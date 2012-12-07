@@ -1,0 +1,29 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}{{ parent() }} > Users{% endblock %}
+
+{% block body %}
+<header class="user">
+{% block header %}{% endblock %}
+</header>
+<div class="content user">
+{% block content %}{% endblock %}
+</div>
+<footer>
+{% block footer %}{% endblock %}
+</footer>
+{% endblock %}
+
+{% block javascripts %}
+{% javascripts '@metaUserProfileBundle/Resources/public/js/*' output='js/min/meta.min.js' filter='?yui_js' %}
+<script src="{{ asset_url }}"></script>
+{% endjavascripts %}
+{{ parent() }}
+{% endblock %}
+
+{% block stylesheets %}
+{% stylesheets '@metaUserProfileBundle/Resources/public/css/*' filter='?yui_css,cssrewrite' %}
+<link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}" />
+{% endstylesheets %}
+{{ parent() }}
+{% endblock %}

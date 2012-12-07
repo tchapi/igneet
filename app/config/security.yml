@@ -1,0 +1,41 @@
+security:
+    encoders:
+        meta\UserProfileBundle\Entity\User:
+            algorithm: sha1
+            encode-as-base64: false
+            iterations: 1
+
+    role_hierarchy:
+        ROLE_ADMIN: [ROLE_USER]
+        ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+
+    providers:
+        user_db:
+            entity: { class: meta\UserProfileBundle\Entity\User, property: username }
+
+    firewalls:
+        main:
+            pattern: /.*
+            provider: user_db
+            form_login:
+                login_path: /login
+                check_path: /login_check
+                remember_me: true
+            logout:
+                path: /logout
+                target: /
+            remember_me:
+                key: MeTa
+                lifetime: 86400
+                path: /.*
+                domain: ~
+            security: true
+            anonymous: true
+    access_control:
+        - { path: /login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: /follow, roles: ROLE_USER }
+        - { path: /unfollow, roles: ROLE_USER }
+        - { path: /watch, roles: ROLE_USER }
+        - { path: /unwatch, roles: ROLE_USER }
+        - { path: /admin, roles: ROLE_ADMIN }
+        - { path: /.*, roles: IS_AUTHENTICATED_ANONYMOUSLY }

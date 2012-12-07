@@ -1,0 +1,6 @@
+parameters:
+    textService.class: meta\GeneralBundle\Services\TextService
+
+services:
+    textService:
+        class: "%textService.class%"

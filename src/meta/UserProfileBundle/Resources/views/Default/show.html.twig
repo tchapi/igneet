@@ -1,0 +1,144 @@
+{% extends 'metaUserProfileBundle::layout.html.twig' %}
+
+{% block title %}{{ parent() }} > {{ user.firstName }}{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+{% if isMe %}
+{% javascripts '@metaGeneralBundle/Resources/public/js-edit/*' output='js/min/meta.min.js' filter='?yui_js' %}
+<script src="{{ asset_url }}"></script>
+{% endjavascripts %}
+{% endif %}
+{% endblock %}
+{% block stylesheets %}
+{{ parent() }}
+{% if isMe %}
+{% stylesheets '@metaGeneralBundle/Resources/public/css-edit/*' filter='?yui_js,cssrewrite' %}
+<link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}" />
+{% endstylesheets %}
+{% endif %}
+{% endblock %}
+
+{% block header %}
+  <div class="userAvatarAndActions">
+    <img src="{{ user.avatar }}" width="150" height="150" class="avatar"/>
+{% if alreadyFollowing %}
+    <a href="{{ path('u_unfollow_user', {'username': user.username}) }}" class="btn btn-info followAction">Unfollow {{ user.firstName }}</a>
+{% elseif not isMe %}
+    <a href="{{ path('u_follow_user', {'username': user.username}) }}" class="btn btn-success followAction">Follow {{ user.firstName }}</a>
+{% endif %}
+  </div>
+  <div class="userInfo">
+    <h2 class="ellipsis"><span data-url="{{ path('u_edit_user_profile', {'username': user.username}) }}" data-name="first_name" class="editable">{{ user.firstName }}</span> <span data-url="{{ path('u_edit_user_profile', {'username': user.username}) }}" data-name="last_name"  class="editable">{{ user.lastName|upper }}</span></h2>
+    <h4 class="ellipsis"><span data-url="{{ path('u_edit_user_profile', {'username': user.username}) }}" data-name="headline" data-type="text" class="editable">{{ user.headline }}</span></h4>
+    <div><i class="icon-map-marker"></i> <span data-url="{{ path('u_edit_user_profile', {'username': user.username}) }}" data-name="city" class="editable">{{ user.city }}</span></div>
+    <div><i class="icon-calendar"></i> Member since {{ user.createdAt|date("d/m/Y") }}</div>
+    <div><i class="icon-trophy"></i> 
+    {% if user.skills|length > 0 %}
+    Skills
+    {% elseif not isMe %}
+    No skills added yet
+    {% endif %}
+    <ul data-toggle="manual" data-url="{{ path('u_edit_user_profile', {'username': user.username}) }}" data-emptytext="Add skills" data-type="checklist" data-source="{{ path('u_list_all_skills') }}" data-name="skills" class="skills skills-target editable">
+    {% for skill in user.skills %}
+        <li class="label">{{ skill.name }}</li>
+    {% endfor %}
+    </ul>
+    {% if isMe %} <a class="editable-trigger" data-target="skills">&hellip;<i class="icon-pencil"></i></a>{% endif %}</div>
+  </div>
+  <div class="userAbout">
+  <div data-url="{{ path('u_edit_user_profile', {'username': user.username}) }}" data-toggle="manual" data-type="textarea" data-name="about" class="about-target about editable">{{ user.about }}</div>{% if isMe %} <a class="editable-trigger" data-target="about">&hellip;<i class="icon-pencil"></i></a>{% endif %}
+  </div>
+{% endblock %}
+
+{% block content %}
+{% if user.following|length > 0 %}
+<section>
+<div class="sectionTitle">{{ user.firstName }} is following : </div>
+<ul class="users sectionContent">
+{% for followingUser in user.following %}
+    <li>
+      <a href="{{ path('u_show_user_profile', {'username': followingUser.username}) }}">
+        <img src="{{ followingUser.avatar }}" width="70" height="70" class="smallAvatar"/>
+        <div class="smallUserInfos">
+          <div>{{ followingUser.firstName }}</div><div>{{ followingUser.lastName|upper }}</div>
+        </div>
+      </a>
+    </li>
+{% endfor %}
+</ul>
+</section>
+{% endif %}
+
+{% if isMe and user.followers|length > 0 %}
+<section>
+<div class="sectionTitle">My followers : </div>
+<ul class="users sectionContent">
+{% for followerUser in user.followers %}
+    <li>
+      <a href="{{ path('u_show_user_profile', {'username': followerUser.username}) }}">
+        <img src="{{ followerUser.avatar }}" width="70" height="70" class="smallAvatar"/>
+        <div class="smallUserInfos">
+          <div>{{ followerUser.firstName }}</div><div>{{ followerUser.lastName|upper }}</div>
+        </div>
+      </a>
+    </li>
+{% endfor %}
+</ul>
+</section>
+{% endif %}
+
+{% if isMe and user.projectsWatched|length > 0 %}
+<section>
+<div class="sectionTitle">Projects I watch :</div>
+<ul class="projects sectionContent">
+{% for watchedProject in user.projectsWatched %}
+    <li>
+      <a href="{{ path('sp_show_project', {'slug': watchedProject.slug}) }}">
+        <img src="{{ watchedProject.picture }}" width="70" height="70" class="smallAvatar"/>
+        <div class="smallUserInfos">
+          {{ watchedProject.name }}
+        </div>
+      </a>
+    </li>
+{% endfor %}
+</ul>
+</section>
+{% endif %}
+
+{% if user.projectsOwned|length > 0 %}
+<section>
+<div class="sectionTitle">Projects I own :</div>
+<ul class="projects sectionContent">
+{% for ownedProject in user.projectsOwned %}
+    <li>
+      <a href="{{ path('sp_show_project', {'slug': ownedProject.slug}) }}">
+        <img src="{{ ownedProject.picture }}" width="70" height="70" class="smallAvatar"/>
+        <div class="smallUserInfos">
+          {{ ownedProject.name }}
+        </div>
+      </a>
+    </li>
+{% endfor %}
+</ul>
+</section>
+{% endif %}
+
+{% if user.projectsParticipatedIn|length > 0 %}
+<section>
+<div class="sectionTitle">Projects I participate in :</div>
+<ul class="projects sectionContent">
+{% for participatedInProject in user.projectsParticipatedIn %}
+    <li>
+      <a href="{{ path('sp_show_project', {'slug': participatedInProject.slug}) }}">
+        <img src="{{ participatedInProject.picture }}" width="70" height="70" class="smallAvatar"/>
+        <div class="smallUserInfos">
+          {{ participatedInProject.name }}
+        </div>
+      </a>
+    </li>
+{% endfor %}
+</ul>
+</section>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'metaStandardProjectProfileBundle::layout.html.twig' %}
+
+{% block title %}{{ parent() }} > All Projects{% endblock %}
+
+{% block header %}
+All Projects
+{% endblock %}
+
+{% block content %}
+{% if standardProjects %}
+<div><ul>
+{% for standardProject in standardProjects %}
+    <li>
+      <a href="{{ path('sp_show_project', {'slug': standardProject.slug}) }}">
+        <img src="{{ standardProject.picture }}" width="100" height="100"/>
+        <span>{{ standardProject.name }} ({{ standardProject.slug|lower }})</span>
+      </a>
+    </li>
+{% endfor %}
+</ul></div>
+{% endif %}
+
+{% endblock %}

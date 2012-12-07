@@ -1,0 +1,7 @@
+parameters:
+#    meta_standard_project_profile.example.class: meta\StandardProjectProfileBundle\Example
+
+services:
+#    meta_standard_project_profile.example:
+#        class: %meta_standard_project_profile.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

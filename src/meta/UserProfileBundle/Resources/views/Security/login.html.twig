@@ -1,0 +1,40 @@
+{% extends 'metaUserProfileBundle::layout.html.twig' %}
+
+{% block title %}{{ parent() }} > Login{% endblock %}
+
+{% block header %}
+  <div class="userAvatarAndActions">
+    <div class="textAvatar"><i class="icon-lock"></i></div>
+  </div>
+  <div class="userCreate">
+    <h2>Welcome back {{ last_username }}.</h2>
+    <h4>Please log in to access the full content of the site.</h4>
+    <p>If you do not have an account, please sign up <a href="{{ path('u_signup') }}">here</a>. If you have lost your password, you can follow the full recovery procedure <a href="#">here</a> to get a new one.</p>
+  </div>
+{% endblock %}
+
+{% block content %}
+{% if error %}
+<div class="alert alert-error">{{ error.message }}</div>
+{% endif %}
+<form action="{{ path('login_check') }}" method="POST">
+  <section>
+    <div class="sectionTitle"><label for="username">Login :</label></div>
+    <div class="sectionContent">
+      <input id="username" type="text" name="_username" value="{{ last_username }}" />
+    </div>
+  </section>
+  <section>
+    <div class="sectionTitle"><label for="password">Password :</label></div>
+    <div class="sectionContent">
+      <input id="password" type="password" name="_password" />
+    </div>
+  </section>
+  <section>
+    <div class="sectionTitle"></div>
+    <div class="sectionContent">
+      <input type="submit" name="Sign in" class="btn btn-info"/>
+    </div>
+  </section>
+</form>
+{% endblock %}

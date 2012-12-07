@@ -1,0 +1,39 @@
+body > header{
+  height: 100px;
+}
+
+div#workspace > div.cardContainer {
+  margin: 0 auto;
+  width: 960px;
+}
+
+div.workspace > div.cardContainer div.card {
+  width: 960px;
+  display: inline-block;
+}
+
+div.card{
+  border-radius: 3px;
+  border: 1px solid #CCC;
+  box-shadow: 0 0 6px rgba(0,0,0,0.3);
+}
+
+div.card > header{
+  background: #EEE;
+}
+
+div.card > header,
+div.card > div.content,
+div.cart > footer{
+  padding: 20px;
+}
+
+/* Users */
+div.userAvatarAndActions{
+  margin-right: 20px;
+  display: inline-block;
+  vertical-align: top;
+}
+div.userInfo{
+  display: inline-block;
+}

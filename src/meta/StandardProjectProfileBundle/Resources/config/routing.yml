@@ -1,0 +1,117 @@
+sp_list_project:
+    pattern:  /projects
+    defaults: { _controller: metaStandardProjectProfileBundle:Default:list, max: 10 }
+
+sp_show_project:
+    pattern:  /project/{slug}
+    defaults: { _controller: metaStandardProjectProfileBundle:Default:showInfo}
+    requirements:
+        _method:  GET
+
+sp_edit_project:
+    pattern:  /project/{slug}
+    defaults: { _controller: metaStandardProjectProfileBundle:Default:edit }
+    requirements:
+        _method:  POST
+
+# TABS
+
+## TIMELINE
+sp_show_project_timeline:
+    pattern:  /project/{slug}/timeline/{page}
+    defaults: { _controller: metaStandardProjectProfileBundle:Default:showTimeline, page: 1 }
+    requirements:
+      page: \d+
+
+
+## LISTS
+sp_show_project_list_home:
+    pattern:  /project/{slug}/lists
+    defaults: { _controller: metaStandardProjectProfileBundle:Default:showCommonListHome}
+
+sp_show_project_list:
+    pattern:  /project/{slug}/list/{id}/{commonListSlug}
+    defaults: { _controller: metaStandardProjectProfileBundle:Default:showCommonList, commonListSlug: _ }
+    requirements:
+      id: \d+
+      _method:  GET
+
+sp_show_project_list_new:
+    pattern:  /project/{slug}/list/new
+    defaults: { _controller: metaStandardProjectProfileBundle:Default:newCommonList}
+
+sp_show_project_list_delete:
+    pattern:  /project/{slug}/list/delete/{id}
+    defaults: { _controller: metaStandardProjectProfileBundle:Default:deleteCommonList}
+    requirements:
+        _method:  POST
+
+sp_show_project_list_edit:
+    pattern:  /project/{slug}/list/edit/{id}
+    defaults: { _controller: metaStandardProjectProfileBundle:Default:editCommonList}
+    requirements:
+      id: \d+
+      _method:  POST
+
+## LIST ITEMS
+sp_show_project_listitem_edit:
+    pattern:  /project/{slug}/list/{listId}/item/{id}
+    defaults: { _controller: metaStandardProjectProfileBundle:Default:editCommonListItem }
+    requirements:
+      id: \d+
+      listId: \d+
+      _method:  POST
+
+sp_show_project_listitem_do:
+    pattern:  /project/{slug}/list/{listId}/item/{id}/do
+    defaults: { _controller: metaStandardProjectProfileBundle:Default:toggleCommonListItem, do: true}
+    requirements:
+      id: \d+
+      listId: \d+
+
+sp_show_project_listitem_undo:
+    pattern:  /project/{slug}/list/{listId}/item/{id}/undo
+    defaults: { _controller: metaStandardProjectProfileBundle:Default:toggleCommonListItem, do: false}
+    requirements:
+      id: \d+
+      listId: \d+
+
+sp_show_project_listitem_delete:
+    pattern:  /project/{slug}/list/{listId}/item/{id}/delete
+    defaults: { _controller: metaStandardProjectProfileBundle:Default:deleteCommonListItem}
+    requirements:
+      id: \d+
+      listId: \d+
+
+sp_show_project_listitem_new:
+    pattern:  /project/{slug}/list/{listId}/item/new
+    defaults: { _controller: metaStandardProjectProfileBundle:Default:newCommonListItem }
+    requirements:
+      listId: \d+
+
+
+## EVENTS 
+
+sp_show_project_events:
+    pattern:  /project/{slug}/events
+    defaults: { _controller: metaStandardProjectProfileBundle:Default:showEvents }
+
+
+# Adding people in projects
+sp_add_owner_to_project:
+    pattern:  /project/{slug}/add_owner/{username}
+    defaults: { _controller: metaStandardProjectProfileBundle:Default:addParticipantOrOwner, owner: true }
+
+sp_add_participant_to_project:
+    pattern:  /project/{slug}/add_participant/{username}
+    defaults: { _controller: metaStandardProjectProfileBundle:Default:addParticipantOrOwner, owner: false }
+
+# Watching projects
+sp_watch_project:
+    pattern:  /watch/{slug}
+    defaults: { _controller: metaStandardProjectProfileBundle:Default:watch }
+
+sp_unwatch_project:
+    pattern:  /unwatch/{slug}
+    defaults: { _controller: metaStandardProjectProfileBundle:Default:unwatch }
+

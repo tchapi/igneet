@@ -1,0 +1,38 @@
+{% extends 'metaUserProfileBundle::layout.html.twig' %}
+
+{% block title %}{{ parent() }} > New user{% endblock %}
+
+{% block header %}
+  <div class="userAvatarAndActions">
+    <div class="textAvatar"><i class="icon-magic"></i></div>
+  </div>
+  <div class="userCreate">
+    <h2><strong>Sign up now</strong> to join the adventure !</h2>
+    <h4>And discover a great community of projects and makers at your fingertips.</h4>
+    <p>It's free and easy, just fill in the few information below and you'll be ready to go, share and participate in projects. Of course you'll be able to change this information anytime later on.</p>
+  </div>
+{% endblock %}
+
+{% form_theme form _self %}
+
+{% block form_row %}
+<section>
+<div class="sectionTitle">{{ form_label(form) }}</div>
+<div class="sectionContent">
+    {{ form_errors(form) }}
+    {{ form_widget(form) }}
+</div>
+</section>
+{% endblock form_row %}
+
+{% block content %}
+<form action="{{ path('u_signup') }}" method="post" {{ form_enctype(form) }}>
+    {{ form_widget(form) }}
+  <section>
+    <div class="sectionTitle"></div>
+    <div class="sectionContent">
+      <input type="submit" value="Create" class="btn btn-large btn-success" />
+    </div>
+  </section>
+</form>
+{% endblock %}

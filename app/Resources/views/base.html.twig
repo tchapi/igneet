@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}meta{% endblock %}</title>
+
+{% block stylesheets %}
+{% stylesheets '@metaGeneralBundle/Resources/public/css/*' filter='?yui_css,cssrewrite' %}
+        <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}" />
+{% endstylesheets %}
+{% endblock %}
+
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+    <body>
+
+        <header>
+          <div class="navbar navbar-fixed-top navbar-inverse">
+            <div class="navbar-inner">
+              <a class="brand" href="#">meta</a>
+              {% render "metaUserProfileBundle:Security:currentUserMenu" %}
+            </div>
+          </div>
+        </header>
+
+        {% if app.session.hasFlash('success') %}
+          <div class="alert alert-success">
+              {{ app.session.flash('success') }}
+              <button type="button" class="close" data-dismiss="alert">×</button>
+          </div>
+        {% endif %}
+        {% if app.session.hasFlash('warning') %}
+          <div class="alert alert-warning">
+              {{ app.session.flash('warning') }}
+              <button type="button" class="close" data-dismiss="alert">×</button>
+          </div>
+        {% endif %}
+        {% if app.session.hasFlash('error') %}
+          <div class="alert alert-error">
+              {{ app.session.flash('error') }}
+              <button type="button" class="close" data-dismiss="alert">×</button>
+          </div>
+        {% endif %}
+
+        <div id="workspace">
+          <div class="cardContainer">
+            <div class="card">
+{% block body %}{% endblock %}
+            </div>
+          </div>
+        </div>
+
+{% block javascripts %}
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+{% javascripts '@metaGeneralBundle/Resources/public/js/*' output='js/min/meta.min.js' filter='?yui_js' %}
+        <script src="{{ asset_url }}"></script>
+{% endjavascripts %}
+{% endblock %}
+
+        <footer>
+        copyright <a href="https://about.me/tchap">tchap</a> 2012-2013 | terms of use | contact | report a bug
+        </footer>
+
+    </body>
+</html>

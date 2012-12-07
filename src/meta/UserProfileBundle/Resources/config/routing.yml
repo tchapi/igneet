@@ -1,0 +1,50 @@
+login:
+    pattern: /login
+    defaults: { _controller: metaUserProfileBundle:Security:login }
+
+login_check:
+    pattern: /login_check
+
+logout:
+    pattern: /logout
+
+u_signup:
+    pattern:  /signup
+    defaults: { _controller: metaUserProfileBundle:Default:create }
+
+u_me:
+    pattern:  /me
+    defaults: { _controller: metaUserProfileBundle:Default:showMe }
+
+u_show_user_profile:
+    pattern:  /who/{username}
+    defaults: { _controller: metaUserProfileBundle:Default:show }
+    requirements:
+        _method:  GET
+
+u_edit_user_profile:
+    pattern:  /who/{username}
+    defaults: { _controller: metaUserProfileBundle:Default:edit }
+    requirements:
+        _method:  POST
+
+u_show_list_recent_created:
+    pattern:  /people
+    defaults: { _controller: metaUserProfileBundle:Default:listRecentlyCreated, max: 10 }
+
+u_choose_user:
+    pattern:  /people/choose
+    defaults: { _controller: metaUserProfileBundle:Default:choose }
+
+u_follow_user:
+    pattern:  /follow/{username}
+    defaults: { _controller: metaUserProfileBundle:Default:followUser }
+
+u_unfollow_user:
+    pattern:  /unfollow/{username}
+    defaults: { _controller: metaUserProfileBundle:Default:unfollowUser }
+
+
+u_list_all_skills:
+    pattern:  /skills
+    defaults: { _controller: metaUserProfileBundle:Default:listSkills }

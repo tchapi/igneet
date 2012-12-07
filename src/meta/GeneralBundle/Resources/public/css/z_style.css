@@ -1,0 +1,410 @@
+body > header{
+  height: 70px;
+}
+body > header .navbar a.brand{
+  margin-left: 0;
+}
+
+body > footer{
+  height: 30px;
+  text-align: center;
+  color: rgba(0,0,0,0.5);
+  padding: 20px 0 0 0;
+  font-size: 0.9em;
+}
+
+div#workspace{
+  transition: opacity 150ms 350ms ease-in;
+}
+
+div#workspace > div.cardContainer {
+  margin: 0 auto;
+  width: 960px;
+}
+
+div.workspace > div.cardContainer div.card {
+  width: 960px;
+  display: inline-block;
+}
+
+div.card{
+  border-radius: 3px;
+  border: 1px solid #CCC;
+  box-shadow: 0 0 6px rgba(0,0,0,0.3);
+}
+
+div.card > header{
+  background: #EEE;
+  border-bottom: 1px solid #DDD;
+}
+
+div.card a{
+  text-decoration: none;
+}
+
+div.card > header,
+div.cart > footer{
+  padding: 20px;
+}
+
+.ellipsis{
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+div.content{ position: relative;}
+div.content section{
+  padding: 10px 20px;
+}
+div.content form section{
+  padding: 0 20px;
+}
+div.content form section h4{
+  text-align: center;
+}
+div.content section:first-child{
+  padding-top: 25px;
+}
+div.content section > div.sectionTitle{
+  display: inline-block;
+  width: 160px;
+  color: black;
+  vertical-align: top;
+}
+div.content form section > div.sectionTitle{
+  width: 350px;
+  text-align: right;
+  margin-right: 10px;
+}
+div.content section > .sectionContent{
+  display: inline-block;
+  margin-left: 5px;
+}
+
+div.content div.menu{
+  width: 180px;
+  float: right;
+  background-color: #eee;
+  padding: 40px 20px 10px 20px;
+}
+div.content div.column{
+  width: 738px;
+  border-left:220px solid #eee; /* The width and color of the rail */
+  margin-left:-220px;
+  float: right;
+}
+div.content div.column h4{
+  display: inline-block;
+}
+
+/*********/
+/*********/
+
+/*! X-editable - v1.1.0 
+* In-place editing with Twitter Bootstrap, jQuery UI or pure jQuery
+* http://github.com/vitalets/x-editable
+* Copyright (c) 2012 Vitaliy Potapov; Licensed MIT */
+
+.editableform {
+    margin-bottom: 0; /* overwrites bootstrap margin */
+}
+
+.editableform .control-group {
+    margin-bottom: 0; /* overwrites bootstrap margin */
+    white-space: nowrap; /* prevent wrapping buttons on new line */
+}
+
+.editable-buttons {
+   display: inline-block; /* should be inline to take effect of parent's white-space: nowrap */
+   vertical-align: top;
+   margin-left: 7px;
+   /* display-inline emulation for IE7*/
+   zoom: 1; 
+   *display: inline;
+}
+
+.editable-input {
+    vertical-align: top; 
+    display: inline-block; /* should be inline to take effect of parent's white-space: nowrap */
+    width: auto; /* bootstrap-responsive has width: 100% that breakes layout */
+    white-space: normal; /* reset white-space decalred in parent*/
+   /* display-inline emulation for IE7*/
+   zoom: 1; 
+   *display: inline;   
+}
+
+.editable-buttons .editable-cancel {
+   margin-left: 7px; 
+}
+
+/*for jquery-ui buttons need set height to look more pretty*/
+.editable-buttons button.ui-button {
+   height: 24px; 
+}
+
+.editableform-loading {
+    background: url('/img/loading.gif') center center no-repeat;  
+    height: 25px;
+    width: auto;  
+}
+
+.editable-inline .editableform-loading {
+    background-position: left 5px;      
+}
+
+ .editable-error-block {
+    max-width: 300px;
+    margin: 5px 0 0 0;
+    width: auto;
+}
+
+/*add padding for jquery ui*/
+.editable-error-block.ui-state-error {
+    padding: 3px;  
+}  
+
+.editable-error {
+   color: red;  
+}
+
+.editableform textarea {
+    height: 150px; /*default height for textarea*/
+}
+
+.editableform .editable-date {
+    padding: 0; 
+    margin: 0;
+    float: left;
+}
+
+
+/* checklist vertical alignment */
+.editable-checklist label input[type="checkbox"], 
+.editable-checklist label span {
+    vertical-align: middle;
+    margin: 0;
+}
+
+.editable-clear {
+   clear: both;
+   font-size: 0.9em;
+   text-decoration: none;
+   text-align: right;
+}
+.editable-container {
+    max-width: none; /* without this rule poshytip does not stretch */
+}  
+
+.editable-container.popover {
+/*   width: 300px;*/  /* debug */
+    width: auto; /* without this rule popover does not stretch */
+}
+
+
+.editable-click{
+  border-bottom: 1px dashed #DDD;
+  cursor: pointer;
+}
+.editable-click:hover{
+  border-bottom: 1px dashed #08C;
+}
+.editable-trigger{
+  cursor: pointer;
+}
+
+.editable-click.editable-disabled, 
+a.editable-click.editable-disabled, 
+a.editable-click.editable-disabled:hover {
+   color: #585858;  
+   cursor: default;
+   border-bottom: none;
+}
+
+.editable-empty, .editable-empty:hover{
+  font-style: italic; 
+  color: #AAA;  
+  border-bottom: none;
+  text-decoration: none;
+}
+
+.editable-unsaved {
+  font-weight: bold; 
+}
+
+.editable-unsaved:after {
+/*    content: '*'*/
+}
+
+/*****************/
+/* Common Avatar */
+/*****************/
+img.avatar{
+  display: block;
+  border-radius: 3px;
+}
+img.smallAvatar{
+  display: inline-block;
+  vertical-align: top;
+  border-radius: 3px 0 0 3px;
+}
+div.textAvatar{
+  display: inline-block;
+  width: 150px;
+  height: 150px;
+  text-align: center;
+  line-height: 150px;
+  font-size: 150px;
+}
+div.smallTextAvatar{
+  display: inline-block;
+  width: 70px;
+  height: 70px;
+  text-align: center;
+  line-height: 70px;
+  font-size: 70px;
+  background: #CCC;
+}
+
+/******************/
+/* Users & Mutual */
+/******************/
+div.userAvatarAndActions,
+div.projectAvatarAndActions{
+  margin-right: 20px;
+  display: inline-block;
+  vertical-align: top;
+  text-align: right;
+}
+a.followAction,
+a.watchAction{
+  margin: 10px 0 0 0;
+}
+div.userInfo{
+  display: inline-block;
+  border-right: 1px solid #CCC;
+  padding-right: 40px;
+  height: 150px;
+  max-width: 400px;
+  min-width: 260px;
+}
+div.userCreate{
+  display: inline-block;
+  max-width: 740px;
+}
+div.userAbout{
+  display: inline-block;
+  vertical-align: top;
+  padding: 5px 20px;
+  height: 140px;
+}
+div.userInfo > h2,
+div.projectInfo > h2{
+  margin-top: 0;
+}
+div.smallUserInfos{
+  display: inline-block;
+  vertical-align: top;
+  padding: 15px 10px 15px 0;
+  min-width: 100px;
+}
+ul.users li,
+ul.projects li{
+  display: inline-block;
+  background: #EEE;
+  border: 1px solid #CCC;
+  border-radius: 3px;
+  margin: 0 5px;
+  vertical-align: top;
+}
+ul.users li:first-child,
+ul.projects li:first-child{
+  margin-left: 0;
+}
+
+
+/**********/
+/* Skills */
+/**********/
+ul.skills{
+  display: inline-block;
+  margin: 0;
+}
+ul.skills li{
+  display: inline-block;
+}
+
+/************/
+/* Projects */
+/************/
+div.navbar.project{
+  margin:0;
+}
+div.navbar.project > div.navbar-inner{
+  border-radius: 0;
+  border-right: none;
+  border-left: none;
+}
+div.projectInfo{
+  display: inline-block;
+  border-right: 1px solid #CCC;
+  padding-right: 40px;
+  height: 150px;
+  width: 550px;
+}
+div.projectAbout{
+  display: inline-block;
+  vertical-align: top;
+  padding: 5px 20px;
+  height: 140px;
+  width: 100px;
+}
+div.smallProjectInfos{
+  display: inline-block;
+  vertical-align: top;
+  padding: 10px;
+}
+
+
+/*************/
+/*   LISTS   */
+/*************/
+ul.lists{
+  list-style-type: none;
+  margin: 5px 0 0 0;
+}
+ul.lists li{
+  width: 190px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+div.menu_new{
+  margin-top: 10px;
+  margin-left: 5px;
+  border-top: 1px solid #DDD;
+  padding-top: 10px;
+}
+section.listInfo{
+  box-shadow: 0 4px 10px #DDD;
+}
+ul.list{
+  list-style-type: none;
+  margin: 0;
+}
+ul.list li{
+  border-bottom: 1px dotted #CCC;
+  padding: 5px;
+}
+ul.list li span.date{
+  font-size: 0.9em;
+}
+ul.list li.even{
+  background: #f4f4f4;
+}
+ul.list li:last-child{
+  border-bottom: none;
+}
+ul.list li.done span.text{
+  text-decoration: line-through;
+}

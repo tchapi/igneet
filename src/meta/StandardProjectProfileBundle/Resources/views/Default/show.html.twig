@@ -1,0 +1,57 @@
+{% extends 'metaStandardProjectProfileBundle::layout.html.twig' %}
+
+{% block title %}{{ parent() }} > {{ base.standardProject.name }}{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+{% if base.isOwning %}
+{% javascripts '@metaGeneralBundle/Resources/public/js-edit/*' output='js/min/meta.min.js' filter='?yui_js' %}
+<script src="{{ asset_url }}"></script>
+{% endjavascripts %}
+{% endif %}
+{% endblock %}
+{% block stylesheets %}
+{{ parent() }}
+{% if base.isOwning %}
+{% stylesheets '@metaGeneralBundle/Resources/public/css-edit/*' filter='?yui_js,cssrewrite' %}
+<link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}" />
+{% endstylesheets %}
+{% endif %}
+{% endblock %}
+
+{% block header %}
+  <div class="projectAvatarAndActions">
+    <img src="{{ base.standardProject.picture }}" width="150" height="150" class="avatar"/>
+{% if base.isAlreadyWatching %}
+    <a href="{{ path('sp_unwatch_project', {'slug': base.standardProject.slug}) }}" class="btn btn-info watchAction">Unwatch {{ base.standardProject.name }}</a>
+{% else %}
+    <a href="{{ path('sp_watch_project', {'slug': base.standardProject.slug}) }}" class="btn btn-success watchAction">Watch {{ base.standardProject.name }}</a>
+{% endif %}
+  </div>
+  <div class="projectInfo">
+    <h2 class="ellipsis"><span>{{ base.standardProject.name }}</span></h2>
+    <h4 class="ellipsis"><span>{{ base.standardProject.headline }}</span></h4>
+    <div><i class="icon-calendar"></i> Created on {{ base.standardProject.createdAt|date("d/m/Y") }}</div>
+    <div><i class="icon-beaker"></i> 
+    {% if base.standardProject.neededSkills|length > 0 %}
+    Needed skills : 
+    {% elseif not base.isOwning %}
+    No skills added yet.
+    {% endif %} 
+    <ul class="skills">
+    {% for skill in base.standardProject.neededSkills %}
+        <li class="label">{{ skill.name }}</li>
+    {% endfor %}
+    </ul>
+    </div>
+  </div>
+  <div class="userAbout">
+    <div>{{ base.standardProject.owners|length }} owners</div>
+    <div>{{ base.standardProject. participants|length }} participants</div>
+    <div>{{ base.standardProject.watchers|length }} watching</div>
+  </div>
+{% endblock %}
+
+{% block navbar %}
+{% render "metaStandardProjectProfileBundle:Default:navbar" with { 'activeMenu' : 'info', 'slug' : base.standardProject.slug } %}
+{% endblock %}

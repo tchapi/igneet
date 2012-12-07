@@ -1,0 +1,59 @@
+{% extends 'metaStandardProjectProfileBundle:Default:show.html.twig' %}
+
+{% block title %}{{ parent() }} > {{ base.standardProject.name }} | List : {{ commonList.name }}{% endblock %}
+
+{% block navbar %}
+{% render "metaStandardProjectProfileBundle:Default:navbar" with { 'activeMenu' : 'lists', 'slug' : base.standardProject.slug } %}
+{% endblock %}
+
+{% block content %}
+<div class="column">
+<section class="listInfo">
+  <h4 class="editable" data-name="name" data-url="{{ path('sp_show_project_list_edit', {'slug': base.standardProject.slug, 'id': commonList.id}) }}" data-type="text">{{ commonList.name }} </h4> <a href="{{ path('sp_show_project_list_delete', {'slug': base.standardProject.slug, 'id': commonList.id}) }}"></a>
+  <p><span class="editable description-target" data-name="description" data-url="{{ path('sp_show_project_list_edit', {'slug': base.standardProject.slug, 'id': commonList.id}) }}" data-toggle="manual" data-type="text" data-emptytext="Provide an optional description">{{ commonList.description }}</span>
+  {% if base.isOwning %} <a class="editable-trigger" data-target="description">&hellip;<i class="icon-pencil"></i></a>{% endif %}</p>
+</section>
+<section>
+{% if commonList.items|length > 0 %}
+  <ul class="list">
+  {% for item in commonList.items %}
+    <li class="{{ cycle(["even", "odd"], loop.index) }}{% if item.done %} done muted{% endif %}">
+      <i class="icon-caret-right"></i>
+      <span class="text editable text-target" data-pk="{{ item.id }}" data-name="text" data-url="{{ path('sp_show_project_listitem_edit', {'slug': base.standardProject.slug, 'listId': commonList.id, 'id': item.id}) }}" data-type="text">{{ item.text }}</span>
+      {% if base.isParticipatingIn %}
+      <span class="pull-right">
+        {% if item.done %}
+        <span class="muted date">done on {{ item.doneAt|date('d-m-Y') }}</span>
+        <a href="{{ path('sp_show_project_listitem_undo', {'slug': base.standardProject.slug, 'listId': commonList.id, 'id': item.id }) }}"><i class="icon-repeat"></i></a>
+        {% else %}
+        <span class="muted date">created on {{ item.createdAt|date('d-m-Y') }}</span>
+        <a href="{{ path('sp_show_project_listitem_do', {'slug': base.standardProject.slug, 'listId': commonList.id, 'id': item.id }) }}"><i class="icon-ok text-success"></i></a>
+        {% endif %}
+        <a href="{{ path('sp_show_project_listitem_delete', {'slug': base.standardProject.slug, 'listId': commonList.id, 'id': item.id }) }}"><i class="icon-remove text-error"></i></a>
+      </span>
+      {% endif %}
+    </li>
+  {% endfor %}
+    <li><a href="{{ path('sp_show_project_listitem_new', {'slug': base.standardProject.slug, 'listId': commonList.id}) }}"><i class="icon-plus"></i>New item</a></li>
+  </ul>
+{% else %}
+  <p class="muted">No list item yet ! <a href="{{ path('sp_show_project_listitem_new', {'slug': base.standardProject.slug, 'listId': commonList.id}) }}">Create one ...</a></p>
+{% endif %}
+</section>
+</div>
+<div class="menu">
+  Lists :
+  <ul class="lists">
+  {% for list in commonLists %}
+      <li>
+        <i class="icon-list-ol"></i> <a href="{{ path('sp_show_project_list', {'slug': base.standardProject.slug, 'id': list.id, 'commonListSlug': list.slug }) }}">{{ list.name }}</a>
+      </li>
+  {% endfor %}
+  </ul>
+  {% if base.isParticipatingIn %}
+  <div class="menu_new">
+    <a href="{{ path('sp_show_project_list_new', {'slug': base.standardProject.slug}) }}"><i class="icon-plus-sign"></i> New list</a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
