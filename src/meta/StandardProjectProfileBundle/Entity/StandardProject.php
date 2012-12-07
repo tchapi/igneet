@@ -117,7 +117,7 @@ class StandardProject
      * Common Lists
      * @ORM\OneToMany(targetEntity="CommonList", mappedBy="project")
      **/
-    private $CommonLists;
+    private $commonLists;
 
 /* ********** */
 
