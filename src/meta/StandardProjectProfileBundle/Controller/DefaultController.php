@@ -352,7 +352,7 @@ class DefaultController extends Controller
                         $objectHasBeenModified = true;
                         break;
                     case 'skills':
-                        $skillSlugsAsArray = explode(",", $request->request->get('value'));
+                        $skillSlugsAsArray = $request->request->get('value');
                         
                         $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:Skill');
                         $skills = $repository->findSkillsByArrayOfSlugs($skillSlugsAsArray);

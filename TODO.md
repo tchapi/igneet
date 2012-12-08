@@ -11,6 +11,8 @@
 
  * pouvoir desactiver le mode edit lorsqu'on est owner ou participant
 
+ * removeParticipant - removeOwner
+ 
 V2
  
  * log des modifs sur les projets
