@@ -90,11 +90,7 @@ sp_show_project_listitem_new:
       listId: \d+
 
 
-## EVENTS 
-
-sp_show_project_events:
-    pattern:  /project/{slug}/events
-    defaults: { _controller: metaStandardProjectProfileBundle:Default:showEvents }
+## WIKI 
 
 
 # Adding people in projects
