@@ -1,27 +1,21 @@
 ## TODO ##
 
- * sign up : chosen 2 + style + cas d'erreurs + taille des champs input variables
+ * signup : avatar
+    + chgt d'avatar
+
  * login : un peu de style plus messages d'erreurs
 
- * Styles des notices générale (notamment le margin en haut qui est dégueu)
-
- * styles des assert ?
-
- * listes : reconnaitre les urls en mettre un lien pour y aller directement a coté ;)
-
  * pouvoir desactiver le mode edit lorsqu'on est owner ou participant
-
- * removeParticipant - removeOwner
-
-V2
  
  * log des modifs sur les projets
 
- * tinyMCE dans les about ??
+ * tinyMCE ou markdown dans les about ??
+
+ * listes : reconnaitre les urls en mettre un lien pour y aller directement a coté ;)
+
+ * wiki
 
 ## Call benjamin
-
-OK -- login nécessaire pour tout
 
  - tous les meta sont publics pour les gens qui y sont et pas pour les autres
 
@@ -40,13 +34,13 @@ une idée est publique dans la meta
 
  * séparer Background / Concept
 
-OK -- un projet est privé au participants / owners
-
 lien vers des droplr avec apercu auto
 
-events : a degager
 
-timeline : tu peux pas filtrer
+OK -- login nécessaire pour tout
+OK -- un projet est privé au participants / owners
+OK -- events : a degager
+OK -- timeline : tu peux pas filtrer
 
 
 # CHECK WORKFLOW

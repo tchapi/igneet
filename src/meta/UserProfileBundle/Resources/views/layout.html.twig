@@ -22,7 +22,7 @@
 {% endblock %}
 
 {% block stylesheets %}
-{% stylesheets '@metaUserProfileBundle/Resources/public/css/*' filter='?yui_css,cssrewrite' %}
+{% stylesheets '/bundles/metauserprofile/css/*' filter='?yui_css,cssrewrite' %}
 <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}" />
 {% endstylesheets %}
 {{ parent() }}

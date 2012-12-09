@@ -46,7 +46,7 @@ No skills added yet
       <a href="{{ path('u_show_user_profile', {'username': owningUser.username}) }}">
         <img src="{{ owningUser.avatar }}" width="70" height="70" class="smallAvatar"/>
         <div class="smallUserInfos">
-          <div>{{ owningUser.firstName }}</div><div>{{ owningUser.lastName|upper }}</div>
+          <div>{{ owningUser.firstName }}</div><div>{{ owningUser.lastName|upper }}</div><a class="removeUserIcon" href="{{ path('sp_remove_owner_to_project', { 'slug': base.standardProject.slug, 'username' : owningUser.username }) }}"><i class="icon-remove-sign icon-large"></i></a>
         </div>
       </a>
     </li>
@@ -72,7 +72,7 @@ No skills added yet
       <a href="{{ path('u_show_user_profile', {'username': participatingUser.username}) }}">
         <img src="{{ participatingUser.avatar }}" width="70" height="70" class="smallAvatar"/>
         <div class="smallUserInfos">
-          <div>{{ participatingUser.firstName }}</div><div>{{ participatingUser.lastName|upper }}</div>
+          <div>{{ participatingUser.firstName }}</div><div>{{ participatingUser.lastName|upper }}</div><a class="removeUserIcon" href="{{ path('sp_remove_participant_to_project', { 'slug': base.standardProject.slug, 'username' : participatingUser.username }) }}"><i class="icon-remove-sign icon-large"></i></a>
         </div>
       </a>
     </li>

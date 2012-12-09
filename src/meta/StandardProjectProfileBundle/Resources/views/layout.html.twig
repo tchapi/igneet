@@ -25,7 +25,7 @@
 {% endblock %}
 
 {% block stylesheets %}
-{% stylesheets '@metaStandardProjectProfileBundle/Resources/public/css/*' filter='?yui_css,cssrewrite' %}
+{% stylesheets 'bundles/metastandardprojectprofile/css/*' filter='?yui_css,cssrewrite' %}
 <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}" />
 {% endstylesheets %}
 {{ parent() }}

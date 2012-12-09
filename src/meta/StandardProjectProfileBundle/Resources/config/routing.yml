@@ -43,8 +43,8 @@ sp_show_project_list_new:
 sp_show_project_list_delete:
     pattern:  /project/{slug}/list/delete/{id}
     defaults: { _controller: metaStandardProjectProfileBundle:Default:deleteCommonList}
-    requirements:
-        _method:  POST
+    # requirements:
+    #     _method:  POST
 
 sp_show_project_list_edit:
     pattern:  /project/{slug}/list/edit/{id}
@@ -84,8 +84,8 @@ sp_show_project_listitem_delete:
       listId: \d+
 
 sp_show_project_listitem_new:
-    pattern:  /project/{slug}/list/{listId}/item/new
-    defaults: { _controller: metaStandardProjectProfileBundle:Default:newCommonListItem }
+    pattern:  /project/{slug}/list/{listId}/item/new/{name}
+    defaults: { _controller: metaStandardProjectProfileBundle:Default:newCommonListItem, name: "New Item" }
     requirements:
       listId: \d+
 
@@ -101,6 +101,15 @@ sp_add_owner_to_project:
 sp_add_participant_to_project:
     pattern:  /project/{slug}/add_participant/{username}
     defaults: { _controller: metaStandardProjectProfileBundle:Default:addParticipantOrOwner, owner: false }
+
+# Removing people in projects
+sp_remove_owner_to_project:
+    pattern:  /project/{slug}/remove_owner/{username}
+    defaults: { _controller: metaStandardProjectProfileBundle:Default:removeParticipantOrOwner, owner: true }
+
+sp_remove_participant_to_project:
+    pattern:  /project/{slug}/remove_participant/{username}
+    defaults: { _controller: metaStandardProjectProfileBundle:Default:removeParticipantOrOwner, owner: false }
 
 # Watching projects
 sp_watch_project:

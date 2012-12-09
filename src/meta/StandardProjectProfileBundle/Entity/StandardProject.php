@@ -476,7 +476,7 @@ class StandardProject
     public function removeCommonList(\meta\StandardProjectProfileBundle\Entity\CommonList $commonList)
     {
         $this->commonLists->removeElement($commonList);
-        $commonList->removeProject($this);
+        $commonList->setProject(null);
     }
 
     /**

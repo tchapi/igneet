@@ -11,7 +11,7 @@
 <section class="listInfo">
   <h4 class="editable" data-name="name" data-url="{{ path('sp_show_project_list_edit', {'slug': base.standardProject.slug, 'id': commonList.id}) }}" data-type="text">{{ commonList.name }} </h4> <a href="{{ path('sp_show_project_list_delete', {'slug': base.standardProject.slug, 'id': commonList.id}) }}"></a>
   <p><span class="editable description-target" data-name="description" data-url="{{ path('sp_show_project_list_edit', {'slug': base.standardProject.slug, 'id': commonList.id}) }}" data-toggle="manual" data-type="text" data-emptytext="Provide an optional description">{{ commonList.description }}</span>
-  {% if base.isOwning %} <a class="editable-trigger" data-target="description">&hellip;<i class="icon-pencil"></i></a>{% endif %}</p>
+  {% if base.isParticipatingIn %} <a class="editable-trigger" data-target="description">&hellip;<i class="icon-pencil"></i></a>{% endif %}</p>
 </section>
 <section>
 {% if commonList.items|length > 0 %}
@@ -46,7 +46,7 @@
   <ul class="lists">
   {% for list in commonLists %}
       <li>
-        <i class="icon-list-ol"></i> <a href="{{ path('sp_show_project_list', {'slug': base.standardProject.slug, 'id': list.id, 'commonListSlug': list.slug }) }}">{{ list.name }}</a>
+        <i class="icon-list-ol"></i> {% if base.isParticipatingIn %}<a href="{{ path('sp_show_project_list_delete', {'slug': base.standardProject.slug, 'id': list.id}) }}"><i class="icon-remove-sign"></i></a>{% endif %} <a href="{{ path('sp_show_project_list', {'slug': base.standardProject.slug, 'id': list.id, 'commonListSlug': list.slug }) }}">{{ list.name }}</a>
       </li>
   {% endfor %}
   </ul>

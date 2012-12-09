@@ -17,12 +17,12 @@ security:
         assets_and_dev:
             pattern:    ^/(_profiler|_wdt|css|js)
             security: false
-        login_firewall:
-            pattern:    ^/login$
-            anonymous:  ~
-        signup_firewall:
-            pattern:    ^/signup$
-            anonymous:  ~
+        # login_firewall:
+        #     pattern:    ^/login$
+        #     anonymous:  ~
+        # signup_firewall:
+        #     pattern:    ^/signup$
+        #     anonymous:  ~
         main:
             pattern:    ^/
             provider: user_db

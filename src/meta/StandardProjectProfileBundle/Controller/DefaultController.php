@@ -229,7 +229,34 @@ class DefaultController extends Controller
         return new Response($error);
     }
 
-    public function newCommonListItemAction($slug, $listId)
+    public function deleteCommonListAction(Request $request, $slug, $id)
+    {
+  
+        $this->fetchProjectAndPreComputeRights($slug, false, true);
+
+        if ($this->base != false) {
+
+            $repository = $this->getDoctrine()->getRepository('metaStandardProjectProfileBundle:CommonList');
+            $commonList = $repository->findOneByIdInProject($id, $this->base['standardProject']->getId());
+
+            $this->base['standardProject']->removeCommonList($commonList);
+            
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+
+            $this->get('session')->setFlash(
+                'success',
+                'Your list "'.$commonList->getName().'" was successfully deleted.'
+            );
+
+            return $this->redirect($this->generateUrl('sp_show_project_list_home', array('slug' => $slug)));
+       
+        }
+
+        return new Response($error);
+    }
+
+    public function newCommonListItemAction($slug, $listId, $name)
     {
         $this->fetchProjectAndPreComputeRights($slug, false, true);
 
@@ -237,7 +264,7 @@ class DefaultController extends Controller
           return $this->forward('metaStandardProjectProfileBundle:Default:showRestricted', array('slug' => $slug));
 
         $commonListItem = new CommonListItem();
-        $commonListItem->setDefaultText();
+        $commonListItem->setText($name);
 
         $repository = $this->getDoctrine()->getRepository('metaStandardProjectProfileBundle:CommonList');
         $commonList = $repository->findOneByIdInProject($listId, $this->base['standardProject']->getId());
@@ -397,7 +424,7 @@ class DefaultController extends Controller
                 $userRepository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
                 $newParticipantOrOwner = $userRepository->findOneByUsername($username);
 
-                if ($newParticipantOrOwner) {
+                if ($newParticipantOrOwner && (( !($newParticipantOrOwner->isOwning($standardProject)) && $owner === true) || ( !($newParticipantOrOwner->isParticipatingIn($standardProject)) && $owner !== true))) {
 
                     if ($owner === true){
 
@@ -426,7 +453,7 @@ class DefaultController extends Controller
 
                     $this->get('session')->setFlash(
                         'error',
-                        'This user does not exist.'
+                        'This user does not exist or is already part of this project.'
                     );
                 }
 
@@ -444,6 +471,78 @@ class DefaultController extends Controller
         return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $slug)));
     }
 
+    public function removeParticipantOrOwnerAction($slug, $username, $owner)
+    {
+
+        $authenticatedUser = $this->getUser();
+
+        if ($authenticatedUser) {
+
+            $projectRepository = $this->getDoctrine()->getRepository('metaStandardProjectProfileBundle:StandardProject');
+            $standardProject = $projectRepository->findOneBySlug($slug);
+
+            if ( $authenticatedUser->isOwning($standardProject) ){
+
+                $userRepository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
+                $toRemoveParticipantOrOwner = $userRepository->findOneByUsername($username);
+
+                if ($toRemoveParticipantOrOwner && (($toRemoveParticipantOrOwner->isOwning($standardProject) && $owner === true) || ($toRemoveParticipantOrOwner->isParticipatingIn($standardProject) && $owner !== true)) ) {
+
+                    if ($toRemoveParticipantOrOwner != $authenticatedUser){
+
+                        if ($owner === true){
+
+                          $toRemoveParticipantOrOwner->removeProjectsOwned($standardProject);
+
+                          $this->get('session')->setFlash(
+                              'success',
+                              'The user '.$toRemoveParticipantOrOwner->getFirstName().' is no longer owner of the project "'.$standardProject->getName().'".'
+                          );
+
+                        } else {
+
+                          $toRemoveParticipantOrOwner->removeProjectsParticipatedIn($standardProject);
+
+                          $this->get('session')->setFlash(
+                              'success',
+                              'The user '.$toRemoveParticipantOrOwner->getFirstName().' does not participate in the project "'.$standardProject->getName().'" anymore .'
+                          );
+                          
+                        }
+
+                        $em = $this->getDoctrine()->getManager();
+                        $em->flush();
+
+                    } else {
+
+                        $this->get('session')->setFlash(
+                            'error',
+                            'You cannot remove yourself from a project.'
+                        );
+
+                    }
+                    
+                } else {
+
+                    $this->get('session')->setFlash(
+                        'error',
+                        'This user does not exist with this role in the project.'
+                    );
+                }
+
+            } else {
+
+                $this->get('session')->setFlash(
+                    'error',
+                    'You are not an owner of the project "'.$standardProject->getName().'".'
+                );
+
+            }
+
+        }
+
+        return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $slug)));
+    }
 
     /*  ####################################################
      *                    PROJECT LIST

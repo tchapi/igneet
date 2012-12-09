@@ -1,8 +1,11 @@
 body > header{
-  height: 70px;
+  height: 52px;
 }
 body > header .navbar a.brand{
   margin-left: 0;
+}
+body > .alert{
+  border-radius: 0 0 3px 3px;
 }
 
 body > footer{
@@ -15,6 +18,7 @@ body > footer{
 
 div#workspace{
   transition: opacity 150ms 350ms ease-in;
+  margin-top: 20px;
 }
 
 div#workspace > div.cardContainer {
@@ -58,7 +62,7 @@ div.content section{
   padding: 10px 20px;
 }
 div.content form section{
-  padding: 0 20px;
+  padding: 3px 20px;
 }
 div.content form section h4{
   text-align: center;
@@ -144,7 +148,7 @@ div.content div.column h4{
 }
 
 .editableform-loading {
-    background: url('/img/loading.gif') center center no-repeat;  
+    background: url('../img/loading.gif') center center no-repeat;  
     height: 25px;
     width: auto;  
 }
@@ -307,6 +311,7 @@ div.smallUserInfos{
   vertical-align: top;
   padding: 15px 10px 15px 0;
   min-width: 100px;
+  position: relative;
 }
 ul.users li,
 ul.projects li{
@@ -321,7 +326,11 @@ ul.users li:first-child,
 ul.projects li:first-child{
   margin-left: 0;
 }
-
+div.errors ul{
+  list-style: none;
+  margin: 0;
+  color: red;
+}
 
 /**********/
 /* Skills */
@@ -364,6 +373,11 @@ div.smallProjectInfos{
   display: inline-block;
   vertical-align: top;
   padding: 10px;
+}
+a.removeUserIcon{
+  position: absolute;
+  right: 4px;
+  top: 28px;
 }
 
 

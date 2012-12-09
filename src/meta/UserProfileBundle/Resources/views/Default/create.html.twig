@@ -19,7 +19,7 @@
 <section>
 <div class="sectionTitle">{{ form_label(form) }}</div>
 <div class="sectionContent">
-    {{ form_errors(form) }}
+    <div class="errors">{{ form_errors(form) }}</div>
     {{ form_widget(form) }}
 </div>
 </section>
@@ -31,7 +31,7 @@
   <section>
     <div class="sectionTitle"></div>
     <div class="sectionContent">
-      <input type="submit" value="Create" class="btn btn-large btn-success" />
+      <input type="submit" value="Create" class="btn btn-success" />
     </div>
   </section>
 </form>

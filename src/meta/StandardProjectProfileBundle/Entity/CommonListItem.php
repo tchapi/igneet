@@ -99,18 +99,6 @@ class CommonListItem
     }
 
     /**
-     * Set default text
-     *
-     * @return ListItem
-     */
-    public function setDefaultText()
-    {
-        $this->text = "New item";
-    
-        return $this;
-    }
-
-    /**
      * Get text
      *
      * @return string 

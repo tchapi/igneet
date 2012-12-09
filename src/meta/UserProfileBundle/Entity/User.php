@@ -15,8 +15,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="User")
  * @ORM\Entity(repositoryClass="meta\UserProfileBundle\Entity\UserRepository")
  * @ORM\HasLifecycleCallbacks()
- * @UniqueEntity("username")
- * @UniqueEntity("email")
+ * @UniqueEntity(fields="username", message="This username is already taken")
+ * @UniqueEntity(fields="email", message="This email is already registered")
  */
 class User implements UserInterface
 {
@@ -752,9 +752,9 @@ class User implements UserInterface
      *
      * @param meta\StandardProjectProfileBundle\Entity\StandardProject $projectParticipatedIn
      */
-    public function removeProjectsParticipatedIn(\meta\StandardProjectProfileBundle\Entity\StandardProject $projectsParticipatedIn)
+    public function removeProjectsParticipatedIn(\meta\StandardProjectProfileBundle\Entity\StandardProject $projectParticipatedIn)
     {
-        $this->projectsParticipatedIn->removeElement($projectsParticipatedIn);
+        $this->projectsParticipatedIn->removeElement($projectParticipatedIn);
         $projectParticipatedIn->removeParticipant($this);
     }
 

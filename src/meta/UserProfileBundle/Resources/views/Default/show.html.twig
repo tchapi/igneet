@@ -13,7 +13,7 @@
 {% block stylesheets %}
 {{ parent() }}
 {% if isMe %}
-{% stylesheets '@metaGeneralBundle/Resources/public/css-edit/*' filter='?yui_js,cssrewrite' %}
+{% stylesheets 'bundles/metageneral/css-edit/*' filter='?yui_js,cssrewrite' %}
 <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}" />
 {% endstylesheets %}
 {% endif %}

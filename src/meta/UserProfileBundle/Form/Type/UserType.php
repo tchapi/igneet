@@ -19,7 +19,7 @@ class UserType extends AbstractType
         $builder->add('avatar', 'url', array('required' => false));
 
         $builder->add('headline', 'text',  array('required' => false));
-        $builder->add('about', 'text', array('required' => false));
+        $builder->add('about', 'textarea', array('required' => false));
 
         $builder->add('skills', 'entity', array(
             'multiple' => true, 
