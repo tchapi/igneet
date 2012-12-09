@@ -115,9 +115,15 @@ class StandardProject
 
     /**
      * Common Lists
-     * @ORM\OneToMany(targetEntity="CommonList", mappedBy="project")
+     * @ORM\OneToMany(targetEntity="CommonList", mappedBy="project", cascade="remove")
      **/
     private $commonLists;
+
+    /**
+     * Wiki (OWNING SIDE)
+     * @ORM\OneToOne(targetEntity="Wiki", inversedBy="project", cascade="remove")
+     **/
+    private $wiki;
 
 /* ********** */
 
@@ -476,7 +482,6 @@ class StandardProject
     public function removeCommonList(\meta\StandardProjectProfileBundle\Entity\CommonList $commonList)
     {
         $this->commonLists->removeElement($commonList);
-        $commonList->setProject(null);
     }
 
     /**
@@ -497,5 +502,28 @@ class StandardProject
     public function hasCommonList(\meta\StandardProjectProfileBundle\Entity\CommonList $commonList)
     {
         return $this->commonLists->contains($commonList);
+    }
+
+    /**
+     * Set wiki
+     *
+     * @param \meta\StandardProjectProfileBundle\Entity\Wiki $wiki
+     * @return StandardProject
+     */
+    public function setWiki(\meta\StandardProjectProfileBundle\Entity\Wiki $wiki = null)
+    {
+        $this->wiki = $wiki;
+    
+        return $this;
+    }
+
+    /**
+     * Get wiki
+     *
+     * @return \meta\StandardProjectProfileBundle\Entity\Wiki 
+     */
+    public function getWiki()
+    {
+        return $this->wiki;
     }
 }

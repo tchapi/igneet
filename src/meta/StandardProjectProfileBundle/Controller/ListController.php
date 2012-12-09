@@ -165,21 +165,32 @@ class ListController extends BaseController
             $repository = $this->getDoctrine()->getRepository('metaStandardProjectProfileBundle:CommonList');
             $commonList = $repository->findOneByIdInProject($id, $this->base['standardProject']->getId());
 
-            $this->base['standardProject']->removeCommonList($commonList);
+            if ($commonList){
+
+                $this->base['standardProject']->removeCommonList($commonList);
+
+                $em = $this->getDoctrine()->getManager();
+                $em->remove($commonList);
+                $em->flush();
+
+                $this->get('session')->setFlash(
+                    'success',
+                    'Your list "'.$commonList->getName().'" was successfully deleted.'
+                );
+
+            } else {
+
+                $this->get('session')->setFlash(
+                    'warning',
+                    'This item does not exist.'
+                );
+
+            }
             
-            $em = $this->getDoctrine()->getManager();
-            $em->flush();
-
-            $this->get('session')->setFlash(
-                'success',
-                'Your list "'.$commonList->getName().'" was successfully deleted.'
-            );
-
-            return $this->redirect($this->generateUrl('sp_show_project_list_home', array('slug' => $slug)));
-       
         }
 
-        return new Response($error);
+        return $this->redirect($this->generateUrl('sp_show_project_list_home', array('slug' => $slug)));
+
     }
 
     public function newCommonListItemAction($slug, $listId, $name)
@@ -250,6 +261,42 @@ class ListController extends BaseController
         return new Response($error);
     }
 
+    public function deleteCommonListItemAction(Request $request, $slug, $listId, $id)
+    {
+  
+        $this->fetchProjectAndPreComputeRights($slug, false, true);
+
+        if ($this->base != false) {
+
+            $repository = $this->getDoctrine()->getRepository('metaStandardProjectProfileBundle:CommonListItem');
+            $commonListItem = $repository->findOneByIdInProjectAndList($id, $listId, $this->base['standardProject']->getId());
+
+            $repository = $this->getDoctrine()->getRepository('metaStandardProjectProfileBundle:CommonList');
+            $commonList = $repository->findOneByIdInProject($listId, $this->base['standardProject']->getId());
+
+            if ($commonList && $commonListItem){
+
+                $commonList->removeItem($commonListItem);
+
+                $em = $this->getDoctrine()->getManager();
+                $em->remove($commonListItem);
+                $em->flush();
+
+            } else {
+
+                $this->get('session')->setFlash(
+                    'warning',
+                    'This item does not exist.'
+                );
+
+            }
+            
+        }
+
+        return $this->redirect($this->generateUrl('sp_show_project_list', array('slug' => $slug, 'id' => $commonList->getId(), 'commonListSlug' => $commonList->getSlug())));
+
+    }
+
     public function toggleCommonListItemAction(Request $request, $slug, $listId, $id, $do)
     {
   
@@ -263,11 +310,22 @@ class ListController extends BaseController
             $repository = $this->getDoctrine()->getRepository('metaStandardProjectProfileBundle:CommonList');
             $commonList = $repository->findOneByIdInProject($listId, $this->base['standardProject']->getId());
 
-            $commonListItem->setDone($do);
+            if ($commonListItem){
 
-            $commonListItem->setUpdatedAt(new \DateTime('now'));
-            $em = $this->getDoctrine()->getManager();
-            $return = $em->flush();
+                $commonListItem->setDone($do);
+
+                $commonListItem->setUpdatedAt(new \DateTime('now'));
+                $em = $this->getDoctrine()->getManager();
+                $return = $em->flush();
+
+            } else {
+
+                $this->get('session')->setFlash(
+                    'warning',
+                    'This item does not exist.'
+                );
+
+            }
             
         }
 

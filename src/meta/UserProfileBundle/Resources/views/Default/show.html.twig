@@ -47,7 +47,7 @@
     {% if isMe %} <a class="editable-trigger" data-target="skills">&hellip;<i class="icon-pencil"></i></a>{% endif %}</div>
   </div>
   <div class="userAbout">
-  <div data-url="{{ path('u_edit_user_profile', {'username': user.username}) }}" data-toggle="manual" data-type="textarea" data-name="about" class="about-target about editable">{{ user.about|nl2br }}</div>{% if isMe %} <a class="editable-trigger" data-target="about">&hellip;<i class="icon-pencil"></i></a>{% endif %}
+  <div data-url="{{ path('u_edit_user_profile', {'username': user.username}) }}" data-toggle="manual" data-type="textarea" data-name="about" class="about-target about editable">{{ user.about|markdown }}</div>{% if isMe %} <a class="editable-trigger" data-target="about">&hellip;<i class="icon-pencil"></i></a>{% endif %}
   </div>
 {% endblock %}
 

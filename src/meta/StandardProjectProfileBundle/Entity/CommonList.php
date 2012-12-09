@@ -65,7 +65,7 @@ class CommonList
 
     /**
      * Common List Items
-     * @ORM\OneToMany(targetEntity="CommonListItem", mappedBy="commonList")
+     * @ORM\OneToMany(targetEntity="CommonListItem", mappedBy="commonList", cascade="remove")
      **/
     private $items;
 
@@ -184,7 +184,6 @@ class CommonList
     public function removeItem(\meta\StandardProjectProfileBundle\Entity\CommonListItem $item)
     {
         $this->items->removeElement($item);
-        $item->removeCommonList($this);
     }
 
     /**

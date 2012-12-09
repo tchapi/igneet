@@ -19,7 +19,7 @@
 
 <section>
 <div class="sectionTitle">About this project :</div>
-<div class="sectionContent"><div class="editable about-target" data-name="about" data-url="{{ path('sp_edit_project', {'slug': base.standardProject.slug}) }}" data-toggle="manual" data-type="textarea">{{ base.standardProject.about|nl2br }}</div>
+<div class="sectionContent"><div class="editable about-target" data-name="about" data-url="{{ path('sp_edit_project', {'slug': base.standardProject.slug}) }}" data-toggle="manual" data-type="textarea">{{ base.standardProject.about|markdown }}</div>
 {% if base.isOwning %} <a class="editable-trigger" data-target="about">&hellip;<i class="icon-pencil"></i></a>{% endif %}
 </div>
 </section>

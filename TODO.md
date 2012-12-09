@@ -9,11 +9,21 @@
  
  * log des modifs sur les projets
 
- * tinyMCE ou markdown dans les about ??
+ * tinyMCE ou markdown dans les about ?? --> voir projet staré dans github
+
+ * wiki
+
+ * images !!! dans assetic
+  + Sg fault in generate ?
+
+ * mettre les css dans les bons bundles!
+
+ * background image pour les projets ?
+
+V2 
 
  * listes : reconnaitre les urls en mettre un lien pour y aller directement a coté ;)
 
- * wiki
 
 ## Call benjamin
 
@@ -26,6 +36,11 @@
 
 au niveau meta, la timeline ne ressort que les trucs publics des proejts en dessous
 
+lien vers des droplr avec apercu auto
+
+
+IDEA :
+
 une idée est publique dans la meta
  - description textuelle principale
   deux champs : Concept et Connaissance
@@ -33,8 +48,6 @@ une idée est publique dans la meta
   tagger 'concept' ou 'connaissance' dans le fil de discussion
 
  * séparer Background / Concept
-
-lien vers des droplr avec apercu auto
 
 
 OK -- login nécessaire pour tout

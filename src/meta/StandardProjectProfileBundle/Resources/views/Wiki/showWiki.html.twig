@@ -1,0 +1,11 @@
+{% extends 'metaStandardProjectProfileBundle:Default:show.html.twig' %}
+
+{% block title %}{{ parent() }} > {{ base.standardProject.name }} | Wiki{% endblock %}
+
+{% block navbar %}
+{% render "metaStandardProjectProfileBundle:Default:navbar" with { 'activeMenu' : 'wiki', 'slug' : base.standardProject.slug } %}
+{% endblock %}
+
+{% block content %}
+Wiki
+{% endblock %}

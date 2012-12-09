@@ -20,6 +20,9 @@ class AppKernel extends Kernel
             new JMS\DiExtraBundle\JMSDiExtraBundle($this),
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
 
+            /* Third Party */
+            new Knp\Bundle\MarkdownBundle\KnpMarkdownBundle(), /* Provides Markdown conversion */
+
             new meta\GeneralBundle\metaGeneralBundle(),
             new meta\UserProfileBundle\metaUserProfileBundle(),
             new meta\StandardProjectProfileBundle\metaStandardProjectProfileBundle(),
