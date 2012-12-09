@@ -14,8 +14,17 @@ security:
             entity: { class: meta\UserProfileBundle\Entity\User, property: username }
 
     firewalls:
+        assets_and_dev:
+            pattern:    ^/(_profiler|_wdt|css|js)
+            security: false
+        login_firewall:
+            pattern:    ^/login$
+            anonymous:  ~
+        signup_firewall:
+            pattern:    ^/signup$
+            anonymous:  ~
         main:
-            pattern: /.*
+            pattern:    ^/
             provider: user_db
             form_login:
                 login_path: /login
@@ -30,12 +39,8 @@ security:
                 path: /.*
                 domain: ~
             security: true
-            anonymous: true
+            anonymous: ~
     access_control:
-        - { path: /login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: /follow, roles: ROLE_USER }
-        - { path: /unfollow, roles: ROLE_USER }
-        - { path: /watch, roles: ROLE_USER }
-        - { path: /unwatch, roles: ROLE_USER }
-        - { path: /admin, roles: ROLE_ADMIN }
-        - { path: /.*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: /login.*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: /signup, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: /.*, roles: ROLE_USER }
