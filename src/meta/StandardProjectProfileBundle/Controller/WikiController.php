@@ -13,7 +13,7 @@ class WikiController extends BaseController
      *                          WIKI
      *  #################################################### */
 
-    public function showWikiAction($slug, $page)
+    public function showWikiHomeAction($slug)
     {
         $this->fetchProjectAndPreComputeRights($slug, false, true);
 

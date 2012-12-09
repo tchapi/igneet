@@ -91,6 +91,9 @@ sp_show_project_listitem_new:
 
 
 ## WIKI 
+sp_show_project_wiki:
+    pattern:  /project/{slug}/wiki
+    defaults: { _controller: metaStandardProjectProfileBundle:Wiki:showWikiHome}
 
 
 # Adding people in projects
