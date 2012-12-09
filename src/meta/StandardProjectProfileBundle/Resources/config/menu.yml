@@ -19,12 +19,6 @@ parameters:
       route: sp_show_project_list_home
       private: true
     - 
-      name: events
-      title: Events
-      icon: icon-calendar
-      route: sp_show_project
-      private: true
-    - 
       name: resources
       title: Resources
       icon: icon-file
