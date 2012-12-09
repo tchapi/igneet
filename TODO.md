@@ -12,12 +12,41 @@
  * pouvoir desactiver le mode edit lorsqu'on est owner ou participant
 
  * removeParticipant - removeOwner
- 
+
 V2
  
  * log des modifs sur les projets
 
- * Sauts à la ligne dans les about + tinyMCE ?
+ * tinyMCE dans les about ??
+
+## Call benjamin
+
+OK -- login nécessaire pour tout
+
+ - tous les meta sont publics pour les gens qui y sont et pas pour les autres
+
+ public :
+  meta
+  projects: page info
+            shoutbox quand les posts outside
+
+au niveau meta, la timeline ne ressort que les trucs publics des proejts en dessous
+
+une idée est publique dans la meta
+ - description textuelle principale
+  deux champs : Concept et Connaissance
+ - discussion
+  tagger 'concept' ou 'connaissance' dans le fil de discussion
+
+ * séparer Background / Concept
+
+OK -- un projet est privé au participants / owners
+
+lien vers des droplr avec apercu auto
+
+events : a degager
+
+timeline : tu peux pas filtrer
 
 
 # CHECK WORKFLOW

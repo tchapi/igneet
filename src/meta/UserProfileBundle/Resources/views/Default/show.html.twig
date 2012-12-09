@@ -39,9 +39,9 @@
     {% elseif not isMe %}
     No skills added yet
     {% endif %}
-    <ul data-toggle="manual" data-url="{{ path('u_edit_user_profile', {'username': user.username}) }}" data-emptytext="Add skills" data-type="checklist" data-source="{{ path('u_list_all_skills') }}" data-name="skills" class="skills skills-target editable">
+    <ul data-toggle="manual" data-url="{{ path('u_edit_user_profile', {'username': user.username}) }}" data-emptytext="Add skills" data-type="checklist" data-source="{{ path('u_list_all_skills') }}" data-name="skills" class="skills skills-target editable-li">
     {% for skill in user.skills %}
-        <li class="label">{{ skill.name }}</li>
+        <li class="label" rel="{{ skill.slug }}">{{ skill.name }}</li>
     {% endfor %}
     </ul>
     {% if isMe %} <a class="editable-trigger" data-target="skills">&hellip;<i class="icon-pencil"></i></a>{% endif %}</div>
