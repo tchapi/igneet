@@ -2,14 +2,16 @@
 
 namespace meta\StandardProjectProfileBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * WikiPage
+ * meta\StandardProjectProfileBundle\Entity\WikiPage
  *
- * @ORM\Table()
- * @ORM\Entity
+ * @ORM\Table(name="WikiPage")
+ * @ORM\Entity(repositoryClass="meta\StandardProjectProfileBundle\Entity\WikiPageRepository")
  */
 class WikiPage
 {
@@ -31,11 +33,36 @@ class WikiPage
     private $title;
 
     /**
+     * @var string $slug
+     *
+     * @ORM\Column(name="slug", type="string", length=255, nullable=true)
+     */
+    private $slug;
+
+    /**
      * @var text $content
      *
-     * @ORM\Column(name="content", type="text")
+     * @ORM\Column(name="content", type="text", nullable=true)
      */
     private $content;
+
+    /**
+     * @var \DateTime $created_at
+     *
+     * @ORM\Column(name="created_at", type="datetime")
+     * @Assert\NotBlank()
+     * @Assert\DateTime()
+     */
+    private $created_at;
+
+    /**
+     * @var \DateTime $updated_at
+     *
+     * @ORM\Column(name="updated_at", type="datetime")
+     * @Assert\NotBlank()
+     * @Assert\DateTime()
+     */
+    private $updated_at;
 
     /**
      * Wiki this page is linked to (REVERSE SIDE)
@@ -56,7 +83,11 @@ class WikiPage
     private $children;
 
     public function __construct() {
-        $this->children = new \Doctrine\Common\Collections\ArrayCollection();
+
+        $this->created_at = $this->updated_at = new \DateTime('now');
+
+        $this->children = new ArrayCollection();
+        $this->parent = null;
     }
 
     /**
@@ -192,5 +223,97 @@ class WikiPage
     public function getContent()
     {
         return $this->content;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     * @return WikiPage
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+    
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string 
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * Set rootWiki
+     *
+     * @param \meta\StandardProjectProfileBundle\Entity\Wiki $rootWiki
+     * @return WikiPage
+     */
+    public function setRootWiki(\meta\StandardProjectProfileBundle\Entity\Wiki $rootWiki = null)
+    {
+        $this->rootWiki = $rootWiki;
+    
+        return $this;
+    }
+
+    /**
+     * Get rootWiki
+     *
+     * @return \meta\StandardProjectProfileBundle\Entity\Wiki 
+     */
+    public function getRootWiki()
+    {
+        return $this->rootWiki;
+    }
+
+    /**
+     * Set created_at
+     *
+     * @param \DateTime $createdAt
+     * @return WikiPage
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->created_at = $createdAt;
+    
+        return $this;
+    }
+
+    /**
+     * Get created_at
+     *
+     * @return \DateTime 
+     */
+    public function getCreatedAt()
+    {
+        return $this->created_at;
+    }
+
+    /**
+     * Set updated_at
+     *
+     * @param \DateTime $updatedAt
+     * @return WikiPage
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updated_at = $updatedAt;
+    
+        return $this;
+    }
+
+    /**
+     * Get updated_at
+     *
+     * @return \DateTime 
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updated_at;
     }
 }

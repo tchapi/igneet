@@ -8,86 +8,101 @@
 
 {% block content %}
 <section>
-<div class="sectionTitle">Name :</div>
-<div class="sectionContent editable" data-name="name" data-url="{{ path('sp_edit_project', {'slug': base.standardProject.slug}) }}">{{ base.standardProject.name }}</div>
+  <div class="sectionTitle">Name :</div>
+  <div class="sectionContent editable" data-name="name" data-url="{{ path('sp_edit_project', {'slug': base.standardProject.slug}) }}">{{ base.standardProject.name }}</div>
 </section>
 
 <section>
-<div class="sectionTitle">Headline :</div>
-<div class="sectionContent editable" data-name="headline" data-url="{{ path('sp_edit_project', {'slug': base.standardProject.slug}) }}" data-type="textarea">{{ base.standardProject.headline }}</div>
+  <div class="sectionTitle">Headline :</div>
+  <div class="sectionContent editable" data-name="headline" data-url="{{ path('sp_edit_project', {'slug': base.standardProject.slug}) }}" data-type="textarea">{{ base.standardProject.headline }}</div>
 </section>
 
 <section>
-<div class="sectionTitle">About this project :</div>
-<div class="sectionContent"><div class="editable about-target" data-name="about" data-url="{{ path('sp_edit_project', {'slug': base.standardProject.slug}) }}" data-toggle="manual" data-type="textarea">{{ base.standardProject.about|markdown }}</div>
-{% if base.isOwning %} <a class="editable-trigger" data-target="about">&hellip;<i class="icon-pencil"></i></a>{% endif %}
-</div>
+  <div class="sectionTitle">Needed skills :</div>
+  <div class="sectionContent">
+    {% if base.standardProject.neededSkills|length == 0 %}
+    No skills added yet
+    {% else %}
+    <ul data-toggle="manual" data-emptytext="Add needed skills" data-url="{{ path('sp_edit_project', {'slug': base.standardProject.slug}) }}" data-type="checklist" data-source="{{ path('u_list_all_skills') }}" data-name="skills" data-type="select" class="skills skills-target editable-li">
+    {% for skill in base.standardProject.neededSkills %}<li class="label" rel="{{ skill.slug }}">{{ skill.name }}</li>{% endfor %}
+    </ul>
+    {% if base.canEdit %} <a class="editable-trigger" data-target="skills">&hellip;<i class="icon-pencil"></i></a>{% endif %}
+    {% endif %}
+  </div>
 </section>
 
-<section>
-<div class="sectionTitle">Needed skills :</div>
-<div class="sectionContent">
-{% if base.standardProject.neededSkills|length == 0 %}
-No skills added yet
-{% else %}
-<ul data-toggle="manual" data-emptytext="Add needed skills" data-url="{{ path('sp_edit_project', {'slug': base.standardProject.slug}) }}" data-type="checklist" data-source="{{ path('u_list_all_skills') }}" data-name="skills" data-type="select" class="skills skills-target editable-li">
-{% for skill in base.standardProject.neededSkills %}<li class="label" rel="{{ skill.slug }}">{{ skill.name }}</li>{% endfor %}
-</ul>
-{% if base.isOwning %} <a class="editable-trigger" data-target="skills">&hellip;<i class="icon-pencil"></i></a>{% endif %}
-{% endif %}
-</div>
-</section>
-
-<section>
-<div class="sectionTitle">Owners : </div>
-<ul class="users sectionContent">
-{% for owningUser in base.standardProject.owners %}
-    <li>
-      <a href="{{ path('u_show_user_profile', {'username': owningUser.username}) }}">
-        <img src="{{ owningUser.avatar }}" width="70" height="70" class="smallAvatar"/>
-        <div class="smallUserInfos">
-          <div>{{ owningUser.firstName }}</div><div>{{ owningUser.lastName|upper }}</div><a class="removeUserIcon" href="{{ path('sp_remove_owner_to_project', { 'slug': base.standardProject.slug, 'username' : owningUser.username }) }}"><i class="icon-remove-sign icon-large"></i></a>
+<section class="colored first">
+  <div class="wmd-heading"><i class="icon-bullhorn"></i> About this project : {% if base.canEdit %}<a class="pull-right markdown-trigger">&hellip;<i class="icon-pencil"></i></a>{% endif %}</div>
+  <div>
+    {% if base.canEdit %}
+      <div class="wmd-wrapper well well-small hide" >
+        <div class="wmd-panel">
+            <div id="wmd-button-bar"></div>
+            <textarea data-name="about" data-url="{{ path('sp_edit_project', {'slug': base.standardProject.slug}) }}" class="wmd-input" id="wmd-input">{{ base.standardProject.about }}</textarea>
         </div>
-      </a>
-    </li>
-{% endfor %}
-{% if base.isOwning %}
-    <li>
-      <a href="{{ path('u_choose_user', {'owner': true}) }}">
-        <div class="smallTextAvatar">+</div>
-        <div class="smallUserInfos">
-          <div>Add an</div><div>Owner</div>
+        <div>
+          <button id="wmd-save" class="btn btn-primary">Save</button> <span class="muted wmd-message">Click save to save your changes</span>
         </div>
-      </a>
-    </li>
-{% endif %}
-</ul>
+      </div>
+    {% endif %}
+    
+    <div id="wmd-preview" class="about">{{ base.standardProject.about|markdown }}</div>
+
+  </div>
 </section>
 
 <section>
-<div class="sectionTitle">Participants : </div>
-<ul class="users sectionContent">
-{% for participatingUser in base.standardProject.participants %}
-    <li>
-      <a href="{{ path('u_show_user_profile', {'username': participatingUser.username}) }}">
-        <img src="{{ participatingUser.avatar }}" width="70" height="70" class="smallAvatar"/>
-        <div class="smallUserInfos">
-          <div>{{ participatingUser.firstName }}</div><div>{{ participatingUser.lastName|upper }}</div><a class="removeUserIcon" href="{{ path('sp_remove_participant_to_project', { 'slug': base.standardProject.slug, 'username' : participatingUser.username }) }}"><i class="icon-remove-sign icon-large"></i></a>
-        </div>
-      </a>
-    </li>
-{% endfor %}
-{% if base.isOwning %}
-    <li>
-      <a href="{{ path('u_choose_user', {'owner': false}) }}">
-        <div class="smallTextAvatar">+</div>
-        <div class="smallUserInfos">
-          <div>Add a</div><div>Participant</div>
-        </div>
-      </a>
-    </li>
-{% endif %}
-</ul>
+  <div class="sectionTitle">Owners : </div>
+  <ul class="users sectionContent">
+  {% for owningUser in base.standardProject.owners %}
+      <li>
+        <a href="{{ path('u_show_user_profile', {'username': owningUser.username}) }}">
+          <img src="{{ owningUser.avatar }}" width="70" height="70" class="smallAvatar"/>
+          <div class="smallUserInfos">
+            <div>{{ owningUser.firstName }}</div><div>{{ owningUser.lastName|upper }}</div>
+            {% if base.isOwning %}<a class="removeUserIcon" href="{{ path('sp_remove_owner_to_project', { 'slug': base.standardProject.slug, 'username' : owningUser.username }) }}"><i class="icon-remove-sign icon-large"></i></a>{% endif %}
+          </div>
+        </a>
+      </li>
+  {% endfor %}
+  {% if base.isOwning %}
+      <li>
+        <a href="{{ path('u_choose_user', {'owner': true}) }}">
+          <div class="smallTextAvatar">+</div>
+          <div class="smallUserInfos">
+            <div>Add an</div><div>Owner</div>
+          </div>
+        </a>
+      </li>
+  {% endif %}
+  </ul>
+</section>
+
+<section>
+  <div class="sectionTitle">Participants : </div>
+  <ul class="users sectionContent">
+  {% for participatingUser in base.standardProject.participants %}
+      <li>
+        <a href="{{ path('u_show_user_profile', {'username': participatingUser.username}) }}">
+          <img src="{{ participatingUser.avatar }}" width="70" height="70" class="smallAvatar"/>
+          <div class="smallUserInfos">
+            <div>{{ participatingUser.firstName }}</div><div>{{ participatingUser.lastName|upper }}</div>
+            {% if base.isOwning %}<a class="removeUserIcon" href="{{ path('sp_remove_participant_to_project', { 'slug': base.standardProject.slug, 'username' : participatingUser.username }) }}"><i class="icon-remove-sign icon-large"></i></a>{% endif %}
+          </div>
+        </a>
+      </li>
+  {% endfor %}
+  {% if base.isOwning %}
+      <li>
+        <a href="{{ path('u_choose_user', {'owner': false}) }}">
+          <div class="smallTextAvatar">+</div>
+          <div class="smallUserInfos">
+            <div>Add a</div><div>Participant</div>
+          </div>
+        </a>
+      </li>
+  {% endif %}
+  </ul>
 </section>
 
 {% endblock %}

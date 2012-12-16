@@ -1,9 +1,9 @@
 {% extends 'metaStandardProjectProfileBundle:Default:show.html.twig' %}
 
-{% block title %}{{ parent() }} > {{ base.standardProject.name }} | New list{% endblock %}
+{% block title %}{{ parent() }} > {{ base.standardProject.name }} | New Wiki Page{% endblock %}
 
 {% block navbar %}
-{% render "metaStandardProjectProfileBundle:Default:navbar" with { 'activeMenu' : 'lists', 'slug' : base.standardProject.slug } %}
+{% render "metaStandardProjectProfileBundle:Default:navbar" with { 'activeMenu' : 'wiki', 'slug' : base.standardProject.slug } %}
 {% endblock %}
 
 {% form_theme form _self %}
@@ -19,9 +19,9 @@
 {% endblock form_row %}
 
 {% block content %}
-<form action="{{ path('sp_show_project_list_new', {'slug': base.standardProject.slug}) }}" method="post" {{ form_enctype(form) }}>
+<form action="{{ path('sp_show_project_wiki_new_page', {'slug': base.standardProject.slug}) }}" method="post" {{ form_enctype(form) }}>
   <section>
-    <h4>Create a new list :</h4>
+    <h4>Create a new page in your wiki :</h4>
   </section>
   {{ form_widget(form) }}
   <section>

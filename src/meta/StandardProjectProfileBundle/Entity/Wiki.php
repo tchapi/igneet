@@ -2,10 +2,13 @@
 
 namespace meta\StandardProjectProfileBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Wiki
+ * meta\StandardProjectProfileBundle\Entity\Wiki
  *
  * @ORM\Table(name="Wiki")
  * @ORM\Entity
@@ -32,6 +35,21 @@ class Wiki
      * @ORM\OneToMany(targetEntity="WikiPage", mappedBy="wiki", cascade="remove")
      **/
     private $pages;
+
+    /**
+     * Home Page of the wiki or null
+     * @ORM\OneToOne(targetEntity="WikiPage", cascade="remove")
+     **/
+    private $homePage;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->pages = new ArrayCollection();
+        $this->homePage = null;
+    }
 
     /**
      * Get id
@@ -65,23 +83,18 @@ class Wiki
     {
         return $this->project;
     }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->pages = new \Doctrine\Common\Collections\ArrayCollection();
-    }
+
     
     /**
      * Add pages
      *
-     * @param \meta\StandardProjectProfileBundle\Entity\WikiPage $pages
+     * @param \meta\StandardProjectProfileBundle\Entity\WikiPage $page
      * @return Wiki
      */
-    public function addPage(\meta\StandardProjectProfileBundle\Entity\WikiPage $pages)
+    public function addPage(\meta\StandardProjectProfileBundle\Entity\WikiPage $page)
     {
-        $this->pages[] = $pages;
+        $page->setWiki($this);
+        $this->pages[] = $page;
     
         return $this;
     }
@@ -89,11 +102,11 @@ class Wiki
     /**
      * Remove pages
      *
-     * @param \meta\StandardProjectProfileBundle\Entity\WikiPage $pages
+     * @param \meta\StandardProjectProfileBundle\Entity\WikiPage $page
      */
-    public function removePage(\meta\StandardProjectProfileBundle\Entity\WikiPage $pages)
+    public function removePage(\meta\StandardProjectProfileBundle\Entity\WikiPage $page)
     {
-        $this->pages->removeElement($pages);
+        $this->pages->removeElement($page);
     }
 
     /**
@@ -104,5 +117,28 @@ class Wiki
     public function getPages()
     {
         return $this->pages;
+    }
+
+    /**
+     * Set homePage
+     *
+     * @param \meta\StandardProjectProfileBundle\Entity\WikiPage $homePage
+     * @return Wiki
+     */
+    public function setHomePage(\meta\StandardProjectProfileBundle\Entity\WikiPage $homePage = null)
+    {
+        $this->homePage = $homePage;
+    
+        return $this;
+    }
+
+    /**
+     * Get homePage
+     *
+     * @return \meta\StandardProjectProfileBundle\Entity\WikiPage 
+     */
+    public function getHomePage()
+    {
+        return $this->homePage;
     }
 }

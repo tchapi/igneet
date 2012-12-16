@@ -13,6 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="StandardProject")
  * @ORM\Entity(repositoryClass="meta\StandardProjectProfileBundle\Entity\StandardProjectRepository")
  * @UniqueEntity("slug")
+ * @ORM\MappedSuperclass
  */
 class StandardProject
 {
@@ -111,6 +112,12 @@ class StandardProject
      **/
     private $watchers;
 
+    /**
+     * Meta this project is linked to
+     * @ORM\ManyToOne(targetEntity="MetaProject", inversedBy="projects")
+     **/
+    private $meta;
+
 /* ********** */
 
     /**
@@ -121,7 +128,7 @@ class StandardProject
 
     /**
      * Wiki (OWNING SIDE)
-     * @ORM\OneToOne(targetEntity="Wiki", inversedBy="project", cascade="remove")
+     * @ORM\OneToOne(targetEntity="Wiki", inversedBy="project", fetch="EAGER")
      **/
     private $wiki;
 
@@ -129,6 +136,8 @@ class StandardProject
 
     public function __construct()
     {
+        $this->created_at = $this->updated_at = new \DateTime('now');
+
         $this->neededSkills = new ArrayCollection();
         $this->owners = new ArrayCollection();
         $this->participants = new ArrayCollection();
@@ -136,7 +145,6 @@ class StandardProject
 
         $this->commonLists = new ArrayCollection();
 
-        $this->created_at = $this->updated_at = new \DateTime('now');
     }
 
     /**
@@ -216,7 +224,7 @@ class StandardProject
     public function getPicture()
     {
         if ($this->picture == "")
-            return "/img/defaults/StandardProject.png";
+            return "/bundles/metageneral/img/defaults/standardProject.png";
         else
             return $this->picture;
     }
@@ -512,6 +520,7 @@ class StandardProject
      */
     public function setWiki(\meta\StandardProjectProfileBundle\Entity\Wiki $wiki = null)
     {
+        if ($wiki) $wiki->setProject($this);
         $this->wiki = $wiki;
     
         return $this;
@@ -525,5 +534,28 @@ class StandardProject
     public function getWiki()
     {
         return $this->wiki;
+    }
+
+    /**
+     * Set meta
+     *
+     * @param \meta\StandardProjectProfileBundle\Entity\MetaProject $meta
+     * @return StandardProject
+     */
+    public function setMeta(\meta\StandardProjectProfileBundle\Entity\MetaProject $meta = null)
+    {
+        $this->meta = $meta;
+    
+        return $this;
+    }
+
+    /**
+     * Get meta
+     *
+     * @return \meta\StandardProjectProfileBundle\Entity\MetaProject 
+     */
+    public function getMeta()
+    {
+        return $this->meta;
     }
 }

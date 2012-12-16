@@ -15,7 +15,7 @@ class InfoController extends BaseController
 
     public function showInfoAction($slug)
     {
-        $this->fetchProjectAndPreComputeRights($slug);
+        $this->fetchProjectAndPreComputeRights($slug, false, false);
 
         if ($this->base == false) 
           return $this->forward('metaStandardProjectProfileBundle:Default:showRestricted', array('slug' => $slug));
@@ -30,54 +30,48 @@ class InfoController extends BaseController
 
     public function editAction(Request $request, $slug){
 
-      $authenticatedUser = $this->getUser();
+        $this->fetchProjectAndPreComputeRights($slug, false, true);
+        $error = null;
 
-        if ($authenticatedUser) {
+        if ($this->base != false) {
+        
+            $objectHasBeenModified = false;
 
-            $projectRepository = $this->getDoctrine()->getRepository('metaStandardProjectProfileBundle:StandardProject');
-            $standardProject = $projectRepository->findOneBySlug($slug);
-
-            if ( $authenticatedUser->isOwning($standardProject) ){
-
-                $objectHasBeenModified = false;
-
-                switch ($request->request->get('name')) {
-                    case 'name':
-                        $standardProject->setName($request->request->get('value'));
-                        $objectHasBeenModified = true;
-                        break;
-                    case 'headline':
-                        $standardProject->setHeadline($request->request->get('value'));
-                        $objectHasBeenModified = true;
-                        break;
-                    case 'about':
-                        $standardProject->setAbout($request->request->get('value'));
-                        $objectHasBeenModified = true;
-                        break;
-                    case 'skills':
-                        $skillSlugsAsArray = $request->request->get('value');
-                        
-                        $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:Skill');
-                        $skills = $repository->findSkillsByArrayOfSlugs($skillSlugsAsArray);
-                        
-                        $standardProject->setNeededSkills($skills);
-                        $objectHasBeenModified = true;
-                        break;
-                }
-
-                $validator = $this->get('validator');
-                $errors = $validator->validate($standardProject);
-
-                if ($objectHasBeenModified === true && count($errors) == 0){
-                    $standardProject->setUpdatedAt(new \DateTime('now'));
-                    $em = $this->getDoctrine()->getManager();
-                    $em->flush();
-                    $error = null;
-                } else {
-                    $error = $errors[0]->getMessage(); 
-                }
-
+            switch ($request->request->get('name')) {
+                case 'name':
+                    $this->base['standardProject']->setName($request->request->get('value'));
+                    $objectHasBeenModified = true;
+                    break;
+                case 'headline':
+                    $this->base['standardProject']->setHeadline($request->request->get('value'));
+                    $objectHasBeenModified = true;
+                    break;
+                case 'about':
+                    $this->base['standardProject']->setAbout($request->request->get('value'));
+                    $objectHasBeenModified = true;
+                    break;
+                case 'skills':
+                    $skillSlugsAsArray = $request->request->get('value');
+                    
+                    $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:Skill');
+                    $skills = $repository->findSkillsByArrayOfSlugs($skillSlugsAsArray);
+                    
+                    $this->base['standardProject']->setNeededSkills($skills);
+                    $objectHasBeenModified = true;
+                    break;
             }
+
+            $validator = $this->get('validator');
+            $errors = $validator->validate($this->base['standardProject']);
+
+            if ($objectHasBeenModified === true && count($errors) == 0){
+                $this->base['standardProject']->setUpdatedAt(new \DateTime('now'));
+                $em = $this->getDoctrine()->getManager();
+                $em->flush();
+            } else {
+                $error = $errors[0]->getMessage(); 
+            }
+
 
         }
 
@@ -88,61 +82,55 @@ class InfoController extends BaseController
     public function addParticipantOrOwnerAction($slug, $username, $owner)
     {
 
-        $authenticatedUser = $this->getUser();
+        $this->fetchProjectAndPreComputeRights($slug, true, false);
 
-        if ($authenticatedUser) {
+        if ($this->base != false) {
 
-            $projectRepository = $this->getDoctrine()->getRepository('metaStandardProjectProfileBundle:StandardProject');
-            $standardProject = $projectRepository->findOneBySlug($slug);
+            $userRepository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
+            $newParticipantOrOwner = $userRepository->findOneByUsername($username);
 
-            if ( $authenticatedUser->isOwning($standardProject) ){
+            if ($newParticipantOrOwner && (( !($newParticipantOrOwner->isOwning($this->base['standardProject'])) && $owner === true) || ( !($newParticipantOrOwner->isParticipatingIn($this->base['standardProject'])) && $owner !== true))) {
 
-                $userRepository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
-                $newParticipantOrOwner = $userRepository->findOneByUsername($username);
+                if ($owner === true){
 
-                if ($newParticipantOrOwner && (( !($newParticipantOrOwner->isOwning($standardProject)) && $owner === true) || ( !($newParticipantOrOwner->isParticipatingIn($standardProject)) && $owner !== true))) {
+                  $newParticipantOrOwner->addProjectsOwned($this->base['standardProject']);
 
-                    if ($owner === true){
+                  $this->get('session')->setFlash(
+                      'success',
+                      'The user '.$newParticipantOrOwner->getFirstName().' is now owner of the project "'.$this->base['standardProject']->getName().'".'
+                  );
 
-                      $newParticipantOrOwner->addProjectsOwned($standardProject);
-
-                      $this->get('session')->setFlash(
-                          'success',
-                          'The user '.$newParticipantOrOwner->getFirstName().' is now owner of the project "'.$standardProject->getName().'".'
-                      );
-
-                    } else {
-
-                      $newParticipantOrOwner->addProjectsParticipatedIn($standardProject);
-
-                      $this->get('session')->setFlash(
-                          'success',
-                          'The user '.$newParticipantOrOwner->getFirstName().' now participates in the project "'.$standardProject->getName().'".'
-                      );
-                      
-                    }
-
-                    $em = $this->getDoctrine()->getManager();
-                    $em->flush();
-                    
                 } else {
 
-                    $this->get('session')->setFlash(
-                        'error',
-                        'This user does not exist or is already part of this project.'
-                    );
+                  $newParticipantOrOwner->addProjectsParticipatedIn($this->base['standardProject']);
+
+                  $this->get('session')->setFlash(
+                      'success',
+                      'The user '.$newParticipantOrOwner->getFirstName().' now participates in the project "'.$this->base['standardProject']->getName().'".'
+                  );
+                  
                 }
 
+                $em = $this->getDoctrine()->getManager();
+                $em->flush();
+                
             } else {
 
                 $this->get('session')->setFlash(
                     'error',
-                    'You are not an owner of the project "'.$standardProject->getName().'".'
+                    'This user does not exist or is already part of this project.'
                 );
-
             }
 
+        } else {
+
+            $this->get('session')->setFlash(
+                'error',
+                'You are not an owner of the project "'.$this->base['standardProject']->getName().'".'
+            );
+
         }
+
 
         return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $slug)));
     }
@@ -150,70 +138,63 @@ class InfoController extends BaseController
     public function removeParticipantOrOwnerAction($slug, $username, $owner)
     {
 
-        $authenticatedUser = $this->getUser();
+        $this->fetchProjectAndPreComputeRights($slug, true, false);
 
-        if ($authenticatedUser) {
+        if ($this->base != false) {
 
-            $projectRepository = $this->getDoctrine()->getRepository('metaStandardProjectProfileBundle:StandardProject');
-            $standardProject = $projectRepository->findOneBySlug($slug);
+            $userRepository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
+            $toRemoveParticipantOrOwner = $userRepository->findOneByUsername($username);
 
-            if ( $authenticatedUser->isOwning($standardProject) ){
+            if ($toRemoveParticipantOrOwner && (($toRemoveParticipantOrOwner->isOwning($this->base['standardProject']) && $owner === true) || ($toRemoveParticipantOrOwner->isParticipatingIn($this->base['standardProject']) && $owner !== true)) ) {
 
-                $userRepository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
-                $toRemoveParticipantOrOwner = $userRepository->findOneByUsername($username);
+                if ($toRemoveParticipantOrOwner != $authenticatedUser){
 
-                if ($toRemoveParticipantOrOwner && (($toRemoveParticipantOrOwner->isOwning($standardProject) && $owner === true) || ($toRemoveParticipantOrOwner->isParticipatingIn($standardProject) && $owner !== true)) ) {
+                    if ($owner === true){
 
-                    if ($toRemoveParticipantOrOwner != $authenticatedUser){
+                      $toRemoveParticipantOrOwner->removeProjectsOwned($this->base['standardProject']);
 
-                        if ($owner === true){
-
-                          $toRemoveParticipantOrOwner->removeProjectsOwned($standardProject);
-
-                          $this->get('session')->setFlash(
-                              'success',
-                              'The user '.$toRemoveParticipantOrOwner->getFirstName().' is no longer owner of the project "'.$standardProject->getName().'".'
-                          );
-
-                        } else {
-
-                          $toRemoveParticipantOrOwner->removeProjectsParticipatedIn($standardProject);
-
-                          $this->get('session')->setFlash(
-                              'success',
-                              'The user '.$toRemoveParticipantOrOwner->getFirstName().' does not participate in the project "'.$standardProject->getName().'" anymore .'
-                          );
-                          
-                        }
-
-                        $em = $this->getDoctrine()->getManager();
-                        $em->flush();
+                      $this->get('session')->setFlash(
+                          'success',
+                          'The user '.$toRemoveParticipantOrOwner->getFirstName().' is no longer owner of the project "'.$this->base['standardProject']->getName().'".'
+                      );
 
                     } else {
 
-                        $this->get('session')->setFlash(
-                            'error',
-                            'You cannot remove yourself from a project.'
-                        );
+                      $toRemoveParticipantOrOwner->removeProjectsParticipatedIn($this->base['standardProject']);
 
+                      $this->get('session')->setFlash(
+                          'success',
+                          'The user '.$toRemoveParticipantOrOwner->getFirstName().' does not participate in the project "'.$this->base['standardProject']->getName().'" anymore .'
+                      );
+                      
                     }
-                    
+
+                    $em = $this->getDoctrine()->getManager();
+                    $em->flush();
+
                 } else {
 
                     $this->get('session')->setFlash(
                         'error',
-                        'This user does not exist with this role in the project.'
+                        'You cannot remove yourself from a project.'
                     );
-                }
 
+                }
+                
             } else {
 
                 $this->get('session')->setFlash(
                     'error',
-                    'You are not an owner of the project "'.$standardProject->getName().'".'
+                    'This user does not exist with this role in the project.'
                 );
-
             }
+
+        } else {
+
+            $this->get('session')->setFlash(
+                'error',
+                'You are not an owner of the project "'.$this->base['standardProject']->getName().'".'
+            );
 
         }
 

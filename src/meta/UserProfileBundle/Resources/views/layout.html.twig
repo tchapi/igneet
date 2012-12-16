@@ -13,17 +13,3 @@
 {% block footer %}{% endblock %}
 </footer>
 {% endblock %}
-
-{% block javascripts %}
-{% javascripts '@metaUserProfileBundle/Resources/public/js/*' output='js/min/meta.min.js' filter='?yui_js' %}
-<script src="{{ asset_url }}"></script>
-{% endjavascripts %}
-{{ parent() }}
-{% endblock %}
-
-{% block stylesheets %}
-{% stylesheets '/bundles/metauserprofile/css/*' filter='?yui_css,cssrewrite' %}
-<link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}" />
-{% endstylesheets %}
-{{ parent() }}
-{% endblock %}

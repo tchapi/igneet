@@ -2,16 +2,15 @@
 
  * signup : avatar
     + chgt d'avatar
-
- * login : un peu de style plus messages d'erreurs
-
- * pouvoir desactiver le mode edit lorsqu'on est owner ou participant
  
  * log des modifs sur les projets
+ BaseComment 
+   \_ WikiComment
+   \_ ListComment
+   \_ ProjectComment ( + Meta?) 
 
- * tinyMCE ou markdown dans les about ?? --> voir projet staré dans github
-
- * wiki
+ * wiki : 
+   - parenting
 
  * images !!! dans assetic
   + Sg fault in generate ?

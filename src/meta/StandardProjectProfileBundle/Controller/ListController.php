@@ -119,6 +119,7 @@ class ListController extends BaseController
     {
   
         $this->fetchProjectAndPreComputeRights($slug, false, true);
+        $error = null;
 
         if ($this->base != false) {
 
@@ -145,7 +146,6 @@ class ListController extends BaseController
                 $commonList->setUpdatedAt(new \DateTime('now'));
                 $em = $this->getDoctrine()->getManager();
                 $return = $em->flush();
-                $error = null;
             } else {
                 $error = $errors[0]->getMessage(); 
             }
@@ -225,6 +225,7 @@ class ListController extends BaseController
     {
   
         $this->fetchProjectAndPreComputeRights($slug, false, true);
+        $error = null;
 
         if ($this->base != false) {
 
@@ -251,8 +252,7 @@ class ListController extends BaseController
                 $commonListItem->setUpdatedAt(new \DateTime('now'));
                 $em = $this->getDoctrine()->getManager();
                 $return = $em->flush();
-                $error = null;
-            } else {
+            } elseif (count($errors) > 0) {
                 $error = $errors[0]->getMessage(); 
             }
             

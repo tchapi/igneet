@@ -199,6 +199,11 @@ class User implements UserInterface
      **/
     private $projectsWatched;
 
+    /**
+     * Comments I created (OWNING SIDE)
+     * @ORM\OneToMany(targetEntity="meta\StandardProjectProfileBundle\Entity\Comment\BaseComment", mappedBy="user")
+     **/
+    private $comments;
 
     public function __construct() {
         /* Links to Skills */
@@ -210,6 +215,8 @@ class User implements UserInterface
         $this->projectsOwned = new ArrayCollection();
         $this->projectsParticipatedIn = new ArrayCollection();
         $this->projectsWatched = new ArrayCollection();
+
+        $this->comments = new ArrayCollection();
 
         /* init */
         $this->salt = md5(uniqid(null, true));
@@ -779,6 +786,16 @@ class User implements UserInterface
     }
 
     /**
+     * Can edit = is participating or owning
+     *
+     * @return boolean 
+     */
+    public function canEditProject(\meta\StandardProjectProfileBundle\Entity\StandardProject $project)
+    {
+        return $this->isParticipatingIn($project) || $this->isOwning($project);
+    }
+
+    /**
      * Add projectsWatched
      *
      * @param meta\StandardProjectProfileBundle\Entity\StandardProject $projectWatched
@@ -821,5 +838,38 @@ class User implements UserInterface
     public function isWatching(\meta\StandardProjectProfileBundle\Entity\StandardProject $project)
     {
         return $this->projectsWatched->contains($project);
+    }
+
+    /**
+     * Add comments
+     *
+     * @param \meta\StandardProjectProfileBundle\Entity\Comment\BaseComment $comment
+     * @return User
+     */
+    public function addComment(\meta\StandardProjectProfileBundle\Entity\Comment\BaseComment $comment)
+    {
+        $this->comments[] = $comment;
+    
+        return $this;
+    }
+
+    /**
+     * Remove comments
+     *
+     * @param \meta\StandardProjectProfileBundle\Entity\Comment\BaseComment $comment
+     */
+    public function removeComment(\meta\StandardProjectProfileBundle\Entity\Comment\BaseComment $comment)
+    {
+        $this->comments->removeElement($comment);
+    }
+
+    /**
+     * Get comments
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getComments()
+    {
+        return $this->comments;
     }
 }

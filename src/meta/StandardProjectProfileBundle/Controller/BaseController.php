@@ -23,15 +23,16 @@ class BaseController extends Controller
 
         $isAlreadyWatching = $authenticatedUser && $authenticatedUser->isWatching($standardProject);
         $isOwning = $authenticatedUser && ($authenticatedUser->isOwning($standardProject));
-        $isParticipatingIn = $isOwning || ($authenticatedUser && ($authenticatedUser->isParticipatingIn($standardProject)));
+        $isParticipatingIn = $authenticatedUser && ($authenticatedUser->isParticipatingIn($standardProject));
         
-        if ( ($mustBeOwner && !$isOwning) || ($mustParticipate && !$isParticipatingIn)) {
+        if ( ($mustBeOwner && !$isOwning) || ($mustParticipate && (!$isParticipatingIn && !$isOwning) )) {
           $this->base = false;
         } else {
           $this->base = array('standardProject' => $standardProject,
                               'isAlreadyWatching' => $isAlreadyWatching,
                               'isParticipatingIn' => $isParticipatingIn,
-                              'isOwning' => $isOwning
+                              'isOwning' => $isOwning,
+                              'canEdit' =>  $isOwning || $isParticipatingIn
                             );
         }
 

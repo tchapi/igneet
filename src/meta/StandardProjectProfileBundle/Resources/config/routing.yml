@@ -95,6 +95,29 @@ sp_show_project_wiki:
     pattern:  /project/{slug}/wiki
     defaults: { _controller: metaStandardProjectProfileBundle:Wiki:showWikiHome}
 
+sp_show_project_wiki_new_page:
+    pattern:  /project/{slug}/wiki/page/new
+    defaults: { _controller: metaStandardProjectProfileBundle:Wiki:newWikiPage}
+
+sp_show_project_wiki_edit_page:
+    pattern:  /project/{slug}/wiki/page/edit/{id}
+    defaults: { _controller: metaStandardProjectProfileBundle:Wiki:editWikiPage}
+    requirements:
+      id: \d+
+      _method: POST
+
+sp_show_project_wiki_delete_page:
+    pattern:  /project/{slug}/wiki/page/delete/{id}
+    defaults: { _controller: metaStandardProjectProfileBundle:Wiki:deleteWikiPage}
+    requirements:
+      id: \d+
+
+sp_show_project_wiki_show_page:
+    pattern:  /project/{slug}/wiki/page/{id}/{pageSlug}
+    defaults: { _controller: metaStandardProjectProfileBundle:Wiki:showWikiPage, pageSlug: _ }
+    requirements:
+      id: \d+
+
 
 # Adding people in projects
 sp_add_owner_to_project:

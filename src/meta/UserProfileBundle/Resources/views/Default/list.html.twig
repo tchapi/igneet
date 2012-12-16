@@ -3,7 +3,14 @@
 {% block title %}{{ parent() }} > Everybody{% endblock %}
 
 {% block header %}
-Everybody
+  <div class="headerAvatarAndActions">
+    <div class="textAvatar"><i class="icon-group"></i></div>
+  </div>
+  <div class="projectsListHeader">
+    <h2>Users</h2>
+    <h4>All the users are listed in this page.</h4>
+    <p>A profile is inherently public.</p>
+  </div>
 {% endblock %}
 
 {% block content %}

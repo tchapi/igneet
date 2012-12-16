@@ -2,7 +2,6 @@
 
 {% block title %}{{ parent() }} > Projects{% endblock %}
 
-
 {% block body %}
 <header class="project">
 {% block header %}{% endblock %}
@@ -14,19 +13,4 @@
 <footer>
 {% block footer %}{% endblock %}
 </footer>
-{% endblock %}
-
-
-{% block javascripts %}
-{% javascripts '@metaStandardProjectProfileBundle/Resources/public/js/*' output='js/min/meta.min.js' filter='?yui_js' %}
-<script src="{{ asset_url }}"></script>
-{% endjavascripts %}
-{{ parent() }}
-{% endblock %}
-
-{% block stylesheets %}
-{% stylesheets 'bundles/metastandardprojectprofile/css/*' filter='?yui_css,cssrewrite' %}
-<link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}" />
-{% endstylesheets %}
-{{ parent() }}
 {% endblock %}

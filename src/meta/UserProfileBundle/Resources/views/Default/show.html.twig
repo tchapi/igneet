@@ -3,24 +3,20 @@
 {% block title %}{{ parent() }} > {{ user.firstName }}{% endblock %}
 
 {% block javascripts %}
-{{ parent() }}
-{% if isMe %}
-{% javascripts '@metaGeneralBundle/Resources/public/js-edit/*' output='js/min/meta.min.js' filter='?yui_js' %}
-<script src="{{ asset_url }}"></script>
-{% endjavascripts %}
-{% endif %}
-{% endblock %}
-{% block stylesheets %}
-{{ parent() }}
-{% if isMe %}
-{% stylesheets 'bundles/metageneral/css-edit/*' filter='?yui_js,cssrewrite' %}
-<link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}" />
-{% endstylesheets %}
-{% endif %}
+  {{ parent() }}
+  {% if isMe %}
+    {% javascripts '@metaGeneralBundle/Resources/public/js-edit/bootstrap-editable.js' 
+                   '@metaGeneralBundle/Resources/public/js-edit/editable.behaviour.js'
+                   '@metaGeneralBundle/Resources/public/js-edit/markdown-editor/*' 
+            filter='?yui_js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+  {% endif %}
 {% endblock %}
 
 {% block header %}
-  <div class="userAvatarAndActions">
+
+  <div class="headerAvatarAndActions">
     <img src="{{ user.avatar }}" width="150" height="150" class="avatar"/>
 {% if alreadyFollowing %}
     <a href="{{ path('u_unfollow_user', {'username': user.username}) }}" class="btn btn-info followAction">Unfollow {{ user.firstName }}</a>
@@ -28,32 +24,73 @@
     <a href="{{ path('u_follow_user', {'username': user.username}) }}" class="btn btn-success followAction">Follow {{ user.firstName }}</a>
 {% endif %}
   </div>
+
   <div class="userInfo">
-    <h2 class="ellipsis"><span data-url="{{ path('u_edit_user_profile', {'username': user.username}) }}" data-name="first_name" class="editable">{{ user.firstName }}</span> <span data-url="{{ path('u_edit_user_profile', {'username': user.username}) }}" data-name="last_name"  class="editable">{{ user.lastName|upper }}</span></h2>
-    <h4 class="ellipsis"><span data-url="{{ path('u_edit_user_profile', {'username': user.username}) }}" data-name="headline" data-type="text" class="editable">{{ user.headline }}</span></h4>
-    <div><i class="icon-map-marker"></i> <span data-url="{{ path('u_edit_user_profile', {'username': user.username}) }}" data-name="city" class="editable">{{ user.city }}</span></div>
-    <div><i class="icon-calendar"></i> Member since {{ user.createdAt|date("d/m/Y") }}</div>
-    <div><i class="icon-trophy"></i> 
-    {% if user.skills|length > 0 %}
-    Skills
-    {% elseif not isMe %}
-    No skills added yet
-    {% endif %}
-    <ul data-toggle="manual" data-url="{{ path('u_edit_user_profile', {'username': user.username}) }}" data-emptytext="Add skills" data-type="checklist" data-source="{{ path('u_list_all_skills') }}" data-name="skills" class="skills skills-target editable-li">
-    {% for skill in user.skills %}
-        <li class="label" rel="{{ skill.slug }}">{{ skill.name }}</li>
-    {% endfor %}
-    </ul>
-    {% if isMe %} <a class="editable-trigger" data-target="skills">&hellip;<i class="icon-pencil"></i></a>{% endif %}</div>
-  </div>
-  <div class="userAbout">
-  <div data-url="{{ path('u_edit_user_profile', {'username': user.username}) }}" data-toggle="manual" data-type="textarea" data-name="about" class="about-target about editable">{{ user.about|markdown }}</div>{% if isMe %} <a class="editable-trigger" data-target="about">&hellip;<i class="icon-pencil"></i></a>{% endif %}
+
+    <h2 class="ellipsis">
+      <span data-url="{{ path('u_edit_user_profile', {'username': user.username}) }}" data-name="first_name" data-title="Change your first name" class="editable">{{ user.firstName }}</span> <span data-url="{{ path('u_edit_user_profile', {'username': user.username}) }}" data-name="last_name" data-title="Change your last name" class="editable">{{ user.lastName|upper }}</span>
+    </h2>
+
+    <h4 class="ellipsis">
+      <span data-url="{{ path('u_edit_user_profile', {'username': user.username}) }}" data-name="headline" data-type="text" data-title="A one-liner to describe yourself" class="editable">{{ user.headline }}</span>
+    </h4>
+
+    <div>
+      <i class="icon-map-marker"></i> <span data-url="{{ path('u_edit_user_profile', {'username': user.username}) }}" data-name="city" data-title="Where do you live ?" class="editable">{{ user.city }}</span>
+    </div>
+
+    <div>
+      <i class="icon-calendar"></i> Member since {{ user.createdAt|date("d/m/Y") }}
+    </div>
+
+    <div>
+      <i class="icon-trophy"></i> 
+
+      {% if user.skills|length > 0 %}
+      Skills
+      {% elseif not isMe %}
+      No skills added yet
+      {% endif %}
+
+      <ul data-toggle="manual" data-title="List your skills" data-url="{{ path('u_edit_user_profile', {'username': user.username}) }}" data-emptytext="Add skills" data-type="checklist" data-source="{{ path('u_list_all_skills') }}" data-name="skills" class="skills skills-target editable-li">
+      {% for skill in user.skills %}
+          <li class="label" rel="{{ skill.slug }}">{{ skill.name }}</li>
+      {% endfor %}
+      </ul>
+
+      {% if isMe %}
+        <a class="editable-trigger" data-target="skills">&hellip;<i class="icon-pencil"></i></a>
+      {% endif %}
+
+    </div>
   </div>
 {% endblock %}
 
 {% block content %}
-{% if user.following|length > 0 %}
+
 <section>
+  <div class="wmd-heading"><i class="icon-bullhorn"></i> About {{ user.firstName }}{% if isMe %}<a class="pull-right markdown-trigger">&hellip;<i class="icon-pencil"></i></a>{% endif %}</div>
+  <div>
+
+    {% if isMe %}
+      <div class="wmd-wrapper well well-small hide" >
+        <div class="wmd-panel">
+            <div id="wmd-button-bar"></div>
+            <textarea data-name="about" data-url="{{ path('u_edit_user_profile', {'username': user.username}) }}" class="wmd-input" id="wmd-input">{{ user.about }}</textarea>
+        </div>
+        <div>
+          <button id="wmd-save" class="btn btn-primary">Save</button> <span class="muted wmd-message">Click 'Save' to commit your changes</span>
+        </div>
+      </div>
+    {% endif %}
+
+    <div id="wmd-preview" class="about">{{ user.about|markdown }}</div>
+
+  </div>
+</section>
+
+{% if user.following|length > 0 %}
+<section class="colored first">
 <div class="sectionTitle">{{ user.firstName }} is following : </div>
 <ul class="users sectionContent">
 {% for followingUser in user.following %}
@@ -71,7 +108,7 @@
 {% endif %}
 
 {% if isMe and user.followers|length > 0 %}
-<section>
+<section class="colored">
 <div class="sectionTitle">My followers : </div>
 <ul class="users sectionContent">
 {% for followerUser in user.followers %}
@@ -89,7 +126,7 @@
 {% endif %}
 
 {% if isMe and user.projectsWatched|length > 0 %}
-<section>
+<section class="colored">
 <div class="sectionTitle">Projects I watch :</div>
 <ul class="projects sectionContent">
 {% for watchedProject in user.projectsWatched %}
@@ -107,7 +144,7 @@
 {% endif %}
 
 {% if user.projectsOwned|length > 0 %}
-<section>
+<section class="colored">
 <div class="sectionTitle">Projects I own :</div>
 <ul class="projects sectionContent">
 {% for ownedProject in user.projectsOwned %}
@@ -125,7 +162,7 @@
 {% endif %}
 
 {% if user.projectsParticipatedIn|length > 0 %}
-<section>
+<section class="colored">
 <div class="sectionTitle">Projects I participate in :</div>
 <ul class="projects sectionContent">
 {% for participatedInProject in user.projectsParticipatedIn %}
@@ -141,4 +178,5 @@
 </ul>
 </section>
 {% endif %}
+
 {% endblock %}

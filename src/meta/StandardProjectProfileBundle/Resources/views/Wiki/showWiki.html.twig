@@ -1,11 +1,49 @@
 {% extends 'metaStandardProjectProfileBundle:Default:show.html.twig' %}
 
-{% block title %}{{ parent() }} > {{ base.standardProject.name }} | Wiki{% endblock %}
+{% block title %}{{ parent() }} > {{ base.standardProject.name }} | Wiki : {{ wikiPage.title }}{% endblock %}
 
 {% block navbar %}
 {% render "metaStandardProjectProfileBundle:Default:navbar" with { 'activeMenu' : 'wiki', 'slug' : base.standardProject.slug } %}
 {% endblock %}
 
 {% block content %}
-Wiki
+<div class="column">
+<section class="listInfo">
+  <h4 class="editable" data-name="title" data-url="{{ path('sp_show_project_wiki_edit_page', {'slug': base.standardProject.slug, 'id': wikiPage.id}) }}" data-type="text">{{ wikiPage.title }}</h4>
+  {% if base.canEdit %}<a class="pull-right markdown-trigger">&hellip;<i class="icon-pencil"></i></a>{% endif %}
+</section>
+<section>
+  <div>
+    {% if base.canEdit %}
+      <div class="wmd-wrapper well well-small hide" >
+        <div class="wmd-panel">
+            <div id="wmd-button-bar"></div>
+            <textarea data-name="content" data-url="{{ path('sp_show_project_wiki_edit_page', {'slug': base.standardProject.slug, 'id': wikiPage.id}) }}" class="wmd-input" id="wmd-input">{{ wikiPage.content }}</textarea>
+        </div>
+        <div>
+          <button id="wmd-save" class="btn btn-primary">Save</button> <span class="muted wmd-message">Click save to save your changes</span>
+        </div>
+      </div>
+    {% endif %}
+    
+    <div id="wmd-preview" class="content">{{ wikiPage.content|markdown }}</div>
+
+  </div>
+</section>
+</div>
+<div class="menu">
+  Pages :
+  <ul class="lists">
+  {% for page in wikiPages %}
+      <li>
+        <i class="icon-file"></i> {% if base.canEdit %}<a href="{{ path('sp_show_project_wiki_delete_page', {'slug': base.standardProject.slug, 'id': page.id}) }}"><i class="icon-remove-sign"></i></a>{% endif %} <a href="{{ path('sp_show_project_wiki_show_page', {'slug': base.standardProject.slug, 'id': page.id, 'pageSlug': page.slug }) }}">{{ page.title }}</a>
+      </li>
+  {% endfor %}
+  </ul>
+  {% if base.canEdit %}
+  <div class="menu_new">
+    <a href="{{ path('sp_show_project_wiki_new_page', {'slug': base.standardProject.slug}) }}"><i class="icon-plus-sign"></i> New page</a>
+  </div>
+  {% endif %}
+</div>
 {% endblock %}

@@ -4,7 +4,7 @@ body > header{
 body > header .navbar a.brand{
   margin-left: 0;
 }
-body > .alert{
+body .alert{
   border-radius: 0 0 3px 3px;
 }
 
@@ -56,7 +56,14 @@ div.cart > footer{
   white-space: nowrap;
   overflow: hidden;
 }
-
+hr {
+  background: transparent url("../img/hr.png") repeat-x 0 0;
+  border: 0 none;
+  color: #CCC;
+  height: 4px;
+  padding: 0;
+}
+/* sections */
 div.content{ position: relative;}
 div.content section{
   padding: 10px 20px;
@@ -68,7 +75,7 @@ div.content form section h4{
   text-align: center;
 }
 div.content section:first-child{
-  padding-top: 25px;
+  padding-top: 15px;
 }
 div.content section > div.sectionTitle{
   display: inline-block;
@@ -85,12 +92,14 @@ div.content section > .sectionContent{
   display: inline-block;
   margin-left: 5px;
 }
-
+div.content section.colored{ background: #EEE;}
+div.content section.colored.first{ border-top: 1px solid #DDD;}
+/* Column-type sections */
 div.content div.menu{
   width: 180px;
   float: right;
   background-color: #eee;
-  padding: 40px 20px 10px 20px;
+  padding: 28px 20px 10px 20px;
 }
 div.content div.column{
   width: 738px;
@@ -213,7 +222,8 @@ div.content div.column h4{
 .editable-click:hover{
   border-bottom: 1px dashed #08C;
 }
-.editable-trigger{
+.editable-trigger,
+.markdown-trigger{
   cursor: pointer;
 }
 
@@ -238,6 +248,22 @@ a.editable-click.editable-disabled:hover {
 
 .editable-unsaved:after {
 /*    content: '*'*/
+}
+
+textarea.wmd-input{
+  width: 100%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  min-height: 200px;
+}
+.wmd-message{
+  margin-left: 5px;
+}
+.wmd-heading{
+  border-bottom: 1px solid #DDD;
+  padding: 5px 0;
+  margin-bottom: 20px;
 }
 
 /*****************/
@@ -273,8 +299,7 @@ div.smallTextAvatar{
 /******************/
 /* Users & Mutual */
 /******************/
-div.userAvatarAndActions,
-div.projectAvatarAndActions{
+div.headerAvatarAndActions{
   margin-right: 20px;
   display: inline-block;
   vertical-align: top;
@@ -286,21 +311,12 @@ a.watchAction{
 }
 div.userInfo{
   display: inline-block;
-  border-right: 1px solid #CCC;
   padding-right: 40px;
   height: 150px;
-  max-width: 400px;
-  min-width: 260px;
 }
 div.userCreate{
   display: inline-block;
   max-width: 740px;
-}
-div.userAbout{
-  display: inline-block;
-  vertical-align: top;
-  padding: 5px 20px;
-  height: 140px;
 }
 div.userInfo > h2,
 div.projectInfo > h2{
@@ -379,7 +395,10 @@ a.removeUserIcon{
   right: 4px;
   top: 28px;
 }
-
+div.projectsListHeader{
+  display: inline-block;
+  max-width: 740px;
+}
 
 /*************/
 /*   LISTS   */

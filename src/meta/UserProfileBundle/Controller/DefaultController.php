@@ -177,13 +177,13 @@ class DefaultController extends Controller
 
             $validator = $this->get('validator');
             $errors = $validator->validate($authenticatedUser);
+            $error = null;
 
             if ($objectHasBeenModified === true && count($errors) == 0){
                 $authenticatedUser->setUpdatedAt(new \DateTime('now'));
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
-                $error = null;
-            } else {
+            } elseif (count($errors) > 0) {
                 $error = $errors[0]->getMessage(); 
             }
 
