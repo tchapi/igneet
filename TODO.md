@@ -4,10 +4,13 @@
     + chgt d'avatar
  
  * log des modifs sur les projets
- BaseComment 
+ BaseComment ::
    \_ WikiComment
    \_ ListComment
-   \_ ProjectComment ( + Meta?) 
+   \_ ResourceComment
+   \_ ProjectComment ( + Meta?) = shoutbox-like
+
+--> potentiellement faire du uni-directionnel si ca pète ?
 
  * wiki : 
    - parenting
@@ -22,6 +25,7 @@
 V2 
 
  * listes : reconnaitre les urls en mettre un lien pour y aller directement a coté ;)
+ * lien vers des droplr avec apercu auto
 
 
 ## Call benjamin
@@ -33,12 +37,9 @@ V2
   projects: page info
             shoutbox quand les posts outside
 
-au niveau meta, la timeline ne ressort que les trucs publics des proejts en dessous
+au niveau meta, la timeline ne ressort que les trucs publics des projets en dessous
 
-lien vers des droplr avec apercu auto
-
-
-IDEA :
+Entity : IDEA :
 
 une idée est publique dans la meta
  - description textuelle principale

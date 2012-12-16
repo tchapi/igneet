@@ -12,6 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table(name="Comments")
  * @ORM\Entity
+ * @ORM\MappedSuperclass
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string")
  * @ORM\DiscriminatorMap({"wikiPage" = "meta\StandardProjectProfileBundle\Entity\WikiPage", "list" = "meta\StandardProjectProfileBundle\Entity\CommonList", "project" = "meta\StandardProjectProfileBundle\Entity\StandardProject", "meta" = "meta\StandardProjectProfileBundle\Entity\MetaProject"})
@@ -30,14 +31,15 @@ class BaseComment
     /**
      * @var string
      *
-     * @ORM\Column(name="text", type="string", length=255)
+     * @ORM\Column(name="text", type="text")
+     * @Assert\NotBlank()
      */
     private $text;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="public", type="boolean")
+     * @ORM\Column(name="public", type="boolean", nullable=true)
      */
     private $public;
 
@@ -45,6 +47,8 @@ class BaseComment
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime")
+     * @Assert\NotBlank()
+     * @Assert\DateTime()
      */
     private $created_at;
 
@@ -60,6 +64,7 @@ class BaseComment
     public function __construct()
     {
         $this->user = new ArrayCollection();
+        $this->created_at = new \DateTime('now');
     }
     
 
@@ -115,6 +120,16 @@ class BaseComment
      * @return boolean 
      */
     public function getPublic()
+    {
+        return $this->public;
+    }
+
+    /**
+     * is public
+     *
+     * @return boolean 
+     */
+    public function isPublic()
     {
         return $this->public;
     }

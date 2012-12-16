@@ -206,6 +206,7 @@ class User implements UserInterface
     private $comments;
 
     public function __construct() {
+        
         /* Links to Skills */
         $this->skills = new ArrayCollection();
         /* Links to Network of Users */
@@ -871,5 +872,24 @@ class User implements UserInterface
     public function getComments()
     {
         return $this->comments;
+    }
+
+    /**
+     * Count public comments
+     *
+     * @return integer
+     */
+    public function countPublicComments()
+    {
+        $count = 0;
+
+        foreach ($this->comments as $comment) {
+            
+            if ($comment->isPublic())
+                $count++;
+
+        }
+
+        return $count;
     }
 }
