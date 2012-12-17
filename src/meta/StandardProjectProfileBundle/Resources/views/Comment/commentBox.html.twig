@@ -1,0 +1,29 @@
+<div class="commentsWrapper">
+  <div class="commentsContent">
+    <div class="commentsInfo">
+      <span>{{ object.comments|length }}</span> comment{% if object.comments|length > 1 %}s{% endif %}
+      <i class='icon-comments pull-right'></i>
+    </div>
+    <div class="commentsForm">
+      <div class="avatar">
+        <img src="{{ app.user.avatar }}" width="30" height="30" class="avatar"/>
+      </div>
+      <textarea placeholder="Leave a comment here ..."></textarea>
+    </div>
+    <ul class="comments">
+    {% for comment in object.comments %}
+        <li>
+          <div>
+            <div class="avatar">
+              <img src="{{ comment.user.avatar }}" width="30" height="30" class="avatar"/>
+            </div>
+            <div class="comment">
+              <header><a href="{{ path('u_show_user_profile', {'username': comment.user.username}) }}">{{ comment.user.firstName }}</a> — <span>{{ comment.createdAt|date("d/m/Y G:i") }}</span></header>
+              <div>{{ comment.text }}</div>
+            </div>
+          </div>
+        </li>
+    {% endfor %}
+    </ul>
+  </div>
+</div>

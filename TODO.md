@@ -2,15 +2,23 @@
 
  * signup : avatar
     + chgt d'avatar
+
+ * Créer un nouveau projet
+
+ * Afficher le meta dans les infos d'un projet
  
+ * Afficher le nombre de commentaires publics d'un user
+
  * log des modifs sur les projets
+
+ * Commentaires
  BaseComment ::
-   \_ WikiComment
-   \_ ListComment
+   \_ WikiPageComment OK OK OK
+   \_ ListComment OK OK OK
    \_ ResourceComment
    \_ ProjectComment ( + Meta?) = shoutbox-like
-
---> potentiellement faire du uni-directionnel si ca pète ?
+ 
+ * Trier les commentaires dans l'autre sens BOULET 
 
  * wiki : 
    - parenting

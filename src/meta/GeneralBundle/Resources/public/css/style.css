@@ -442,3 +442,55 @@ ul.list li:last-child{
 ul.list li.done span.text{
   text-decoration: line-through;
 }
+
+/*************/
+/* COMMENTS  */
+/*************/
+div.commentsWrapper{
+  border: 1px solid #CCC;
+  background: #EEE;
+  border-radius: 14px;
+  padding: 35px 7px 7px 7px;
+}
+div.commentsContent{
+  background: white;
+  padding: 15px;
+  border-radius: 6px;
+}
+div.commentsInfo{
+  font-size: 1.3em;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+div.commentsForm div.avatar,
+ul.comments div.avatar
+{
+  display: inline-block;
+  vertical-align: top;
+}
+div.commentsForm{
+  border-bottom: 2px solid #EEE;
+}
+div.commentsForm textarea{
+  width: 604px;
+  height: 21px;
+}
+ul.comments{
+  margin: 10px 0;
+}
+ul.comments li{
+  list-style-type: none;
+  padding: 10px 0;
+  border-bottom: 1px solid #EEE;
+}
+ul.comments li div.comment{
+  display: inline-block;
+  width: 604px;
+}
+ul.comments li div.comment header{
+  font-size: 0.8em;
+  margin-bottom: 3px;
+  font-weight: bold;
+  line-height: 1em;
+}
+

@@ -15,8 +15,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\MappedSuperclass
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string")
- * @ORM\DiscriminatorMap({"wikiPage" = "meta\StandardProjectProfileBundle\Entity\WikiPage", "list" = "meta\StandardProjectProfileBundle\Entity\CommonList", "project" = "meta\StandardProjectProfileBundle\Entity\StandardProject", "meta" = "meta\StandardProjectProfileBundle\Entity\MetaProject"})
+ * @ORM\DiscriminatorMap({"wikiPage" = "meta\StandardProjectProfileBundle\Entity\Comment\WikiPageComment", "list" = "meta\StandardProjectProfileBundle\Entity\Comment\CommonListComment"})
  */
+
+/*, "project" = "meta\StandardProjectProfileBundle\Entity\Comment\StandardProjecComment", "meta" = "meta\StandardProjectProfileBundle\Entity\Comment\MetaProjectComment"*/
 class BaseComment
 {
     /**
@@ -54,7 +56,7 @@ class BaseComment
 
     /**
      * User that created this comment
-     * @ORM\ManyToOne(targetEntity="meta\UserProfileBundle\Entity\User", inversedBy="comments")
+     * @ORM\ManyToOne(targetEntity="meta\UserProfileBundle\Entity\User", inversedBy="comments", fetch="EAGER")
      **/
     private $user;
     

@@ -82,12 +82,20 @@ class WikiPage
      **/
     private $children;
 
+    /**
+     * Comments on this page (OWNING SIDE)
+     * @ORM\OneToMany(targetEntity="meta\StandardProjectProfileBundle\Entity\Comment\WikiPageComment", mappedBy="wikiPage")
+     **/
+    private $comments;
+
     public function __construct() {
 
         $this->created_at = $this->updated_at = new \DateTime('now');
 
         $this->children = new ArrayCollection();
         $this->parent = null;
+
+        $this->comments = new ArrayCollection();
     }
 
     /**
@@ -315,5 +323,40 @@ class WikiPage
     public function getUpdatedAt()
     {
         return $this->updated_at;
+    }
+
+    /**
+     * Add comments
+     *
+     * @param \meta\StandardProjectProfileBundle\Entity\Comment\WikiPageComment $comment
+     * @return WikiPage
+     */
+    public function addComment(\meta\StandardProjectProfileBundle\Entity\Comment\WikiPageComment $comment)
+    {
+        $comment->setWikiPage($this);
+        $this->comments[] = $comment;
+    
+        return $this;
+    }
+
+    /**
+     * Remove comments
+     *
+     * @param \meta\StandardProjectProfileBundle\Entity\Comment\WikiPageComment $comment
+     */
+    public function removeComment(\meta\StandardProjectProfileBundle\Entity\Comment\WikiPageComment $comment)
+    {
+        $comment->setWikiPage(null);
+        $this->comments->removeElement($comment);
+    }
+
+    /**
+     * Get comments
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getComments()
+    {
+        return $this->comments;
     }
 }

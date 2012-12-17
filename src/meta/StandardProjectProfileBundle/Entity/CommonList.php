@@ -75,7 +75,15 @@ class CommonList
      **/
     private $project;
 
+    /**
+     * Comments on this page (OWNING SIDE)
+     * @ORM\OneToMany(targetEntity="meta\StandardProjectProfileBundle\Entity\Comment\CommonListComment", mappedBy="commonList")
+     **/
+    private $comments;
+
     public function __construct(){
+
+        $this->comments = new ArrayCollection();
 
         $this->items = new ArrayCollection();
         $this->created_at = $this->updated_at = new \DateTime('now');
@@ -263,5 +271,38 @@ class CommonList
     public function getUpdatedAt()
     {
         return $this->updated_at;
+    }
+
+    /**
+     * Add comments
+     *
+     * @param \meta\StandardProjectProfileBundle\Entity\Comment\CommonListComment $comments
+     * @return CommonList
+     */
+    public function addComment(\meta\StandardProjectProfileBundle\Entity\Comment\CommonListComment $comments)
+    {
+        $this->comments[] = $comments;
+    
+        return $this;
+    }
+
+    /**
+     * Remove comments
+     *
+     * @param \meta\StandardProjectProfileBundle\Entity\Comment\CommonListComment $comments
+     */
+    public function removeComment(\meta\StandardProjectProfileBundle\Entity\Comment\CommonListComment $comments)
+    {
+        $this->comments->removeElement($comments);
+    }
+
+    /**
+     * Get comments
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getComments()
+    {
+        return $this->comments;
     }
 }
