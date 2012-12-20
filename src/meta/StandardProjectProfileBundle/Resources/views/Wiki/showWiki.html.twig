@@ -31,7 +31,7 @@
   </div>
 </section>
 <section>
-{% render "metaStandardProjectProfileBundle:Comment:commentBox" with { 'object' : wikiPage } %}
+{% render "metaStandardProjectProfileBundle:Comment:addWikiPageComment" with { 'slug' : base.standardProject.slug, 'id': wikiPage.id } %}
 </section>
 </div>
 <div class="menu">

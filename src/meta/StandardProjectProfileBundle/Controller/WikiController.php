@@ -156,30 +156,34 @@ class WikiController extends BaseController
 
               $repository = $this->getDoctrine()->getRepository('metaStandardProjectProfileBundle:WikiPage');
               $wikiPage = $repository->findOneByIdInWiki($id, $wiki->getId());
+              
+              if ($wikiPage){
 
-              $objectHasBeenModified = false;
+                $objectHasBeenModified = false;
 
-              switch ($request->request->get('name')) {
-                  case 'title':
-                      $wikiPage->setTitle($request->request->get('value'));
-                      $objectHasBeenModified = true;
-                      break;
-                  case 'content':
-                      $wikiPage->setContent($request->request->get('value'));
-                      $objectHasBeenModified = true;
-                      break;
-              }
+                switch ($request->request->get('name')) {
+                    case 'title':
+                        $wikiPage->setTitle($request->request->get('value'));
+                        $objectHasBeenModified = true;
+                        break;
+                    case 'content':
+                        $wikiPage->setContent($request->request->get('value'));
+                        $objectHasBeenModified = true;
+                        break;
+                }
 
-              $validator = $this->get('validator');
-              $errors = $validator->validate($wikiPage);
-              $error = null;
+                $validator = $this->get('validator');
+                $errors = $validator->validate($wikiPage);
+                $error = null;
 
-              if ($objectHasBeenModified === true && count($errors) == 0){
-                  $wikiPage->setUpdatedAt(new \DateTime('now'));
-                  $em = $this->getDoctrine()->getManager();
-                  $return = $em->flush();
-              } elseif (count($errors) > 0) {
-                  $error = $errors[0]->getMessage(); 
+                if ($objectHasBeenModified === true && count($errors) == 0){
+                    $wikiPage->setUpdatedAt(new \DateTime('now'));
+                    $em = $this->getDoctrine()->getManager();
+                    $return = $em->flush();
+                } elseif (count($errors) > 0) {
+                    $error = $errors[0]->getMessage(); 
+                }
+                
               }
 
             }

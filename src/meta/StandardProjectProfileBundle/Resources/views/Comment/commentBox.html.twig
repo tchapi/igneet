@@ -1,4 +1,6 @@
 <div class="commentsWrapper">
+  <span class="commentsBoxTitle" style="display: none;"><span>{{ object.comments|length }}</span> comment{% if object.comments|length > 1 %}s{% endif %}</span>
+  <a class="commentsBoxToggle"><i class="icon-resize-small"></i> toggle</a>
   <div class="commentsContent">
     <div class="commentsInfo">
       <span>{{ object.comments|length }}</span> comment{% if object.comments|length > 1 %}s{% endif %}
@@ -8,7 +10,11 @@
       <div class="avatar">
         <img src="{{ app.user.avatar }}" width="30" height="30" class="avatar"/>
       </div>
-      <textarea placeholder="Leave a comment here ..."></textarea>
+      <form action="{{ route }}" method="post" {{ form_enctype(form) }}>
+        {{ form_widget(form.text) }}
+        {{ form_widget(form._token) }}
+        <input type="submit" class="btn btn-success"/>
+      </form>
     </div>
     <ul class="comments">
     {% for comment in object.comments %}

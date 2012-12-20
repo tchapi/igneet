@@ -40,6 +40,9 @@
   <p class="muted">No list item yet ! <a href="{{ path('sp_show_project_listitem_new', {'slug': base.standardProject.slug, 'listId': commonList.id}) }}">Create one ...</a></p>
 {% endif %}
 </section>
+<section>
+{% render "metaStandardProjectProfileBundle:Comment:addCommonListComment" with { 'slug' : base.standardProject.slug, 'id': commonList.id } %}
+</section>
 </div>
 <div class="menu">
   Lists :

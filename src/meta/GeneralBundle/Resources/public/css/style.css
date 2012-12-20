@@ -451,6 +451,20 @@ div.commentsWrapper{
   background: #EEE;
   border-radius: 14px;
   padding: 35px 7px 7px 7px;
+  position: relative;
+}
+a.commentsBoxToggle{
+  position: absolute;
+  top: 11px;
+  right: 16px;
+  cursor: pointer;
+}
+span.commentsBoxTitle{
+  position: absolute;
+  top: 10px;
+  left: 22px;
+  font-size: 1.3em;
+  font-weight: bold;
 }
 div.commentsContent{
   background: white;
@@ -471,9 +485,15 @@ ul.comments div.avatar
 div.commentsForm{
   border-bottom: 2px solid #EEE;
 }
+div.commentsForm form{
+  display: inline-block;
+  width: 618px;
+  margin-bottom: 10px;
+}
 div.commentsForm textarea{
-  width: 604px;
+  width: 530px;
   height: 21px;
+  vertical-align: top;
 }
 ul.comments{
   margin: 10px 0;

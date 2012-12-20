@@ -29,22 +29,9 @@ sp_show_project_list_home:
     pattern:  /project/{slug}/lists
     defaults: { _controller: metaStandardProjectProfileBundle:List:showCommonListHome}
 
-sp_show_project_list:
-    pattern:  /project/{slug}/list/{id}/{commonListSlug}
-    defaults: { _controller: metaStandardProjectProfileBundle:List:showCommonList, commonListSlug: _ }
-    requirements:
-      id: \d+
-      _method:  GET
-
 sp_show_project_list_new:
     pattern:  /project/{slug}/list/new
     defaults: { _controller: metaStandardProjectProfileBundle:List:newCommonList}
-
-sp_show_project_list_delete:
-    pattern:  /project/{slug}/list/delete/{id}
-    defaults: { _controller: metaStandardProjectProfileBundle:List:deleteCommonList}
-    # requirements:
-    #     _method:  POST
 
 sp_show_project_list_edit:
     pattern:  /project/{slug}/list/edit/{id}
@@ -52,6 +39,24 @@ sp_show_project_list_edit:
     requirements:
       id: \d+
       _method:  POST
+
+sp_show_project_list_delete:
+    pattern:  /project/{slug}/list/delete/{id}
+    defaults: { _controller: metaStandardProjectProfileBundle:List:deleteCommonList}
+    requirements:
+      id: \d+
+
+sp_show_project_list:
+    pattern:  /project/{slug}/list/{id}/{commonListSlug}
+    defaults: { _controller: metaStandardProjectProfileBundle:List:showCommonList, commonListSlug: _ }
+    requirements:
+      id: \d+
+
+sp_show_project_list_comment:
+    pattern:  /project/{slug}/list/comment/{id}
+    defaults: { _controller: metaStandardProjectProfileBundle:Comment:addCommonListComment}
+    requirements:
+      id: \d+
 
 ## LIST ITEMS
 sp_show_project_listitem_edit:
@@ -115,6 +120,12 @@ sp_show_project_wiki_delete_page:
 sp_show_project_wiki_show_page:
     pattern:  /project/{slug}/wiki/page/{id}/{pageSlug}
     defaults: { _controller: metaStandardProjectProfileBundle:Wiki:showWikiPage, pageSlug: _ }
+    requirements:
+      id: \d+
+
+sp_show_project_wikipage_comment:
+    pattern:  /project/{slug}/wiki/page/comment/{id}
+    defaults: { _controller: metaStandardProjectProfileBundle:Comment:addWikiPageComment }
     requirements:
       id: \d+
 

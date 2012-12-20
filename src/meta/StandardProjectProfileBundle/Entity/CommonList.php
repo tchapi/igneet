@@ -276,12 +276,13 @@ class CommonList
     /**
      * Add comments
      *
-     * @param \meta\StandardProjectProfileBundle\Entity\Comment\CommonListComment $comments
+     * @param \meta\StandardProjectProfileBundle\Entity\Comment\CommonListComment $comment
      * @return CommonList
      */
-    public function addComment(\meta\StandardProjectProfileBundle\Entity\Comment\CommonListComment $comments)
+    public function addComment(\meta\StandardProjectProfileBundle\Entity\Comment\CommonListComment $comment)
     {
-        $this->comments[] = $comments;
+        $comment->setCommonList($this);
+        $this->comments[] = $comment;
     
         return $this;
     }
@@ -289,11 +290,12 @@ class CommonList
     /**
      * Remove comments
      *
-     * @param \meta\StandardProjectProfileBundle\Entity\Comment\CommonListComment $comments
+     * @param \meta\StandardProjectProfileBundle\Entity\Comment\CommonListComment $comment
      */
-    public function removeComment(\meta\StandardProjectProfileBundle\Entity\Comment\CommonListComment $comments)
+    public function removeComment(\meta\StandardProjectProfileBundle\Entity\Comment\CommonListComment $comment)
     {
-        $this->comments->removeElement($comments);
+        $comment->setCommonList(null);
+        $this->comments->removeElement($comment);
     }
 
     /**
