@@ -111,6 +111,14 @@ div.content div.column h4{
   display: inline-block;
 }
 
+div.smallObjectInfos{
+  display: inline-block;
+  vertical-align: top;
+  padding: 15px 5px;
+  min-width: 100px;
+  position: relative;
+}
+
 /*********/
 /*********/
 
@@ -295,6 +303,9 @@ div.smallTextAvatar{
   font-size: 70px;
   background: #CCC;
 }
+div.smallTextAvatar i{
+  width: 70px;
+}
 
 /******************/
 /* Users & Mutual */
@@ -321,13 +332,6 @@ div.userCreate{
 div.userInfo > h2,
 div.projectInfo > h2{
   margin-top: 0;
-}
-div.smallUserInfos{
-  display: inline-block;
-  vertical-align: top;
-  padding: 15px 10px 15px 0;
-  min-width: 100px;
-  position: relative;
 }
 ul.users li,
 ul.projects li{
@@ -384,11 +388,6 @@ div.projectAbout{
   padding: 5px 20px;
   height: 140px;
   width: 100px;
-}
-div.smallProjectInfos{
-  display: inline-block;
-  vertical-align: top;
-  padding: 10px;
 }
 a.removeUserIcon{
   position: absolute;

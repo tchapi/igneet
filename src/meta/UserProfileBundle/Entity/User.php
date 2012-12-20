@@ -98,9 +98,13 @@ class User implements UserInterface
      * @var string $avatar
      *
      * @ORM\Column(name="avatar", type="string", length=255, nullable=true)
-     * @Assert\Url()
      */
     private $avatar;
+
+    /**
+     * @Assert\File(maxSize="6000000")
+     */
+    public $file;
 
     /**
      * @var date $created_at
@@ -351,17 +355,86 @@ class User implements UserInterface
     public function getAvatar()
     {
 
-        if ($this->avatar == ""){
+        if ($this->avatar === null){
            
             $hash = md5(strtolower(trim($this->email)));
             return "http://www.gravatar.com/avatar/".$hash."?s=150&d=".self::$gravatar_default_style;
         
         } else {
 
-            return $this->avatar;
+            return $this->getAvatarWebPath();
         
         }
 
+    }
+
+    public function getAbsoluteAvatarPath()
+    {
+        return null === $this->avatar
+            ? null
+            : $this->getUploadRootDir().'/'.$this->avatar;
+    }
+
+    public function getAvatarWebPath()
+    {
+        return null === $this->avatar
+            ? null
+            : '/'.$this->getUploadDir().'/'.$this->avatar;
+    }
+
+    protected function getUploadRootDir()
+    {
+        // the absolute directory path where uploaded
+        // documents should be saved
+        return __DIR__.'/../../../../web/'.$this->getUploadDir();
+    }
+
+    protected function getUploadDir()
+    {
+        // get rid of the __DIR__ so it doesn't screw up
+        // when displaying uploaded doc/image in the view.
+        return 'uploads/avatars';
+    }
+
+    /**
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function preUpload()
+    {
+        if (null !== $this->file) {
+            // Generate a unique name
+            $filename = sha1(uniqid(mt_rand(), true));
+            $this->avatar = $filename.'.'.$this->file->guessExtension();
+        }
+    }
+
+    /**
+     * @ORM\PostPersist()
+     * @ORM\PostUpdate()
+     */
+    public function upload()
+    {
+        if (null === $this->file) {
+            return;
+        }
+
+        // if there is an error when moving the file, an exception will
+        // be automatically thrown by move(). This will properly prevent
+        // the entity from being persisted to the database on error
+        $this->file->move($this->getUploadRootDir(), $this->avatar);
+
+        unset($this->file);
+    }
+
+    /**
+     * @ORM\PostRemove()
+     */
+    public function removeUpload()
+    {
+        if ($file = $this->getAbsolutePath()) {
+            unlink($file);
+        }
     }
 
     /**

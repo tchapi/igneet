@@ -97,7 +97,7 @@
     <li>
       <a href="{{ path('u_show_user_profile', {'username': followingUser.username}) }}">
         <img src="{{ followingUser.avatar }}" width="70" height="70" class="smallAvatar"/>
-        <div class="smallUserInfos">
+        <div class="smallObjectInfos">
           <div>{{ followingUser.firstName }}</div><div>{{ followingUser.lastName|upper }}</div>
         </div>
       </a>
@@ -115,7 +115,7 @@
     <li>
       <a href="{{ path('u_show_user_profile', {'username': followerUser.username}) }}">
         <img src="{{ followerUser.avatar }}" width="70" height="70" class="smallAvatar"/>
-        <div class="smallUserInfos">
+        <div class="smallObjectInfos">
           <div>{{ followerUser.firstName }}</div><div>{{ followerUser.lastName|upper }}</div>
         </div>
       </a>
@@ -133,7 +133,7 @@
     <li>
       <a href="{{ path('sp_show_project', {'slug': watchedProject.slug}) }}">
         <img src="{{ watchedProject.picture }}" width="70" height="70" class="smallAvatar"/>
-        <div class="smallUserInfos">
+        <div class="smallObjectInfos">
           {{ watchedProject.name }}
         </div>
       </a>
@@ -151,7 +151,7 @@
     <li>
       <a href="{{ path('sp_show_project', {'slug': ownedProject.slug}) }}">
         <img src="{{ ownedProject.picture }}" width="70" height="70" class="smallAvatar"/>
-        <div class="smallUserInfos">
+        <div class="smallObjectInfos">
           {{ ownedProject.name }}
         </div>
       </a>
@@ -169,7 +169,7 @@
     <li>
       <a href="{{ path('sp_show_project', {'slug': participatedInProject.slug}) }}">
         <img src="{{ participatedInProject.picture }}" width="70" height="70" class="smallAvatar"/>
-        <div class="smallUserInfos">
+        <div class="smallObjectInfos">
           {{ participatedInProject.name }}
         </div>
       </a>

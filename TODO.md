@@ -1,13 +1,15 @@
 ## TODO ##
 
- * signup : avatar
-    + chgt d'avatar
+ * signup : avatar OK OK
+    + chgt d'avatar ?
 
  * Créer un nouveau projet
 
  * Afficher le meta dans les infos d'un projet
  
  * Afficher le nombre de commentaires publics d'un user
+
+ * Add a participant : faire le 'user chooser'
 
  * log des modifs sur les projets
 
