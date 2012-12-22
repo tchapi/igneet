@@ -25,7 +25,7 @@
             </div>
             <div class="comment">
               <header><a href="{{ path('u_show_user_profile', {'username': comment.user.username}) }}">{{ comment.user.firstName }}</a> — <span>{{ comment.createdAt|date("d/m/Y G:i") }}</span></header>
-              <div>{{ comment.text }}</div>
+              <div>{{ comment.text|nl2br }}</div>
             </div>
           </div>
         </li>

@@ -550,6 +550,7 @@ div.commentsForm form{
 }
 div.commentsForm textarea{
   width: 530px;
+  max-width: 530px;
   height: 21px;
   vertical-align: top;
 }
