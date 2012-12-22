@@ -1,0 +1,38 @@
+{% extends 'metaStandardProjectProfileBundle::layout.html.twig' %}
+
+{% block title %}{{ parent() }} > New project{% endblock %}
+
+{% block header %}
+  <div class="headerAvatarAndActions">
+    <div class="textAvatar"><i class="icon-beaker"></i></div>
+  </div>
+  <div class="userCreate">
+    <h2><strong>Create</strong> a new project</h2>
+    <h4>And gather a strong community of experts o help you go forward.</h4>
+    <p>You can add more information once the project is created, such as lists, wikis and resources ...</p>
+  </div>
+{% endblock %}
+
+{% form_theme form _self %}
+
+{% block form_row %}
+<section>
+<div class="sectionTitle">{{ form_label(form) }}</div>
+<div class="sectionContent">
+    <div class="errors">{{ form_errors(form) }}</div>
+    {{ form_widget(form) }}
+</div>
+</section>
+{% endblock form_row %}
+
+{% block content %}
+<form action="{{ path('sp_new_project') }}" method="post" {{ form_enctype(form) }}>
+    {{ form_widget(form) }}
+  <section>
+    <div class="sectionTitle"></div>
+    <div class="sectionContent">
+      <input type="submit" value="Create" class="btn btn-success" />
+    </div>
+  </section>
+</form>
+{% endblock %}

@@ -6,6 +6,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller,
     Symfony\Component\HttpFoundation\Request,
     Symfony\Component\HttpFoundation\Response;
 
+/*
+ * Importing Class definitions
+ */
+use meta\StandardProjectProfileBundle\Entity\StandardProject;
+use meta\StandardProjectProfileBundle\Form\Type\StandardProjectType;
+
 class DefaultController extends BaseController
 {
 
@@ -24,6 +30,51 @@ class DefaultController extends BaseController
 
     }
 
+
+    /*
+     * Create a form for a new project AND process result if POST
+     */
+    public function createAction(Request $request)
+    {
+        
+        $authenticatedUser = $this->getUser();
+
+        $standardProject = new StandardProject();
+        $form = $this->createForm(new StandardProjectType(), $standardProject);
+
+        if ($request->isMethod('POST')) {
+
+            $form->bind($request);
+
+            if ($form->isValid()) {
+                
+                $authenticatedUser->addProjectsOwned($standardProject);
+
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($standardProject);
+                $em->flush();
+
+                $this->get('session')->setFlash(
+                    'success',
+                    'Your new project '.$standardProject->getName().' has successfully been created.'
+                );
+
+                return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $standardProject->getSlug())));
+           
+            } else {
+               
+               $this->get('session')->setFlash(
+                    'error',
+                    'The information you provided does not seem valid.'
+                );
+
+            }
+
+        }
+
+        return $this->render('metaStandardProjectProfileBundle:Default:create.html.twig', array('form' => $form->createView()));
+
+    }
 
     /*  ####################################################
      *                   WATCH / UNWATCH

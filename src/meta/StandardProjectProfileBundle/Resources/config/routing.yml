@@ -2,14 +2,16 @@ sp_list_project:
     pattern:  /projects
     defaults: { _controller: metaStandardProjectProfileBundle:Default:list, max: 10 }
 
+sp_new_project:
+    pattern:  /projects/new
+    defaults: { _controller: metaStandardProjectProfileBundle:Default:create}
+
 sp_show_project:
     pattern:  /project/{slug}
     defaults: { _controller: metaStandardProjectProfileBundle:Info:showInfo}
-    requirements:
-        _method:  GET
 
 sp_edit_project:
-    pattern:  /project/{slug}
+    pattern:  /project/{slug}/edit
     defaults: { _controller: metaStandardProjectProfileBundle:Info:edit }
     requirements:
         _method:  POST
