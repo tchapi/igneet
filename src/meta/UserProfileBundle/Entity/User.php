@@ -38,7 +38,7 @@ class User implements UserInterface
      * @ORM\Column(name="username", type="string", length=255, unique=true)
      * @Assert\NotBlank()
      * @Assert\Length(min = "3")
-     * @Assert\Regex(pattern="/[a-zA-Z]{1}[a-zA-Z0-9\-]+/")
+     * @Assert\Regex(pattern="/^[a-zA-Z0-9\-]+$/")
      */
     private $username;
 
