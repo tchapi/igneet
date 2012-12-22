@@ -79,7 +79,7 @@ div.content section:first-child{
 }
 div.content section > div.sectionTitle{
   display: inline-block;
-  width: 160px;
+  width: 150px;
   color: black;
   vertical-align: top;
 }
@@ -91,6 +91,7 @@ div.content form section > div.sectionTitle{
 div.content section > .sectionContent{
   display: inline-block;
   margin-left: 5px;
+  width: 758px;
 }
 div.content section.colored{ background: #EEE;}
 /* Column-type sections */
@@ -114,7 +115,7 @@ div.smallObjectInfos{
   display: inline-block;
   vertical-align: top;
   padding: 15px 5px;
-  min-width: 100px;
+  width: 95px;
   position: relative;
 }
 
@@ -347,12 +348,8 @@ ul.projects li{
   background: #EEE;
   border: 1px solid #CCC;
   border-radius: 3px;
-  margin: 0 5px;
+  margin: 0 4px 7px 0;
   vertical-align: top;
-}
-ul.users li:first-child,
-ul.projects li:first-child{
-  margin-left: 0;
 }
 div.errors ul{
   list-style: none;
