@@ -93,7 +93,6 @@ div.content section > .sectionContent{
   margin-left: 5px;
 }
 div.content section.colored{ background: #EEE;}
-div.content section.colored.first{ border-top: 1px solid #DDD;}
 /* Column-type sections */
 div.content div.menu{
   width: 180px;
@@ -389,7 +388,7 @@ div.projectInfo{
   border-right: 1px solid #CCC;
   padding-right: 40px;
   height: 150px;
-  width: 550px;
+  width: 540px;
 }
 div.projectAbout{
   display: inline-block;
