@@ -12,7 +12,9 @@ class StandardProjectType extends AbstractType
         $builder->add('name');
         $builder->add('slug');
         $builder->add('headline', 'text',  array('required' => false));
-        
+
+        $builder->add('file', 'file', array('required' => false));
+
         $builder->add('neededSkills', 'entity', array(
             'multiple' => true, 
             'required' => false, 

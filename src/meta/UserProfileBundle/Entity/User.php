@@ -395,6 +395,16 @@ class User implements UserInterface
         return 'uploads/avatars';
     }
 
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    public function setFile($file)
+    {
+        $this->file = $file;
+    }
+    
     /**
      * @ORM\PrePersist()
      * @ORM\PreUpdate()

@@ -1,5 +1,12 @@
 ## TODO ##
 
+ * noms des labels dans signup et new project
+    __ helpers pour les champs
+
+
+ * IDEA
+   --> transform into project
+
  * signup : avatar OK OK
     + chgt d'avatar -----> TODO Mais pas simple
 
