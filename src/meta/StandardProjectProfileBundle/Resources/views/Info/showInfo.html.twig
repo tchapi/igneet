@@ -60,7 +60,7 @@
           <img src="{{ owningUser.avatar }}" width="70" height="70" class="smallAvatar"/>
           <div class="smallObjectInfos">
             <div>{{ owningUser.firstName }}</div><div>{{ owningUser.lastName|upper }}</div>
-            {% if base.isOwning %}<a class="removeUserIcon" href="{{ path('sp_remove_owner_to_project', { 'slug': base.standardProject.slug, 'username' : owningUser.username }) }}"><i class="icon-remove-sign icon-large"></i></a>{% endif %}
+            {% if base.isOwning and owningUser != app.user %}<a class="removeUserIcon" href="{{ path('sp_remove_owner_to_project', { 'slug': base.standardProject.slug, 'username' : owningUser.username }) }}"><i class="icon-remove-sign icon-large"></i></a>{% endif %}
           </div>
         </a>
       </li>
