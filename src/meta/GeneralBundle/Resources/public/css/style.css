@@ -93,6 +93,9 @@ div.content section > .sectionContent{
   margin-left: 5px;
   width: 758px;
 }
+div.content form section > .sectionContent{
+  width: auto;
+}
 div.content section.colored{ background: #EEE;}
 /* Column-type sections */
 div.content div.menu{
@@ -257,6 +260,23 @@ a.editable-click.editable-disabled:hover {
 .editable-unsaved:after {
 /*    content: '*'*/
 }
+
+
+.icon-blockquote,
+.icon-code,
+.icon-header,
+.icon-hr-line
+{
+  background: url(../../../bundles/metageneral/img/Markdown.Editor.Icons.png) no-repeat scroll;
+  height: 20px;
+  width: 14px;
+  display: block;
+}
+.icon-blockquote        { background-position: -24px  3px; }
+.icon-code              { background-position: -48px  3px; }
+.icon-header            { background-position: -120px 3px; }
+.icon-hr-line           { background-position: -144px 3px; }
+
 
 textarea.wmd-input{
   width: 100%;
