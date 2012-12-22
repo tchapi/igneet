@@ -1,0 +1,7 @@
+parameters:
+#    meta_idea_profile.example.class: meta\IdeaProfileBundle\Example
+
+services:
+#    meta_idea_profile.example:
+#        class: %meta_idea_profile.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

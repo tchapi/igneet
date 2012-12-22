@@ -8,6 +8,7 @@ $(document).ready(function(){
 
   });
 
+  // Toggle the height of the commenting input
   $('.commentsForm textarea').blur(function(){
     if ( $(this).val() == "" ) $(this).animate({height:'20px'});
   });

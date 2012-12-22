@@ -26,6 +26,7 @@ class AppKernel extends Kernel
             new meta\GeneralBundle\metaGeneralBundle(),
             new meta\UserProfileBundle\metaUserProfileBundle(),
             new meta\StandardProjectProfileBundle\metaStandardProjectProfileBundle(),
+            new meta\IdeaProfileBundle\metaIdeaProfileBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

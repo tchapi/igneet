@@ -1,0 +1,19 @@
+# IDEAS
+
+i_list_idea:
+    pattern:  /ideas
+    defaults: { _controller: metaIdeaProfileBundle:Default:list, max: 10 }
+
+i_new_idea:
+    pattern:  /ideas/new
+    defaults: { _controller: metaIdeaProfileBundle:Default:create}
+
+i_show_idea:
+    pattern:  /idea/{slug}
+    defaults: { _controller: metaIdeaProfileBundle:Default:showInfo}
+
+i_edit_idea:
+    pattern:  /idea/{slug}/edit
+    defaults: { _controller: metaIdeaProfileBundle:Default:edit }
+    requirements:
+        _method:  POST

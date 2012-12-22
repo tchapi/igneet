@@ -53,6 +53,11 @@ class StandardProject
      */
     private $headline;
 
+    /** Original Idea
+     * @ORM\OneToOne(targetEntity="meta\IdeaProfileBundle\Entity\Idea", inversedBy="resultingProject")
+     **/
+    private $originalIdea;
+
     /**
      * @var string $picture
      *
@@ -274,7 +279,7 @@ class StandardProject
     {
         $this->file = $file;
     }
-    
+
     /**
      * @ORM\PrePersist()
      * @ORM\PreUpdate()
@@ -644,5 +649,28 @@ class StandardProject
     public function getMeta()
     {
         return $this->meta;
+    }
+
+    /**
+     * Set originalIdea
+     *
+     * @param \meta\IdeaProfileBundle\Entity\Idea $originalIdea
+     * @return StandardProject
+     */
+    public function setOriginalIdea(\meta\IdeaProfileBundle\Entity\Idea $originalIdea = null)
+    {
+        $this->originalIdea = $originalIdea;
+    
+        return $this;
+    }
+
+    /**
+     * Get originalIdea
+     *
+     * @return \meta\IdeaProfileBundle\Entity\Idea 
+     */
+    public function getOriginalIdea()
+    {
+        return $this->originalIdea;
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace meta\StandardProjectProfileBundle\Tests\Controller;
+namespace meta\IdeaProfileBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
