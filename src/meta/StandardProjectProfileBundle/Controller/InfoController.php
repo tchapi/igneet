@@ -147,7 +147,7 @@ class InfoController extends BaseController
 
             if ($toRemoveParticipantOrOwner && (($toRemoveParticipantOrOwner->isOwning($this->base['standardProject']) && $owner === true) || ($toRemoveParticipantOrOwner->isParticipatingIn($this->base['standardProject']) && $owner !== true)) ) {
 
-                if ($toRemoveParticipantOrOwner != $authenticatedUser){
+                if ($toRemoveParticipantOrOwner != $this->getUser()){
 
                     if ($owner === true){
 
