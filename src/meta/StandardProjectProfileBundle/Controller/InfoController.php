@@ -25,59 +25,8 @@ class InfoController extends BaseController
     }
 
     /*  ####################################################
-     *               PROJECT EDITION / ADD USER
+     *                          ADD USER
      *  #################################################### */
-
-    public function editAction(Request $request, $slug){
-
-        $this->fetchProjectAndPreComputeRights($slug, false, true);
-        $error = null;
-
-        if ($this->base != false) {
-        
-            $objectHasBeenModified = false;
-
-            switch ($request->request->get('name')) {
-                case 'name':
-                    $this->base['standardProject']->setName($request->request->get('value'));
-                    $objectHasBeenModified = true;
-                    break;
-                case 'headline':
-                    $this->base['standardProject']->setHeadline($request->request->get('value'));
-                    $objectHasBeenModified = true;
-                    break;
-                case 'about':
-                    $this->base['standardProject']->setAbout($request->request->get('value'));
-                    $objectHasBeenModified = true;
-                    break;
-                case 'skills':
-                    $skillSlugsAsArray = $request->request->get('value');
-                    
-                    $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:Skill');
-                    $skills = $repository->findSkillsByArrayOfSlugs($skillSlugsAsArray);
-                    
-                    $this->base['standardProject']->setNeededSkills($skills);
-                    $objectHasBeenModified = true;
-                    break;
-            }
-
-            $validator = $this->get('validator');
-            $errors = $validator->validate($this->base['standardProject']);
-
-            if ($objectHasBeenModified === true && count($errors) == 0){
-                $this->base['standardProject']->setUpdatedAt(new \DateTime('now'));
-                $em = $this->getDoctrine()->getManager();
-                $em->flush();
-            } else {
-                $error = $errors[0]->getMessage(); 
-            }
-
-
-        }
-
-        return new Response($error);
-
-    }
 
     public function addParticipantOrOwnerAction($slug, $username, $owner)
     {

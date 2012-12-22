@@ -66,6 +66,7 @@ hr {
 /* sections */
 div.content{ position: relative;}
 div.content section{
+  position: relative;
   padding: 10px 20px;
 }
 div.content form section{
@@ -92,6 +93,12 @@ div.content section > .sectionContent{
   display: inline-block;
   margin-left: 5px;
   width: 758px;
+}
+div.content section.listing{
+  border-bottom: 1px solid #DDD;
+}
+div.content section.listing:last-child{
+  border-bottom: none;
 }
 div.content form section > .sectionContent{
   width: auto;
@@ -261,7 +268,6 @@ a.editable-click.editable-disabled:hover {
 /*    content: '*'*/
 }
 
-
 .icon-blockquote,
 .icon-code,
 .icon-header,
@@ -306,6 +312,11 @@ img.smallAvatar{
   vertical-align: top;
   border-radius: 3px 0 0 3px;
 }
+img.miniAvatar{
+  display: inline-block;
+  vertical-align: top;
+  border-radius: 3px;
+}
 div.textAvatar{
   display: inline-block;
   width: 150px;
@@ -327,6 +338,28 @@ div.smallTextAvatar i{
   width: 70px;
 }
 
+/*****************/
+/*    Listing    */
+/*****************/
+div.listingItemInfo{
+  height: 80px;
+  padding: 10px;
+  vertical-align: top;
+  width: 790px;
+  display: inline-block;
+}
+div.listingItemRelatedObjects{
+  position: absolute;
+  right: 20px;
+  bottom: 10px;
+}
+div.listingItemRelatedObjects ul{
+  list-style: none;
+}
+div.listingItemRelatedObjects ul li{
+  display: inline-block;
+}
+
 /******************/
 /* Users & Mutual */
 /******************/
@@ -339,11 +372,12 @@ div.headerAvatarAndActions{
 }
 div.headerAvatarAndActions div.changeAvatar{
   position: absolute;
-  bottom: 0;
+  top: 0;
   right: 0;
   height: 20px;
   background: rgba(255, 255, 255, 0.6);
   padding: 4px 11px;
+  border-radius: 0 3px 0 0;
 }
 a.followAction,
 a.watchAction{

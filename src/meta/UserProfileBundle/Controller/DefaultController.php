@@ -137,6 +137,7 @@ class DefaultController extends Controller
     {
 
         $authenticatedUser = $this->getUser();
+        $response = new Response();
 
         if ($authenticatedUser->getUsername() == $username) {
 
@@ -177,19 +178,19 @@ class DefaultController extends Controller
 
             $validator = $this->get('validator');
             $errors = $validator->validate($authenticatedUser);
-            $error = null;
 
             if ($objectHasBeenModified === true && count($errors) == 0){
                 $authenticatedUser->setUpdatedAt(new \DateTime('now'));
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
             } elseif (count($errors) > 0) {
-                $error = $errors[0]->getMessage(); 
+                $response->setStatusCode(406);
+                $response->setContent($errors[0]->getMessage());
             }
 
         }
 
-        return new Response($error);
+        return $response;
 
     }
 

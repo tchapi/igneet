@@ -15,16 +15,41 @@
 
 {% block content %}
 {% if standardProjects %}
-<div><ul>
 {% for standardProject in standardProjects %}
-    <li>
-      <a href="{{ path('sp_show_project', {'slug': standardProject.slug}) }}">
-        <img src="{{ standardProject.picture }}" width="100" height="100"/>
-        <span>{{ standardProject.name }} ({{ standardProject.slug|lower }})</span>
-      </a>
-    </li>
+<section class="listing">
+  
+  <a href="{{ path('sp_show_project', {'slug': standardProject.slug}) }}">
+    <img src="{{ standardProject.picture }}" width="100" height="100"/>
+  </a>
+
+  <div class="listingItemInfo">
+    <h4><a href="{{ path('sp_show_project', {'slug': standardProject.slug}) }}">{{ standardProject.name }} ({{ standardProject.slug|lower }})</a></h4>
+    <div>{{ standardProject.headline }}</div>
+    <div class="muted"><i class="icon-calendar"></i> Created on {{ standardProject.createdAt|date("d/m/Y") }}</div>
+  </div>
+
+  <div class="listingItemRelatedObjects">
+    <ul>
+      {% for owner in standardProject.owners %}
+      <li>
+        <a href="{{ path('u_show_user_profile', {'username': owner.username}) }}">
+          <img src="{{ owner.avatar }}" title="{{ owner.firstName }} {{ owner.lastName|upper }}" width="30" height="30" class="miniAvatar"/>
+        </a>
+      </li>
+      {% endfor %}
+      {% for participant in standardProject.participants %}
+      <li>
+        <a href="{{ path('u_show_user_profile', {'username': participant.username}) }}">
+          <img src="{{ participant.avatar }}" title="{{ participant.firstName }} {{ participant.lastName|upper }}" width="30" height="30" class="miniAvatar"/>
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+
+</section>
 {% endfor %}
-</ul></div>
+
 {% endif %}
 
 {% endblock %}

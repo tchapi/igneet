@@ -3,7 +3,7 @@
  * signup : avatar OK OK
     + chgt d'avatar -----> TODO Mais pas simple
 
- * Créer un nouveau projet
+ * Créer un nouveau projet OK OK
 
  * Afficher le meta dans les infos d'un projet
 

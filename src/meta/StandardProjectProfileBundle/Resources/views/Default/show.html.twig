@@ -20,18 +20,23 @@
 
 {% block header %}
   <div class="headerAvatarAndActions">
+    {% if base.canEdit %}<div class="changeAvatar"><a href="#"><i class="icon-pencil"></i> change</a></div>{% endif %}
     <img src="{{ asset(base.standardProject.picture) }}" width="150" height="150" class="avatar"/>
 {% if base.isAlreadyWatching %}
-    <a href="{{ path('sp_unwatch_project', {'slug': base.standardProject.slug}) }}" class="btn btn-info watchAction">Unwatch {{ base.standardProject.name }}</a>
+    <a href="{{ path('sp_unwatch_project', {'slug': base.standardProject.slug}) }}" class="btn btn-info watchAction">Unwatch project</a>
 {% else %}
-    <a href="{{ path('sp_watch_project', {'slug': base.standardProject.slug}) }}" class="btn btn-success watchAction">Watch {{ base.standardProject.name }}</a>
+    <a href="{{ path('sp_watch_project', {'slug': base.standardProject.slug}) }}" class="btn btn-success watchAction">Watch project</a>
 {% endif %}
   </div>
 
   <div class="projectInfo">
 
-    <h2 class="ellipsis"><span>{{ base.standardProject.name }}</span></h2>
-    <h4 class="ellipsis"><span>{{ base.standardProject.headline }}</span></h4>
+    <h2 class="ellipsis">
+      <span class="editable" data-name="name" data-url="{{ path('sp_edit_project', {'slug': base.standardProject.slug}) }}">{{ base.standardProject.name }}</span>
+    </h2>
+    <h4 class="ellipsis">
+      <span class="editable" data-name="headline" data-emptytext="Click to add a headline" data-url="{{ path('sp_edit_project', {'slug': base.standardProject.slug}) }}" data-type="textarea">{{ base.standardProject.headline }}</span>
+    </h4>
     <div>
       <i class="icon-calendar"></i> Created on {{ base.standardProject.createdAt|date("d/m/Y") }}
     </div>
@@ -40,15 +45,12 @@
       <i class="icon-beaker"></i> 
 
       {% if base.standardProject.neededSkills|length > 0 %}
-      Needed skills : 
-      {% else %}
-      No skills added yet.
-      {% endif %} 
-      <ul class="skills">
-      {% for skill in base.standardProject.neededSkills %}
-          <li class="label">{{ skill.name }}</li>
-      {% endfor %}
+      Needed skills :
+      {% endif %}
+      <ul data-toggle="manual" data-emptytext="Add needed skills" data-url="{{ path('sp_edit_project', {'slug': base.standardProject.slug}) }}" data-type="checklist" data-source="{{ path('u_list_all_skills') }}" data-name="skills" data-type="select" class="skills skills-target editable-li">
+    {% for skill in base.standardProject.neededSkills %}<li class="label" rel="{{ skill.slug }}">{{ skill.name }}</li>{% endfor %}
       </ul>
+      {% if base.canEdit %} <a class="editable-trigger" data-target="skills">&hellip;<i class="icon-pencil"></i></a>{% endif %}
 
     </div>
 

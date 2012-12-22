@@ -147,6 +147,7 @@ class WikiController extends BaseController
     {
   
         $this->fetchProjectAndPreComputeRights($slug, false, true);
+        $response = new Response();
 
         if ($this->base != false) {
 
@@ -174,14 +175,14 @@ class WikiController extends BaseController
 
                 $validator = $this->get('validator');
                 $errors = $validator->validate($wikiPage);
-                $error = null;
 
                 if ($objectHasBeenModified === true && count($errors) == 0){
                     $wikiPage->setUpdatedAt(new \DateTime('now'));
                     $em = $this->getDoctrine()->getManager();
                     $return = $em->flush();
                 } elseif (count($errors) > 0) {
-                    $error = $errors[0]->getMessage(); 
+                    $response->setStatusCode(406);
+                    $response->setContent($errors[0]->getMessage());
                 }
                 
               }
@@ -190,7 +191,7 @@ class WikiController extends BaseController
 
         }
 
-        return new Response($error);
+        return $response;
     }
 
     public function deleteWikiPageAction(Request $request, $slug, $id)

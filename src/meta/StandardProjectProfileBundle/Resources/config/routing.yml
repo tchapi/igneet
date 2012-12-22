@@ -1,3 +1,25 @@
+# META PROJECTS
+
+mp_list_meta:
+    pattern:  /metas
+    defaults: { _controller: metaStandardProjectProfileBundle:Default:list, max: 10 }
+
+mp_new_meta:
+    pattern:  /metas/new
+    defaults: { _controller: metaStandardProjectProfileBundle:Default:create}
+
+mp_show_meta:
+    pattern:  /meta/{slug}
+    defaults: { _controller: metaStandardProjectProfileBundle:Info:showInfo}
+
+mp_edit_meta:
+    pattern:  /meta/{slug}/edit
+    defaults: { _controller: metaStandardProjectProfileBundle:Info:edit }
+    requirements:
+        _method:  POST
+
+# STANDARD PROJECTS
+
 sp_list_project:
     pattern:  /projects
     defaults: { _controller: metaStandardProjectProfileBundle:Default:list, max: 10 }
@@ -12,7 +34,7 @@ sp_show_project:
 
 sp_edit_project:
     pattern:  /project/{slug}/edit
-    defaults: { _controller: metaStandardProjectProfileBundle:Info:edit }
+    defaults: { _controller: metaStandardProjectProfileBundle:Default:edit }
     requirements:
         _method:  POST
 

@@ -33,7 +33,7 @@
     </h2>
 
     <h4 class="ellipsis">
-      <span data-url="{{ path('u_edit_user_profile', {'username': user.username}) }}" data-name="headline" data-type="text" data-title="A one-liner to describe yourself" class="editable">{{ user.headline }}</span>
+      <span data-url="{{ path('u_edit_user_profile', {'username': user.username}) }}" data-name="headline" data-emptytext="Click to add a headline" data-type="text" data-title="A one-liner to describe yourself" class="editable">{{ user.headline }}</span>
     </h4>
 
     <div>
@@ -48,7 +48,7 @@
       <i class="icon-trophy"></i> 
 
       {% if user.skills|length > 0 %}
-      Skills
+      Skills : 
       {% elseif not isMe %}
       No skills added yet
       {% endif %}
@@ -164,7 +164,7 @@
 
 {% if user.projectsParticipatedIn|length > 0 %}
 <section class="colored">
-<div class="sectionTitle">Projects I participate in :</div>
+<div class="sectionTitle">Projects I'm in :</div>
 <ul class="projects sectionContent">
 {% for participatedInProject in user.projectsParticipatedIn %}
     <li>

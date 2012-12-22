@@ -119,7 +119,7 @@ class ListController extends BaseController
     {
   
         $this->fetchProjectAndPreComputeRights($slug, false, true);
-        $error = null;
+        $response = new Response();
 
         if ($this->base != false) {
 
@@ -147,12 +147,13 @@ class ListController extends BaseController
                 $em = $this->getDoctrine()->getManager();
                 $return = $em->flush();
             } else {
-                $error = $errors[0]->getMessage(); 
+                $response->setStatusCode(406);
+                $response->setContent($errors[0]->getMessage());
             }
             
         }
 
-        return new Response($error);
+        return $response;
     }
 
     public function deleteCommonListAction(Request $request, $slug, $id)
