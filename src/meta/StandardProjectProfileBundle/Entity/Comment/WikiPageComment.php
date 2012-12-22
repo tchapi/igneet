@@ -19,7 +19,7 @@ class WikiPageComment extends BaseComment
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * Wiki Page commented

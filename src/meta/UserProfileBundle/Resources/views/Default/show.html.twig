@@ -17,6 +17,7 @@
 {% block header %}
 
   <div class="headerAvatarAndActions">
+    {% if isMe %}<div class="changeAvatar"><a href="#"><i class="icon-pencil"></i> change</a></div>{% endif %}
     <img src="{{ user.avatar }}" width="150" height="150" class="avatar"/>
 {% if alreadyFollowing %}
     <a href="{{ path('u_unfollow_user', {'username': user.username}) }}" class="btn btn-info followAction">Unfollow {{ user.firstName }}</a>
@@ -178,5 +179,11 @@
 </ul>
 </section>
 {% endif %}
+<section class="colored">
+  <div class="sectionTitle">Activity :</div>
+  <div class="projects sectionContent">
+    {{ user.comments|length }} comments, including {{ user.countPublicComments }} public ones.
+  </div>
+</section>
 
 {% endblock %}

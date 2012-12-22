@@ -315,6 +315,15 @@ div.headerAvatarAndActions{
   display: inline-block;
   vertical-align: top;
   text-align: right;
+  position: relative;
+}
+div.headerAvatarAndActions div.changeAvatar{
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.6);
+  padding: 4px 11px;
 }
 a.followAction,
 a.watchAction{

@@ -1,13 +1,11 @@
 ## TODO ##
 
  * signup : avatar OK OK
-    + chgt d'avatar ?
+    + chgt d'avatar -----> TODO Mais pas simple
 
  * Créer un nouveau projet
 
  * Afficher le meta dans les infos d'un projet
- 
- * Afficher le nombre de commentaires publics d'un user
 
  * Add a participant : faire le 'user chooser'
 
@@ -19,8 +17,6 @@
    \_ ListComment OK OK OK
    \_ ResourceComment
    \_ ProjectComment ( + Meta?) = shoutbox-like
- 
- * Trier les commentaires dans l'autre sens BOULET 
 
  * wiki : 
    - parenting
@@ -36,7 +32,7 @@ V2
 
  * listes : reconnaitre les urls en mettre un lien pour y aller directement a coté ;)
  * lien vers des droplr avec apercu auto
-
+    --> tout ca doit se faire en JS a priori
 
 ## Call benjamin
 

@@ -78,6 +78,7 @@ class CommonList
     /**
      * Comments on this page (OWNING SIDE)
      * @ORM\OneToMany(targetEntity="meta\StandardProjectProfileBundle\Entity\Comment\CommonListComment", mappedBy="commonList")
+     * @ORM\OrderBy({"created_at" = "DESC"})
      **/
     private $comments;
 

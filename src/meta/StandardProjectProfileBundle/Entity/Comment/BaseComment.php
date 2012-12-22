@@ -12,7 +12,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table(name="Comments")
  * @ORM\Entity
- * @ORM\MappedSuperclass
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string")
  * @ORM\DiscriminatorMap({"wikiPage" = "meta\StandardProjectProfileBundle\Entity\Comment\WikiPageComment", "list" = "meta\StandardProjectProfileBundle\Entity\Comment\CommonListComment"})
@@ -28,7 +27,7 @@ class BaseComment
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
@@ -55,8 +54,8 @@ class BaseComment
     private $created_at;
 
     /**
-     * User that created this comment
-     * @ORM\ManyToOne(targetEntity="meta\UserProfileBundle\Entity\User", inversedBy="comments", fetch="EAGER")
+     * User that created this comment (OWNING SIDE)
+     * @ORM\ManyToOne(targetEntity="meta\UserProfileBundle\Entity\User", inversedBy="comments")
      **/
     private $user;
     
@@ -65,10 +64,14 @@ class BaseComment
      */
     public function __construct()
     {
-        $this->user = new ArrayCollection();
         $this->created_at = new \DateTime('now');
     }
+
+    public function __sleep(){
+     
+        return array('id');
     
+    }
 
     /**
      * Get id

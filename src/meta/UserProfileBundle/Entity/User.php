@@ -104,7 +104,7 @@ class User implements UserInterface
     /**
      * @Assert\File(maxSize="6000000")
      */
-    public $file;
+    protected $file;
 
     /**
      * @var date $created_at
@@ -204,7 +204,7 @@ class User implements UserInterface
     private $projectsWatched;
 
     /**
-     * Comments I created (OWNING SIDE)
+     * Comments I created 
      * @ORM\OneToMany(targetEntity="meta\StandardProjectProfileBundle\Entity\Comment\BaseComment", mappedBy="user")
      **/
     private $comments;
@@ -229,7 +229,6 @@ class User implements UserInterface
         $this->created_at = $this->updated_at = new \DateTime('now');
 
     }
-
 
     /**
      * Get id
