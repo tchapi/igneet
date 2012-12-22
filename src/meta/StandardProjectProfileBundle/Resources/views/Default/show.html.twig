@@ -38,9 +38,10 @@
 
     <div>
       <i class="icon-beaker"></i> 
+
       {% if base.standardProject.neededSkills|length > 0 %}
       Needed skills : 
-      {% elseif not base.isOwning %}
+      {% else %}
       No skills added yet.
       {% endif %} 
       <ul class="skills">
@@ -48,6 +49,7 @@
           <li class="label">{{ skill.name }}</li>
       {% endfor %}
       </ul>
+
     </div>
 
   </div>
