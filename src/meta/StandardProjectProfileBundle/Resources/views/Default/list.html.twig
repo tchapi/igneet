@@ -31,22 +31,20 @@
   <div class="listingItemRelatedObjects">
 
     <div class="type">
-      <div class="muted pull-right">{{ standardProject.participants|length + standardProject.owners|length }} 
-        user{% if (standardProject.participants|length + standardProject.owners|length) > 1 %}s{% endif %}</div>
+      <div class="muted pull-right">{{ standardProject.participants|length }} 
+        participant{% if (standardProject.participants|length) > 1 %}s{% endif %}</div>
     </div>
 
     <ul>
-      {% for owner in standardProject.owners %}
+      {% if standardProject.participants|length > 11 %}
       <li>
-        <a href="{{ path('u_show_user_profile', {'username': owner.username}) }}">
-          <img src="{{ owner.avatar }}" title="{{ owner.firstName }} {{ owner.lastName|upper }}" width="30" height="30" class="miniAvatar"/>
-        </a>
+        <div class="miniTextAvatar">...</div>
       </li>
-      {% endfor %}
-      {% for participant in standardProject.participants %}
+      {% endif %}
+      {% for user in standardProject.getRandomParticipants(11) %}
       <li>
-        <a href="{{ path('u_show_user_profile', {'username': participant.username}) }}">
-          <img src="{{ participant.avatar }}" title="{{ participant.firstName }} {{ participant.lastName|upper }}" width="30" height="30" class="miniAvatar"/>
+        <a href="{{ path('u_show_user_profile', {'username': user.username}) }}">
+          <img src="{{ user.avatar }}" title="{{ user.firstName }} {{ user.lastName|upper }}" width="30" height="30" class="miniAvatar"/>
         </a>
       </li>
       {% endfor %}

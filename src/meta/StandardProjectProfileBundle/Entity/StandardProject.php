@@ -505,6 +505,34 @@ class StandardProject
     }
 
     /**
+     * Get N random owners
+     *
+     * @return Doctrine\Common\Collections\Collections
+     */
+    public function getRandomOwners($limit)
+    {
+        $sub_array = $this->owners->slice(0,max(0,$limit));
+        shuffle($sub_array);
+
+        return $sub_array;
+
+    }
+
+    /**
+     * Get N random participants
+     *
+     * @return Doctrine\Common\Collections\Collections
+     */
+    public function getRandomParticipants($limit)
+    {
+        $sub_array = $this->participants->slice(0,max(0,$limit));
+        shuffle($sub_array);
+
+        return $sub_array;
+
+    }
+    
+    /**
      * Add watchers
      *
      * @param meta\UserProfileBundle\Entity\User $watchers

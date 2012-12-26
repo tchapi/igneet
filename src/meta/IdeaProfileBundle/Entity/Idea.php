@@ -309,6 +309,19 @@ class Idea
     }
 
     /**
+     * Get N random watchers
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getRandomWatchers($limit)
+    {
+        $sub_array = $this->watchers->slice(0,max(0,$limit));
+        shuffle($sub_array);
+
+        return $sub_array;
+    }
+
+    /**
      * Set picture
      *
      * @param string $picture

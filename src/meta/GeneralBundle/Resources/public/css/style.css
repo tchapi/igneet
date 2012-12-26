@@ -337,6 +337,20 @@ div.smallTextAvatar{
 div.smallTextAvatar i{
   width: 70px;
 }
+div.miniTextAvatar{
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  line-height: 30px;
+  font-size: 14px;
+  vertical-align: top;
+  background: #CCC;
+  border-radius: 3px;
+}
+div.miniTextAvatar i{
+  width: 30px;
+}
 
 /*********************/
 /*  Listing & Mutual */

@@ -127,7 +127,7 @@ class User implements UserInterface
     /**
      * @var string $headline
      *
-     * @ORM\Column(name="headline", type="string", length=40, nullable=true)
+     * @ORM\Column(name="headline", type="string", length=100, nullable=true)
      * @Assert\NotBlank()
      * @Assert\Length(max = 100)
      */
@@ -830,6 +830,20 @@ class User implements UserInterface
     public function getProjectsOwned()
     {
         return $this->projectsOwned;
+    }
+
+    /**
+     * Get N random projects owned
+     *
+     * @return Doctrine\Common\Collections\Collections
+     */
+    public function getRandomProjectsOwned($limit)
+    {
+        $sub_array = $this->projectsOwned->slice(0,max(0,$limit));
+        shuffle($sub_array);
+
+        return $sub_array;
+
     }
 
     /**

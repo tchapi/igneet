@@ -36,7 +36,12 @@
     </div>
 
     <ul>
-      {% for watcher in idea.watchers %}
+      {% if idea.watchers|length > 11 %}
+      <li>
+        <div class="miniTextAvatar">...</div>
+      </li>
+      {% endif %}
+      {% for watcher in idea.getRandomWatchers(11) %}
       <li>
         <a href="{{ path('u_show_user_profile', {'username': watcher.username}) }}">
           <img src="{{ watcher.avatar }}" title="{{ watcher.firstName }} {{ watcher.lastName|upper }}" width="30" height="30" class="miniAvatar"/>

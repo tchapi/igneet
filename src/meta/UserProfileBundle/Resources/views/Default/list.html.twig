@@ -32,18 +32,16 @@
 
     <div class="type">
       <div class="muted pull-right">{{ user.projectsOwned|length + user.projectsParticipatedIn|length }} 
-        project{% if (user.projectsOwned|length + user.projectsParticipatedIn|length) > 1 %}s{% endif %}</div>
+        project{% if (user.projectsOwned|length + user.projectsParticipatedIn|length) > 1 %}s{% endif %} owned</div>
     </div>
 
     <ul>
-      {% for project in user.projectsOwned %}
+      {% if user.projectsOwned|length > 11 %}
       <li>
-        <a href="{{ path('sp_show_project', {'slug': project.slug}) }}">
-          <img src="{{ project.picture }}" title="{{ project.name }} ({{ project.slug|lower }})" width="30" height="30" class="miniAvatar"/>
-        </a>
+        <div class="miniTextAvatar">...</div>
       </li>
-      {% endfor %}
-      {% for project in user.projectsParticipatedIn %}
+      {% endif %}
+      {% for project in user.getRandomProjectsOwned(11) %}
       <li>
         <a href="{{ path('sp_show_project', {'slug': project.slug}) }}">
           <img src="{{ project.picture }}" title="{{ project.name }} ({{ project.slug|lower }})" width="30" height="30" class="miniAvatar"/>
