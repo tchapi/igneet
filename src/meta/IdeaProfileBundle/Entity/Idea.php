@@ -90,6 +90,11 @@ class Idea
      **/
     private $watchers;
 
+    /**
+     * Creator of the idea (OWNING SIDE)
+     * @ORM\ManyToOne(targetEntity="meta\UserProfileBundle\Entity\User", inversedBy="ideasCreated", fetch="EAGER")
+     **/
+    private $creator;
 
     public function __construct()
     {
@@ -409,4 +414,27 @@ class Idea
         }
     }
 
+
+    /**
+     * Set creator
+     *
+     * @param \meta\UserProfileBundle\Entity\User $creator
+     * @return Idea
+     */
+    public function setCreator(\meta\UserProfileBundle\Entity\User $creator = null)
+    {
+        $this->creator = $creator;
+    
+        return $this;
+    }
+
+    /**
+     * Get creator
+     *
+     * @return \meta\UserProfileBundle\Entity\User 
+     */
+    public function getCreator()
+    {
+        return $this->creator;
+    }
 }

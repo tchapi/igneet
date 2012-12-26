@@ -15,10 +15,11 @@
  * Afficher le meta dans les infos d'un projet
  * Add a participant : faire le 'user chooser'
 
-
- * listes d'idées, project, users : mettre une limite sur le nombre et rajouter une phrase
+ * listes d'idées, project, users : rajouter un (...) si nb > 12
 
  * log des modifs sur les projets
+
+ * login et signup : focus sur le champ lors du chargement de la page
 
  * Commentaires
  BaseComment ::

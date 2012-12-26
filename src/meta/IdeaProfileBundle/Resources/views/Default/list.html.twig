@@ -25,7 +25,7 @@
   <div class="listingItemInfo">
     <h4><a href="{{ path('i_show_idea', {'id': idea.id}) }}">{{ idea.name }}</a></h4>
     <div>{{ idea.headline }}</div>
-    <div class="muted"><i class="icon-calendar"></i> Created on {{ idea.createdAt|date("d/m/Y") }}</div>
+    <div class="muted"><i class="icon-calendar"></i> Created on {{ idea.createdAt|date("d/m/Y") }} by {{ idea.creator.firstName }} {{ idea.creator.lastName }}</div>
   </div>
 
   <div class="listingItemRelatedObjects">

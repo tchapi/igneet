@@ -214,6 +214,12 @@ class User implements UserInterface
     private $ideasWatched;
 
     /**
+     * Ideas I have created (OWNING SIDE)
+     * @ORM\OneToMany(targetEntity="meta\IdeaProfileBundle\Entity\Idea", mappedBy="creator")
+     **/
+    private $ideasCreated;
+
+    /**
      * Comments I created 
      * @ORM\OneToMany(targetEntity="meta\StandardProjectProfileBundle\Entity\Comment\BaseComment", mappedBy="user")
      **/
@@ -231,7 +237,8 @@ class User implements UserInterface
         $this->projectsParticipatedIn = new ArrayCollection();
         $this->projectsWatched = new ArrayCollection();
         /* Links to ideas */
-        $this->projectsWatched = new ArrayCollection();
+        $this->ideasWatched = new ArrayCollection();
+        $this->ideasCreated = new ArrayCollection();
 
         $this->comments = new ArrayCollection();
 
@@ -1028,5 +1035,38 @@ class User implements UserInterface
     public function getIdeasWatched()
     {
         return $this->ideasWatched;
+    }
+
+    /**
+     * Add ideasCreated
+     *
+     * @param \meta\IdeaProfileBundle\Entity\Idea $ideasCreated
+     * @return User
+     */
+    public function addIdeasCreated(\meta\IdeaProfileBundle\Entity\Idea $ideasCreated)
+    {
+        $this->ideasCreated[] = $ideasCreated;
+    
+        return $this;
+    }
+
+    /**
+     * Remove ideasCreated
+     *
+     * @param \meta\IdeaProfileBundle\Entity\Idea $ideasCreated
+     */
+    public function removeIdeasCreated(\meta\IdeaProfileBundle\Entity\Idea $ideasCreated)
+    {
+        $this->ideasCreated->removeElement($ideasCreated);
+    }
+
+    /**
+     * Get ideasCreated
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getIdeasCreated()
+    {
+        return $this->ideasCreated;
     }
 }

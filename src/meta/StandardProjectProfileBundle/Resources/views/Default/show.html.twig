@@ -32,10 +32,10 @@
   <div class="projectInfo">
 
     <h2 class="ellipsis">
-      <span class="editable" data-name="name" data-url="{{ path('sp_edit_project', {'slug': base.standardProject.slug}) }}">{{ base.standardProject.name }}</span>
+      <span class="editable" data-title="Change the title of this project" data-name="name" data-url="{{ path('sp_edit_project', {'slug': base.standardProject.slug}) }}">{{ base.standardProject.name }}</span>
     </h2>
     <h4 class="ellipsis">
-      <span class="editable" data-name="headline" data-emptytext="Click to add a headline" data-url="{{ path('sp_edit_project', {'slug': base.standardProject.slug}) }}" data-type="textarea">{{ base.standardProject.headline }}</span>
+      <span class="editable" data-title="Change the headline of this project" data-name="headline" data-emptytext="Click to add a headline" data-url="{{ path('sp_edit_project', {'slug': base.standardProject.slug}) }}" data-type="textarea">{{ base.standardProject.headline }}</span>
     </h4>
     <div>
       <i class="icon-calendar"></i> Created on {{ base.standardProject.createdAt|date("d/m/Y") }}
@@ -47,7 +47,7 @@
       {% if base.standardProject.neededSkills|length > 0 %}
       Needed skills :
       {% endif %}
-      <ul data-toggle="manual" data-emptytext="Add needed skills" data-url="{{ path('sp_edit_project', {'slug': base.standardProject.slug}) }}" data-type="checklist" data-source="{{ path('u_list_all_skills') }}" data-name="skills" data-type="select" class="skills skills-target editable-li">
+      <ul data-toggle="manual" data-title="What skills are needed for this project?" data-emptytext="Add needed skills" data-url="{{ path('sp_edit_project', {'slug': base.standardProject.slug}) }}" data-type="checklist" data-source="{{ path('u_list_all_skills') }}" data-name="skills" data-type="select" class="skills skills-target editable-li">
     {% for skill in base.standardProject.neededSkills %}<li class="label" rel="{{ skill.slug }}">{{ skill.name }}</li>{% endfor %}
       </ul>
       {% if base.canEdit %} <a class="editable-trigger" data-target="skills">&hellip;<i class="icon-pencil"></i></a>{% endif %}

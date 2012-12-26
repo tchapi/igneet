@@ -9,7 +9,7 @@
 {% block content %}
 <div class="column">
 <section class="listInfo">
-  <h4 class="editable" data-name="title" data-url="{{ path('sp_show_project_wiki_edit_page', {'slug': base.standardProject.slug, 'id': wikiPage.id}) }}" data-type="text">{{ wikiPage.title }}</h4>
+  <h4 class="editable" data-title="Change the title of this wiki page" data-name="title" data-url="{{ path('sp_show_project_wiki_edit_page', {'slug': base.standardProject.slug, 'id': wikiPage.id}) }}" data-type="text">{{ wikiPage.title }}</h4>
   {% if base.canEdit %}<a class="pull-right markdown-trigger">&hellip;<i class="icon-pencil"></i></a>{% endif %}
 </section>
 <section>

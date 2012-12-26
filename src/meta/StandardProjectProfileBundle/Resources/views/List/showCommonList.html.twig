@@ -9,8 +9,8 @@
 {% block content %}
 <div class="column">
 <section class="listInfo">
-  <h4 class="editable" data-name="name" data-url="{{ path('sp_show_project_list_edit', {'slug': base.standardProject.slug, 'id': commonList.id}) }}" data-type="text">{{ commonList.name }} </h4>
-  <p><span class="editable description-target" data-name="description" data-url="{{ path('sp_show_project_list_edit', {'slug': base.standardProject.slug, 'id': commonList.id}) }}" data-toggle="manual" data-type="text" data-emptytext="Provide an optional description">{{ commonList.description }}</span>
+  <h4 class="editable" data-title="Change the name of this list" data-name="name" data-url="{{ path('sp_show_project_list_edit', {'slug': base.standardProject.slug, 'id': commonList.id}) }}" data-type="text">{{ commonList.name }} </h4>
+  <p><span class="editable description-target" data-title="You can provide an optional description for this list" data-name="description" data-url="{{ path('sp_show_project_list_edit', {'slug': base.standardProject.slug, 'id': commonList.id}) }}" data-toggle="manual" data-type="textarea" data-emptytext="Provide an optional description">{{ commonList.description }}</span>
   {% if base.canEdit %} <a class="editable-trigger" data-target="description">&hellip;<i class="icon-pencil"></i></a>{% endif %}</p>
 </section>
 <section>
