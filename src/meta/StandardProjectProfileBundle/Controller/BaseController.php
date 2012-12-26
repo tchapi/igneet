@@ -21,7 +21,7 @@ class BaseController extends Controller
 
         $authenticatedUser = $this->getUser();
 
-        $isAlreadyWatching = $authenticatedUser && $authenticatedUser->isWatching($standardProject);
+        $isAlreadyWatching = $authenticatedUser && $authenticatedUser->isWatchingProject($standardProject);
         $isOwning = $authenticatedUser && ($authenticatedUser->isOwning($standardProject));
         $isParticipatingIn = $authenticatedUser && ($authenticatedUser->isParticipatingIn($standardProject));
         

@@ -5,7 +5,7 @@
 
 
  * IDEA
-   --> transform into project
+   --> transform into project : tout les commentaires de l'idée sont réassociés avec une marque <hr> dans la timeline pour séparer quand c'est devenu un projet
 
  * signup : avatar OK OK
     + chgt d'avatar -----> TODO Mais pas simple
@@ -13,8 +13,10 @@
  * Créer un nouveau projet OK OK
 
  * Afficher le meta dans les infos d'un projet
-
  * Add a participant : faire le 'user chooser'
+
+
+ * listes d'idées, project, users : mettre une limite sur le nombre et rajouter une phrase
 
  * log des modifs sur les projets
 
@@ -35,6 +37,8 @@
 
  * background image pour les projets ?
 
+ * Ajax pour new item, new list, new wiki page avec input a la place du 'New item' ?
+
 V2 
 
  * listes : reconnaitre les urls en mettre un lien pour y aller directement a coté ;)
@@ -52,15 +56,15 @@ V2
 
 au niveau meta, la timeline ne ressort que les trucs publics des projets en dessous
 
-Entity : IDEA :
+Entity IDEA :
 
 une idée est publique dans la meta
- - description textuelle principale
-  deux champs : Concept et Connaissance
+ - description textuelle principale OK OK
+  deux champs : Concept et Connaissance OK OK
  - discussion
   tagger 'concept' ou 'connaissance' dans le fil de discussion
 
- * séparer Background / Concept
+ * séparer Background / Concept OK OK
 
 
 OK -- login nécessaire pour tout

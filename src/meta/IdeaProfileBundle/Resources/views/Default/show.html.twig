@@ -1,0 +1,89 @@
+{% extends 'metaIdeaProfileBundle::layout.html.twig' %}
+
+{% block title %}{{ parent() }} > {{ base.idea.name }}{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+    {% javascripts '@metaGeneralBundle/Resources/public/js/comments.behaviour.js' 
+            filter='?yui_js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    {% javascripts '@metaGeneralBundle/Resources/public/js-edit/bootstrap-editable.js' 
+                   '@metaGeneralBundle/Resources/public/js-edit/editable.behaviour.js'
+                   '@metaGeneralBundle/Resources/public/js-edit/markdown-editor/*' 
+            filter='?yui_js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+{% endblock %}
+
+{% block header %}
+  <div class="headerAvatarAndActions">
+    <div class="changeAvatar"><a href="#"><i class="icon-pencil"></i> change</a></div>
+    <img src="{{ asset(base.idea.picture) }}" width="150" height="150" class="avatar"/>
+{% if base.isAlreadyWatching %}
+    <a href="{{ path('i_unwatch_idea', {'id': base.idea.id}) }}" class="btn btn-info watchAction">Unwatch idea</a>
+{% else %}
+    <a href="{{ path('i_watch_idea', {'id': base.idea.id}) }}" class="btn btn-success watchAction">Watch idea</a>
+{% endif %}
+  </div>
+
+  <div class="ideaInfo">
+
+    <h2 class="ellipsis">
+      <span class="editable" data-name="name" data-url="{{ path('i_edit_idea', {'id': base.idea.id}) }}">{{ base.idea.name }}</span>
+    </h2>
+    <h4 class="ellipsis">
+      <span class="editable" data-name="headline" data-emptytext="Click to add a headline" data-url="{{ path('i_edit_idea', {'id': base.idea.id}) }}" data-type="textarea">{{ base.idea.headline }}</span>
+    </h4>
+    <div>
+      <i class="icon-calendar"></i> Created on {{ base.idea.createdAt|date("d/m/Y") }}
+    </div>
+
+  </div>
+
+  <div class="ideaAbout">
+    <div>{{ base.idea.watchers|length }} watching</div>
+  </div>
+{% endblock %}
+
+{% block content %}
+
+<section>
+  <div class="wmd-heading"><i class="icon-book"></i> Knowledge <a class="pull-right markdown-trigger">&hellip;<i class="icon-pencil"></i></a></div>
+  <div>
+
+      <div class="wmd-wrapper well well-small hide" >
+        <div class="wmd-panel">
+            <div id="wmd-button-bar"></div>
+            <textarea data-name="knowledge_text" data-url="{{ path('i_edit_idea', {'id': base.idea.id}) }}" class="wmd-input" id="wmd-input">{{ base.idea.knowledgeText }}</textarea>
+        </div>
+        <div>
+          <button id="wmd-save" class="btn btn-primary">Save</button> <span class="muted wmd-message">Click 'Save' to commit your changes</span>
+        </div>
+      </div>
+
+    <div id="wmd-preview" class="about">{{ base.idea.knowledgeText|markdown }}</div>
+
+  </div>
+</section>
+<section>
+  <div class="wmd-heading"><i class="icon-cogs"></i> Concept <a class="pull-right markdown-trigger">&hellip;<i class="icon-pencil"></i></a></div>
+  <div>
+
+      <div class="wmd-wrapper well well-small hide" >
+        <div class="wmd-panel">
+            <div id="wmd-button-bar-second"></div>
+            <textarea data-name="concept_text" data-url="{{ path('i_edit_idea', {'id': base.idea.id}) }}" class="wmd-input" id="wmd-input-second">{{ base.idea.conceptText }}</textarea>
+        </div>
+        <div>
+          <button id="wmd-save-second" class="btn btn-primary">Save</button> <span class="muted wmd-message">Click 'Save' to commit your changes</span>
+        </div>
+      </div>
+
+    <div id="wmd-preview-second" class="about">{{ base.idea.conceptText|markdown }}</div>
+
+  </div>
+</section>
+{% endblock %}

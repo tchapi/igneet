@@ -1,15 +1,15 @@
-{% extends 'metaUserProfileBundle::layout.html.twig' %}
+{% extends 'metaIdeaProfileBundle::layout.html.twig' %}
 
-{% block title %}{{ parent() }} > New user{% endblock %}
+{% block title %}{{ parent() }} > New idea{% endblock %}
 
 {% block header %}
   <div class="headerAvatarAndActions">
-    <div class="textAvatar"><i class="icon-magic"></i></div>
+    <div class="textAvatar"><i class="icon-beaker"></i></div>
   </div>
   <div class="objectHeader">
-    <h2><strong>Sign up now</strong> to join the adventure !</h2>
-    <h4>And discover a great community of projects and makers at your fingertips.</h4>
-    <p>It's free and easy, just fill in the few information below and you'll be ready to go, share and participate in projects. Of course you'll be able to change this information anytime later on.</p>
+    <h2><strong>Create</strong> a new idea</h2>
+    <h4>And gather a strong community of experts o help you go forward.</h4>
+    <p>You can add more information once the idea is created ...</p>
   </div>
 {% endblock %}
 
@@ -26,7 +26,7 @@
 {% endblock form_row %}
 
 {% block content %}
-<form action="{{ path('u_signup') }}" method="post" {{ form_enctype(form) }}>
+<form action="{{ path('i_new_idea') }}" method="post" {{ form_enctype(form) }}>
     {{ form_widget(form) }}
   <section>
     <div class="sectionTitle"></div>

@@ -146,7 +146,7 @@ class ListController extends BaseController
                 $commonList->setUpdatedAt(new \DateTime('now'));
                 $em = $this->getDoctrine()->getManager();
                 $return = $em->flush();
-            } else {
+            } elseif (count($errors) > 0) {
                 $response->setStatusCode(406);
                 $response->setContent($errors[0]->getMessage());
             }

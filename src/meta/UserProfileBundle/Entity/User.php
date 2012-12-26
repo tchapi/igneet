@@ -204,6 +204,16 @@ class User implements UserInterface
     private $projectsWatched;
 
     /**
+     * Ideas I watch (OWNING SIDE)
+     * @ORM\ManyToMany(targetEntity="meta\IdeaProfileBundle\Entity\Idea", inversedBy="watchers")
+     * @ORM\JoinTable(name="User_watches_Idea",
+     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="idea_id", referencedColumnName="id")}
+     *      )
+     **/
+    private $ideasWatched;
+
+    /**
      * Comments I created 
      * @ORM\OneToMany(targetEntity="meta\StandardProjectProfileBundle\Entity\Comment\BaseComment", mappedBy="user")
      **/
@@ -219,6 +229,8 @@ class User implements UserInterface
         /* Links to Standard Projects */
         $this->projectsOwned = new ArrayCollection();
         $this->projectsParticipatedIn = new ArrayCollection();
+        $this->projectsWatched = new ArrayCollection();
+        /* Links to ideas */
         $this->projectsWatched = new ArrayCollection();
 
         $this->comments = new ArrayCollection();
@@ -918,7 +930,7 @@ class User implements UserInterface
      *
      * @return boolean 
      */
-    public function isWatching(\meta\StandardProjectProfileBundle\Entity\StandardProject $project)
+    public function isWatchingProject(\meta\StandardProjectProfileBundle\Entity\StandardProject $project)
     {
         return $this->projectsWatched->contains($project);
     }
@@ -973,5 +985,48 @@ class User implements UserInterface
         }
 
         return $count;
+    }
+
+    /**
+     * Add ideasWatched
+     *
+     * @param \meta\IdeaProfileBundle\Entity\Idea $ideasWatched
+     * @return User
+     */
+    public function addIdeasWatched(\meta\IdeaProfileBundle\Entity\Idea $ideasWatched)
+    {
+        $this->ideasWatched[] = $ideasWatched;
+    
+        return $this;
+    }
+
+    /**
+     * Is already watching an idea
+     *
+     * @return boolean 
+     */
+    public function isWatchingIdea(\meta\IdeaProfileBundle\Entity\Idea $idea)
+    {
+        return $this->ideasWatched->contains($idea);
+    }
+
+    /**
+     * Remove ideasWatched
+     *
+     * @param \meta\IdeaProfileBundle\Entity\Idea $ideasWatched
+     */
+    public function removeIdeasWatched(\meta\IdeaProfileBundle\Entity\Idea $ideasWatched)
+    {
+        $this->ideasWatched->removeElement($ideasWatched);
+    }
+
+    /**
+     * Get ideasWatched
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getIdeasWatched()
+    {
+        return $this->ideasWatched;
     }
 }

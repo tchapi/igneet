@@ -1,6 +1,5 @@
 meta_idea_profile:
-    resource: "@metaIdeaProfileBundle/Controller/"
-    type:     annotation
+    resource: "@metaIdeaProfileBundle/Resources/config/routing.yml"
     prefix:   /
 
 meta_standard_project_profile:

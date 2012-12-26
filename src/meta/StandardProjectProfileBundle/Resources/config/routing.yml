@@ -174,10 +174,10 @@ sp_remove_participant_to_project:
 
 # Watching projects
 sp_watch_project:
-    pattern:  /watch/{slug}
+    pattern:  /watch/project/{slug}
     defaults: { _controller: metaStandardProjectProfileBundle:Default:watch }
 
 sp_unwatch_project:
-    pattern:  /unwatch/{slug}
+    pattern:  /unwatch/project/{slug}
     defaults: { _controller: metaStandardProjectProfileBundle:Default:unwatch }
 

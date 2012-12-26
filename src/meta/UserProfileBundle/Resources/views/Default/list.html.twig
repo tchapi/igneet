@@ -6,7 +6,7 @@
   <div class="headerAvatarAndActions">
     <div class="textAvatar"><i class="icon-group"></i></div>
   </div>
-  <div class="projectsListHeader">
+  <div class="objectHeader">
     <h2>Users</h2>
     <h4>All the users are listed in this page.</h4>
     <p>A profile is inherently public.</p>
@@ -29,6 +29,12 @@
   </div>
 
   <div class="listingItemRelatedObjects">
+
+    <div class="type">
+      <div class="muted pull-right">{{ user.projectsOwned|length + user.projectsParticipatedIn|length }} 
+        project{% if (user.projectsOwned|length + user.projectsParticipatedIn|length) > 1 %}s{% endif %}</div>
+    </div>
+
     <ul>
       {% for project in user.projectsOwned %}
       <li>

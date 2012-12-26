@@ -33,7 +33,7 @@ class StandardProjectRepository extends EntityRepository
     $qb = $this->getEntityManager()->createQueryBuilder();
 
     return $qb->select('sp')
-            ->from('metaStandardProjectProfileBundle:User', 'sp')
+            ->from('metaStandardProjectProfileBundle:StandardProject', 'sp')
             ->orderBy('sp.updated_at', 'DESC')
             ->setMaxResults($limit)
             ->getQuery()

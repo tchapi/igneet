@@ -120,7 +120,7 @@ class DefaultController extends BaseController
                 $this->base['standardProject']->setUpdatedAt(new \DateTime('now'));
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
-            } else {
+            } elseif (count($errors) > 0) {
                 $response->setStatusCode(406);
                 $response->setContent($errors[0]->getMessage());
             }
@@ -147,7 +147,7 @@ class DefaultController extends BaseController
             $repository = $this->getDoctrine()->getRepository('metaStandardProjectProfileBundle:StandardProject');
             $standardProject = $repository->findOneBySlug($slug);
 
-            if ( !($authenticatedUser->isWatching($standardProject)) ){
+            if ( !($authenticatedUser->isWatchingProject($standardProject)) ){
 
                 $authenticatedUser->addProjectsWatched($standardProject);
 
@@ -183,7 +183,7 @@ class DefaultController extends BaseController
             $repository = $this->getDoctrine()->getRepository('metaStandardProjectProfileBundle:StandardProject');
             $standardProject = $repository->findOneBySlug($slug);
 
-            if ( $authenticatedUser->isWatching($standardProject) ){
+            if ( $authenticatedUser->isWatchingProject($standardProject) ){
 
                 $authenticatedUser->removeProjectsWatched($standardProject);
 

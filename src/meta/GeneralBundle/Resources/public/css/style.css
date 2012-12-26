@@ -338,9 +338,9 @@ div.smallTextAvatar i{
   width: 70px;
 }
 
-/*****************/
-/*    Listing    */
-/*****************/
+/*********************/
+/*  Listing & Mutual */
+/*********************/
 div.listingItemInfo{
   height: 80px;
   padding: 10px;
@@ -355,14 +355,22 @@ div.listingItemRelatedObjects{
 }
 div.listingItemRelatedObjects ul{
   list-style: none;
+  overflow: hidden;
+  width: 384px;
+  height: 32px;
+  direction: rtl;
 }
 div.listingItemRelatedObjects ul li{
   display: inline-block;
+  margin: 2px 1px;
 }
 
-/******************/
-/* Users & Mutual */
-/******************/
+div.listingItemRelatedObjects div.type div{
+  display: block;
+  font-size: 0.85em;
+  font-weight: lighter;
+}
+
 div.headerAvatarAndActions{
   margin-right: 20px;
   display: inline-block;
@@ -383,14 +391,25 @@ a.followAction,
 a.watchAction{
   margin: 10px 0 0 0;
 }
+div.objectHeader
+{
+  display: inline-block;
+  max-width: 740px;
+}
+div.errors ul{
+  list-style: none;
+  margin: 0;
+  color: red;
+}
+
+
+/******************/
+/*     Users      */
+/******************/
 div.userInfo{
   display: inline-block;
   padding-right: 40px;
   height: 150px;
-}
-div.userCreate{
-  display: inline-block;
-  max-width: 740px;
 }
 div.userInfo > h2,
 div.projectInfo > h2{
@@ -404,11 +423,6 @@ ul.projects li{
   border-radius: 3px;
   margin: 0 4px 7px 0;
   vertical-align: top;
-}
-div.errors ul{
-  list-style: none;
-  margin: 0;
-  color: red;
 }
 
 /**********/
@@ -434,14 +448,16 @@ div.navbar.project > div.navbar-inner{
   border-right: none;
   border-left: none;
 }
-div.projectInfo{
+div.projectInfo,
+div.ideaInfo{
   display: inline-block;
   border-right: 1px solid #CCC;
   padding-right: 40px;
   height: 150px;
   width: 540px;
 }
-div.projectAbout{
+div.projectAbout,
+div.ideaAbout{
   display: inline-block;
   vertical-align: top;
   padding: 5px 20px;
@@ -452,10 +468,6 @@ a.removeUserIcon{
   position: absolute;
   right: 4px;
   top: 28px;
-}
-div.projectsListHeader{
-  display: inline-block;
-  max-width: 740px;
 }
 
 /*************/

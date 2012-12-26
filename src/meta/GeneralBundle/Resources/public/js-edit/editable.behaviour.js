@@ -39,27 +39,46 @@ $(document).ready(function(){
     /*  Markdown fields
      *  (for about)
      */ 
-    var converter = Markdown.getSanitizingConverter();
-    var editor = new Markdown.Editor(converter);
-    editor.run();
-  
+    if ($('#wmd-input')) {
+      var converter = Markdown.getSanitizingConverter();
+      var editor = new Markdown.Editor(converter);
+      editor.run();
+    }
+
+    if ($('#wmd-input-second')) {
+      // In case there is a second one
+      var converter2 = new Markdown.Converter();
+      var editor2 = new Markdown.Editor(converter2, "-second");
+      editor2.run();
+    }
+
     // Save function
-    $('#wmd-save').click(function() {
-      $(".wmd-message").html("Saving to server ...");
-      $.post($('#wmd-input').attr('data-url'), {
-        name: $('#wmd-input').attr('data-name'),
-        value: $('#wmd-input').val()
+    $('#wmd-save, #wmd-save-second').click(function() {
+
+      var messagesBox = $(this).parent().parent().find(".wmd-message");
+      var inputBox = $(this).parent().parent().find('.wmd-input');
+
+      messagesBox.html("Saving to server ...");
+
+      $.post(inputBox.attr('data-url'), {
+        name: inputBox.attr('data-name'),
+        value: inputBox.val()
       })
       .success(function(data, config) {
-         $(".wmd-message").html("Changes saved.");               
+         messagesBox.html("Changes saved.");               
       })
       .error(function(errors) {
-         $(".wmd-message").html("Error saving changes.");
+         messagesBox.html("Error saving changes.");
       });
+
     });
 
     // Editable triggers for markdown
     $('.markdown-trigger').click(function(){
-      $('.wmd-wrapper').toggle();
+
+      var markdownBox = $(this).parent().parent().find('.wmd-wrapper');
+
+      markdownBox.toggle();
+
     });
 });
