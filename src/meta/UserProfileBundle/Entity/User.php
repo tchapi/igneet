@@ -129,7 +129,7 @@ class User implements UserInterface
      *
      * @ORM\Column(name="headline", type="string", length=40, nullable=true)
      * @Assert\NotBlank()
-     * @Assert\Length(max = 40)
+     * @Assert\Length(max = 100)
      */
     private $headline;
 
@@ -1040,12 +1040,12 @@ class User implements UserInterface
     /**
      * Add ideasCreated
      *
-     * @param \meta\IdeaProfileBundle\Entity\Idea $ideasCreated
+     * @param \meta\IdeaProfileBundle\Entity\Idea $ideaCreated
      * @return User
      */
-    public function addIdeasCreated(\meta\IdeaProfileBundle\Entity\Idea $ideasCreated)
+    public function addIdeasCreated(\meta\IdeaProfileBundle\Entity\Idea $ideaCreated)
     {
-        $this->ideasCreated[] = $ideasCreated;
+        $this->ideasCreated[] = $ideaCreated;
     
         return $this;
     }
@@ -1053,11 +1053,11 @@ class User implements UserInterface
     /**
      * Remove ideasCreated
      *
-     * @param \meta\IdeaProfileBundle\Entity\Idea $ideasCreated
+     * @param \meta\IdeaProfileBundle\Entity\Idea $ideaCreated
      */
-    public function removeIdeasCreated(\meta\IdeaProfileBundle\Entity\Idea $ideasCreated)
+    public function removeIdeasCreated(\meta\IdeaProfileBundle\Entity\Idea $ideaCreated)
     {
-        $this->ideasCreated->removeElement($ideasCreated);
+        $this->ideasCreated->removeElement($ideaCreated);
     }
 
     /**

@@ -144,6 +144,24 @@
 </section>
 {% endif %}
 
+{% if isMe and user.ideasWatched|length > 0 %}
+<section class="colored">
+<div class="sectionTitle">Ideas I watch :</div>
+<ul class="projects sectionContent">
+{% for idea in user.ideasWatched %}
+    <li>
+      <a href="{{ path('i_show_idea', {'id': idea.id}) }}">
+        <img src="{{ idea.picture }}" width="70" height="70" class="smallAvatar"/>
+        <div class="smallObjectInfos">
+          {{ idea.name }}
+        </div>
+      </a>
+    </li>
+{% endfor %}
+</ul>
+</section>
+{% endif %}
+
 {% if user.projectsOwned|length > 0 %}
 <section class="colored">
 <div class="sectionTitle">Projects I own :</div>
@@ -179,6 +197,25 @@
 </ul>
 </section>
 {% endif %}
+
+{% if user.ideasCreated|length > 0 %}
+<section class="colored">
+<div class="sectionTitle">Ideas I initiated :</div>
+<ul class="projects sectionContent">
+{% for idea in user.ideasCreated %}
+    <li>
+      <a href="{{ path('i_show_idea', {'id': idea.id}) }}">
+        <img src="{{ idea.picture }}" width="70" height="70" class="smallAvatar"/>
+        <div class="smallObjectInfos">
+          {{ idea.name }}
+        </div>
+      </a>
+    </li>
+{% endfor %}
+</ul>
+</section>
+{% endif %}
+
 <section class="colored">
   <div class="sectionTitle">Activity :</div>
   <div class="projects sectionContent">

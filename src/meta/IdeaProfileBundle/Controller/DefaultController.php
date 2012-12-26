@@ -77,6 +77,7 @@ class DefaultController extends Controller
 
             if ($form->isValid()) {
                 
+                $idea->setCreator($authenticatedUser);
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($idea);
                 $em->flush();

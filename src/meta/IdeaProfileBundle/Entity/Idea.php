@@ -423,6 +423,11 @@ class Idea
      */
     public function setCreator(\meta\UserProfileBundle\Entity\User $creator = null)
     {
+        if ( is_null($creator) ){
+            $this->creator->removeIdeasCreated($this);
+        } else {
+            $creator->addIdeasCreated($this);
+        }
         $this->creator = $creator;
     
         return $this;

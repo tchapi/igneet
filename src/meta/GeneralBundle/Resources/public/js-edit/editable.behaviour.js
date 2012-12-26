@@ -77,7 +77,6 @@ $(document).ready(function(){
     $('.markdown-trigger').click(function(){
 
       var markdownBox = $(this).parent().parent().find('.wmd-wrapper');
-
       markdownBox.toggle();
 
     });
