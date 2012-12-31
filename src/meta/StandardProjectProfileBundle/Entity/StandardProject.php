@@ -140,7 +140,7 @@ class StandardProject
 
     /**
      * Wiki (OWNING SIDE)
-     * @ORM\OneToOne(targetEntity="Wiki", inversedBy="project", fetch="EAGER")
+     * @ORM\OneToOne(targetEntity="Wiki", inversedBy="project")
      **/
     private $wiki;
 
@@ -255,14 +255,14 @@ class StandardProject
             : '/'.$this->getUploadDir().'/'.$this->picture;
     }
 
-    protected function getUploadRootDir()
+    private function getUploadRootDir()
     {
         // the absolute directory path where uploaded
         // documents should be saved
         return __DIR__.'/../../../../web/'.$this->getUploadDir();
     }
 
-    protected function getUploadDir()
+    private function getUploadDir()
     {
         // get rid of the __DIR__ so it doesn't screw up
         // when displaying uploaded doc/image in the view.
@@ -531,7 +531,7 @@ class StandardProject
         return $sub_array;
 
     }
-    
+
     /**
      * Add watchers
      *
@@ -553,6 +553,17 @@ class StandardProject
     public function removeWatcher(\meta\UserProfileBundle\Entity\User $watchers)
     {
         $this->watchers->removeElement($watchers);
+    }
+
+    /**
+     * Set watchers
+     *
+     * @return StandardProject 
+     */
+    public function setWatchers(\Doctrine\Common\Collections\Collection $watchers)
+    {
+        $this->watchers = $watchers;
+        return $this;
     }
 
     /**
@@ -687,6 +698,11 @@ class StandardProject
      */
     public function setOriginalIdea(\meta\IdeaProfileBundle\Entity\Idea $originalIdea = null)
     {
+        if ($originalIdea){
+            $originalIdea->setResultingProject($this);
+        } else {
+            $this->originalIdea->setResultingProject(null);
+        }
         $this->originalIdea = $originalIdea;
     
         return $this;

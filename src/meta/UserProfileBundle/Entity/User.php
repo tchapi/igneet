@@ -104,7 +104,7 @@ class User implements UserInterface
     /**
      * @Assert\File(maxSize="6000000")
      */
-    protected $file;
+    private $file;
 
     /**
      * @var date $created_at
@@ -247,6 +247,30 @@ class User implements UserInterface
         $this->roles = array('ROLE_USER');
         $this->created_at = $this->updated_at = new \DateTime('now');
 
+    }
+
+    /* 
+
+     So, why this function here ?
+     Symfony tries to serialize the User object, which is indeed what I'm asking since I want to be able to log
+     users in and out of this site.
+     When serializing, Doctrine2 will try to serialize the mapped entities (such as Projects, Ideas, etc ...) 
+     leading to cyclic references that are not handled correctly in Serializable. Thus, it will badly fail
+
+     The __sleep() method is the method that lists the parameters that have to be serialized. When creating a 
+     proxy class for User, Symfony includes in the __sleep() method all the properties in the scope, notably
+     properties that are mapped classes. Serializing a user entity thus leads to serializing a cyclic loop.
+
+     Defining __sleep() here redefines the Symfony __sleep() method to make sure that not cyclic loop is present
+     when serializing a User object.
+
+     Source : https://groups.google.com/forum/?fromgroups=#!topic/symfony2/iL8C2hSMAfI
+
+    */
+
+    public function __sleep(){
+
+        return array("id", "first_name", "last_name", "username", "email", "avatar");
     }
 
     /**
@@ -400,14 +424,14 @@ class User implements UserInterface
             : '/'.$this->getUploadDir().'/'.$this->avatar;
     }
 
-    protected function getUploadRootDir()
+    private function getUploadRootDir()
     {
         // the absolute directory path where uploaded
         // documents should be saved
         return __DIR__.'/../../../../web/'.$this->getUploadDir();
     }
 
-    protected function getUploadDir()
+    private function getUploadDir()
     {
         // get rid of the __DIR__ so it doesn't screw up
         // when displaying uploaded doc/image in the view.
@@ -1016,6 +1040,7 @@ class User implements UserInterface
      */
     public function addIdeasWatched(\meta\IdeaProfileBundle\Entity\Idea $ideasWatched)
     {
+        $ideasWatched->addWatcher($this);
         $this->ideasWatched[] = $ideasWatched;
     
         return $this;
@@ -1039,6 +1064,7 @@ class User implements UserInterface
     public function removeIdeasWatched(\meta\IdeaProfileBundle\Entity\Idea $ideasWatched)
     {
         $this->ideasWatched->removeElement($ideasWatched);
+        $ideasWatched->removeWatcher($this);
     }
 
     /**
@@ -1052,6 +1078,25 @@ class User implements UserInterface
     }
 
     /**
+     * Count ideas Watched not archived
+     *
+     * @return integer
+     */
+    public function countNotArchivedIdeasWatched()
+    {
+        $count = 0;
+
+        foreach ($this->ideasWatched as $idea) {
+            
+            if ( !($idea->isArchived()) )
+                $count++;
+
+        }
+
+        return $count;
+    }
+
+    /**
      * Add ideasCreated
      *
      * @param \meta\IdeaProfileBundle\Entity\Idea $ideaCreated
@@ -1062,6 +1107,25 @@ class User implements UserInterface
         $this->ideasCreated[] = $ideaCreated;
     
         return $this;
+    }
+
+    /**
+     * Count ideas Created not archived
+     *
+     * @return integer
+     */
+    public function countNotArchivedIdeasCreated()
+    {
+        $count = 0;
+
+        foreach ($this->ideasCreated as $idea) {
+            
+            if ( !($idea->isArchived()) )
+                $count++;
+
+        }
+
+        return $count;
     }
 
     /**

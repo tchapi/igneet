@@ -67,12 +67,6 @@ class BaseComment
         $this->created_at = new \DateTime('now');
     }
 
-    public function __sleep(){
-     
-        return array('id');
-    
-    }
-
     /**
      * Get id
      *

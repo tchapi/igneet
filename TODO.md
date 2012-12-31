@@ -6,6 +6,8 @@
 
  * IDEA
    --> transform into project : tout les commentaires de l'idée sont réassociés avec une marque <hr> dans la timeline pour séparer quand c'est devenu un projet
+  --> mettre 'from idea' dans le projet
+  fetch commence a me saouler !!!!
 
  * signup : avatar OK OK
     + chgt d'avatar -----> TODO Mais pas simple
@@ -15,12 +17,12 @@
  * Afficher le meta dans les infos d'un projet
  * Add a participant : faire le 'user chooser'
 
- * listes d'idées, project, users : rajouter un (...) si nb > 12
-
  * log des modifs sur les projets
 
  * login et signup : focus sur le champ lors du chargement de la page
 
+ * delete a project / idea / user etc 
+ 
  * Commentaires
  BaseComment ::
    \_ WikiPageComment OK OK OK

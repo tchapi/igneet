@@ -30,3 +30,10 @@ i_unwatch_idea:
     pattern:  /unwatch/idea/{id}
     defaults: { _controller: metaIdeaProfileBundle:Default:unwatch }
 
+# Turn idea to project
+
+i_turn_idea_into_project:
+    pattern:  /idea/projectize/{id}
+    defaults: { _controller: metaIdeaProfileBundle:Default:projectize }
+    requirements:
+        id: \d+

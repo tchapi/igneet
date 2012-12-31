@@ -144,11 +144,12 @@
 </section>
 {% endif %}
 
-{% if isMe and user.ideasWatched|length > 0 %}
+{% if isMe and user.countNotArchivedIdeasWatched() > 0 %}
 <section class="colored">
 <div class="sectionTitle">Ideas I watch :</div>
 <ul class="projects sectionContent">
 {% for idea in user.ideasWatched %}
+  {% if not idea.isArchived %}
     <li>
       <a href="{{ path('i_show_idea', {'id': idea.id}) }}">
         <img src="{{ idea.picture }}" width="70" height="70" class="smallAvatar"/>
@@ -157,6 +158,7 @@
         </div>
       </a>
     </li>
+  {% endif %}
 {% endfor %}
 </ul>
 </section>
@@ -198,11 +200,12 @@
 </section>
 {% endif %}
 
-{% if user.ideasCreated|length > 0 %}
+{% if user.countNotArchivedIdeasCreated > 0 %}
 <section class="colored">
 <div class="sectionTitle">Ideas I initiated :</div>
 <ul class="projects sectionContent">
 {% for idea in user.ideasCreated %}
+  {% if not idea.isArchived %}
     <li>
       <a href="{{ path('i_show_idea', {'id': idea.id}) }}">
         <img src="{{ idea.picture }}" width="70" height="70" class="smallAvatar"/>
@@ -211,6 +214,7 @@
         </div>
       </a>
     </li>
+  {% endif %}
 {% endfor %}
 </ul>
 </section>

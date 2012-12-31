@@ -43,7 +43,11 @@
     <div>
       <i class="icon-user"></i> An idea by <a href="{{ path('u_show_user_profile', {'username': base.idea.creator.username}) }}">{{ base.idea.creator.firstName }} {{ base.idea.creator.lastName }}</a>
     </div>
-
+    {% if app.user == base.idea.creator %}
+    <div>
+      <i class="icon-external-link"></i> Turn this idea <a href="{{ path('i_turn_idea_into_project', {'id': base.idea.id}) }}">into a project</a>. <span class="muted">( <i class="icon-warning-sign"></i> Warning : you cannot undo this )</span>
+    </div>
+    {% endif %}
   </div>
 
   <div class="ideaAbout">
@@ -52,7 +56,6 @@
 {% endblock %}
 
 {% block content %}
-
 <section>
   <div class="wmd-heading"><i class="icon-book"></i> Knowledge <a class="pull-right markdown-trigger">&hellip;<i class="icon-pencil"></i></a></div>
   <div>

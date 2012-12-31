@@ -85,6 +85,14 @@ class Idea
     private $resultingProject;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="archived", type="boolean", nullable=true)
+     */
+    private $archived;
+
+
+    /**
      * Users watching me (REVERSE SIDE)
      * @ORM\ManyToMany(targetEntity="meta\UserProfileBundle\Entity\User", mappedBy="ideasWatched")
      **/
@@ -92,7 +100,7 @@ class Idea
 
     /**
      * Creator of the idea (OWNING SIDE)
-     * @ORM\ManyToOne(targetEntity="meta\UserProfileBundle\Entity\User", inversedBy="ideasCreated", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="meta\UserProfileBundle\Entity\User", inversedBy="ideasCreated")
      **/
     private $creator;
 
@@ -101,6 +109,8 @@ class Idea
         
         $this->created_at = $this->updated_at = new \DateTime('now');
         $this->watchers = new ArrayCollection();
+
+        $this->archived = false;
 
     }
 
@@ -299,6 +309,17 @@ class Idea
     }
 
     /**
+     * Set watchers
+     *
+     * @return Idea 
+     */
+    public function setWatchers(\Doctrine\Common\Collections\Collection $watchers)
+    {
+        $this->watchers = $watchers;
+        return $this;
+    }
+
+    /**
      * Get watchers
      *
      * @return \Doctrine\Common\Collections\Collection 
@@ -361,14 +382,14 @@ class Idea
             : '/'.$this->getUploadDir().'/'.$this->picture;
     }
 
-    protected function getUploadRootDir()
+    private function getUploadRootDir()
     {
         // the absolute directory path where uploaded
         // documents should be saved
         return __DIR__.'/../../../../web/'.$this->getUploadDir();
     }
 
-    protected function getUploadDir()
+    private function getUploadDir()
     {
         // get rid of the __DIR__ so it doesn't screw up
         // when displaying uploaded doc/image in the view.
@@ -454,5 +475,32 @@ class Idea
     public function getCreator()
     {
         return $this->creator;
+    }
+
+    /**
+     * Set archived
+     *
+     * @param boolean $archived
+     * @return Idea
+     */
+    public function setArchived($archived)
+    {
+        $this->archived = $archived;
+    
+        return $this;
+    }
+
+    /**
+     * Get archived
+     *
+     * @return boolean 
+     */
+    public function getArchived()
+    {
+        return $this->archived;
+    }
+    public function isArchived()
+    {
+        return $this->getArchived();
     }
 }

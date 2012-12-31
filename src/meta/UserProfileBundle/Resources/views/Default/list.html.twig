@@ -31,8 +31,8 @@
   <div class="listingItemRelatedObjects">
 
     <div class="type">
-      <div class="muted pull-right">{{ user.projectsOwned|length + user.projectsParticipatedIn|length }} 
-        project{% if (user.projectsOwned|length + user.projectsParticipatedIn|length) > 1 %}s{% endif %} owned</div>
+      <div class="muted pull-right">{{ user.projectsOwned|length }} 
+        project{% if (user.projectsOwned|length) > 1 %}s{% endif %} owned</div>
     </div>
 
     <ul>

@@ -11,6 +11,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller,
  */
 use meta\IdeaProfileBundle\Entity\Idea;
 use meta\IdeaProfileBundle\Form\Type\IdeaType;
+use meta\StandardProjectProfileBundle\Entity\StandardProject;
+use meta\StandardProjectProfileBundle\Entity\Wiki;
+use meta\StandardProjectProfileBundle\Entity\WikiPage;
 
 class DefaultController extends Controller
 {
@@ -41,7 +44,7 @@ class DefaultController extends Controller
         $repository = $this->getDoctrine()->getRepository('metaIdeaProfileBundle:Idea');
         $idea = $repository->findOneById($id);
 
-        if (!$idea){
+        if (!$idea || $idea->isArchived()){
           throw $this->createNotFoundException('This idea does not exist');
         }
 
@@ -154,6 +157,83 @@ class DefaultController extends Controller
         }
 
         return $response;
+
+    }
+
+    public function projectizeAction($id)
+    {
+        $repository = $this->getDoctrine()->getRepository('metaIdeaProfileBundle:Idea');
+        $idea = $repository->findOneById($id);
+
+        if (!$idea){
+          throw $this->createNotFoundException('This idea does not exist');
+        }
+
+        $authenticatedUser = $this->getUser();
+
+        if ($authenticatedUser && $authenticatedUser == $idea->getCreator()){
+
+            $idea->setArchived(true);
+
+            $project = new StandardProject();
+                $project->setName($idea->getName());
+                $project->setHeadline($idea->getHeadline());
+                $project->setAbout("Originated from idea #" . $idea->getId());
+                $project->setPicture($idea->getAbsolutePicturePath());
+                $project->setCreatedAt($idea->getCreatedAt());
+
+                foreach ($idea->getWatchers() as $watcher) {
+                    // $watcher->removeIdeasWatched($idea); // We keep the history of the idea and its state
+                    $watcher->addProjectsWatched($project);
+                }
+
+                $project->setOriginalIdea($idea);
+                
+                $textService = $this->container->get('textService');
+                $project->setSlug($textService->slugify($project->getName()));
+
+            $wiki = new Wiki();
+
+                $project->setWiki($wiki);
+                $wikiPageConcept = new WikiPage();
+                    $wikiPageConcept->setTitle("Concept");
+                    $wikiPageConcept->setContent($idea->getConceptText());
+                    $wikiPageConcept->setSlug('concept');
+
+                $wikiPageKnowledge = new WikiPage();
+                    $wikiPageKnowledge->setTitle("Knowledge");
+                    $wikiPageKnowledge->setContent($idea->getKnowledgeText());
+                    $wikiPageKnowledge->setSlug('knowledge');
+
+                $wiki->addPage($wikiPageConcept);
+                $wiki->addPage($wikiPageKnowledge);
+
+            $authenticatedUser->addProjectsOwned($project);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($project);
+            $em->persist($wiki);
+            $em->persist($wikiPageConcept);
+            $em->persist($wikiPageKnowledge);
+            $em->flush();
+
+            $this->get('session')->setFlash(
+                    'success',
+                    'Your idea has successfully been transformed into a project.'
+                );
+
+            return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $project->getSlug())));
+
+        } else {
+
+            $this->get('session')->setFlash(
+                    'error',
+                    'You are not allowed to transform this idea into the project since you have not created it.'
+                );
+
+            return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
+        }
+
 
     }
 

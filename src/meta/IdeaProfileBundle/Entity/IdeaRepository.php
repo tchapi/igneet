@@ -20,6 +20,8 @@ class IdeaRepository extends EntityRepository
 
     return $qb->select('i')
             ->from('metaIdeaProfileBundle:Idea', 'i')
+            ->where('i.archived = :bool')
+            ->setParameter('bool', 0)
             ->orderBy('i.created_at', 'DESC')
             ->setMaxResults($limit)
             ->getQuery()
@@ -34,6 +36,8 @@ class IdeaRepository extends EntityRepository
 
     return $qb->select('i')
             ->from('metaIdeaProfileBundle:Idea', 'i')
+            ->where('i.archived = :bool')
+            ->setParameter('bool', 0)
             ->orderBy('i.updated_at', 'DESC')
             ->setMaxResults($limit)
             ->getQuery()
