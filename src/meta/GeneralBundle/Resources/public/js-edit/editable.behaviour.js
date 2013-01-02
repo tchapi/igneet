@@ -39,13 +39,13 @@ $(document).ready(function(){
     /*  Markdown fields
      *  (for about)
      */ 
-    if ($('#wmd-input')) {
+    if ($('#wmd-input').length != 0) {
       var converter = Markdown.getSanitizingConverter();
       var editor = new Markdown.Editor(converter);
       editor.run();
     }
 
-    if ($('#wmd-input-second')) {
+    if ($('#wmd-input-second').length != 0) {
       // In case there is a second one
       var converter2 = new Markdown.Converter();
       var editor2 = new Markdown.Editor(converter2, "-second");

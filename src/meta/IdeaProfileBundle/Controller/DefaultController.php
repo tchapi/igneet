@@ -17,7 +17,36 @@ use meta\StandardProjectProfileBundle\Entity\WikiPage;
 
 class DefaultController extends Controller
 {
-    
+        
+    public function fetchIdeaAndPreComputeRights($id, $mustBeCreator = false, $mustParticipate = false)
+    {
+
+        $repository = $this->getDoctrine()->getRepository('metaIdeaProfileBundle:Idea');
+        $idea = $repository->findOneById($id);
+
+        if (!$idea){
+          throw $this->createNotFoundException('This idea does not exist');
+        }
+
+        $authenticatedUser = $this->getUser();
+
+        $isAlreadyWatching = $authenticatedUser && $authenticatedUser->isWatchingIdea($idea);
+        $isCreator = $authenticatedUser && ($idea->getCreator() == $authenticatedUser);
+        $isParticipatingIn = $authenticatedUser && ($authenticatedUser->isParticipatingInIdea($idea));
+        
+        if ( ($mustBeCreator && !$isCreator) || ($mustParticipate && !$isParticipatingIn && !$isCreator) ) {
+          $this->base = false;
+        } else {
+          $this->base = array('idea' => $idea,
+                              'isAlreadyWatching' => $isAlreadyWatching,
+                              'isParticipatingIn' => $isParticipatingIn,
+                              'isCreator' => $isCreator,
+                              'canEdit' =>  $isCreator || $isParticipatingIn
+                            );
+        }
+
+    }
+
     /*  ####################################################
      *                    IDEA LIST
      *  #################################################### */
@@ -41,19 +70,11 @@ class DefaultController extends Controller
     public function showAction($id)
     {
 
-        $repository = $this->getDoctrine()->getRepository('metaIdeaProfileBundle:Idea');
-        $idea = $repository->findOneById($id);
+        $this->fetchIdeaAndPreComputeRights($id, false, false);
 
-        if (!$idea || $idea->isArchived()){
-          throw $this->createNotFoundException('This idea does not exist');
+        if ($this->base['idea']->isArchived()){
+          throw $this->createNotFoundException('This idea is already archived');
         }
-
-        $authenticatedUser = $this->getUser();
-        $isAlreadyWatching = $authenticatedUser->isWatchingIdea($idea);
-
-        $this->base = array('idea' => $idea,
-                            'isAlreadyWatching' => $isAlreadyWatching
-                          );
         
         return $this->render('metaIdeaProfileBundle:Default:show.html.twig', 
             array('base' => $this->base));
@@ -113,47 +134,43 @@ class DefaultController extends Controller
 
     public function editAction(Request $request, $id){
 
-        $repository = $this->getDoctrine()->getRepository('metaIdeaProfileBundle:Idea');
-        $idea = $repository->findOneById($id);
-
-        if (!$idea){
-          throw $this->createNotFoundException('This idea does not exist');
-        }
-
-        $authenticatedUser = $this->getUser();
-
+        $this->fetchIdeaAndPreComputeRights($id, false, true);
         $response = new Response();
-        $objectHasBeenModified = false;
 
-        switch ($request->request->get('name')) {
-            case 'name':
-                $idea->setName($request->request->get('value'));
-                $objectHasBeenModified = true;
-                break;
-            case 'headline':
-                $idea->setHeadline($request->request->get('value'));
-                $objectHasBeenModified = true;
-                break;
-            case 'concept_text':
-                $idea->setConceptText($request->request->get('value'));
-                $objectHasBeenModified = true;
-                break;
-            case 'knowledge_text':
-                $idea->setKnowledgeText($request->request->get('value'));
-                $objectHasBeenModified = true;
-                break;
-        }
+        if ($this->base != false) {
+        
+            $objectHasBeenModified = false;
 
-        $validator = $this->get('validator');
-        $errors = $validator->validate($idea);
+            switch ($request->request->get('name')) {
+                case 'name':
+                    $this->base['idea']->setName($request->request->get('value'));
+                    $objectHasBeenModified = true;
+                    break;
+                case 'headline':
+                    $this->base['idea']->setHeadline($request->request->get('value'));
+                    $objectHasBeenModified = true;
+                    break;
+                case 'concept_text':
+                    $this->base['idea']->setConceptText($request->request->get('value'));
+                    $objectHasBeenModified = true;
+                    break;
+                case 'knowledge_text':
+                    $this->base['idea']->setKnowledgeText($request->request->get('value'));
+                    $objectHasBeenModified = true;
+                    break;
+            }
 
-        if ($objectHasBeenModified === true && count($errors) == 0){
-            $idea->setUpdatedAt(new \DateTime('now'));
-            $em = $this->getDoctrine()->getManager();
-            $em->flush();
-        } elseif (count($errors) > 0) {
-            $response->setStatusCode(406);
-            $response->setContent($errors[0]->getMessage());
+            $validator = $this->get('validator');
+            $errors = $validator->validate($this->base['idea']);
+
+            if ($objectHasBeenModified === true && count($errors) == 0){
+                $this->base['idea']->setUpdatedAt(new \DateTime('now'));
+                $em = $this->getDoctrine()->getManager();
+                $em->flush();
+            } elseif (count($errors) > 0) {
+                $response->setStatusCode(406);
+                $response->setContent($errors[0]->getMessage());
+            }
         }
 
         return $response;
@@ -162,32 +179,25 @@ class DefaultController extends Controller
 
     public function projectizeAction($id)
     {
-        $repository = $this->getDoctrine()->getRepository('metaIdeaProfileBundle:Idea');
-        $idea = $repository->findOneById($id);
+        $this->fetchIdeaAndPreComputeRights($id, true, false);
 
-        if (!$idea){
-          throw $this->createNotFoundException('This idea does not exist');
-        }
+        if ($this->base != false){
 
-        $authenticatedUser = $this->getUser();
-
-        if ($authenticatedUser && $authenticatedUser == $idea->getCreator()){
-
-            $idea->setArchived(true);
+            $this->base['idea']->setArchived(true);
 
             $project = new StandardProject();
-                $project->setName($idea->getName());
-                $project->setHeadline($idea->getHeadline());
-                $project->setAbout("Originated from idea #" . $idea->getId());
-                $project->setPicture($idea->getAbsolutePicturePath());
-                $project->setCreatedAt($idea->getCreatedAt());
+                $project->setName($this->base['idea']->getName());
+                $project->setHeadline($this->base['idea']->getHeadline());
+                $project->setAbout("Originated from idea #" . $this->base['idea']->getId());
+                $project->setPicture($this->base['idea']->getAbsolutePicturePath());
+                $project->setCreatedAt($this->base['idea']->getCreatedAt());
 
-                foreach ($idea->getWatchers() as $watcher) {
-                    // $watcher->removeIdeasWatched($idea); // We keep the history of the idea and its state
+                foreach ($this->base['idea']->getWatchers() as $watcher) {
+                    // $watcher->removeIdeasWatched($this->base['idea']); // We keep the history of the idea and its state
                     $watcher->addProjectsWatched($project);
                 }
 
-                $project->setOriginalIdea($idea);
+                $project->setOriginalIdea($this->base['idea']);
                 
                 $textService = $this->container->get('textService');
                 $project->setSlug($textService->slugify($project->getName()));
@@ -197,12 +207,12 @@ class DefaultController extends Controller
                 $project->setWiki($wiki);
                 $wikiPageConcept = new WikiPage();
                     $wikiPageConcept->setTitle("Concept");
-                    $wikiPageConcept->setContent($idea->getConceptText());
+                    $wikiPageConcept->setContent($this->base['idea']->getConceptText());
                     $wikiPageConcept->setSlug('concept');
 
                 $wikiPageKnowledge = new WikiPage();
                     $wikiPageKnowledge->setTitle("Knowledge");
-                    $wikiPageKnowledge->setContent($idea->getKnowledgeText());
+                    $wikiPageKnowledge->setContent($this->base['idea']->getKnowledgeText());
                     $wikiPageKnowledge->setSlug('knowledge');
 
                 $wiki->addPage($wikiPageConcept);
@@ -310,6 +320,53 @@ class DefaultController extends Controller
             }
 
         }
+
+        return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
+    }
+
+    /*  ####################################################
+     *                          ADD USER
+     *  #################################################### */
+
+    public function addParticipantAction($id, $username)
+    {
+
+        $this->fetchIdeaAndPreComputeRights($id, true, false);
+
+        if ($this->base != false) {
+
+            $userRepository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
+            $newParticipant = $userRepository->findOneByUsername($username);
+
+            if ($newParticipant && ($newParticipant != $this->base['idea']->getCreator()) && !($newParticipant->isParticipatingInIdea($this->base['idea'])) ) {
+
+                $newParticipant->addIdeasParticipatedIn($this->base['idea']);
+
+                $this->get('session')->setFlash(
+                  'success',
+                  'The user '.$newParticipant->getFirstName().' now participates in the idea "'.$this->base['idea']->getName().'".'
+                );
+
+                $em = $this->getDoctrine()->getManager();
+                $em->flush();
+                
+            } else {
+
+                $this->get('session')->setFlash(
+                    'error',
+                    'This user does not exist or is already part of this idea.'
+                );
+            }
+
+        } else {
+
+            $this->get('session')->setFlash(
+                'error',
+                'You are not allowed to add a participant to an idea you have not initiated.'
+            );
+
+        }
+
 
         return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
     }

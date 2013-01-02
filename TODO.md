@@ -1,18 +1,16 @@
 ## TODO ##
 
- * noms des labels dans signup et new project
+ * noms des labels dans signup et new project (labels du form je parle)
     __ helpers pour les champs
 
+ * tagging des pages wiki et des listes
 
  * IDEA
    --> transform into project : tout les commentaires de l'idée sont réassociés avec une marque <hr> dans la timeline pour séparer quand c'est devenu un projet
   --> mettre 'from idea' dans le projet
-  fetch commence a me saouler !!!!
 
  * signup : avatar OK OK
     + chgt d'avatar -----> TODO Mais pas simple
-
- * Créer un nouveau projet OK OK
 
  * Afficher le meta dans les infos d'un projet
  * Add a participant : faire le 'user chooser'
@@ -22,7 +20,7 @@
  * login et signup : focus sur le champ lors du chargement de la page
 
  * delete a project / idea / user etc 
- 
+
  * Commentaires
  BaseComment ::
    \_ WikiPageComment OK OK OK
@@ -42,11 +40,42 @@
 
  * Ajax pour new item, new list, new wiki page avec input a la place du 'New item' ?
 
+ * commenter un listItem en plus d'une liste ?
+
+ * IDEA = tagguer dans le fil de discussion Concept ou Knowledge
+ * IDEA : pouvoir tagguer un commentaire en 'valuable'
+   --> passer automatiquement un commentaire dans l'un ou l'autre des champs textes
+
 V2 
 
+ * Home : doit driver l'utilisateur en avant
  * listes : reconnaitre les urls en mettre un lien pour y aller directement a coté ;)
  * lien vers des droplr avec apercu auto
     --> tout ca doit se faire en JS a priori
+    --> avoir du deep-linking dans le wiki
+
+## OK DONE
+
+ * Créer un nouveau projet OK OK
+
+ * IDEA peut etre modifiée que par son createur OK OK
+ * IDEA : mettre des participants OK OK
+
+  Entity IDEA :
+
+  une idée est publique dans la meta
+   - description textuelle principale OK OK
+    deux champs : Concept et Connaissance OK OK
+   - discussion
+    tagger 'concept' ou 'connaissance' dans le fil de discussion
+
+ * séparer Background / Concept OK OK
+
+
+OK -- login nécessaire pour tout
+OK -- un projet est privé au participants / owners
+OK -- events : a degager
+OK -- timeline : tu peux pas filtrer
 
 ## Call benjamin
 
@@ -58,22 +87,6 @@ V2
             shoutbox quand les posts outside
 
 au niveau meta, la timeline ne ressort que les trucs publics des projets en dessous
-
-Entity IDEA :
-
-une idée est publique dans la meta
- - description textuelle principale OK OK
-  deux champs : Concept et Connaissance OK OK
- - discussion
-  tagger 'concept' ou 'connaissance' dans le fil de discussion
-
- * séparer Background / Concept OK OK
-
-
-OK -- login nécessaire pour tout
-OK -- un projet est privé au participants / owners
-OK -- events : a degager
-OK -- timeline : tu peux pas filtrer
 
 
 # CHECK WORKFLOW

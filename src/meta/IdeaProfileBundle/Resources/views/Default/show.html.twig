@@ -8,19 +8,19 @@
             filter='?yui_js' %}
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
-
+    {% if base.canEdit %}
     {% javascripts '@metaGeneralBundle/Resources/public/js-edit/bootstrap-editable.js' 
                    '@metaGeneralBundle/Resources/public/js-edit/editable.behaviour.js'
                    '@metaGeneralBundle/Resources/public/js-edit/markdown-editor/*' 
             filter='?yui_js' %}
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
-
+    {% endif %}
 {% endblock %}
 
 {% block header %}
   <div class="headerAvatarAndActions">
-    <div class="changeAvatar"><a href="#"><i class="icon-pencil"></i> change</a></div>
+    {% if base.isCreator %}<div class="changeAvatar"><a href="#"><i class="icon-pencil"></i> change</a></div>{% endif %}
     <img src="{{ asset(base.idea.picture) }}" width="150" height="150" class="avatar"/>
 {% if base.isAlreadyWatching %}
     <a href="{{ path('i_unwatch_idea', {'id': base.idea.id}) }}" class="btn btn-info watchAction">Unwatch idea</a>
@@ -57,7 +57,7 @@
 
 {% block content %}
 <section>
-  <div class="wmd-heading"><i class="icon-book"></i> Knowledge <a class="pull-right markdown-trigger">&hellip;<i class="icon-pencil"></i></a></div>
+  <div class="wmd-heading"><i class="icon-book"></i> Knowledge {% if base.canEdit %}<a class="pull-right markdown-trigger">&hellip;<i class="icon-pencil"></i></a>{% endif %}</div>
   <div>
 
       <div class="wmd-wrapper well well-small hide" >
@@ -75,7 +75,7 @@
   </div>
 </section>
 <section>
-  <div class="wmd-heading"><i class="icon-cogs"></i> Concept <a class="pull-right markdown-trigger">&hellip;<i class="icon-pencil"></i></a></div>
+  <div class="wmd-heading"><i class="icon-cogs"></i> Concept {% if base.canEdit %}<a class="pull-right markdown-trigger">&hellip;<i class="icon-pencil"></i></a>{% endif %}</div>
   <div>
 
       <div class="wmd-wrapper well well-small hide" >
@@ -91,5 +91,31 @@
     <div id="wmd-preview-second" class="about">{{ base.idea.conceptText|markdown }}</div>
 
   </div>
+</section>
+<section class="colored">
+  <div class="sectionTitle">Participants : </div>
+  <ul class="users sectionContent">
+  {% for participatingUser in base.idea.participants %}
+      <li>
+        <a href="{{ path('u_show_user_profile', {'username': participatingUser.username}) }}">
+          <img src="{{ participatingUser.avatar }}" width="70" height="70" class="smallAvatar"/>
+          <div class="smallObjectInfos">
+            <div>{{ participatingUser.firstName }}</div><div>{{ participatingUser.lastName|upper }}</div>
+            {% if base.isCreator %}<a class="removeUserIcon" href="{{ path('i_remove_participant_to_idea', { 'id': base.idea.id, 'username' : participatingUser.username }) }}"><i class="icon-remove-sign icon-large"></i></a>{% endif %}
+          </div>
+        </a>
+      </li>
+  {% endfor %}
+  {% if base.isCreator %}
+      <li>
+        <a href="{{ path('u_choose_user', {'owner': false}) }}">
+          <div class="smallTextAvatar"><i class="icon-plus-sign"></i></div>
+          <div class="smallObjectInfos">
+            <div>Add a</div><div>Participant</div>
+          </div>
+        </a>
+      </li>
+  {% endif %}
+  </ul>
 </section>
 {% endblock %}

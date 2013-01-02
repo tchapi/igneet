@@ -104,11 +104,18 @@ class Idea
      **/
     private $creator;
 
+    /**
+     * Users participating in me (REVERSE SIDE)
+     * @ORM\ManyToMany(targetEntity="meta\UserProfileBundle\Entity\User", mappedBy="ideasParticipatedIn")
+     **/
+    private $participants;
+
     public function __construct()
     {
         
         $this->created_at = $this->updated_at = new \DateTime('now');
         $this->watchers = new ArrayCollection();
+        $this->participants = new ArrayCollection();
 
         $this->archived = false;
 
@@ -502,5 +509,38 @@ class Idea
     public function isArchived()
     {
         return $this->getArchived();
+    }
+
+    /**
+     * Add participants
+     *
+     * @param \meta\UserProfileBundle\Entity\User $participants
+     * @return Idea
+     */
+    public function addParticipant(\meta\UserProfileBundle\Entity\User $participants)
+    {
+        $this->participants[] = $participants;
+    
+        return $this;
+    }
+
+    /**
+     * Remove participants
+     *
+     * @param \meta\UserProfileBundle\Entity\User $participants
+     */
+    public function removeParticipant(\meta\UserProfileBundle\Entity\User $participants)
+    {
+        $this->participants->removeElement($participants);
+    }
+
+    /**
+     * Get participants
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getParticipants()
+    {
+        return $this->participants;
     }
 }

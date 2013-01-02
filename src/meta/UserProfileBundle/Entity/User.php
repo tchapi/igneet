@@ -220,6 +220,16 @@ class User implements UserInterface
     private $ideasCreated;
 
     /**
+     * Ideas I participate in (OWNING SIDE)
+     * @ORM\ManyToMany(targetEntity="meta\IdeaProfileBundle\Entity\Idea", inversedBy="participants")
+     * @ORM\JoinTable(name="User_participatesIn_Idea",
+     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="idea_id", referencedColumnName="id")}
+     *      )
+     **/
+    private $ideasParticipatedIn;
+    
+    /**
      * Comments I created 
      * @ORM\OneToMany(targetEntity="meta\StandardProjectProfileBundle\Entity\Comment\BaseComment", mappedBy="user")
      **/
@@ -239,6 +249,7 @@ class User implements UserInterface
         /* Links to ideas */
         $this->ideasWatched = new ArrayCollection();
         $this->ideasCreated = new ArrayCollection();
+        $this->ideasParticipatedIn = new ArrayCollection();
 
         $this->comments = new ArrayCollection();
 
@@ -1147,4 +1158,48 @@ class User implements UserInterface
     {
         return $this->ideasCreated;
     }
+
+    /**
+     * Add ideasParticipatedIn
+     *
+     * @param \meta\IdeaProfileBundle\Entity\Idea $ideasParticipatedIn
+     * @return User
+     */
+    public function addIdeasParticipatedIn(\meta\IdeaProfileBundle\Entity\Idea $ideasParticipatedIn)
+    {
+        $this->ideasParticipatedIn[] = $ideasParticipatedIn;
+    
+        return $this;
+    }
+
+    /**
+     * Remove ideasParticipatedIn
+     *
+     * @param \meta\IdeaProfileBundle\Entity\Idea $ideasParticipatedIn
+     */
+    public function removeIdeasParticipatedIn(\meta\IdeaProfileBundle\Entity\Idea $ideasParticipatedIn)
+    {
+        $this->ideasParticipatedIn->removeElement($ideasParticipatedIn);
+    }
+
+    /**
+     * Get ideasParticipatedIn
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getIdeasParticipatedIn()
+    {
+        return $this->ideasParticipatedIn;
+    }
+
+    /**
+     * Is already participating in an idea
+     *
+     * @return boolean 
+     */
+    public function isParticipatingInIdea(\meta\IdeaProfileBundle\Entity\Idea $idea)
+    {
+        return $this->ideasParticipatedIn->contains($idea);
+    }
+
 }

@@ -25,10 +25,27 @@ i_edit_idea:
 i_watch_idea:
     pattern:  /watch/idea/{id}
     defaults: { _controller: metaIdeaProfileBundle:Default:watch }
+    requirements:
+        id: \d+
 
 i_unwatch_idea:
     pattern:  /unwatch/idea/{id}
     defaults: { _controller: metaIdeaProfileBundle:Default:unwatch }
+    requirements:
+        id: \d+
+
+# Add participant to an idea
+i_add_participant_to_idea:
+    pattern:  /idea/{id}/add_participant/{username}
+    defaults: { _controller: metaIdeaProfileBundle:Default:addParticipant }
+    requirements:
+        id: \d+
+
+i_remove_participant_to_idea:
+    pattern:  /idea/{id}/remove_participant/{username}
+    defaults: { _controller: metaIdeaProfileBundle:Default:removeParticipant }
+    requirements:
+        id: \d+
 
 # Turn idea to project
 
