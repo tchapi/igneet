@@ -268,7 +268,7 @@ a.editable-click.editable-disabled:hover {
 /*    content: '*'*/
 }
 
-.icon-blockquote,
+
 .icon-code,
 .icon-header,
 .icon-hr-line
@@ -278,7 +278,6 @@ a.editable-click.editable-disabled:hover {
   width: 14px;
   display: block;
 }
-.icon-blockquote        { background-position: -24px  3px; }
 .icon-code              { background-position: -48px  3px; }
 .icon-header            { background-position: -120px 3px; }
 .icon-hr-line           { background-position: -144px 3px; }

@@ -23,10 +23,8 @@
 
  * Commentaires
  BaseComment ::
-   \_ WikiPageComment OK OK OK
-   \_ ListComment OK OK OK
    \_ ResourceComment
-   \_ ProjectComment ( + Meta?) = shoutbox-like
+   \_ ProjectComment ( + Meta? ) = shoutbox-like
 
  * wiki : 
    - parenting
@@ -55,6 +53,10 @@ V2
     --> avoir du deep-linking dans le wiki
 
 ## OK DONE
+
+ * BaseComment ::
+   \_ WikiPageComment OK OK OK
+   \_ ListComment OK OK OK
 
  * Créer un nouveau projet OK OK
 
