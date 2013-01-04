@@ -93,7 +93,7 @@
   </div>
 </section>
 <section class="colored">
-  <div class="sectionTitle">Participants : </div>
+  <div class="sectionTitle">{% if base.idea.participants|length > 0 %}Participants : {% else %}No participant yet ...{% endif %}</div>
   <ul class="users sectionContent">
   {% for participatingUser in base.idea.participants %}
       <li>

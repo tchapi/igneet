@@ -1,18 +1,14 @@
 ## TODO ##
 
  * noms des labels dans signup et new project (labels du form je parle)
-    __ helpers pour les champs
+    __ help pour les champs
 
  * tagging des pages wiki et des listes
 
- * IDEA
-   --> transform into project : tout les commentaires de l'idée sont réassociés avec une marque <hr> dans la timeline pour séparer quand c'est devenu un projet
-  --> mettre 'from idea' dans le projet
 
  * signup : avatar OK OK
     + chgt d'avatar -----> TODO Mais pas simple
 
- * Afficher le meta dans les infos d'un projet
  * Add a participant : faire le 'user chooser'
 
  * log des modifs sur les projets
@@ -20,6 +16,7 @@
  * login et signup : focus sur le champ lors du chargement de la page
 
  * delete a project / idea / user etc 
+--> user attention : vérifier qu'il y a bien des owners etc ..
 
  * Commentaires
  BaseComment ::
@@ -32,17 +29,21 @@
  * images !!! dans assetic
   + Sg fault in generate ?
 
- * mettre les css dans les bons bundles!
-
  * background image pour les projets ?
 
  * Ajax pour new item, new list, new wiki page avec input a la place du 'New item' ?
 
  * commenter un listItem en plus d'une liste ?
-
+ 
  * IDEA = tagguer dans le fil de discussion Concept ou Knowledge
  * IDEA : pouvoir tagguer un commentaire en 'valuable'
    --> passer automatiquement un commentaire dans l'un ou l'autre des champs textes
+ * IDEA
+   --> transform into project : tout les commentaires de l'idée sont réassociés avec une marque <hr> dans la timeline pour séparer quand c'est devenu un projet
+
+META
+
+ * Afficher le meta dans les infos d'un projet
 
 V2 
 
@@ -62,6 +63,7 @@ V2
 
  * IDEA peut etre modifiée que par son createur OK OK
  * IDEA : mettre des participants OK OK
+  --> mettre 'from idea' dans le projet OK
 
   Entity IDEA :
 
