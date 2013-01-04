@@ -100,10 +100,10 @@
         <a href="{{ path('u_show_user_profile', {'username': participatingUser.username}) }}">
           <img src="{{ participatingUser.avatar }}" width="70" height="70" class="smallAvatar"/>
           <div class="smallObjectInfos">
-            <div>{{ participatingUser.firstName }}</div><div>{{ participatingUser.lastName|upper }}</div>
-            {% if base.isCreator %}<a class="removeUserIcon" href="{{ path('i_remove_participant_to_idea', { 'id': base.idea.id, 'username' : participatingUser.username }) }}"><i class="icon-remove-sign icon-large"></i></a>{% endif %}
+            <span><div>{{ participatingUser.firstName }}</div><div>{{ participatingUser.lastName|upper }}</div></span>
           </div>
         </a>
+        {% if base.isCreator %}<a class="removeUserIcon" href="{{ path('i_remove_participant_to_idea', { 'id': base.idea.id, 'username' : participatingUser.username }) }}"><i class="icon-remove-sign icon-large"></i></a>{% endif %}
       </li>
   {% endfor %}
   {% if base.isCreator %}
@@ -111,7 +111,7 @@
         <a href="{{ path('u_choose_user', {'owner': false}) }}">
           <div class="smallTextAvatar"><i class="icon-plus-sign"></i></div>
           <div class="smallObjectInfos">
-            <div>Add a</div><div>Participant</div>
+            <span>Add a Participant</span>
           </div>
         </a>
       </li>

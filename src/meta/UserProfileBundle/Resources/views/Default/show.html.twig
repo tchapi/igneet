@@ -99,7 +99,7 @@
       <a href="{{ path('u_show_user_profile', {'username': followingUser.username}) }}">
         <img src="{{ followingUser.avatar }}" width="70" height="70" class="smallAvatar"/>
         <div class="smallObjectInfos">
-          <div>{{ followingUser.firstName }}</div><div>{{ followingUser.lastName|upper }}</div>
+          <span><div>{{ followingUser.firstName }}</div><div>{{ followingUser.lastName|upper }}</div></span>
         </div>
       </a>
     </li>
@@ -117,7 +117,7 @@
       <a href="{{ path('u_show_user_profile', {'username': followerUser.username}) }}">
         <img src="{{ followerUser.avatar }}" width="70" height="70" class="smallAvatar"/>
         <div class="smallObjectInfos">
-          <div>{{ followerUser.firstName }}</div><div>{{ followerUser.lastName|upper }}</div>
+          <span><div>{{ followerUser.firstName }}</div><div>{{ followerUser.lastName|upper }}</div></span>
         </div>
       </a>
     </li>
@@ -135,7 +135,7 @@
       <a href="{{ path('sp_show_project', {'slug': watchedProject.slug}) }}">
         <img src="{{ watchedProject.picture }}" width="70" height="70" class="smallAvatar"/>
         <div class="smallObjectInfos">
-          {{ watchedProject.name }}
+          <span>{{ watchedProject.name }}</span>
         </div>
       </a>
     </li>
@@ -154,7 +154,7 @@
       <a href="{{ path('i_show_idea', {'id': idea.id}) }}">
         <img src="{{ idea.picture }}" width="70" height="70" class="smallAvatar"/>
         <div class="smallObjectInfos">
-          {{ idea.name }}
+          <span>{{ idea.name }}</span>
         </div>
       </a>
     </li>
@@ -173,7 +173,7 @@
       <a href="{{ path('sp_show_project', {'slug': ownedProject.slug}) }}">
         <img src="{{ ownedProject.picture }}" width="70" height="70" class="smallAvatar"/>
         <div class="smallObjectInfos">
-          {{ ownedProject.name }}
+          <span>{{ ownedProject.name }}</span>
         </div>
       </a>
     </li>
@@ -191,7 +191,7 @@
       <a href="{{ path('sp_show_project', {'slug': participatedInProject.slug}) }}">
         <img src="{{ participatedInProject.picture }}" width="70" height="70" class="smallAvatar"/>
         <div class="smallObjectInfos">
-          {{ participatedInProject.name }}
+          <span>{{ participatedInProject.name }}</span>
         </div>
       </a>
     </li>
@@ -210,7 +210,7 @@
       <a href="{{ path('i_show_idea', {'id': idea.id}) }}">
         <img src="{{ idea.picture }}" width="70" height="70" class="smallAvatar"/>
         <div class="smallObjectInfos">
-          {{ idea.name }}
+          <span>{{ idea.name }}</span>
         </div>
       </a>
     </li>

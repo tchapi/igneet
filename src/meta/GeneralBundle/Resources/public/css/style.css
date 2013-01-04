@@ -124,9 +124,17 @@ div.content div.column h4{
 div.smallObjectInfos{
   display: inline-block;
   vertical-align: top;
-  padding: 15px 5px;
+  padding: 5px;
   width: 95px;
+  height: 60px;
+  line-height: 60px;
   position: relative;
+}
+
+div.smallObjectInfos span{
+  vertical-align: middle;
+  display: inline-block;
+  line-height: 1.2em;
 }
 
 /*********/
@@ -436,6 +444,13 @@ ul.projects li{
   border-radius: 3px;
   margin: 0 4px 7px 0;
   vertical-align: top;
+  height: 70px;
+  position: relative;
+}
+
+ul.users li a,
+ul.projects li a{
+  display: block;
 }
 
 /**********/
@@ -480,7 +495,12 @@ div.ideaAbout{
 a.removeUserIcon{
   position: absolute;
   right: 4px;
-  top: 28px;
+  top: 5px;
+  box-shadow: -5px 0 10px #EEE;
+  height: 60px;
+  background: #EEE;
+  vertical-align: middle;
+  line-height: 60px;
 }
 
 /*************/

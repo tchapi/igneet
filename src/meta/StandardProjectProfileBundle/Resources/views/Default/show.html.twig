@@ -39,6 +39,7 @@
     </h4>
     <div>
       <i class="icon-calendar"></i> Created on {{ base.standardProject.createdAt|date("d/m/Y") }}
+      <span class="muted">{% if base.standardProject.originalIdea %} from the idea "{{ base.standardProject.originalIdea.name }}"{% endif %}</span>
     </div>
 
     <div>
