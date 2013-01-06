@@ -10,11 +10,66 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller,
  * Importing Class definitions
  */
 use meta\StandardProjectProfileBundle\Entity\Comment\WikiPageComment,
-    meta\StandardProjectProfileBundle\Entity\Comment\CommonListComment;
+    meta\StandardProjectProfileBundle\Entity\Comment\CommonListComment,
+    meta\StandardProjectProfileBundle\Entity\Comment\StandardProjectComment;
 
 
 class CommentController extends BaseController
 {
+
+    public function addStandardProjectCommentAction(Request $request, $slug){
+
+        $this->fetchProjectAndPreComputeRights($slug, false, true);
+
+        if ($this->base != false) {
+
+            $comment = new StandardProjectComment();
+            $form = $this->createFormBuilder($comment)
+                ->add('text', 'textarea', array('attr' => array('placeholder' => 'Leave a message ...')))
+                ->getForm();
+
+            if ($request->isMethod('POST')) {
+
+                $form->bind($request);
+
+                if ($form->isValid()) {
+
+                    $comment->setUser($this->getUser());
+                    $this->base['standardProject']->addComment($comment);
+                    
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($comment);
+                    $em->flush();
+
+                    $this->get('session')->setFlash(
+                        'success',
+                        'Your comment was successfully added.'
+                    );
+
+                } else {
+
+                   $this->get('session')->setFlash(
+                        'error',
+                        'The information you provided does not seem valid.'
+                    );
+                }
+
+                return $this->redirect($this->generateUrl('sp_show_project_timeline', array('slug' => $slug)));
+
+            } else {
+
+                $route = $this->get('router')->generate('sp_show_project_comment', array('slug' => $slug));
+
+                return $this->render('metaStandardProjectProfileBundle:Comment:commentBox.html.twig', 
+                    array('object' => $this->base['standardProject'], 'route' => $route, 'form' => $form->createView()));
+
+            }
+
+        }
+
+        throw $this->createNotFoundException('This project does not exist');
+
+    }
 
     public function addWikiPageCommentAction(Request $request, $slug, $id){
 

@@ -8,4 +8,7 @@
 
 {% block content %}
 Timeline
+<section>
+{% render "metaStandardProjectProfileBundle:Comment:addStandardProjectComment" with { 'slug' : base.standardProject.slug } %}
+</section>
 {% endblock %}

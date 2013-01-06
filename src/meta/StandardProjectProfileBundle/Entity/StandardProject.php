@@ -130,6 +130,13 @@ class StandardProject
      **/
     private $meta;
 
+    /**
+     * Comments on this project (OWNING SIDE)
+     * @ORM\OneToMany(targetEntity="meta\StandardProjectProfileBundle\Entity\Comment\StandardProjectComment", mappedBy="standardProject", cascade="remove")
+     * @ORM\OrderBy({"created_at" = "DESC"})
+     **/
+    private $comments;
+
 /* ********** */
 
     /**
@@ -156,6 +163,8 @@ class StandardProject
         $this->watchers = new ArrayCollection();
 
         $this->commonLists = new ArrayCollection();
+
+        $this->comments = new ArrayCollection();
 
     }
 
@@ -716,5 +725,40 @@ class StandardProject
     public function getOriginalIdea()
     {
         return $this->originalIdea;
+    }
+
+    /**
+     * Add comment
+     *
+     * @param \meta\StandardProjectProfileBundle\Entity\Comment\StandardProjectComment $comment
+     * @return StandardProject
+     */
+    public function addComment(\meta\StandardProjectProfileBundle\Entity\Comment\StandardProjectComment $comment)
+    {
+        $comment->setStandardProject($this);
+        $this->comments[] = $comment;
+    
+        return $this;
+    }
+
+    /**
+     * Remove comments
+     *
+     * @param \meta\StandardProjectProfileBundle\Entity\Comment\StandardProjectComment $comment
+     */
+    public function removeComment(\meta\StandardProjectProfileBundle\Entity\Comment\StandardProjectComment $comment)
+    {
+        $comment->setStandardProject(null);
+        $this->comments->removeElement($comment);
+    }
+
+    /**
+     * Get comments
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getComments()
+    {
+        return $this->comments;
     }
 }

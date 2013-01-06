@@ -14,10 +14,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string")
- * @ORM\DiscriminatorMap({"wikiPage" = "meta\StandardProjectProfileBundle\Entity\Comment\WikiPageComment", "list" = "meta\StandardProjectProfileBundle\Entity\Comment\CommonListComment"})
+ * @ORM\DiscriminatorMap({"wikiPage" = "meta\StandardProjectProfileBundle\Entity\Comment\WikiPageComment", "list" = "meta\StandardProjectProfileBundle\Entity\Comment\CommonListComment", "project" = "meta\StandardProjectProfileBundle\Entity\Comment\StandardProjectComment"})
  */
 
-/*, "project" = "meta\StandardProjectProfileBundle\Entity\Comment\StandardProjecComment", "meta" = "meta\StandardProjectProfileBundle\Entity\Comment\MetaProjectComment"*/
+/*, "meta" = "meta\StandardProjectProfileBundle\Entity\Comment\MetaProjectComment"*/
 class BaseComment
 {
     /**
