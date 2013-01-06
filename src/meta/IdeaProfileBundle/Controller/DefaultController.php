@@ -177,6 +177,67 @@ class DefaultController extends Controller
 
     }
 
+    public function deleteAction($id){
+
+        $this->fetchIdeaAndPreComputeRights($id, true, false);
+
+        if ($this->base != false) {
+        
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($this->base['idea']);
+            $em->flush();
+
+            $this->get('session')->setFlash(
+                    'success',
+                    'The idea '.$this->base['idea']->getName().' has been deleted successfully.'
+                );
+            
+            return $this->redirect($this->generateUrl('i_list_ideas'));
+
+        } else {
+
+            $this->get('session')->setFlash(
+                    'warning',
+                    'You do not have sufficient privileges to delete this idea.'
+                );
+
+            return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
+        }
+
+    }
+
+    public function transferAction($id, $username){
+
+        $this->fetchIdeaAndPreComputeRights($id, true, false);
+
+        $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
+        $newCreator = $repository->findOneByUsername($username);
+
+        if ($this->base != false && $newCreator) {
+
+            $this->base['idea']->setCreator($newCreator);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+
+             $this->get('session')->setFlash(
+                    'success',
+                    'This idea is now owned by ' . $newCreator->getFirstName() . ' ' . $newCreator->getLastName() . '.'
+                );
+        
+        } else {
+
+            $this->get('session')->setFlash(
+                    'error',
+                    'You cannot transfer ownership for this idea.'
+                );
+
+        }
+
+        return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
+    
+    }
+
     public function projectizeAction($id)
     {
         $this->fetchIdeaAndPreComputeRights($id, true, false);

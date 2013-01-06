@@ -28,6 +28,12 @@ u_edit_user_profile:
     requirements:
         _method:  POST
 
+u_delete_user_profile:
+    pattern:  /byebye/{username}
+    defaults: { _controller: metaUserProfileBundle:Default:delete }
+    requirements:
+        _method:  GET
+
 u_show_list_recent_created:
     pattern:  /people
     defaults: { _controller: metaUserProfileBundle:Default:listRecentlyCreated, max: 10 }

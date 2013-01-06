@@ -5,7 +5,6 @@
 
  * tagging des pages wiki et des listes
 
-
  * signup : avatar OK OK
     + chgt d'avatar -----> TODO Mais pas simple
 
@@ -14,9 +13,6 @@
  * log des modifs sur les projets
 
  * login et signup : focus sur le champ lors du chargement de la page
-
- * delete a project / idea / user etc 
---> user attention : vérifier qu'il y a bien des owners etc ..
 
  * Commentaires
  BaseComment ::
@@ -28,6 +24,8 @@
 
  * images !!! dans assetic
   + Sg fault in generate ?
+
+ * Rajouter un badge 'YOU' quand l'utilisateur courant est affiché
 
  * background image pour les projets ?
 
@@ -55,6 +53,8 @@ V2
 
 ## OK DONE
 
+ * infos d'un projet : quand pas de skills ne pas afficher le vase ? ou All skills welcome OK
+
  * BaseComment ::
    \_ WikiPageComment OK OK OK
    \_ ListComment OK OK OK
@@ -74,6 +74,9 @@ V2
     tagger 'concept' ou 'connaissance' dans le fil de discussion
 
  * séparer Background / Concept OK OK
+
+ * delete user OK
+--> attention : vérifier qu'il y a bien des owners etc ..
 
 
 OK -- login nécessaire pour tout

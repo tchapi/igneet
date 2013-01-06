@@ -226,5 +226,10 @@
     {{ user.comments|length }} comments, including {{ user.countPublicComments }} public ones.
   </div>
 </section>
-
+{% if isMe %}
+<section class="colored warning">
+  <div class="sectionTitle">Delete my account : </div>
+  <div class="sectionContent"><a class="btn btn-danger" href="{{ path('u_delete_user_profile', { 'username': user.username}) }}">Delete</a> <span class="muted">( <i class="icon-warning-sign"></i> Warning : you cannot undo this )</span></div>
+</section>
+{% endif %}
 {% endblock %}

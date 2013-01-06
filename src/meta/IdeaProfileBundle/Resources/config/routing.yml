@@ -9,7 +9,7 @@ i_new_idea:
     defaults: { _controller: metaIdeaProfileBundle:Default:create}
 
 i_show_idea:
-    pattern:  /idea/{id}/{slug}
+    pattern:  /idea/show/{id}/{slug}
     defaults: { _controller: metaIdeaProfileBundle:Default:show, slug: _}
     requirements:
         id: \d+
@@ -20,6 +20,18 @@ i_edit_idea:
     requirements:
         id: \d+
         _method:  POST
+
+i_delete_idea:
+    pattern:  /idea/delete/{id}
+    defaults: { _controller: metaIdeaProfileBundle:Default:delete }
+    requirements:
+        id: \d+
+
+i_transfer_idea:
+    pattern:  /idea/transfer/{id}/user/{username}
+    defaults: { _controller: metaIdeaProfileBundle:Default:transfer }
+    requirements:
+        id: \d+
 
 # Watching ideas
 i_watch_idea:
@@ -36,13 +48,13 @@ i_unwatch_idea:
 
 # Add participant to an idea
 i_add_participant_to_idea:
-    pattern:  /idea/{id}/add_participant/{username}
+    pattern:  /idea/edit/{id}/add_participant/{username}
     defaults: { _controller: metaIdeaProfileBundle:Default:addParticipant }
     requirements:
         id: \d+
 
 i_remove_participant_to_idea:
-    pattern:  /idea/{id}/remove_participant/{username}
+    pattern:  /idea/edit/{id}/remove_participant/{username}
     defaults: { _controller: metaIdeaProfileBundle:Default:removeParticipant }
     requirements:
         id: \d+

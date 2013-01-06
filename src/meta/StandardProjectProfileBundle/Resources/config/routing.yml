@@ -20,7 +20,7 @@ mp_edit_meta:
 
 # STANDARD PROJECTS
 
-sp_list_project:
+sp_list_projects:
     pattern:  /projects
     defaults: { _controller: metaStandardProjectProfileBundle:Default:list, max: 10 }
 
@@ -29,20 +29,24 @@ sp_new_project:
     defaults: { _controller: metaStandardProjectProfileBundle:Default:create}
 
 sp_show_project:
-    pattern:  /project/{slug}
+    pattern:  /project/show/{slug}
     defaults: { _controller: metaStandardProjectProfileBundle:Info:showInfo}
 
 sp_edit_project:
-    pattern:  /project/{slug}/edit
+    pattern:  /project/edit/{slug}
     defaults: { _controller: metaStandardProjectProfileBundle:Default:edit }
     requirements:
         _method:  POST
+
+sp_delete_project:
+    pattern:  /project/delete/{slug}
+    defaults: { _controller: metaStandardProjectProfileBundle:Default:delete}
 
 # TABS
 
 ## TIMELINE
 sp_show_project_timeline:
-    pattern:  /project/{slug}/timeline/{page}
+    pattern:  /project/show/{slug}/timeline/{page}
     defaults: { _controller: metaStandardProjectProfileBundle:Timeline:showTimeline, page: 1 }
     requirements:
       page: \d+
@@ -50,41 +54,41 @@ sp_show_project_timeline:
 
 ## LISTS
 sp_show_project_list_home:
-    pattern:  /project/{slug}/lists
+    pattern:  /project/show/{slug}/lists
     defaults: { _controller: metaStandardProjectProfileBundle:List:showCommonListHome}
 
 sp_show_project_list_new:
-    pattern:  /project/{slug}/list/new
+    pattern:  /project/show/{slug}/list/new
     defaults: { _controller: metaStandardProjectProfileBundle:List:newCommonList}
 
 sp_show_project_list_edit:
-    pattern:  /project/{slug}/list/edit/{id}
+    pattern:  /project/show/{slug}/list/edit/{id}
     defaults: { _controller: metaStandardProjectProfileBundle:List:editCommonList}
     requirements:
       id: \d+
       _method:  POST
 
 sp_show_project_list_delete:
-    pattern:  /project/{slug}/list/delete/{id}
+    pattern:  /project/show/{slug}/list/delete/{id}
     defaults: { _controller: metaStandardProjectProfileBundle:List:deleteCommonList}
     requirements:
       id: \d+
 
 sp_show_project_list:
-    pattern:  /project/{slug}/list/{id}/{commonListSlug}
+    pattern:  /project/show/{slug}/list/{id}/{commonListSlug}
     defaults: { _controller: metaStandardProjectProfileBundle:List:showCommonList, commonListSlug: _ }
     requirements:
       id: \d+
 
 sp_show_project_list_comment:
-    pattern:  /project/{slug}/list/comment/{id}
+    pattern:  /project/show/{slug}/list/comment/{id}
     defaults: { _controller: metaStandardProjectProfileBundle:Comment:addCommonListComment}
     requirements:
       id: \d+
 
 ## LIST ITEMS
 sp_show_project_listitem_edit:
-    pattern:  /project/{slug}/list/{listId}/item/{id}
+    pattern:  /project/show/{slug}/list/{listId}/item/{id}
     defaults: { _controller: metaStandardProjectProfileBundle:List:editCommonListItem }
     requirements:
       id: \d+
@@ -92,28 +96,28 @@ sp_show_project_listitem_edit:
       _method:  POST
 
 sp_show_project_listitem_do:
-    pattern:  /project/{slug}/list/{listId}/item/{id}/do
+    pattern:  /project/show/{slug}/list/{listId}/item/{id}/do
     defaults: { _controller: metaStandardProjectProfileBundle:List:toggleCommonListItem, do: true}
     requirements:
       id: \d+
       listId: \d+
 
 sp_show_project_listitem_undo:
-    pattern:  /project/{slug}/list/{listId}/item/{id}/undo
+    pattern:  /project/show/{slug}/list/{listId}/item/{id}/undo
     defaults: { _controller: metaStandardProjectProfileBundle:List:toggleCommonListItem, do: false}
     requirements:
       id: \d+
       listId: \d+
 
 sp_show_project_listitem_delete:
-    pattern:  /project/{slug}/list/{listId}/item/{id}/delete
+    pattern:  /project/show/{slug}/list/{listId}/item/{id}/delete
     defaults: { _controller: metaStandardProjectProfileBundle:List:deleteCommonListItem}
     requirements:
       id: \d+
       listId: \d+
 
 sp_show_project_listitem_new:
-    pattern:  /project/{slug}/list/{listId}/item/new/{name}
+    pattern:  /project/show/{slug}/list/{listId}/item/new/{name}
     defaults: { _controller: metaStandardProjectProfileBundle:List:newCommonListItem, name: "New Item" }
     requirements:
       listId: \d+
@@ -121,34 +125,34 @@ sp_show_project_listitem_new:
 
 ## WIKI 
 sp_show_project_wiki:
-    pattern:  /project/{slug}/wiki
+    pattern:  /project/show/{slug}/wiki
     defaults: { _controller: metaStandardProjectProfileBundle:Wiki:showWikiHome}
 
 sp_show_project_wiki_new_page:
-    pattern:  /project/{slug}/wiki/page/new
+    pattern:  /project/show/{slug}/wiki/page/new
     defaults: { _controller: metaStandardProjectProfileBundle:Wiki:newWikiPage}
 
 sp_show_project_wiki_edit_page:
-    pattern:  /project/{slug}/wiki/page/edit/{id}
+    pattern:  /project/show/{slug}/wiki/page/edit/{id}
     defaults: { _controller: metaStandardProjectProfileBundle:Wiki:editWikiPage}
     requirements:
       id: \d+
       _method: POST
 
 sp_show_project_wiki_delete_page:
-    pattern:  /project/{slug}/wiki/page/delete/{id}
+    pattern:  /project/show/{slug}/wiki/page/delete/{id}
     defaults: { _controller: metaStandardProjectProfileBundle:Wiki:deleteWikiPage}
     requirements:
       id: \d+
 
 sp_show_project_wiki_show_page:
-    pattern:  /project/{slug}/wiki/page/{id}/{pageSlug}
+    pattern:  /project/show/{slug}/wiki/page/{id}/{pageSlug}
     defaults: { _controller: metaStandardProjectProfileBundle:Wiki:showWikiPage, pageSlug: _ }
     requirements:
       id: \d+
 
 sp_show_project_wikipage_comment:
-    pattern:  /project/{slug}/wiki/page/comment/{id}
+    pattern:  /project/show/{slug}/wiki/page/comment/{id}
     defaults: { _controller: metaStandardProjectProfileBundle:Comment:addWikiPageComment }
     requirements:
       id: \d+
@@ -156,20 +160,20 @@ sp_show_project_wikipage_comment:
 
 # Adding people in projects
 sp_add_owner_to_project:
-    pattern:  /project/{slug}/add_owner/{username}
+    pattern:  /project/edit/{slug}/add_owner/{username}
     defaults: { _controller: metaStandardProjectProfileBundle:Info:addParticipantOrOwner, owner: true }
 
 sp_add_participant_to_project:
-    pattern:  /project/{slug}/add_participant/{username}
+    pattern:  /project/edit/{slug}/add_participant/{username}
     defaults: { _controller: metaStandardProjectProfileBundle:Info:addParticipantOrOwner, owner: false }
 
 # Removing people in projects
 sp_remove_owner_to_project:
-    pattern:  /project/{slug}/remove_owner/{username}
+    pattern:  /project/edit/{slug}/remove_owner/{username}
     defaults: { _controller: metaStandardProjectProfileBundle:Info:removeParticipantOrOwner, owner: true }
 
 sp_remove_participant_to_project:
-    pattern:  /project/{slug}/remove_participant/{username}
+    pattern:  /project/edit/{slug}/remove_participant/{username}
     defaults: { _controller: metaStandardProjectProfileBundle:Info:removeParticipantOrOwner, owner: false }
 
 # Watching projects

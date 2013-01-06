@@ -41,9 +41,9 @@
       <i class="icon-calendar"></i> Created on {{ base.idea.createdAt|date("d/m/Y") }}
     </div>
     <div>
-      <i class="icon-user"></i> An idea by <a href="{{ path('u_show_user_profile', {'username': base.idea.creator.username}) }}">{{ base.idea.creator.firstName }} {{ base.idea.creator.lastName }}</a>
+      <i class="icon-user"></i> An idea by <a href="{{ path('u_show_user_profile', {'username': base.idea.creator.username}) }}">{{ base.idea.creator.firstName }} {{ base.idea.creator.lastName }}</a>{% if base.isCreator %} <span class="muted">( <i class="icon-exchange"></i><a href="{{ path('u_choose_user') }}"> Transfer ownership</a> )</span>{% endif %}
     </div>
-    {% if app.user == base.idea.creator %}
+    {% if base.isCreator %}
     <div>
       <i class="icon-external-link"></i> Turn this idea <a href="{{ path('i_turn_idea_into_project', {'id': base.idea.id}) }}">into a project</a>. <span class="muted">( <i class="icon-warning-sign"></i> Warning : you cannot undo this )</span>
     </div>
@@ -118,4 +118,10 @@
   {% endif %}
   </ul>
 </section>
+{% if base.isCreator %}
+<section class="colored warning">
+  <div class="sectionTitle">Delete this idea : </div>
+  <div class="sectionContent"><a class="btn btn-danger" href="{{ path('i_delete_idea', { 'id': base.idea.id}) }}">Delete</a> <span class="muted">( <i class="icon-warning-sign"></i> Warning : you cannot undo this )</span></div>
+</section>
+{% endif %}
 {% endblock %}

@@ -84,7 +84,7 @@ class WikiPage
 
     /**
      * Comments on this page (OWNING SIDE)
-     * @ORM\OneToMany(targetEntity="meta\StandardProjectProfileBundle\Entity\Comment\WikiPageComment", mappedBy="wikiPage")
+     * @ORM\OneToMany(targetEntity="meta\StandardProjectProfileBundle\Entity\Comment\WikiPageComment", mappedBy="wikiPage", cascade="remove")
      * @ORM\OrderBy({"created_at" = "DESC"})
      **/
     private $comments;

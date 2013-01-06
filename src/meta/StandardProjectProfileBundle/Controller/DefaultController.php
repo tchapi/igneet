@@ -132,6 +132,35 @@ class DefaultController extends BaseController
 
     }
 
+    public function deleteAction($slug){
+
+        $this->fetchProjectAndPreComputeRights($slug, true, false);
+
+        if ($this->base != false) {
+        
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($this->base['standardProject']);
+            $em->flush();
+
+            $this->get('session')->setFlash(
+                    'success',
+                    'The project '.$this->base['standardProject']->getName().' has been deleted successfully.'
+                );
+            
+            return $this->redirect($this->generateUrl('sp_list_projects'));
+
+        } else {
+
+            $this->get('session')->setFlash(
+                    'warning',
+                    'You do not have sufficient privileges to delete this project.'
+                );
+
+            return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $slug)));
+        }
+
+    }
+
     /*  ####################################################
      *                   WATCH / UNWATCH
      *  #################################################### */

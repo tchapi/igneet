@@ -53,7 +53,7 @@
   {% endif %}
   </ul>
 </section>
-
+{% if base.standardProject.participants|length > 0 %}
 <section class="colored">
   <div class="sectionTitle">Participants : </div>
   <ul class="users sectionContent">
@@ -80,5 +80,11 @@
   {% endif %}
   </ul>
 </section>
-
+{% endif %}
+{% if base.isOwning %}
+<section class="colored warning">
+  <div class="sectionTitle">Delete this project : </div>
+  <div class="sectionContent"><a class="btn btn-danger" href="{{ path('sp_delete_project', { 'slug': base.standardProject.slug}) }}">Delete</a> <span class="muted">( <i class="icon-warning-sign"></i> Warning : you cannot undo this )</span></div>
+</section>
+{% endif %}
 {% endblock %}

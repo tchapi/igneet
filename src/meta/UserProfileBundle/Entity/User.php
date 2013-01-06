@@ -495,7 +495,7 @@ class User implements UserInterface
      */
     public function removeUpload()
     {
-        if ($file = $this->getAbsolutePath()) {
+        if ($file = $this->getAbsoluteAvatarPath()) {
             unlink($file);
         }
     }

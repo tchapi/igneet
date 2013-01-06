@@ -450,7 +450,7 @@ class Idea
      */
     public function removeUpload()
     {
-        if ($file = $this->getAbsolutePath()) {
+        if ($file = $this->getAbsolutePicturePath()) {
             unlink($file);
         }
     }
@@ -464,9 +464,8 @@ class Idea
      */
     public function setCreator(\meta\UserProfileBundle\Entity\User $creator = null)
     {
-        if ( is_null($creator) ){
-            $this->creator->removeIdeasCreated($this);
-        } else {
+        $this->creator->removeIdeasCreated($this);
+        if ( !is_null($creator) ){
             $creator->addIdeasCreated($this);
         }
         $this->creator = $creator;

@@ -194,6 +194,57 @@ class DefaultController extends Controller
 
     }
 
+    public function deleteAction($username){
+
+        $authenticatedUser = $this->getUser();
+
+        if ($authenticatedUser->getUsername() === $username) {
+        
+            // Performs checks for ownerships
+
+            // ideas must have a creator and projects must have at least an owner
+            if ($authenticatedUser->countNotArchivedIdeasCreated() === 0 &&
+                $authenticatedUser->getProjectsOwned()->count() === 0 ) {
+
+                // Then reassign the comments to NULL
+                foreach ($authenticatedUser->getComments() as $comment) {
+                    $comment->setUser(null);
+                }
+
+                // Delete the user for real
+                $em = $this->getDoctrine()->getManager();
+                $em->remove($authenticatedUser);
+                $em->flush();
+
+                $this->get('session')->setFlash(
+                        'success',
+                        'The user '.$username.' has been deleted successfully.'
+                    );
+                
+                return $this->redirect($this->generateUrl('login'));
+
+            } else {
+
+                $this->get('session')->setFlash(
+                    'error',
+                    'You cannot delete your account; you still own projects or unarchived ideas. Transfer idea ownership, make sure your projects have another owner and try again.'
+                );
+
+                return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $username)));
+            }
+
+        } else {
+
+            $this->get('session')->setFlash(
+                    'error',
+                    'You cannot delete someone else\'s account.'
+                );
+
+            return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $username)));
+        }
+
+    }
+
     /*
      * Authenticated user follows the request user
      */

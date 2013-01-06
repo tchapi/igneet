@@ -1,5 +1,5 @@
 body > header{
-  height: 52px;
+  height: 41px;
 }
 body > header .navbar a.brand{
   margin-left: 0;
@@ -104,6 +104,7 @@ div.content form section > .sectionContent{
   width: auto;
 }
 div.content section.colored{ background: #EEE;}
+div.content section.colored.warning{ background: lightPink;}
 /* Column-type sections */
 div.content div.menu{
   width: 180px;
