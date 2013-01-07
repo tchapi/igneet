@@ -4,3 +4,7 @@ parameters:
 services:
     textService:
         class: "%textService.class%"
+    doctrine.listener.historyListener:
+        class: meta\GeneralBundle\Listener\HistoryListener
+        tags:
+            - { name: doctrine.event_listener, event: onFlush, method: onFlush }
