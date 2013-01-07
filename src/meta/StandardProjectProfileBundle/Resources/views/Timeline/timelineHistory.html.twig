@@ -1,0 +1,12 @@
+<ul class="history">
+{% for step in timeframe %}
+ {# {% if step.data|length > 0%} #}
+  <li class="date">{{ step.name}}</li>
+
+  {% for item in step.data %}
+    <li></li>
+  {% endfor %}
+
+{#  {% endif %} #}
+{% endfor %}
+</ul>

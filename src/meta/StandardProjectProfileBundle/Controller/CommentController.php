@@ -60,7 +60,7 @@ class CommentController extends BaseController
 
                 $route = $this->get('router')->generate('sp_show_project_comment', array('slug' => $slug));
 
-                return $this->render('metaStandardProjectProfileBundle:Comment:commentBox.html.twig', 
+                return $this->render('metaStandardProjectProfileBundle:Comment:timelineCommentBox.html.twig', 
                     array('object' => $this->base['standardProject'], 'route' => $route, 'form' => $form->createView()));
 
             }

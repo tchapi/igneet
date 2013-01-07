@@ -505,6 +505,29 @@ a.removeUserIcon{
 }
 
 /*************/
+/* TIMELINE  */
+/*************/
+ul.history{
+  margin: 0;
+}
+ul.history li.date {
+  text-align: center;
+  list-style: none;
+  background: #CCC;
+  border: 5px solid #DDD;
+  height: 24px;
+  width: 70px;
+  border-radius: 50px;
+  padding: 28px 5px;
+  margin-left: 380px;
+  font-size: 1.5em;
+}
+ul.history li.date:first-child {
+  background: lightGreen;
+  border: 5px solid darkSeaGreen;
+}
+
+/*************/
 /*   LISTS   */
 /*************/
 ul.lists{
@@ -594,11 +617,18 @@ div.commentsForm form{
   width: 618px;
   margin-bottom: 10px;
 }
+div.commentsForm.timeline form{
+  width: 884px;
+}
 div.commentsForm textarea{
   width: 530px;
   max-width: 530px;
   height: 21px;
   vertical-align: top;
+}
+div.commentsForm.timeline textarea{
+  width: 796px;
+  max-width: 796px;
 }
 ul.comments{
   margin: 10px 0;
