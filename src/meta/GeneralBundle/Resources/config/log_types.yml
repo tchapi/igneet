@@ -1,0 +1,88 @@
+parameters:
+  general.log_types:
+# User acting for his profile
+    user_created: #
+      type: user
+      icon: user
+      text: %%user$s has just joined us — hooray!
+    user_update_profile: #
+      type: user
+      icon: user
+      text: %%user$s has updated its profile.
+    user_follow_user: #
+      type: user
+      icon: eye
+      text: %%user$s has started following %%other_user$s.
+# User acting on a project
+    user_make_user_owner_project:
+      type: project
+      icon: user
+      text: %%other_user$s made %%user$s an owner of the project %%project$s.
+    user_make_user_participant_project:
+      type: project
+      icon: user
+      text: %%other_user$s made %%user$s a participant in the project %%project$s.
+    user_watch_project:
+      type: project
+      icon: user
+      text: %%user$s has started watching the project %%project$s.
+    user_update_project_info:
+      type: project
+      icon: user
+      text: %%user$s has updated some information for the project %%project$s.
+    user_create_wikipage:
+      type: project
+      icon: user
+      text: %%user$s has created a new page %%wikipage$s in project %%project$s's wiki.
+    user_update_wikipage:
+      type: project
+      icon: user
+      text: %%user$s has updated the page %%wikipage$s in project %%project$s's wiki.
+    user_delete_wikipage:
+      type: project
+      icon: user
+      text: %%user$s has deleted the page %%wikipage$s in project %%project$s's wiki.
+    user_create_list:
+      type: project
+      icon: user
+      text: %%user$s has created a new list %%list$s in the project %%project$s.
+    user_update_list:
+      type: project
+      icon: user
+      text: %%user$s has updated the list %%list$s in the project %%project$s.
+    user_delete_list:
+      type: project
+      icon: user
+      text: %%user$s has deleted the list %%list$s in the project %%project$s.
+    user_transform_idea_in_project: #
+      type: project
+      icon: user
+      text: %%user$s has created a new project %%project$s from the idea %%idea$s.
+# User acting on an idea
+    user_create_idea: #
+      type: idea
+      icon: user
+      text: %%user$s created a new idea %%idea$s.
+    user_is_made_creator_idea: #
+      type: idea
+      icon: user
+      text: %%other_user$s transfered owner of the idea %%idea$s to %%user$s.
+    user_update_idea_info: #
+      type: idea
+      icon: user
+      text: %%user$s has updated some information for the idea %%idea$s.
+    user_is_made_participant_idea: #
+      type: idea
+      icon: user
+      text: %%other_user$s made %%user$s a participant in the idea %%idea$s.
+    user_watch_idea: #
+      type: idea
+      icon: user
+      text: %%user$s has started watching the idea %%idea$s.
+
+
+
+
+
+
+

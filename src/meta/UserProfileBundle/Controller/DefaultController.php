@@ -99,6 +99,9 @@ class DefaultController extends Controller
                 $em->persist($user);
                 $em->flush();
 
+                $logService = $this->container->get('logService');
+                $logService->log($user, 'user_created', $user, array());
+
                 /* Tries to login the user now */
                 // Here, "main" is the name of the firewall in security.yml
                 $token = new UsernamePasswordToken($user, $user->getPassword(), "main", $user->getRoles());
@@ -181,6 +184,10 @@ class DefaultController extends Controller
 
             if ($objectHasBeenModified === true && count($errors) == 0){
                 $authenticatedUser->setUpdatedAt(new \DateTime('now'));
+
+                $logService = $this->container->get('logService');
+                $logService->log($authenticatedUser, 'user_update_profile', $authenticatedUser, array());
+
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
             } elseif (count($errors) > 0) {
@@ -263,6 +270,9 @@ class DefaultController extends Controller
                 if ( !($this->getUser()->isFollowing($user)) ){
 
                     $authenticatedUser->addFollowing($user);
+
+                    $logService = $this->container->get('logService');
+                    $logService->log($authenticatedUser, 'user_follow_user', $user, array());
 
                     $em = $this->getDoctrine()->getManager();
                     $em->flush();

@@ -100,11 +100,14 @@ class DefaultController extends Controller
             $form->bind($request);
 
             if ($form->isValid()) {
-                
+
                 $idea->setCreator($authenticatedUser);
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($idea);
                 $em->flush();
+                
+                $logService = $this->container->get('logService');
+                $logService->log($authenticatedUser, 'user_create_idea', $idea, array());
 
                 $this->get('session')->setFlash(
                     'success',
@@ -165,6 +168,10 @@ class DefaultController extends Controller
 
             if ($objectHasBeenModified === true && count($errors) == 0){
                 $this->base['idea']->setUpdatedAt(new \DateTime('now'));
+
+                $logService = $this->container->get('logService');
+                $logService->log($this->getUser(), 'user_update_idea_info', $this->base['idea'], array());
+
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
             } elseif (count($errors) > 0) {
@@ -216,6 +223,9 @@ class DefaultController extends Controller
         if ($this->base != false && $newCreator) {
 
             $this->base['idea']->setCreator($newCreator);
+
+            $logService = $this->container->get('logService');
+            $logService->log($newCreator, 'user_is_made_creator_idea', $this->base['idea'], array( 'other_user' => array('class' => 'User', 'id' => $this->getUser()->getId()) ));
 
             $em = $this->getDoctrine()->getManager();
             $em->flush();
@@ -279,7 +289,7 @@ class DefaultController extends Controller
                 $wiki->addPage($wikiPageConcept);
                 $wiki->addPage($wikiPageKnowledge);
 
-            $authenticatedUser->addProjectsOwned($project);
+            $this->getUser()->addProjectsOwned($project);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($project);
@@ -287,6 +297,10 @@ class DefaultController extends Controller
             $em->persist($wikiPageConcept);
             $em->persist($wikiPageKnowledge);
             $em->flush();
+
+            $logService = $this->container->get('logService');
+            $logService->log($this->getUser(), 'user_transform_idea_in_project', $this->base['idea'], array( 'project' => array('class' => 'StandardProject', 'id' => $project->getId()) ));
+
 
             $this->get('session')->setFlash(
                     'success',
@@ -326,6 +340,10 @@ class DefaultController extends Controller
             if ( !($authenticatedUser->isWatchingIdea($idea)) ){
 
                 $authenticatedUser->addIdeasWatched($idea);
+
+                $logService = $this->container->get('logService');
+                $logService->log($authenticatedUser, 'user_watch_idea', $idea, array());
+
 
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
@@ -407,6 +425,10 @@ class DefaultController extends Controller
                   'success',
                   'The user '.$newParticipant->getFirstName().' now participates in the idea "'.$this->base['idea']->getName().'".'
                 );
+
+                $logService = $this->container->get('logService');
+                $logService->log($newParticipant, 'user_is_made_participant_idea', $this->base['idea'], array( 'other_user' => array('class' => 'User', 'id' => $this->getUser()->getId()) ));
+
 
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();

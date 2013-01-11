@@ -12,12 +12,24 @@
 
  * log des modifs sur les projets
 
+
+    ^
+   / \
+  / ! \
+  -----
+
+
+
+
+   TODO : reverse liens dans Idea, user, et project
+   Verifier tous les appels a logservice 
+
+
  * login et signup : focus sur le champ lors du chargement de la page
 
  * Commentaires
  BaseComment ::
    \_ ResourceComment
-   \_ ProjectComment ( + Meta? ) = shoutbox-like
 
  * wiki : 
    - parenting
@@ -42,6 +54,9 @@
 META
 
  * Afficher le meta dans les infos d'un projet
+
+ * Commentaires
+   \_ MetaComment = shoutbox-like
 
 V2 
 

@@ -235,6 +235,12 @@ class User implements UserInterface
      **/
     private $comments;
 
+    /**
+     * Log entries I created 
+     * @ORM\OneToMany(targetEntity="meta\GeneralBundle\Entity\Log\BaseLogEntry", mappedBy="user")
+     **/
+    private $logEntries;
+
     public function __construct() {
         
         /* Links to Skills */
@@ -252,6 +258,7 @@ class User implements UserInterface
         $this->ideasParticipatedIn = new ArrayCollection();
 
         $this->comments = new ArrayCollection();
+        $this->logEntries = new ArrayCollection();
 
         /* init */
         $this->salt = md5(uniqid(null, true));
@@ -1202,4 +1209,37 @@ class User implements UserInterface
         return $this->ideasParticipatedIn->contains($idea);
     }
 
+
+    /**
+     * Add logEntries
+     *
+     * @param \meta\GeneralBundle\Entity\Log\BaseLogEntry $logEntries
+     * @return User
+     */
+    public function addLogEntrie(\meta\GeneralBundle\Entity\Log\BaseLogEntry $logEntries)
+    {
+        $this->logEntries[] = $logEntries;
+    
+        return $this;
+    }
+
+    /**
+     * Remove logEntries
+     *
+     * @param \meta\GeneralBundle\Entity\Log\BaseLogEntry $logEntries
+     */
+    public function removeLogEntrie(\meta\GeneralBundle\Entity\Log\BaseLogEntry $logEntries)
+    {
+        $this->logEntries->removeElement($logEntries);
+    }
+
+    /**
+     * Get logEntries
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getLogEntries()
+    {
+        return $this->logEntries;
+    }
 }

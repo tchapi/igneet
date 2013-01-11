@@ -110,6 +110,12 @@ class Idea
      **/
     private $participants;
 
+    /**
+     * Log entries about this idea
+     * @ORM\OneToMany(targetEntity="meta\GeneralBundle\Entity\Log\IdeaLogEntry", mappedBy="idea")
+     **/
+    private $logEntries;
+
     public function __construct()
     {
         
@@ -464,7 +470,9 @@ class Idea
      */
     public function setCreator(\meta\UserProfileBundle\Entity\User $creator = null)
     {
-        $this->creator->removeIdeasCreated($this);
+        if ( !is_null($this->creator) ){
+            $this->creator->removeIdeasCreated($this);
+        }
         if ( !is_null($creator) ){
             $creator->addIdeasCreated($this);
         }

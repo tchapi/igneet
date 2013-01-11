@@ -153,6 +153,12 @@ class StandardProject
 
 /* ********** */
 
+    /**
+     * Log entries about this project
+     * @ORM\OneToMany(targetEntity="meta\GeneralBundle\Entity\Log\StandardProjectLogEntry", mappedBy="standardProject")
+     **/
+    private $logEntries;
+
     public function __construct()
     {
         $this->created_at = $this->updated_at = new \DateTime('now');

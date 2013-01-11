@@ -1,10 +1,12 @@
 parameters:
     textService.class: meta\GeneralBundle\Services\TextService
+    logService.class: meta\GeneralBundle\Services\LogService
 
 services:
     textService:
         class: "%textService.class%"
-    doctrine.listener.historyListener:
-        class: meta\GeneralBundle\Listener\HistoryListener
-        tags:
-            - { name: doctrine.event_listener, event: onFlush, method: onFlush }
+    logService:
+        class: "%logService.class%"
+        arguments: 
+            entityManager: "@doctrine.orm.entity_manager"
+            log_types: %general.log_types%

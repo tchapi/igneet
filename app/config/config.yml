@@ -2,6 +2,7 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: @metaStandardProjectProfileBundle/Resources/config/menu.yml }
+    - { resource: @metaGeneralBundle/Resources/config/log_types.yml }
     - { resource: @metaGeneralBundle/Resources/config/services.yml }
 
 framework:
@@ -74,6 +75,6 @@ swiftmailer:
     password:  "%mailer_password%"
     spool:     { type: memory }
 
-# META Specific
+# User profile specific
 parameters:
     gravatar.default_style: 'retro'
