@@ -767,4 +767,37 @@ class StandardProject
     {
         return $this->comments;
     }
+
+    /**
+     * Add logEntries
+     *
+     * @param \meta\GeneralBundle\Entity\Log\StandardProjectLogEntry $logEntries
+     * @return StandardProject
+     */
+    public function addLogEntrie(\meta\GeneralBundle\Entity\Log\StandardProjectLogEntry $logEntries)
+    {
+        $this->logEntries[] = $logEntries;
+    
+        return $this;
+    }
+
+    /**
+     * Remove logEntries
+     *
+     * @param \meta\GeneralBundle\Entity\Log\StandardProjectLogEntry $logEntries
+     */
+    public function removeLogEntrie(\meta\GeneralBundle\Entity\Log\StandardProjectLogEntry $logEntries)
+    {
+        $this->logEntries->removeElement($logEntries);
+    }
+
+    /**
+     * Get logEntries
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getLogEntries()
+    {
+        return $this->logEntries;
+    }
 }

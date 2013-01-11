@@ -27,8 +27,6 @@ class UserLogEntry extends BaseLogEntry
      **/
     private $other_user;
 
-
-
     /**
      * Get id
      *

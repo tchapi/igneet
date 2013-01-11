@@ -47,7 +47,7 @@ class BaseLogEntry
 
     /**
      * User that did this (OWNING SIDE)
-     * @ORM\ManyToOne(targetEntity="meta\UserProfileBundle\Entity\User", inversedBy="logEntries")
+     * @ORM\ManyToOne(targetEntity="meta\UserProfileBundle\Entity\User", inversedBy="initiatedLogEntries")
      **/
     private $user;
 

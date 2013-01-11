@@ -239,6 +239,12 @@ class User implements UserInterface
      * Log entries I created 
      * @ORM\OneToMany(targetEntity="meta\GeneralBundle\Entity\Log\BaseLogEntry", mappedBy="user")
      **/
+    private $initiatedLogEntries;
+
+    /**
+     * User in subject : user 
+     * @ORM\OneToMany(targetEntity="meta\GeneralBundle\Entity\Log\UserLogEntry", mappedBy="other_user")
+     **/
     private $logEntries;
 
     public function __construct() {
@@ -1241,5 +1247,38 @@ class User implements UserInterface
     public function getLogEntries()
     {
         return $this->logEntries;
+    }
+
+    /**
+     * Add initiatedLogEntries
+     *
+     * @param \meta\GeneralBundle\Entity\Log\BaseLogEntry $initiatedLogEntries
+     * @return User
+     */
+    public function addInitiatedLogEntrie(\meta\GeneralBundle\Entity\Log\BaseLogEntry $initiatedLogEntries)
+    {
+        $this->initiatedLogEntries[] = $initiatedLogEntries;
+    
+        return $this;
+    }
+
+    /**
+     * Remove initiatedLogEntries
+     *
+     * @param \meta\GeneralBundle\Entity\Log\BaseLogEntry $initiatedLogEntries
+     */
+    public function removeInitiatedLogEntrie(\meta\GeneralBundle\Entity\Log\BaseLogEntry $initiatedLogEntries)
+    {
+        $this->initiatedLogEntries->removeElement($initiatedLogEntries);
+    }
+
+    /**
+     * Get initiatedLogEntries
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getInitiatedLogEntries()
+    {
+        return $this->initiatedLogEntries;
     }
 }

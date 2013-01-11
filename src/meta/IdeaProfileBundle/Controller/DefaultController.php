@@ -453,4 +453,46 @@ class DefaultController extends Controller
 
         return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
     }
+
+    public function removeParticipantAction($id, $username)
+    {
+
+        $this->fetchIdeaAndPreComputeRights($id, true, false);
+
+        if ($this->base != false) {
+
+            $userRepository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
+            $toRemoveParticipant = $userRepository->findOneByUsername($username);
+
+            if ($toRemoveParticipant && $toRemoveParticipant->isParticipatingInIdea($this->base['idea']) ) {
+                
+                $toRemoveParticipant->removeIdeasParticipatedIn($this->base['idea']);
+
+                $this->get('session')->setFlash(
+                  'success',
+                  'The user '.$toRemoveParticipant->getFirstName().' does not participate in the idea "'.$this->base['idea']->getName().'" anymore .'
+                );
+
+                $em = $this->getDoctrine()->getManager();
+                $em->flush();
+                
+            } else {
+
+                $this->get('session')->setFlash(
+                    'error',
+                    'This user does not exist with this role in the idea.'
+                );
+            }
+
+        } else {
+
+            $this->get('session')->setFlash(
+                'error',
+                'You are not the creator of the idea "'.$this->base['idea']->getName().'".'
+            );
+
+        }
+
+        return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
+    }
 }

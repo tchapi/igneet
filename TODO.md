@@ -10,20 +10,7 @@
 
  * Add a participant : faire le 'user chooser'
 
- * log des modifs sur les projets
-
-
-    ^
-   / \
-  / ! \
-  -----
-
-
-
-
-   TODO : reverse liens dans Idea, user, et project
-   Verifier tous les appels a logservice 
-
+ * log des modifs sur les projets / ideas / users
 
  * login et signup : focus sur le champ lors du chargement de la page
 
