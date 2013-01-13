@@ -265,12 +265,21 @@ class User implements UserInterface
 
         $this->comments = new ArrayCollection();
         $this->logEntries = new ArrayCollection();
+        $this->initiatedLogEntries = new ArrayCollection();
 
         /* init */
         $this->salt = md5(uniqid(null, true));
         $this->roles = array('ROLE_USER');
         $this->created_at = $this->updated_at = new \DateTime('now');
 
+    }
+
+    public function getLogName()
+    {
+        return $this->first_name . " " . $this->last_name;
+    }
+    public function getLogArgs(){
+        return array( 'username' => $this->username );
     }
 
     /* 

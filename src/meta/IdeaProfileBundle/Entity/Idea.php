@@ -127,6 +127,14 @@ class Idea
 
     }
 
+    public function getLogName()
+    {
+        return $this->name;
+    }
+    public function getLogArgs(){
+        return array( 'id' => $this->id );
+    }
+
     /**
      * Get id
      *

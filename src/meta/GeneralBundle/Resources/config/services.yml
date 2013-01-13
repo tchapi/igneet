@@ -10,3 +10,5 @@ services:
         arguments: 
             entityManager: "@doctrine.orm.entity_manager"
             log_types: %general.log_types%
+            log_routing: %general.log_routing%
+            twig: "@twig"

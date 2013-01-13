@@ -1,4 +1,8 @@
 parameters:
+  general.log_routing:
+    user: u_show_user_profile
+    project: sp_show_project
+    idea: i_show_idea
   general.log_types:
 # User acting for his profile
     user_created: #

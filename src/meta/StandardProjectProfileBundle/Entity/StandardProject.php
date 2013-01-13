@@ -174,6 +174,14 @@ class StandardProject
 
     }
 
+    public function getLogName()
+    {
+        return $this->name;
+    }
+    public function getLogArgs(){
+        return array( 'slug' => $this->slug );
+    }
+
     /**
      * Get id
      *

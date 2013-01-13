@@ -4,7 +4,7 @@
   <li class="date">{{ step.name}}</li>
 
   {% for item in step.data %}
-    <li></li>
+    <li>{{ item|raw }}</li>
   {% endfor %}
 
 {#  {% endif %} #}
