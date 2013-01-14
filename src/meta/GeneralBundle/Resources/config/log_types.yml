@@ -5,34 +5,38 @@ parameters:
     idea: i_show_idea
   general.log_types:
 # User acting for his profile
-    user_created: #
+    user_created: # DONE
       type: user
-      icon: user
+      icon: check
       text: %%user$s has just joined us — hooray!
-    user_update_profile: #
+    user_update_profile: # DONE
       type: user
-      icon: user
+      icon: edit
       text: %%user$s has updated its profile.
-    user_follow_user: #
+    user_follow_user: # DONE
       type: user
-      icon: eye
+      icon: pushpin
       text: %%user$s has started following %%other_user$s.
 # User acting on a project
-    user_make_user_owner_project:
+    user_create_project: # DONE
       type: project
-      icon: user
-      text: %%other_user$s made %%user$s an owner of the project %%project$s.
-    user_make_user_participant_project:
+      icon: beaker
+      text: %%user$s created a new project %%project$s.
+    user_is_made_owner_project: # DONE
       type: project
-      icon: user
-      text: %%other_user$s made %%user$s a participant in the project %%project$s.
-    user_watch_project:
+      icon: key
+      text: %%user$s was promoted owner of the project %%project$s by %%other_user$s.
+    user_is_made_participant_project: # DONE
       type: project
-      icon: user
+      icon: group
+      text: %%user$s was made a participant in the project %%project$s by %%other_user$s.
+    user_watch_project: # DONE
+      type: project
+      icon: eye-open
       text: %%user$s has started watching the project %%project$s.
-    user_update_project_info:
+    user_update_project_info: # DONE
       type: project
-      icon: user
+      icon: edit
       text: %%user$s has updated some information for the project %%project$s.
     user_create_wikipage:
       type: project
@@ -58,30 +62,30 @@ parameters:
       type: project
       icon: user
       text: %%user$s has deleted the list %%list$s in the project %%project$s.
-    user_transform_idea_in_project: #
+    user_transform_idea_in_project: # DONE
       type: project
-      icon: user
+      icon: refresh
       text: %%user$s has created a new project %%project$s from the idea %%idea$s.
 # User acting on an idea
-    user_create_idea: #
+    user_create_idea: # DONE
       type: idea
-      icon: user
+      icon: lightbulb
       text: %%user$s created a new idea %%idea$s.
-    user_is_made_creator_idea: #
+    user_is_made_creator_idea: # DONE
       type: idea
-      icon: user
+      icon: share
       text: %%other_user$s transfered owner of the idea %%idea$s to %%user$s.
-    user_update_idea_info: #
+    user_update_idea_info: # DONE
       type: idea
-      icon: user
+      icon: edit
       text: %%user$s has updated some information for the idea %%idea$s.
-    user_is_made_participant_idea: #
+    user_is_made_participant_idea: # DONE
       type: idea
-      icon: user
-      text: %%other_user$s made %%user$s a participant in the idea %%idea$s.
-    user_watch_idea: #
+      icon: group
+      text: %%user$s was made a participant in the idea %%idea$s by %%other_user$s.
+    user_watch_idea: # DONE
       type: idea
-      icon: user
+      icon: eye-open
       text: %%user$s has started watching the idea %%idea$s.
 
 

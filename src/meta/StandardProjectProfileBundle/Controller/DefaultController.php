@@ -54,6 +54,9 @@ class DefaultController extends BaseController
                 $em->persist($standardProject);
                 $em->flush();
 
+                $logService = $this->container->get('logService');
+                $logService->log($authenticatedUser, 'user_create_project', $standardProject, array() );
+
                 $this->get('session')->setFlash(
                     'success',
                     'Your new project '.$standardProject->getName().' has successfully been created.'
@@ -120,6 +123,10 @@ class DefaultController extends BaseController
                 $this->base['standardProject']->setUpdatedAt(new \DateTime('now'));
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
+
+                $logService = $this->container->get('logService');
+                $logService->log($this->getUser(), 'user_update_project_info', $this->base['standardProject'], array());
+
             } elseif (count($errors) > 0) {
                 $response->setStatusCode(406);
                 $response->setContent($errors[0]->getMessage());
@@ -182,6 +189,9 @@ class DefaultController extends BaseController
 
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
+
+                $logService = $this->container->get('logService');
+                $logService->log($authenticatedUser, 'user_watch_project', $standardProject, array());
 
                 $this->get('session')->setFlash(
                     'success',

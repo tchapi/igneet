@@ -6,14 +6,14 @@ use Doctrine\ORM\EntityManager;
 use meta\UserProfileBundle\Entity\User,
     meta\GeneralBundle\Entity\Log\UserLogEntry,
     meta\GeneralBundle\Entity\Log\IdeaLogEntry,
-    meta\GeneralBundle\Entity\Log\StanardProjectLogEntry;
+    meta\GeneralBundle\Entity\Log\StandardProjectLogEntry;
 
 class LogService
 {
 
     private $em;
     private $log_types, $log_routing;
-    private $twig, $template;
+    private $twig, $template_link, $template_link_null, $template_item;
 
     public function __construct(EntityManager $entityManager, $log_types, $log_routing, $twig)
     {
@@ -24,7 +24,9 @@ class LogService
 
         $this->twig = $twig;
 
-        $this->template = 'metaGeneralBundle:Log:logLink.html.twig';
+        $this->template_link      = 'metaGeneralBundle:Log:logLink.html.twig';
+        $this->template_link_null = 'metaGeneralBundle:Log:logLink.null.html.twig';
+        $this->template_item      = 'metaGeneralBundle:Log:logItem.html.twig';
     }
 
     public function log($user, $logActionName, $subject, array $objects)
@@ -65,15 +67,24 @@ class LogService
 
     }
 
-    public function getText($logEntry)
+    public function getHTML($logEntry)
     {
 
-        if ( is_null($logEntry) ) return "No description available.";
+        if ( is_null($logEntry) ) {
+            return $this->twig->render($this->template_link_null);
+        }
 
-        $format = $this->log_types[$logEntry->getType()]['text'];
+        $format     = $this->log_types[$logEntry->getType()]['text'];
         $parameters = $this->getParameters($logEntry);
 
-        return $this->sprintfn( $format, $parameters );
+        // We get the formatted text for the log
+        $text = $this->sprintfn( $format, $parameters );
+
+        $date = $logEntry->getCreatedAt();
+        $user = $logEntry->getUser();
+        $icon = $this->log_types[$logEntry->getType()]['icon'];
+
+        return $this->twig->render($this->template_item, array( 'icon' => $icon, 'user' => $user, 'text' => $text, 'date' => $date));
     }
 
     private function getParameters($logEntry)
@@ -83,14 +94,14 @@ class LogService
 
         $parameters = array();
 
-        $parameters["user"] = $this->twig->render($this->template, 
+        $parameters["user"] = $this->twig->render($this->template_link, 
                                                 array( 'object' => $logEntry->getUser()->getLogName(),
                                                        'routing' => array( 'path' => $this->log_routing['user'], 
                                                                            'args' => $logEntry->getUser()->getLogArgs()
                                                                            )
                                                        )
                                                 );
-        $parameters["$type"] = $this->twig->render($this->template, 
+        $parameters["$type"] = $this->twig->render($this->template_link, 
                                                 array( 'object' => $logEntry->getSubject()->getLogName(),
                                                        'routing' => array( 'path' => $this->log_routing["$type"], 
                                                                            'args' => $logEntry->getSubject()->getLogArgs()
@@ -100,9 +111,9 @@ class LogService
 
         foreach ($logEntry->getObjects() as $key => $object) {
 
-            $parameters["$key"] = $this->twig->render($this->template, 
+            $parameters["$key"] = $this->twig->render($this->template_link, 
                                                 array( 'object' => $object['logName'],
-                                                       'routing' => array( 'path' => $this->log_routing[$object['logName']], 
+                                                       'routing' => array( 'path' => $this->log_routing[$object['routing']], 
                                                                            'args' => $object['args']
                                                                            )
                                                        )

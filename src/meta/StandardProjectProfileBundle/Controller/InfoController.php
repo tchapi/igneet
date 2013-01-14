@@ -44,6 +44,9 @@ class InfoController extends BaseController
 
                   $newParticipantOrOwner->addProjectsOwned($this->base['standardProject']);
 
+                  $logService = $this->container->get('logService');
+                  $logService->log($newParticipantOrOwner, 'user_is_made_owner_project', $this->base['standardProject'], array( 'other_user' => array( 'routing' => 'user', 'logName' => $this->getUser()->getLogName(), 'args' => array( 'username' => $this->getUser()->getUsername())) ));
+
                   $this->get('session')->setFlash(
                       'success',
                       'The user '.$newParticipantOrOwner->getFirstName().' is now owner of the project "'.$this->base['standardProject']->getName().'".'
@@ -52,6 +55,9 @@ class InfoController extends BaseController
                 } else {
 
                   $newParticipantOrOwner->addProjectsParticipatedIn($this->base['standardProject']);
+
+                  $logService = $this->container->get('logService');
+                  $logService->log($newParticipantOrOwner, 'user_is_made_participant_project', $this->base['standardProject'], array( 'other_user' => array( 'routing' => 'user', 'logName' => $this->getUser()->getLogName(), 'args' => array( 'username' => $this->getUser()->getUsername())) ));
 
                   $this->get('session')->setFlash(
                       'success',

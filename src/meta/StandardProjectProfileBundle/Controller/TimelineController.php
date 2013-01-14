@@ -49,7 +49,7 @@ class TimelineController extends BaseController
 
         foreach ($entries as $entry) {
           
-          $text = $logService->getText($entry);
+          $text = $logService->getHTML($entry);
           
           $createdAt = date_create($entry->getCreatedAt()->format('Y-m-d H:i:s'));
           $startOfToday = date_create('midnight');
@@ -57,19 +57,19 @@ class TimelineController extends BaseController
           if ( $createdAt > $startOfToday ) {
             
             // Today
-            array_push($this->timeframe['today']['data'], $text );
+            array_unshift($this->timeframe['today']['data'], $text );
 
           } else if ( $createdAt < date_create('midnight 6 days ago') ) {
 
             // Before
-            array_push($this->timeframe['before']['data'], $text );
+            array_unshift($this->timeframe['before']['data'], $text );
 
           } else {
 
             // Last seven days, by day
             $days = date_diff($createdAt, $startOfToday)->days + 1;
 
-            array_push($this->timeframe['d-'.$days]['data'], $text );
+            array_unshift($this->timeframe['d-'.$days]['data'], $text );
 
           }
 
