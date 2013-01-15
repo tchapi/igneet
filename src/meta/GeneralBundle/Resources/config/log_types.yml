@@ -4,8 +4,9 @@ parameters:
     project: sp_show_project
     idea: i_show_idea
     list: sp_show_project_list
+    wikipage: sp_show_project_wiki_show_page
   general.log_types:
-# User acting for his profile
+# User acting for his profile or on another user
     user_created: # DONE
       type: user
       icon: check
@@ -41,15 +42,15 @@ parameters:
       text: %%user$s has updated some information for the project %%project$s.
     user_create_wikipage:
       type: project
-      icon: user
+      icon: file-alt
       text: %%user$s has created a new page %%wikipage$s in project %%project$s's wiki.
     user_update_wikipage:
       type: project
-      icon: user
+      icon: edit
       text: %%user$s has updated the page %%wikipage$s in project %%project$s's wiki.
     user_delete_wikipage:
       type: project
-      icon: user
+      icon: trash
       text: %%user$s has deleted the page %%wikipage$s in project %%project$s's wiki.
     user_create_list: # DONE
       type: project
