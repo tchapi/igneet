@@ -94,6 +94,9 @@ class ListController extends BaseController
                 $em->persist($commonList);
                 $em->flush();
 
+                $logService = $this->container->get('logService');
+                $logService->log($this->getUser(), 'user_create_list', $this->base['standardProject'], array( 'list' => array( 'routing' => 'list', 'logName' => $commonList->getLogName(), 'args' => $commonList->getLogArgs()) ));
+
                 $this->get('session')->setFlash(
                     'success',
                     'Your list "'.$commonList->getName().'" was successfully created.'
@@ -145,7 +148,11 @@ class ListController extends BaseController
             if ($objectHasBeenModified === true && count($errors) == 0){
                 $commonList->setUpdatedAt(new \DateTime('now'));
                 $em = $this->getDoctrine()->getManager();
-                $return = $em->flush();
+                $em->flush();
+
+                $logService = $this->container->get('logService');
+                $logService->log($this->getUser(), 'user_update_list', $this->base['standardProject'], array( 'list' => array( 'routing' => 'list', 'logName' => $commonList->getLogName(), 'args' => $commonList->getLogArgs() ) ));
+
             } elseif (count($errors) > 0) {
                 $response->setStatusCode(406);
                 $response->setContent($errors[0]->getMessage());
@@ -169,6 +176,9 @@ class ListController extends BaseController
             if ($commonList){
 
                 $this->base['standardProject']->removeCommonList($commonList);
+
+                $logService = $this->container->get('logService');
+                $logService->log($this->getUser(), 'user_delete_list', $this->base['standardProject'], array( 'list' => array( 'routing' => null, 'logName' => $commonList->getLogName() )) );
 
                 $em = $this->getDoctrine()->getManager();
                 $em->remove($commonList);
@@ -213,6 +223,10 @@ class ListController extends BaseController
         $em->persist($commonListItem);
         $em->flush();
 
+        $logService = $this->container->get('logService');
+        $logService->log($this->getUser(), 'user_create_list_item', $this->base['standardProject'], array( 'list' => array( 'routing' => 'list', 'logName' => $commonList->getLogName(), 'args' => $commonList->getLogArgs() ),
+                                                                                                           'list_item' => array( 'routing' => null, 'logName' => $commonListItem->getLogName() )) );
+
         $this->get('session')->setFlash(
             'success',
             'Your new item was successfully created.'
@@ -229,6 +243,9 @@ class ListController extends BaseController
         $error = null;
 
         if ($this->base != false) {
+
+            $repository = $this->getDoctrine()->getRepository('metaStandardProjectProfileBundle:CommonList');
+            $commonList = $repository->findOneByIdInProject($listId, $this->base['standardProject']->getId());
 
             $repository = $this->getDoctrine()->getRepository('metaStandardProjectProfileBundle:CommonListItem');
             $commonListItem = $repository->findOneByIdInProjectAndList($id, $listId, $this->base['standardProject']->getId());
@@ -252,7 +269,12 @@ class ListController extends BaseController
             if ($objectHasBeenModified === true && count($errors) == 0){
                 $commonListItem->setUpdatedAt(new \DateTime('now'));
                 $em = $this->getDoctrine()->getManager();
-                $return = $em->flush();
+                $em->flush();
+
+                $logService = $this->container->get('logService');
+                $logService->log($this->getUser(), 'user_update_list_item', $this->base['standardProject'], array( 'list' => array( 'routing' => 'list', 'logName' => $commonList->getLogName(), 'args' => $commonList->getLogArgs()),
+                                                                                                                   'list_item' => array( 'routing' => null, 'logName' => $commonListItem->getLogName() )) );
+
             } elseif (count($errors) > 0) {
                 $error = $errors[0]->getMessage(); 
             }
@@ -282,6 +304,11 @@ class ListController extends BaseController
                 $em = $this->getDoctrine()->getManager();
                 $em->remove($commonListItem);
                 $em->flush();
+
+                $logService = $this->container->get('logService');
+                $logService->log($this->getUser(), 'user_delete_list_item', $this->base['standardProject'], array( 'list' => array( 'routing' => 'list', 'logName' => $commonList->getLogName(), 'args' => $commonList->getLogArgs()),
+                                                                                                              'list_item' => array( 'routing' => null,   'logName' => $commonListItem->getLogName() )) );
+
 
             } else {
 
@@ -317,7 +344,12 @@ class ListController extends BaseController
 
                 $commonListItem->setUpdatedAt(new \DateTime('now'));
                 $em = $this->getDoctrine()->getManager();
-                $return = $em->flush();
+                $em->flush();
+
+                $logService = $this->container->get('logService');
+                $action = $do?'do':'undo';
+                $logService->log($this->getUser(), 'user_'.$action.'_list_item', $this->base['standardProject'], array( 'list' => array( 'routing' => 'list', 'logName' => $commonList->getLogName(), 'args' => $commonList->getLogArgs()),
+                                                                                                                   'list_item' => array( 'routing' => null,   'logName' => $commonListItem->getLogName() )) );
 
             } else {
 

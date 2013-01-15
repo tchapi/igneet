@@ -91,6 +91,14 @@ class CommonList
 
     } 
 
+    public function getLogName()
+    {
+        return $this->name;
+    }
+    public function getLogArgs(){
+        return array( 'id' => $this->id, 'commonListSlug' => $this->slug );
+    }
+
     /**
      * Get id
      *

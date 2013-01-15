@@ -111,11 +111,20 @@ class LogService
 
         foreach ($logEntry->getObjects() as $key => $object) {
 
+            if ( is_null($object['routing']) ) {
+
+                $routing = null;
+
+            } else {
+
+                $routing = array( 'path' => $this->log_routing[$object['routing']], 
+                                  'args' => array_merge($logEntry->getSubject()->getLogArgs(), $object['args']) ); // we need to merge with the subject for the routing
+
+            }
+
             $parameters["$key"] = $this->twig->render($this->template_link, 
                                                 array( 'object' => $object['logName'],
-                                                       'routing' => array( 'path' => $this->log_routing[$object['routing']], 
-                                                                           'args' => $object['args']
-                                                                           )
+                                                       'routing' => $routing
                                                        )
                                                 );
             

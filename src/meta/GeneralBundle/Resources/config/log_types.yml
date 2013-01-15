@@ -3,6 +3,7 @@ parameters:
     user: u_show_user_profile
     project: sp_show_project
     idea: i_show_idea
+    list: sp_show_project_list
   general.log_types:
 # User acting for his profile
     user_created: # DONE
@@ -50,18 +51,38 @@ parameters:
       type: project
       icon: user
       text: %%user$s has deleted the page %%wikipage$s in project %%project$s's wiki.
-    user_create_list:
+    user_create_list: # DONE
       type: project
-      icon: user
+      icon: list
       text: %%user$s has created a new list %%list$s in the project %%project$s.
-    user_update_list:
+    user_update_list: # DONE
       type: project
-      icon: user
+      icon: edit
       text: %%user$s has updated the list %%list$s in the project %%project$s.
-    user_delete_list:
+    user_delete_list: # DONE
       type: project
-      icon: user
+      icon: trash
       text: %%user$s has deleted the list %%list$s in the project %%project$s.
+    user_create_list_item: # DONE
+      type: project
+      icon: indent-right
+      text: %%user$s has created a new list item %%list_item$s in the list %%list$s in the project %%project$s.
+    user_update_list_item: # DONE
+      type: project
+      icon: edit
+      text: %%user$s has updated the list item %%list_item$s of the list %%list$s in the project %%project$s.
+    user_delete_list_item: # DONE
+      type: project
+      icon: indent-left
+      text: %%user$s has deleted the list item %%list_item$s of the list %%list$s in the project %%project$s.
+    user_do_list_item: # DONE
+      type: project
+      icon: check
+      text: %%user$s has finished the list item %%list_item$s of the list %%list$s in the project %%project$s.
+    user_undo_list_item: # DONE
+      type: project
+      icon: check-empty
+      text: %%user$s has reopened the list item %%list_item$s of the list %%list$s in the project %%project$s.
     user_transform_idea_in_project: # DONE
       type: project
       icon: refresh

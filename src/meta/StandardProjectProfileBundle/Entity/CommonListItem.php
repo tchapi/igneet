@@ -75,6 +75,11 @@ class CommonListItem
         $this->done = false;
     }
 
+    public function getLogName()
+    {
+        return $this->text;
+    }
+
     /**
      * Get id
      *

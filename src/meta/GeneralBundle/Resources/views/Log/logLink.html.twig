@@ -1,1 +1,5 @@
+{% if routing %}
 <a href="{{ path(routing.path, routing.args) }}">{{ object }}</a>
+{% else %}
+<strong>{{ object }}</strong>
+{% endif %}

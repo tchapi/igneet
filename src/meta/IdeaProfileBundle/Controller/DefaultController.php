@@ -225,7 +225,7 @@ class DefaultController extends Controller
             $this->base['idea']->setCreator($newCreator);
 
             $logService = $this->container->get('logService');
-            $logService->log($newCreator, 'user_is_made_creator_idea', $this->base['idea'], array( 'other_user' => array( 'routing' => 'user', 'logName' => $this->getUser()->getLogName(), 'args' => array( 'username' => $this->getUser()->getUsername())) ));
+            $logService->log($newCreator, 'user_is_made_creator_idea', $this->base['idea'], array( 'other_user' => array( 'routing' => 'user', 'logName' => $this->getUser()->getLogName(), 'args' => $this->getUser()->getLogArgs()) ));
 
             $em = $this->getDoctrine()->getManager();
             $em->flush();
@@ -299,7 +299,7 @@ class DefaultController extends Controller
             $em->flush();
 
             $logService = $this->container->get('logService');
-            $logService->log($this->getUser(), 'user_transform_idea_in_project', $this->base['idea'], array( 'project' => array('routing' => 'project', 'logName' => $project->getLogName(), 'args' => array( 'slug' => $project->getSlug()) )));
+            $logService->log($this->getUser(), 'user_transform_idea_in_project', $this->base['idea'], array( 'project' => array('routing' => 'project', 'logName' => $project->getLogName(), 'args' => $project->getLogArgs() )));
 
 
             $this->get('session')->setFlash(
@@ -427,7 +427,7 @@ class DefaultController extends Controller
                 );
 
                 $logService = $this->container->get('logService');
-                $logService->log($newParticipant, 'user_is_made_participant_idea', $this->base['idea'], array( 'other_user' => array( 'routing' => 'user', 'logName' => $this->getUser()->getLogName(), 'args' => array( 'username' => $this->getUser()->getUsername())) ));
+                $logService->log($newParticipant, 'user_is_made_participant_idea', $this->base['idea'], array( 'other_user' => array( 'routing' => 'user', 'logName' => $this->getUser()->getLogName(), 'args' => $this->getUser()->getLogArgs()) ));
 
 
                 $em = $this->getDoctrine()->getManager();
