@@ -1,0 +1,143 @@
+Todo - General / Users :
+
+ ☐ Noms des labels dans signup et new project (labels du form je parle)
+ ☐ Help pour les champs
+
+ ✔ signup : avatar @done (13-01-16 21:15)
+ ☐ chgt d'avatar -----> Mais pas simple
+
+ ☐ Add a participant : faire le 'user chooser'
+
+ ☐ login et signup : focus sur le champ lors du chargement de la page
+
+ ☐ images dans assetic
+   \_ Sg fault in generate ?
+
+ ☐ Rajouter un badge 'YOU' quand l'utilisateur courant est affiché
+
+
+Todo - entité "CommonList":
+
+ ☐ Ajax pour new item, new list avec input a la place du 'New item' ?
+
+Todo - entité "Wiki":
+
+ ☐ tagging des pages wiki et des listes
+
+ ☐ Ajax pour new wiki page
+ 
+ ☐ Wiki - parenting
+
+Todo - Home :
+
+ ☐ Home : doit driver l'utilisateur en avant
+ ☐ listes : reconnaitre les urls en mettre un lien pour y aller directement a coté ;)
+ ☐ lien vers des droplr avec apercu auto
+   \_ tout ca doit se faire en JS a priori
+   \_ avoir du deep-linking dans le wiki
+
+Todo - entité "StandardProject":
+
+ ✔ infos d'un projet : quand pas de skills ne pas afficher le vase ? ou All skills welcome OK @done (13-01-16 21:13)
+
+ ✔ Créer un nouveau projet @done (13-01-16 20:51)
+
+ ☐ Background image pour les projets ?
+
+ ☐ log des modifs sur les projets
+
+Todo - entité "Comment":
+
+ ✔ Comments @done (13-01-16 20:51)
+   \_ WikiPageComment
+   \_ ListComment
+
+ ☐ Commentaires
+   \_ ResourceComment
+ ☐ Commenter un listItem en plus d'une liste ?
+ 
+Todo - entité "Idea":
+
+ ☐ log des modifs sur les ideas
+
+ ✔ Description / Info @done (13-01-16 21:18)
+  \_ description textuelle principale OK OK
+  \_ deux champs : Concept et Connaissance OK OK
+
+ ✔ Séparer Background / Concept @done (13-01-16 20:50)
+
+ ✔ delete user --> attention : vérifier qu'il y a bien des owners etc .. @done (13-01-16 20:50)
+
+ ✔ login nécessaire pour tout @done (13-01-16 20:48)
+ ✔ un projet est privé au participants / owners @done (13-01-16 20:48)
+ ✔ events : a dégager @done (13-01-16 20:48)
+ ✔ timeline : tu peux pas filtrer @done (13-01-16 20:48)
+
+ ✔ idée peut etre modifiée que par son createur OK OK @done (13-01-16 20:51)
+ ✔ mettre des participants --> mettre 'from idea' @done (13-01-16 20:51)
+
+ ☐ tagguer dans le fil de discussion Concept ou Knowledge
+ ☐ pouvoir tagguer un commentaire en 'valuable'
+     --> passer automatiquement un commentaire dans l'un ou l'autre des champs textes
+
+ ☐ Transform into project : tout les commentaires de l'idée sont réassociés avec une marque <hr> dans la timeline pour séparer quand c'est devenu un projet
+
+Todo - Meta:
+
+ ☐ tous les meta sont publics pour les gens qui y sont et pas pour les autres
+ ☐ projects: page info est publique + shoutbox quand les posts sont taggés 'outside'
+
+  ☐ une idée est publique dans la meta
+   - discussion
+    tagger 'concept' ou 'connaissance' dans le fil de discussion
+
+ ☐ au niveau meta, la timeline ne ressort que les trucs publics des projets en dessous
+
+ ☐ Afficher le meta dans les infos d'un projet
+
+ ☐ Commentaires
+   \_ MetaComment = shoutbox-like
+
+
+Basic Workflow:
+
+ ✔ authenticated ? @done (13-01-16 20:48)
+  false :> home du projet (info ou timeline)
+
+ ✔ user owning or participant ? @done (13-01-16 20:48)
+  false :> home ou project
+
+ ✔ check if object is in project @done (13-01-16 20:48)
+  false :> 404
+
+Routing:
+
+ ✔ PROJECT @done (13-01-16 20:47)
+project/{slug}/todolist/new --> POST new TodoList or form
+project/{slug}/todolist/{id}/{slug} --> todolist by Id
+   -  id numérique
+project/{slug}/todolists --> home, first alpha
+
+ ✔ TIMELINE @done (13-01-16 20:47)
+project/{slug}/timeline/{page}
+     - defaults : page:1 id numérique
+
+ ☐ EVENTS
+project/{slug}/events  ---> vue calendrier
+project/{slug}/events/{year}    --> All events of the year (aaaa)
+project/{slug}/events/{year}/{month}    --> All events of the month (aaaa/mm)
+project/{slug}/events/{year}/{month}/{day}    --> All events of the day (aaaa/mm/dd)
+project/{slug}/event/{id} --> specific event (ID)
+
+ ☐ RESSOURCES
+project/{slug}/resources --> liste de toutes les ressources
+project/{slug}/resource/{id}/{slug} --> page de la ressource (page simple)
+project/{slug}/resource/tag/{tag} --> page listing toutes les ressources avec le tag
+ 
+ ✔ WIKI @done (13-01-16 20:47)
+# --> Markdown parser ???
+project/{slug}/wiki --> home du wiki
+project/{slug}/wiki/{pageSlug} --> page du wiki  # PAS DE PAGE POUR LES DOSSIERS
+   -- le pageSlug est choisi par l‘utilisateur
+
+
