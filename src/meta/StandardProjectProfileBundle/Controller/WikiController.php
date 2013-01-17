@@ -121,6 +121,9 @@ class WikiController extends BaseController
                 $em->persist($wikiPage);
                 $em->flush();
 
+                $logService = $this->container->get('logService');
+                $logService->log($this->getUser(), 'user_create_wikipage', $this->base['standardProject'], array( 'wikipage' => array( 'routing' => 'wikipage', 'logName' => $wikiPage->getLogName(), 'args' => $wikiPage->getLogArgs()) ));
+
                 $this->get('session')->setFlash(
                     'success',
                     'Your page "'.$wikiPage->getTitle().'" was successfully created.'
@@ -179,7 +182,11 @@ class WikiController extends BaseController
                 if ($objectHasBeenModified === true && count($errors) == 0){
                     $wikiPage->setUpdatedAt(new \DateTime('now'));
                     $em = $this->getDoctrine()->getManager();
-                    $return = $em->flush();
+                    $em->flush();
+
+                    $logService = $this->container->get('logService');
+                    $logService->log($this->getUser(), 'user_update_wikipage', $this->base['standardProject'], array( 'wikipage' => array( 'routing' => 'wikipage', 'logName' => $wikiPage->getLogName(), 'args' => $wikiPage->getLogArgs() ) ));
+
                 } elseif (count($errors) > 0) {
                     $response->setStatusCode(406);
                     $response->setContent($errors[0]->getMessage());
@@ -210,6 +217,9 @@ class WikiController extends BaseController
 
                 if ($wikiPage){
                   $wiki->removePage($wikiPage);
+
+                  $logService = $this->container->get('logService');
+                  $logService->log($this->getUser(), 'user_delete_wikipage', $this->base['standardProject'], array( 'wikipage' => array( 'routing' => null, 'logName' => $wikiPage->getLogName() )) );
 
                   $em = $this->getDoctrine()->getManager();
                   $em->remove($wikiPage);

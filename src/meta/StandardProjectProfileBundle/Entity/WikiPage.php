@@ -99,6 +99,15 @@ class WikiPage
         $this->comments = new ArrayCollection();
     }
 
+
+    public function getLogName()
+    {
+        return $this->title;
+    }
+    public function getLogArgs(){
+        return array( 'id' => $this->id, 'pageSlug' => $this->slug );
+    }
+
     /**
      * Get id
      *

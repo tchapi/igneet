@@ -1,7 +1,12 @@
+
+## TODO ##
+
 Todo - General / Users :
 
  ☐ Noms des labels dans signup et new project (labels du form je parle)
  ☐ Help pour les champs
+
+ ☐ Boutons bootstrap pour markdown editor : ceux qui manquent
 
  ✔ signup : avatar @done (13-01-16 21:15)
  ☐ chgt d'avatar -----> Mais pas simple
@@ -15,10 +20,13 @@ Todo - General / Users :
 
  ☐ Rajouter un badge 'YOU' quand l'utilisateur courant est affiché
 
+ ☐ Pagination générale sur les objets
 
 Todo - entité "CommonList":
 
  ☐ Ajax pour new item, new list avec input a la place du 'New item' ?
+
+ ☐ Highlight la page en cours dans la liste de gauche
 
 Todo - entité "Wiki":
 
@@ -27,6 +35,8 @@ Todo - entité "Wiki":
  ☐ Ajax pour new wiki page
  
  ☐ Wiki - parenting
+
+ ☐ Highlight la page en cours dans la liste de gauche
 
 Todo - Home :
 
@@ -121,6 +131,8 @@ project/{slug}/todolists --> home, first alpha
  ✔ TIMELINE @done (13-01-16 20:47)
 project/{slug}/timeline/{page}
      - defaults : page:1 id numérique
+
+ ✔ LISTS @done (13-01-17 19:01)
 
  ☐ EVENTS
 project/{slug}/events  ---> vue calendrier
