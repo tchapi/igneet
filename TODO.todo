@@ -3,8 +3,10 @@
 
 Todo - General / Users :
 
- ☐ Noms des labels dans signup et new project (labels du form je parle)
- ☐ Help pour les champs
+ ✔ Noms des labels dans signup et new project (labels du form je parle) @done (13-01-19 15:10)
+ ✔ Help pour les champs @done (13-01-19 15:10)
+
+ ☐ Required ne s'affiche pas pour password email et textarea ?
 
  ☐ Boutons bootstrap pour markdown editor : ceux qui manquent
 
@@ -48,13 +50,12 @@ Todo - Home :
 
 Todo - entité "StandardProject":
 
- ✔ infos d'un projet : quand pas de skills ne pas afficher le vase ? ou All skills welcome OK @done (13-01-16 21:13)
-
  ✔ Créer un nouveau projet @done (13-01-16 20:51)
+ ✔ infos d'un projet : quand pas de skills ne pas afficher le vase ? ou All skills welcome OK @done (13-01-16 21:13)
 
  ☐ Background image pour les projets ?
 
- ☐ log des modifs sur les projets
+ ✔ log des modifs sur les projets @done (13-01-17 23:08)
 
 Todo - entité "Comment":
 

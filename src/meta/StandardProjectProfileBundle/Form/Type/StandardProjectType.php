@@ -9,17 +9,19 @@ class StandardProjectType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name');
-        $builder->add('slug');
-        $builder->add('headline', 'text',  array('required' => false));
+        $builder->add('name', null, array('label'  => 'Name of this project', 'attr' => array( 'class' => 'input-xxlarge', 'placeholder' => 'My new project')));
+        $builder->add('slug', null, array('label'  => 'URL Slug', 'attr' => array( 'class' => 'input-xxlarge', 'help' => 'Accepted characters : alphanumeric and hyphens', 'placeholder' => 'my-new-project')));
+        $builder->add('headline', 'text',  array('required' => false, 'label'  => 'Headline', 'attr' => array('class' => 'input-xxlarge', 'help' => 'Give your project some nice catchline')));
 
-        $builder->add('file', 'file', array('required' => false));
+        $builder->add('file', 'file', array('required' => false, 'label' => 'Picture'));
 
         $builder->add('neededSkills', 'entity', array(
             'multiple' => true, 
             'required' => false, 
             'property' => 'name',
-            'class' => 'meta\UserProfileBundle\Entity\Skill'
+            'class' => 'meta\UserProfileBundle\Entity\Skill',
+            'label' => 'Skills needed for this project (if any)',
+            'attr' => array('class' => 'select2-trigger')
             ));
     }
     

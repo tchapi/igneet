@@ -8,31 +8,58 @@
   </div>
   <div class="objectHeader">
     <h2><strong>Create</strong> a new idea</h2>
-    <h4>And gather a strong community of experts o help you go forward.</h4>
+    <h4>And gather a strong community of experts to help you go forward.</h4>
     <p>You can add more information once the idea is created ...</p>
   </div>
 {% endblock %}
 
 {% form_theme form _self %}
 
+{% use 'form_div_layout.html.twig' with field_widget as base_field_widget %}
+
+{% block field_widget %}
+    {{ block('base_field_widget') }}
+    {% if required or attr.help is defined %}
+        <span class="help-block">{% if required %}<span class="muted">* Required.</span>{% endif %} {% if attr.help is defined %}{{ attr.help }}{% endif %}</span>
+    {% endif %}
+
+{% endblock %}
+  
+{% block form_errors %}
+    {% spaceless %}
+        {% if errors|length > 0 %}
+        <ul class="error_list">
+            {% for error in errors %}
+                <li><i class="icon-warning-sign"></i> {{
+                    error.messagePluralization is null
+                        ? error.messageTemplate|trans(error.messageParameters, 'validators')
+                        : error.messageTemplate|transchoice(error.messagePluralization, error.messageParameters, 'validators')
+                }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    {% endspaceless %}
+{% endblock form_errors %}
+
 {% block form_row %}
-<section>
-<div class="sectionTitle">{{ form_label(form) }}</div>
-<div class="sectionContent">
-    <div class="errors">{{ form_errors(form) }}</div>
+<div class="control-group {% if errors %}error{% endif %}">
+  <label class="control-label" for="inputEmail">{{ form_label(form) }}</label>
+  <div class="controls">
     {{ form_widget(form) }}
+    {% if errors %}
+    <span class="help-block error-block">{{ form_errors(form) }}</span>
+    {% endif %}
+  </div>
 </div>
-</section>
 {% endblock form_row %}
 
 {% block content %}
-<form action="{{ path('i_new_idea') }}" method="post" {{ form_enctype(form) }}>
-    {{ form_widget(form) }}
-  <section>
-    <div class="sectionTitle"></div>
-    <div class="sectionContent">
-      <input type="submit" value="Create" class="btn btn-success" />
-    </div>
-  </section>
-</form>
+<div class="formContent">
+  <form action="{{ path('i_new_idea') }}" method="post" {{ form_enctype(form) }} class="form-horizontal">
+      {{ form_widget(form) }}
+      <div class="form-actions">
+        <input type="submit" value="Create" class="btn btn-success" />
+      </div>
+  </form>
+</div>
 {% endblock %}
