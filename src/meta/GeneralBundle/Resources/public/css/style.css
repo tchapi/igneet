@@ -122,6 +122,16 @@ div.content div.column h4{
   display: inline-block;
 }
 
+div.content div.formContent form,
+div.content div.formContent .form-actions{
+  margin-bottom: 0;
+  margin-top: 20px;
+}
+div.content div.formContent .help-block{
+  color: #bbb;
+  font-size: 0.9em;
+}
+
 div.smallObjectInfos{
   display: inline-block;
   vertical-align: top;
@@ -308,6 +318,20 @@ textarea.wmd-input{
   margin-bottom: 20px;
 }
 
+
+/*****************/
+/*     Forms     */
+/*****************/
+
+.error-block ul{
+  list-style-type: none;
+  margin: 0;
+}
+.error-block ul li {
+  color: red;
+}
+
+
 /*****************/
 /* Common Avatar */
 /*****************/
@@ -417,11 +441,6 @@ div.objectHeader
 {
   display: inline-block;
   max-width: 740px;
-}
-div.errors ul{
-  list-style: none;
-  margin: 0;
-  color: red;
 }
 
 

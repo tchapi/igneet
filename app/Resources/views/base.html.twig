@@ -58,7 +58,8 @@
 
 {% block javascripts %}
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-{% javascripts '@metaGeneralBundle/Resources/public/js/bootstrap.js' filter='?yui_js' %}
+{% javascripts '@metaGeneralBundle/Resources/public/js/bootstrap.js'
+               '@metaGeneralBundle/Resources/public/js/select2.js' filter='?yui_js' %}
         <script src="{{ asset_url }}"></script>
 {% endjavascripts %}
 {% endblock %}
