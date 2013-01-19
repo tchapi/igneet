@@ -152,5 +152,3 @@ project/{slug}/resource/tag/{tag} --> page listing toutes les ressources avec le
 project/{slug}/wiki --> home du wiki
 project/{slug}/wiki/{pageSlug} --> page du wiki  # PAS DE PAGE POUR LES DOSSIERS
    -- le pageSlug est choisi par l‘utilisateur
-
-
