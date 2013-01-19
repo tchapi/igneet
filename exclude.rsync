@@ -1,0 +1,11 @@
+# exclude.rsync
+.DS_Store
+.gitignore
+.git
+.svn
+svn-commit*
+*.swp
+test*
+exclude.rsync
+TODO*
+README.md
