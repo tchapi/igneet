@@ -1,10 +1,10 @@
 <?php
 
-namespace Acme\UserProfileBundle\DataFixtures\ORM;
+namespace meta\UserProfileBundle\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Acme\UserProfileBundle\Entity\User;
+use meta\UserProfileBundle\Entity\Skill;
 
 class LoadSkillData implements FixtureInterface
 {
