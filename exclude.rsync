@@ -9,3 +9,5 @@ test*
 exclude.rsync
 TODO*
 README.md
+LICENSE
+UPGRADE.md
