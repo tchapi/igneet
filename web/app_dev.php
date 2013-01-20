@@ -12,6 +12,11 @@ if (isset($_SERVER['HTTP_CLIENT_IP'])
     || isset($_SERVER['HTTP_X_FORWARDED_FOR'])
     || !in_array(@$_SERVER['REMOTE_ADDR'], array(
         '127.0.0.1',
+        '109.190.90.220',
+<<<<<<< HEAD
+=======
+        '37.59.11.115',
+>>>>>>> master
         '::1',
     ))
 ) {
