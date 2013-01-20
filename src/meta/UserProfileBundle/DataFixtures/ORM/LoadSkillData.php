@@ -53,7 +53,7 @@ class LoadSkillData implements FixtureInterface
         $skill->setSlug('tech-consulting');
         $skill->setName('Tech Consulting');
         $skill->setDescription('Consulting & Technical expertise');
-        $skill->setColor('00CCBB')
+        $skill->setColor('00CCBB');
 
         $manager->persist($skill);
         $manager->flush();
