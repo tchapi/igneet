@@ -19,8 +19,7 @@ class UserType extends AbstractType
         $builder->add('file', 'file', array('label'  => 'Your avatar', 'required' => false, 'attr' => array('help' => 'If no file is provided, your default profile picture will be retrieved from gravatar.com')));
 
         $builder->add('headline', 'text',  array('label'  => 'Headline', 'required' => false, 'attr' => array('class' => 'input-xxlarge', 'help' => 'How would you sum up who you are ?' )));
-        $builder->add('about', 'textarea', array('label'  => 'About you', 'required' => false, 'attr' => array('class' => 'input-xxlarge', 'help' => 'Tell us a bit more about you ...')));
-
+        
         $builder->add('skills', 'entity', array(
             'label'  => 'Your skills', 
             'multiple' => true, 
