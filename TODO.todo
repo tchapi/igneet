@@ -3,25 +3,27 @@
 
 Todo - General / Users :
 
+ ✔ signup : avatar @done (13-01-16 21:15)
+ ☐ chgt d'avatar -----> Mais pas simple
+
+ ☐ login et signup : focus sur le champ lors du chargement de la page
+
+ ☐ Mettre à jour les popin de choix des skills avec la partie 'tags' de X-editable
+
+ ☐ Rajouter un badge 'YOU' quand l'utilisateur courant est affiché
+
+ ☐ Pagination générale sur les objets
+
  ✔ Noms des labels dans signup et new project (labels du form je parle) @done (13-01-19 15:10)
  ✔ Help pour les champs @done (13-01-19 15:10)
 
  ✔ Required ne s'affiche pas pour password email et textarea ? @done (13-01-21 23:46)
 
- ☐ Boutons bootstrap pour markdown editor : ceux qui manquent
-
- ✔ signup : avatar @done (13-01-16 21:15)
- ☐ chgt d'avatar -----> Mais pas simple
+ ✔ Boutons bootstrap pour markdown editor : ceux qui manquent @done (13-01-22 00:10)
 
  ✔ Add a participant : faire le 'user chooser' @done (13-01-21 23:46)
 
- ☐ login et signup : focus sur le champ lors du chargement de la page
-
  ✔ images dans assetic : ok apparemment @done (13-01-20 19:41)
-
- ☐ Rajouter un badge 'YOU' quand l'utilisateur courant est affiché
-
- ☐ Pagination générale sur les objets
 
 Todo - entité "CommonList":
 
@@ -39,14 +41,6 @@ Todo - entité "Wiki":
 
  ✔ Highlight la page en cours dans la liste de gauche @done (13-01-22 00:00)
 
-Todo - Home :
-
- ☐ Home : doit driver l'utilisateur en avant
- ☐ listes : reconnaitre les urls en mettre un lien pour y aller directement a coté ;)
- ☐ lien vers des droplr avec apercu auto
-   \_ tout ca doit se faire en JS a priori
-   \_ avoir du deep-linking dans le wiki
-
 Todo - entité "StandardProject":
 
  ✔ Créer un nouveau projet @done (13-01-16 20:51)
@@ -61,6 +55,8 @@ Todo - entité "Comment":
  ✔ Comments @done (13-01-16 20:51)
    \_ WikiPageComment
    \_ ListComment
+
+ ☐ Commentaires en tant que LOG  ?? Comment faire
 
  ☐ Commentaires
    \_ ResourceComment
@@ -91,6 +87,14 @@ Todo - entité "Idea":
      --> passer automatiquement un commentaire dans l'un ou l'autre des champs textes
 
  ☐ Transform into project : tout les commentaires de l'idée sont réassociés avec une marque <hr> dans la timeline pour séparer quand c'est devenu un projet
+
+Todo - Home :
+
+ ☐ Home : doit driver l'utilisateur en avant
+ ☐ listes : reconnaitre les urls en mettre un lien pour y aller directement a coté ;)
+ ☐ lien vers des droplr avec apercu auto
+   \_ tout ca doit se faire en JS a priori
+   \_ avoir du deep-linking dans le wiki
 
 Todo - Meta:
 
