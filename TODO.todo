@@ -6,14 +6,14 @@ Todo - General / Users :
  ✔ Noms des labels dans signup et new project (labels du form je parle) @done (13-01-19 15:10)
  ✔ Help pour les champs @done (13-01-19 15:10)
 
- ☐ Required ne s'affiche pas pour password email et textarea ?
+ ✔ Required ne s'affiche pas pour password email et textarea ? @done (13-01-21 23:46)
 
  ☐ Boutons bootstrap pour markdown editor : ceux qui manquent
 
  ✔ signup : avatar @done (13-01-16 21:15)
  ☐ chgt d'avatar -----> Mais pas simple
 
- ☐ Add a participant : faire le 'user chooser'
+ ✔ Add a participant : faire le 'user chooser' @done (13-01-21 23:46)
 
  ☐ login et signup : focus sur le champ lors du chargement de la page
 
@@ -27,7 +27,7 @@ Todo - entité "CommonList":
 
  ☐ Ajax pour new item, new list avec input a la place du 'New item' ?
 
- ☐ Highlight la page en cours dans la liste de gauche
+ ✔ Highlight la page en cours dans la liste de gauche @done (13-01-22 00:00)
 
 Todo - entité "Wiki":
 
@@ -37,7 +37,7 @@ Todo - entité "Wiki":
  
  ☐ Wiki - parenting
 
- ☐ Highlight la page en cours dans la liste de gauche
+ ✔ Highlight la page en cours dans la liste de gauche @done (13-01-22 00:00)
 
 Todo - Home :
 
@@ -52,7 +52,7 @@ Todo - entité "StandardProject":
  ✔ Créer un nouveau projet @done (13-01-16 20:51)
  ✔ infos d'un projet : quand pas de skills ne pas afficher le vase ? ou All skills welcome OK @done (13-01-16 21:13)
 
- ☐ Background image pour les projets ?
+ ✘ Background image pour les projets ? BOF BOF @cancelled (13-01-21 23:49)
 
  ✔ log des modifs sur les projets @done (13-01-17 23:08)
 
@@ -68,7 +68,7 @@ Todo - entité "Comment":
  
 Todo - entité "Idea":
 
- ☐ log des modifs sur les ideas
+ ☐ log des modifs sur les ideas : reste l'affichage sur une timeline ?
 
  ✔ Description / Info @done (13-01-16 21:18)
   \_ description textuelle principale OK OK
@@ -125,12 +125,12 @@ Routing:
  ✔ PROJECT @done (13-01-16 20:47)
 project/{slug}/todolist/new --> POST new TodoList or form
 project/{slug}/todolist/{id}/{slug} --> todolist by Id
-   -  id numérique
+   \--  id numérique
 project/{slug}/todolists --> home, first alpha
 
  ✔ TIMELINE @done (13-01-16 20:47)
 project/{slug}/timeline/{page}
-     - defaults : page:1 id numérique
+    \-- defaults : page:1 id numérique
 
  ✔ LISTS @done (13-01-17 19:01)
 
@@ -150,4 +150,4 @@ project/{slug}/resource/tag/{tag} --> page listing toutes les ressources avec le
 # --> Markdown parser ???
 project/{slug}/wiki --> home du wiki
 project/{slug}/wiki/{pageSlug} --> page du wiki  # PAS DE PAGE POUR LES DOSSIERS
-   -- le pageSlug est choisi par l‘utilisateur
+ \-- le pageSlug est choisi par l‘utilisateur

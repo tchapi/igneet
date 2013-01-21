@@ -593,10 +593,14 @@ ul.lists{
   margin: 5px 0 0 0;
 }
 ul.lists li{
-  width: 190px;
+  width: 180px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+ul.lists li.active{
+  background: #DDD;
+  position: relative;
 }
 div.menu_new{
   margin-top: 10px;
