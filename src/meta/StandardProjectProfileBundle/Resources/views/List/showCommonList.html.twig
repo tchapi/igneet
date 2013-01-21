@@ -48,7 +48,7 @@
   Lists :
   <ul class="lists">
   {% for list in commonLists %}
-      <li>
+      <li{% if list.id == commonList.id %} class="active"{% endif %}>
         <i class="icon-list-ol"></i> {% if base.canEdit %}<a href="{{ path('sp_show_project_list_delete', {'slug': base.standardProject.slug, 'id': list.id}) }}"><i class="icon-remove-sign"></i></a>{% endif %} <a href="{{ path('sp_show_project_list', {'slug': base.standardProject.slug, 'id': list.id, 'commonListSlug': list.slug }) }}">{{ list.name }}</a>
       </li>
   {% endfor %}
