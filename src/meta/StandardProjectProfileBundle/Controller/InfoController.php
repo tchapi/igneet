@@ -20,8 +20,13 @@ class InfoController extends BaseController
         if ($this->base == false) 
           return $this->forward('metaStandardProjectProfileBundle:Default:showRestricted', array('slug' => $slug));
 
+        $targetOwnerAsBase64 = array ('slug' => 'sp_add_owner_to_project', 'params' => array('slug' => $slug, 'owner' => true));
+        $targetParticipantAsBase64 = array ('slug' => 'sp_add_participant_to_project', 'params' => array('slug' => $slug, 'owner' => false));
+
         return $this->render('metaStandardProjectProfileBundle:Info:showInfo.html.twig', 
-            array('base' => $this->base));
+            array('base' => $this->base, 
+                  'targetOwnerAsBase64' => base64_encode(json_encode($targetOwnerAsBase64)), 
+                  'targetParticipantAsBase64' => base64_encode(json_encode($targetParticipantAsBase64)) ));
     }
 
     /*  ####################################################

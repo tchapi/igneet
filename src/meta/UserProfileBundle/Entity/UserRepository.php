@@ -40,4 +40,18 @@ class UserRepository extends EntityRepository
             ->getResult();
             
   }
+
+  public function findAllUsersExceptMe($userId)
+  {
+    
+    $qb = $this->getEntityManager()->createQueryBuilder();
+
+    return $qb->select('u')
+            ->from('metaUserProfileBundle:User', 'u')
+            ->where('u.id <> :userId')
+            ->setParameter('userId', $userId)
+            ->getQuery()
+            ->getResult();
+
+  }
 }

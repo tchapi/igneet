@@ -41,7 +41,7 @@
       <i class="icon-calendar"></i> Created on {{ base.idea.createdAt|date("d/m/Y") }}
     </div>
     <div>
-      <i class="icon-user"></i> An idea by <a href="{{ path('u_show_user_profile', {'username': base.idea.creator.username}) }}">{{ base.idea.creator.firstName }} {{ base.idea.creator.lastName }}</a>{% if base.isCreator %} <span class="muted">( <i class="icon-exchange"></i><a href="{{ path('u_choose_user') }}"> Transfer ownership</a> )</span>{% endif %}
+      <i class="icon-user"></i> An idea by <a href="{{ path('u_show_user_profile', {'username': base.idea.creator.username}) }}">{{ base.idea.creator.firstName }} {{ base.idea.creator.lastName }}</a>{% if base.isCreator %} <span class="muted">( <i class="icon-exchange"></i><a href="{{ path('u_choose_user', {'targetAsBase64': targetOwnerAsBase64 }) }}"> Transfer ownership</a> )</span>{% endif %}
     </div>
     {% if base.isCreator %}
     <div>
@@ -93,7 +93,7 @@
   </div>
 </section>
 <section class="colored">
-  <div class="sectionTitle">{% if base.idea.participants|length > 0 %}Participants : {% else %}No participant yet ...{% endif %}</div>
+  <div class="sectionTitle">{% if base.idea.participants|length > 0 or base.isCreator %}Participants : {% else %}No participant yet ...{% endif %}</div>
   <ul class="users sectionContent">
   {% for participatingUser in base.idea.participants %}
       <li>
@@ -108,7 +108,7 @@
   {% endfor %}
   {% if base.isCreator %}
       <li>
-        <a href="{{ path('u_choose_user', {'owner': false}) }}">
+        <a href="{{ path('u_choose_user', {'targetAsBase64': targetParticipantAsBase64 }) }}">
           <div class="smallTextAvatar"><i class="icon-plus-sign"></i></div>
           <div class="smallObjectInfos">
             <span>Add a Participant</span>

@@ -30,7 +30,6 @@
     {% if required or attr.help is defined %}
         <span class="help-block">{% if required %}<span class="muted">* Required.</span>{% endif %} {% if attr.help is defined %}{{ attr.help }}{% endif %}</span>
     {% endif %}
-
 {% endblock %}
   
 {% block form_errors %}

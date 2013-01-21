@@ -17,8 +17,7 @@ Todo - General / Users :
 
  ☐ login et signup : focus sur le champ lors du chargement de la page
 
- ☐ images dans assetic
-   \_ Sg fault in generate ?
+ ✔ images dans assetic : ok apparemment @done (13-01-20 19:41)
 
  ☐ Rajouter un badge 'YOU' quand l'utilisateur courant est affiché
 

@@ -1,0 +1,34 @@
+{% extends 'metaUserProfileBundle::layout.html.twig' %}
+
+{% block title %}{{ parent() }} > Choose a user{% endblock %}
+
+{% block header %}
+  <div class="headerAvatarAndActions">
+    <div class="textAvatar"><i class="icon-search"></i></div>
+  </div>
+  <div class="objectHeader">
+    <h2>Choose a user</h2>
+    <h4>You need to indicate a specific user to continue with your request.</h4>
+  </div>
+{% endblock %}
+
+
+{% block content %}
+<div class="formContent">
+  <form action="{{ path('u_choose_user', { 'targetAsBase64' : targetAsBase64 }) }}" method="post" class="form-horizontal">
+      <div class="control-group ">
+        <label class="control-label" for="inputEmail"><label for="username" class="required">Choose a user : </label></label>
+        <div class="controls">
+          <select id="username" name="username" required="required">
+            {% for user in users %}
+            <option>{{ user.username }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      <div class="form-actions">
+        <input type="submit" value="Choose this user" class="btn btn-success" />
+      </div>
+  </form>
+</div>
+{% endblock %}

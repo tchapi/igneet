@@ -39,7 +39,7 @@ u_show_list_recent_created:
     defaults: { _controller: metaUserProfileBundle:Default:listRecentlyCreated, max: 10 }
 
 u_choose_user:
-    pattern:  /people/choose
+    pattern:  /people/choose/{targetAsBase64}
     defaults: { _controller: metaUserProfileBundle:Default:choose }
 
 u_follow_user:

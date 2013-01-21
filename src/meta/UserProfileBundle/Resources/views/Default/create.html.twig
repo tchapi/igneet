@@ -30,9 +30,16 @@
     {% if required or attr.help is defined %}
         <span class="help-block">{% if required %}<span class="muted">* Required.</span>{% endif %} {% if attr.help is defined %}{{ attr.help }}{% endif %}</span>
     {% endif %}
-
 {% endblock %}
-  
+
+{% block email_widget %}
+    {{ block('base_field_widget') }}
+    {% if required or attr.help is defined %}
+        <span class="help-block">{% if required %}<span class="muted">* Required.</span>{% endif %} {% if attr.help is defined %}{{ attr.help }}{% endif %}</span>
+    {% endif %}
+{% endblock %}
+
+
 {% block form_row %}
 <div class="control-group {% if errors %}error{% endif %}">
   <label class="control-label" for="inputEmail">{{ form_label(form) }}</label>
