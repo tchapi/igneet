@@ -43,7 +43,7 @@
   {% endfor %}
   {% if base.isOwning %}
       <li>
-        <a href="{{ path('u_choose_user', {'owner': true}) }}">
+        <a href="{{ path('u_choose_user', {'targetAsBase64': targetOwnerAsBase64 }) }}">
           <div class="smallTextAvatar"><i class="icon-plus-sign"></i></div>
           <div class="smallObjectInfos">
             <span>Add an Owner</span>
@@ -53,7 +53,7 @@
   {% endif %}
   </ul>
 </section>
-{% if base.standardProject.participants|length > 0 %}
+{% if base.standardProject.participants|length > 0 or base.isOwning %}
 <section class="colored">
   <div class="sectionTitle">Participants : </div>
   <ul class="users sectionContent">
@@ -70,7 +70,7 @@
   {% endfor %}
   {% if base.isOwning %}
       <li>
-        <a href="{{ path('u_choose_user', {'owner': false}) }}">
+        <a href="{{ path('u_choose_user', {'targetAsBase64': targetParticipantAsBase64 }) }}">
           <div class="smallTextAvatar"><i class="icon-plus-sign"></i></div>
           <div class="smallObjectInfos">
             <span>Add a Participant</span>

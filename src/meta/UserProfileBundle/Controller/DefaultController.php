@@ -359,7 +359,6 @@ class DefaultController extends Controller
     {
 
         $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
-
         $users = $repository->findRecentlyCreatedUsers($max);
 
         return $this->render('metaUserProfileBundle:Default:list.html.twig', array('users' => $users));
@@ -396,9 +395,47 @@ class DefaultController extends Controller
     /*
      * Allow to choose for a user
      */
-    public function chooseAction(Request $request)
+    public function chooseAction(Request $request, $targetAsBase64)
     {
 
+        $target = json_decode(base64_decode($targetAsBase64), true);
+
+        if ($request->isMethod('POST')) {
+
+            $username = $request->request->get('username');
+
+            $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
+            $user = $repository->findOneByUsername($username);
+
+            if ($user && isset($target['slug']) && isset($target['params']) ){
+
+                $target['params']['username'] = $username;
+                return $this->redirect($this->generateUrl($target['slug'], $target['params']));
+
+            } else {
+
+                throw $this->createNotFoundException();
+
+            }
+
+        } else {
+
+            $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
+            $users = $repository->findAllUsersExceptMe($this->getUser()->getId());
+
+            if (count($users) == 0 ){
+
+                $this->get('session')->setFlash(
+                        'warning',
+                        'You\'re alone, mate.'
+                    );
+
+                return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $this->getUser()->getUsername())));
+            }
+
+            return $this->render('metaUserProfileBundle:Default:choose.html.twig', array('users' => $users, 'targetAsBase64' => $targetAsBase64));
+
+        }
 
     }
 }
