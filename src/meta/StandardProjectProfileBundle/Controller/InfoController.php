@@ -86,7 +86,7 @@ class InfoController extends BaseController
 
             $this->get('session')->setFlash(
                 'error',
-                'You are not an owner of the project "'.$this->base['standardProject']->getName().'".'
+                'You are not an owner of this project.'
             );
 
         }
