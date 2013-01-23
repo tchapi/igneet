@@ -125,6 +125,15 @@ class User implements UserInterface
     private $updated_at;  
 
     /**
+     * @var date $last_seen_at
+     * 
+     * @ORM\Column(name="last_seen_at", type="datetime")
+     * @Assert\NotBlank()
+     * @Assert\DateTime()
+     */
+    private $last_seen_at;  
+
+    /**
      * @var string $headline
      *
      * @ORM\Column(name="headline", type="string", length=100, nullable=true)
