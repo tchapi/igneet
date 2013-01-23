@@ -622,6 +622,9 @@ ul.list li{
 ul.list li span.date{
   font-size: 0.9em;
 }
+ul.list li div.actions{
+  text-align: right;
+}
 ul.list li.even{
   background: #f4f4f4;
 }

@@ -3,8 +3,9 @@
 
 Todo - General / Users :
 
- ✔ signup : avatar @done (13-01-16 21:15)
+ ☐ signup : avatar
  ☐ chgt d'avatar -----> Mais pas simple
+    \-- nécessite un composant full ajax j'imagine
 
  ☐ login et signup : focus sur le champ lors du chargement de la page
 
@@ -24,6 +25,8 @@ Todo - General / Users :
  ✔ Add a participant : faire le 'user chooser' @done (13-01-21 23:46)
 
  ✔ images dans assetic : ok apparemment @done (13-01-20 19:41)
+
+ ☐ watch / unwatch quand tu es owner ou participant ou createur --> a degager
 
 Todo - entité "CommonList":
 
@@ -61,6 +64,8 @@ Todo - entité "Comment":
  ☐ Commentaires
    \_ ResourceComment
  ☐ Commenter un listItem en plus d'une liste ?
+
+ ☐ VARCHAR 255 -> a changer dans le modele pour les CommonListItem
  
 Todo - entité "Idea":
 
@@ -112,6 +117,9 @@ Todo - Meta:
  ☐ Commentaires
    \_ MetaComment = shoutbox-like
 
+Todo - search:
+
+ ☐ Recherche
 
 Basic Workflow:
 
