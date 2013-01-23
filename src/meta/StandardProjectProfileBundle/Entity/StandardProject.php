@@ -555,6 +555,19 @@ class StandardProject
 
     }
 
+     /**
+     * Get N random participants or owners
+     *
+     * @return array
+     */
+    public function getRandomParticipantsAndOwners($limit)
+    {
+        $array = array_merge($this->getRandomParticipants($limit), $this->getRandomOwners($limit));
+        shuffle($array);
+
+        return array_slice($array, 0, max(0,$limit));
+    }
+
     /**
      * Add watchers
      *

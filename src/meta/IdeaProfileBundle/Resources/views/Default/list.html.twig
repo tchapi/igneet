@@ -23,8 +23,8 @@
   </a>
 
   <div class="listingItemInfo">
-    <h4><a href="{{ path('i_show_idea', {'id': idea.id}) }}">{{ idea.name }}</a></h4>
-    <div>{{ idea.headline }}</div>
+    <h4 class="ellipsis"><a href="{{ path('i_show_idea', {'id': idea.id}) }}">{{ idea.name }}</a></h4>
+    <div class="ellipsis">{{ idea.headline }}</div>
     <div class="muted"><i class="icon-calendar"></i> Created on {{ idea.createdAt|date("d/m/Y") }} by {{ idea.creator.firstName }} {{ idea.creator.lastName }}</div>
   </div>
 
@@ -36,12 +36,12 @@
     </div>
 
     <ul>
-      {% if idea.watchers|length > 11 %}
+      {% if idea.watchers|length > 5 %}
       <li>
         <div class="miniTextAvatar">...</div>
       </li>
       {% endif %}
-      {% for watcher in idea.getRandomWatchers(11) %}
+      {% for watcher in idea.getRandomWatchers(5) %}
       <li>
         <a href="{{ path('u_show_user_profile', {'username': watcher.username}) }}">
           <img src="{{ watcher.avatar }}" title="{{ watcher.firstName }} {{ watcher.lastName|upper }}" width="30" height="30" class="miniAvatar"/>

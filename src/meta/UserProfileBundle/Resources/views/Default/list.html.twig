@@ -23,8 +23,8 @@
   </a>
 
   <div class="listingItemInfo">
-    <h4><a href="{{ path('u_show_user_profile', {'username': user.username}) }}">{{ user.firstName }} {{ user.lastName|upper }}</a></h4>
-    <div>{{ user.headline }}</div>
+    <h4 class="ellipsis"><a href="{{ path('u_show_user_profile', {'username': user.username}) }}">{{ user.firstName }} {{ user.lastName|upper }}</a></h4>
+    <div class="ellipsis">{{ user.headline }}</div>
     <div class="muted"><i class="icon-calendar"></i> Member since {{ user.createdAt|date("d/m/Y") }}</div>
   </div>
 
@@ -36,12 +36,12 @@
     </div>
 
     <ul>
-      {% if user.projectsOwned|length > 11 %}
+      {% if user.projectsOwned|length > 5 %}
       <li>
         <div class="miniTextAvatar">...</div>
       </li>
       {% endif %}
-      {% for project in user.getRandomProjectsOwned(11) %}
+      {% for project in user.getRandomProjectsOwned(5) %}
       <li>
         <a href="{{ path('sp_show_project', {'slug': project.slug}) }}">
           <img src="{{ project.picture }}" title="{{ project.name }} ({{ project.slug|lower }})" width="30" height="30" class="miniAvatar"/>

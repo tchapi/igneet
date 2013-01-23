@@ -23,25 +23,26 @@
   </a>
 
   <div class="listingItemInfo">
-    <h4><a href="{{ path('sp_show_project', {'slug': standardProject.slug}) }}">{{ standardProject.name }} ({{ standardProject.slug|lower }})</a></h4>
-    <div>{{ standardProject.headline }}</div>
+    <h4 class="ellipsis"><a href="{{ path('sp_show_project', {'slug': standardProject.slug}) }}">{{ standardProject.name }} ({{ standardProject.slug|lower }})</a></h4>
+    <div class="ellipsis">{{ standardProject.headline }}</div>
     <div class="muted"><i class="icon-calendar"></i> Created on {{ standardProject.createdAt|date("d/m/Y") }}</div>
   </div>
 
   <div class="listingItemRelatedObjects">
 
     <div class="type">
-      <div class="muted pull-right">{{ standardProject.participants|length }} 
+      <div class="muted pull-right">{{ standardProject.owners|length }} 
+        owner{% if (standardProject.owners|length) > 1 %}s{% endif %} and {{ standardProject.participants|length }} 
         participant{% if (standardProject.participants|length) > 1 %}s{% endif %}</div>
     </div>
 
     <ul>
-      {% if standardProject.participants|length > 11 %}
+      {% if standardProject.participants|length > 5 %}
       <li>
         <div class="miniTextAvatar">...</div>
       </li>
       {% endif %}
-      {% for user in standardProject.getRandomParticipants(11) %}
+      {% for user in standardProject.getRandomParticipantsAndOwners(5) %}
       <li>
         <a href="{{ path('u_show_user_profile', {'username': user.username}) }}">
           <img src="{{ user.avatar }}" title="{{ user.firstName }} {{ user.lastName|upper }}" width="30" height="30" class="miniAvatar"/>
