@@ -21,7 +21,7 @@
       <i class="icon-caret-right"></i>
       <span class="text editable text-target" data-pk="{{ item.id }}" data-name="text" data-url="{{ path('sp_show_project_listitem_edit', {'slug': base.standardProject.slug, 'listId': commonList.id, 'id': item.id}) }}" data-type="text">{{ item.text }}</span>
       {% if base.canEdit %}
-      <span class="pull-right">
+      <div class="actions">
         {% if item.done %}
         <span class="muted date">done on {{ item.doneAt|date('d-m-Y') }}</span>
         <a href="{{ path('sp_show_project_listitem_undo', {'slug': base.standardProject.slug, 'listId': commonList.id, 'id': item.id }) }}"><i class="icon-repeat"></i></a>
@@ -30,7 +30,7 @@
         <a href="{{ path('sp_show_project_listitem_do', {'slug': base.standardProject.slug, 'listId': commonList.id, 'id': item.id }) }}"><i class="icon-ok text-success"></i></a>
         {% endif %}
         <a href="{{ path('sp_show_project_listitem_delete', {'slug': base.standardProject.slug, 'listId': commonList.id, 'id': item.id }) }}"><i class="icon-remove text-error"></i></a>
-      </span>
+      </div>
       {% endif %}
     </li>
   {% endfor %}

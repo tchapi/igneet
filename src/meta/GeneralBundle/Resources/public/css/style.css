@@ -295,7 +295,7 @@ a.editable-click.editable-disabled:hover {
   background: url(../../../bundles/metageneral/img/Markdown.Editor.Icons.png) no-repeat scroll;
   height: 20px;
   width: 14px;
-  display: block;
+  display: block !important;
 }
 .icon-code              { background-position: -48px  3px; }
 .icon-header            { background-position: -120px 3px; }
@@ -621,6 +621,9 @@ ul.list li{
 }
 ul.list li span.date{
   font-size: 0.9em;
+}
+ul.list li div.actions{
+  text-align: right;
 }
 ul.list li.even{
   background: #f4f4f4;
