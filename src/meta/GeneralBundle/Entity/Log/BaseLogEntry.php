@@ -46,6 +46,13 @@ class BaseLogEntry
     private $created_at;
 
     /**
+     * @var integer $combined_count
+     * @ORM\Column(name="combined_count", type="integer")
+     *
+     */
+    private $combined_count;
+
+    /**
      * User that did this (OWNING SIDE)
      * @ORM\ManyToOne(targetEntity="meta\UserProfileBundle\Entity\User", inversedBy="initiatedLogEntries")
      **/
@@ -62,6 +69,7 @@ class BaseLogEntry
 
         $this->created_at = new \Datetime('now');
         $this->objects = array();
+        $this->combined_count = 1;
     }
 
     /**
@@ -164,5 +172,41 @@ class BaseLogEntry
     public function getObjects()
     {
         return $this->objects;
+    }
+
+    /**
+     * Set combined_count
+     *
+     * @param integer $combinedCount
+     * @return BaseLogEntry
+     */
+    public function setCombinedCount($combinedCount)
+    {
+        $this->combined_count = $combinedCount;
+    
+        return $this;
+    }
+
+    /**
+     * Increment combined_count by 1
+     *
+     * @param integer $combinedCount
+     * @return BaseLogEntry
+     */
+    public function incrementCombinedCount()
+    {
+        $this->combined_count +=1 ;
+    
+        return $this;
+    }
+
+    /**
+     * Get combined_count
+     *
+     * @return integer 
+     */
+    public function getCombinedCount()
+    {
+        return $this->combined_count;
     }
 }

@@ -1,4 +1,5 @@
 parameters:
+  general.log_concurrent_merge_interval: 600
   general.log_routing:
     user: u_show_user_profile
     project: sp_show_project
@@ -40,15 +41,15 @@ parameters:
       type: project
       icon: edit
       text: %%user$s has updated some information for the project %%project$s.
-    user_create_wikipage:
+    user_create_wikipage: # DONE
       type: project
       icon: file-alt
       text: %%user$s has created a new page %%wikipage$s in project %%project$s's wiki.
-    user_update_wikipage:
+    user_update_wikipage: # DONE
       type: project
       icon: edit
       text: %%user$s has updated the page %%wikipage$s in project %%project$s's wiki.
-    user_delete_wikipage:
+    user_delete_wikipage: # DONE
       type: project
       icon: trash
       text: %%user$s has deleted the page %%wikipage$s in project %%project$s's wiki.

@@ -1,7 +1,7 @@
 
 ## TODO ##
 
- ☐ Date de dernier push en prod dans le header
+ ✔ Date de dernier push en prod dans le header @done (13-01-24 23:31)
  ☐ dashboard
    ☐ top 3 projects et idées privées
       \__ X, Y et Z ont contribués sur ce projet
@@ -9,8 +9,7 @@
    ☐ top 3 projets watchés + 3 dernières nouvelles idées
    ☐ idem ideas
  ☐ deeplinks de type [wikipage:43] ==> twig filter ?
- ☐ cluttering des activity logs
- ☐ User ->lastactivity et maj le timestamp à chaque requete http ?
+ ✔ cluttering des activity logs @done (13-01-25 00:29)
 
 Nom:
 
@@ -29,6 +28,8 @@ thethirdplace.fr
  ☐ Commentaires timeline
 
 Todo - General / Users :
+
+ ✔ User ->lastactivity et maj le timestamp à chaque requete http ? @done (13-01-24 22:46)
 
  ☐ Mettre maxUsersInListings en parameters de l'appli a récupérer dans Twig
 
@@ -57,6 +58,8 @@ Todo - General / Users :
 
  ☐ watch / unwatch quand tu es owner ou participant ou createur --> a degager
  ☐ watch ou participant sur unde idée : a voir ?
+
+ ☐ Recherche
 
 Todo - entité "CommonList":
 
