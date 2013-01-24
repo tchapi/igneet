@@ -279,7 +279,7 @@ class User implements UserInterface
         /* init */
         $this->salt = md5(uniqid(null, true));
         $this->roles = array('ROLE_USER');
-        $this->created_at = $this->updated_at = new \DateTime('now');
+        $this->created_at = $this->last_seen_at = $this->updated_at = new \DateTime('now');
 
     }
 
