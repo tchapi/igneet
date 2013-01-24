@@ -1299,4 +1299,27 @@ class User implements UserInterface
     {
         return $this->initiatedLogEntries;
     }
+
+    /**
+     * Set last_seen_at
+     *
+     * @param \DateTime $lastSeenAt
+     * @return User
+     */
+    public function setLastSeenAt($lastSeenAt)
+    {
+        $this->last_seen_at = $lastSeenAt;
+    
+        return $this;
+    }
+
+    /**
+     * Get last_seen_at
+     *
+     * @return \DateTime 
+     */
+    public function getLastSeenAt()
+    {
+        return $this->last_seen_at;
+    }
 }
