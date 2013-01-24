@@ -63,8 +63,7 @@ class LogService
         $entry->setSubject($subject);
         $entry->setObjects($objects);
 
-// TODO
-        // Merge concurrent updates
+        // Merge concurrent log updates
         // Check if there is a similar log less than X seconds ago
         $repository = $this->em->getRepository($repositoryName);
         $lastEntry = $repository->findOneBy(
