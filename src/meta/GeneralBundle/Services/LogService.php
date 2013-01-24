@@ -15,12 +15,13 @@ class LogService
     private $log_types, $log_routing;
     private $twig, $template_link, $template_link_null, $template_item;
 
-    public function __construct(EntityManager $entityManager, $log_types, $log_routing, $twig)
+    public function __construct(EntityManager $entityManager, $log_types, $log_routing, $log_concurrent_merge_interval, $twig)
     {
         $this->em = $entityManager;
         
         $this->log_types = $log_types;
         $this->log_routing = $log_routing;
+        $this->concurrent_merge_interval = $log_concurrent_merge_interval;
 
         $this->twig = $twig;
 
@@ -38,31 +39,48 @@ class LogService
         switch ($type) {
             case 'idea':
                  $entry = new IdeaLogEntry();
+                 $repositoryName = 'metaGeneralBundle:Log\IdeaLogEntry';
+                 $subject_type = "idea";
                  break;
             case 'project':
                  $entry = new StandardProjectLogEntry();
+                 $repositoryName = 'metaGeneralBundle:Log\StandardProjectLogEntry';
+                 $subject_type = "standardProject";
                  break;
             case 'user':
                  $entry = new UserLogEntry();
+                 $repositoryName = 'metaGeneralBundle:Log\UserLogEntry';
+                 $subject_type = "otherUser";
                  break;   
             default:
                  $entry = new BaseLogEntry();
+                 $repositoryName = 'metaGeneralBundle:Log\BaseLogEntry';
                  break;
          }
             
-// TODO
-        // Merge concurrent updates
-        // if update < XX secondes , then update the date of the old one with the new date
-
         $entry->setUser($user);
         $entry->setType($logActionName);
         $entry->setSubject($subject);
         $entry->setObjects($objects);
 
-        // pour chaque entité, faire une fonction getLogLink()
-        // Si un object a été supprimé, ne pas faire le lien et/ou l'indiquer ?
+// TODO
+        // Merge concurrent updates
+        // Check if there is a similar log less than X seconds ago
+        $repository = $this->em->getRepository($repositoryName);
+        $lastEntry = $repository->findOneBy(
+            array('user' => $user, 'type' =>  $logActionName, "$subject_type" => $subject),
+            array('created_at' => 'DESC'));
 
-        $this->em->persist($entry);
+        if ( $lastEntry->getObjects() == $objects && date_create($lastEntry->getCreatedAt()->format('Y-m-d H:i:s')) > date_create('now -'.$this->concurrent_merge_interval.' seconds')) {
+            // if update < XX secondes , then update the date of the old one with the new date
+            $lastEntry->setCreatedAt(new \Datetime('now'));
+            $lastEntry->incrementCombinedCount();
+        } else {
+            // else persists the new log
+            $this->em->persist($entry);
+        }
+
+        // Flush the shit
         $this->em->flush();
 
     }
@@ -82,9 +100,10 @@ class LogService
 
         $date = $logEntry->getCreatedAt();
         $user = $logEntry->getUser();
+        $combinedCount = $logEntry->getCombinedCount();
         $icon = $this->log_types[$logEntry->getType()]['icon'];
 
-        return $this->twig->render($this->template_item, array( 'icon' => $icon, 'user' => $user, 'text' => $text, 'date' => $date));
+        return $this->twig->render($this->template_item, array( 'icon' => $icon, 'user' => $user, 'text' => $text, 'date' => $date, 'combinedCount' => $combinedCount));
     }
 
     private function getParameters($logEntry)

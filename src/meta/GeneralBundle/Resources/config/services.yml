@@ -11,4 +11,5 @@ services:
             entityManager: "@doctrine.orm.entity_manager"
             log_types: %general.log_types%
             log_routing: %general.log_routing%
+            log_concurrent_merge_interval: %general.log_concurrent_merge_interval%
             twig: "@twig"

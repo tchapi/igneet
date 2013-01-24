@@ -49,6 +49,11 @@ class SecurityController extends Controller
 
         if ($authenticatedUser) {
 
+            // Logs last activity
+            $em = $this->getDoctrine()->getManager();
+            $authenticatedUser->setLastSeenAt(new \DateTime('now'));
+            $em->flush();
+
             return $this->render(
                 'metaUserProfileBundle:Security:_authenticated.html.twig',
                 array('user' => $authenticatedUser)
