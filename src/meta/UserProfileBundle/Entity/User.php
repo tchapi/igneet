@@ -125,6 +125,15 @@ class User implements UserInterface
     private $updated_at;  
 
     /**
+     * @var date $last_seen_at
+     * 
+     * @ORM\Column(name="last_seen_at", type="datetime")
+     * @Assert\NotBlank()
+     * @Assert\DateTime()
+     */
+    private $last_seen_at;  
+
+    /**
      * @var string $headline
      *
      * @ORM\Column(name="headline", type="string", length=100, nullable=true)
@@ -1289,5 +1298,28 @@ class User implements UserInterface
     public function getInitiatedLogEntries()
     {
         return $this->initiatedLogEntries;
+    }
+
+    /**
+     * Set last_seen_at
+     *
+     * @param \DateTime $lastSeenAt
+     * @return User
+     */
+    public function setLastSeenAt($lastSeenAt)
+    {
+        $this->last_seen_at = $lastSeenAt;
+    
+        return $this;
+    }
+
+    /**
+     * Get last_seen_at
+     *
+     * @return \DateTime 
+     */
+    public function getLastSeenAt()
+    {
+        return $this->last_seen_at;
     }
 }

@@ -1,7 +1,36 @@
 
 ## TODO ##
 
+ ☐ Date de dernier push en prod dans le header
+ ☐ dashboard
+   ☐ top 3 projects et idées privées
+      \__ X, Y et Z ont contribués sur ce projet
+      \__ NB activités sur les 7 derniers jours avec graphe
+   ☐ top 3 projets watchés + 3 dernières nouvelles idées
+   ☐ idem ideas
+ ☐ deeplinks de type [wikipage:43] ==> twig filter ?
+ ☐ cluttering des activity logs
+ ☐ User ->lastactivity et maj le timestamp à chaque requete http ?
+
+Nom:
+
+the-third-space.com
+athirdspace.com
+thirdplace.fr
+thethirdplace.fr
+
+ Need:
+
+ ☐ parenting des wikipages
+ ☐ tags des wikipages
+ ☐ ressources
+   \__ liens avec nom
+   \__ upload avec nom rempli automatiquement
+ ☐ Commentaires timeline
+
 Todo - General / Users :
+
+ ☐ Mettre maxUsersInListings en parameters de l'appli a récupérer dans Twig
 
  ☐ signup : avatar
  ☐ chgt d'avatar -----> Mais pas simple
@@ -27,6 +56,7 @@ Todo - General / Users :
  ✔ images dans assetic : ok apparemment @done (13-01-20 19:41)
 
  ☐ watch / unwatch quand tu es owner ou participant ou createur --> a degager
+ ☐ watch ou participant sur unde idée : a voir ?
 
 Todo - entité "CommonList":
 
@@ -46,6 +76,8 @@ Todo - entité "Wiki":
 
 Todo - entité "StandardProject":
 
+ ✔ Listing : mettre X participants and Y owners ... @done (13-01-24 00:02)
+
  ✔ Créer un nouveau projet @done (13-01-16 20:51)
  ✔ infos d'un projet : quand pas de skills ne pas afficher le vase ? ou All skills welcome OK @done (13-01-16 21:13)
 
@@ -63,9 +95,10 @@ Todo - entité "Comment":
 
  ☐ Commentaires
    \_ ResourceComment
- ☐ Commenter un listItem en plus d'une liste ?
 
- ☐ VARCHAR 255 -> a changer dans le modele pour les CommonListItem
+ ✘ Commenter un listItem en plus d'une liste ? @cancelled (13-01-23 23:43)
+
+ ✔ VARCHAR 255 -> a changer dans le modele pour les CommonListItem @done (13-01-23 23:42)
  
 Todo - entité "Idea":
 
@@ -86,6 +119,8 @@ Todo - entité "Idea":
 
  ✔ idée peut etre modifiée que par son createur OK OK @done (13-01-16 20:51)
  ✔ mettre des participants --> mettre 'from idea' @done (13-01-16 20:51)
+
+ ✔ http://d.pr/i/Ldg6 @done (13-01-24 00:02)
 
  ☐ tagguer dans le fil de discussion Concept ou Knowledge
  ☐ pouvoir tagguer un commentaire en 'valuable'
@@ -120,6 +155,7 @@ Todo - Meta:
 Todo - search:
 
  ☐ Recherche
+ ☐ par tags exacts
 
 Basic Workflow:
 

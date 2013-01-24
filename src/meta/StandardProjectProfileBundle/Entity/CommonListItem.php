@@ -25,7 +25,7 @@ class CommonListItem
     /**
      * @var string $text
      *
-     * @ORM\Column(name="text", type="string", length=255)
+     * @ORM\Column(name="text", type="text")
      * @Assert\NotBlank()
      */
     private $text;

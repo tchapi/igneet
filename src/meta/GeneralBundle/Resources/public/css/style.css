@@ -148,6 +148,12 @@ div.smallObjectInfos span{
   line-height: 1.2em;
 }
 
+.ellipsis{
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
 /*********/
 /*********/
 
@@ -391,7 +397,7 @@ div.listingItemInfo{
   height: 80px;
   padding: 10px;
   vertical-align: top;
-  width: 790px;
+  width: 570px;
   display: inline-block;
 }
 div.listingItemRelatedObjects{
@@ -402,7 +408,8 @@ div.listingItemRelatedObjects{
 div.listingItemRelatedObjects ul{
   list-style: none;
   overflow: hidden;
-  width: 384px;
+  width: 220px;
+  margin-left: 0px;
   height: 32px;
   direction: rtl;
 }
