@@ -58,8 +58,10 @@ Todo - General / Users :
 
  ✔ images dans assetic : ok apparemment @done (13-01-20 19:41)
 
- ☐ watch / unwatch quand tu es owner ou participant ou createur --> a degager
- ☐ watch ou participant sur unde idée : a voir ?
+ ✘ watch / unwatch quand tu es owner ou participant ou createur --> a degager @cancelled (13-01-26 11:25)
+   \__ si, ça a un intérêt
+ ✘ watch ou participant sur unde idée : a voir ? @cancelled (13-01-26 11:25)
+   \__ si, ça a un intérêt
 
  ☐ Recherche
 
@@ -74,6 +76,8 @@ Todo - entité "Wiki":
  ☐ tagging des pages wiki et des listes
 
  ☐ Ajax pour new wiki page
+
+ ☐ make homepage du wiki
  
  ☐ Wiki - parenting
 
