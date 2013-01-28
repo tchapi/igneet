@@ -2,9 +2,9 @@
 
 namespace meta\UserProfileBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Doctrine\Common\Collections\ArrayCollection,
+    Doctrine\ORM\Mapping as ORM,
+    Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * meta\UserProfileBundle\Entity\Skill
@@ -48,7 +48,7 @@ class Skill
     /**
      * @var string $color
      *
-     * @ORM\Column(name="color", type="string", length=7)
+     * @ORM\Column(name="color", type="string", length=7, nullable=true)
      */
     private $color;
 

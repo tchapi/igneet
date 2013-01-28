@@ -4,6 +4,7 @@ parameters:
     user: u_show_user_profile
     project: sp_show_project
     idea: i_show_idea
+    other_user: u_show_user_profile
     list: sp_show_project_list
     wikipage: sp_show_project_wiki_show_page
   general.log_types:
@@ -85,11 +86,11 @@ parameters:
       type: project
       icon: check-empty
       text: %%user$s has reopened the list item %%list_item$s of the list %%list$s in the project %%project$s.
+# User acting on an idea
     user_transform_idea_in_project: # DONE
-      type: project
+      type: idea
       icon: refresh
       text: %%user$s has created a new project %%project$s from the idea %%idea$s.
-# User acting on an idea
     user_create_idea: # DONE
       type: idea
       icon: lightbulb

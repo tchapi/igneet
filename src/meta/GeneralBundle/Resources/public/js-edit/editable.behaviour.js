@@ -11,19 +11,29 @@ $(document).ready(function(){
     /* Editable lists of ul/li 
      * (for skills for instance)
      */
-    $('.editable-li').attr('data-value', $.map( $('.editable-li li'), function (element) { return $(element).attr('rel') }).join(',') );
+    $('.editable-li.skills').attr('data-value', $.map( $('.editable-li.skills').find('li'), function (element) { return $(element).attr('rel') }).join(',') );
+    $('.editable-li.tags').attr('data-value', $.map( $('.editable-li.tags').find('li'), function (element) { return $(element).attr('rel') }).join(',') );
     $('.editable-li').editable({
         pk: 1,
         placement: 'bottom',
-        display:   function(value, sourceData) {
-                        $(this).empty();
+        display:  function(value, sourceData) {
+                    $(this).empty();
+                      if (sourceData) {
                         var selected = $.grep(sourceData,function(e,i){
                           return (value.indexOf(e.value) != -1);
                         });
                         for(item in selected){
                           $(this).append('<li class="label" rel="' + selected[item].value + '">' + selected[item].text + '</li>');
                         }
-                    }
+                      } else {
+                        for(item in value){
+                          $(this).append('<li class="label">' + value[item] + '</li>');
+                        }
+                      }
+                  },
+        select2: {
+          tags:[]
+        }
     });
 
     /* For manual toggles */

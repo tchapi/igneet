@@ -6,11 +6,30 @@
 {% render "metaStandardProjectProfileBundle:Default:navbar" with { 'activeMenu' : 'wiki', 'slug' : base.standardProject.slug } %}
 {% endblock %}
 
+{% block javascripts %}
+  {{ parent() }}
+    {% javascripts '@metaGeneralBundle/Resources/public/js/select2.behaviour.js' 
+            filter='?yui_js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
 {% block content %}
 <div class="column">
 <section class="listInfo">
   <h4 class="editable" data-title="Change the title of this wiki page" data-name="title" data-url="{{ path('sp_show_project_wiki_edit_page', {'slug': base.standardProject.slug, 'id': wikiPage.id}) }}" data-type="text">{{ wikiPage.title }}</h4>
   {% if base.canEdit %}<a class="pull-right markdown-trigger">&hellip;<i class="icon-pencil"></i></a>{% endif %}
+  <div>
+    {% if wikiPage.tags|length > 0 %}
+      Tags :
+    {% elseif not base.canEdit %}
+      No tags yet.
+    {% endif %}
+    <ul data-toggle="manual" data-title="Indicate tags separated by a comma or space" data-emptytext="Add tags" data-url="{{ path('sp_show_project_wiki_edit_page', {'slug': base.standardProject.slug, 'id': wikiPage.id }) }}" data-type="select2" data-name="tags" class="tags tags-target editable-li" >
+    {% for tag in wikiPage.tags %}<li class="label" rel="{{ tag.name }}">{{ tag.name }}</li>{% endfor %}
+    </ul>
+    {% if base.canEdit %} <a class="editable-trigger" data-target="tags">&hellip;<i class="icon-pencil"></i></a>{% endif %}
+  </div>
 </section>
 <section>
   <div>

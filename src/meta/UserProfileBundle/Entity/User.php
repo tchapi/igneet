@@ -2,12 +2,11 @@
 
 namespace meta\UserProfileBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-
-use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\ArrayCollection,
+    Doctrine\ORM\Mapping as ORM,
+    Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity,
+    Symfony\Component\Security\Core\User\UserInterface,
+    Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * meta\UserProfileBundle\Entity\User

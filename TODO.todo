@@ -9,6 +9,7 @@
    ☐ top 3 projets watchés + 3 dernières nouvelles idées
    ☐ idem ideas
  ☐ deeplinks de type [wikipage:43] ==> twig filter ?
+ ☐ Base.canEdit --> C'est très très con pour les wiki, les listes, car c'est que les éditeurs qui peuvent le voir anyway => transformer en un <span> qui permet d'avoir une preference "voir l'édition" ou pas
 
 Nom:
 
@@ -20,7 +21,7 @@ thethirdplace.fr
  Need:
 
  ☐ parenting des wikipages
- ☐ tags des wikipages
+ ✔ tags des wikipages @done (13-01-28 21:58)
  ☐ ressources
    \__ liens avec nom
    \__ upload avec nom rempli automatiquement
@@ -41,7 +42,7 @@ Todo - General / Users :
 
  ☐ login et signup : focus sur le champ lors du chargement de la page
 
- ☐ Mettre à jour les popin de choix des skills avec la partie 'tags' de X-editable
+ ✔ Mettre à jour les popin de choix des skills avec la partie 'tags' de X-editable @done (13-01-28 23:17)
 
  ☐ Rajouter un badge 'YOU' quand l'utilisateur courant est affiché
 
@@ -63,8 +64,6 @@ Todo - General / Users :
  ✘ watch ou participant sur unde idée : a voir ? @cancelled (13-01-26 11:25)
    \__ si, ça a un intérêt
 
- ☐ Recherche
-
 Todo - entité "CommonList":
 
  ☐ Ajax pour new item, new list avec input a la place du 'New item' ?
@@ -73,7 +72,7 @@ Todo - entité "CommonList":
 
 Todo - entité "Wiki":
 
- ☐ tagging des pages wiki et des listes
+ ✔ tagging des pages wiki et des listes @done (13-01-28 21:58)
 
  ☐ Ajax pour new wiki page
 

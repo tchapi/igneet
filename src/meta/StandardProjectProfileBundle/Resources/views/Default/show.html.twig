@@ -18,6 +18,14 @@
   {% endif %}
 {% endblock %}
 
+{% block stylesheets %}
+  {{ parent() }}
+  {% stylesheets  'bundles/metageneral/css-edit/bootstrap-editable.css' 
+    filter='?yui_css,cssrewrite' %}
+          <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}" />
+  {% endstylesheets %}
+{% endblock %}
+
 {% block header %}
   <div class="headerAvatarAndActions">
     {% if base.canEdit %}<div class="changeAvatar"><a href="#"><i class="icon-pencil"></i> change</a></div>{% endif %}
@@ -50,8 +58,8 @@
       {% elseif not base.canEdit %}
       No specific skills needed.
       {% endif %}
-      <ul data-toggle="manual" data-title="What skills are needed for this project?" data-emptytext="Add needed skills" data-url="{{ path('sp_edit_project', {'slug': base.standardProject.slug}) }}" data-type="checklist" data-source="{{ path('u_list_all_skills') }}" data-name="skills" data-type="select" class="skills skills-target editable-li">
-    {% for skill in base.standardProject.neededSkills %}<li class="label" rel="{{ skill.slug }}">{{ skill.name }}</li>{% endfor %}
+      <ul data-toggle="manual" data-title="What skills are needed for this project?" data-emptytext="Add needed skills" data-url="{{ path('sp_edit_project', {'slug': base.standardProject.slug}) }}" data-type="checklist" data-source="{{ path('u_list_all_skills') }}" data-name="skills" class="skills skills-target editable-li">
+    {% for skill in base.standardProject.neededSkills %}<li class="label" style="background-color: #{{ skill.color }}" rel="{{ skill.slug }}">{{ skill.name }}</li>{% endfor %}
       </ul>
       {% if base.canEdit %} <a class="editable-trigger" data-target="skills">&hellip;<i class="icon-pencil"></i></a>{% endif %}
 

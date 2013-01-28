@@ -2,8 +2,8 @@
 
 namespace meta\StandardProjectProfileBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\ORM\Mapping as ORM,
+    Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * meta\StandardProjectProfileBundle\Entity\CommonListItem

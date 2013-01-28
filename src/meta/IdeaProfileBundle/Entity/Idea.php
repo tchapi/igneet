@@ -2,10 +2,11 @@
 
 namespace meta\IdeaProfileBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\ArrayCollection,
+    Doctrine\ORM\Mapping as ORM,
+    Symfony\Component\Validator\Constraints as Assert;
 
-use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
+use meta\GeneralBundle\Entity\Behaviour\Taggable;
 
 /**
  * Idea
@@ -13,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="Idea")
  * @ORM\Entity(repositoryClass="meta\IdeaProfileBundle\Entity\IdeaRepository")
  */
-class Idea
+class Idea extends Taggable
 {
     /**
      * @var integer
@@ -22,7 +23,7 @@ class Idea
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var \DateTime $created_at

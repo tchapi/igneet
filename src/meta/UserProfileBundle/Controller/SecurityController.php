@@ -2,8 +2,8 @@
  
 namespace meta\UserProfileBundle\Controller;
  
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Security\Core\SecurityContext;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller,
+    Symfony\Component\Security\Core\SecurityContext;
 
 /*
  * Importing Class definitions

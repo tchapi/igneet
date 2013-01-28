@@ -10,7 +10,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller,
  * Importing Class definitions
  */
 use meta\StandardProjectProfileBundle\Entity\Wiki,
-    meta\StandardProjectProfileBundle\Entity\WikiPage;
+    meta\StandardProjectProfileBundle\Entity\WikiPage,
+    meta\GeneralBundle\Entity\Behaviour\Tag;
 
 class WikiController extends BaseController
 {
@@ -164,6 +165,7 @@ class WikiController extends BaseController
               if ($wikiPage){
 
                 $objectHasBeenModified = false;
+                $em = $this->getDoctrine()->getManager();
 
                 switch ($request->request->get('name')) {
                     case 'title':
@@ -174,6 +176,29 @@ class WikiController extends BaseController
                         $wikiPage->setContent($request->request->get('value'));
                         $objectHasBeenModified = true;
                         break;
+                    case 'tags':
+                        $tagsAsArray = $request->request->get('value');
+
+                        $wikiPage->clearTags();
+
+                        $tagRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Behaviour\Tag');
+                        $existingTags = $tagRepository->findBy(array('name' => $tagsAsArray));
+                        $existingTagNames = array();
+
+                        foreach ($existingTags as $tag) {
+                          $wikiPage->addTag($tag);
+                          $existingTagNames[] = $tag->getName();
+                        }
+
+                        foreach ($tagsAsArray as $name) {
+                          if ( in_array($name, $existingTagNames) ){ continue; }
+                          $tag = new Tag($name);
+                          $em->persist($tag);
+                          $wikiPage->addTag($tag);
+                        }
+
+                        $objectHasBeenModified = true;
+                        break;
                 }
 
                 $validator = $this->get('validator');
@@ -181,7 +206,6 @@ class WikiController extends BaseController
 
                 if ($objectHasBeenModified === true && count($errors) == 0){
                     $wikiPage->setUpdatedAt(new \DateTime('now'));
-                    $em = $this->getDoctrine()->getManager();
                     $em->flush();
 
                     $logService = $this->container->get('logService');

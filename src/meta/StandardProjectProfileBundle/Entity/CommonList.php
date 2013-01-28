@@ -2,17 +2,19 @@
 
 namespace meta\StandardProjectProfileBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\ArrayCollection,
+    Doctrine\ORM\Mapping as ORM,
+    Symfony\Component\Validator\Constraints as Assert;
+
+use meta\GeneralBundle\Entity\Behaviour\Taggable;
 
 /**
- * meta\StandardProjectProfileBundle\Entity\List
+ * meta\StandardProjectProfileBundle\Entity\CommonList
  *
  * @ORM\Table(name="CommonList")
  * @ORM\Entity(repositoryClass="meta\StandardProjectProfileBundle\Entity\CommonListRepository")
  */
-class CommonList
+class CommonList extends Taggable
 {
     /**
      * @var integer $id
@@ -21,7 +23,7 @@ class CommonList
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string $name
@@ -316,4 +318,5 @@ class CommonList
     {
         return $this->comments;
     }
+
 }
