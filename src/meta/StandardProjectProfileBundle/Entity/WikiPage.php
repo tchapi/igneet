@@ -2,10 +2,11 @@
 
 namespace meta\StandardProjectProfileBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\ArrayCollection,
+    Doctrine\ORM\Mapping as ORM,
+    Symfony\Component\Validator\Constraints as Assert;
 
-use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
+use meta\GeneralBundle\Entity\Behaviour\Taggable;
 
 /**
  * meta\StandardProjectProfileBundle\Entity\WikiPage
@@ -13,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="WikiPage")
  * @ORM\Entity(repositoryClass="meta\StandardProjectProfileBundle\Entity\WikiPageRepository")
  */
-class WikiPage
+class WikiPage extends Taggable
 {
     /**
      * @var integer
@@ -22,7 +23,7 @@ class WikiPage
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string $title
@@ -369,4 +370,5 @@ class WikiPage
     {
         return $this->comments;
     }
+
 }

@@ -3,6 +3,7 @@
 namespace meta\GeneralBundle\Services;
 
 use Doctrine\ORM\EntityManager;
+
 use meta\UserProfileBundle\Entity\User,
     meta\GeneralBundle\Entity\Log\UserLogEntry,
     meta\GeneralBundle\Entity\Log\IdeaLogEntry,
@@ -12,7 +13,7 @@ class LogService
 {
 
     private $em;
-    private $log_types, $log_routing;
+    private $log_types, $log_routing, $concurrent_merge_interval;
     private $twig, $template_link, $template_link_null, $template_item;
 
     public function __construct(EntityManager $entityManager, $log_types, $log_routing, $log_concurrent_merge_interval, $twig)
@@ -50,7 +51,7 @@ class LogService
             case 'user':
                  $entry = new UserLogEntry();
                  $repositoryName = 'metaGeneralBundle:Log\UserLogEntry';
-                 $subject_type = "otherUser";
+                 $subject_type = "other_user";
                  break;   
             default:
                  $entry = new BaseLogEntry();
@@ -70,7 +71,7 @@ class LogService
             array('user' => $user, 'type' =>  $logActionName, "$subject_type" => $subject),
             array('created_at' => 'DESC'));
 
-        if ( $lastEntry->getObjects() == $objects && date_create($lastEntry->getCreatedAt()->format('Y-m-d H:i:s')) > date_create('now -'.$this->concurrent_merge_interval.' seconds')) {
+        if ( !is_null($lastEntry) && $lastEntry->getObjects() == $objects && date_create($lastEntry->getCreatedAt()->format('Y-m-d H:i:s')) > date_create('now -'.$this->concurrent_merge_interval.' seconds')) {
             // if update < XX secondes , then update the date of the old one with the new date
             $lastEntry->setCreatedAt(new \Datetime('now'));
             $lastEntry->incrementCombinedCount();

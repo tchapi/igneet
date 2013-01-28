@@ -2,10 +2,9 @@
 
 namespace meta\StandardProjectProfileBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-
-use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\ArrayCollection,
+    Doctrine\ORM\Mapping as ORM,
+    Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * MetaProject
@@ -21,7 +20,7 @@ class MetaProject extends StandardProject
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * Projects in this meta

@@ -1,5 +1,5 @@
 # META PROJECTS
-
+# TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
 mp_list_meta:
     pattern:  /metas
     defaults: { _controller: metaStandardProjectProfileBundle:Default:list, max: 10 }
@@ -19,7 +19,6 @@ mp_edit_meta:
         _method:  POST
 
 # STANDARD PROJECTS
-
 sp_list_projects:
     pattern:  /projects
     defaults: { _controller: metaStandardProjectProfileBundle:Default:list, max: 10 }
@@ -42,13 +41,21 @@ sp_delete_project:
     pattern:  /project/delete/{slug}
     defaults: { _controller: metaStandardProjectProfileBundle:Default:delete}
 
-# TABS
-
+# COMMENTS
 sp_show_project_comment:
     pattern:  /project/show/{slug}/comment
     defaults: { _controller: metaStandardProjectProfileBundle:Comment:addStandardProjectComment }
     requirements:
       id: \d+
+
+# TABS --------------------------
+
+## RESOURCES
+sp_show_project_resources:
+    pattern:  /project/show/{slug}/resources/{page}
+    defaults: { _controller: metaStandardProjectProfileBundle:Resource:showResources, page: 1 }
+    requirements:
+      page: \d+
 
 ## TIMELINE
 sp_show_project_timeline:

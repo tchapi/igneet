@@ -9,11 +9,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller,
 /*
  * Importing Class definitions
  */
-use meta\IdeaProfileBundle\Entity\Idea;
-use meta\IdeaProfileBundle\Form\Type\IdeaType;
-use meta\StandardProjectProfileBundle\Entity\StandardProject;
-use meta\StandardProjectProfileBundle\Entity\Wiki;
-use meta\StandardProjectProfileBundle\Entity\WikiPage;
+use meta\IdeaProfileBundle\Entity\Idea,
+    meta\IdeaProfileBundle\Form\Type\IdeaType,
+    meta\StandardProjectProfileBundle\Entity\StandardProject,
+    meta\StandardProjectProfileBundle\Entity\Wiki,
+    meta\StandardProjectProfileBundle\Entity\WikiPage;
 
 class DefaultController extends Controller
 {

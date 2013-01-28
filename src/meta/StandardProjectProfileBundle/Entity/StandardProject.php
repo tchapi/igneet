@@ -2,12 +2,12 @@
 
 namespace meta\StandardProjectProfileBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\ArrayCollection,
+    Doctrine\ORM\Mapping as ORM,
+    Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity,
+    Symfony\Component\Validator\Constraints as Assert;
 
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-
-use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
+use meta\GeneralBundle\Entity\Behaviour\Taggable;
 
 /**
  * meta\StandardProjectProfileBundle\Entity\StandardProject
@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @UniqueEntity("slug")
  * @ORM\MappedSuperclass
  */
-class StandardProject
+class StandardProject extends Taggable
 {
     /**
      * @var integer $id
@@ -26,7 +26,7 @@ class StandardProject
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string $name

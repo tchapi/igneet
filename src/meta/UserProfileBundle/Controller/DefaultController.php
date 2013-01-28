@@ -12,8 +12,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller,
 /*
  * Importing Class definitions
  */
-use meta\UserProfileBundle\Entity\User;
-use meta\UserProfileBundle\Form\Type\UserType;
+use meta\UserProfileBundle\Entity\User,
+    meta\UserProfileBundle\Form\Type\UserType;
 
 class DefaultController extends Controller
 {

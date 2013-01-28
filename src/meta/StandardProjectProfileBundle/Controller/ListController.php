@@ -10,7 +10,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller,
  * Importing Class definitions
  */
 use meta\StandardProjectProfileBundle\Entity\CommonList,
-    meta\StandardProjectProfileBundle\Entity\CommonListItem;
+    meta\StandardProjectProfileBundle\Entity\CommonListItem,
+    meta\GeneralBundle\Entity\Behaviour\Tag;
 
 class ListController extends BaseController
 {
@@ -130,6 +131,7 @@ class ListController extends BaseController
             $commonList = $repository->findOneByIdInProject($id, $this->base['standardProject']->getId());
 
             $objectHasBeenModified = false;
+            $em = $this->getDoctrine()->getManager();
 
             switch ($request->request->get('name')) {
                 case 'name':
@@ -140,6 +142,29 @@ class ListController extends BaseController
                     $commonList->setDescription($request->request->get('value'));
                     $objectHasBeenModified = true;
                     break;
+                case 'tags':
+                    $tagsAsArray = $request->request->get('value');
+
+                    $commonList->clearTags();
+
+                    $tagRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Behaviour\Tag');
+                    $existingTags = $tagRepository->findBy(array('name' => $tagsAsArray));
+                    $existingTagNames = array();
+
+                    foreach ($existingTags as $tag) {
+                      $commonList->addTag($tag);
+                      $existingTagNames[] = $tag->getName();
+                    }
+
+                    foreach ($tagsAsArray as $name) {
+                      if ( in_array($name, $existingTagNames) ){ continue; }
+                      $tag = new Tag($name);
+                      $em->persist($tag);
+                      $commonList->addTag($tag);
+                    }
+
+                    $objectHasBeenModified = true;
+                    break;
             }
 
             $validator = $this->get('validator');
@@ -147,7 +172,6 @@ class ListController extends BaseController
 
             if ($objectHasBeenModified === true && count($errors) == 0){
                 $commonList->setUpdatedAt(new \DateTime('now'));
-                $em = $this->getDoctrine()->getManager();
                 $em->flush();
 
                 $logService = $this->container->get('logService');

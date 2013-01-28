@@ -9,8 +9,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller,
 /*
  * Importing Class definitions
  */
-use meta\StandardProjectProfileBundle\Entity\StandardProject;
-use meta\StandardProjectProfileBundle\Form\Type\StandardProjectType;
+use meta\StandardProjectProfileBundle\Entity\StandardProject,
+    meta\StandardProjectProfileBundle\Form\Type\StandardProjectType;
 
 class DefaultController extends BaseController
 {

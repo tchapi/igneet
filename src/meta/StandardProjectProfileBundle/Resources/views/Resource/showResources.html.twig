@@ -1,0 +1,13 @@
+{% extends 'metaStandardProjectProfileBundle:Default:show.html.twig' %}
+
+{% block title %}{{ parent() }} > {{ base.standardProject.name }} | Resources{% endblock %}
+
+{% block navbar %}
+{% render "metaStandardProjectProfileBundle:Default:navbar" with { 'activeMenu' : 'resources', 'slug' : base.standardProject.slug } %}
+{% endblock %}
+
+{% block content %}
+<section>
+rien
+</section>
+{% endblock %}

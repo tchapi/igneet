@@ -3,6 +3,10 @@ parameters:
     logService.class: meta\GeneralBundle\Services\LogService
 
 services:
+    meta.twig.deep_linking_extension:
+        class: Meta\GeneralBundle\Twig\DeepLinkingExtension
+        tags:
+            - { name: twig.extension }
     textService:
         class: "%textService.class%"
     logService:
