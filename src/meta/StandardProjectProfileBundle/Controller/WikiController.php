@@ -51,10 +51,11 @@ class WikiController extends BaseController
         $repository = $this->getDoctrine()->getRepository('metaStandardProjectProfileBundle:WikiPage');
         $wikiPages = $repository->findAllAlphaInWiki($wiki->getId());
 
-        $wikiPage = ($homePage!=null)?$homepage:$repository->findFirstAlphaInWiki($wiki->getId());
+        $wikiPage = ($homePage!=null)?$homePage:$repository->findFirstAlphaInWiki($wiki->getId());
 
         return $this->render('metaStandardProjectProfileBundle:Wiki:showWiki.html.twig', 
             array('base' => $this->base, 
+                  'homePage' => $homePage,
                   'wikiPages' => $wikiPages,
                   'wikiPage' => $wikiPage));
     }
@@ -84,6 +85,7 @@ class WikiController extends BaseController
 
         return $this->render('metaStandardProjectProfileBundle:Wiki:showWiki.html.twig', 
             array('base' => $this->base,
+                  'homePage' => $wiki->getHomePage(),
                   'wikiPages' => $wikiPages,
                   'wikiPage' => $wikiPage));
 
@@ -144,6 +146,52 @@ class WikiController extends BaseController
 
         return $this->render('metaStandardProjectProfileBundle:Wiki:newWikiPage.html.twig', 
             array('base' => $this->base, 'form' => $form->createView()));
+
+    }
+
+    public function makeHomeWikiPageAction($slug, $id)
+    {
+        $this->fetchProjectAndPreComputeRights($slug, false, true);
+
+        if ($this->base == false) 
+          return $this->forward('metaStandardProjectProfileBundle:Base:showRestricted', array('slug' => $slug));
+
+        $wiki = $this->base['standardProject']->getWiki();
+
+        if (!$wiki){
+          return $this->forward('metaStandardProjectProfileBundle:Wiki:showWikiHome', array('slug' => $slug));
+        }
+
+        $repository = $this->getDoctrine()->getRepository('metaStandardProjectProfileBundle:WikiPage');
+        $wikiPage = $repository->findOneByIdInWiki($id, $wiki->getId());
+
+        // Check if wikiPage belongs to project
+        if ( !$wikiPage ){
+          throw $this->createNotFoundException('This page does not exist');
+        }
+
+        if ($wiki->getHomePage() == $wikiPage){
+
+          $this->get('session')->setFlash(
+                    'error',
+                    'This page is already the home of this wiki.'
+                );
+
+        } else {
+
+          $this->get('session')->setFlash(
+                    'success',
+                    'Your page "'.$wikiPage->getTitle().'" was successfully promoted to home page for this wiki.'
+                );
+
+          $em = $this->getDoctrine()->getManager();
+          $wiki->setHomePage($wikiPage);
+          $em->flush();
+
+        }
+
+        return $this->redirect($this->generateUrl('sp_show_project_wiki_show_page', array('slug' => $slug, 'id' => $id, 'pageSlug' => $wikiPage->getSlug())));
+           
 
     }
 
@@ -240,6 +288,8 @@ class WikiController extends BaseController
                 $wikiPage = $repository->findOneByIdInWiki($id, $wiki->getId());
 
                 if ($wikiPage){
+                  
+                  if ($wikiPage == $wiki->getHomePage()) $wiki->setHomePage(null);
                   $wiki->removePage($wikiPage);
 
                   $logService = $this->container->get('logService');
