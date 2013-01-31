@@ -157,6 +157,12 @@ sp_show_project_wiki_delete_page:
     requirements:
       id: \d+
 
+sp_show_project_wiki_make_home_page:
+    pattern:  /project/show/{slug}/wiki/page/make_home/{id}
+    defaults: { _controller: metaStandardProjectProfileBundle:Wiki:makeHomeWikiPage}
+    requirements:
+      id: \d+
+
 sp_show_project_wiki_show_page:
     pattern:  /project/show/{slug}/wiki/page/{id}/{pageSlug}
     defaults: { _controller: metaStandardProjectProfileBundle:Wiki:showWikiPage, pageSlug: _ }

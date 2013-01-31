@@ -58,7 +58,7 @@
   <ul class="lists">
   {% for page in wikiPages %}
       <li {% if page.id == wikiPage.id %}class="active"{% endif %}>
-        <i class="icon-file"></i> {% if base.canEdit %}<a href="{{ path('sp_show_project_wiki_delete_page', {'slug': base.standardProject.slug, 'id': page.id}) }}"><i class="icon-remove-sign"></i></a>{% endif %} <a href="{{ path('sp_show_project_wiki_show_page', {'slug': base.standardProject.slug, 'id': page.id, 'pageSlug': page.slug }) }}">{{ page.title }}</a>
+        <a title="Make home page" href="{{ path('sp_show_project_wiki_make_home_page', {'slug': base.standardProject.slug, 'id': page.id}) }}"><i class="icon-file{% if page == homePage %}-alt{% endif %}"></i></a> {% if base.canEdit %}<a title="Delete" href="{{ path('sp_show_project_wiki_delete_page', {'slug': base.standardProject.slug, 'id': page.id}) }}"><i class="icon-remove-sign"></i></a>{% endif %} <a href="{{ path('sp_show_project_wiki_show_page', {'slug': base.standardProject.slug, 'id': page.id, 'pageSlug': page.slug }) }}">{{ page.title }}</a>
       </li>
   {% endfor %}
   </ul>
