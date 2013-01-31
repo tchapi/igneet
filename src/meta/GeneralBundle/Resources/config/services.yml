@@ -4,7 +4,7 @@ parameters:
 
 services:
     meta.twig.deep_linking_extension:
-        class: Meta\GeneralBundle\Twig\DeepLinkingExtension
+        class: meta\GeneralBundle\Twig\DeepLinkingExtension
         tags:
             - { name: twig.extension }
     textService:
