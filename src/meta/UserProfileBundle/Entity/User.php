@@ -136,7 +136,6 @@ class User implements UserInterface
      * @var string $headline
      *
      * @ORM\Column(name="headline", type="string", length=100, nullable=true)
-     * @Assert\NotBlank()
      * @Assert\Length(max = 100)
      */
     private $headline;
@@ -392,6 +391,16 @@ class User implements UserInterface
     public function getLastName()
     {
         return $this->last_name;
+    }
+
+    /**
+     * Get full name
+     *
+     * @return string 
+     */
+    public function getFullName()
+    {
+        return $this->first_name.' '.$this->last_name;
     }
 
     /**

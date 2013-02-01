@@ -237,7 +237,7 @@ class DefaultController extends Controller
 
              $this->get('session')->setFlash(
                     'success',
-                    'This idea is now owned by ' . $newCreator->getFirstName() . ' ' . $newCreator->getLastName() . '.'
+                    'This idea is now owned by ' . $newCreator->getFullName() . '.'
                 );
         
         } else {
@@ -428,7 +428,7 @@ class DefaultController extends Controller
 
                 $this->get('session')->setFlash(
                   'success',
-                  'The user '.$newParticipant->getFirstName().' now participates in the idea "'.$this->base['idea']->getName().'".'
+                  'The user '.$newParticipant->getFullName().' now participates in the idea "'.$this->base['idea']->getName().'".'
                 );
 
                 $logService = $this->container->get('logService');
@@ -475,7 +475,7 @@ class DefaultController extends Controller
 
                 $this->get('session')->setFlash(
                   'success',
-                  'The user '.$toRemoveParticipant->getFirstName().' does not participate in the idea "'.$this->base['idea']->getName().'" anymore .'
+                  'The user '.$toRemoveParticipant->getFullName().' does not participate in the idea "'.$this->base['idea']->getName().'" anymore .'
                 );
 
                 $em = $this->getDoctrine()->getManager();

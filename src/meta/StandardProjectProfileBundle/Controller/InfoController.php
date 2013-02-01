@@ -54,7 +54,7 @@ class InfoController extends BaseController
 
                   $this->get('session')->setFlash(
                       'success',
-                      'The user '.$newParticipantOrOwner->getFirstName().' is now owner of the project "'.$this->base['standardProject']->getName().'".'
+                      'The user '.$newParticipantOrOwner->getFullName().' is now owner of the project "'.$this->base['standardProject']->getName().'".'
                   );
 
                 } else {
@@ -66,7 +66,7 @@ class InfoController extends BaseController
 
                   $this->get('session')->setFlash(
                       'success',
-                      'The user '.$newParticipantOrOwner->getFirstName().' now participates in the project "'.$this->base['standardProject']->getName().'".'
+                      'The user '.$newParticipantOrOwner->getFullName().' now participates in the project "'.$this->base['standardProject']->getName().'".'
                   );
                   
                 }
@@ -115,7 +115,7 @@ class InfoController extends BaseController
 
                       $this->get('session')->setFlash(
                           'success',
-                          'The user '.$toRemoveParticipantOrOwner->getFirstName().' is no longer owner of the project "'.$this->base['standardProject']->getName().'".'
+                          'The user '.$toRemoveParticipantOrOwner->getFullName().' is no longer owner of the project "'.$this->base['standardProject']->getName().'".'
                       );
 
                     } else {
@@ -124,7 +124,7 @@ class InfoController extends BaseController
 
                       $this->get('session')->setFlash(
                           'success',
-                          'The user '.$toRemoveParticipantOrOwner->getFirstName().' does not participate in the project "'.$this->base['standardProject']->getName().'" anymore .'
+                          'The user '.$toRemoveParticipantOrOwner->getFullName().' does not participate in the project "'.$this->base['standardProject']->getName().'" anymore .'
                       );
                       
                     }
