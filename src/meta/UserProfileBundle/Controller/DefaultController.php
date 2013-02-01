@@ -279,14 +279,14 @@ class DefaultController extends Controller
 
                     $this->get('session')->setFlash(
                         'success',
-                        'You are now following '.$user->getFirstName().'.'
+                        'You are now following '.$user->getFullName().'.'
                     );
 
                 } else {
 
                     $this->get('session')->setFlash(
                         'warning',
-                        'You are already following '.$user->getFirstName().'.'
+                        'You are already following '.$user->getFullName().'.'
                     );
 
                 }
@@ -328,14 +328,14 @@ class DefaultController extends Controller
 
                     $this->get('session')->setFlash(
                         'success',
-                        'You are not following '.$user->getFirstName().' anymore.'
+                        'You are not following '.$user->getFullName().' anymore.'
                     );
 
                 } else {
 
                     $this->get('session')->setFlash(
                         'warning',
-                        'You are not following '.$user->getFirstName().'.'
+                        'You are not following '.$user->getFullName().'.'
                     );
 
                 }
