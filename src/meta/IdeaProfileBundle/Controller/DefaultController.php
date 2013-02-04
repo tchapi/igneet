@@ -161,18 +161,28 @@ class DefaultController extends Controller
                     $this->base['idea']->setHeadline($request->request->get('value'));
                     $objectHasBeenModified = true;
                     break;
-                case 'concept_text':
-                    $this->base['idea']->setConceptText($request->request->get('value'));
-                    $objectHasBeenModified = true;
-                    break;
                 case 'file':
                     $uploadedFile = $request->files->get('file');
                     $this->base['idea']->setFile($uploadedFile);
                     $objectHasBeenModified = true;
                     $needsRedirect = true;
                     break;
+                case 'concept_text':
+                    $this->base['idea']->setConceptText($request->request->get('value'));
+                    $deepLinkingService = $this->container->get('meta.twig.deep_linking_extension');
+                        $response->setContent($deepLinkingService->convertDeepLinks(
+                          $this->container->get('markdown.parser')->transformMarkdown($request->request->get('value')),
+                          $this->get('templating'))
+                        );
+                    $objectHasBeenModified = true;
+                    break;
                 case 'knowledge_text':
                     $this->base['idea']->setKnowledgeText($request->request->get('value'));
+                    $deepLinkingService = $this->container->get('meta.twig.deep_linking_extension');
+                        $response->setContent($deepLinkingService->convertDeepLinks(
+                          $this->container->get('markdown.parser')->transformMarkdown($request->request->get('value')),
+                          $this->get('templating'))
+                        );
                     $objectHasBeenModified = true;
                     break;
             }

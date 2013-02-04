@@ -19,10 +19,11 @@
         <div>
           <button id="wmd-save" class="btn btn-primary">Save</button> <span class="muted wmd-message">Click save to save your changes</span>
         </div>
+        <div id="wmd-preview" class="preview">{{ base.standardProject.about }}</div>
       </div>
     {% endif %}
     
-    <div id="wmd-preview" class="about">{{ base.standardProject.about|markdown }}</div>
+    <div class="content">{{ base.standardProject.about|deeplinks|markdown }}</div>
 
   </div>
 </section>

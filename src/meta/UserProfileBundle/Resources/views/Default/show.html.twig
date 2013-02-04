@@ -90,10 +90,11 @@
         <div>
           <button id="wmd-save" class="btn btn-primary">Save</button> <span class="muted wmd-message">Click 'Save' to commit your changes</span>
         </div>
+        <div id="wmd-preview" class="preview">{{ user.about }}</div>
       </div>
     {% endif %}
 
-    <div id="wmd-preview" class="about">{{ user.about|markdown }}</div>
+    <div class="content">{{ user.about|deeplinks|markdown }}</div>
 
   </div>
 </section>

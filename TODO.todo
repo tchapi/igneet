@@ -36,8 +36,8 @@ Todo - General / Users :
 
  ☐ Mettre maxUsersInListings en parameters de l'appli a récupérer dans Twig
 
- ☐ signup : avatar
- ☐ chgt d'avatar -----> Mais pas simple
+ ✔ signup : avatar @done (13-02-04 20:12)
+ ✔ chgt d'avatar -----> Mais pas simple @done (13-02-04 20:17)
     \-- nécessite un composant full ajax j'imagine
 
  ☐ login et signup : focus sur le champ lors du chargement de la page
@@ -76,7 +76,7 @@ Todo - entité "Wiki":
 
  ☐ Ajax pour new wiki page
 
- ☐ make homepage du wiki
+ ✔ make homepage du wiki @done (13-01-31 22:56)
  
  ☐ Wiki - parenting
 

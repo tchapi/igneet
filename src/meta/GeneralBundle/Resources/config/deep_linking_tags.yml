@@ -1,0 +1,17 @@
+parameters:
+  general.deep_linking_tags:
+    user:
+      routing: u_show_user_profile
+      icon: user
+    project:
+      routing: sp_show_project
+      icon: beaker
+    idea:
+      routing: i_show_idea
+      icon: lightbulb
+    wikipage:
+      routing: sp_show_project_wiki_show_page
+      icon: file
+    list:
+      routing: sp_show_project_list
+      icon: list

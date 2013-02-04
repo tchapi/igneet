@@ -179,6 +179,13 @@ textarea.wmd-input{
   box-sizing: border-box;
   min-height: 200px;
 }
+
+.wmd-wrapper .preview {
+  margin-top: 10px;
+  border-top: 1px solid #DDD;
+  padding-top: 10px;
+}
+
 .wmd-message{
   margin-left: 5px;
 }
