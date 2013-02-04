@@ -67,6 +67,7 @@ $(document).ready(function(){
 
       var messagesBox = $(this).parent().parent().find(".wmd-message");
       var inputBox = $(this).parent().parent().find('.wmd-input');
+      var contentBox = $(this).parent().parent().parent().parent().find('.content');
 
       messagesBox.html("Saving to server ...");
 
@@ -75,7 +76,9 @@ $(document).ready(function(){
         value: inputBox.val()
       })
       .success(function(data, config) {
-         messagesBox.html("Changes saved.");               
+         messagesBox.html("Changes saved.");
+         console
+         contentBox.html(data);             
       })
       .error(function(errors) {
          messagesBox.html("Error saving changes.");
@@ -87,7 +90,9 @@ $(document).ready(function(){
     $('.markdown-trigger').click(function(){
 
       var markdownBox = $(this).parent().parent().find('.wmd-wrapper');
+      var contentBox = markdownBox.parent().find('.content');
       markdownBox.toggle();
+      contentBox.toggle();
 
     });
 });

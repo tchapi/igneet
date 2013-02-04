@@ -1,3 +1,7 @@
+general:
+    resource: "@metaGeneralBundle/Resources/config/routing.yml"
+    prefix:   /
+
 meta_idea_profile:
     resource: "@metaIdeaProfileBundle/Resources/config/routing.yml"
     prefix:   /

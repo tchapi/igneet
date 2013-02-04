@@ -4,6 +4,31 @@ namespace meta\GeneralBundle\Twig;
 
 class DeepLinkingExtension extends \Twig_Extension
 {
+
+    private $deep_linking_tags, $em, $template;
+
+    private $environment = null;
+
+    public function initRuntime(\Twig_Environment $environment)
+    {
+        $this->environment = $environment;
+    }
+
+    public function initService($environment)
+    {
+        $this->environment = $environment;
+    }
+
+    public function __construct($deep_linking_tags, $entity_manager)
+    {
+
+        $this->deep_linking_tags = $deep_linking_tags;
+        $this->em = $entity_manager;
+
+        $this->template = 'metaGeneralBundle:Twig:deepLink.html.twig';
+
+    }
+
     public function getFilters()
     {
         return array(
@@ -11,10 +36,98 @@ class DeepLinkingExtension extends \Twig_Extension
         );
     }
 
-    public function convertDeepLinks($text)
+    public function convertDeepLinks($text, $environment = null)
     {
 
+        if ( is_null($this->environment) ) $this->initService($environment);
+
+        $count = preg_match_all("/\[\[(\w+?)\:(\w+?)\]\]/", $text, $matches);
+
+        if($count > 0)
+        {
+             for($i = 0; $i < $count; $i++)
+             {
+                 // $matches[0][$i] contains the entire matched string
+                 // $matches[1][$i] contains the first portion (ex: user)
+                 // $matches[2][$i] contains the second portion (ex: tchap)
+
+                $matched = false;
+                $title = $args = null;
+
+                switch ($matches[1][$i]) {
+                    case 'user':
+                        $repository = $this->em->getRepository('metaUserProfileBundle:User');
+                        $user = $repository->findOneByUsername($matches[2][$i]);
+                        if ($user){
+                            $args = array( 'username' => $user->getUsername());
+                            $title = $user->getFullName();  
+                            $matched = true;
+                        }
+                        break;
+                    
+                    case 'project':
+                        $repository = $this->em->getRepository('metaStandardProjectProfileBundle:StandardProject');
+                        $standardProject = $repository->findOneBySlug($matches[2][$i]);
+                        if ($standardProject){
+                            $args = array( 'slug' => $standardProject->getSlug());
+                            $title = $standardProject->getName();  
+                            $matched = true;
+                        }
+                        break;
+                    
+                    case 'idea':
+                        $repository = $this->em->getRepository('metaIdeaProfileBundle:Idea');
+                        $idea = $repository->findOneById($matches[2][$i]);
+                        if ($idea){
+                            $args = array( 'id' => $idea->getId());
+                            $title = $idea->getName();  
+                            $matched = true;
+                        }
+                        break;
+
+                    case 'wikipage':
+                        $repository = $this->em->getRepository('metaStandardProjectProfileBundle:WikiPage');
+                        $wikiPage = $repository->findOneById($matches[2][$i]);
+                        if ($wikiPage && $wikiPage->getWiki()){
+                            $standardProject = $wikiPage->getWiki()->getProject();
+                            $args = array( 'slug' => $standardProject->getSlug(), 'id' => $wikiPage->getId());
+                            $title = $wikiPage->getTitle();  
+                            $matched = true;
+                        }
+                        break;
+
+                    case 'list':
+                        $repository = $this->em->getRepository('metaStandardProjectProfileBundle:CommonList');
+                        $commonList = $repository->findOneById($matches[2][$i]);
+                        if ($commonList){
+                            $standardProject = $commonList->getProject();
+                            $args = array( 'slug' => $standardProject->getSlug(), 'id' => $commonList->getId());
+                            $title = $commonList->getName();  
+                            $matched = true;
+                        }
+                        break;
+                }
+
+                if ($matched){
+
+                    $config = $this->deep_linking_tags[ $matches[1][$i] ];
+                    $replacement = $this->environment->render($this->template, 
+                        array( 'routing' => array( 
+                            'path' => $config['routing'], 
+                            'args'=> $args
+                            ), 
+                        'icon' => $config['icon'], 
+                        'title' => $title
+                        ));
+
+                    $text = str_replace($matches[0][$i], $replacement, $text);
+                }
+
+             }
+        }
+
         return $text;
+
     }
 
     public function getName()

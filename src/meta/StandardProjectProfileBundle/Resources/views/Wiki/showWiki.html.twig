@@ -42,10 +42,11 @@
         <div>
           <button id="wmd-save" class="btn btn-primary">Save</button> <span class="muted wmd-message">Click save to save your changes</span>
         </div>
+        <div id="wmd-preview" class="preview">{{ wikiPage.content }}</div>
       </div>
     {% endif %}
     
-    <div id="wmd-preview" class="content">{{ wikiPage.content|markdown }}</div>
+    <div class="content">{{ wikiPage.content|deeplinks|markdown }}</div>
 
   </div>
 </section>

@@ -16,9 +16,9 @@ class LogService
     private $log_types, $log_routing, $concurrent_merge_interval;
     private $twig, $template_link, $template_link_null, $template_item;
 
-    public function __construct(EntityManager $entityManager, $log_types, $log_routing, $log_concurrent_merge_interval, $twig)
+    public function __construct(EntityManager $entity_manager, $log_types, $log_routing, $log_concurrent_merge_interval, $twig)
     {
-        $this->em = $entityManager;
+        $this->em = $entity_manager;
         
         $this->log_types = $log_types;
         $this->log_routing = $log_routing;

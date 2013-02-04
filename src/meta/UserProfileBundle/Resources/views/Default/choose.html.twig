@@ -17,7 +17,7 @@
 <div class="formContent">
   <form action="{{ path('u_choose_user', { 'targetAsBase64' : targetAsBase64 }) }}" method="post" class="form-horizontal">
       <div class="control-group ">
-        <label class="control-label" for="inputEmail"><label for="username" class="required">Choose a user : </label></label>
+        <label class="control-label"><label for="username" class="required">Choose a user : </label></label>
         <div class="controls">
           <select id="username" name="username" required="required">
             {% for user in users %}

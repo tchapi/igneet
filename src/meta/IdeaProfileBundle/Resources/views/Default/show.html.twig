@@ -20,7 +20,7 @@
 
 {% block header %}
   <div class="headerAvatarAndActions">
-    {% if base.isCreator %}<div class="changeAvatar"><a href="#"><i class="icon-pencil"></i> change</a></div>{% endif %}
+    {% if base.isCreator %}<div class="changeAvatar"><a href="{{ path('g_choose_file', {'targetAsBase64': base.targetPictureAsBase64 }) }}"><i class="icon-pencil"></i> change</a></div>{% endif %}
     <img src="{{ asset(base.idea.picture) }}" width="150" height="150" class="avatar"/>
 {% if base.isAlreadyWatching %}
     <a href="{{ path('i_unwatch_idea', {'id': base.idea.id}) }}" class="btn btn-info watchAction">Unwatch idea</a>
@@ -68,9 +68,10 @@
         <div>
           <button id="wmd-save" class="btn btn-primary">Save</button> <span class="muted wmd-message">Click 'Save' to commit your changes</span>
         </div>
+        <div id="wmd-preview" class="preview">{{ base.idea.knowledgeText }}</div>
       </div>
 
-    <div id="wmd-preview" class="about">{{ base.idea.knowledgeText|markdown }}</div>
+    <div class="content">{{ base.idea.knowledgeText|deeplinks|markdown }}</div>
 
   </div>
 </section>
@@ -86,9 +87,10 @@
         <div>
           <button id="wmd-save-second" class="btn btn-primary">Save</button> <span class="muted wmd-message">Click 'Save' to commit your changes</span>
         </div>
+        <div id="wmd-preview-second" class="preview">{{ base.idea.conceptText }}</div>
       </div>
 
-    <div id="wmd-preview-second" class="about">{{ base.idea.conceptText|markdown }}</div>
+    <div class="content">{{ base.idea.conceptText|deeplinks|markdown }}</div>
 
   </div>
 </section>

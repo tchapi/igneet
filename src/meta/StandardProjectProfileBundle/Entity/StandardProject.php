@@ -14,6 +14,7 @@ use meta\GeneralBundle\Entity\Behaviour\Taggable;
  *
  * @ORM\Table(name="StandardProject")
  * @ORM\Entity(repositoryClass="meta\StandardProjectProfileBundle\Entity\StandardProjectRepository")
+ * @ORM\HasLifecycleCallbacks
  * @UniqueEntity("slug")
  * @ORM\MappedSuperclass
  */
@@ -62,7 +63,6 @@ class StandardProject extends Taggable
      * @var string $picture
      *
      * @ORM\Column(name="picture", type="string", length=255, nullable=true)
-     * @Assert\Url()
      */
     private $picture;
 
@@ -311,6 +311,7 @@ class StandardProject extends Taggable
     {
         if (null !== $this->file) {
             // Generate a unique name
+
             $filename = sha1(uniqid(mt_rand(), true));
             $this->picture = $filename.'.'.$this->file->guessExtension();
         }
@@ -329,7 +330,7 @@ class StandardProject extends Taggable
         // if there is an error when moving the file, an exception will
         // be automatically thrown by move(). This will properly prevent
         // the entity from being persisted to the database on error
-        $this->file->move($this->getUploadRootDir(), $this->avatar);
+        $this->file->move($this->getUploadRootDir(), $this->picture);
 
         unset($this->file);
     }
