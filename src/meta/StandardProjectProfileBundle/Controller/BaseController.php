@@ -25,6 +25,8 @@ class BaseController extends Controller
         $isOwning = $authenticatedUser && ($authenticatedUser->isOwning($standardProject));
         $isParticipatingIn = $authenticatedUser && ($authenticatedUser->isParticipatingIn($standardProject));
         
+        $targetPictureAsBase64 = array ('slug' => 'metaStandardProjectProfileBundle:Default:edit', 'params' => array('slug' => $slug ));
+
         if ( ($mustBeOwner && !$isOwning) || ($mustParticipate && (!$isParticipatingIn && !$isOwning) )) {
           $this->base = false;
         } else {
@@ -32,6 +34,7 @@ class BaseController extends Controller
                               'isAlreadyWatching' => $isAlreadyWatching,
                               'isParticipatingIn' => $isParticipatingIn,
                               'isOwning' => $isOwning,
+                              'targetPictureAsBase64' => base64_encode(json_encode($targetPictureAsBase64)),
                               'canEdit' =>  $isOwning || $isParticipatingIn
                             );
         }

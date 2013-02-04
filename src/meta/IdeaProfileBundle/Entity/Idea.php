@@ -13,6 +13,7 @@ use meta\GeneralBundle\Entity\Behaviour\Taggable;
  *
  * @ORM\Table(name="Idea")
  * @ORM\Entity(repositoryClass="meta\IdeaProfileBundle\Entity\IdeaRepository")
+ * @ORM\HasLifecycleCallbacks
  */
 class Idea extends Taggable
 {
@@ -62,10 +63,14 @@ class Idea extends Taggable
      * @var string $picture
      *
      * @ORM\Column(name="picture", type="string", length=255, nullable=true)
-     * @Assert\Url()
      */
     private $picture;
     
+    /**
+     * @Assert\File(maxSize="6000000")
+     */
+    private $file;
+
     /**
      * @var string
      *
@@ -377,7 +382,7 @@ class Idea extends Taggable
         return $this;
     }
 
-  /**
+    /**
      * Get picture
      *
      * @return string 
@@ -437,6 +442,7 @@ class Idea extends Taggable
     {
         if (null !== $this->file) {
             // Generate a unique name
+
             $filename = sha1(uniqid(mt_rand(), true));
             $this->picture = $filename.'.'.$this->file->guessExtension();
         }
@@ -455,7 +461,7 @@ class Idea extends Taggable
         // if there is an error when moving the file, an exception will
         // be automatically thrown by move(). This will properly prevent
         // the entity from being persisted to the database on error
-        $this->file->move($this->getUploadRootDir(), $this->avatar);
+        $this->file->move($this->getUploadRootDir(), $this->picture);
 
         unset($this->file);
     }
@@ -469,7 +475,6 @@ class Idea extends Taggable
             unlink($file);
         }
     }
-
 
     /**
      * Set creator

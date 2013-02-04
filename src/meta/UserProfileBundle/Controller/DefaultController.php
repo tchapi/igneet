@@ -36,10 +36,13 @@ class DefaultController extends Controller
         $alreadyFollowing = $authenticatedUser && $authenticatedUser->isFollowing($user);
         $isMe = $authenticatedUser && ($authenticatedUser->getUsername() == $username);
 
+        $targetAvatarAsBase64 = array ('slug' => 'metaUserProfileBundle:Default:edit', 'params' => array('username' => $username ));
+
         return $this->render('metaUserProfileBundle:Default:show.html.twig', 
             array('user' => $user,
                   'alreadyFollowing' => $alreadyFollowing,
-                  'isMe' => $isMe  
+                  'isMe' => $isMe,
+                  'targetAvatarAsBase64' => base64_encode(json_encode($targetAvatarAsBase64))
                 ));
     }
 
@@ -167,6 +170,12 @@ class DefaultController extends Controller
                     $authenticatedUser->setAbout($request->request->get('value'));
                     $objectHasBeenModified = true;
                     break;
+                case 'file':
+                    $uploadedFile = $request->files->get('file');
+                    $authenticatedUser->setFile($uploadedFile);
+                    $objectHasBeenModified = true;
+                    $needsRedirect = true;
+                    break;
                 case 'skills':
                     $skillSlugsAsArray = $request->request->get('value');
                     
@@ -197,7 +206,22 @@ class DefaultController extends Controller
 
         }
 
-        return $response;
+        
+        if (isset($needsRedirect) && $needsRedirect) {
+
+            if (count($errors) > 0) {
+                $this->get('session')->setFlash(
+                        'error',
+                        $errors[0]->getMessage()
+                    );
+            }
+
+            return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $username)));
+
+        } else {
+        
+            return $response;
+        }
 
     }
 

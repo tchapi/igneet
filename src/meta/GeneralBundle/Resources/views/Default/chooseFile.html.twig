@@ -1,0 +1,31 @@
+{% extends 'metaUserProfileBundle::layout.html.twig' %}
+
+{% block title %}Choose a file{% endblock %}
+
+{% block header %}
+  <div class="headerAvatarAndActions">
+    <div class="textAvatar"><i class="icon-search"></i></div>
+  </div>
+  <div class="objectHeader">
+    <h2>Choose a file</h2>
+    <h4>You need to indicate a specific file to continue with your request.</h4>
+  </div>
+{% endblock %}
+
+
+{% block content %}
+<div class="formContent">
+  <form action="{{ path('g_choose_file', { 'targetAsBase64' : targetAsBase64 }) }}" method="post" class="form-horizontal" enctype="multipart/form-data">
+      <div class="control-group ">
+        <label class="control-label"><label for="file" class="required">Choose a file : </label></label>
+        <div class="controls">
+          <input type="hidden" name="name" id="name" value="file"/>
+          <input type="file" name="file" id="file" />
+        </div>
+      </div>
+      <div class="form-actions">
+        <input type="submit" value="Upload this file" class="btn btn-success" />
+      </div>
+  </form>
+</div>
+{% endblock %}

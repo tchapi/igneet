@@ -34,6 +34,8 @@ class DefaultController extends Controller
         $isCreator = $authenticatedUser && ($idea->getCreator() == $authenticatedUser);
         $isParticipatingIn = $authenticatedUser && ($authenticatedUser->isParticipatingInIdea($idea));
         
+        $targetPictureAsBase64 = array ('slug' => 'metaIdeaProfileBundle:Default:edit', 'params' => array('id' => $id ));
+
         if ( ($mustBeCreator && !$isCreator) || ($mustParticipate && !$isParticipatingIn && !$isCreator) ) {
           $this->base = false;
         } else {
@@ -41,6 +43,7 @@ class DefaultController extends Controller
                               'isAlreadyWatching' => $isAlreadyWatching,
                               'isParticipatingIn' => $isParticipatingIn,
                               'isCreator' => $isCreator,
+                              'targetPictureAsBase64' => base64_encode(json_encode($targetPictureAsBase64)),
                               'canEdit' =>  $isCreator || $isParticipatingIn
                             );
         }
@@ -162,6 +165,12 @@ class DefaultController extends Controller
                     $this->base['idea']->setConceptText($request->request->get('value'));
                     $objectHasBeenModified = true;
                     break;
+                case 'file':
+                    $uploadedFile = $request->files->get('file');
+                    $this->base['idea']->setFile($uploadedFile);
+                    $objectHasBeenModified = true;
+                    $needsRedirect = true;
+                    break;
                 case 'knowledge_text':
                     $this->base['idea']->setKnowledgeText($request->request->get('value'));
                     $objectHasBeenModified = true;
@@ -185,7 +194,22 @@ class DefaultController extends Controller
             }
         }
 
-        return $response;
+        
+        if (isset($needsRedirect) && $needsRedirect) {
+
+            if (count($errors) > 0) {
+                $this->get('session')->setFlash(
+                        'error',
+                        $errors[0]->getMessage()
+                    );
+            }
+
+            return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
+
+        } else {
+        
+            return $response;
+        }
 
     }
 

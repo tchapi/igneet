@@ -1,0 +1,5 @@
+# General
+
+g_choose_file:
+    pattern:  /file/upload/{targetAsBase64}
+    defaults: { _controller: metaGeneralBundle:Default:chooseFile }

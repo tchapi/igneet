@@ -25,7 +25,7 @@
 {% block header %}
 
   <div class="headerAvatarAndActions">
-    {% if isMe %}<div class="changeAvatar"><a href="#"><i class="icon-pencil"></i> change</a></div>{% endif %}
+    {% if isMe %}<div class="changeAvatar"><a href="{{ path('g_choose_file', {'targetAsBase64': targetAvatarAsBase64 }) }}"><i class="icon-pencil"></i> change</a></div>{% endif %}
     <img src="{{ user.avatar }}" width="150" height="150" class="avatar"/>
 {% if alreadyFollowing %}
     <a href="{{ path('u_unfollow_user', {'username': user.username}) }}" class="btn btn-info followAction">Unfollow {{ user.firstName }}</a>

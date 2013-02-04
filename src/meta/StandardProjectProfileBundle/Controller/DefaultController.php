@@ -105,6 +105,12 @@ class DefaultController extends BaseController
                     $this->base['standardProject']->setAbout($request->request->get('value'));
                     $objectHasBeenModified = true;
                     break;
+                case 'file':
+                    $uploadedFile = $request->files->get('file');
+                    $this->base['standardProject']->setFile($uploadedFile);
+                    $objectHasBeenModified = true;
+                    $needsRedirect = true;
+                    break;
                 case 'skills':
                     $skillSlugsAsArray = $request->request->get('value');
                     
@@ -135,7 +141,21 @@ class DefaultController extends BaseController
 
         }
 
-        return $response;
+        if (isset($needsRedirect) && $needsRedirect) {
+
+            if (count($errors) > 0) {
+                $this->get('session')->setFlash(
+                        'error',
+                        $errors[0]->getMessage()
+                    );
+            }
+
+            return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $slug)));
+
+        } else {
+        
+            return $response;
+        }
 
     }
 
