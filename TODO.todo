@@ -32,9 +32,15 @@ Todo - General / Users :
  ✔ cluttering des activity logs @done (13-01-25 00:29)
  ☐ Clustering : vérifier que l'object correspond en récupérant le findOneBY, et pas faire le test dans le if après
 
+ ☐ Delete des uers : cascade des log entries
+
  ✔ User ->lastactivity et maj le timestamp à chaque requete http ? @done (13-01-24 22:46)
 
+ ☐ Rajouter l'avatar du user dans la barre de menu en haut à droite
+
  ☐ Mettre maxUsersInListings en parameters de l'appli a récupérer dans Twig
+
+ ☐ Ne pas passer le nom complet de l'action en base64 lors d'un chooseFile ou User mais mettre seulement qqs parametres puis reconstruire après ?
 
  ✔ signup : avatar @done (13-02-04 20:12)
  ✔ chgt d'avatar -----> Mais pas simple @done (13-02-04 20:17)

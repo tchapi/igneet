@@ -55,6 +55,7 @@ class BaseLogEntry
     /**
      * User that did this (OWNING SIDE)
      * @ORM\ManyToOne(targetEntity="meta\UserProfileBundle\Entity\User", inversedBy="initiatedLogEntries")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      **/
     private $user;
 
