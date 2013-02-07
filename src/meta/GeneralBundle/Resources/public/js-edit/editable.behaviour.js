@@ -11,8 +11,10 @@ $(document).ready(function(){
     /* Editable lists of ul/li 
      * (for skills for instance)
      */
-    $('.editable-li.skills').attr('data-value', $.map( $('.editable-li.skills').find('li'), function (element) { return $(element).attr('rel') }).join(',') );
-    $('.editable-li.tags').attr('data-value', $.map( $('.editable-li.tags').find('li'), function (element) { return $(element).attr('rel') }).join(',') );
+    $('.editable-li').each(function(){
+      $(this).attr('data-value', $.map( $(this).find('li'), function (element) { return $(element).attr('rel') }).join(',') );
+    });
+
     $('.editable-li').editable({
         pk: 1,
         placement: 'bottom',
