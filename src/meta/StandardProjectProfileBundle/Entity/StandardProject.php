@@ -146,6 +146,12 @@ class StandardProject extends Taggable
     private $commonLists;
 
     /**
+     * Resources
+     * @ORM\OneToMany(targetEntity="Resource", mappedBy="project", cascade="remove")
+     **/
+    private $resources;
+
+    /**
      * Wiki (OWNING SIDE)
      * @ORM\OneToOne(targetEntity="Wiki", inversedBy="project")
      **/
@@ -168,9 +174,10 @@ class StandardProject extends Taggable
         $this->participants = new ArrayCollection();
         $this->watchers = new ArrayCollection();
 
-        $this->commonLists = new ArrayCollection();
-
         $this->comments = new ArrayCollection();
+
+        $this->commonLists = new ArrayCollection();
+        $this->resources = new ArrayCollection();
 
     }
 
@@ -821,5 +828,40 @@ class StandardProject extends Taggable
     public function getLogEntries()
     {
         return $this->logEntries;
+    }
+
+    /**
+     * Add resources
+     *
+     * @param \meta\StandardProjectProfileBundle\Entity\Resource $resource
+     * @return StandardProject
+     */
+    public function addResource(\meta\StandardProjectProfileBundle\Entity\Resource $resource)
+    {
+        $resource->setProject($this);
+        $this->resources[] = $resource;
+    
+        return $this;
+    }
+
+    /**
+     * Remove resources
+     *
+     * @param \meta\StandardProjectProfileBundle\Entity\Resource $resource
+     */
+    public function removeResource(\meta\StandardProjectProfileBundle\Entity\Resource $resource)
+    {
+        $this->resources->removeElement($resource);
+        $resource->setProject(null);
+    }
+
+    /**
+     * Get resources
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getResources()
+    {
+        return $this->resources;
     }
 }

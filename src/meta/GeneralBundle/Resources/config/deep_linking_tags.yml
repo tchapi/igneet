@@ -15,3 +15,6 @@ parameters:
     list:
       routing: sp_show_project_list
       icon: list
+    resource:
+      routing: sp_show_project_resources
+      icon: file-alt
