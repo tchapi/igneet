@@ -12,22 +12,26 @@ use meta\GeneralBundle\Entity\Behaviour\Taggable;
  * meta\StandardProjectProfileBundle\Entity\Resource
  *
  * @ORM\Table(name="Resource")
+ * @ORM\HasLifecycleCallbacks
  * @ORM\Entity()
  */
 class Resource extends Taggable
 {
 
-    const TYPE_GDOC    = 1;
-    const TYPE_DROPBOX = 2;
-    const TYPE_DROPLR  = 3;
+    const TYPE_GDOC    = 'google';
+    const TYPE_DROPBOX = 'box_open';
+    const TYPE_DROPLR  = 'package_link';
+    const TYPE_YOUTUBE = 'movies';
 
-    const TYPE_WORD    = 4;
-    const TYPE_EXCEL   = 5;
-    const TYPE_PPT     = 6;
+    const TYPE_WORD    = 'file_extension_doc';
+    const TYPE_EXCEL   = 'file_extension_xls';
+    const TYPE_PPT     = 'file_extension_ppt';
 
-    const TYPE_PDF     = 7;
+    const TYPE_PDF     = 'file_extension_pdf';
 
-    const TYPE_OTHER   = 0;
+    const TYPE_IMAGE   = 'picture';
+
+    const TYPE_OTHER   = 'document_comments';
 
     /**
      * @var integer $id
@@ -49,7 +53,7 @@ class Resource extends Taggable
     /**
      * @var string $type
      *
-     * @ORM\Column(name="type", type="string", length=255)
+     * @ORM\Column(name="type", type="string", length=100)
      * @Assert\NotBlank()
      */
     private $type;
@@ -62,9 +66,16 @@ class Resource extends Taggable
     private $url;
 
     /**
+     * @var string $original_filename
+     *
+     * @ORM\Column(name="original_filename", type="string", length=255, nullable=true)
+     */
+    private $original_filename;
+
+    /**
      * @Assert\File(maxSize="6000000")
      */
-    private $file;
+    protected $file;
 
     /**
      * @var date $created_at
@@ -75,10 +86,34 @@ class Resource extends Taggable
      */
     private $created_at;  
 
+    /**
+     * @var date $updated_at
+     * 
+     * @ORM\Column(name="updated_at", type="datetime")
+     * @Assert\NotBlank()
+     * @Assert\DateTime()
+     */
+    private $updated_at;  
+
+    /**
+     * Project this resource is linked to (REVERSE SIDE)
+     * @ORM\ManyToOne(targetEntity="StandardProject", inversedBy="resources")
+     **/
+    private $project;
+
     public function __construct()
     {
         $this->type = self::TYPE_OTHER;
-        $this->created_at = new \DateTime('now');
+        $this->created_at = $this->updated_at = new \DateTime('now');
+    }
+
+
+    public function getLogName()
+    {
+        return $this->title;
+    }
+    public function getLogArgs(){
+        return array();
     }
 
     /**
@@ -115,6 +150,10 @@ class Resource extends Taggable
 
     public function getUrlWebPath()
     {
+
+        if (substr($this->url, 0, 4) === "http")
+            return $this->url;
+
         return null === $this->url
             ? null
             : '/'.$this->getUploadDir().'/'.$this->url;
@@ -150,9 +189,10 @@ class Resource extends Taggable
      */
     public function preUpload()
     {
-        if (null !== $this->file) {
+        if (isset($this->file) && null !== $this->file) {
             // Generate a unique name
             $filename = sha1(uniqid(mt_rand(), true));
+            $this->original_filename = $this->file->getClientOriginalName();
             $this->url = $filename.'.'.$this->file->guessExtension();
         }
     }
@@ -163,8 +203,51 @@ class Resource extends Taggable
      */
     public function upload()
     {
-        if (null === $this->file) {
+
+        // Tries to guess platform from absolute url
+        if (!isset($this->file) || null === $this->file) {
+
+            if (strpos($this->url, "dropbox.com") !== false)
+                $this->type = self::TYPE_DROPBOX; // https://www.dropbox.com/home/Public
+            if (strpos($this->url, "docs.google.com") !== false)
+                $this->type = self::TYPE_GDOC; // https://docs.google.com/document/d/11c9o7030Wi38dhJjyVd0iqVyX-U-EYoHWg9XGzQezwI/edit
+            if (strpos($this->url, "d.pr/i") !== false)
+                $this->type = self::TYPE_DROPLR; // http://d.pr/i/Q4Bg
+            if (strpos($this->url, "youtube.com") !== false)
+                $this->type = self::TYPE_YOUTUBE; // http://www.youtube.com/watch?v=Kcz_VmDvrgM
+
             return;
+        }
+
+        switch ($this->file->guessExtension()) {
+            case 'pdf':
+                $this->type = self::TYPE_PDF;
+                break;
+            case 'doc':
+            case 'docx':
+                $this->type = self::TYPE_WORD;
+                break;
+            case 'ppt':
+            case 'pptx':
+            case 'pot':
+                $this->type = self::TYPE_PPT;
+                break;
+            case 'xls':
+            case 'xlsx':
+            case 'xlsm':
+            case 'xlm':
+                $this->type = self::TYPE_EXCEL;
+                break;
+            case 'jpg':
+            case 'jpeg':
+            case 'png':
+            case 'gif':
+            case 'bmp':
+                $this->type = self::TYPE_IMAGE;
+                break;    
+            default:
+                $this->type = self::TYPE_OTHER;
+                break;
         }
 
         // if there is an error when moving the file, an exception will
@@ -180,7 +263,9 @@ class Resource extends Taggable
      */
     public function removeUpload()
     {
-        if ($file = $this->getAbsoluteUrlPath()) {
+
+        if ( ($file = $this->getAbsoluteUrlPath()) && 
+             $this->original_filename != null) {
             unlink($file);
         }
     }
@@ -293,5 +378,74 @@ class Resource extends Taggable
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * Set project
+     *
+     * @param \meta\StandardProjectProfileBundle\Entity\StandardProject $project
+     * @return Resource
+     */
+    public function setProject(\meta\StandardProjectProfileBundle\Entity\StandardProject $project = null)
+    {
+        $this->project = $project;
+    
+        return $this;
+    }
+
+    /**
+     * Get project
+     *
+     * @return \meta\StandardProjectProfileBundle\Entity\StandardProject 
+     */
+    public function getProject()
+    {
+        return $this->project;
+    }
+
+    /**
+     * Set updated_at
+     *
+     * @param \DateTime $updatedAt
+     * @return Resource
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updated_at = $updatedAt;
+    
+        return $this;
+    }
+
+    /**
+     * Get updated_at
+     *
+     * @return \DateTime 
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updated_at;
+    }
+
+    /**
+     * Set original_filename
+     *
+     * @param string $originalFilename
+     * @return Resource
+     */
+    public function setOriginalFilename($originalFilename)
+    {
+        $this->original_filename = $originalFilename;
+    
+        return $this;
+    }
+
+    /**
+     * Get original_filename
+     *
+     * @return string 
+     */
+    public function getOriginalFilename()
+    {
+        return $this->original_filename;
     }
 }

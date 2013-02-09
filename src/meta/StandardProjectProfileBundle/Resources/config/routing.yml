@@ -57,6 +57,19 @@ sp_show_project_resources:
     requirements:
       page: \d+
 
+sp_show_project_resource_edit:
+    pattern:  /project/show/{slug}/resource/edit/{id}
+    defaults: { _controller: metaStandardProjectProfileBundle:Resource:editResource }
+    requirements:
+      page: \d+
+      _method:  POST
+
+sp_show_project_resource_delete:
+    pattern:  /project/show/{slug}/resource/delete/{id}
+    defaults: { _controller: metaStandardProjectProfileBundle:Resource:deleteResource }
+    requirements:
+      page: \d+
+
 ## TIMELINE
 sp_show_project_timeline:
     pattern:  /project/show/{slug}/timeline/{page}

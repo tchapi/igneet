@@ -24,7 +24,9 @@ thethirdplace.fr
  ✔ tags des wikipages @done (13-01-28 21:58)
  ☐ ressources
    \__ liens avec nom
-   \__ upload avec nom rempli automatiquement
+   \__ upload avec nom
+   \__ Faire une page spécifique pour chaque resource ?
+    ☐ slugify les noms de fichier  + un id unique pour s'y retrouver au téléchargement ? Ou le faire justement quand la personne veut télécharger en prenant le titre (mieux) ?
  ☐ Commentaires timeline
 
 Todo - General / Users :
@@ -32,9 +34,15 @@ Todo - General / Users :
  ✔ cluttering des activity logs @done (13-01-25 00:29)
  ☐ Clustering : vérifier que l'object correspond en récupérant le findOneBY, et pas faire le test dans le if après
 
+ ✔ Delete des uers : cascade des log entries @done (13-02-05 20:42)
+
  ✔ User ->lastactivity et maj le timestamp à chaque requete http ? @done (13-01-24 22:46)
 
+ ☐ Rajouter l'avatar du user dans la barre de menu en haut à droite
+
  ☐ Mettre maxUsersInListings en parameters de l'appli a récupérer dans Twig
+
+ ☐ Ne pas passer le nom complet de l'action en base64 lors d'un chooseFile ou User mais mettre seulement qqs parametres puis reconstruire après ?
 
  ✔ signup : avatar @done (13-02-04 20:12)
  ✔ chgt d'avatar -----> Mais pas simple @done (13-02-04 20:17)
@@ -164,6 +172,10 @@ Todo - Search:
 
  ☐ Recherche
  ☐ par tags exacts
+
+Site statique:
+
+ ☐ Page credits avec les attributions des icones, librairies JS, etc
 
 Basic Workflow:
 

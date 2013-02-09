@@ -6,8 +6,57 @@
 {% render "metaStandardProjectProfileBundle:Default:navbar" with { 'activeMenu' : 'resources', 'slug' : base.standardProject.slug } %}
 {% endblock %}
 
-{% block content %}
+{% form_theme form _self %}
+
+{% block form_row %}
 <section>
-rien
+<div class="sectionTitle">{{ form_label(form) }}</div>
+<div class="sectionContent">
+    {{ form_errors(form) }}
+    {{ form_widget(form) }}
+</div>
 </section>
+{% endblock form_row %}
+
+{% block content %}
+{% if base.standardProject.resources|length > 0 %}
+<section class="colored">
+  <div class="sectionTitle">Available resources :</div>
+  <div class="sectionContent">
+  <ul class="resources">
+  {% for resource in base.standardProject.resources %}
+      <li>
+        {% if base.canEdit %}<a href="{{ path('sp_show_project_resource_delete', {'slug': base.standardProject.slug, 'id': resource.id}) }}"><i class="icon-remove-sign"></i></a>{% endif %}
+        <img src="{{ asset('/bundles/metageneral/img/icons/' ~ resource.type ~ '.png') }}" />
+        <span class="editable" data-title="Change the title of this resource" data-name="title" data-url="{{ path('sp_show_project_resource_edit', {'slug': base.standardProject.slug, 'id': resource.id}) }}" data-type="text">{{ resource.title }}</span>{% if resource.originalfilename %} <em>({{ resource.originalfilename }})</em>{% endif %}
+        - <a href="{{ resource.url }}" target="_blank"><i class="icon-external-link"></i></a><a href=""><i class="icon-download"></i></a>
+        <span>
+          {% if resource.tags|length > 0 %}
+            Tags :
+          {% elseif not base.canEdit %}
+            No tags yet.
+          {% endif %}
+          <ul data-toggle="manual" data-title="Indicate tags separated by a comma or space" data-emptytext="Add tags" data-url="{{ path('sp_show_project_resource_edit', {'slug': base.standardProject.slug, 'id' : resource.id }) }}" data-type="select2" data-name="tags" class="tags tags{{ resource.id }}-target editable-li" >
+          {% for tag in resource.tags %}<li class="label" rel="{{ tag.name }}">{{ tag.name }}</li>{% endfor %}
+          </ul>
+          {% if base.canEdit %} <a class="editable-trigger" data-target="tags{{ resource.id }}">&hellip;<i class="icon-pencil"></i></a>{% endif %}
+        </span>
+      </li>
+  {% endfor %}
+  </ul>
+  </div>
+</section>
+{% endif %}
+<form action="{{ path('sp_show_project_resources', {'slug': base.standardProject.slug}) }}" method="post" {{ form_enctype(form) }}>
+  <section>
+    <h4>Add a new resource :</h4>
+  </section>
+  {{ form_widget(form) }}
+  <section>
+    <div class="sectionTitle"></div>
+    <div class="sectionContent">
+      <input type="submit" value="Add" class="btn btn-info" />
+    </div>
+  </section>
+</form>
 {% endblock %}

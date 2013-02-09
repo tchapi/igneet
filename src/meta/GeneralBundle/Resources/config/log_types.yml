@@ -6,6 +6,7 @@ parameters:
     idea: i_show_idea
     other_user: u_show_user_profile
     list: sp_show_project_list
+    resource: sp_show_project_resources
     wikipage: sp_show_project_wiki_show_page
   general.log_types:
 # User acting for his profile or on another user
@@ -86,6 +87,18 @@ parameters:
       type: project
       icon: check-empty
       text: %%user$s has reopened the list item %%list_item$s of the list %%list$s in the project %%project$s.
+    user_add_resource: 
+      type: project
+      icon: file
+      text: %%user$s has added the resource %%resource$s to the project %%project$s.
+    user_update_resource: 
+      type: project
+      icon: paste
+      text: %%user$s has updated the resource %%resource$s of the project %%project$s.
+    user_delete_resource: 
+      type: project
+      icon: trash
+      text: %%user$s has deleted the resource %%resource$s of the project %%project$s.
 # User acting on an idea
     user_transform_idea_in_project: # DONE
       type: idea

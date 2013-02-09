@@ -251,12 +251,10 @@ class DefaultController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->remove($authenticatedUser);
                 $em->flush();
-
-                $this->get('session')->setFlash(
-                        'success',
-                        'The user '.$username.' has been deleted successfully.'
-                    );
                 
+                $this->get('security.context')->setToken(null);
+                $this->get('request')->getSession()->invalidate();
+
                 return $this->redirect($this->generateUrl('login'));
 
             } else {

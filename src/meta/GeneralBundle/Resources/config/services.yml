@@ -9,7 +9,6 @@ services:
             - { name: twig.extension }
         arguments: 
             deep_linking_tags: %general.deep_linking_tags%
-            # twig: "@twig"
             entity_manager: "@doctrine.orm.entity_manager"
     textService:
         class: "%textService.class%"

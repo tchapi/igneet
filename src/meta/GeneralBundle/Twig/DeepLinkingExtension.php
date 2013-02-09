@@ -106,6 +106,17 @@ class DeepLinkingExtension extends \Twig_Extension
                             $matched = true;
                         }
                         break;
+
+                    case 'resource':
+                        $repository = $this->em->getRepository('metaStandardProjectProfileBundle:Resource');
+                        $resource = $repository->findOneById($matches[2][$i]);
+                        if ($resource){
+                            $standardProject = $resource->getProject();
+                            $args = array( 'slug' => $standardProject->getSlug(), 'id' => $resource->getId());
+                            $title = $resource->getTitle();  
+                            $matched = true;
+                        }
+                        break;
                 }
 
                 if ($matched){

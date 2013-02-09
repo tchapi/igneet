@@ -607,3 +607,11 @@ ul.tags li{
   display: inline-block;
   margin-right: 2px;
 }
+
+/*************/
+/* RESOURCES */
+/*************/
+ul.resources{
+  list-style-type: none;
+  margin: 0;
+}
