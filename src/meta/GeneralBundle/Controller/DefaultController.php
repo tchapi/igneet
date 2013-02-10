@@ -23,7 +23,29 @@ class DefaultController extends Controller
 
             if (null !== $uploadedFile) {
 
+                // An upload was performed
+
+                // Do we go to crop and resize ?
+                if ($target['crop'] == true){
+    
+                    $filename = sha1(uniqid(mt_rand(), true));
+                    $picture = $filename.'-toCropAndResize.'.$uploadedFile->guessExtension();
+                    $uploadedFile->move(__DIR__.'/../../../../web/uploads/tmp', $picture);
+                    unset($uploadedFile);
+
+                    return $this->render('metaGeneralBundle:Default:resizeCrop.html.twig', array('targetAsBase64' => $targetAsBase64, 'image' => '/uploads/tmp/'.$picture));
+
+                } else {
+
+                    return $this->forward($target['slug'], $target['params']);
+
+                }
+
+            } else {
+
+                // A crop was performed
                 return $this->forward($target['slug'], $target['params']);
+
             }
 
         } 

@@ -4,6 +4,7 @@ namespace meta\StandardProjectProfileBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller,
     Symfony\Component\HttpFoundation\Request,
+    Symfony\Component\HttpFoundation\File\File,
     Symfony\Component\HttpFoundation\Response;
 
 /*
@@ -110,9 +111,23 @@ class DefaultController extends BaseController
                         );
                     $objectHasBeenModified = true;
                     break;
-                case 'file':
-                    $uploadedFile = $request->files->get('file');
-                    $this->base['standardProject']->setFile($uploadedFile);
+                case 'picture':
+                    $preparedFilename = trim(__DIR__.'/../../../../web'.$request->request->get('value'));
+                    
+                    $targ_w = $targ_h = 300;
+                    $img_r = imagecreatefromstring(file_get_contents($preparedFilename));
+                    $dst_r = ImageCreateTrueColor($targ_w, $targ_h);
+
+                    imagecopyresampled($dst_r,$img_r,0,0,
+                        intval($request->request->get('x')),
+                        intval($request->request->get('y')),
+                        $targ_w, $targ_h, 
+                        intval($request->request->get('w')),
+                        intval($request->request->get('h')));
+                    imagepng($dst_r, $preparedFilename.".cropped");
+
+                    $this->base['standardProject']->setFile(new File($preparedFilename.".cropped"));
+
                     $objectHasBeenModified = true;
                     $needsRedirect = true;
                     break;

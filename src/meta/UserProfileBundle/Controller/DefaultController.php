@@ -4,6 +4,7 @@ namespace meta\UserProfileBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller,
     Symfony\Component\HttpFoundation\Request,
+    Symfony\Component\HttpFoundation\File\File,
     Symfony\Component\HttpFoundation\Response,
     Symfony\Component\EventDispatcher\EventDispatcher,
     Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken,
@@ -36,7 +37,7 @@ class DefaultController extends Controller
         $alreadyFollowing = $authenticatedUser && $authenticatedUser->isFollowing($user);
         $isMe = $authenticatedUser && ($authenticatedUser->getUsername() == $username);
 
-        $targetAvatarAsBase64 = array ('slug' => 'metaUserProfileBundle:Default:edit', 'params' => array('username' => $username ));
+        $targetAvatarAsBase64 = array ('slug' => 'metaUserProfileBundle:Default:edit', 'params' => array('username' => $username ), 'crop' => true);
 
         return $this->render('metaUserProfileBundle:Default:show.html.twig', 
             array('user' => $user,
@@ -175,9 +176,23 @@ class DefaultController extends Controller
                         );
                     $objectHasBeenModified = true;
                     break;
-                case 'file':
-                    $uploadedFile = $request->files->get('file');
-                    $authenticatedUser->setFile($uploadedFile);
+                case 'picture':
+                    $preparedFilename = trim(__DIR__.'/../../../../web'.$request->request->get('value'));
+                    
+                    $targ_w = $targ_h = 300;
+                    $img_r = imagecreatefromstring(file_get_contents($preparedFilename));
+                    $dst_r = ImageCreateTrueColor($targ_w, $targ_h);
+
+                    imagecopyresampled($dst_r,$img_r,0,0,
+                        intval($request->request->get('x')),
+                        intval($request->request->get('y')),
+                        $targ_w, $targ_h, 
+                        intval($request->request->get('w')),
+                        intval($request->request->get('h')));
+                    imagepng($dst_r, $preparedFilename.".cropped");
+
+                    $authenticatedUser->setFile(new File($preparedFilename.".cropped"));
+
                     $objectHasBeenModified = true;
                     $needsRedirect = true;
                     break;
