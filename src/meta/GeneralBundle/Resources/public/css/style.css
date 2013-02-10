@@ -56,6 +56,7 @@ div.cart > footer{
   white-space: nowrap;
   overflow: hidden;
 }
+
 hr {
   background: transparent url("../img/hr.png") repeat-x 0 0;
   border: 0 none;
@@ -148,10 +149,8 @@ div.smallObjectInfos span{
   line-height: 1.2em;
 }
 
-.ellipsis{
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
+.smallHeaderAvatar{
+  border: 1px solid #555;
 }
 
 .imageCropWrapper{
