@@ -267,6 +267,37 @@ class DefaultController extends Controller
 
     }
 
+    /*
+     * Reset picture of idea
+     */
+    public function resetPictureAction($id)
+    {
+
+        $this->fetchIdeaAndPreComputeRights($id, true, false);
+
+        if ($this->base != false) {
+
+            $this->base['idea']->setPicture(null);
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+
+            $this->get('session')->setFlash(
+                        'success',
+                        'The picture of this idea has successfully been reset.'
+                    );
+
+        } else {
+    
+            $this->get('session')->setFlash(
+                    'error',
+                    'You cannot reset the picture for this idea.'
+                );
+        }
+
+        return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
+
+    }
+
     public function transferAction($id, $username){
 
         $this->fetchIdeaAndPreComputeRights($id, true, false);

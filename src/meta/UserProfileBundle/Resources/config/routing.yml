@@ -28,6 +28,10 @@ u_edit_user_profile:
     requirements:
         _method:  POST
 
+u_edit_user_profile_reset_avatar:
+    pattern:  /who/{username}/resetavatar
+    defaults: { _controller: metaUserProfileBundle:Default:resetAvatar }
+
 u_delete_user_profile:
     pattern:  /byebye/{username}
     defaults: { _controller: metaUserProfileBundle:Default:delete }

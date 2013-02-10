@@ -20,7 +20,7 @@
 
 {% block header %}
   <div class="headerAvatarAndActions">
-    {% if base.isCreator %}<div class="changeAvatar"><a href="{{ path('g_choose_file', {'targetAsBase64': base.targetPictureAsBase64 }) }}"><i class="icon-pencil"></i> change</a></div>{% endif %}
+    {% if base.isCreator %}<div class="changeAvatar"><a href="{{ path('i_edit_idea_reset_picture', {'id': base.idea.id }) }}" alt="Reset to default picture"><i class="icon-trash"></i></a> | <a href="{{ path('g_choose_file', {'targetAsBase64': base.targetPictureAsBase64 }) }}"><i class="icon-pencil"></i> change</a></div>{% endif %}
     <img src="{{ asset(base.idea.picture) }}" width="150" height="150" class="avatar"/>
 {% if base.isAlreadyWatching %}
     <a href="{{ path('i_unwatch_idea', {'id': base.idea.id}) }}" class="btn btn-info watchAction">Unwatch idea</a>
