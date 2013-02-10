@@ -5,10 +5,11 @@ $(document).ready(function(){
       onSelect: showCoords,
       boxWidth: 400,
       boxHeight: 400,
-      minSize: [100, 100],
+      trueSize: [document.getElementById('target').naturalWidth, document.getElementById('target').naturalHeight],
+      minSize: [150, 150],
       bgColor:     'black',
       bgOpacity:   .4,
-      setSelect:   [ 0, 0, 100, 100 ],
+      setSelect:   [ 0, 0, 150, 150 ],
       aspectRatio: 1
   });
 
