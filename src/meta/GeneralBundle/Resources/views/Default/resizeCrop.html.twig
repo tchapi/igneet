@@ -1,0 +1,55 @@
+{% extends 'metaUserProfileBundle::layout.html.twig' %}
+
+{% block title %}Resize and crop an image{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+    {% javascripts '@metaGeneralBundle/Resources/public/js-edit/jquery.Jcrop.js'
+                   '@metaGeneralBundle/Resources/public/js-edit/jcrop.behaviour.js' 
+            filter='?yui_js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block stylesheets %}
+  {{ parent() }}
+  {% stylesheets  'bundles/metageneral/css-edit/jquery.Jcrop.css' 
+    filter='?yui_css,cssrewrite' %}
+          <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}" />
+  {% endstylesheets %}
+{% endblock %}
+
+{% block header %}
+  <div class="headerAvatarAndActions">
+    <div class="textAvatar"><i class="icon-picture"></i></div>
+  </div>
+  <div class="objectHeader">
+    <h2>Resize and crop an image</h2>
+    <h4>You need to square this off, buddy !</h4>
+  </div>
+{% endblock %}
+
+{% block content %}
+<div class="formContent">
+  <form action="{{ path('g_choose_file', { 'targetAsBase64' : targetAsBase64 }) }}" method="post" enctype="multipart/form-data">
+      <div class="control-group ">
+        <label class="control-label"><label for="file" class="required">Crop and resize the image to your needs : </label></label>
+        <div class="controls">
+          <input type="hidden" name="name" id="name" value="picture" />
+          <input type="hidden" name="value" id="value" value="{{ image }}" />
+          <div class="imageCropWrapper">
+            <img id="target" src="{{ image }}"/>
+          </div>
+          <input type="hidden" size="4" id="x" name="x" />
+          <input type="hidden" size="4" id="y" name="y" />
+          <input type="hidden" size="4" id="w" name="w" />
+          <input type="hidden" size="4" id="h" name="h" />
+        </div>
+      </div>
+      <div class="form-actions">
+        <a class="btn" href="javascript:history.back()">Cancel</a>
+        <input type="submit" value="Continue with this image" class="btn btn-success" />
+      </div>
+  </form>
+</div>
+{% endblock %}
