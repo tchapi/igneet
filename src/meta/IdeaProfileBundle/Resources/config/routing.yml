@@ -21,6 +21,12 @@ i_edit_idea:
         id: \d+
         _method:  POST
 
+i_edit_idea_reset_picture:
+    pattern:  /idea/resetpicture/{id}
+    defaults: { _controller: metaIdeaProfileBundle:Default:resetPicture }
+    requirements:
+        id: \d+
+
 i_delete_idea:
     pattern:  /idea/delete/{id}
     defaults: { _controller: metaIdeaProfileBundle:Default:delete }

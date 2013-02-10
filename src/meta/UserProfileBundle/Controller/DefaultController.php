@@ -245,6 +245,39 @@ class DefaultController extends Controller
 
     }
 
+    /*
+     * Reset Avatar of user
+     */
+    public function resetAvatarAction($username)
+    {
+
+        $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
+        $user = $repository->findOneByUsername($username);
+
+        if (!$user || $user != $this->getUser()) {
+
+            $this->get('session')->setFlash(
+                    'error',
+                    'You cannot reset the avatar for this user.'
+                );
+
+        } else {
+
+            $this->getUser()->setAvatar(null);
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+
+            $this->get('session')->setFlash(
+                        'success',
+                        'Your avatar has successfully been reset.'
+                    );
+    
+        }
+
+        return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $this->getUser()->getUsername())));
+
+    }
+
     public function deleteAction($username){
 
         $authenticatedUser = $this->getUser();

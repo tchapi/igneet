@@ -31,6 +31,8 @@ thethirdplace.fr
 
 Todo - General / Users :
 
+ ☐ ajouter la possibilité de supprimer une image de profile
+
  ✔ cluttering des activity logs @done (13-01-25 00:29)
  ☐ Clustering : vérifier que l'object correspond en récupérant le findOneBY, et pas faire le test dans le if après
 

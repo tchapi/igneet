@@ -208,6 +208,37 @@ class DefaultController extends BaseController
 
     }
 
+    /*
+     * Reset picture of project
+     */
+    public function resetPictureAction($slug)
+    {
+
+        $this->fetchProjectAndPreComputeRights($slug, true, false);
+
+        if ($this->base != false) {
+
+            $this->base['standardProject']->setPicture(null);
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+
+            $this->get('session')->setFlash(
+                        'success',
+                        'The picture of the project has successfully been reset.'
+                    );
+
+        } else {
+    
+            $this->get('session')->setFlash(
+                    'error',
+                    'You cannot reset the picture for this project.'
+                );
+        }
+
+        return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $slug)));
+
+    }
+
     /*  ####################################################
      *                   WATCH / UNWATCH
      *  #################################################### */

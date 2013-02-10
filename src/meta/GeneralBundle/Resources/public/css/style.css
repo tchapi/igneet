@@ -154,6 +154,15 @@ div.smallObjectInfos span{
   white-space: nowrap;
 }
 
+.imageCropWrapper{
+  margin: auto;
+  width: 400px;
+  background: #DDD;
+  border: 2px solid #AAA;
+}
+.imageCropWrapper div{
+  margin: auto;
+}
 /*********/
 /* X-editable tweeks */
 /*********/
