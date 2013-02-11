@@ -80,7 +80,6 @@ $(document).ready(function(){
       })
       .success(function(data, config) {
          messagesBox.html("Changes saved.");
-         console
          contentBox.html(data);             
       })
       .error(function(errors) {
