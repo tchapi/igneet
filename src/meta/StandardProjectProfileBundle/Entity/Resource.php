@@ -18,10 +18,11 @@ use meta\GeneralBundle\Entity\Behaviour\Taggable;
 class Resource extends Taggable
 {
 
-    const TYPE_GDOC    = 'google';
-    const TYPE_DROPBOX = 'box_open';
-    const TYPE_DROPLR  = 'package_link';
-    const TYPE_YOUTUBE = 'movies';
+    const PROVIDER_GDOC    = 'google';
+    const PROVIDER_DROPBOX = 'box_open';
+    const PROVIDER_DROPLR  = 'package_link';
+    const PROVIDER_YOUTUBE = 'movies';
+    const PROVIDER_LOCAL   = 'file_manager';
 
     const TYPE_WORD    = 'file_extension_doc';
     const TYPE_EXCEL   = 'file_extension_xls';
@@ -49,6 +50,14 @@ class Resource extends Taggable
      * @Assert\NotBlank()
      */
     private $title;
+
+    /**
+     * @var string $provider
+     *
+     * @ORM\Column(name="provider", type="string", length=100)
+     * @Assert\NotBlank()
+     */
+    private $provider;
 
     /**
      * @var string $type
@@ -104,6 +113,7 @@ class Resource extends Taggable
     public function __construct()
     {
         $this->type = self::TYPE_OTHER;
+        $this->provider = self::PROVIDER_LOCAL;
         $this->created_at = $this->updated_at = new \DateTime('now');
     }
 
@@ -208,18 +218,31 @@ class Resource extends Taggable
         if (!isset($this->file) || null === $this->file) {
 
             if (strpos($this->url, "dropbox.com") !== false)
-                $this->type = self::TYPE_DROPBOX; // https://www.dropbox.com/home/Public
+                $this->provider = self::PROVIDER_DROPBOX; // https://www.dropbox.com/home/Public
             if (strpos($this->url, "docs.google.com") !== false)
-                $this->type = self::TYPE_GDOC; // https://docs.google.com/document/d/11c9o7030Wi38dhJjyVd0iqVyX-U-EYoHWg9XGzQezwI/edit
+                $this->provider = self::PROVIDER_GDOC; // https://docs.google.com/document/d/11c9o7030Wi38dhJjyVd0iqVyX-U-EYoHWg9XGzQezwI/edit
             if (strpos($this->url, "d.pr/i") !== false)
-                $this->type = self::TYPE_DROPLR; // http://d.pr/i/Q4Bg
+                $this->provider = self::PROVIDER_DROPLR; // http://d.pr/i/Q4Bg
             if (strpos($this->url, "youtube.com") !== false)
-                $this->type = self::TYPE_YOUTUBE; // http://www.youtube.com/watch?v=Kcz_VmDvrgM
+                $this->provider = self::PROVIDER_YOUTUBE; // http://www.youtube.com/watch?v=Kcz_VmDvrgM
 
-            return;
+            $guessedType = explode('.', $this->url);
+            $guessedType = $guessedType[count($guessedType)-1];
+
+        } else {
+
+            $this->provider = self::PROVIDER_LOCAL;
+            $guessedType = $this->file->guessExtension();
+
+            // if there is an error when moving the file, an exception will
+            // be automatically thrown by move(). This will properly prevent
+            // the entity from being persisted to the database on error
+            $this->file->move($this->getUploadRootDir(), $this->url);
+
+            unset($this->file);
         }
 
-        switch ($this->file->guessExtension()) {
+        switch ($guessedType) {
             case 'pdf':
                 $this->type = self::TYPE_PDF;
                 break;
@@ -250,12 +273,6 @@ class Resource extends Taggable
                 break;
         }
 
-        // if there is an error when moving the file, an exception will
-        // be automatically thrown by move(). This will properly prevent
-        // the entity from being persisted to the database on error
-        $this->file->move($this->getUploadRootDir(), $this->url);
-
-        unset($this->file);
     }
 
     /**
@@ -447,5 +464,28 @@ class Resource extends Taggable
     public function getOriginalFilename()
     {
         return $this->original_filename;
+    }
+
+    /**
+     * Set provider
+     *
+     * @param string $provider
+     * @return Resource
+     */
+    public function setProvider($provider)
+    {
+        $this->provider = $provider;
+    
+        return $this;
+    }
+
+    /**
+     * Get provider
+     *
+     * @return string 
+     */
+    public function getProvider()
+    {
+        return $this->provider;
     }
 }
