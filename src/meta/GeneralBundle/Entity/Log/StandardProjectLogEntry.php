@@ -24,6 +24,7 @@ class StandardProjectLogEntry extends BaseLogEntry
     /**
      * Subject : StandardProject
      * @ORM\ManyToOne(targetEntity="\meta\StandardProjectProfileBundle\Entity\StandardProject", inversedBy="logEntries")
+     * @ORM\JoinColumn(name="standardProject_id", referencedColumnName="id", onDelete="CASCADE")
      **/
     private $standardProject;
 
