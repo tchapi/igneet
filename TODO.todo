@@ -8,7 +8,7 @@
       \__ NB activités sur les 7 derniers jours avec graphe
    ☐ top 3 projets watchés + 3 dernières nouvelles idées
    ☐ idem ideas
- ☐ deeplinks de type [wikipage:43] ==> twig filter ?
+ ✔ deeplinks de type [wikipage:43] ==> twig filter ? @done (13-02-10 22:46)
  ☐ Base.canEdit --> C'est très très con pour les wiki, les listes, car c'est que les éditeurs qui peuvent le voir anyway => transformer en un <span> qui permet d'avoir une preference "voir l'édition" ou pas
 
 Nom:
@@ -31,7 +31,7 @@ thethirdplace.fr
 
 Todo - General / Users :
 
- ☐ ajouter la possibilité de supprimer une image de profile
+ ✔ ajouter la possibilité de supprimer une image de profile @done (13-02-10 23:09)
 
  ✔ cluttering des activity logs @done (13-01-25 00:29)
  ☐ Clustering : vérifier que l'object correspond en récupérant le findOneBY, et pas faire le test dans le if après
@@ -40,7 +40,7 @@ Todo - General / Users :
 
  ✔ User ->lastactivity et maj le timestamp à chaque requete http ? @done (13-01-24 22:46)
 
- ☐ Rajouter l'avatar du user dans la barre de menu en haut à droite
+ ✔ Rajouter l'avatar du user dans la barre de menu en haut à droite @done (13-02-10 23:09)
 
  ☐ Mettre maxUsersInListings en parameters de l'appli a récupérer dans Twig
 

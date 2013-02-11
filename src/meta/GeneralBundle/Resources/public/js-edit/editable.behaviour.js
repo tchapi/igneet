@@ -34,7 +34,8 @@ $(document).ready(function(){
                       }
                   },
         select2: {
-          tags:[]
+          tags:[],
+          tokenSeparators: [",", " "]
         }
     });
 

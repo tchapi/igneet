@@ -24,6 +24,7 @@ class UserLogEntry extends BaseLogEntry
     /**
      * Subject : User
      * @ORM\ManyToOne(targetEntity="\meta\UserProfileBundle\Entity\User", inversedBy="logEntries")
+     * @ORM\JoinColumn(name="other_user_id", referencedColumnName="id", onDelete="CASCADE")
      **/
     private $other_user;
 

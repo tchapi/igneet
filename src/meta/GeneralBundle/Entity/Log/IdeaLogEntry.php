@@ -24,6 +24,7 @@ class IdeaLogEntry extends BaseLogEntry
     /**
      * Subject : idea
      * @ORM\ManyToOne(targetEntity="\meta\IdeaProfileBundle\Entity\Idea", inversedBy="logEntries")
+     * @ORM\JoinColumn(name="idea_id", referencedColumnName="id", onDelete="CASCADE")
      **/
     private $idea;
 
