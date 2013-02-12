@@ -10,6 +10,7 @@ services:
         arguments: 
             deep_linking_tags: %general.deep_linking_tags%
             entity_manager: "@doctrine.orm.entity_manager"
+            router: "@router"
     textService:
         class: "%textService.class%"
     logService:

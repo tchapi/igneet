@@ -230,8 +230,7 @@ class WikiController extends BaseController
                         $objectHasBeenModified = true;
                         $deepLinkingService = $this->container->get('meta.twig.deep_linking_extension');
                         $response->setContent($deepLinkingService->convertDeepLinks(
-                          $this->container->get('markdown.parser')->transformMarkdown($request->request->get('value')),
-                          $this->get('templating'))
+                          $this->container->get('markdown.parser')->transformMarkdown($request->request->get('value')))
                         );
                         break;
                     case 'tags':
