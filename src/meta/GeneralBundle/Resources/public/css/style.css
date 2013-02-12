@@ -115,8 +115,8 @@ div.content div.menu{
 }
 div.content div.column{
   width: 738px;
-  border-left:220px solid #eee; /* The width and color of the rail */
-  margin-left:-220px;
+  border-left: 220px solid #eee; /* The width and color of the rail */
+  margin-left: -220px;
   float: right;
 }
 div.content div.column h4{
@@ -162,6 +162,36 @@ div.smallObjectInfos span{
 .imageCropWrapper div{
   margin: auto;
 }
+
+/*******************/
+/* Sortable tweaks */
+/*******************/
+
+body.dragging, body.dragging * {
+  cursor: move !important;
+}
+ul.highlight{
+  border: 1px dashed #555;
+  padding: 3px;
+}
+ul.nested{
+  border-left: 1px dotted #888;
+  margin-left: 7px;
+  padding-left: 7px;
+}
+li.dragged {
+  position: absolute;
+  opacity: 0.5;
+  z-index: 2000;
+}
+li.placeholder{
+  border: 1px dashed #AAA;
+  height: 20px;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
 /*********/
 /* X-editable tweeks */
 /*********/
@@ -490,7 +520,6 @@ ul.lists li{
 }
 ul.lists li.active{
   background: #DDD;
-  position: relative;
 }
 div.menu_new{
   margin-top: 10px;

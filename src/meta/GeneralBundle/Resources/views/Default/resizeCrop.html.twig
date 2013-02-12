@@ -30,8 +30,8 @@
 {% endblock %}
 
 {% block content %}
-<div class="formContent">
-  <form action="{{ path('g_choose_file', { 'targetAsBase64' : targetAsBase64 }) }}" method="post" enctype="multipart/form-data">
+<form action="{{ path('g_choose_file', { 'targetAsBase64' : targetAsBase64 }) }}" method="post" enctype="multipart/form-data">
+  <section>
       <div class="control-group ">
         <label class="control-label"><label for="file" class="required">Crop and resize the image to your needs : </label></label>
         <div class="controls">
@@ -50,6 +50,6 @@
         <a class="btn" href="javascript:history.back()">Cancel</a>
         <input type="submit" value="Continue with this image" class="btn btn-success" />
       </div>
-  </form>
-</div>
+  </section>
+</form>
 {% endblock %}

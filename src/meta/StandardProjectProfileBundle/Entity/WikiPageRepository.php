@@ -76,4 +76,19 @@ class WikiPageRepository extends EntityRepository
             ->getResult();
   }
 
+  public function findAllRootAlphaInWiki($wikiId)
+  {
+
+    $qb = $this->getEntityManager()->createQueryBuilder();
+
+    return $qb->select('wp')
+            ->from('metaStandardProjectProfileBundle:WikiPage', 'wp')
+            ->join('wp.wiki', 'w')
+            ->where('w.id = :pid')
+            ->setParameter('pid', $wikiId)
+            ->andWhere('wp.parent IS NULL')
+            ->orderBy('wp.title', 'ASC')
+            ->getQuery()
+            ->getResult();
+  }
 }

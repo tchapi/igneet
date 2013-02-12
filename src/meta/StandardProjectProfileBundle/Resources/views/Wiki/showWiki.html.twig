@@ -8,10 +8,17 @@
 
 {% block javascripts %}
   {{ parent() }}
-    {% javascripts '@metaGeneralBundle/Resources/public/js/select2.behaviour.js' 
+    {% javascripts '@metaGeneralBundle/Resources/public/js/select2.behaviour.js'
             filter='?yui_js' %}
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
+    {% if base.canEdit %}
+    {% javascripts '@metaGeneralBundle/Resources/public/js-edit/jquery-sortable.js'
+                   '@metaGeneralBundle/Resources/public/js-edit/sortable.behaviour.js'
+            filter='?yui_js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+  {% endif %}
 {% endblock %}
 
 {% block content %}
@@ -54,14 +61,21 @@
 {% render "metaStandardProjectProfileBundle:Comment:addWikiPageComment" with { 'slug' : base.standardProject.slug, 'id': wikiPage.id } %}
 </section>
 </div>
+{% macro tree(wikipages, wikiPage, base, homePage) %}
+    {% for page in wikipages %}
+        <li {% if page.id == wikiPage.id %}class="active" {% endif %}data-name="parent" data-url="{{ path('sp_show_project_wiki_edit_page', {'slug': base.standardProject.slug, 'id': page.id}) }}">
+            <a title="Make home page" href="{{ path('sp_show_project_wiki_make_home_page', {'slug': base.standardProject.slug, 'id': page.id}) }}"><i class="icon-file{% if page == homePage %}-alt{% endif %}"></i></a> {% if base.canEdit %}<a title="Delete" href="{{ path('sp_show_project_wiki_delete_page', {'slug': base.standardProject.slug, 'id': page.id}) }}"><i class="icon-remove-sign"></i></a>{% endif %} <a href="{{ path('sp_show_project_wiki_show_page', {'slug': base.standardProject.slug, 'id': page.id, 'pageSlug': page.slug }) }}">{{ page.title }}</a>
+            <ul class="nested" data-value="{{ page.id }}">
+                {{ _self.tree(page.children, wikiPage, base, homePage) }}
+            </ul>
+        </li>
+    {% endfor %}
+{% endmacro %}
+{% import _self as macros %}
 <div class="menu">
   Pages :
-  <ul class="lists">
-  {% for page in wikiPages %}
-      <li {% if page.id == wikiPage.id %}class="active"{% endif %}>
-        <a title="Make home page" href="{{ path('sp_show_project_wiki_make_home_page', {'slug': base.standardProject.slug, 'id': page.id}) }}"><i class="icon-file{% if page == homePage %}-alt{% endif %}"></i></a> {% if base.canEdit %}<a title="Delete" href="{{ path('sp_show_project_wiki_delete_page', {'slug': base.standardProject.slug, 'id': page.id}) }}"><i class="icon-remove-sign"></i></a>{% endif %} <a href="{{ path('sp_show_project_wiki_show_page', {'slug': base.standardProject.slug, 'id': page.id, 'pageSlug': page.slug }) }}">{{ page.title }}</a>
-      </li>
-  {% endfor %}
+  <ul class="lists sortable" data-value="0">
+    {{ macros.tree(wikiPages, wikiPage, base, homePage) }}
   </ul>
   {% if base.canEdit %}
   <div class="menu_new">
