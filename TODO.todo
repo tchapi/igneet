@@ -20,7 +20,7 @@ thethirdplace.fr
 
  Need:
 
- ☐ parenting des wikipages
+ ✔ parenting des wikipages @done (13-02-12 22:33)
  ✔ tags des wikipages @done (13-01-28 21:58)
  ☐ ressources
    \__ liens avec nom
@@ -32,6 +32,10 @@ thethirdplace.fr
 Todo - General / Users :
 
  ✔ ajouter la possibilité de supprimer une image de profile @done (13-02-10 23:09)
+
+ ☐ Faire une flash en javascript
+
+ ☐ remplacer le templating twig dans deeplink par du sprintf
 
  ☐ refaire la gestion des constantes pour les types de resources
 
@@ -90,7 +94,7 @@ Todo - entité "Wiki":
 
  ✔ make homepage du wiki @done (13-01-31 22:56)
  
- ☐ Wiki - parenting
+ ✔ Wiki - parenting @done (13-02-12 22:33)
 
  ✔ Highlight la page en cours dans la liste de gauche @done (13-01-22 00:00)
 

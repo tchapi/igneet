@@ -49,7 +49,7 @@ class WikiController extends BaseController
         }
 
         $repository = $this->getDoctrine()->getRepository('metaStandardProjectProfileBundle:WikiPage');
-        $wikiPages = $repository->findAllAlphaInWiki($wiki->getId());
+        $wikiPages = $repository->findAllRootAlphaInWiki($wiki->getId());
 
         $wikiPage = ($homePage!=null)?$homePage:$repository->findFirstAlphaInWiki($wiki->getId());
 
@@ -76,7 +76,7 @@ class WikiController extends BaseController
         $repository = $this->getDoctrine()->getRepository('metaStandardProjectProfileBundle:WikiPage');
         $wikiPage = $repository->findOneByIdInWiki($id, $wiki->getId());
 
-        $wikiPages = $repository->findAllAlphaInWiki($wiki->getId());
+        $wikiPages = $repository->findAllRootAlphaInWiki($wiki->getId());
 
         // Check if wikiPage belongs to project
         if ( !$wikiPage ){
@@ -190,7 +190,7 @@ class WikiController extends BaseController
 
         }
 
-        return $this->redirect($this->generateUrl('sp_show_project_wiki_show_page', array('slug' => $slug, 'id' => $id, 'pageSlug' => $wikiPage->getSlug())));
+        return $this->redirect($this->generateUrl('sp_show_project_wiki', array('slug' => $slug)));
            
 
     }
@@ -218,6 +218,11 @@ class WikiController extends BaseController
                 switch ($request->request->get('name')) {
                     case 'title':
                         $wikiPage->setTitle($request->request->get('value'));
+                        $objectHasBeenModified = true;
+                        break;
+                    case 'parent':
+                        $parent = $repository->findOneByIdInWiki(intval($request->request->get('value')), $wiki->getId());
+                        $wikiPage->setParent($parent);
                         $objectHasBeenModified = true;
                         break;
                     case 'content':

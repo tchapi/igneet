@@ -150,6 +150,12 @@ class WikiPage extends Taggable
      */
     public function setParent(\meta\StandardProjectProfileBundle\Entity\WikiPage $parent = null)
     {
+        if (!is_null($parent)){
+            $parent->addChildren($this);
+        } else if (!is_null($this->parent)) {
+            $this->parent->removeChildren($this);
+        }
+
         $this->parent = $parent;
     
         return $this;
