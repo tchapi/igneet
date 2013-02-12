@@ -20,11 +20,9 @@ thethirdplace.fr
 
  Need:
 
- ✔ parenting des wikipages @done (13-02-12 22:33)
- ✔ tags des wikipages @done (13-01-28 21:58)
  ☐ ressources
-   \__ liens avec nom
-   \__ upload avec nom
+   \__ liens avec nom OK
+   \__ upload avec nom OK
    \__ Faire une page spécifique pour chaque resource ?
     ☐ slugify les noms de fichier  + un id unique pour s'y retrouver au téléchargement ? Ou le faire justement quand la personne veut télécharger en prenant le titre (mieux) ?
  ☐ Commentaires timeline
@@ -93,9 +91,7 @@ Todo - entité "Wiki":
  ☐ Ajax pour new wiki page
 
  ✔ make homepage du wiki @done (13-01-31 22:56)
- 
  ✔ Wiki - parenting @done (13-02-12 22:33)
-
  ✔ Highlight la page en cours dans la liste de gauche @done (13-01-22 00:00)
 
 Todo - entité "StandardProject":
@@ -184,6 +180,7 @@ Todo - Search:
 Site statique:
 
  ☐ Page credits avec les attributions des icones, librairies JS, etc
+ ✔ Copie du README.md @done (13-02-12 22:53)
 
 Basic Workflow:
 
