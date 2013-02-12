@@ -186,8 +186,7 @@ class DefaultController extends Controller
                     $this->base['idea']->setConceptText($request->request->get('value'));
                     $deepLinkingService = $this->container->get('meta.twig.deep_linking_extension');
                         $response->setContent($deepLinkingService->convertDeepLinks(
-                          $this->container->get('markdown.parser')->transformMarkdown($request->request->get('value')),
-                          $this->get('templating'))
+                          $this->container->get('markdown.parser')->transformMarkdown($request->request->get('value')))
                         );
                     $objectHasBeenModified = true;
                     break;
@@ -195,8 +194,7 @@ class DefaultController extends Controller
                     $this->base['idea']->setKnowledgeText($request->request->get('value'));
                     $deepLinkingService = $this->container->get('meta.twig.deep_linking_extension');
                         $response->setContent($deepLinkingService->convertDeepLinks(
-                          $this->container->get('markdown.parser')->transformMarkdown($request->request->get('value')),
-                          $this->get('templating'))
+                          $this->container->get('markdown.parser')->transformMarkdown($request->request->get('value')))
                         );
                     $objectHasBeenModified = true;
                     break;

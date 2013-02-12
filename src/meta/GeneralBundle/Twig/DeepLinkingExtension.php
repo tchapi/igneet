@@ -2,30 +2,21 @@
 
 namespace meta\GeneralBundle\Twig;
 
+use Symfony\Component\Routing\Router;
+
 class DeepLinkingExtension extends \Twig_Extension
 {
 
-    private $deep_linking_tags, $em, $template;
+    private $deep_linking_tags, $em, $template, $router;
 
-    private $environment = null;
-
-    public function initRuntime(\Twig_Environment $environment)
-    {
-        $this->environment = $environment;
-    }
-
-    public function initService($environment)
-    {
-        $this->environment = $environment;
-    }
-
-    public function __construct($deep_linking_tags, $entity_manager)
+    public function __construct($deep_linking_tags, $entity_manager, Router $router)
     {
 
         $this->deep_linking_tags = $deep_linking_tags;
         $this->em = $entity_manager;
+        $this->router = $router;
 
-        $this->template = 'metaGeneralBundle:Twig:deepLink.html.twig';
+        $this->template = '<a title="Go to the page relating to this object" href="%s"><i class="icon-%s"></i> %s</a>';
 
     }
 
@@ -36,10 +27,15 @@ class DeepLinkingExtension extends \Twig_Extension
         );
     }
 
-    public function convertDeepLinks($text, $environment = null)
+    private function renderLink($params)
     {
+        $url = $this->router->generate($params['path'], $params['args']);
+        return sprintf($this->template, $url, $params['icon'], $params['title']);
 
-        if ( is_null($this->environment) ) $this->initService($environment);
+    }
+
+    public function convertDeepLinks($text)
+    {
 
         $count = preg_match_all("/\[\[(\w+?)\:(\w+?)\]\]/", $text, $matches);
 
@@ -122,13 +118,11 @@ class DeepLinkingExtension extends \Twig_Extension
                 if ($matched){
 
                     $config = $this->deep_linking_tags[ $matches[1][$i] ];
-                    $replacement = $this->environment->render($this->template, 
-                        array( 'routing' => array( 
-                            'path' => $config['routing'], 
-                            'args'=> $args
-                            ), 
-                        'icon' => $config['icon'], 
-                        'title' => $title
+                    $replacement = $this->renderLink(
+                        array('path' => $config['routing'], 
+                              'args' => $args,
+                              'icon' => $config['icon'], 
+                              'title' => $title
                         ));
 
                     $text = str_replace($matches[0][$i], $replacement, $text);
