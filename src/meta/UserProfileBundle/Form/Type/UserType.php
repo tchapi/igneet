@@ -16,8 +16,6 @@ class UserType extends AbstractType
         $builder->add('password', 'password', array( 'label' => 'Password', 'attr' => array('class' => 'input-xxlarge')));
         $builder->add('city', 'text', array('label' => 'Your city', 'attr' => array('class' => 'input-xxlarge')));
 
-        $builder->add('file', 'file', array('label' => 'Your avatar', 'required' => false, 'attr' => array('help' => 'If no file is provided, your default profile picture will be retrieved from gravatar.com')));
-
         $builder->add('headline', 'text',  array('label' => 'Headline', 'required' => false, 'attr' => array('class' => 'input-xxlarge', 'help' => 'How would you sum up who you are ?' )));
         
         $builder->add('skills', 'entity', array(
