@@ -35,7 +35,7 @@ $(document).ready(function(){
                   },
         select2: {
           tags:[],
-          tokenSeparators: [",", " "]
+          tokenSeparators: [","]
         }
     });
 
