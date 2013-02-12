@@ -1,6 +1,7 @@
 $(document).ready(function(){
 
-  $("#target").load(function(){
+  var target = $('#target');
+  $("<img/>").load(function () { //create in memory image, and bind the load event
 
     var nW = parseInt(document.getElementById("target").naturalWidth);
     var nH = parseInt(document.getElementById("target").naturalHeight);
@@ -18,7 +19,7 @@ $(document).ready(function(){
         aspectRatio: 1
     });
 
-  });
+  }).attr("src", target.attr("src")); //set the src of the in memory copy after binding the load event, to avoid WebKit issues
 
   function showCoords(c)
   {
