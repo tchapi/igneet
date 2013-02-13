@@ -31,9 +31,9 @@ Todo - General / Users :
 
  ✔ ajouter la possibilité de supprimer une image de profile @done (13-02-10 23:09)
 
- ☐ Faire une flash en javascript
+ ☐ Faire une set_flash en javascript
 
- ☐ remplacer le templating twig dans deeplink par du sprintf
+ ✔ remplacer le templating twig dans deeplink par du sprintf @done (13-02-12 23:15)
 
  ☐ refaire la gestion des constantes pour les types de resources
 
