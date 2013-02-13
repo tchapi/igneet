@@ -34,7 +34,7 @@ class ResourceController extends BaseController
 
             $form->bind($request);
 
-            $pattern = "|^http(s)?://[a-z0-9-]+(.[a-z0-9-]+)*(:[0-9]+)?(/.*)?$|i";
+            $pattern = "|^http(s)?://[a-z0-9-]+(.[a-z0-9-_]+)*(:[0-9]+)?(/.*)?$|i";
             
             if ($form->isValid() && 
               ($request->files->get('resource[file]', null, true) != null || preg_match( $pattern, $resource->getUrl() ) == 1 ) ) {
