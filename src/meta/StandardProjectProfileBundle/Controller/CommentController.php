@@ -103,6 +103,9 @@ class CommentController extends BaseController
                             $em->persist($comment);
                             $em->flush();
 
+                            $logService = $this->container->get('logService');
+                            $logService->log($this->getUser(), 'user_comment_wikipage', $this->base['standardProject'], array( 'wikipage' => array( 'routing' => 'wikipage', 'logName' => $wikiPage->getLogName(), 'args' => $wikiPage->getLogArgs()) ));
+
                             $this->get('session')->setFlash(
                                 'success',
                                 'Your comment was successfully added.'
@@ -162,6 +165,9 @@ class CommentController extends BaseController
                         $em = $this->getDoctrine()->getManager();
                         $em->persist($comment);
                         $em->flush();
+
+                        $logService = $this->container->get('logService');
+                        $logService->log($this->getUser(), 'user_comment_list', $this->base['standardProject'], array( 'list' => array( 'routing' => 'list', 'logName' => $commonList->getLogName(), 'args' => $commonList->getLogArgs()) ));
 
                         $this->get('session')->setFlash(
                             'success',
