@@ -298,8 +298,14 @@ class WikiController extends BaseController
 
                 if ($wikiPage){
                   
+                  // What if this is the homepage of the wiki ?
                   if ($wikiPage == $wiki->getHomePage()) $wiki->setHomePage(null);
                   $wiki->removePage($wikiPage);
+
+                  // What if the page has children ?
+                  foreach($wikiPage->getChildren() as $child){
+                    $child->setParent(null);
+                  }
 
                   $logService = $this->container->get('logService');
                   $logService->log($this->getUser(), 'user_delete_wikipage', $this->base['standardProject'], array( 'wikipage' => array( 'routing' => null, 'logName' => $wikiPage->getLogName() )) );
@@ -310,7 +316,7 @@ class WikiController extends BaseController
 
                   $this->get('session')->setFlash(
                       'success',
-                      'Your page "'.$wikiPage->getTitle().'" was successfully deleted.'
+                      'Your page "'.$wikiPage->getTitle().'" was successfully deleted. Its children, if any, have been put back at the root of the wiki.'
                   );
 
                 } else {

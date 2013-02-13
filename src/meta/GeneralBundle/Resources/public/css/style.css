@@ -525,6 +525,9 @@ ul.lists li{
 ul.lists li.active{
   background: #DDD;
 }
+ul.lists li.active > a{
+  font-weight: bold;
+}
 div.menu_new{
   margin-top: 10px;
   margin-left: 5px;
