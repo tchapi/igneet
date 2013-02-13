@@ -175,9 +175,13 @@ ul.highlight{
   padding: 3px;
 }
 ul.nested{
+  background: #EEE;
+  margin-left: 0;
+}
+ul.nested li{
   border-left: 1px dotted #888;
   margin-left: 7px;
-  padding-left: 7px;
+  padding-left: 4px;
 }
 li.dragged {
   position: absolute;
