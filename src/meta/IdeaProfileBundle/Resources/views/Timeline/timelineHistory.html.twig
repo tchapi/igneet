@@ -1,0 +1,14 @@
+<ul class="timeline">
+{% for step in timeframe %}
+  {% if step.data|length > 0 %}
+  <li class="dateWrapper"><div class="date">{{ step.name}}</div></li>
+
+  {% for item in step.data %}
+    <li class="logWrapper"><div class="log">{{ item|raw }}</div></li>
+  {% endfor %}
+
+  {% else %}
+  <li class="dateWrapper pass"></li>
+  {% endif %}
+{% endfor %}
+</ul>

@@ -1,6 +1,6 @@
 <?php
 
-namespace meta\StandardProjectProfileBundle\Entity\Comment;
+namespace meta\GeneralBundle\Entity\Comment;
 
 use Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM,
@@ -13,7 +13,7 @@ use Doctrine\Common\Collections\ArrayCollection,
  * @ORM\Entity
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string")
- * @ORM\DiscriminatorMap({"wikiPage" = "meta\StandardProjectProfileBundle\Entity\Comment\WikiPageComment", "list" = "meta\StandardProjectProfileBundle\Entity\Comment\CommonListComment", "project" = "meta\StandardProjectProfileBundle\Entity\Comment\StandardProjectComment"})
+ * @ORM\DiscriminatorMap({"wikiPage" = "meta\StandardProjectProfileBundle\Entity\Comment\WikiPageComment", "list" = "meta\StandardProjectProfileBundle\Entity\Comment\CommonListComment", "project" = "meta\StandardProjectProfileBundle\Entity\Comment\StandardProjectComment", "idea" = "meta\IdeaProfileBundle\Entity\Comment\IdeaComment"})
  */
 
 /*, "meta" = "meta\StandardProjectProfileBundle\Entity\Comment\MetaProjectComment"*/

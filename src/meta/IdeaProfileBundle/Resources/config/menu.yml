@@ -1,0 +1,14 @@
+parameters:
+  idea.menu:
+    - 
+      name: timeline
+      title: Timeline
+      icon: icon-comments-alt
+      route: i_show_idea_timeline
+      private: true
+    - 
+      name: info
+      title: Info
+      icon: icon-info-sign
+      route: i_show_idea
+      private: false

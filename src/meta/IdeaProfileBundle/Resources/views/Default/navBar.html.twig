@@ -1,0 +1,10 @@
+<div class="navbar project">
+  <div class="navbar-inner">
+    <ul class="nav">
+      {% for menuItem in menu %}
+      <li{% if activeMenu == menuItem.name %} class="active"{% endif %}><a href="{{ path(menuItem.route, {'id': id}) }}">
+        <i class="{{ menuItem.icon }}"></i> {{ menuItem.title }}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
