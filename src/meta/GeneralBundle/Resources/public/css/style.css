@@ -181,7 +181,11 @@ ul.nested{
 ul.nested li{
   border-left: 1px dotted #888;
   margin-left: 7px;
-  padding-left: 4px;
+}
+ul.nested li > a:first-child,
+ul.nested li ul
+{
+   padding-left: 4px;
 }
 li.dragged {
   position: absolute;
