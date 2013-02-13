@@ -18,6 +18,14 @@
     {% endif %}
 {% endblock %}
 
+{% block stylesheets %}
+  {{ parent() }}
+  {% stylesheets  'bundles/metageneral/css-edit/bootstrap-editable.css' 
+    filter='?yui_css,cssrewrite' %}
+          <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}" />
+  {% endstylesheets %}
+{% endblock %}
+
 {% block header %}
   <div class="headerAvatarAndActions">
     {% if base.isCreator %}<div class="changeAvatar"><a href="{{ path('i_edit_idea_reset_picture', {'id': base.idea.id }) }}" alt="Reset to default picture"><i class="icon-trash"></i></a> | <a href="{{ path('g_choose_file', {'targetAsBase64': base.targetPictureAsBase64 }) }}"><i class="icon-pencil"></i> change</a></div>{% endif %}
@@ -126,4 +134,8 @@
   <div class="sectionContent"><a class="btn btn-danger" href="{{ path('i_delete_idea', { 'id': base.idea.id}) }}">Delete</a> <span class="muted">( <i class="icon-warning-sign"></i> Warning : you cannot undo this )</span></div>
 </section>
 {% endif %}
+{% endblock %}
+
+{% block navbar %}
+{% render "metaIdeaProfileBundle:Default:navbar" with { 'activeMenu' : 'info', 'id' : base.idea.id } %}
 {% endblock %}
