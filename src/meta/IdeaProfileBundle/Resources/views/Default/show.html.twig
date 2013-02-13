@@ -18,6 +18,14 @@
     {% endif %}
 {% endblock %}
 
+{% block stylesheets %}
+  {{ parent() }}
+  {% stylesheets  'bundles/metageneral/css-edit/bootstrap-editable.css' 
+    filter='?yui_css,cssrewrite' %}
+          <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}" />
+  {% endstylesheets %}
+{% endblock %}
+
 {% block header %}
   <div class="headerAvatarAndActions">
     {% if base.isCreator %}<div class="changeAvatar"><a href="{{ path('i_edit_idea_reset_picture', {'id': base.idea.id }) }}" alt="Reset to default picture"><i class="icon-trash"></i></a> | <a href="{{ path('g_choose_file', {'targetAsBase64': base.targetPictureAsBase64 }) }}"><i class="icon-pencil"></i> change</a></div>{% endif %}
@@ -55,75 +63,6 @@
   </div>
 {% endblock %}
 
-{% block content %}
-<section>
-  <div class="wmd-heading"><i class="icon-book"></i> Knowledge {% if base.canEdit %}<a class="pull-right markdown-trigger">&hellip;<i class="icon-pencil"></i></a>{% endif %}</div>
-  <div>
-
-      <div class="wmd-wrapper well well-small hide" >
-        <div class="wmd-panel">
-            <div id="wmd-button-bar"></div>
-            <textarea data-name="knowledge_text" data-url="{{ path('i_edit_idea', {'id': base.idea.id}) }}" class="wmd-input" id="wmd-input">{{ base.idea.knowledgeText }}</textarea>
-        </div>
-        <div>
-          <button id="wmd-save" class="btn btn-primary">Save</button> <span class="muted wmd-message">Click 'Save' to commit your changes</span>
-        </div>
-        <div id="wmd-preview" class="preview">{{ base.idea.knowledgeText }}</div>
-      </div>
-
-    <div class="content">{{ base.idea.knowledgeText|deeplinks|markdown }}</div>
-
-  </div>
-</section>
-<section>
-  <div class="wmd-heading"><i class="icon-cogs"></i> Concept {% if base.canEdit %}<a class="pull-right markdown-trigger">&hellip;<i class="icon-pencil"></i></a>{% endif %}</div>
-  <div>
-
-      <div class="wmd-wrapper well well-small hide" >
-        <div class="wmd-panel">
-            <div id="wmd-button-bar-second"></div>
-            <textarea data-name="concept_text" data-url="{{ path('i_edit_idea', {'id': base.idea.id}) }}" class="wmd-input" id="wmd-input-second">{{ base.idea.conceptText }}</textarea>
-        </div>
-        <div>
-          <button id="wmd-save-second" class="btn btn-primary">Save</button> <span class="muted wmd-message">Click 'Save' to commit your changes</span>
-        </div>
-        <div id="wmd-preview-second" class="preview">{{ base.idea.conceptText }}</div>
-      </div>
-
-    <div class="content">{{ base.idea.conceptText|deeplinks|markdown }}</div>
-
-  </div>
-</section>
-<section class="colored">
-  <div class="sectionTitle">{% if base.idea.participants|length > 0 or base.isCreator %}Participants : {% else %}No participant yet ...{% endif %}</div>
-  <ul class="users sectionContent">
-  {% for participatingUser in base.idea.participants %}
-      <li>
-        <a href="{{ path('u_show_user_profile', {'username': participatingUser.username}) }}">
-          <img src="{{ participatingUser.avatar }}" width="70" height="70" class="smallAvatar"/>
-          <div class="smallObjectInfos">
-            <span><div>{{ participatingUser.firstName }}</div><div>{{ participatingUser.lastName|upper }}</div></span>
-          </div>
-        </a>
-        {% if base.isCreator %}<a class="removeUserIcon" href="{{ path('i_remove_participant_to_idea', { 'id': base.idea.id, 'username' : participatingUser.username }) }}"><i class="icon-remove-sign icon-large"></i></a>{% endif %}
-      </li>
-  {% endfor %}
-  {% if base.isCreator %}
-      <li>
-        <a href="{{ path('u_choose_user', {'targetAsBase64': targetParticipantAsBase64 }) }}">
-          <div class="smallTextAvatar"><i class="icon-plus-sign"></i></div>
-          <div class="smallObjectInfos">
-            <span>Add a Participant</span>
-          </div>
-        </a>
-      </li>
-  {% endif %}
-  </ul>
-</section>
-{% if base.isCreator %}
-<section class="colored warning">
-  <div class="sectionTitle">Delete this idea : </div>
-  <div class="sectionContent"><a class="btn btn-danger" href="{{ path('i_delete_idea', { 'id': base.idea.id}) }}">Delete</a> <span class="muted">( <i class="icon-warning-sign"></i> Warning : you cannot undo this )</span></div>
-</section>
-{% endif %}
+{% block navbar %}
+{% render "metaIdeaProfileBundle:Default:navbar" with { 'activeMenu' : 'info', 'id' : base.idea.id } %}
 {% endblock %}

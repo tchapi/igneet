@@ -11,13 +11,6 @@
  ✔ deeplinks de type [wikipage:43] ==> twig filter ? @done (13-02-10 22:46)
  ☐ Base.canEdit --> C'est très très con pour les wiki, les listes, car c'est que les éditeurs qui peuvent le voir anyway => transformer en un <span> qui permet d'avoir une preference "voir l'édition" ou pas
 
-Nom:
-
-the-third-space.com
-athirdspace.com
-thirdplace.fr
-thethirdplace.fr
-
  Need:
 
  ☐ ressources
@@ -25,7 +18,7 @@ thethirdplace.fr
    \__ upload avec nom OK
    \__ Faire une page spécifique pour chaque resource ?
     ☐ slugify les noms de fichier  + un id unique pour s'y retrouver au téléchargement ? Ou le faire justement quand la personne veut télécharger en prenant le titre (mieux) ?
- ☐ Commentaires timeline
+ ✔ Commentaires timeline @done (13-02-13 16:25)
 
 Todo - General / Users :
 
@@ -58,7 +51,7 @@ Todo - General / Users :
 
  ✔ Mettre à jour les popin de choix des skills avec la partie 'tags' de X-editable @done (13-01-28 23:17)
 
- ☐ Rajouter un badge 'YOU' quand l'utilisateur courant est affiché
+ ✘ Rajouter un badge 'YOU' quand l'utilisateur courant est affiché @cancelled (13-02-13 14:08)
 
  ☐ Pagination générale sur les objets
 
@@ -111,9 +104,9 @@ Todo - entité "Comment":
    \_ WikiPageComment
    \_ ListComment
 
- ☐ Commentaires en tant que LOG  ?? Comment faire
+ ✔ Commentaires en tant que LOG  ?? Comment faire @done (13-02-13 16:25)
 
- ☐ Commentaires
+ ✘ Commentaires @cancelled (13-02-13 16:25)
    \_ ResourceComment
 
  ✘ Commenter un listItem en plus d'une liste ? @cancelled (13-01-23 23:43)
@@ -122,7 +115,7 @@ Todo - entité "Comment":
  
 Todo - entité "Idea":
 
- ☐ log des modifs sur les ideas : reste l'affichage sur une timeline ?
+ ✔ log des modifs sur les ideas : reste l'affichage sur une timeline ? @done (13-02-13 18:49)
 
  ✔ Description / Info @done (13-01-16 21:18)
   \_ description textuelle principale OK OK

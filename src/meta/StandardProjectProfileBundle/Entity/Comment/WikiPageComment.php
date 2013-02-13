@@ -2,6 +2,7 @@
 
 namespace meta\StandardProjectProfileBundle\Entity\Comment;
 
+use meta\GeneralBundle\Entity\Comment\BaseComment;
 use Doctrine\ORM\Mapping as ORM;
 
 /**

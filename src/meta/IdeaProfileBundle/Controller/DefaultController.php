@@ -12,9 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller,
  */
 use meta\IdeaProfileBundle\Entity\Idea,
     meta\IdeaProfileBundle\Form\Type\IdeaType,
-    meta\StandardProjectProfileBundle\Entity\StandardProject,
-    meta\StandardProjectProfileBundle\Entity\Wiki,
-    meta\StandardProjectProfileBundle\Entity\WikiPage;
+    meta\IdeaProfileBundle\Entity\Comment\IdeaComment;
 
 class DefaultController extends Controller
 {
@@ -51,6 +49,13 @@ class DefaultController extends Controller
 
     }
 
+    public function navbarAction($activeMenu, $id)
+    {
+        $menu = $this->container->getParameter('idea.menu');
+
+        return $this->render('metaIdeaProfileBundle:Default:navbar.html.twig', array('menu' => $menu, 'activeMenu' => $activeMenu, 'id' => $id));
+    }
+
     /*  ####################################################
      *                    IDEA LIST
      *  #################################################### */
@@ -66,12 +71,30 @@ class DefaultController extends Controller
 
     }
 
+    /*  ####################################################
+     *                        TIMELINE
+     *  #################################################### */
+
+    public function showTimelineAction($id, $slug, $page)
+    {
+        $this->fetchIdeaAndPreComputeRights($id, false, false);
+
+        if ($this->base['idea']->isArchived()){
+          throw $this->createNotFoundException('This idea is already archived');
+        }
+
+        $targetOwnerAsBase64 = array ('slug' => 'i_transfer_idea', 'params' => array('id' => $id, 'owner' => false));
+
+       
+        return $this->render('metaIdeaProfileBundle:Timeline:showTimeline.html.twig', 
+            array('base' => $this->base, 'targetOwnerAsBase64' => base64_encode(json_encode($targetOwnerAsBase64))));
+    }
     
     /*  ####################################################
      *                        SHOW
      *  #################################################### */
 
-    public function showAction($id)
+    public function showAction($id, $slug)
     {
 
         $this->fetchIdeaAndPreComputeRights($id, false, false);
@@ -83,7 +106,7 @@ class DefaultController extends Controller
         $targetParticipantAsBase64 = array ('slug' => 'i_add_participant_to_idea', 'params' => array('id' => $id, 'owner' => false));
         $targetOwnerAsBase64 = array ('slug' => 'i_transfer_idea', 'params' => array('id' => $id, 'owner' => false));
 
-        return $this->render('metaIdeaProfileBundle:Default:show.html.twig', 
+        return $this->render('metaIdeaProfileBundle:Info:showInfo.html.twig', 
             array('base' => $this->base,
                 'targetParticipantAsBase64' => base64_encode(json_encode($targetParticipantAsBase64)),
                 'targetOwnerAsBase64' => base64_encode(json_encode($targetOwnerAsBase64)) ));
@@ -402,6 +425,148 @@ class DefaultController extends Controller
             return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
         }
 
+
+    }
+
+
+    public function addIdeaCommentAction(Request $request, $id){
+
+        $this->fetchIdeaAndPreComputeRights($id, false, false);
+
+        if ($this->base != false) {
+
+            if ($this->base['idea']->isArchived()){
+              throw $this->createNotFoundException('This idea is already archived');
+            }
+
+            $comment = new IdeaComment();
+            $form = $this->createFormBuilder($comment)
+                ->add('text', 'textarea', array('attr' => array('placeholder' => 'Leave a message ...')))
+                ->getForm();
+
+            if ($request->isMethod('POST')) {
+
+                $form->bind($request);
+
+                if ($form->isValid()) {
+
+                    $comment->setUser($this->getUser());
+                    $this->base['idea']->addComment($comment);
+                    
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($comment);
+                    $em->flush();
+
+                    $this->get('session')->setFlash(
+                        'success',
+                        'Your comment was successfully added.'
+                    );
+
+                } else {
+
+                   $this->get('session')->setFlash(
+                        'error',
+                        'The information you provided does not seem valid.'
+                    );
+                }
+
+                return $this->redirect($this->generateUrl('i_show_idea_timeline', array('id' => $id)));
+
+            } else {
+
+                $route = $this->get('router')->generate('i_show_idea_comment', array('id' => $id));
+
+                return $this->render('metaGeneralBundle:Comment:timelineCommentBox.html.twig', 
+                    array('object' => $this->base['idea'], 'route' => $route, 'form' => $form->createView()));
+
+            }
+
+        }
+
+        throw $this->createNotFoundException('This idea does not exist');
+
+    }
+
+    public function historyAction($id, $page){
+
+        $this->fetchIdeaAndPreComputeRights($id, false, false);
+
+        $this->timeframe = array( 'today' => array( 'name' => 'today', 'data' => array()),
+                            'd-1'   => array( 'name' => date("M j", strtotime("-1 day")), 'data' => array() ),
+                            'd-2'   => array( 'name' => date("M j", strtotime("-2 day")), 'data' => array() ),
+                            'd-3'   => array( 'name' => date("M j", strtotime("-3 day")), 'data' => array() ),
+                            'd-4'   => array( 'name' => date("M j", strtotime("-4 day")), 'data' => array() ),
+                            'd-5'   => array( 'name' => date("M j", strtotime("-5 day")), 'data' => array() ),
+                            'd-6'   => array( 'name' => date("M j", strtotime("-6 day")), 'data' => array() ),
+                            'before'=> array( 'name' => 'before', 'data' => array() )
+                            );
+
+        $repository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\IdeaLogEntry');
+        $entries = $repository->findByIdea($this->base['idea']);
+
+        $history = array();
+
+        // Logs
+        $log_types = $this->container->getParameter('general.log_types');
+        $logService = $this->container->get('logService');
+
+        foreach ($entries as $entry) {
+          
+          $text = $logService->getHTML($entry);
+          $createdAt = date_create($entry->getCreatedAt()->format('Y-m-d H:i:s'));
+
+          $history[] = array( 'createdAt' => $createdAt , 'text' => $text );
+        
+        }
+
+        // Comments
+        foreach ($this->base['idea']->getComments() as $comment) {
+
+          $text = $logService->getHTML($comment); //"test";
+          $createdAt = date_create($comment->getCreatedAt()->format('Y-m-d H:i:s'));
+
+          $history[] = array( 'createdAt' => $createdAt , 'text' => $text );
+
+        }
+
+        // Sort !
+        function build_sorter($key) {
+            return function ($a, $b) use ($key) {
+                return $a[$key]>$b[$key];
+            };
+        }
+        usort($history, build_sorter('createdAt'));
+        
+        // Now put the entries in the correct timeframes
+        $startOfToday = date_create('midnight');
+        $before = date_create('midnight 6 days ago');
+
+        foreach ($history as $historyEntry) {
+          
+          if ( $historyEntry['createdAt'] > $startOfToday ) {
+            
+            // Today
+            array_unshift($this->timeframe['today']['data'], $historyEntry['text'] );
+
+          } else if ( $historyEntry['createdAt'] < $before ) {
+
+            // Before
+            array_unshift($this->timeframe['before']['data'], $historyEntry['text'] );
+
+          } else {
+
+            // Last seven days, by day
+            $days = date_diff($historyEntry['createdAt'], $startOfToday)->days + 1;
+
+            array_unshift($this->timeframe['d-'.$days]['data'], $historyEntry['text'] );
+
+          }
+
+        }
+
+        return $this->render('metaIdeaProfileBundle:Timeline:timelineHistory.html.twig', 
+            array('base' => $this->base,
+                  'timeframe' => $this->timeframe));
 
     }
 

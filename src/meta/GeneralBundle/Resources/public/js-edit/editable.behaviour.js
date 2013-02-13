@@ -20,18 +20,19 @@ $(document).ready(function(){
         placement: 'bottom',
         display:  function(value, sourceData) {
                     $(this).empty();
-                      if (sourceData) {
-                        var selected = $.grep(sourceData,function(e,i){
-                          return (value.indexOf(e.value) != -1);
-                        });
-                        for(item in selected){
-                          $(this).append('<li class="label" rel="' + selected[item].value + '">' + selected[item].text + '</li>');
-                        }
-                      } else {
-                        for(item in value){
-                          $(this).append('<li class="label">' + value[item] + '</li>');
-                        }
+                    var len = value.length;
+                    if (sourceData) {
+                      var selected = $.grep(sourceData,function(e,i){
+                        return (value.indexOf(e.value) != -1);
+                      });
+                      for(item in selected){
+                        $(this).append('<li class="label" rel="' + selected[item].value + '">' + selected[item].text + '</li>');
                       }
+                    } else {
+                      for(var i=0; i<len; i++){
+                        $(this).append('<li class="label">' + value[i] + '</li>');
+                      }
+                    }
                   },
         select2: {
           tags:[],

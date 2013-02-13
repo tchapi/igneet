@@ -122,12 +122,20 @@ class Idea extends Taggable
      **/
     private $logEntries;
 
+    /**
+     * Comments on this idea (OWNING SIDE)
+     * @ORM\OneToMany(targetEntity="meta\IdeaProfileBundle\Entity\Comment\IdeaComment", mappedBy="idea", cascade="remove")
+     * @ORM\OrderBy({"created_at" = "DESC"})
+     **/
+    private $comments;
+
     public function __construct()
     {
         
         $this->created_at = $this->updated_at = new \DateTime('now');
         $this->watchers = new ArrayCollection();
         $this->participants = new ArrayCollection();
+        $this->comments = new ArrayCollection();
 
         $this->archived = false;
 
@@ -596,5 +604,40 @@ class Idea extends Taggable
     public function getLogEntries()
     {
         return $this->logEntries;
+    }
+
+    /**
+     * Add comments
+     *
+     * @param \meta\IdeaProfileBundle\Entity\Comment\IdeaComment $comment
+     * @return Idea
+     */
+    public function addComment(\meta\IdeaProfileBundle\Entity\Comment\IdeaComment $comment)
+    {
+        $comment->setIdea($this);
+        $this->comments[] = $comment;
+    
+        return $this;
+    }
+
+    /**
+     * Remove comments
+     *
+     * @param \meta\IdeaProfileBundle\Entity\Comment\IdeaComment $comment
+     */
+    public function removeComment(\meta\IdeaProfileBundle\Entity\Comment\IdeaComment $comment)
+    {
+        $comment->setIdea(null);
+        $this->comments->removeElement($comment);
+    }
+
+    /**
+     * Get comments
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getComments()
+    {
+        return $this->comments;
     }
 }

@@ -14,6 +14,12 @@ i_show_idea:
     requirements:
         id: \d+
 
+i_show_idea_timeline:
+    pattern:  /idea/timeline/{id}/{slug}/{page}
+    defaults: { _controller: metaIdeaProfileBundle:Default:showTimeline, slug: _, page: 1}
+    requirements:
+        id: \d+
+
 i_edit_idea:
     pattern:  /idea/edit/{id}
     defaults: { _controller: metaIdeaProfileBundle:Default:edit }
@@ -38,6 +44,13 @@ i_transfer_idea:
     defaults: { _controller: metaIdeaProfileBundle:Default:transfer }
     requirements:
         id: \d+
+
+# COMMENTS
+i_show_idea_comment:
+    pattern:  /idea/timeline/comment/{id}
+    defaults: { _controller: metaIdeaProfileBundle:Default:addIdeaComment }
+    requirements:
+      id: \d+
 
 # Watching ideas
 i_watch_idea:

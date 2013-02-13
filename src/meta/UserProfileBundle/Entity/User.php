@@ -238,7 +238,7 @@ class User implements UserInterface
     
     /**
      * Comments I created 
-     * @ORM\OneToMany(targetEntity="meta\StandardProjectProfileBundle\Entity\Comment\BaseComment", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="meta\GeneralBundle\Entity\Comment\BaseComment", mappedBy="user")
      **/
     private $comments;
 
@@ -1033,10 +1033,10 @@ class User implements UserInterface
     /**
      * Add comments
      *
-     * @param \meta\StandardProjectProfileBundle\Entity\Comment\BaseComment $comment
+     * @param \meta\GeneralBundle\Entity\Comment\BaseComment $comment
      * @return User
      */
-    public function addComment(\meta\StandardProjectProfileBundle\Entity\Comment\BaseComment $comment)
+    public function addComment(\meta\GeneralBundle\Entity\Comment\BaseComment $comment)
     {
         $this->comments[] = $comment;
     
@@ -1046,9 +1046,9 @@ class User implements UserInterface
     /**
      * Remove comments
      *
-     * @param \meta\StandardProjectProfileBundle\Entity\Comment\BaseComment $comment
+     * @param \meta\GeneralBundle\Entity\Comment\BaseComment $comment
      */
-    public function removeComment(\meta\StandardProjectProfileBundle\Entity\Comment\BaseComment $comment)
+    public function removeComment(\meta\GeneralBundle\Entity\Comment\BaseComment $comment)
     {
         $this->comments->removeElement($comment);
     }

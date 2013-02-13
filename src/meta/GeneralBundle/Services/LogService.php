@@ -8,7 +8,7 @@ use meta\UserProfileBundle\Entity\User,
     meta\GeneralBundle\Entity\Log\UserLogEntry,
     meta\GeneralBundle\Entity\Log\IdeaLogEntry,
     meta\GeneralBundle\Entity\Log\StandardProjectLogEntry,
-    meta\StandardProjectProfileBundle\Entity\Comment\BaseComment;
+    meta\GeneralBundle\Entity\Comment\BaseComment;
 
 class LogService
 {
@@ -30,7 +30,7 @@ class LogService
         $this->template_link      = 'metaGeneralBundle:Log:logLink.html.twig';
         $this->template_link_null = 'metaGeneralBundle:Log:logLink.null.html.twig';
         $this->template_item      = 'metaGeneralBundle:Log:logItem.html.twig';
-        $this->template_item_comment      = 'metaGeneralBundle:Log:logItemComment.html.twig';
+        $this->template_item_comment = 'metaGeneralBundle:Log:logItemComment.html.twig';
     }
 
     public function log($user, $logActionName, $subject, array $objects)

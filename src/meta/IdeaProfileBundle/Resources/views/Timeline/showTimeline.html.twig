@@ -1,0 +1,16 @@
+{% extends 'metaIdeaProfileBundle:Default:show.html.twig' %}
+
+{% block title %}{{ parent() }} > {{ base.idea.name }} | Timeline{% endblock %}
+
+{% block content %}
+<section>
+{% render "metaIdeaProfileBundle:Default:addIdeaComment" with { 'id' : base.idea.id } %}
+</section>
+<section>
+{% render "metaIdeaProfileBundle:Default:history" with { 'id' : base.idea.id, 'page' : 1 } %}
+</section>
+{% endblock %}
+
+{% block navbar %}
+{% render "metaIdeaProfileBundle:Default:navbar" with { 'activeMenu' : 'timeline', 'id' : base.idea.id } %}
+{% endblock %}

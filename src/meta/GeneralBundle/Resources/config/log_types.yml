@@ -1,5 +1,5 @@
 parameters:
-  general.log_concurrent_merge_interval: 600
+  general.log_concurrent_merge_interval: 3600
   general.log_routing:
     user: u_show_user_profile
     project: sp_show_project
