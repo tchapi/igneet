@@ -7,7 +7,8 @@ use Doctrine\ORM\EntityManager;
 use meta\UserProfileBundle\Entity\User,
     meta\GeneralBundle\Entity\Log\UserLogEntry,
     meta\GeneralBundle\Entity\Log\IdeaLogEntry,
-    meta\GeneralBundle\Entity\Log\StandardProjectLogEntry;
+    meta\GeneralBundle\Entity\Log\StandardProjectLogEntry,
+    meta\StandardProjectProfileBundle\Entity\Comment\BaseComment;
 
 class LogService
 {
@@ -29,6 +30,7 @@ class LogService
         $this->template_link      = 'metaGeneralBundle:Log:logLink.html.twig';
         $this->template_link_null = 'metaGeneralBundle:Log:logLink.null.html.twig';
         $this->template_item      = 'metaGeneralBundle:Log:logItem.html.twig';
+        $this->template_item_comment      = 'metaGeneralBundle:Log:logItemComment.html.twig';
     }
 
     public function log($user, $logActionName, $subject, array $objects)
@@ -85,25 +87,38 @@ class LogService
 
     }
 
-    public function getHTML($logEntry)
+    public function getHTML($logEntryOrComment)
     {
 
-        if ( is_null($logEntry) ) {
+        if ( is_null($logEntryOrComment) ) {
             return $this->twig->render($this->template_link_null);
         }
 
-        $format     = $this->log_types[$logEntry->getType()]['text'];
-        $parameters = $this->getParameters($logEntry);
+        if ($logEntryOrComment instanceof BaseComment) {
 
-        // We get the formatted text for the log
-        $text = $this->sprintfn( $format, $parameters );
+            $text = $logEntryOrComment->getText();
+            $user = $logEntryOrComment->getUser();
+            $date = $logEntryOrComment->getCreatedAt();
 
-        $date = $logEntry->getCreatedAt();
-        $user = $logEntry->getUser();
-        $combinedCount = $logEntry->getCombinedCount();
-        $icon = $this->log_types[$logEntry->getType()]['icon'];
+            return $this->twig->render($this->template_item_comment, array('user' => $user, 'text' => $text, 'date' => $date));
+            
+        } else {
 
-        return $this->twig->render($this->template_item, array( 'icon' => $icon, 'user' => $user, 'text' => $text, 'date' => $date, 'combinedCount' => $combinedCount));
+            $format     = $this->log_types[$logEntryOrComment->getType()]['text'];
+            $parameters = $this->getParameters($logEntryOrComment);
+
+            // We get the formatted text for the log
+            $text = $this->sprintfn( $format, $parameters );
+
+            $date = $logEntryOrComment->getCreatedAt();
+            $user = $logEntryOrComment->getUser();
+            $combinedCount = $logEntryOrComment->getCombinedCount();
+            $icon = $this->log_types[$logEntryOrComment->getType()]['icon'];
+
+            return $this->twig->render($this->template_item, array( 'icon' => $icon, 'user' => $user, 'text' => $text, 'date' => $date, 'combinedCount' => $combinedCount));
+
+        }
+
     }
 
     private function getParameters($logEntry)

@@ -44,32 +44,61 @@ class TimelineController extends BaseController
         $repository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\StandardProjectLogEntry');
         $entries = $repository->findByStandardProject($this->base['standardProject']);
 
+        $history = array();
+
+        // Logs
         $log_types = $this->container->getParameter('general.log_types');
         $logService = $this->container->get('logService');
 
         foreach ($entries as $entry) {
           
           $text = $logService->getHTML($entry);
-          
           $createdAt = date_create($entry->getCreatedAt()->format('Y-m-d H:i:s'));
-          $startOfToday = date_create('midnight');
 
-          if ( $createdAt > $startOfToday ) {
+          $history[] = array( 'createdAt' => $createdAt , 'text' => $text );
+        
+        }
+
+        // Comments
+        foreach ($this->base['standardProject']->getComments() as $comment) {
+
+          $text = $logService->getHTML($comment); //"test";
+          $createdAt = date_create($comment->getCreatedAt()->format('Y-m-d H:i:s'));
+
+          $history[] = array( 'createdAt' => $createdAt , 'text' => $text );
+
+        }
+
+        // Sort !
+        function build_sorter($key) {
+            return function ($a, $b) use ($key) {
+                return $a[$key]>$b[$key];
+            };
+        }
+        usort($history, build_sorter('createdAt'));
+        
+        // Now put the entries in the correct timeframes
+        $startOfToday = date_create('midnight');
+        $before = date_create('midnight 6 days ago');
+
+        foreach ($history as $historyEntry) {
+          
+          if ( $historyEntry['createdAt'] > $startOfToday ) {
             
             // Today
-            array_unshift($this->timeframe['today']['data'], $text );
+            array_unshift($this->timeframe['today']['data'], $historyEntry['text'] );
 
-          } else if ( $createdAt < date_create('midnight 6 days ago') ) {
+          } else if ( $historyEntry['createdAt'] < $before ) {
 
             // Before
-            array_unshift($this->timeframe['before']['data'], $text );
+            array_unshift($this->timeframe['before']['data'], $historyEntry['text'] );
 
           } else {
 
             // Last seven days, by day
-            $days = date_diff($createdAt, $startOfToday)->days + 1;
+            $days = date_diff($historyEntry['createdAt'], $startOfToday)->days + 1;
 
-            array_unshift($this->timeframe['d-'.$days]['data'], $text );
+            array_unshift($this->timeframe['d-'.$days]['data'], $historyEntry['text'] );
 
           }
 
