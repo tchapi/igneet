@@ -595,7 +595,8 @@ div.commentsInfo{
   margin-bottom: 20px;
 }
 div.commentsForm div.avatar,
-ul.comments div.avatar
+ul.comments div.avatar,
+ul.timeline div.avatar
 {
   display: inline-block;
   vertical-align: top;
@@ -629,11 +630,13 @@ ul.comments li{
   padding: 10px 0;
   border-bottom: 1px solid #EEE;
 }
-ul.comments li div.comment{
+ul.comments li div.comment,
+ul.timeline li div.comment{
   display: inline-block;
   width: 604px;
 }
-ul.comments li div.comment header{
+ul.comments li div.comment header,
+ul.timeline li div.comment header{
   font-size: 0.8em;
   margin-bottom: 3px;
   font-weight: bold;
