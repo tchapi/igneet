@@ -613,14 +613,14 @@ div.commentsForm.timeline form{
   width: 884px;
 }
 div.commentsForm textarea{
-  width: 530px;
-  max-width: 530px;
+  width: 546px;
+  max-width: 546px;
   height: 21px;
   vertical-align: top;
 }
 div.commentsForm.timeline textarea{
-  width: 796px;
-  max-width: 796px;
+  width: 812px;
+  max-width: 812px;
 }
 ul.comments{
   margin: 10px 0;
