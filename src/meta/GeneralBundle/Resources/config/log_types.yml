@@ -51,6 +51,10 @@ parameters:
       type: project
       icon: edit
       text: %%user$s has updated the page %%wikipage$s in project %%project$s's wiki.
+    user_comment_wikipage: # DONE
+      type: project
+      icon: comments-alt
+      text: %%user$s has commented the page %%wikipage$s in project %%project$s's wiki.
     user_delete_wikipage: # DONE
       type: project
       icon: trash
@@ -63,6 +67,10 @@ parameters:
       type: project
       icon: edit
       text: %%user$s has updated the list %%list$s in the project %%project$s.
+    user_comment_list: # DONE
+      type: project
+      icon: comments-alt
+      text: %%user$s has commented the list %%list$s in the project %%project$s.
     user_delete_list: # DONE
       type: project
       icon: trash
