@@ -163,6 +163,16 @@ div.smallObjectInfos span{
   margin: auto;
 }
 
+
+/********/
+/* Some basic colors */
+/*********************/
+.alert{color: red;}
+.success{color: green;}
+.warning{color: orange;}
+.info{color: blue;}
+.neutral{color: darkGray;}
+
 /*******************/
 /* Sortable tweaks */
 /*******************/
