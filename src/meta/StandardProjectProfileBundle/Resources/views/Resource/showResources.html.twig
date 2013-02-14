@@ -26,7 +26,7 @@
   <ul class="resources">
   {% for resource in base.standardProject.resources %}
       <li>
-        {% if base.canEdit %}<a href="{{ path('sp_show_project_resource_delete', {'slug': base.standardProject.slug, 'id': resource.id}) }}"><i class="icon-remove-sign"></i></a>{% endif %}
+        {% if base.canEdit %}<a data-confirm="Are you sure you want to delete this resource ?" href="{{ path('sp_show_project_resource_delete', {'slug': base.standardProject.slug, 'id': resource.id}) }}"><i class="icon-remove-sign"></i></a>{% endif %}
         <img src="{{ asset('/bundles/metageneral/img/icons/' ~ resource.provider ~ '.png') }}" /> 
         <img src="{{ asset('/bundles/metageneral/img/icons/' ~ resource.type ~ '.png') }}" />
         <span class="editable" data-title="Change the title of this resource" data-name="title" data-url="{{ path('sp_show_project_resource_edit', {'slug': base.standardProject.slug, 'id': resource.id}) }}" data-type="text">{{ resource.title }}</span>{% if resource.originalfilename %} <em>({{ resource.originalfilename }})</em>{% endif %}

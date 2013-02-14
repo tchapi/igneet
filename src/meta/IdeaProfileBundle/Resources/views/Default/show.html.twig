@@ -53,7 +53,7 @@
     </div>
     {% if base.isCreator %}
     <div>
-      <i class="icon-external-link"></i> Turn this idea <a href="{{ path('i_turn_idea_into_project', {'id': base.idea.id}) }}">into a project</a>. <span class="muted">( <i class="icon-warning-sign"></i> Warning : you cannot undo this )</span>
+      <i class="icon-external-link"></i> Turn this idea <a data-confirm="Are you sure you want to turn this idea into a project ?" href="{{ path('i_turn_idea_into_project', {'id': base.idea.id}) }}">into a project</a>. <span class="muted">( <i class="icon-warning-sign"></i> Warning : you cannot undo this )</span>
     </div>
     {% endif %}
   </div>

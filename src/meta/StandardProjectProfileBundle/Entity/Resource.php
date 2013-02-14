@@ -22,6 +22,7 @@ class Resource extends Taggable
     const PROVIDER_DROPBOX = 'box_open';
     const PROVIDER_DROPLR  = 'package_link';
     const PROVIDER_YOUTUBE = 'movies';
+    const PROVIDER_OTHER   = 'world_link';
     const PROVIDER_LOCAL   = 'file_manager';
 
     const TYPE_WORD    = 'file_extension_doc';
@@ -216,6 +217,8 @@ class Resource extends Taggable
 
         // Tries to guess platform from absolute url
         if (!isset($this->file) || null === $this->file) {
+
+            $this->provider = self::PROVIDER_OTHER;
 
             if (strpos($this->url, "dropbox.com") !== false)
                 $this->provider = self::PROVIDER_DROPBOX; // https://www.dropbox.com/home/Public
