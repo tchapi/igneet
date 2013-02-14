@@ -4,7 +4,7 @@ body > header{
 body > header .navbar a.brand{
   margin-left: 0;
 }
-body .alert{
+body > div.alert{
   border-radius: 0 0 3px 3px;
 }
 
@@ -162,16 +162,6 @@ div.smallObjectInfos span{
 .imageCropWrapper div{
   margin: auto;
 }
-
-
-/********/
-/* Some basic colors */
-/*********************/
-.alert{color: red;}
-.success{color: green;}
-.warning{color: orange;}
-.info{color: blue;}
-.neutral{color: darkGray;}
 
 /*******************/
 /* Sortable tweaks */

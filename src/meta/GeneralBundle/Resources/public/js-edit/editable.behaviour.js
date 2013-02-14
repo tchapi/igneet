@@ -1,7 +1,6 @@
 $(document).ready(function(){
   
-    /* 
-     * Editable elements : basics 
+    /* Editable elements : basics 
      */
     $('.editable').editable({
         pk: 1,
@@ -66,13 +65,12 @@ $(document).ready(function(){
       editor2.run();
     }
 
-    // Save function
-
+    // Save function with states
     var unsavedChanges = false;
 
     $('.wmd-input').keyup(function(){
       if (unsavedChanges == true) return;
-      $(this).parent().parent().find(".wmd-message").html('<span class="warning">Unsaved changes</span>');
+      $(this).parent().parent().find(".wmd-message").html('<span class="alert">Unsaved changes</span>');
       unsavedChanges = true;
     });
 
@@ -82,20 +80,20 @@ $(document).ready(function(){
       var inputBox = $(this).parent().parent().find('.wmd-input');
       var contentBox = $(this).parent().parent().parent().parent().find('.content');
 
-      messagesBox.html('<span class="info">Saving to server ...</span>');
+      messagesBox.html('<span class="alert alert-info">Saving to server ...</span>');
 
       $.post(inputBox.attr('data-url'), {
         name: inputBox.attr('data-name'),
         value: inputBox.val()
       })
       .success(function(data, config) {
-         messagesBox.html('<span class="success">Changes saved at ' + (new Date()).toTimeString() + '.</span>');
-         window.setTimeout(function(){ if (unsavedChanges == false) { messagesBox.html('<span class="neutral">Click to save your changes</span>'); } }, 3000);
+         messagesBox.html('<span class="alert alert-success">Changes saved at ' + (new Date()).toTimeString() + '.</span>');
+         window.setTimeout(function(){ if (unsavedChanges == false) { messagesBox.html('Click to save your changes'); } }, 3000);
          unsavedChanges = false;
          contentBox.html(data);             
       })
       .error(function(errors) {
-         messagesBox.html('<span class="alert">Error saving changes.</span>');
+         messagesBox.html('<span class="alert alert-error">Error saving changes.</span>');
       });
 
     });
