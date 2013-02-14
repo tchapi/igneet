@@ -49,11 +49,11 @@ class DefaultController extends Controller
 
     }
 
-    public function navbarAction($activeMenu, $id)
+    public function navbarAction($activeMenu, $id, $slug)
     {
         $menu = $this->container->getParameter('idea.menu');
 
-        return $this->render('metaIdeaProfileBundle:Default:navbar.html.twig', array('menu' => $menu, 'activeMenu' => $activeMenu, 'id' => $id));
+        return $this->render('metaIdeaProfileBundle:Default:navbar.html.twig', array('menu' => $menu, 'activeMenu' => $activeMenu, 'id' => $id, 'slug' => $slug));
     }
 
     /*  ####################################################
@@ -131,6 +131,9 @@ class DefaultController extends Controller
 
             $form->bind($request);
 
+            $textService = $this->container->get('textService');
+            $idea->setSlug($textService->slugify($idea->getName()));
+
             if ($form->isValid()) {
 
                 $idea->setCreator($authenticatedUser);
@@ -179,6 +182,8 @@ class DefaultController extends Controller
             switch ($request->request->get('name')) {
                 case 'name':
                     $this->base['idea']->setName($request->request->get('value'));
+                      $textService = $this->container->get('textService');
+                      $this->base['idea']->setSlug($textService->slugify($this->base['idea']->getName()));
                     $objectHasBeenModified = true;
                     break;
                 case 'headline':

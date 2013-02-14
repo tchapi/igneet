@@ -53,6 +53,13 @@ class Idea extends Taggable
     private $name;
 
     /**
+     * @var string $slug
+     *
+     * @ORM\Column(name="slug", type="string", length=255, nullable=true)
+     */
+    private $slug;
+    
+    /**
      * @var string
      *
      * @ORM\Column(name="headline", type="string", length=255, nullable=true)
@@ -639,5 +646,28 @@ class Idea extends Taggable
     public function getComments()
     {
         return $this->comments;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     * @return Idea
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+    
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string 
+     */
+    public function getSlug()
+    {
+        return $this->slug;
     }
 }

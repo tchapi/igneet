@@ -67,24 +67,35 @@ $(document).ready(function(){
     }
 
     // Save function
+
+    var unsavedChanges = false;
+
+    $('.wmd-input').keyup(function(){
+      if (unsavedChanges == true) return;
+      $(this).parent().parent().find(".wmd-message").html('<span class="warning">Unsaved changes</span>');
+      unsavedChanges = true;
+    });
+
     $('#wmd-save, #wmd-save-second').click(function() {
 
       var messagesBox = $(this).parent().parent().find(".wmd-message");
       var inputBox = $(this).parent().parent().find('.wmd-input');
       var contentBox = $(this).parent().parent().parent().parent().find('.content');
 
-      messagesBox.html("Saving to server ...");
+      messagesBox.html('<span class="info">Saving to server ...</span>');
 
       $.post(inputBox.attr('data-url'), {
         name: inputBox.attr('data-name'),
         value: inputBox.val()
       })
       .success(function(data, config) {
-         messagesBox.html("Changes saved.");
+         messagesBox.html('<span class="success">Changes saved at ' + (new Date()).toTimeString() + '.</span>');
+         window.setTimeout(function(){ if (unsavedChanges == false) { messagesBox.html('<span class="neutral">Click to save your changes</span>'); } }, 3000);
+         unsavedChanges = false;
          contentBox.html(data);             
       })
       .error(function(errors) {
-         messagesBox.html("Error saving changes.");
+         messagesBox.html('<span class="alert">Error saving changes.</span>');
       });
 
     });

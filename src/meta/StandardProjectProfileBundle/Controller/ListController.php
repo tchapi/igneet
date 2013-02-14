@@ -136,6 +136,8 @@ class ListController extends BaseController
             switch ($request->request->get('name')) {
                 case 'name':
                     $commonList->setName($request->request->get('value'));
+                      $textService = $this->container->get('textService');
+                      $commonList->setSlug($textService->slugify($commonList->getName()));
                     $objectHasBeenModified = true;
                     break;
                 case 'description':

@@ -218,6 +218,8 @@ class WikiController extends BaseController
                 switch ($request->request->get('name')) {
                     case 'title':
                         $wikiPage->setTitle($request->request->get('value'));
+                          $textService = $this->container->get('textService');
+                          $wikiPage->setSlug($textService->slugify($wikiPage->getTitle()));
                         $objectHasBeenModified = true;
                         break;
                     case 'parent':
