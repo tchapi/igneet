@@ -20,7 +20,7 @@ $(document).ready(function(){
         display:  function(value, sourceData) {
                     $(this).empty();
                     var len = value.length;
-                    if (sourceData) {
+                    if (sourceData) {
                       var selected = $.grep(sourceData,function(e,i){
                         return (value.indexOf(e.value) != -1);
                       });
