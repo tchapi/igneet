@@ -66,19 +66,17 @@ $(document).ready(function(){
     }
 
     // Save function with states
-    var unsavedChanges = false;
-
-    $('.wmd-input').keyup(function(){
-      if (unsavedChanges == true) return;
+    $('.wmd-input[unsaved="no"]').keyup(function(){
       $(this).parent().parent().find(".wmd-message").html('<span class="alert">Unsaved changes</span>');
-      unsavedChanges = true;
+      $(this).attr('unsaved', 'yes');
     });
 
     $('#wmd-save, #wmd-save-second').click(function() {
 
-      var messagesBox = $(this).parent().parent().find(".wmd-message");
-      var inputBox = $(this).parent().parent().find('.wmd-input');
-      var contentBox = $(this).parent().parent().parent().parent().find('.content');
+      var containerBox = $(this).parent().parent();
+      var messagesBox = containerBox.find('.wmd-message');
+      var inputBox = containerBox.find('.wmd-input');
+      var contentBox = containerBox.parent().parent().find('.content');
 
       messagesBox.html('<span class="alert alert-info">Saving to server ...</span>');
 
@@ -88,8 +86,8 @@ $(document).ready(function(){
       })
       .success(function(data, config) {
          messagesBox.html('<span class="alert alert-success">Changes saved at ' + (new Date()).toTimeString() + '.</span>');
-         window.setTimeout(function(){ if (unsavedChanges == false) { messagesBox.html('Click to save your changes'); } }, 3000);
-         unsavedChanges = false;
+         window.setTimeout(function(){ if (inputBox.attr('unsaved') == 'no') { messagesBox.html('Click to save your changes'); } }, 3000);
+         inputBox.attr('unsaved', 'no');
          contentBox.html(data);             
       })
       .error(function(errors) {
@@ -101,8 +99,18 @@ $(document).ready(function(){
     // Editable triggers for markdown
     $('.markdown-trigger').click(function(){
 
-      var markdownBox = $(this).parent().parent().find('.wmd-wrapper');
+      var containerBox = $(this).parent().parent();
+      var markdownBox = containerBox.find('.wmd-wrapper');
+      var messageBoxTop = containerBox.find('.wmd-message-top');
+      var inputBox = containerBox.find('.wmd-input');
       var contentBox = markdownBox.parent().find('.content');
+
+      if (inputBox.is(":visible") && inputBox.attr('unsaved') == 'yes'){
+        messageBoxTop.show();
+      } else {
+        messageBoxTop.hide();
+      }
+
       markdownBox.toggle();
       contentBox.toggle();
 
