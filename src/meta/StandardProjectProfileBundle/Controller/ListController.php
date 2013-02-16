@@ -27,11 +27,11 @@ class ListController extends BaseController
         if ($this->base == false) 
           return $this->forward('metaStandardProjectProfileBundle:Base:showRestricted', array('slug' => $slug));
 
-        // Now we find the first alphabetical todo
+        // Now we find the first ranked list
         $repository = $this->getDoctrine()->getRepository('metaStandardProjectProfileBundle:CommonList');
-        $commonList = $repository->findFirstAlphaInProject($this->base['standardProject']->getId());
+        $commonList = $repository->findFirstInProject($this->base['standardProject']->getId());
 
-        $commonLists = $repository->findAllAlphaInProject($this->base['standardProject']->getId());
+        $commonLists = $repository->findAllInProject($this->base['standardProject']->getId());
 
         if (!$commonList){
           return $this->forward('metaStandardProjectProfileBundle:List:newCommonList', array('slug' => $slug));
@@ -54,7 +54,7 @@ class ListController extends BaseController
         $repository = $this->getDoctrine()->getRepository('metaStandardProjectProfileBundle:CommonList');
         $commonList = $repository->findOneByIdInProject($id, $this->base['standardProject']->getId());
 
-        $commonLists = $repository->findAllAlphaInProject($this->base['standardProject']->getId());
+        $commonLists = $repository->findAllInProject($this->base['standardProject']->getId());
 
         // Check if commonList belongs to project
         if ( !$commonList ){
@@ -65,6 +65,30 @@ class ListController extends BaseController
             array('base' => $this->base,
                   'commonLists' => $commonLists,
                   'commonList' => $commonList));
+    }
+
+    public function rankCommonListsAction(Request $request, $slug)
+    {
+        $this->fetchProjectAndPreComputeRights($slug, false, true);
+
+        if ($this->base != false) {
+
+            $ranks = explode(',', $request->request->get('ranks'));
+            $repository = $this->getDoctrine()->getRepository('metaStandardProjectProfileBundle:CommonList');
+
+            foreach($ranks as $key => $list_id)
+            {
+                if ($list_id == "") continue;
+                $commonList = $repository->findOneByIdInProject(intval($list_id), $this->base['standardProject']->getId());
+                if ($commonList) $commonList->setRank(intval($key));
+            }
+
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+        }
+
+        return new Response();
+
     }
 
     public function newCommonListAction(Request $request, $slug)

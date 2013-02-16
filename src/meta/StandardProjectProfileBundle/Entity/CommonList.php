@@ -48,6 +48,13 @@ class CommonList extends Taggable
     private $description;
 
     /**
+     * @var integer $rank
+     *
+     * @ORM\Column(name="rank", type="integer")
+     */
+    private $rank;
+
+    /**
      * @var \DateTime $created_at
      *
      * @ORM\Column(name="created_at", type="datetime")
@@ -90,6 +97,8 @@ class CommonList extends Taggable
 
         $this->items = new ArrayCollection();
         $this->created_at = $this->updated_at = new \DateTime('now');
+
+        $this->rank = 1000; // Big enough to be the last
 
     } 
 
@@ -319,4 +328,27 @@ class CommonList extends Taggable
         return $this->comments;
     }
 
+
+    /**
+     * Set rank
+     *
+     * @param integer $rank
+     * @return CommonList
+     */
+    public function setRank($rank)
+    {
+        $this->rank = $rank;
+    
+        return $this;
+    }
+
+    /**
+     * Get rank
+     *
+     * @return integer 
+     */
+    public function getRank()
+    {
+        return $this->rank;
+    }
 }

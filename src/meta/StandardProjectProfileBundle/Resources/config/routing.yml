@@ -115,6 +115,12 @@ sp_show_project_list_comment:
     requirements:
       id: \d+
 
+sp_show_project_list_rank:
+    pattern:  /project/show/{slug}/lists/rank
+    defaults: { _controller: metaStandardProjectProfileBundle:List:rankCommonLists}
+    requirements:
+      _method:  POST
+
 ## LIST ITEMS
 sp_show_project_listitem_edit:
     pattern:  /project/show/{slug}/list/{listId}/item/{id}
@@ -192,6 +198,11 @@ sp_show_project_wikipage_comment:
     requirements:
       id: \d+
 
+sp_show_project_wiki_rank:
+    pattern:  /project/show/{slug}/wiki/rank
+    defaults: { _controller: metaStandardProjectProfileBundle:Wiki:rankWikiPages}
+    requirements:
+      _method: POST
 
 # Adding people in projects
 sp_add_owner_to_project:

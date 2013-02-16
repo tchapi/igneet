@@ -49,9 +49,9 @@ class WikiController extends BaseController
         }
 
         $repository = $this->getDoctrine()->getRepository('metaStandardProjectProfileBundle:WikiPage');
-        $wikiPages = $repository->findAllRootAlphaInWiki($wiki->getId());
+        $wikiPages = $repository->findAllRootInWiki($wiki->getId());
 
-        $wikiPage = ($homePage!=null)?$homePage:$repository->findFirstAlphaInWiki($wiki->getId());
+        $wikiPage = ($homePage!=null)?$homePage:$repository->findFirstInWiki($wiki->getId());
 
         return $this->render('metaStandardProjectProfileBundle:Wiki:showWiki.html.twig', 
             array('base' => $this->base, 
@@ -76,7 +76,7 @@ class WikiController extends BaseController
         $repository = $this->getDoctrine()->getRepository('metaStandardProjectProfileBundle:WikiPage');
         $wikiPage = $repository->findOneByIdInWiki($id, $wiki->getId());
 
-        $wikiPages = $repository->findAllRootAlphaInWiki($wiki->getId());
+        $wikiPages = $repository->findAllRootInWiki($wiki->getId());
 
         // Check if wikiPage belongs to project
         if ( !$wikiPage ){
@@ -192,6 +192,37 @@ class WikiController extends BaseController
 
         return $this->redirect($this->generateUrl('sp_show_project_wiki', array('slug' => $slug)));
            
+
+    }
+
+    public function rankWikiPagesAction(Request $request, $slug)
+    {
+        $this->fetchProjectAndPreComputeRights($slug, false, true);
+
+        if ($this->base != false) {
+
+          $wiki = $this->base['standardProject']->getWiki();
+
+          if ($wiki) {
+
+            $ranks = explode(',', $request->request->get('ranks'));
+            $repository = $this->getDoctrine()->getRepository('metaStandardProjectProfileBundle:WikiPage');
+
+            foreach($ranks as $key => $page_id)
+            {
+                if ($page_id == "") continue;
+                $wikiPage = $repository->findOneByIdInWiki(intval($page_id), $wiki->getId());
+                if ($wikiPage) $wikiPage->setRank(intval($key));
+            }
+
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+          
+          }
+
+        }
+
+        return new Response();
 
     }
 

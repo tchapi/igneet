@@ -37,7 +37,7 @@ class WikiPageRepository extends EntityRepository
 
   }
 
-  public function findFirstAlphaInWiki($wikiId)
+  public function findFirstInWiki($wikiId)
   {
     
     $qb = $this->getEntityManager()->createQueryBuilder();
@@ -47,7 +47,7 @@ class WikiPageRepository extends EntityRepository
             ->join('wp.wiki', 'w')
             ->where('w.id = :pid')
             ->setParameter('pid', $wikiId)
-            ->orderBy('wp.title', 'ASC')
+            ->orderBy('wp.rank', 'ASC')
             ->setMaxResults(1)
             ->getQuery();
 
@@ -61,7 +61,7 @@ class WikiPageRepository extends EntityRepository
 
   }
 
-  public function findAllAlphaInWiki($wikiId)
+  public function findAllInWiki($wikiId)
   {
 
     $qb = $this->getEntityManager()->createQueryBuilder();
@@ -71,12 +71,12 @@ class WikiPageRepository extends EntityRepository
             ->join('wp.wiki', 'w')
             ->where('w.id = :pid')
             ->setParameter('pid', $wikiId)
-            ->orderBy('wp.title', 'ASC')
+            ->orderBy('wp.rank', 'ASC')
             ->getQuery()
             ->getResult();
   }
 
-  public function findAllRootAlphaInWiki($wikiId)
+  public function findAllRootInWiki($wikiId)
   {
 
     $qb = $this->getEntityManager()->createQueryBuilder();
@@ -87,7 +87,7 @@ class WikiPageRepository extends EntityRepository
             ->where('w.id = :pid')
             ->setParameter('pid', $wikiId)
             ->andWhere('wp.parent IS NULL')
-            ->orderBy('wp.title', 'ASC')
+            ->orderBy('wp.rank', 'ASC')
             ->getQuery()
             ->getResult();
   }

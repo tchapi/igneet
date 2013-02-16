@@ -37,7 +37,7 @@ class CommonListRepository extends EntityRepository
 
   }
 
-  public function findFirstAlphaInProject($projectId)
+  public function findFirstInProject($projectId)
   {
     
     $qb = $this->getEntityManager()->createQueryBuilder();
@@ -47,7 +47,7 @@ class CommonListRepository extends EntityRepository
             ->join('cl.project', 'sp')
             ->where('sp.id = :pid')
             ->setParameter('pid', $projectId)
-            ->orderBy('cl.name', 'ASC')
+            ->orderBy('cl.rank', 'ASC')
             ->setMaxResults(1)
             ->getQuery();
 
@@ -61,7 +61,7 @@ class CommonListRepository extends EntityRepository
 
   }
 
-  public function findAllAlphaInProject($projectId)
+  public function findAllInProject($projectId)
   {
 
     $qb = $this->getEntityManager()->createQueryBuilder();
@@ -71,7 +71,7 @@ class CommonListRepository extends EntityRepository
             ->join('cl.project', 'sp')
             ->where('sp.id = :pid')
             ->setParameter('pid', $projectId)
-            ->orderBy('cl.name', 'ASC')
+            ->orderBy('cl.rank', 'ASC')
             ->getQuery()
             ->getResult();
   }
