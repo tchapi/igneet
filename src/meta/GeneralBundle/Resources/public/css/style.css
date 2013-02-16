@@ -113,6 +113,10 @@ div.content div.menu{
   background-color: #eee;
   padding: 28px 20px 10px 20px;
 }
+div.content section.restricted{
+  text-align: center;
+  padding: 50px;
+}
 div.content div.column{
   width: 738px;
   border-left: 220px solid #eee; /* The width and color of the rail */

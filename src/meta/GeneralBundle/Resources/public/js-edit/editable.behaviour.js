@@ -19,15 +19,17 @@ $(document).ready(function(){
         placement: 'bottom',
         display:  function(value, sourceData) {
                     $(this).empty();
-                    var len = value.length;
-                    if (sourceData) {
+                    if (sourceData) {
                       var selected = $.grep(sourceData,function(e,i){
                         return (value.indexOf(e.value) != -1);
                       });
-                      for(item in selected){
-                        $(this).append('<li class="label" rel="' + selected[item].value + '">' + selected[item].text + '</li>');
+                      $(this).empty();
+                      var len = selected.length;
+                      for(var i=0; i<len; i++){
+                        $(this).append('<li class="label" rel="' + selected[i].value + '">' + selected[i].text + '</li>');
                       }
                     } else {
+                      var len = value.length;
                       for(var i=0; i<len; i++){
                         $(this).append('<li class="label">' + value[i] + '</li>');
                       }

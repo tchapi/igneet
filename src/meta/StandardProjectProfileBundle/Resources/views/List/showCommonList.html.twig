@@ -6,6 +6,17 @@
 {% render "metaStandardProjectProfileBundle:Default:navbar" with { 'activeMenu' : 'lists', 'slug' : base.standardProject.slug } %}
 {% endblock %}
 
+{% block javascripts %}
+  {{ parent() }}
+    {% if base.canEdit %}
+    {% javascripts '@metaGeneralBundle/Resources/public/js-edit/jquery-sortable.js'
+                   '@metaGeneralBundle/Resources/public/js-edit/sortable.behaviour.js'
+            filter='?yui_js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+  {% endif %}
+{% endblock %}
+
 {% block content %}
 <div class="column">
 <section class="listInfo">
@@ -57,9 +68,9 @@
 </div>
 <div class="menu">
   Lists :
-  <ul class="lists">
+  <ul class="lists sortable" data-url="{{ path('sp_show_project_list_rank', {'slug': base.standardProject.slug}) }}">
   {% for list in commonLists %}
-      <li{% if list.id == commonList.id %} class="active"{% endif %}>
+      <li{% if list.id == commonList.id %} class="active"{% endif %} id="{{ list.id }}">
         <i class="icon-list-ol"></i> {% if base.canEdit %}<a data-confirm="Are you sure you want to delete this list ?" href="{{ path('sp_show_project_list_delete', {'slug': base.standardProject.slug, 'id': list.id}) }}"><i class="icon-remove-sign"></i></a>{% endif %} <a href="{{ path('sp_show_project_list', {'slug': base.standardProject.slug, 'id': list.id, 'commonListSlug': list.slug }) }}">{{ list.name }}</a>
       </li>
   {% endfor %}
