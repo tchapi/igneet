@@ -60,6 +60,10 @@ parameters:
       name: ZIP archive
       icon: file_extension_zip
       displayable: false
+    psd:
+      name: Photoshop file
+      icon: file_extension_psd
+      displayable: false
     other: 
       name: Unknown format
       icon: document_comments
