@@ -17,7 +17,7 @@
    \__ liens avec nom OK
    \__ upload avec nom OK
    \__ Faire une page spécifique pour chaque resource ?
-    ☐ slugify les noms de fichier  + un id unique pour s'y retrouver au téléchargement ? Ou le faire justement quand la personne veut télécharger en prenant le titre (mieux) ?
+    ✔ slugify les noms de fichier  + un id unique pour s'y retrouver au téléchargement ? Ou le faire justement quand la personne veut télécharger en prenant le titre (mieux) ? @done (13-02-18 00:13)
  ✔ Commentaires timeline @done (13-02-13 16:25)
 
 Todo - General / Users :
@@ -29,7 +29,7 @@ Todo - General / Users :
 
  ✔ remplacer le templating twig dans deeplink par du sprintf @done (13-02-12 23:15)
 
- ☐ refaire la gestion des constantes pour les types de resources
+ ✔ refaire la gestion des constantes pour les types de resources @done (13-02-18 00:13)
 
  ✔ cluttering des activity logs @done (13-01-25 00:29)
  ☐ Clustering : vérifier que l'object correspond en récupérant le findOneBY, et pas faire le test dans le if après

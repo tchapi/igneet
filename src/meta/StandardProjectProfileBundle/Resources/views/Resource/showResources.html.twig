@@ -27,10 +27,12 @@
   {% for resource in base.standardProject.resources %}
       <li>
         {% if base.canEdit %}<a data-confirm="Are you sure you want to delete this resource ?" href="{{ path('sp_show_project_resource_delete', {'slug': base.standardProject.slug, 'id': resource.id}) }}"><i class="icon-remove-sign"></i></a>{% endif %}
-        <img src="{{ asset('/bundles/metageneral/img/icons/' ~ resource.provider ~ '.png') }}" /> 
-        <img src="{{ asset('/bundles/metageneral/img/icons/' ~ resource.type ~ '.png') }}" />
+        <img src="{{ asset('/bundles/metageneral/img/icons/' ~ providers[resource.provider].icon ~ '.png') }}" width="32px" height="32px"/> 
+        <img src="{{ asset('/bundles/metageneral/img/icons/' ~ types[resource.type].icon ~ '.png') }}" width="32px" height="32px"/>
         <span class="editable" data-title="Change the title of this resource" data-name="title" data-url="{{ path('sp_show_project_resource_edit', {'slug': base.standardProject.slug, 'id': resource.id}) }}" data-type="text">{{ resource.title }}</span>{% if resource.originalfilename %} <em>({{ resource.originalfilename }})</em>{% endif %}
-        - <a href="{{ resource.url }}" target="_blank"><i class="icon-external-link"></i></a><a href=""><i class="icon-download"></i></a>
+        - 
+        {% if types[resource.type].displayable or not providers[resource.provider].downloadable %}<a title="View in a new window" href="{{ resource.url }}" target="_blank"><i class="icon-external-link"></i></a>{% endif %}
+        {% if providers[resource.provider].downloadable %}<a title="Download resource" href="{{ path('sp_show_project_resource_download', {'slug': base.standardProject.slug, 'id': resource.id})}}"><i class="icon-download"></i></a>{% endif %}
         <span>
           {% if resource.tags|length > 0 %}
             Tags :
