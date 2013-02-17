@@ -13,8 +13,6 @@ class StandardProjectType extends AbstractType
         $builder->add('slug', null, array('label'  => 'URL Slug', 'attr' => array( 'class' => 'input-xxlarge', 'help' => 'Accepted characters : alphanumeric and hyphens', 'placeholder' => 'my-new-project')));
         $builder->add('headline', 'text',  array('required' => false, 'label'  => 'Headline', 'attr' => array('class' => 'input-xxlarge', 'help' => 'Give your project some nice catchline')));
 
-        $builder->add('file', 'file', array('required' => false, 'label' => 'Picture'));
-
         $builder->add('neededSkills', 'entity', array(
             'multiple' => true, 
             'required' => false, 
