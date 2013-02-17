@@ -1,0 +1,100 @@
+parameters:
+  standardproject.resource_types:
+    pdf: 
+      name: PDF File
+      icon: file_extension_pdf
+      displayable: true
+    doc: 
+      name: Word document
+      icon: file_extension_doc
+      displayable: false
+    docx: 
+      name: Word 2010+ document
+      icon: file_extension_doc
+      displayable: false
+    ppt: 
+      name: Powerpoint File
+      icon: file_extension_ppt
+      displayable: false
+    pptx: 
+      name: Powerpoint 2010 File
+      icon: file_extension_ppt
+      displayable: false
+    xls: 
+      name: Excel File
+      icon: file_extension_xls
+      displayable: false
+    xlsx: 
+      name: Excel 2010 File
+      icon: file_extension_xls
+      displayable: false
+    jpeg: 
+      name: JPEG Image
+      icon: file_extension_jpeg
+      displayable: true
+    jpg: 
+      name: JPEG Image
+      icon: file_extension_jpg
+      displayable: true
+    png: 
+      name: PNG Image
+      icon: file_extension_png
+      displayable: true
+    gif: 
+      name: GIF Image
+      icon: file_extension_gif
+      displayable: true
+    mp3:
+      name: MP3 Audio
+      icon: file_extension_mp2
+      displayable: true
+    mpga:
+      name: MP3 Audio
+      icon: file_extension_mpg
+      displayable: true
+    mp4:
+      name: MP4 Video
+      icon: file_extension_mp4
+      displayable: true
+    zip:
+      name: ZIP archive
+      icon: file_extension_zip
+      displayable: false
+    other: 
+      name: Unknown format
+      icon: document_comments
+      displayable: false
+  standardproject.resource_providers:
+    gdocs:
+      name: Google Documents / Google Drive
+      pattern: /docs\.google\.com/
+      icon: provider_gdocs
+      downloadable: false
+    dropbox:
+      name: Dropbox storage
+      pattern: /dropbox\.com/
+      icon: provider_dropbox
+      downloadable: false
+    droplr:
+      name: Droplr file storage
+      pattern: /d\.pr\/i/
+      icon: provider_droplr
+      downloadable: false
+    youtube:
+      name: Youtube video
+      pattern: /youtube\.com/
+      icon: provider_youtube
+      downloadable: false
+    skydrive:
+      name: Microsoft Skydrive
+      pattern: /sdrv\.com/
+      icon: provider_skydrive
+      downloadable: false
+    other:
+      name: Unknown remote document repository
+      icon: provider_other
+      downloadable: false
+    local:
+      name: Local document repository
+      icon: provider_local
+      downloadable: true
