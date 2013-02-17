@@ -18,23 +18,6 @@ use meta\GeneralBundle\Entity\Behaviour\Taggable;
 class Resource extends Taggable
 {
 
-    const PROVIDER_GDOC    = 'google';
-    const PROVIDER_DROPBOX = 'box_open';
-    const PROVIDER_DROPLR  = 'package_link';
-    const PROVIDER_YOUTUBE = 'movies';
-    const PROVIDER_OTHER   = 'world_link';
-    const PROVIDER_LOCAL   = 'file_manager';
-
-    const TYPE_WORD    = 'file_extension_doc';
-    const TYPE_EXCEL   = 'file_extension_xls';
-    const TYPE_PPT     = 'file_extension_ppt';
-
-    const TYPE_PDF     = 'file_extension_pdf';
-
-    const TYPE_IMAGE   = 'picture';
-
-    const TYPE_OTHER   = 'document_comments';
-
     /**
      * @var integer $id
      *
@@ -113,8 +96,8 @@ class Resource extends Taggable
 
     public function __construct()
     {
-        $this->type = self::TYPE_OTHER;
-        $this->provider = self::PROVIDER_LOCAL;
+        $this->type = 'other';
+        $this->provider = 'local';
         $this->created_at = $this->updated_at = new \DateTime('now');
     }
 
@@ -215,27 +198,7 @@ class Resource extends Taggable
     public function upload()
     {
 
-        // Tries to guess platform from absolute url
-        if (!isset($this->file) || null === $this->file) {
-
-            $this->provider = self::PROVIDER_OTHER;
-
-            if (strpos($this->url, "dropbox.com") !== false)
-                $this->provider = self::PROVIDER_DROPBOX; // https://www.dropbox.com/home/Public
-            if (strpos($this->url, "docs.google.com") !== false)
-                $this->provider = self::PROVIDER_GDOC; // https://docs.google.com/document/d/11c9o7030Wi38dhJjyVd0iqVyX-U-EYoHWg9XGzQezwI/edit
-            if (strpos($this->url, "d.pr/i") !== false)
-                $this->provider = self::PROVIDER_DROPLR; // http://d.pr/i/Q4Bg
-            if (strpos($this->url, "youtube.com") !== false)
-                $this->provider = self::PROVIDER_YOUTUBE; // http://www.youtube.com/watch?v=Kcz_VmDvrgM
-
-            $guessedType = explode('.', $this->url);
-            $guessedType = $guessedType[count($guessedType)-1];
-
-        } else {
-
-            $this->provider = self::PROVIDER_LOCAL;
-            $guessedType = $this->file->guessExtension();
+        if (isset($this->file)) {
 
             // if there is an error when moving the file, an exception will
             // be automatically thrown by move(). This will properly prevent
@@ -243,37 +206,6 @@ class Resource extends Taggable
             $this->file->move($this->getUploadRootDir(), $this->url);
 
             unset($this->file);
-        }
-
-        switch ($guessedType) {
-            case 'pdf':
-                $this->type = self::TYPE_PDF;
-                break;
-            case 'doc':
-            case 'docx':
-                $this->type = self::TYPE_WORD;
-                break;
-            case 'ppt':
-            case 'pptx':
-            case 'pot':
-                $this->type = self::TYPE_PPT;
-                break;
-            case 'xls':
-            case 'xlsx':
-            case 'xlsm':
-            case 'xlm':
-                $this->type = self::TYPE_EXCEL;
-                break;
-            case 'jpg':
-            case 'jpeg':
-            case 'png':
-            case 'gif':
-            case 'bmp':
-                $this->type = self::TYPE_IMAGE;
-                break;    
-            default:
-                $this->type = self::TYPE_OTHER;
-                break;
         }
 
     }

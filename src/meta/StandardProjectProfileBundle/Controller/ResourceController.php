@@ -27,6 +27,9 @@ class ResourceController extends BaseController
         if ($this->base == false) 
           return $this->forward('metaStandardProjectProfileBundle:Base:showRestricted', array('slug' => $slug));
 
+        $types = $this->container->getParameter('standardproject.resource_types');
+        $providers = $this->container->getParameter('standardproject.resource_providers');
+
         $resource = new Resource();
         $form = $this->createForm(new ResourceType(), $resource);
 
@@ -40,6 +43,37 @@ class ResourceController extends BaseController
               ($request->files->get('resource[file]', null, true) != null || preg_match( $pattern, $resource->getUrl() ) == 1 ) ) {
 
                 $this->base['standardProject']->addResource($resource);
+
+                // Guess resource type and provider
+
+                // Tries to guess platform from absolute url
+                if ($request->files->get('resource[file]', null, true) == null) {
+
+                    $resource->setProvider('other');
+
+                    foreach ($providers as $provider => $provider_infos) {
+                        if ($provider != 'other' && $provider != 'local' && preg_match($provider_infos['pattern'], $resource->getUrl())){
+                            $resource->setProvider($provider);
+                            break;
+                        }
+                    }
+
+                    $guessedType = explode('.', $resource->getUrl());
+                    $guessedType = $guessedType[count($guessedType)-1];
+
+                } else {
+
+                    $resource->setProvider('local');
+                    $guessedType = $resource->getFile()->guessExtension();
+
+                }
+
+                // Guesses type
+                if (isset($types[$guessedType])){
+                    $resource->setType($guessedType);
+                } else {
+                    $resource->setType('other');
+                }
 
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($resource);
@@ -67,7 +101,7 @@ class ResourceController extends BaseController
 
 
         return $this->render('metaStandardProjectProfileBundle:Resource:showResources.html.twig', 
-            array('base' => $this->base, 'form' => $form->createView()));
+            array('base' => $this->base, 'types' => $types, 'providers' => $providers, 'form' => $form->createView()));
     }
 
     public function editResourceAction(Request $request, $slug, $id)
@@ -173,4 +207,39 @@ class ResourceController extends BaseController
         return $this->redirect($this->generateUrl('sp_show_project_resources', array('slug' => $slug)));
 
     }
+
+    public function downloadResourceAction(Request $request, $slug, $id)
+    {
+  
+        $this->fetchProjectAndPreComputeRights($slug, false, true);
+
+        if ($this->base != false) {
+
+            $repository = $this->getDoctrine()->getRepository('metaStandardProjectProfileBundle:Resource');
+            $resource = $repository->findOneById($id);
+
+            if ($resource){
+
+              $response = new Response();
+              $response->headers->set('Content-type', 'application/octet-stream');
+              $response->headers->set('Content-Disposition', sprintf('attachment; filename="%s"', $resource->getOriginalFilename()));
+              $response->setContent(file_get_contents($resource->getAbsoluteUrlPath()));
+
+              return $response;
+
+            } else {
+
+                $this->get('session')->setFlash(
+                    'warning',
+                    'This resource does not exist.'
+                );
+
+            }
+            
+        }
+
+        return $this->redirect($this->generateUrl('sp_show_project_resources', array('slug' => $slug)));
+
+    }
+
 }

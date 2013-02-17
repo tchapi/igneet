@@ -2,6 +2,7 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: @metaStandardProjectProfileBundle/Resources/config/menu.yml }
+    - { resource: @metaStandardProjectProfileBundle/Resources/config/resources.yml }
     - { resource: @metaIdeaProfileBundle/Resources/config/menu.yml }
     - { resource: @metaGeneralBundle/Resources/config/log_types.yml }
     - { resource: @metaGeneralBundle/Resources/config/deep_linking_tags.yml }
