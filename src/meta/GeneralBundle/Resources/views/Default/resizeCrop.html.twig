@@ -4,8 +4,8 @@
 
 {% block javascripts %}
   {{ parent() }}
-    {% javascripts '@metaGeneralBundle/Resources/public/js-edit/jquery.Jcrop.js'
-                   '@metaGeneralBundle/Resources/public/js-edit/jcrop.behaviour.js' 
+    {% javascripts '@metaGeneralBundle/Resources/public/js-edit/jquery-imgareaselect.js'
+                   '@metaGeneralBundle/Resources/public/js-edit/imgareaselect.behaviour.js' 
             filter='?yui_js' %}
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
@@ -13,7 +13,7 @@
 
 {% block stylesheets %}
   {{ parent() }}
-  {% stylesheets  'bundles/metageneral/css-edit/jquery.Jcrop.css' 
+  {% stylesheets  'bundles/metageneral/css-edit/jquery.imgareaselect.css' 
     filter='?yui_css,cssrewrite' %}
           <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}" />
   {% endstylesheets %}
