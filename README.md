@@ -64,6 +64,13 @@ Font Awesome CSS, LESS, and SASS files are licensed under the MIT License - http
 
 The Font Awesome pictograms are licensed under the CC BY 3.0 License - http://creativecommons.org/licenses/by/3.0/
 
+- - -
+
+### D3.js by Michael Bostock - http://d3js.org/
+
+Copyright (c) 2013, Michael Bostock
+All rights reserved.
+
 - - - 
 
 ### Farm Fresh Icons by Fatcow Web Hosting - http://www.fatcow.com/free-icons
