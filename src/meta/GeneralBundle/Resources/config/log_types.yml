@@ -11,15 +11,15 @@ parameters:
   general.log_types:
 # User acting for his profile or on another user
     user_created: # DONE
-      type: user
+      type: other_user
       icon: check
       text: %%user$s has just joined us — hooray!
     user_update_profile: # DONE
-      type: user
+      type: other_user
       icon: edit
       text: %%user$s has updated its profile.
     user_follow_user: # DONE
-      type: user
+      type: other_user
       icon: pushpin
       text: %%user$s has started following %%other_user$s.
 # User acting on a project
