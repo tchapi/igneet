@@ -40,6 +40,7 @@ div.card{
 div.card > header{
   background: #EEE;
   border-bottom: 1px solid #DDD;
+  position: relative;
 }
 
 div.card a{
@@ -239,10 +240,11 @@ textarea.wmd-input{
 .wmd-message{
   margin-left: 5px;
 }
-.wmd-heading{
+.wmd-heading, 
+.heading{
   border-bottom: 1px solid #DDD;
   padding: 5px 0;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .editable-trigger,
@@ -669,4 +671,37 @@ ul.tags li{
 ul.resources{
   list-style-type: none;
   margin: 0;
+}
+
+/*************/
+/* DASHBOARD */
+/*************/
+.blank_dashboard_item{
+  background: lightgreen;
+  padding: 152px 10px;
+  text-align: center;
+}
+/**************/
+/*   GRAPHS   */
+/**************/
+
+header .graph{
+  position: absolute;
+  bottom: 0;
+  right: 10px;
+}
+.graph_placeholder{
+  height: 21px;
+  padding: 62px 0;
+  background: #CCC;
+  text-align: center;
+}
+.axis path, .axis line {
+  fill: none;
+  stroke: #DDD;
+  shape-rendering: crispEdges;
+}
+.axis text, .top-label {
+  font-family: sans-serif;
+  font-size: 10px;
 }

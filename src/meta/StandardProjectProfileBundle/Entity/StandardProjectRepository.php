@@ -40,4 +40,53 @@ class StandardProjectRepository extends EntityRepository
             ->getResult();
             
   }
+
+  public function findTopProjectsForUser($userId, $max = 3)
+  {
+    
+    $qb = $this->getEntityManager()->createQueryBuilder();
+
+    return $qb->select('sp')
+            ->from('metaStandardProjectProfileBundle:StandardProject', 'sp')
+            ->join('sp.owners', 'u')
+            ->where('u.id = :userId')
+            ->setParameter('userId', $userId)
+            ->orderBy('sp.updated_at', 'DESC')
+            ->setMaxResults($max)
+            ->getQuery()
+            ->getResult();
+
+  }
+
+  public function computeWeekActivityForProjects($projects)
+  {
+ 
+    $qb = $this->getEntityManager()->createQueryBuilder();
+
+    return $qb->select('l AS log')
+            ->addSelect('sp.id as id')
+            ->addSelect('COUNT(DISTINCT l.id) AS nb_actions')
+            ->addSelect('COUNT(DISTINCT c.id) AS nb_comments')
+            ->addSelect('SUBSTRING(l.created_at,1,10) AS date')
+            ->addSelect('MAX(l.created_at) AS last_activity')
+            ->addSelect('u.username as username')
+
+            ->from('metaGeneralBundle:Log\StandardProjectLogEntry', 'l')
+            ->leftJoin('l.standardProject', 'sp')
+            
+            ->leftJoin('sp.logEntries', 'l2', 'WITH', 'SUBSTRING(l2.created_at,1,10) = SUBSTRING(l.created_at,1,10) AND l2.created_at > l.created_at')
+            ->leftJoin('l2.user', 'u')
+            ->leftJoin('sp.comments', 'c', 'WITH', 'SUBSTRING(c.created_at,1,10) = SUBSTRING(l.created_at,1,10)')
+
+            ->andWhere('sp IN (:pids)')
+            ->setParameter('pids', $projects)
+            ->andWhere("l.created_at > DATE_SUB(CURRENT_DATE(),7,'DAY')")
+            
+            ->groupBy('sp.id, date')
+            ->orderBy('sp.updated_at', 'DESC')
+            ->addOrderBy('date','DESC')
+            ->getQuery()
+            ->getResult();
+
+  }
 }

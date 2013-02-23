@@ -22,6 +22,12 @@ u_show_user_profile:
     requirements:
         _method:  GET
 
+u_show_user_dashboard:
+    pattern:  /dashboard
+    defaults: { _controller: metaUserProfileBundle:Default:showDashboard }
+    requirements:
+        _method:  GET
+
 u_edit_user_profile:
     pattern:  /who/{username}
     defaults: { _controller: metaUserProfileBundle:Default:edit }

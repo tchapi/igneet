@@ -3,12 +3,23 @@
 
  ✔ Date de dernier push en prod dans le header @done (13-01-24 23:31)
  ☐ dashboard
-   ☐ top 3 projects et idées privées
-      \__ X, Y et Z ont contribués sur ce projet
-      \__ NB activités sur les 7 derniers jours avec graphe
-   ☐ top 3 projets watchés + 3 dernières nouvelles idées
-   ☐ idem ideas
- ✔ deeplinks de type [wikipage:43] ==> twig filter ? @done (13-02-10 22:46)
+
+   ☐ 1. overview mon activité :
+     ☐ - * from logentries where user = me limit X
+     ☐ - dans le header sur une semaine !! 
+
+   ☐ 2. overview commenting 
+     ☐ - * from comments where user = me lmit XC
+
+   ☐ 3. Top 3 projets/idées
+     ✔ - 1 ligne avec 3 colonnes + bouton 'nouvelle idée/projet' en dessous @done (13-02-19 00:59)
+     titre au dessus du graphe
+     ☐ - select count(item) from log entries group by date where project = XYZ
+       --> graphe
+     ☐ - LAST 3 contributors on this project (liste en dessous du projet)
+
+   ☐ (idem ideas)
+
  ☐ Base.canEdit --> C'est très très con pour les wiki, les listes, car c'est que les éditeurs qui peuvent le voir anyway => transformer en un <span> qui permet d'avoir une preference "voir l'édition" ou pas
 
  Need:
