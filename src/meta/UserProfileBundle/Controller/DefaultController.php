@@ -48,6 +48,77 @@ class DefaultController extends Controller
     }
 
     /*
+     * Show a user dashboard
+     */
+    public function showDashboardAction()
+    {
+
+        $authenticatedUser = $this->getUser();
+
+        if (!$authenticatedUser) {
+
+            $this->get('session')->setFlash(
+                'error',
+                'Please login to access your account.'
+            );
+
+            return $this->redirect($this->generateUrl('login'));
+        } 
+
+        // So let's get the stuff
+        $logRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\BaseLogEntry');
+        $commentRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Comment\BaseComment');
+        $standardProjectRepository = $this->getDoctrine()->getRepository('metaStandardProjectProfileBundle:StandardProject');
+        $ideaRepository = $this->getDoctrine()->getRepository('metaIdeaProfileBundle:Idea');
+
+        // Last recorded activity
+        $lastActivity = $logRepository->findLastActivityDateForUser($authenticatedUser->getId());
+
+        // 7 days activity
+        $last7daysActivity = $logRepository->computeWeekActivityForUser($authenticatedUser->getId());
+
+        // Recent social activity
+        $lastSocial_raw = $logRepository->findLastSocialActivityForUser($authenticatedUser->getId(), 3);
+        $logService = $this->container->get('logService');
+        $lastSocial = array();
+        foreach ($lastSocial as $entry) {
+            $lastSocial[] = $logService->getText($entry);
+        }
+
+        $last7daysCommentActivity = $commentRepository->computeWeekCommentActivityForUser($authenticatedUser->getId());
+        
+        // Top 3 projects
+        $top3projects = $standardProjectRepository->findTopProjectsForUser($authenticatedUser->getId(), 3);
+        $top3projectsActivity_raw = $standardProjectRepository->computeWeekActivityForProjects($top3projects);
+        
+        $top3projectsActivity = array();
+        foreach ($top3projectsActivity_raw as $key => $value) {
+            $top3projectsActivity[$value['id']][] = $value;
+        }
+
+        // Top 3 ideas
+        $top3ideas = $ideaRepository->findTopIdeasForUser($authenticatedUser->getId(), 3);
+        $top3ideasActivity_raw = $ideaRepository->computeWeekActivityForIdeas($top3ideas);
+        
+        $top3ideasActivity = array();
+        foreach ($top3ideasActivity_raw as $key => $value) {
+            $top3ideasActivity[$value['id']][] = $value;
+        }
+
+        return $this->render('metaUserProfileBundle:Dashboard:showDashboard.html.twig', 
+            array('user' => $authenticatedUser,
+                  'lastActivity' => $lastActivity['date'],
+                  'last7daysActivity' => $last7daysActivity,
+                  'last7daysCommentActivity' => $last7daysCommentActivity,
+                  'lastSocial' => $lastSocial,
+                  'top3projects' => $top3projects,
+                  'top3projectsActivity' => $top3projectsActivity,
+                  'top3ideas' => $top3ideas,
+                  'top3ideasActivity' => $top3ideasActivity
+                ));
+    }
+
+    /*
      * Show My user profile
      */
     public function showMeAction()

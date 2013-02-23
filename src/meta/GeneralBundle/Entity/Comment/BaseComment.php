@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection,
  * BaseComment
  *
  * @ORM\Table(name="Comments")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="meta\GeneralBundle\Entity\Comment\BaseCommentRepository")
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string")
  * @ORM\DiscriminatorMap({"wikiPage" = "meta\StandardProjectProfileBundle\Entity\Comment\WikiPageComment", "list" = "meta\StandardProjectProfileBundle\Entity\Comment\CommonListComment", "project" = "meta\StandardProjectProfileBundle\Entity\Comment\StandardProjectComment", "idea" = "meta\IdeaProfileBundle\Entity\Comment\IdeaComment"})

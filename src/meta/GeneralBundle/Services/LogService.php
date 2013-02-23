@@ -87,6 +87,28 @@ class LogService
 
     }
 
+    public function getText($logEntryOrComment)
+    {
+
+        if ( is_null($logEntryOrComment) ) {
+            return $this->twig->render($this->template_link_null);
+        }
+
+        if ($logEntryOrComment instanceof BaseComment) {
+
+            return $logEntryOrComment->getText();
+            
+        } else {
+
+            $format     = $this->log_types[$logEntryOrComment->getType()]['text'];
+            $parameters = $this->getParameters($logEntryOrComment);
+
+            return $this->sprintfn( $format, $parameters );
+
+        }
+
+    }
+
     public function getHTML($logEntryOrComment)
     {
 
