@@ -1,6 +1,6 @@
 {% extends 'metaUserProfileBundle::layout.html.twig' %}
 
-{% block title %}{{ parent() }} > {{ user.firstName }}{% endblock %}
+{% block title %}{{ parent() }} > {{ user.getFullName() }}{% endblock %}
 
 {% block javascripts %}
   {{ parent() }}
