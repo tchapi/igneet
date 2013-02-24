@@ -411,6 +411,11 @@ class Idea extends Taggable
             return $this->getPictureWebPath();
     }
 
+    public function getRawPicture()
+    {
+        return $this->picture;
+    }
+    
     public function getAbsolutePicturePath()
     {
         return null === $this->picture
@@ -480,16 +485,6 @@ class Idea extends Taggable
         $this->file->move($this->getUploadRootDir(), $this->picture);
 
         unset($this->file);
-    }
-
-    /**
-     * @ORM\PostRemove()
-     */
-    public function removeUpload()
-    {
-        if ($file = $this->getAbsolutePicturePath()) {
-            unlink($file);
-        }
     }
 
     /**
