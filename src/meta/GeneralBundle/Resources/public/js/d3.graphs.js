@@ -2,7 +2,7 @@ $(document).ready(function(){
    
    // Personal Dashboard graphs
 
-   var createWeeklyGraph = function(width, height, node, dataset) {
+   var createWeeklyGraph = function(node, width, height, dataset) {
 
       //Width and height
       var margin = 20;
@@ -116,9 +116,9 @@ $(document).ready(function(){
    $('.graph').each(function(){
 
       createWeeklyGraph(
+         this,
          parseInt($(this).attr('graph-width')),
          parseInt($(this).attr('graph-height')),
-         this, 
          $.parseJSON($(this).attr('graph-data'))
       );
 
