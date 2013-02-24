@@ -2,7 +2,11 @@
 
 i_list_ideas:
     pattern:  /ideas
-    defaults: { _controller: metaIdeaProfileBundle:Default:list, max: 10 }
+    defaults: { _controller: metaIdeaProfileBundle:Default:list, max: 10, onlyArchived: false }
+
+i_list_archived_ideas:
+    pattern:  /ideas/archived
+    defaults: { _controller: metaIdeaProfileBundle:Default:list, max: 10, onlyArchived: true }
 
 i_new_idea:
     pattern:  /ideas/new
@@ -42,6 +46,18 @@ i_delete_idea:
 i_transfer_idea:
     pattern:  /idea/transfer/{id}/user/{username}
     defaults: { _controller: metaIdeaProfileBundle:Default:transfer }
+    requirements:
+        id: \d+
+
+i_archive_idea:
+    pattern:  /idea/archive/{id}
+    defaults: { _controller: metaIdeaProfileBundle:Default:archiveOrRecycle, archive: true }
+    requirements:
+        id: \d+
+
+i_recycle_idea:
+    pattern:  /idea/recycle/{id}
+    defaults: { _controller: metaIdeaProfileBundle:Default:archiveOrRecycle, archive:false }
     requirements:
         id: \d+
 

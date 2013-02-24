@@ -13,7 +13,7 @@ use Doctrine\ORM\EntityRepository;
 class IdeaRepository extends EntityRepository
 {
 
-  public function findRecentlyCreatedIdeas($limit)
+  public function findRecentlyCreatedIdeas($limit, $onlyArchived)
   {
     
     $qb = $this->getEntityManager()->createQueryBuilder();
@@ -21,7 +21,7 @@ class IdeaRepository extends EntityRepository
     return $qb->select('i')
             ->from('metaIdeaProfileBundle:Idea', 'i')
             ->where('i.archived = :bool')
-            ->setParameter('bool', 0)
+            ->setParameter('bool', $onlyArchived)
             ->orderBy('i.created_at', 'DESC')
             ->setMaxResults($limit)
             ->getQuery()

@@ -28,7 +28,7 @@
 
 {% block header %}
   <div class="headerAvatarAndActions">
-    {% if base.isCreator %}<div class="changeAvatar"><a href="{{ path('i_edit_idea_reset_picture', {'id': base.idea.id }) }}" alt="Reset to default picture"><i class="icon-trash"></i></a> | <a href="{{ path('g_choose_file', {'targetAsBase64': base.targetPictureAsBase64 }) }}"><i class="icon-pencil"></i> change</a></div>{% endif %}
+    {% if base.canEdit %}<div class="changeAvatar"><a href="{{ path('i_edit_idea_reset_picture', {'id': base.idea.id }) }}" alt="Reset to default picture"><i class="icon-trash"></i></a> | <a href="{{ path('g_choose_file', {'targetAsBase64': base.targetPictureAsBase64 }) }}"><i class="icon-pencil"></i> change</a></div>{% endif %}
     <img src="{{ asset(base.idea.picture) }}" width="150" height="150" class="avatar"/>
 {% if base.isAlreadyWatching %}
     <a href="{{ path('i_unwatch_idea', {'id': base.idea.id}) }}" class="btn btn-info watchAction">Unwatch idea</a>
@@ -40,7 +40,7 @@
   <div class="ideaInfo">
 
     <h2 class="ellipsis">
-      <span class="editable" data-title="Change the title of this idea" data-name="name" data-url="{{ path('i_edit_idea', {'id': base.idea.id}) }}">{{ base.idea.name }}</span>
+      {% if base.idea.archived %}<span class="muted">[Archive]</span> {% endif %}<span class="editable" data-title="Change the title of this idea" data-name="name" data-url="{{ path('i_edit_idea', {'id': base.idea.id}) }}">{{ base.idea.name }}</span>
     </h2>
     <h4 class="ellipsis">
       <span class="editable" data-title="Change the headline of this idea" data-name="headline" data-emptytext="Click to add a headline" data-url="{{ path('i_edit_idea', {'id': base.idea.id}) }}" data-type="textarea">{{ base.idea.headline }}</span>
@@ -53,7 +53,7 @@
     </div>
     {% if base.isCreator %}
     <div>
-      <i class="icon-external-link"></i> Turn this idea <a data-confirm="Are you sure you want to turn this idea into a project ?" href="{{ path('i_turn_idea_into_project', {'id': base.idea.id}) }}">into a project</a>. <span class="muted">( <i class="icon-warning-sign"></i> Warning : you cannot undo this )</span>
+      {% if not base.idea.archived %}<i class="icon-external-link"></i> Turn this idea <a data-confirm="Are you sure you want to turn this idea into a project ?" href="{{ path('i_turn_idea_into_project', {'id': base.idea.id}) }}">into a project</a> or <a data-confirm="Are you sure you want to archive this idea ?" href="{{ path('i_archive_idea', {'id': base.idea.id}) }}">archive</a> it.{% else %}<i class="icon-refresh"></i> <a data-confirm="Are you sure you want to recycle this idea ?" href="{{ path('i_recycle_idea', {'id': base.idea.id}) }}">Recycle</a> this idea{% endif %}
     </div>
     {% endif %}
   </div>
