@@ -50,7 +50,7 @@ class LogService
                  $repositoryName = 'metaGeneralBundle:Log\StandardProjectLogEntry';
                  $subject_type = "standardProject";
                  break;
-            case 'user':
+            case 'other_user':
                  $entry = new UserLogEntry();
                  $repositoryName = 'metaGeneralBundle:Log\UserLogEntry';
                  $subject_type = "other_user";
