@@ -166,7 +166,7 @@ Todo - entité "Idea":
  ✔ project : décliner d'une idée 'spin off' @done (13-02-24 17:39)
   \__ transform n'archive pas l'idée mais propose de le faire
 
- ☐ projectise : slug pas unique !!! ARGH !!!
+ ✔ projectise : slug pas unique !!! ARGH !!! @done (13-02-24 23:13)
 
 Todo - Home :
 
