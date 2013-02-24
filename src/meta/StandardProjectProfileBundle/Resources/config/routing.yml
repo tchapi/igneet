@@ -45,6 +45,10 @@ sp_delete_project:
     pattern:  /project/delete/{slug}
     defaults: { _controller: metaStandardProjectProfileBundle:Default:delete}
 
+sp_choose_slug:
+    pattern:  /project/slug/{targetAsBase64}
+    defaults: { _controller: metaStandardProjectProfileBundle:Default:chooseSlug}
+
 # COMMENTS
 sp_show_project_comment:
     pattern:  /project/show/{slug}/comment

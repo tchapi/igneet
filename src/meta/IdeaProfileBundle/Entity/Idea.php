@@ -93,9 +93,9 @@ class Idea extends Taggable
     private $knowledge_text;
 
     /** Project that resulted
-     * @ORM\OneToOne(targetEntity="meta\StandardProjectProfileBundle\Entity\StandardProject", mappedBy="originalIdea")
+     * @ORM\OneToMany(targetEntity="meta\StandardProjectProfileBundle\Entity\StandardProject", mappedBy="originalIdea")
      **/
-    private $resultingProject;
+    private $resultingProjects;
 
     /**
      * @var boolean
@@ -143,6 +143,7 @@ class Idea extends Taggable
         $this->watchers = new ArrayCollection();
         $this->participants = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->resultingProjects = new ArrayCollection();
 
         $this->archived = false;
 
@@ -669,5 +670,38 @@ class Idea extends Taggable
     public function getSlug()
     {
         return $this->slug;
+    }
+
+    /**
+     * Add resultingProjects
+     *
+     * @param \meta\StandardProjectProfileBundle\Entity\StandardProject $resultingProject
+     * @return Idea
+     */
+    public function addResultingProject(\meta\StandardProjectProfileBundle\Entity\StandardProject $resultingProject)
+    {
+        $this->resultingProjects[] = $resultingProject;
+    
+        return $this;
+    }
+
+    /**
+     * Remove resultingProjects
+     *
+     * @param \meta\StandardProjectProfileBundle\Entity\StandardProject $resultingProject
+     */
+    public function removeResultingProject(\meta\StandardProjectProfileBundle\Entity\StandardProject $resultingProject)
+    {
+        $this->resultingProjects->removeElement($resultingProject);
+    }
+
+    /**
+     * Get resultingProjects
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getResultingProjects()
+    {
+        return $this->resultingProjects;
     }
 }

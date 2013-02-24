@@ -238,6 +238,42 @@ class DefaultController extends BaseController
 
     }
 
+    /*
+     * Choose a slug
+     */
+    public function chooseSlugAction(Request $request, $targetAsBase64)
+    {
+
+        $target = json_decode(base64_decode($targetAsBase64), true);
+
+        if ($request->isMethod('POST')) {
+
+            $newSlug = $request->request->get('slug');
+
+            if ("" !== $newSlug) {
+
+                $repository = $this->getDoctrine()->getRepository('metaStandardProjectProfileBundle:StandardProject');
+                $slugExists = $repository->findOneBySlug($newSlug);
+
+                if ($slugExists !== null){
+
+                    $this->get('session')->setFlash(
+                        'error',
+                        'This project (and its slug) already exists. Try to choose a different slug.'
+                    );
+
+                } else {
+                
+                    return $this->forward($target['slug'], $target['params']);
+                }
+            }
+
+        } 
+
+        return $this->render('metaStandardProjectProfileBundle:Default:chooseSlug.html.twig', array('targetAsBase64' => $targetAsBase64));
+
+    }
+
     /*  ####################################################
      *                   WATCH / UNWATCH
      *  #################################################### */

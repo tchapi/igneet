@@ -55,7 +55,7 @@ class StandardProject extends Taggable
     private $headline;
 
     /** Original Idea
-     * @ORM\OneToOne(targetEntity="meta\IdeaProfileBundle\Entity\Idea", inversedBy="resultingProject")
+     * @ORM\ManyToOne(targetEntity="meta\IdeaProfileBundle\Entity\Idea", inversedBy="resultingProject")
      **/
     private $originalIdea;
 
