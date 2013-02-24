@@ -2,29 +2,29 @@
 ## TODO ##
 
  ✔ Date de dernier push en prod dans le header @done (13-01-24 23:31)
- ☐ dashboard
+ ✔ dashboard @done (13-02-23 22:52)
 
-   ☐ 1. overview mon activité :
-     ☐ - * from logentries where user = me limit X
-     ☐ - dans le header sur une semaine !! 
+   ✔ 1. overview mon activité : @done (13-02-23 22:52)
+     ✔ - * from logentries where user = me limit X @done (13-02-23 22:52)
+     ✔ - dans le header sur une semaine !! @done (13-02-23 22:52)
 
-   ☐ 2. overview commenting 
-     ☐ - * from comments where user = me lmit XC
+   ✔ 2. overview commenting @done (13-02-23 22:52)
+     ✔ - * from comments where user = me lmit XC @done (13-02-23 22:52)
 
-   ☐ 3. Top 3 projets/idées
+   ✔ 3. Top 3 projets/idées @done (13-02-23 22:52)
      ✔ - 1 ligne avec 3 colonnes + bouton 'nouvelle idée/projet' en dessous @done (13-02-19 00:59)
      titre au dessus du graphe
-     ☐ - select count(item) from log entries group by date where project = XYZ
+     ✔ - select count(item) from log entries group by date where project = XYZ @done (13-02-23 22:52)
        --> graphe
-     ☐ - LAST 3 contributors on this project (liste en dessous du projet)
+     ✔ - LAST 3 contributors on this project (liste en dessous du projet) @done (13-02-23 22:52)
 
-   ☐ (idem ideas)
+   ✔ (idem ideas) @done (13-02-23 22:52)
 
  ☐ Base.canEdit --> C'est très très con pour les wiki, les listes, car c'est que les éditeurs qui peuvent le voir anyway => transformer en un <span> qui permet d'avoir une preference "voir l'édition" ou pas
 
  Need:
 
- ☐ ressources
+ ✔ ressources @done (13-02-23 22:52)
    \__ liens avec nom OK
    \__ upload avec nom OK
    \__ Faire une page spécifique pour chaque resource ?
@@ -37,6 +37,8 @@ Todo - General / Users :
  ✔ ajouter la possibilité de supprimer une image de profile @done (13-02-10 23:09)
 
  ☐ Faire une set_flash en javascript
+
+ ☐  Signup : non public, faire une invitation par mail avec un token ?
 
  ✔ remplacer le templating twig dans deeplink par du sprintf @done (13-02-12 23:15)
 
@@ -112,6 +114,11 @@ Todo - entité "StandardProject":
 
  ✔ log des modifs sur les projets @done (13-01-17 23:08)
 
+ ✔ faire une page des projets 'archivés' @done (13-02-24 16:27)
+   \__ + un bouton 'archiver' par projet
+   \__ + demander si archiver un projet apres projectize
+   \__ abandonner un projet ? 
+
 Todo - entité "Comment":
 
  ✔ Comments @done (13-01-16 20:51)
@@ -154,6 +161,12 @@ Todo - entité "Idea":
      --> passer automatiquement un commentaire dans l'un ou l'autre des champs textes
 
  ☐ Transform into project : tout les commentaires de l'idée sont réassociés avec une marque <hr> dans la timeline pour séparer quand c'est devenu un projet
+
+
+ ☐ project : décliner d'une idée 'spin off'
+  \__ transform n'archive pas l'idée mais propose de le faire
+
+ ☐ projectise : slug pas unique !!!!!
 
 Todo - Home :
 

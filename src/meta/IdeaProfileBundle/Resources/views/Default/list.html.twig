@@ -7,7 +7,7 @@
     <div class="textAvatar"><i class="icon-paper-clip"></i></div>
   </div>
   <div class="objectHeader">
-    <h2>Ideas</h2>
+    <h2>{% if archived %}Archived {% endif %}Ideas</h2>
     <h4>All the ideas accessible on meta are listed here.</h4>
     <p><a href="{{ path('i_new_idea') }}" class="btn btn-success">New idea</a></p>
   </div>

@@ -12,7 +12,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller,
  */
 use meta\IdeaProfileBundle\Entity\Idea,
     meta\IdeaProfileBundle\Form\Type\IdeaType,
-    meta\IdeaProfileBundle\Entity\Comment\IdeaComment;
+    meta\IdeaProfileBundle\Entity\Comment\IdeaComment,
+    meta\StandardProjectProfileBundle\Entity\StandardProject,
+    meta\StandardProjectProfileBundle\Entity\Wiki,
+    meta\StandardProjectProfileBundle\Entity\WikiPage;
 
 class DefaultController extends Controller
 {
@@ -60,14 +63,14 @@ class DefaultController extends Controller
      *                    IDEA LIST
      *  #################################################### */
 
-    public function listAction($max)
+    public function listAction($max, $onlyArchived)
     {
 
         $repository = $this->getDoctrine()->getRepository('metaIdeaProfileBundle:Idea');
 
-        $ideas = $repository->findRecentlyCreatedIdeas($max);
+        $ideas = $repository->findRecentlyCreatedIdeas($max, $onlyArchived);
 
-        return $this->render('metaIdeaProfileBundle:Default:list.html.twig', array('ideas' => $ideas));
+        return $this->render('metaIdeaProfileBundle:Default:list.html.twig', array('ideas' => $ideas, 'archived' => $onlyArchived));
 
     }
 
@@ -79,13 +82,9 @@ class DefaultController extends Controller
     {
         $this->fetchIdeaAndPreComputeRights($id, false, false);
 
-        if ($this->base['idea']->isArchived()){
-          throw $this->createNotFoundException('This idea is already archived');
-        }
-
         $targetOwnerAsBase64 = array ('slug' => 'i_transfer_idea', 'params' => array('id' => $id, 'owner' => false));
 
-       
+    
         return $this->render('metaIdeaProfileBundle:Timeline:showTimeline.html.twig', 
             array('base' => $this->base, 'targetOwnerAsBase64' => base64_encode(json_encode($targetOwnerAsBase64))));
     }
@@ -98,10 +97,6 @@ class DefaultController extends Controller
     {
 
         $this->fetchIdeaAndPreComputeRights($id, false, false);
-
-        if ($this->base['idea']->isArchived()){
-          throw $this->createNotFoundException('This idea is already archived');
-        }
         
         $targetParticipantAsBase64 = array ('slug' => 'i_add_participant_to_idea', 'params' => array('id' => $id, 'owner' => false));
         $targetOwnerAsBase64 = array ('slug' => 'i_transfer_idea', 'params' => array('id' => $id, 'owner' => false));
@@ -293,6 +288,36 @@ class DefaultController extends Controller
 
     }
 
+    public function archiveOrRecycleAction($id, $archive){
+
+        $this->fetchIdeaAndPreComputeRights($id, true, false);
+
+        if ($this->base != false) {
+        
+
+            $em = $this->getDoctrine()->getManager();
+            $this->base['idea']->setArchived($archive);
+            $em->flush();
+
+            $this->get('session')->setFlash(
+                    'success',
+                    'The idea '.$this->base['idea']->getName().' has been archived successfully.'
+                );
+            
+            return $this->redirect($this->generateUrl('i_list_ideas'));
+
+        } else {
+
+            $this->get('session')->setFlash(
+                    'warning',
+                    'You do not have sufficient privileges to archive this idea.'
+                );
+
+            return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
+        }
+
+    }
+
     /*
      * Reset picture of idea
      */
@@ -363,7 +388,7 @@ class DefaultController extends Controller
     {
         $this->fetchIdeaAndPreComputeRights($id, true, false);
 
-        if ($this->base != false){
+        if ($this->base != false && $this->base['idea']->isArchived() === false){
 
             $this->base['idea']->setArchived(true);
 
@@ -424,7 +449,7 @@ class DefaultController extends Controller
 
             $this->get('session')->setFlash(
                     'error',
-                    'You are not allowed to transform this idea into the project since you have not created it.'
+                    'You are not allowed to transform this idea into the project since you have not created it or it is already archived.'
                 );
 
             return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
@@ -439,10 +464,6 @@ class DefaultController extends Controller
         $this->fetchIdeaAndPreComputeRights($id, false, false);
 
         if ($this->base != false) {
-
-            if ($this->base['idea']->isArchived()){
-              throw $this->createNotFoundException('This idea is already archived');
-            }
 
             $comment = new IdeaComment();
             $form = $this->createFormBuilder($comment)
