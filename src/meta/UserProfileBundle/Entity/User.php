@@ -295,13 +295,13 @@ class User implements UserInterface
      Symfony tries to serialize the User object, which is indeed what I'm asking since I want to be able to log
      users in and out of this site.
      When serializing, Doctrine2 will try to serialize the mapped entities (such as Projects, Ideas, etc ...) 
-     leading to cyclic references that are not handled correctly in Serializable. Thus, it will badly fail
+     leading to cyclic references that are not handled correctly in Serializable. Thus, it will badly fail.
 
      The __sleep() method is the method that lists the parameters that have to be serialized. When creating a 
      proxy class for User, Symfony includes in the __sleep() method all the properties in the scope, notably
      properties that are mapped classes. Serializing a user entity thus leads to serializing a cyclic loop.
 
-     Defining __sleep() here redefines the Symfony __sleep() method to make sure that not cyclic loop is present
+     Defining __sleep() here redefines the Symfony __sleep() method to make sure that no cyclic loop is present
      when serializing a User object.
 
      Source : https://groups.google.com/forum/?fromgroups=#!topic/symfony2/iL8C2hSMAfI
