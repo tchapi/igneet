@@ -13,13 +13,13 @@
 
 {% block header %}
   <div class="headerAvatarAndActions">
-    <img src="{{ user.avatar }}" width="150" height="150" class="avatar"/>
+    <img src="{{ asset(user.getAvatar()) }}" width="150" height="150" class="avatar"/>
   </div>
 
   <div class="userInfo">
 
     <h2 class="ellipsis">
-      <span >My personal dashboard</span>
+      <span>My personal dashboard</span>
     </h2>
     <h4>My recent activity :</h4>
     <div>
