@@ -8,7 +8,7 @@
   <ul class="nav pull-right">
       <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-          <img src="{{ user.avatar }}" width="20px" height="20px" class="smallHeaderAvatar"/> {{ user.firstName }} {{ user.lastName|upper }} <b class="caret"></b>
+          <img src="{{ user.avatar }}" width="20px" height="20px" class="smallHeaderAvatar"/> {{ user.getFullName() }} <b class="caret"></b>
         </a>
         <ul class="dropdown-menu">
             <li><a href="{{ path('u_me') }}"><i class="icon-user"></i> My profile</a></li>
