@@ -26,7 +26,7 @@
 
   <div class="headerAvatarAndActions">
     {% if isMe %}<div class="changeAvatar"><a href="{{ path('u_edit_user_profile_reset_avatar', {'username': user.username }) }}" alt="Reset to default avatar"><i class="icon-trash"></i></a> | <a href="{{ path('g_choose_file', {'targetAsBase64': targetAvatarAsBase64 }) }}"><i class="icon-pencil"></i> change</a></div>{% endif %}
-    <img src="{{ user.avatar }}" width="150" height="150" class="avatar"/>
+    <img src="{{ asset(user.getAvatar()) }}" width="150" height="150" class="avatar"/>
 {% if alreadyFollowing %}
     <a href="{{ path('u_unfollow_user', {'username': user.username}) }}" class="btn btn-info followAction">Unfollow {{ user.firstName }}</a>
 {% elseif not isMe %}

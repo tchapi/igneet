@@ -398,7 +398,7 @@ class DefaultController extends Controller
                 $project->setName($this->base['idea']->getName());
                 $project->setHeadline($this->base['idea']->getHeadline());
                 $project->setAbout("Originated from idea #" . $this->base['idea']->getId());
-                $project->setPicture($this->base['idea']->getPicture());
+                $project->setPicture($this->base['idea']->getRawPicture());
                 $project->setCreatedAt($this->base['idea']->getCreatedAt());
 
                 foreach ($this->base['idea']->getWatchers() as $watcher) {
