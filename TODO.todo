@@ -163,10 +163,10 @@ Todo - entité "Idea":
  ☐ Transform into project : tout les commentaires de l'idée sont réassociés avec une marque <hr> dans la timeline pour séparer quand c'est devenu un projet
 
 
- ☐ project : décliner d'une idée 'spin off'
+ ✔ project : décliner d'une idée 'spin off' @done (13-02-24 17:39)
   \__ transform n'archive pas l'idée mais propose de le faire
 
- ☐ projectise : slug pas unique !!!!!
+ ☐ projectise : slug pas unique !!! ARGH !!!
 
 Todo - Home :
 

@@ -37,6 +37,7 @@ class DefaultController extends Controller
         $isParticipatingIn = $authenticatedUser && ($authenticatedUser->isParticipatingInIdea($idea));
         
         $targetPictureAsBase64 = array ('slug' => 'metaIdeaProfileBundle:Default:edit', 'params' => array('id' => $id ), 'crop' => true);
+        $projectizeAsBase64 = array ('slug' => 'metaIdeaProfileBundle:Default:projectize', 'params' => array('id' => $id ));
 
         if ( ($mustBeCreator && !$isCreator) || ($mustParticipate && !$isParticipatingIn && !$isCreator) ) {
           $this->base = false;
@@ -46,6 +47,7 @@ class DefaultController extends Controller
                               'isParticipatingIn' => $isParticipatingIn,
                               'isCreator' => $isCreator,
                               'targetPictureAsBase64' => base64_encode(json_encode($targetPictureAsBase64)),
+                              'projectizeAsBase64' => base64_encode(json_encode($projectizeAsBase64)),
                               'canEdit' =>  $isCreator || $isParticipatingIn
                             );
         }
@@ -384,7 +386,7 @@ class DefaultController extends Controller
     
     }
 
-    public function projectizeAction($id)
+    public function projectizeAction(Request $request, $id)
     {
         $this->fetchIdeaAndPreComputeRights($id, true, false);
 
@@ -396,7 +398,7 @@ class DefaultController extends Controller
                 $project->setName($this->base['idea']->getName());
                 $project->setHeadline($this->base['idea']->getHeadline());
                 $project->setAbout("Originated from idea #" . $this->base['idea']->getId());
-                $project->setPicture($this->base['idea']->getAbsolutePicturePath());
+                $project->setPicture($this->base['idea']->getPicture());
                 $project->setCreatedAt($this->base['idea']->getCreatedAt());
 
                 foreach ($this->base['idea']->getWatchers() as $watcher) {
@@ -406,8 +408,13 @@ class DefaultController extends Controller
 
                 $project->setOriginalIdea($this->base['idea']);
                 
-                $textService = $this->container->get('textService');
-                $project->setSlug($textService->slugify($project->getName()));
+
+                if ($request->request->get('slug') === ""){
+                    $textService = $this->container->get('textService');
+                    $project->setSlug($textService->slugify($project->getName()));
+                } else {
+                    $project->setSlug(trim($request->request->get('slug')));
+                }
 
             $wiki = new Wiki();
 

@@ -258,7 +258,8 @@ class DefaultController extends Controller
                         intval($request->request->get('y')),
                         $targ_w, $targ_h, 
                         intval($request->request->get('w')),
-                        intval($request->request->get('h')));
+                        intval($request->request->get('h'))
+                    );
                     imagepng($dst_r, $preparedFilename.".cropped");
 
                     $authenticatedUser->setFile(new File($preparedFilename.".cropped"));

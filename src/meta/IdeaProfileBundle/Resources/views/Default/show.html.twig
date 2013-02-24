@@ -53,7 +53,7 @@
     </div>
     {% if base.isCreator %}
     <div>
-      {% if not base.idea.archived %}<i class="icon-external-link"></i> Turn this idea <a data-confirm="Are you sure you want to turn this idea into a project ?" href="{{ path('i_turn_idea_into_project', {'id': base.idea.id}) }}">into a project</a> or <a data-confirm="Are you sure you want to archive this idea ?" href="{{ path('i_archive_idea', {'id': base.idea.id}) }}">archive</a> it.{% else %}<i class="icon-refresh"></i> <a data-confirm="Are you sure you want to recycle this idea ?" href="{{ path('i_recycle_idea', {'id': base.idea.id}) }}">Recycle</a> this idea{% endif %}
+      {% if not base.idea.archived %}<i class="icon-external-link"></i> Turn this idea <a data-confirm="Are you sure you want to turn this idea into a project ?" href="{{ path('sp_choose_slug', {'targetAsBase64': base.projectizeAsBase64 }) }}" rel="{{ path('i_turn_idea_into_project', {'id': base.idea.id}) }}">into a project</a> or <a data-confirm="Are you sure you want to archive this idea ?" href="{{ path('i_archive_idea', {'id': base.idea.id}) }}">archive</a> it.{% else %}<i class="icon-refresh"></i> <a data-confirm="Are you sure you want to recycle this idea ?" href="{{ path('i_recycle_idea', {'id': base.idea.id}) }}">Recycle</a> this idea{% endif %}
     </div>
     {% endif %}
   </div>
