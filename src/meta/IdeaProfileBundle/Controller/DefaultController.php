@@ -86,7 +86,6 @@ class DefaultController extends Controller
 
         $targetOwnerAsBase64 = array ('slug' => 'i_transfer_idea', 'params' => array('id' => $id, 'owner' => false));
 
-    
         return $this->render('metaIdeaProfileBundle:Timeline:showTimeline.html.twig', 
             array('base' => $this->base, 'targetOwnerAsBase64' => base64_encode(json_encode($targetOwnerAsBase64))));
     }
@@ -555,7 +554,7 @@ class DefaultController extends Controller
         // Comments
         foreach ($this->base['idea']->getComments() as $comment) {
 
-          $text = $logService->getHTML($comment); //"test";
+          $text = $logService->getHTML($comment);
           $createdAt = date_create($comment->getCreatedAt()->format('Y-m-d H:i:s'));
 
           $history[] = array( 'createdAt' => $createdAt , 'text' => $text );

@@ -69,6 +69,8 @@ Todo - General / Users :
 
  ☐ Pagination générale sur les objets
 
+ ☐ filtrer les timelines ?
+
  ✔ Noms des labels dans signup et new project (labels du form je parle) @done (13-01-19 15:10)
  ✔ Help pour les champs @done (13-01-19 15:10)
 
@@ -134,6 +136,8 @@ Todo - entité "Comment":
 
  ✔ VARCHAR 255 -> a changer dans le modele pour les CommonListItem @done (13-01-23 23:42)
  
+ ☐ upvotes
+
 Todo - entité "Idea":
 
  ✔ log des modifs sur les ideas : reste l'affichage sur une timeline ? @done (13-02-13 18:49)

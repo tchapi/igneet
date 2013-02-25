@@ -62,7 +62,7 @@ class TimelineController extends BaseController
         // Comments
         foreach ($this->base['standardProject']->getComments() as $comment) {
 
-          $text = $logService->getHTML($comment); //"test";
+          $text = $logService->getHTML($comment);
           $createdAt = date_create($comment->getCreatedAt()->format('Y-m-d H:i:s'));
 
           $history[] = array( 'createdAt' => $createdAt , 'text' => $text );

@@ -43,7 +43,7 @@
       {% if base.idea.archived %}<span class="muted">[Archive]</span> {% endif %}<span class="editable" data-title="Change the title of this idea" data-name="name" data-url="{{ path('i_edit_idea', {'id': base.idea.id}) }}">{{ base.idea.name }}</span>
     </h2>
     <h4 class="ellipsis">
-      <span class="editable" data-title="Change the headline of this idea" data-name="headline" data-emptytext="Click to add a headline" data-url="{{ path('i_edit_idea', {'id': base.idea.id}) }}" data-type="textarea">{{ base.idea.headline }}</span>
+      <span class="editable" data-title="Change the headline of this idea" data-name="headline" data-emptytext="Click to add a headline" data-url="{{ path('i_edit_idea', {'id': base.idea.id}) }}" data-type="textarea" title="{{ base.idea.headline }}">{{ base.idea.headline }}</span>
     </h4>
     <div>
       <i class="icon-calendar"></i> Created on {{ base.idea.createdAt|date("d/m/Y") }}

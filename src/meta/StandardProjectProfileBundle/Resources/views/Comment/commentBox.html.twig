@@ -33,7 +33,7 @@
                 <a href="{{ path('u_show_user_profile', {'username': comment.user.username}) }}">{{ comment.user.firstName }}</a>
                 {% else %}<span class="muted">Deleted user</span>{% endif %}
                  — <span>{{ comment.createdAt|date("d/m/Y G:i") }}</span></header>
-              <div>{{ comment.text|nl2br }}</div>
+              <div>{{ comment.text|deeplinks|markdown }}</div>
             </div>
           </div>
         </li>
