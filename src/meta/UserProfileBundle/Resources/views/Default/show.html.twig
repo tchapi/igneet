@@ -41,7 +41,7 @@
     </h2>
 
     <h4 class="ellipsis">
-      <span data-url="{{ path('u_edit_user_profile', {'username': user.username}) }}" data-name="headline" data-emptytext="Click to add a headline" data-type="text" data-title="A one-liner to describe yourself" class="editable">{{ user.headline }}</span>
+      <span data-url="{{ path('u_edit_user_profile', {'username': user.username}) }}" data-name="headline" data-emptytext="Click to add a headline" data-type="text" data-title="A one-liner to describe yourself" class="editable" title="{{ user.headline }}">{{ user.headline }}</span>
     </h4>
 
     <div>
