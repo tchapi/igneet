@@ -1,0 +1,30 @@
+{% extends 'metaIdeaProfileBundle:Default:show.html.twig' %}
+
+{% block title %}{{ parent() }} > {{ base.idea.name }} | Concept{% endblock %}
+
+{% block content %}
+<section>
+  <div class="wmd-heading"><i class="icon-cogs"></i> Concept {% if base.canEdit %}<a class="pull-right markdown-trigger">&hellip;<i class="icon-pencil"></i></a>{% endif %}</div>
+  <div>
+
+      <div class="wmd-message-top hide alert"><i class="icon-warning-sign"></i> Unsaved changes</div>
+      <div class="wmd-wrapper well well-small hide" >
+        <div class="wmd-panel">
+            <div id="wmd-button-bar"></div>
+            <textarea unsaved='no'data-name="concept_text" data-url="{{ path('i_edit_idea', {'id': base.idea.id}) }}" class="wmd-input" id="wmd-input">{{ base.idea.conceptText }}</textarea>
+        </div>
+        <div>
+          <button id="wmd-save" class="btn btn-primary">Save</button> <span class="muted wmd-message">Click 'Save' to commit your changes</span>
+        </div>
+        <div id="wmd-preview" class="preview">{{ base.idea.conceptText }}</div>
+      </div>
+
+    <div class="content">{{ base.idea.conceptText|deeplinks|markdown }}</div>
+
+  </div>
+</section>
+{% endblock %}
+
+{% block navbar %}
+{% render "metaIdeaProfileBundle:Default:navbar" with { 'activeMenu' : 'concept', 'id' : base.idea.id, 'slug' : base.idea.slug } %}
+{% endblock %}
