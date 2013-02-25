@@ -1,0 +1,30 @@
+{% extends 'metaIdeaProfileBundle:Default:show.html.twig' %}
+
+{% block title %}{{ parent() }} > {{ base.idea.name }} | Knowledge{% endblock %}
+
+{% block content %}
+<section>
+  <div class="wmd-heading"><i class="icon-book"></i> Knowledge {% if base.canEdit %}<a class="pull-right markdown-trigger">&hellip;<i class="icon-pencil"></i></a>{% endif %}</div>
+  <div>
+
+      <div class="wmd-message-top hide alert"><i class="icon-warning-sign"></i> Unsaved changes</div>
+      <div class="wmd-wrapper well well-small hide" >
+        <div class="wmd-panel">
+            <div id="wmd-button-bar"></div>
+            <textarea unsaved='no' data-name="knowledge_text" data-url="{{ path('i_edit_idea', {'id': base.idea.id}) }}" class="wmd-input" id="wmd-input">{{ base.idea.knowledgeText }}</textarea>
+        </div>
+        <div>
+          <button id="wmd-save" class="btn btn-primary">Save</button> <span class="muted wmd-message">Click 'Save' to commit your changes</span>
+        </div>
+        <div id="wmd-preview" class="preview">{{ base.idea.knowledgeText }}</div>
+      </div>
+
+    <div class="content">{{ base.idea.knowledgeText|deeplinks|markdown }}</div>
+
+  </div>
+</section>
+{% endblock %}
+
+{% block navbar %}
+{% render "metaIdeaProfileBundle:Default:navbar" with { 'activeMenu' : 'knowledge', 'id' : base.idea.id, 'slug' : base.idea.slug } %}
+{% endblock %}

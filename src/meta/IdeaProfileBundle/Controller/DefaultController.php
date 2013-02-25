@@ -109,6 +109,25 @@ class DefaultController extends Controller
     }
 
     /*  ####################################################
+     *                        SHOW
+     *  #################################################### */
+
+    public function showConceptOrKnowledgeAction($id, $slug, $type)
+    {
+
+        $this->fetchIdeaAndPreComputeRights($id, false, false);
+        
+        $targetParticipantAsBase64 = array ('slug' => 'i_add_participant_to_idea', 'params' => array('id' => $id, 'owner' => false));
+        $targetOwnerAsBase64 = array ('slug' => 'i_transfer_idea', 'params' => array('id' => $id, 'owner' => false));
+
+        return $this->render('metaIdeaProfileBundle:Info:show' . ucfirst($type) . '.html.twig', 
+            array('base' => $this->base,
+                'targetParticipantAsBase64' => base64_encode(json_encode($targetParticipantAsBase64)),
+                'targetOwnerAsBase64' => base64_encode(json_encode($targetOwnerAsBase64)) ));
+    }
+
+
+    /*  ####################################################
      *                       IDEA CREATION 
      *  #################################################### */
 
@@ -184,6 +203,14 @@ class DefaultController extends Controller
                     break;
                 case 'headline':
                     $this->base['idea']->setHeadline($request->request->get('value'));
+                    $objectHasBeenModified = true;
+                    break;
+                case 'about':
+                    $this->base['idea']->setAbout($request->request->get('value'));
+                    $deepLinkingService = $this->container->get('meta.twig.deep_linking_extension');
+                        $response->setContent($deepLinkingService->convertDeepLinks(
+                          $this->container->get('markdown.parser')->transformMarkdown($request->request->get('value')))
+                        );
                     $objectHasBeenModified = true;
                     break;
                 case 'picture':

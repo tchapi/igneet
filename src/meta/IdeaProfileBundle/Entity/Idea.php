@@ -79,6 +79,13 @@ class Idea extends Taggable
     private $file;
 
     /**
+     * @var text $about
+     *
+     * @ORM\Column(name="about", type="text", nullable=true)
+     */
+    private $about;
+    
+    /**
      * @var string
      *
      * @ORM\Column(name="concept_text", type="text", nullable=true)
@@ -698,5 +705,28 @@ class Idea extends Taggable
     public function getResultingProjects()
     {
         return $this->resultingProjects;
+    }
+
+    /**
+     * Set about
+     *
+     * @param string $about
+     * @return Idea
+     */
+    public function setAbout($about)
+    {
+        $this->about = $about;
+    
+        return $this;
+    }
+
+    /**
+     * Get about
+     *
+     * @return string 
+     */
+    public function getAbout()
+    {
+        return $this->about;
     }
 }
