@@ -21,7 +21,7 @@
         <div class="controls">
           <select id="username" name="username" required="required">
             {% for user in users %}
-            <option>{{ user.username }}</option>
+            <option>{{ user.getFullName() }}</option>
             {% endfor %}
           </select>
         </div>
