@@ -1,87 +1,52 @@
 
 ## TODO ##
 
+Todo - General / Users :
+
+ ☐ Faire une set_flash en javascript
+ ☐ Signup : non public, faire une invitation par mail avec un token ?
+ ☐ Clustering des activityLogs : vérifier que l'object correspond en récupérant le findOneBY, et pas faire le test dans le if après
+ ☐ Mettre maxUsersInListings en parameters de l'appli a récupérer dans Twig
+ ☐ Ne pas passer le nom complet de l'action en base64 lors d'un chooseFile ou User mais mettre seulement qqs parametres puis reconstruire après ?
+ ☐ Pagination générale sur les objets
+ ☐ Filtrer les timelines ?
+ ☐ login et signup : focus sur le champ lors du chargement de la page
+ ☐ Base.canEdit --> C'est très très con pour les wiki, les listes, car c'est que les éditeurs qui peuvent le voir anyway => transformer en un <span> qui permet d'avoir une preference "voir l'édition" ou pas
+
+ ✔ Faire le skin de la page 'Area restricted' @done (13-02-16 16:12)
+ ✔ ajouter la possibilité de supprimer une image de profile @done (13-02-10 23:09)
+ ✔ remplacer le templating twig dans deeplink par du sprintf @done (13-02-12 23:15)
+ ✔ refaire la gestion des constantes pour les types de resources @done (13-02-18 00:13)
+ ✔ cluttering des activity logs @done (13-01-25 00:29)
+ ✔ Delete des uers : cascade des log entries @done (13-02-05 20:42)
+ ✔ User ->lastactivity et maj le timestamp à chaque requete http ? @done (13-01-24 22:46)
+ ✔ Rajouter l'avatar du user dans la barre de menu en haut à droite @done (13-02-10 23:09)
+ ✔ Mettre à jour les popin de choix des skills avec la partie 'tags' de X-editable @done (13-01-28 23:17)
+ ✔ signup : avatar @done (13-02-04 20:12)
+ ✔ chgt d'avatar -----> Mais pas simple @done (13-02-04 20:17)
+    \-- nécessite un composant full ajax j'imagine
+ ✔ Noms des labels dans signup et new project (labels du form je parle) @done (13-01-19 15:10)
+ ✔ Help pour les champs @done (13-01-19 15:10)
+ ✔ Required ne s'affiche pas pour password email et textarea ? @done (13-01-21 23:46)
+ ✔ Boutons bootstrap pour markdown editor : ceux qui manquent @done (13-01-22 00:10)
+ ✔ Add a participant : faire le 'user chooser' @done (13-01-21 23:46)
+ ✔ images dans assetic : ok apparemment @done (13-01-20 19:41)
  ✔ Date de dernier push en prod dans le header @done (13-01-24 23:31)
  ✔ dashboard @done (13-02-23 22:52)
-
    ✔ 1. overview mon activité : @done (13-02-23 22:52)
      ✔ - * from logentries where user = me limit X @done (13-02-23 22:52)
      ✔ - dans le header sur une semaine !! @done (13-02-23 22:52)
-
    ✔ 2. overview commenting @done (13-02-23 22:52)
      ✔ - * from comments where user = me lmit XC @done (13-02-23 22:52)
-
    ✔ 3. Top 3 projets/idées @done (13-02-23 22:52)
      ✔ - 1 ligne avec 3 colonnes + bouton 'nouvelle idée/projet' en dessous @done (13-02-19 00:59)
      titre au dessus du graphe
      ✔ - select count(item) from log entries group by date where project = XYZ @done (13-02-23 22:52)
        --> graphe
      ✔ - LAST 3 contributors on this project (liste en dessous du projet) @done (13-02-23 22:52)
-
    ✔ (idem ideas) @done (13-02-23 22:52)
-
- ☐ Base.canEdit --> C'est très très con pour les wiki, les listes, car c'est que les éditeurs qui peuvent le voir anyway => transformer en un <span> qui permet d'avoir une preference "voir l'édition" ou pas
-
- Need:
-
- ✔ ressources @done (13-02-23 22:52)
-   \__ liens avec nom OK
-   \__ upload avec nom OK
-   \__ Faire une page spécifique pour chaque resource ?
-    ✔ slugify les noms de fichier  + un id unique pour s'y retrouver au téléchargement ? Ou le faire justement quand la personne veut télécharger en prenant le titre (mieux) ? @done (13-02-18 00:13)
- ✔ Commentaires timeline @done (13-02-13 16:25)
-
-Todo - General / Users :
-
- ✔ Faire le skin de la page 'Area restricted' @done (13-02-16 16:12)
- ✔ ajouter la possibilité de supprimer une image de profile @done (13-02-10 23:09)
-
- ☐ Faire une set_flash en javascript
-
- ☐  Signup : non public, faire une invitation par mail avec un token ?
-
- ✔ remplacer le templating twig dans deeplink par du sprintf @done (13-02-12 23:15)
-
- ✔ refaire la gestion des constantes pour les types de resources @done (13-02-18 00:13)
-
- ✔ cluttering des activity logs @done (13-01-25 00:29)
- ☐ Clustering : vérifier que l'object correspond en récupérant le findOneBY, et pas faire le test dans le if après
-
- ✔ Delete des uers : cascade des log entries @done (13-02-05 20:42)
-
- ✔ User ->lastactivity et maj le timestamp à chaque requete http ? @done (13-01-24 22:46)
-
- ✔ Rajouter l'avatar du user dans la barre de menu en haut à droite @done (13-02-10 23:09)
-
- ☐ Mettre maxUsersInListings en parameters de l'appli a récupérer dans Twig
-
- ☐ Ne pas passer le nom complet de l'action en base64 lors d'un chooseFile ou User mais mettre seulement qqs parametres puis reconstruire après ?
-
- ✔ signup : avatar @done (13-02-04 20:12)
- ✔ chgt d'avatar -----> Mais pas simple @done (13-02-04 20:17)
-    \-- nécessite un composant full ajax j'imagine
-
- ☐ login et signup : focus sur le champ lors du chargement de la page
-
- ✔ Mettre à jour les popin de choix des skills avec la partie 'tags' de X-editable @done (13-01-28 23:17)
-
+ 
  ✘ Rajouter un badge 'YOU' quand l'utilisateur courant est affiché @cancelled (13-02-13 14:08)
-
- ☐ Pagination générale sur les objets
-
- ☐ filtrer les timelines ?
-
- ✔ Noms des labels dans signup et new project (labels du form je parle) @done (13-01-19 15:10)
- ✔ Help pour les champs @done (13-01-19 15:10)
-
- ✔ Required ne s'affiche pas pour password email et textarea ? @done (13-01-21 23:46)
-
- ✔ Boutons bootstrap pour markdown editor : ceux qui manquent @done (13-01-22 00:10)
-
- ✔ Add a participant : faire le 'user chooser' @done (13-01-21 23:46)
-
- ✔ images dans assetic : ok apparemment @done (13-01-20 19:41)
-
  ✘ watch / unwatch quand tu es owner ou participant ou createur --> a degager @cancelled (13-01-26 11:25)
    \__ si, ça a un intérêt
  ✘ watch ou participant sur unde idée : a voir ? @cancelled (13-01-26 11:25)
@@ -90,17 +55,15 @@ Todo - General / Users :
 Todo - entité "CommonList":
 
  ☐ Ajax pour new item, new list avec input a la place du 'New item' ?
-
  ☐ Faire un routing pour les listItems qui 'hightlight' le bon list item ? idem pour les resources 
 
  ✔ Highlight la page en cours dans la liste de gauche @done (13-01-22 00:00)
 
 Todo - entité "Wiki":
 
- ✔ tagging des pages wiki et des listes @done (13-01-28 21:58)
-
  ☐ Ajax pour new wiki page
 
+ ✔ tagging des pages wiki et des listes @done (13-01-28 21:58)
  ✔ make homepage du wiki @done (13-01-31 22:56)
  ✔ Wiki - parenting @done (13-02-12 22:33)
  ✔ Highlight la page en cours dans la liste de gauche @done (13-01-22 00:00)
@@ -108,68 +71,52 @@ Todo - entité "Wiki":
 Todo - entité "StandardProject":
 
  ✔ Listing : mettre X participants and Y owners ... @done (13-01-24 00:02)
-
  ✔ Créer un nouveau projet @done (13-01-16 20:51)
  ✔ infos d'un projet : quand pas de skills ne pas afficher le vase ? ou All skills welcome OK @done (13-01-16 21:13)
-
- ✘ Background image pour les projets ? BOF BOF @cancelled (13-01-21 23:49)
-
  ✔ log des modifs sur les projets @done (13-01-17 23:08)
-
  ✔ faire une page des projets 'archivés' @done (13-02-24 16:27)
    \__ + un bouton 'archiver' par projet
    \__ + demander si archiver un projet apres projectize
    \__ abandonner un projet ? 
 
+ ✘ Background image pour les projets ? BOF BOF @cancelled (13-01-21 23:49)
+
 Todo - entité "Comment":
+
+ ☐ upvotes des commentaires a la StackOverflow
 
  ✔ Comments @done (13-01-16 20:51)
    \_ WikiPageComment
    \_ ListComment
-
  ✔ Commentaires en tant que LOG  ?? Comment faire @done (13-02-13 16:25)
-
- ✘ Commentaires @cancelled (13-02-13 16:25)
-   \_ ResourceComment
-
- ✘ Commenter un listItem en plus d'une liste ? @cancelled (13-01-23 23:43)
-
  ✔ VARCHAR 255 -> a changer dans le modele pour les CommonListItem @done (13-01-23 23:42)
  
- ☐ upvotes
+ ✘ Commentaires @cancelled (13-02-13 16:25)
+   \_ ResourceComment
+ ✘ Commenter un listItem en plus d'une liste ? @cancelled (13-01-23 23:43)
 
 Todo - entité "Idea":
-
- ✔ log des modifs sur les ideas : reste l'affichage sur une timeline ? @done (13-02-13 18:49)
-
- ✔ Description / Info @done (13-01-16 21:18)
-  \_ description textuelle principale OK OK
-  \_ deux champs : Concept et Connaissance OK OK
-
- ✔ Séparer Background / Concept @done (13-01-16 20:50)
-
- ✔ delete user --> attention : vérifier qu'il y a bien des owners etc .. @done (13-01-16 20:50)
-
- ✔ login nécessaire pour tout @done (13-01-16 20:48)
- ✔ un projet est privé au participants / owners @done (13-01-16 20:48)
- ✔ events : a dégager @done (13-01-16 20:48)
- ✔ timeline : tu peux pas filtrer @done (13-01-16 20:48)
-
- ✔ idée peut etre modifiée que par son createur OK OK @done (13-01-16 20:51)
- ✔ mettre des participants --> mettre 'from idea' @done (13-01-16 20:51)
-
- ✔ http://d.pr/i/Ldg6 @done (13-01-24 00:02)
 
  ☐ tagguer dans le fil de discussion Concept ou Knowledge
  ☐ pouvoir tagguer un commentaire en 'valuable'
      --> passer automatiquement un commentaire dans l'un ou l'autre des champs textes
-
  ☐ Transform into project : tout les commentaires de l'idée sont réassociés avec une marque <hr> dans la timeline pour séparer quand c'est devenu un projet
 
-
+ ✔ log des modifs sur les ideas : reste l'affichage sur une timeline ? @done (13-02-13 18:49)
+ ✔ Description / Info @done (13-01-16 21:18)
+  \_ description textuelle principale OK OK
+  \_ deux champs : Concept et Connaissance OK OK
+ ✔ Séparer Background / Concept @done (13-01-16 20:50)
+ ✔ delete user --> attention : vérifier qu'il y a bien des owners etc .. @done (13-01-16 20:50)
+ ✔ login nécessaire pour tout @done (13-01-16 20:48)
+ ✔ un projet est privé au participants / owners @done (13-01-16 20:48)
+ ✔ events : a dégager @done (13-01-16 20:48)
+ ✔ timeline : tu peux pas filtrer @done (13-01-16 20:48)
+ ✔ idée peut etre modifiée que par son createur OK OK @done (13-01-16 20:51)
+ ✔ mettre des participants --> mettre 'from idea' @done (13-01-16 20:51)
+ ✔ http://d.pr/i/Ldg6 @done (13-01-24 00:02)
  ✔ project : décliner d'une idée 'spin off' @done (13-02-24 17:39)
   \__ transform n'archive pas l'idée mais propose de le faire
-
  ✔ projectise : slug pas unique !!! ARGH !!! @done (13-02-24 23:13)
 
 Todo - Home :
@@ -204,18 +151,8 @@ Todo - Search:
 Site statique:
 
  ☐ Page credits avec les attributions des icones, librairies JS, etc
+
  ✔ Copie du README.md @done (13-02-12 22:53)
-
-Basic Workflow:
-
- ✔ authenticated ? @done (13-01-16 20:48)
-  false :> home du projet (info ou timeline)
-
- ✔ user owning or participant ? @done (13-01-16 20:48)
-  false :> home ou project
-
- ✔ check if object is in project @done (13-01-16 20:48)
-  false :> 404
 
 Routing:
 
@@ -238,7 +175,7 @@ project/{slug}/events/{year}/{month}    --> All events of the month (aaaa/mm)
 project/{slug}/events/{year}/{month}/{day}    --> All events of the day (aaaa/mm/dd)
 project/{slug}/event/{id} --> specific event (ID)
 
- ☐ RESSOURCES
+ ✔ RESSOURCES @done (13-02-26 19:39)
 project/{slug}/resources --> liste de toutes les ressources
 project/{slug}/resource/{id}/{slug} --> page de la ressource (page simple)
 project/{slug}/resource/tag/{tag} --> page listing toutes les ressources avec le tag
