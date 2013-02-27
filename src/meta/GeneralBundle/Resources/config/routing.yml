@@ -3,3 +3,10 @@
 g_choose_file:
     pattern:  /file/upload/{targetAsBase64}
     defaults: { _controller: metaGeneralBundle:Default:chooseFile }
+
+g_validate_comment:
+    pattern: /comment/validate/{id}
+    defaults: { _controller: metaGeneralBundle:Default:validateComment }
+    requirements:
+      _method: POST
+      id: \d+

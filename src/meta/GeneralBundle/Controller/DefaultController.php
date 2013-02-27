@@ -53,4 +53,28 @@ class DefaultController extends Controller
         return $this->render('metaGeneralBundle:Default:chooseFile.html.twig', array('targetAsBase64' => $targetAsBase64));
 
     }
+
+    public function validateCommentAction($id)
+    {
+        $authenticatedUser = $this->getUser();
+
+        if ($authenticatedUser){
+
+            $repository = $this->getDoctrine()->getRepository('metaGeneralBundle:Comment\BaseComment');
+            $comment = $repository->findOneById($id);
+
+            if ($comment){
+
+                // S'il est deja validé ???
+                $comment->toggleValidator($authenticatedUser);
+                $em = $this->getDoctrine()->getManager();
+                $em->flush();
+
+                return new Response(count($comment->getValidators()));
+
+            }
+        }
+
+        return new Response();
+    }
 }

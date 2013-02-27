@@ -643,7 +643,20 @@ ul.comments li{
 ul.comments li div.comment,
 ul.timeline li div.comment{
   display: inline-block;
-  width: 604px;
+  width: 564px;
+}
+ul.comments li div.validations{
+  display: inline-block;
+  width: 35px;
+  padding-left: 5px;
+  vertical-align: top;
+  background: #EEE;
+}
+ul.comments li div.validations.validated{
+  background: lightGreen;
+}
+.validate-trigger{
+  cursor: pointer;
 }
 ul.comments li div.comment header,
 ul.timeline li div.comment header{

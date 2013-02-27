@@ -57,6 +57,13 @@ class BaseComment
      * @ORM\ManyToOne(targetEntity="meta\UserProfileBundle\Entity\User", inversedBy="comments")
      **/
     private $user;
+
+    /**
+     * Users that validate this comment
+     * @ORM\JoinTable(name="User_validates_Comment")
+     * @ORM\ManyToMany(targetEntity="meta\UserProfileBundle\Entity\User", inversedBy="validatedComments")
+     **/
+    private $validators;
     
     /**
      * Constructor
@@ -64,6 +71,7 @@ class BaseComment
     public function __construct()
     {
         $this->created_at = new \DateTime('now');
+        $this->validators = new ArrayCollection();
     }
 
     /**
@@ -182,5 +190,65 @@ class BaseComment
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Add validators
+     *
+     * @param \meta\UserProfileBundle\Entity\User $validator
+     * @return BaseComment
+     */
+    public function addValidator(\meta\UserProfileBundle\Entity\User $validator)
+    {
+        if( $validator !== null && $this->validators->indexOf($validator) === false ) {
+            $validator->addValidatedComment($this);
+            $this->validators[] = $validator;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove validators
+     *
+     * @param \meta\UserProfileBundle\Entity\User $validator
+     */
+    public function removeValidator(\meta\UserProfileBundle\Entity\User $validator)
+    {
+        if( $validator !== null) {
+            $validator->removeValidatedComment($this);
+        }
+
+        $this->validators->removeElement($validator);
+    }
+
+    /**
+     * Toggle validators
+     *
+     * @param \meta\UserProfileBundle\Entity\User $validator
+     */
+    public function toggleValidator(\meta\UserProfileBundle\Entity\User $validator)
+    {
+        if( $validator !== null){
+            if ($this->validators->indexOf($validator) === false ) {
+                $validator->addValidatedComment($this);
+                $this->validators[] = $validator;
+            } else {
+                $validator->removeValidatedComment($this);
+                $this->validators->removeElement($validator);
+            }
+        }
+        
+        return $this;
+    }
+
+    /**
+     * Get validators
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getValidators()
+    {
+        return $this->validators;
     }
 }
