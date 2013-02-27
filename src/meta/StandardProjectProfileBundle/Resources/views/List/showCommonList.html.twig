@@ -71,7 +71,7 @@
   <ul class="lists sortable" data-url="{{ path('sp_show_project_list_rank', {'slug': base.standardProject.slug}) }}">
   {% for list in commonLists %}
       <li{% if list.id == commonList.id %} class="active"{% endif %} id="{{ list.id }}">
-        <i class="icon-list-ol"></i> {% if base.canEdit %}<a data-confirm="Are you sure you want to delete this list ?" href="{{ path('sp_show_project_list_delete', {'slug': base.standardProject.slug, 'id': list.id}) }}"><i class="icon-remove-sign"></i></a>{% endif %} <a href="{{ path('sp_show_project_list', {'slug': base.standardProject.slug, 'id': list.id, 'commonListSlug': list.slug }) }}" title="{{ list.name }">{{ list.name }}</a>
+        <i class="icon-list-ol"></i> {% if base.canEdit %}<a data-confirm="Are you sure you want to delete this list ?" href="{{ path('sp_show_project_list_delete', {'slug': base.standardProject.slug, 'id': list.id}) }}"><i class="icon-remove-sign"></i></a>{% endif %} <a href="{{ path('sp_show_project_list', {'slug': base.standardProject.slug, 'id': list.id, 'commonListSlug': list.slug }) }}" title="{{ list.name }}">{{ list.name }}</a>
       </li>
   {% endfor %}
   </ul>
