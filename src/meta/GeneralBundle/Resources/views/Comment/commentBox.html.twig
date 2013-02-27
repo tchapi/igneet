@@ -32,8 +32,11 @@
                 {% if comment.user %}
                 <a href="{{ path('u_show_user_profile', {'username': comment.user.username}) }}">{{ comment.user.firstName }}</a>
                 {% else %}<span class="muted">Deleted user</span>{% endif %}
-                 — <span>{{ comment.createdAt|date("d/m/Y G:i") }}</span></header>
+                 — <span>{{ comment.createdAt|date("d/m/Y H:i") }}</span></header>
               <div>{{ comment.text|deeplinks|markdown }}</div>
+            </div>
+            <div class="validations tooltip-trigger{% if app.user in comment.validators %} validated{% endif %}" data-toggle="tooltip" title="{% for user in comment.validators %}{{ user.getFullName() }}<br />{% endfor %}" data-placement="bottom">
+              <strong><a class="validate-trigger" data-url="{{ path('g_validate_comment', {'id': comment.id} ) }}"><i class="icon-thumbs-up"></i></a> <span>{{ comment.validators|length }}</span></strong>
             </div>
           </div>
         </li>

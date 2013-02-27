@@ -257,6 +257,12 @@ class User implements UserInterface
     private $comments;
 
     /**
+     * Comments validated by this user
+     * @ORM\ManyToMany(targetEntity="meta\GeneralBundle\Entity\Comment\BaseComment", mappedBy="validators")
+     **/
+    private $validatedComments;
+
+    /**
      * Log entries I created 
      * @ORM\OneToMany(targetEntity="meta\GeneralBundle\Entity\Log\BaseLogEntry", mappedBy="user")
      **/
@@ -285,6 +291,8 @@ class User implements UserInterface
         $this->ideasParticipatedIn = new ArrayCollection();
 
         $this->comments = new ArrayCollection();
+        $this->validatedComments = new ArrayCollection();
+
         $this->logEntries = new ArrayCollection();
         $this->initiatedLogEntries = new ArrayCollection();
 
@@ -1401,5 +1409,38 @@ class User implements UserInterface
     public function getCreatedTokens()
     {
         return $this->createdTokens;
+    }
+
+    /**
+     * Add validatedComments
+     *
+     * @param \meta\GeneralBundle\Entity\Comment\BaseComment $validatedComment
+     * @return User
+     */
+    public function addValidatedComment(\meta\GeneralBundle\Entity\Comment\BaseComment $validatedComment)
+    {
+        $this->validatedComments[] = $validatedComment;
+    
+        return $this;
+    }
+
+    /**
+     * Remove validatedComments
+     *
+     * @param \meta\GeneralBundle\Entity\Comment\BaseComment $validatedComment
+     */
+    public function removeValidatedComment(\meta\GeneralBundle\Entity\Comment\BaseComment $validatedComment)
+    {
+        $this->validatedComments->removeElement($validatedComment);
+    }
+
+    /**
+     * Get validatedComments
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getValidatedComments()
+    {
+        return $this->validatedComments;
     }
 }

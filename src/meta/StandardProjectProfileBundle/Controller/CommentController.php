@@ -125,7 +125,7 @@ class CommentController extends BaseController
 
                         $route = $this->get('router')->generate('sp_show_project_wikipage_comment', array('slug' => $slug, 'id' => $id));
 
-                        return $this->render('metaStandardProjectProfileBundle:Comment:commentBox.html.twig', 
+                        return $this->render('metaGeneralBundle:Comment:commentBox.html.twig', 
                             array('object' => $wikiPage, 'route' => $route, 'form' => $form->createView()));
 
                     }
@@ -188,7 +188,7 @@ class CommentController extends BaseController
 
                     $route = $this->get('router')->generate('sp_show_project_list_comment', array('slug' => $slug, 'id' => $id));
 
-                    return $this->render('metaStandardProjectProfileBundle:Comment:commentBox.html.twig', 
+                    return $this->render('metaGeneralBundle:Comment:commentBox.html.twig', 
                         array('object' => $commonList, 'route' => $route, 'form' => $form->createView()));
 
                 }

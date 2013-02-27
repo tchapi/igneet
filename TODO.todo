@@ -4,7 +4,6 @@
 Todo - General / Users :
 
  ☐ Faire une set_flash en javascript
- ☐ Signup : non public, faire une invitation par mail avec un token ?
  ☐ Clustering des activityLogs : vérifier que l'object correspond en récupérant le findOneBY, et pas faire le test dans le if après
  ☐ Mettre maxUsersInListings en parameters de l'appli a récupérer dans Twig
  ☐ Ne pas passer le nom complet de l'action en base64 lors d'un chooseFile ou User mais mettre seulement qqs parametres puis reconstruire après ?
@@ -14,6 +13,7 @@ Todo - General / Users :
  ☐ Base.canEdit --> C'est très très con pour les wiki, les listes, car c'est que les éditeurs qui peuvent le voir anyway => transformer en un <span> qui permet d'avoir une preference "voir l'édition" ou pas
 
  ✔ Faire le skin de la page 'Area restricted' @done (13-02-16 16:12)
+ ✔ Signup : non public, faire une invitation par mail avec un token ? @done (13-02-27 21:22)
  ✔ ajouter la possibilité de supprimer une image de profile @done (13-02-10 23:09)
  ✔ remplacer le templating twig dans deeplink par du sprintf @done (13-02-12 23:15)
  ✔ refaire la gestion des constantes pour les types de resources @done (13-02-18 00:13)
@@ -42,7 +42,7 @@ Todo - General / Users :
      ✔ - 1 ligne avec 3 colonnes + bouton 'nouvelle idée/projet' en dessous @done (13-02-19 00:59)
      titre au dessus du graphe
      ✔ - select count(item) from log entries group by date where project = XYZ @done (13-02-23 22:52)
-       --> graphe
+       \--> graphe
      ✔ - LAST 3 contributors on this project (liste en dessous du projet) @done (13-02-23 22:52)
    ✔ (idem ideas) @done (13-02-23 22:52)
  
@@ -83,8 +83,7 @@ Todo - entité "StandardProject":
 
 Todo - entité "Comment":
 
- ☐ upvotes des commentaires a la StackOverflow
-
+ ✔ upvotes des commentaires a la StackOverflow avec les noms des gens qui ont upvoté @done (13-02-27 23:03)
  ✔ Comments @done (13-01-16 20:51)
    \_ WikiPageComment
    \_ ListComment
