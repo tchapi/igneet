@@ -8,8 +8,12 @@ login_check:
 logout:
     pattern: /logout
 
+invite:
+    pattern: /invite
+    defaults: { _controller: metaUserProfileBundle:Security:invite }
+
 u_signup:
-    pattern:  /signup
+    pattern:  /signup/{token}
     defaults: { _controller: metaUserProfileBundle:Default:create }
 
 u_me:

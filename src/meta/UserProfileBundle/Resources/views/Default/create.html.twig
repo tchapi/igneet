@@ -70,7 +70,7 @@
 
 {% block content %}
 <div class="formContent">
-  <form action="{{ path('u_signup') }}" method="post" {{ form_enctype(form) }} class="form-horizontal">
+  <form action="{{ path('u_signup', { 'token': token.token }) }}" method="post" {{ form_enctype(form) }} class="form-horizontal">
       {{ form_widget(form) }}
       <div class="form-actions">
         <input type="submit" value="Create" class="btn btn-success" />
