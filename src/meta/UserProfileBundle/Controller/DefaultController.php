@@ -142,7 +142,7 @@ class DefaultController extends Controller
     /*
      * Create a form for a new user to signin AND process result if POST
      */
-    public function createAction(Request $request)
+    public function createAction(Request $request, $token)
     {
         
         $authenticatedUser = $this->getUser();
@@ -157,6 +157,21 @@ class DefaultController extends Controller
             return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $authenticatedUser->getUsername())));
         }
 
+        // Checks the token
+
+        $tokenRepository = $this->getDoctrine()->getRepository('metaUserProfileBundle:UserInviteToken');
+        $token = $tokenRepository->findOneByToken($token);
+
+        if ( !$token || $token->isUsed() ){
+
+            $this->get('session')->setFlash(
+                'error',
+                'This signup link is not valid. Make sure it has not been used.'
+            );
+
+            return $this->redirect($this->generateUrl('login'));   
+        }
+
         $user = new User();
         $form = $this->createForm(new UserType(), $user);
 
@@ -169,6 +184,9 @@ class DefaultController extends Controller
                 $factory = $this->get('security.encoder_factory');
                 $encoder = $factory->getEncoder($user);
                 $user->setPassword($encoder->encodePassword($user->getPassword(), $user->getSalt()));
+
+                // Use token
+                $token->setResultingUser($user);
 
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($user);
@@ -204,7 +222,7 @@ class DefaultController extends Controller
 
         }
 
-        return $this->render('metaUserProfileBundle:Default:create.html.twig', array('form' => $form->createView()));
+        return $this->render('metaUserProfileBundle:Default:create.html.twig', array('form' => $form->createView(), 'token' => $token));
 
     }
 

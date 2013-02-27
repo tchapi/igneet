@@ -3,7 +3,10 @@
 namespace meta\UserProfileBundle\Controller;
  
 use Symfony\Bundle\FrameworkBundle\Controller\Controller,
+    Symfony\Component\HttpFoundation\Request,
     Symfony\Component\Security\Core\SecurityContext;
+
+use meta\UserProfileBundle\Entity\UserInviteToken;
 
 /*
  * Importing Class definitions
@@ -61,9 +64,70 @@ class SecurityController extends Controller
 
         } else {
 
-            return $this->render(
-                'metaUserProfileBundle:Security:_anonymous.html.twig'
+            return $this->render('metaUserProfileBundle:Security:_anonymous.html.twig');
+
+        }
+
+    }
+
+    public function inviteAction(Request $request)
+    {
+
+        $authenticatedUser = $this->getUser();
+
+        if ($authenticatedUser) {
+
+            if ($request->isMethod('POST')) {
+            
+                // Gets mail 
+                $mail = $request->request->get('mail');
+
+                if(filter_var($mail, FILTER_VALIDATE_EMAIL)){
+
+                    // Create token linked to email
+                    $token = new UserInviteToken($authenticatedUser, $mail);
+
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($token);
+                    $em->flush();
+
+                    // Sends mail to invitee
+                    $message = \Swift_Message::newInstance()
+                        ->setSubject('You\'ve been invited')
+                        ->setFrom($authenticatedUser->getEmail())
+                        ->setTo($mail)
+                        ->setBody(
+                            $this->renderView(
+                                'metaUserProfileBundle:Mail:invite.mail.html.twig',
+                                array('user' => $authenticatedUser, 'token' => $token->getToken())
+                            )
+                        )
+                    ;
+                    $this->get('mailer')->send($message);
+
+                    $this->get('session')->setFlash(
+                        'success',
+                        'Your invitation was sent to ' . $mail . '.'
+                    );
+
+                    return $this->redirect($this->generateUrl('u_me'));
+                }
+
+
+            } else {
+
+                return $this->render('metaUserProfileBundle:Security:invite.html.twig');
+
+            }
+
+        } else {
+
+            $this->get('session')->setFlash(
+                'error',
+                'You need to be logged in to invite someone.'
             );
+
+            return $this->redirect($this->generateUrl('login'));
 
         }
 

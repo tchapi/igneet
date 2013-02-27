@@ -1,0 +1,8 @@
+<h3>Congratulations !</h3>
+
+<p>{{ user.getFullName() }} has invited you on meta !</p>
+
+<p>Click on the following link to sign up and create your profile :</p>
+<p><a href="{{ path('u_signup', { 'token': token } ) }}">{{ path('u_signup', { 'token': token } ) }}</a></p>
+
+<p>The meta team</p>

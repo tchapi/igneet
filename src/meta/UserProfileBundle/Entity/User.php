@@ -106,6 +106,20 @@ class User implements UserInterface
     private $file;
 
     /**
+     *  The token, if any, that th user used to sign up
+     *
+     * @ORM\OneToOne(targetEntity="UserInviteToken", mappedBy="resultingUser")
+     */
+    private $originatingToken;
+
+    /**
+     *  The tokens created by this user
+     *
+     * @ORM\OneToMany(targetEntity="UserInviteToken", mappedBy="referalUser")
+     */
+    private $createdTokens;
+
+    /**
      * @var date $created_at
      * 
      * @ORM\Column(name="created_at", type="datetime")
@@ -273,6 +287,8 @@ class User implements UserInterface
         $this->comments = new ArrayCollection();
         $this->logEntries = new ArrayCollection();
         $this->initiatedLogEntries = new ArrayCollection();
+
+        $this->createdTokens = new ArrayCollection();
 
         /* init */
         $this->salt = md5(uniqid(null, true));
@@ -1329,5 +1345,61 @@ class User implements UserInterface
     public function getLastSeenAt()
     {
         return $this->last_seen_at;
+    }
+
+    /**
+     * Set originatingToken
+     *
+     * @param \meta\UserProfileBundle\Entity\UserInviteToken $originatingToken
+     * @return User
+     */
+    public function setOriginatingToken(\meta\UserProfileBundle\Entity\UserInviteToken $originatingToken = null)
+    {
+        $this->originatingToken = $originatingToken;
+    
+        return $this;
+    }
+
+    /**
+     * Get originatingToken
+     *
+     * @return \meta\UserProfileBundle\Entity\UserInviteToken 
+     */
+    public function getOriginatingToken()
+    {
+        return $this->originatingToken;
+    }
+
+    /**
+     * Add createdTokens
+     *
+     * @param \meta\UserProfileBundle\Entity\UserInviteToken $createdTokens
+     * @return User
+     */
+    public function addCreatedToken(\meta\UserProfileBundle\Entity\UserInviteToken $createdTokens)
+    {
+        $this->createdTokens[] = $createdTokens;
+    
+        return $this;
+    }
+
+    /**
+     * Remove createdTokens
+     *
+     * @param \meta\UserProfileBundle\Entity\UserInviteToken $createdTokens
+     */
+    public function removeCreatedToken(\meta\UserProfileBundle\Entity\UserInviteToken $createdTokens)
+    {
+        $this->createdTokens->removeElement($createdTokens);
+    }
+
+    /**
+     * Get createdTokens
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCreatedTokens()
+    {
+        return $this->createdTokens;
     }
 }
