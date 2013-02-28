@@ -100,7 +100,7 @@ class SecurityController extends Controller
                             $this->renderView(
                                 'metaUserProfileBundle:Mail:invite.mail.html.twig',
                                 array('user' => $authenticatedUser, 'token' => $token->getToken())
-                            )
+                            ), 'text/html'
                         )
                     ;
                     $this->get('mailer')->send($message);
