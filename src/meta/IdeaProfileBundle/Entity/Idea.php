@@ -119,10 +119,10 @@ class Idea extends Taggable
     private $watchers;
 
     /**
-     * Creator of the idea (OWNING SIDE)
-     * @ORM\ManyToOne(targetEntity="meta\UserProfileBundle\Entity\User", inversedBy="ideasCreated")
+     * Creators of the idea (OWNING SIDE)
+     * @ORM\ManyToMany(targetEntity="meta\UserProfileBundle\Entity\User", inversedBy="ideasCreated")
      **/
-    private $creator;
+    private $creators;
 
     /**
      * Users participating in me (REVERSE SIDE)
@@ -147,8 +147,12 @@ class Idea extends Taggable
     {
         
         $this->created_at = $this->updated_at = new \DateTime('now');
+        
         $this->watchers = new ArrayCollection();
+
+        $this->creators = new ArrayCollection();
         $this->participants = new ArrayCollection();
+
         $this->comments = new ArrayCollection();
         $this->resultingProjects = new ArrayCollection();
 
@@ -495,35 +499,6 @@ class Idea extends Taggable
     }
 
     /**
-     * Set creator
-     *
-     * @param \meta\UserProfileBundle\Entity\User $creator
-     * @return Idea
-     */
-    public function setCreator(\meta\UserProfileBundle\Entity\User $creator = null)
-    {
-        if ( !is_null($this->creator) ){
-            $this->creator->removeIdeasCreated($this);
-        }
-        if ( !is_null($creator) ){
-            $creator->addIdeasCreated($this);
-        }
-        $this->creator = $creator;
-    
-        return $this;
-    }
-
-    /**
-     * Get creator
-     *
-     * @return \meta\UserProfileBundle\Entity\User 
-     */
-    public function getCreator()
-    {
-        return $this->creator;
-    }
-
-    /**
      * Set archived
      *
      * @param boolean $archived
@@ -553,12 +528,12 @@ class Idea extends Taggable
     /**
      * Add participants
      *
-     * @param \meta\UserProfileBundle\Entity\User $participants
+     * @param \meta\UserProfileBundle\Entity\User $participant
      * @return Idea
      */
-    public function addParticipant(\meta\UserProfileBundle\Entity\User $participants)
+    public function addParticipant(\meta\UserProfileBundle\Entity\User $participant)
     {
-        $this->participants[] = $participants;
+        $this->participants[] = $participant;
     
         return $this;
     }
@@ -566,11 +541,11 @@ class Idea extends Taggable
     /**
      * Remove participants
      *
-     * @param \meta\UserProfileBundle\Entity\User $participants
+     * @param \meta\UserProfileBundle\Entity\User $participant
      */
-    public function removeParticipant(\meta\UserProfileBundle\Entity\User $participants)
+    public function removeParticipant(\meta\UserProfileBundle\Entity\User $participant)
     {
-        $this->participants->removeElement($participants);
+        $this->participants->removeElement($participant);
     }
 
     /**
@@ -728,5 +703,38 @@ class Idea extends Taggable
     public function getAbout()
     {
         return $this->about;
+    }
+
+    /**
+     * Add creators
+     *
+     * @param \meta\UserProfileBundle\Entity\User $creators
+     * @return Idea
+     */
+    public function addCreator(\meta\UserProfileBundle\Entity\User $creators)
+    {
+        $this->creators[] = $creators;
+    
+        return $this;
+    }
+
+    /**
+     * Remove creators
+     *
+     * @param \meta\UserProfileBundle\Entity\User $creators
+     */
+    public function removeCreator(\meta\UserProfileBundle\Entity\User $creators)
+    {
+        $this->creators->removeElement($creators);
+    }
+
+    /**
+     * Get creators
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCreators()
+    {
+        return $this->creators;
     }
 }

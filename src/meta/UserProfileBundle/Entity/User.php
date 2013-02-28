@@ -236,17 +236,15 @@ class User implements UserInterface
 
     /**
      * Ideas I have created (OWNING SIDE)
-     * @ORM\OneToMany(targetEntity="meta\IdeaProfileBundle\Entity\Idea", mappedBy="creator")
+     * @ORM\ManyToMany(targetEntity="meta\IdeaProfileBundle\Entity\Idea", mappedBy="creators")
+     * @ORM\JoinTable(name="User_created_Idea")
      **/
     private $ideasCreated;
 
     /**
      * Ideas I participate in (OWNING SIDE)
      * @ORM\ManyToMany(targetEntity="meta\IdeaProfileBundle\Entity\Idea", inversedBy="participants")
-     * @ORM\JoinTable(name="User_participatesIn_Idea",
-     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="idea_id", referencedColumnName="id")}
-     *      )
+     * @ORM\JoinTable(name="User_participatesIn_Idea")
      **/
     private $ideasParticipatedIn;
     
@@ -1109,13 +1107,13 @@ class User implements UserInterface
     /**
      * Add ideasWatched
      *
-     * @param \meta\IdeaProfileBundle\Entity\Idea $ideasWatched
+     * @param \meta\IdeaProfileBundle\Entity\Idea $ideaWatched
      * @return User
      */
-    public function addIdeasWatched(\meta\IdeaProfileBundle\Entity\Idea $ideasWatched)
+    public function addIdeasWatched(\meta\IdeaProfileBundle\Entity\Idea $ideaWatched)
     {
-        $ideasWatched->addWatcher($this);
-        $this->ideasWatched[] = $ideasWatched;
+        $ideaWatched->addWatcher($this);
+        $this->ideasWatched[] = $ideaWatched;
     
         return $this;
     }
@@ -1133,12 +1131,12 @@ class User implements UserInterface
     /**
      * Remove ideasWatched
      *
-     * @param \meta\IdeaProfileBundle\Entity\Idea $ideasWatched
+     * @param \meta\IdeaProfileBundle\Entity\Idea $ideaWatched
      */
-    public function removeIdeasWatched(\meta\IdeaProfileBundle\Entity\Idea $ideasWatched)
+    public function removeIdeasWatched(\meta\IdeaProfileBundle\Entity\Idea $ideaWatched)
     {
-        $this->ideasWatched->removeElement($ideasWatched);
-        $ideasWatched->removeWatcher($this);
+        $this->ideasWatched->removeElement($ideaWatched);
+        $ideaWatched->removeWatcher($this);
     }
 
     /**
@@ -1178,6 +1176,7 @@ class User implements UserInterface
      */
     public function addIdeasCreated(\meta\IdeaProfileBundle\Entity\Idea $ideaCreated)
     {
+        $ideaCreated->addCreator($this);
         $this->ideasCreated[] = $ideaCreated;
     
         return $this;
@@ -1210,6 +1209,7 @@ class User implements UserInterface
     public function removeIdeasCreated(\meta\IdeaProfileBundle\Entity\Idea $ideaCreated)
     {
         $this->ideasCreated->removeElement($ideaCreated);
+        $ideaCreated->removeCreator($this);
     }
 
     /**
@@ -1223,14 +1223,25 @@ class User implements UserInterface
     }
 
     /**
+     * has created an idea
+     *
+     * @return boolean 
+     */
+    public function hasCreatedIdea(\meta\IdeaProfileBundle\Entity\Idea $idea)
+    {
+        return $this->ideasCreated->contains($idea);
+    }
+
+    /**
      * Add ideasParticipatedIn
      *
-     * @param \meta\IdeaProfileBundle\Entity\Idea $ideasParticipatedIn
+     * @param \meta\IdeaProfileBundle\Entity\Idea $ideaParticipatedIn
      * @return User
      */
-    public function addIdeasParticipatedIn(\meta\IdeaProfileBundle\Entity\Idea $ideasParticipatedIn)
+    public function addIdeasParticipatedIn(\meta\IdeaProfileBundle\Entity\Idea $ideaParticipatedIn)
     {
-        $this->ideasParticipatedIn[] = $ideasParticipatedIn;
+        $ideaParticipatedIn->addParticipant($this);
+        $this->ideasParticipatedIn[] = $ideaParticipatedIn;
     
         return $this;
     }
@@ -1238,11 +1249,12 @@ class User implements UserInterface
     /**
      * Remove ideasParticipatedIn
      *
-     * @param \meta\IdeaProfileBundle\Entity\Idea $ideasParticipatedIn
+     * @param \meta\IdeaProfileBundle\Entity\Idea $ideaParticipatedIn
      */
-    public function removeIdeasParticipatedIn(\meta\IdeaProfileBundle\Entity\Idea $ideasParticipatedIn)
+    public function removeIdeasParticipatedIn(\meta\IdeaProfileBundle\Entity\Idea $ideaParticipatedIn)
     {
-        $this->ideasParticipatedIn->removeElement($ideasParticipatedIn);
+        $this->ideasParticipatedIn->removeElement($ideaParticipatedIn);
+        $ideaParticipatedIn->removeParticipant($this);
     }
 
     /**
