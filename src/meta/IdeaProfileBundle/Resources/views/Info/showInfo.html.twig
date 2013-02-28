@@ -52,7 +52,7 @@
         {% if base.isCreator %}<a class="removeUserIcon" href="{{ path('i_remove_participant_to_idea', { 'id': base.idea.id, 'username' : participatingUser.username, 'token': csrf_token('removeParticipant') }) }}"><i class="icon-remove-sign icon-large"></i></a>{% endif %}
       </li>
   {% endfor %}
-  {% if base.isCreator %}
+  {% if base.canEdit %}
       <li>
         <a href="{{ path('u_choose_user', {'targetAsBase64': targetParticipantAsBase64, 'token': csrf_token('addParticipant')  }) }}">
           <div class="smallTextAvatar"><i class="icon-plus-sign"></i></div>
