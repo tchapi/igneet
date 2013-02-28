@@ -93,8 +93,9 @@ class SecurityController extends Controller
 
                     // Sends mail to invitee
                     $message = \Swift_Message::newInstance()
-                        ->setSubject('You\'ve been invited')
-                        ->setFrom($authenticatedUser->getEmail())
+                        ->setSubject('You\'ve been invited on igneet')
+                        ->setFrom($this->container->getParameter('mailer_from'))
+                        ->setReplyTo($authenticatedUser->getEmail())
                         ->setTo($mail)
                         ->setBody(
                             $this->renderView(
@@ -107,7 +108,7 @@ class SecurityController extends Controller
 
                     $this->get('session')->setFlash(
                         'success',
-                        'Your invitation was sent to ' . $mail . '.'
+                        'An invitation was sent to ' . $mail . ' on your behalf.'
                     );
 
                     return $this->redirect($this->generateUrl('u_me'));
