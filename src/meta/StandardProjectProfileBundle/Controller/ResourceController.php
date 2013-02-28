@@ -170,7 +170,9 @@ class ResourceController extends BaseController
 
     public function deleteResourceAction(Request $request, $slug, $id)
     {
-  
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('delete', $request->get('token')))
+            return $this->redirect($this->generateUrl('sp_show_project_resources', array('slug' => $slug)));
+          
         $this->fetchProjectAndPreComputeRights($slug, false, true);
 
         if ($this->base != false) {

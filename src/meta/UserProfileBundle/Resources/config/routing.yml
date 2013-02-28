@@ -13,7 +13,7 @@ invite:
     defaults: { _controller: metaUserProfileBundle:Security:invite }
 
 u_signup:
-    pattern:  /signup/{token}
+    pattern:  /signup/{inviteToken}
     defaults: { _controller: metaUserProfileBundle:Default:create }
 
 u_me:

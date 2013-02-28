@@ -86,6 +86,9 @@ class DefaultController extends BaseController
 
     public function editAction(Request $request, $slug){
 
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('edit', $request->get('token')))
+            return new Response();
+
         $this->fetchProjectAndPreComputeRights($slug, false, true);
         $response = new Response();
 
@@ -178,7 +181,10 @@ class DefaultController extends BaseController
 
     }
 
-    public function deleteAction($slug){
+    public function deleteAction(Request $request, $slug){
+
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('delete', $request->get('token')))
+            return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $slug)));
 
         $this->fetchProjectAndPreComputeRights($slug, true, false);
 
@@ -210,8 +216,11 @@ class DefaultController extends BaseController
     /*
      * Reset picture of project
      */
-    public function resetPictureAction($slug)
+    public function resetPictureAction(Request $request, $slug)
     {
+
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('resetPicture', $request->get('token')))
+            return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $slug)));
 
         $this->fetchProjectAndPreComputeRights($slug, true, false);
 
@@ -264,13 +273,14 @@ class DefaultController extends BaseController
 
                 } else {
                 
+                    $target['params']['token'] = $request->get('token');
                     return $this->forward($target['slug'], $target['params']);
                 }
             }
 
         } 
 
-        return $this->render('metaStandardProjectProfileBundle:Default:chooseSlug.html.twig', array('targetAsBase64' => $targetAsBase64));
+        return $this->render('metaStandardProjectProfileBundle:Default:chooseSlug.html.twig', array('targetAsBase64' => $targetAsBase64, 'token' => $request->get('token')));
 
     }
 
@@ -278,8 +288,11 @@ class DefaultController extends BaseController
      *                   WATCH / UNWATCH
      *  #################################################### */
 
-    public function watchAction($slug)
+    public function watchAction(Request $request, $slug)
     {
+
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('watch', $request->get('token')))
+            return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $slug)));
 
         $authenticatedUser = $this->getUser();
 
@@ -318,8 +331,11 @@ class DefaultController extends BaseController
         return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $slug)));
     }
 
-    public function unwatchAction($slug)
+    public function unwatchAction(Request $request, $slug)
     {
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('unwatch', $request->get('token')))
+            return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $slug)));
+
         $authenticatedUser = $this->getUser();
 
         // The actually authenticated user now follows $user if they are not the same

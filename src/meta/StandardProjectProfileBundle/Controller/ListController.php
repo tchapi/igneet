@@ -146,6 +146,9 @@ class ListController extends BaseController
     public function editCommonListAction(Request $request, $slug, $id)
     {
   
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('editCommonList', $request->get('token')))
+            return new Response();
+
         $this->fetchProjectAndPreComputeRights($slug, false, true);
         $response = new Response();
 
@@ -216,6 +219,9 @@ class ListController extends BaseController
     public function deleteCommonListAction(Request $request, $slug, $id)
     {
   
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('deleteCommonList', $request->get('token')))
+            return $this->redirect($this->generateUrl('sp_show_project_resources', array('slug' => $slug)));
+
         $this->fetchProjectAndPreComputeRights($slug, false, true);
 
         if ($this->base != false) {
@@ -289,6 +295,9 @@ class ListController extends BaseController
     public function editCommonListItemAction(Request $request, $slug, $listId, $id)
     {
   
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('editCommonListItem', $request->get('token')))
+            return new Response();
+
         $this->fetchProjectAndPreComputeRights($slug, false, true);
         $error = null;
 
@@ -337,6 +346,9 @@ class ListController extends BaseController
     public function deleteCommonListItemAction(Request $request, $slug, $listId, $id)
     {
   
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('deleteCommonListItem', $request->get('token')))
+            return $this->redirect($this->generateUrl('sp_show_project_list', array('slug' => $slug, 'id' => $listId)));
+
         $this->fetchProjectAndPreComputeRights($slug, false, true);
 
         if ($this->base != false) {
@@ -378,6 +390,9 @@ class ListController extends BaseController
     public function toggleCommonListItemAction(Request $request, $slug, $listId, $id, $do)
     {
   
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('toggleCommonListItem', $request->get('token')))
+            return $this->redirect($this->generateUrl('sp_show_project_list_home', array('slug' => $slug)));
+
         $this->fetchProjectAndPreComputeRights($slug, false, true);
 
         if ($this->base != false) {
@@ -401,6 +416,8 @@ class ListController extends BaseController
                 $logService->log($this->getUser(), 'user_'.$action.'_list_item', $this->base['standardProject'], array( 'list' => array( 'routing' => 'list', 'logName' => $commonList->getLogName(), 'args' => $commonList->getLogArgs()),
                                                                                                                    'list_item' => array( 'routing' => null,   'logName' => $commonListItem->getLogName() )) );
 
+                return $this->redirect($this->generateUrl('sp_show_project_list', array('slug' => $slug, 'id' => $commonList->getId(), 'commonListSlug' => $commonList->getSlug())));
+
             } else {
 
                 $this->get('session')->setFlash(
@@ -411,8 +428,9 @@ class ListController extends BaseController
             }
             
         }
-
-        return $this->forward('metaStandardProjectProfileBundle:List:showCommonList', array('slug' => $slug, 'id' => $listId, 'commonListSlug' => $commonList->getSlug()));
+        
+        return $this->redirect($this->generateUrl('sp_show_project_list_home', array('slug' => $slug)));
+    
     }
 
 }

@@ -10,6 +10,6 @@
     {% if user %}
     <a href="{{ path('u_show_user_profile', {'username': user.username}) }}">{{ user.firstName }}</a>
     {% else %}<span class="muted">Deleted user</span>{% endif %}
-     — <span>{{ date|date("d/m/Y G:i") }}</span></header>
+     — <span>{{ date|date("d/m/Y H:i") }}</span></header>
   <div>{{ text|deeplinks|markdown }}</div>
 </div>

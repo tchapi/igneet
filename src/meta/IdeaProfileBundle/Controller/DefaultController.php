@@ -185,7 +185,11 @@ class DefaultController extends Controller
      *                       IDEA EDITION 
      *  #################################################### */
 
-    public function editAction(Request $request, $id){
+    public function editAction(Request $request, $id)
+    {
+
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('edit', $request->get('token')))
+            return new Response();
 
         $this->fetchIdeaAndPreComputeRights($id, false, true);
         $response = new Response();
@@ -287,7 +291,11 @@ class DefaultController extends Controller
 
     }
 
-    public function deleteAction($id){
+    public function deleteAction(Request $request, $id)
+    {
+
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('delete', $request->get('token')))
+            return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
 
         $this->fetchIdeaAndPreComputeRights($id, true, false);
 
@@ -316,7 +324,11 @@ class DefaultController extends Controller
 
     }
 
-    public function archiveOrRecycleAction($id, $archive){
+    public function archiveOrRecycleAction(Request $request, $id, $archive)
+    {
+
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('archiveOrRecycle', $request->get('token')))
+            return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
 
         $this->fetchIdeaAndPreComputeRights($id, true, false);
 
@@ -349,10 +361,13 @@ class DefaultController extends Controller
     /*
      * Reset picture of idea
      */
-    public function resetPictureAction($id)
+    public function resetPictureAction(Request $request, $id)
     {
 
-        $this->fetchIdeaAndPreComputeRights($id, true, false);
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('resetPicture', $request->get('token')))
+            return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
+
+        $this->fetchIdeaAndPreComputeRights($id, false, true);
 
         if ($this->base != false) {
 
@@ -377,7 +392,11 @@ class DefaultController extends Controller
 
     }
 
-    public function transferAction($id, $username){
+    public function transferAction(Request $request, $id, $username)
+    {
+
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('transfer', $request->get('token')))
+            return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
 
         $this->fetchIdeaAndPreComputeRights($id, true, false);
 
@@ -414,6 +433,10 @@ class DefaultController extends Controller
 
     public function projectizeAction(Request $request, $id)
     {
+
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('projectize', $request->get('token')))
+            return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
+
         $this->fetchIdeaAndPreComputeRights($id, true, false);
 
         if ($this->base != false && $this->base['idea']->isArchived() === false){
@@ -633,77 +656,75 @@ class DefaultController extends Controller
      *                   WATCH / UNWATCH
      *  #################################################### */
 
-    public function watchAction($id)
+    public function watchAction(Request $request, $id)
     {
+
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('watch', $request->get('token')))
+            return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
 
         $authenticatedUser = $this->getUser();
 
         // The actually authenticated user now watches the idea with $id
-        if ($authenticatedUser) {
+        $repository = $this->getDoctrine()->getRepository('metaIdeaProfileBundle:Idea');
+        $idea = $repository->findOneById($id);
 
-            $repository = $this->getDoctrine()->getRepository('metaIdeaProfileBundle:Idea');
-            $idea = $repository->findOneById($id);
+        if ( !($authenticatedUser->isWatchingIdea($idea)) ){
 
-            if ( !($authenticatedUser->isWatchingIdea($idea)) ){
+            $authenticatedUser->addIdeasWatched($idea);
 
-                $authenticatedUser->addIdeasWatched($idea);
-
-                $logService = $this->container->get('logService');
-                $logService->log($authenticatedUser, 'user_watch_idea', $idea, array());
+            $logService = $this->container->get('logService');
+            $logService->log($authenticatedUser, 'user_watch_idea', $idea, array());
 
 
-                $em = $this->getDoctrine()->getManager();
-                $em->flush();
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
 
-                $this->get('session')->setFlash(
-                    'success',
-                    'You are now watching '.$idea->getName().'.'
-                );
+            $this->get('session')->setFlash(
+                'success',
+                'You are now watching '.$idea->getName().'.'
+            );
 
-            } else {
+        } else {
 
-                $this->get('session')->setFlash(
-                    'warning',
-                    'You are already watching '.$idea->getName().'.'
-                );
-
-            }
+            $this->get('session')->setFlash(
+                'warning',
+                'You are already watching '.$idea->getName().'.'
+            );
 
         }
 
         return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
     }
 
-    public function unwatchAction($id)
+    public function unwatchAction(Request $request, $id)
     {
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('unwatch', $request->get('token')))
+            return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
+
         $authenticatedUser = $this->getUser();
 
         // The actually authenticated user now follows $user if they are not the same
-        if ($authenticatedUser) {
+        $repository = $this->getDoctrine()->getRepository('metaIdeaProfileBundle:Idea');
+        $idea = $repository->findOneById($id);
 
-            $repository = $this->getDoctrine()->getRepository('metaIdeaProfileBundle:Idea');
-            $idea = $repository->findOneById($id);
+        if ( $authenticatedUser->isWatchingIdea($idea) ){
 
-            if ( $authenticatedUser->isWatchingIdea($idea) ){
+            $authenticatedUser->removeIdeasWatched($idea);
 
-                $authenticatedUser->removeIdeasWatched($idea);
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
 
-                $em = $this->getDoctrine()->getManager();
-                $em->flush();
+            $this->get('session')->setFlash(
+                'success',
+                'You are not watching '.$idea->getName().' anymore.'
+            );
 
-                $this->get('session')->setFlash(
-                    'success',
-                    'You are not watching '.$idea->getName().' anymore.'
-                );
+        } else {
 
-            } else {
-
-                $this->get('session')->setFlash(
-                    'warning',
-                    'You are not watching '.$idea->getName().'.'
-                );
-
-            }
+            $this->get('session')->setFlash(
+                'warning',
+                'You are not watching '.$idea->getName().'.'
+            );
 
         }
 
@@ -714,8 +735,11 @@ class DefaultController extends Controller
      *                          ADD USER
      *  #################################################### */
 
-    public function addParticipantAction($id, $username)
+    public function addParticipantAction(Request $request, $id, $username)
     {
+
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('addParticipant', $request->get('token')))
+            return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
 
         $this->fetchIdeaAndPreComputeRights($id, true, false);
 
@@ -761,8 +785,11 @@ class DefaultController extends Controller
         return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
     }
 
-    public function removeParticipantAction($id, $username)
+    public function removeParticipantAction(Request $request, $id, $username)
     {
+
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('removeParticipant', $request->get('token')))
+            return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
 
         $this->fetchIdeaAndPreComputeRights($id, true, false);
 

@@ -15,7 +15,7 @@
 
 {% block content %}
 <div class="formContent">
-  <form action="{{ path('sp_choose_slug', { 'targetAsBase64' : targetAsBase64 }) }}" method="post" class="form-horizontal">
+  <form action="{{ path('sp_choose_slug', { 'targetAsBase64' : targetAsBase64, 'token': token }) }}" method="post" class="form-horizontal">
       <div class="control-group ">
         <label class="control-label"><label for="slug" class="required">Choose a slug : </label></label>
         <div class="controls">

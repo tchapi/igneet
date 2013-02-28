@@ -40,12 +40,12 @@
             <span><div>{{ owningUser.firstName }}</div><div>{{ owningUser.lastName|upper }}</div></span>
           </div>
         </a>
-        {% if base.isOwning and owningUser != app.user %}<a class="removeUserIcon" href="{{ path('sp_remove_owner_to_project', { 'slug': base.standardProject.slug, 'username' : owningUser.username }) }}"><i class="icon-remove-sign icon-large"></i></a>{% endif %}
+        {% if base.isOwning and owningUser != app.user %}<a class="removeUserIcon" href="{{ path('sp_remove_owner_to_project', { 'slug': base.standardProject.slug, 'username' : owningUser.username, 'token': csrf_token('removeParticipantOrOwner') }) }}"><i class="icon-remove-sign icon-large"></i></a>{% endif %}
       </li>
   {% endfor %}
   {% if base.isOwning %}
       <li>
-        <a href="{{ path('u_choose_user', {'targetAsBase64': targetOwnerAsBase64 }) }}">
+        <a href="{{ path('u_choose_user', {'targetAsBase64': targetOwnerAsBase64, 'token': csrf_token('addParticipantOrOwner') }) }}">
           <div class="smallTextAvatar"><i class="icon-plus-sign"></i></div>
           <div class="smallObjectInfos">
             <span>Add an Owner</span>
@@ -67,12 +67,12 @@
             <span><div>{{ participatingUser.firstName }}</div><div>{{ participatingUser.lastName|upper }}</div></span>
           </div>
         </a>
-        {% if base.isOwning %}<a class="removeUserIcon" href="{{ path('sp_remove_participant_to_project', { 'slug': base.standardProject.slug, 'username' : participatingUser.username }) }}"><i class="icon-remove-sign icon-large"></i></a>{% endif %}
+        {% if base.isOwning %}<a class="removeUserIcon" href="{{ path('sp_remove_participant_to_project', { 'slug': base.standardProject.slug, 'username' : participatingUser.username, 'token': csrf_token('removeParticipantOrOwner') }) }}"><i class="icon-remove-sign icon-large"></i></a>{% endif %}
       </li>
   {% endfor %}
   {% if base.isOwning %}
       <li>
-        <a href="{{ path('u_choose_user', {'targetAsBase64': targetParticipantAsBase64 }) }}">
+        <a href="{{ path('u_choose_user', {'targetAsBase64': targetParticipantAsBase64, 'token': csrf_token('addParticipantOrOwner') }) }}">
           <div class="smallTextAvatar"><i class="icon-plus-sign"></i></div>
           <div class="smallObjectInfos">
             <span>Add a Participant</span>
@@ -86,7 +86,7 @@
 {% if base.isOwning %}
 <section class="colored warning">
   <div class="sectionTitle">Delete this project : </div>
-  <div class="sectionContent"><a class="btn btn-danger" data-confirm="Are you sure you want to delete this project ?" href="{{ path('sp_delete_project', { 'slug': base.standardProject.slug}) }}">Delete</a> <span class="muted">( <i class="icon-warning-sign"></i> Warning : you cannot undo this )</span></div>
+  <div class="sectionContent"><a class="btn btn-danger" data-confirm="Are you sure you want to delete this project ?" href="{{ path('sp_delete_project', { 'slug': base.standardProject.slug, 'token': csrf_token('delete') }) }}">Delete</a> <span class="muted">( <i class="icon-warning-sign"></i> Warning : you cannot undo this )</span></div>
 </section>
 {% endif %}
 {% endblock %}
