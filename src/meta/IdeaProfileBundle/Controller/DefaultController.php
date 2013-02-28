@@ -32,9 +32,9 @@ class DefaultController extends Controller
 
         $authenticatedUser = $this->getUser();
 
-        $isAlreadyWatching = $authenticatedUser && $authenticatedUser->isWatchingIdea($idea);
-        $isCreator = $authenticatedUser && ($idea->getCreator() == $authenticatedUser);
-        $isParticipatingIn = $authenticatedUser && ($authenticatedUser->isParticipatingInIdea($idea));
+        $isAlreadyWatching = $authenticatedUser->isWatchingIdea($idea);
+        $isCreator = $idea->getCreators()->contains($authenticatedUser);
+        $isParticipatingIn = $authenticatedUser->isParticipatingInIdea($idea);
         
         $targetPictureAsBase64 = array ('slug' => 'metaIdeaProfileBundle:Default:edit', 'params' => array('id' => $id ), 'crop' => true);
         $projectizeAsBase64 = array ('slug' => 'metaIdeaProfileBundle:Default:projectize', 'params' => array('id' => $id ));
@@ -151,7 +151,10 @@ class DefaultController extends Controller
 
             if ($form->isValid()) {
 
-                $idea->setCreator($authenticatedUser);
+                if ( !$idea->getCreators()->contains($authenticatedUser) ){
+                    $idea->addCreator($authenticatedUser);
+                }
+
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($idea);
                 $em->flush();
@@ -451,12 +454,18 @@ class DefaultController extends Controller
                 $project->setCreatedAt($this->base['idea']->getCreatedAt());
 
                 foreach ($this->base['idea']->getWatchers() as $watcher) {
-                    // $watcher->removeIdeasWatched($this->base['idea']); // We keep the history of the idea and its state
                     $watcher->addProjectsWatched($project);
                 }
 
+                foreach ($this->base['idea']->getParticipants() as $participant) {
+                    $participant->addProjectsParticipatedIn($project);
+                }
+
+                foreach ($this->base['idea']->getCreators() as $creator) {
+                    $creator->addProjectsOwned($project);
+                }
+
                 $project->setOriginalIdea($this->base['idea']);
-                
 
                 if ($request->request->get('slug') === ""){
                     $textService = $this->container->get('textService');
@@ -480,8 +489,6 @@ class DefaultController extends Controller
 
                 $wiki->addPage($wikiPageConcept);
                 $wiki->addPage($wikiPageKnowledge);
-
-            $this->getUser()->addProjectsOwned($project);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($project);
@@ -748,7 +755,7 @@ class DefaultController extends Controller
             $userRepository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
             $newParticipant = $userRepository->findOneByUsername($username);
 
-            if ($newParticipant && ($newParticipant != $this->base['idea']->getCreator()) && !($newParticipant->isParticipatingInIdea($this->base['idea'])) ) {
+            if ($newParticipant && !($newParticipant->hasCreatedIdea($this->base['idea'])) && !($newParticipant->isParticipatingInIdea($this->base['idea'])) ) {
 
                 $newParticipant->addIdeasParticipatedIn($this->base['idea']);
 

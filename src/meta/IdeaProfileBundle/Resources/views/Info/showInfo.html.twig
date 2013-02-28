@@ -24,6 +24,21 @@
   </div>
 </section>
 <section class="colored">
+  <div class="sectionTitle">Creators : </div>
+  <ul class="users sectionContent">
+  {% for creatorUser in base.idea.creators %}
+      <li>
+        <a href="{{ path('u_show_user_profile', {'username': creatorUser.username}) }}">
+          <img src="{{ creatorUser.avatar }}" width="70" height="70" class="smallAvatar"/>
+          <div class="smallObjectInfos">
+            <span><div>{{ creatorUser.firstName }}</div><div>{{ creatorUser.lastName|upper }}</div></span>
+          </div>
+        </a>
+      </li>
+  {% endfor %}
+  </ul>
+</section>
+<section class="colored">
   <div class="sectionTitle">{% if base.idea.participants|length > 0 or base.isCreator %}Participants : {% else %}No participant yet ...{% endif %}</div>
   <ul class="users sectionContent">
   {% for participatingUser in base.idea.participants %}
