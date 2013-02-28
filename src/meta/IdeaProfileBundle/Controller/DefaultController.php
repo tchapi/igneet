@@ -748,7 +748,7 @@ class DefaultController extends Controller
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('addParticipant', $request->get('token')))
             return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
 
-        $this->fetchIdeaAndPreComputeRights($id, true, false);
+        $this->fetchIdeaAndPreComputeRights($id, false, true);
 
         if ($this->base != false) {
 
