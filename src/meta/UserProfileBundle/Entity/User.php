@@ -677,7 +677,9 @@ class User implements UserInterface
      */
     public function addSkill(\meta\UserProfileBundle\Entity\Skill $skill)
     {
-        $skill->addSkilledUser($this);
+        if (!is_null($skill)){
+            $skill->addSkilledUser($this);
+        }
         $this->skills[] = $skill;
     
         return $this;
@@ -690,8 +692,11 @@ class User implements UserInterface
      */
     public function removeSkill(\meta\UserProfileBundle\Entity\Skill $skill)
     {
+        if (!is_null($skill)){
+            $skill->removeSkilledUser($this);
+        }
         $this->skills->removeElement($skill);
-        $skill->removeSkilledUser($this);
+        
     }
 
     /**
@@ -1368,62 +1373,6 @@ class User implements UserInterface
     }
 
     /**
-     * Set originatingToken
-     *
-     * @param \meta\UserProfileBundle\Entity\UserInviteToken $originatingToken
-     * @return User
-     */
-    public function setOriginatingToken(\meta\UserProfileBundle\Entity\UserInviteToken $originatingToken = null)
-    {
-        $this->originatingToken = $originatingToken;
-    
-        return $this;
-    }
-
-    /**
-     * Get originatingToken
-     *
-     * @return \meta\UserProfileBundle\Entity\UserInviteToken 
-     */
-    public function getOriginatingToken()
-    {
-        return $this->originatingToken;
-    }
-
-    /**
-     * Add createdTokens
-     *
-     * @param \meta\UserProfileBundle\Entity\UserInviteToken $createdTokens
-     * @return User
-     */
-    public function addCreatedToken(\meta\UserProfileBundle\Entity\UserInviteToken $createdTokens)
-    {
-        $this->createdTokens[] = $createdTokens;
-    
-        return $this;
-    }
-
-    /**
-     * Remove createdTokens
-     *
-     * @param \meta\UserProfileBundle\Entity\UserInviteToken $createdTokens
-     */
-    public function removeCreatedToken(\meta\UserProfileBundle\Entity\UserInviteToken $createdTokens)
-    {
-        $this->createdTokens->removeElement($createdTokens);
-    }
-
-    /**
-     * Get createdTokens
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getCreatedTokens()
-    {
-        return $this->createdTokens;
-    }
-
-    /**
      * Add validatedComments
      *
      * @param \meta\GeneralBundle\Entity\Comment\BaseComment $validatedComment
@@ -1455,4 +1404,64 @@ class User implements UserInterface
     {
         return $this->validatedComments;
     }
+    
+    /**
+     * Set originatingToken
+     *
+     * BINDING LOGIC IS DONE IN 'USERINVITETOKEN' CLASS 
+     * @param \meta\UserProfileBundle\Entity\UserInviteToken $originatingToken
+     * @return User
+     */
+    public function setOriginatingToken(\meta\UserProfileBundle\Entity\UserInviteToken $originatingToken = null)
+    {
+        $this->originatingToken = $originatingToken;
+    
+        return $this;
+    }
+
+    /**
+     * Get originatingToken
+     *
+     * @return \meta\UserProfileBundle\Entity\UserInviteToken 
+     */
+    public function getOriginatingToken()
+    {
+        return $this->originatingToken;
+    }
+
+    /**
+     * Add createdTokens
+     *
+     * BINDING LOGIC IS DONE IN 'USERINVITETOKEN' CLASS 
+     * @param \meta\UserProfileBundle\Entity\UserInviteToken $createdTokens
+     * @return User
+     */
+    public function addCreatedToken(\meta\UserProfileBundle\Entity\UserInviteToken $createdTokens)
+    {
+        $this->createdTokens[] = $createdTokens;
+    
+        return $this;
+    }
+
+    /**
+     * Remove createdTokens
+     *
+     * BINDING LOGIC IS DONE IN 'USERINVITETOKEN' CLASS 
+     * @param \meta\UserProfileBundle\Entity\UserInviteToken $createdTokens
+     */
+    public function removeCreatedToken(\meta\UserProfileBundle\Entity\UserInviteToken $createdTokens)
+    {
+        $this->createdTokens->removeElement($createdTokens);
+    }
+
+    /**
+     * Get createdTokens
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCreatedTokens()
+    {
+        return $this->createdTokens;
+    }
+
 }

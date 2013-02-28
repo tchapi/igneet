@@ -65,7 +65,6 @@ class DefaultController extends Controller
 
             if ($comment){
 
-                // S'il est deja validé ???
                 $comment->toggleValidator($authenticatedUser);
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
