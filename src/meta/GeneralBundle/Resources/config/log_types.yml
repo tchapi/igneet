@@ -110,7 +110,7 @@ parameters:
 # User acting on an idea
     user_transform_idea_in_project: # DONE
       type: idea
-      icon: refresh
+      icon: upload-alt
       text: %%user$s has created a new project %%project$s from the idea %%idea$s.
     user_create_idea: # DONE
       type: idea
