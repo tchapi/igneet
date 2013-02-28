@@ -120,7 +120,8 @@ class Idea extends Taggable
 
     /**
      * Creators of the idea (OWNING SIDE)
-     * @ORM\ManyToMany(targetEntity="meta\UserProfileBundle\Entity\User", mappedBy="ideasCreated")
+     * @ORM\ManyToMany(targetEntity="meta\UserProfileBundle\Entity\User", inversedBy="ideasCreated")
+     * @ORM\JoinTable(name="User_created_Idea")
      **/
     private $creators;
 
