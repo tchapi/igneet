@@ -1,8 +1,9 @@
-<h3>Congratulations !</h3>
+<h3>Hello,</h3>
 
-<p>{{ user.getFullName() }} has invited you on meta !</p>
+<p>{{ user.getFullName() }} has invited you to join her/him on igneet !</p>
 
 <p>Click on the following link to sign up and create your profile :</p>
 <p><a href="{{ url('u_signup', { 'token': token } ) }}">{{ url('u_signup', { 'token': token } ) }}</a></p>
 
-<p>The meta team</p>
+<p><em>This is an automated message from igneet, but you can answer directly to {{ user.getFullName() }} by replying to this message</em></p>
+<p><strong>The igneet team</strong></p>
