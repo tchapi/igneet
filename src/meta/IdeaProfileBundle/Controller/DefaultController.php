@@ -395,45 +395,6 @@ class DefaultController extends Controller
 
     }
 
-    public function transferAction(Request $request, $id, $username)
-    {
-
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('transfer', $request->get('token')))
-            return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
-
-        $this->fetchIdeaAndPreComputeRights($id, true, false);
-
-        $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
-        $newCreator = $repository->findOneByUsername($username);
-
-        if ($this->base != false && $newCreator) {
-
-            $this->base['idea']->setCreator($newCreator);
-
-            $logService = $this->container->get('logService');
-            $logService->log($newCreator, 'user_is_made_creator_idea', $this->base['idea'], array( 'other_user' => array( 'routing' => 'user', 'logName' => $this->getUser()->getLogName(), 'args' => $this->getUser()->getLogArgs()) ));
-
-            $em = $this->getDoctrine()->getManager();
-            $em->flush();
-
-             $this->get('session')->setFlash(
-                    'success',
-                    'This idea is now owned by ' . $newCreator->getFullName() . '.'
-                );
-        
-        } else {
-
-            $this->get('session')->setFlash(
-                    'error',
-                    'You cannot transfer ownership for this idea.'
-                );
-
-        }
-
-        return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
-    
-    }
-
     public function projectizeAction(Request $request, $id)
     {
 
