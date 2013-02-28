@@ -1,6 +1,8 @@
 
 ## TODO ##
 
+Pour la publicité : tout est read-only tout public, la modif reste aux owners+participants des projets ou idées, sauf pour les commentaires où tout le monde peut commenter partout.
+
 Todo - General / Users :
 
  ☐ Faire une set_flash en javascript
@@ -12,6 +14,8 @@ Todo - General / Users :
  ☐ login et signup : focus sur le champ lors du chargement de la page
  ☐ Base.canEdit --> C'est très très con pour les wiki, les listes, car c'est que les éditeurs qui peuvent le voir anyway => transformer en un <span> qui permet d'avoir une preference "voir l'édition" ou pas
  ☐ GA
+
+ ☐ soft-delete des idées et projets et users 
  
  ✔ Faire le skin de la page 'Area restricted' @done (13-02-16 16:12)
  ✔ Signup : non public, faire une invitation par mail avec un token ? @done (13-02-27 21:22)

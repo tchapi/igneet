@@ -55,12 +55,6 @@ i_delete_idea:
     requirements:
         id: \d+
 
-i_transfer_idea:
-    pattern:  /idea/transfer/{id}/user/{username}
-    defaults: { _controller: metaIdeaProfileBundle:Default:transfer }
-    requirements:
-        id: \d+
-
 i_archive_idea:
     pattern:  /idea/archive/{id}
     defaults: { _controller: metaIdeaProfileBundle:Default:archiveOrRecycle, archive: true }
