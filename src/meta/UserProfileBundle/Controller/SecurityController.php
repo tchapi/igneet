@@ -100,7 +100,7 @@ class SecurityController extends Controller
                         ->setBody(
                             $this->renderView(
                                 'metaUserProfileBundle:Mail:invite.mail.html.twig',
-                                array('user' => $authenticatedUser, 'token' => $token->getToken())
+                                array('user' => $authenticatedUser, 'inviteToken' => $token->getToken())
                             ), 'text/html'
                         )
                     ;

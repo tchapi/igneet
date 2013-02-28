@@ -91,7 +91,8 @@ class WikiController extends BaseController
 
     }
 
-    public function newWikiPageAction(Request $request, $slug){
+    public function newWikiPageAction(Request $request, $slug)
+    {
 
         $this->fetchProjectAndPreComputeRights($slug, false, true);
 
@@ -151,6 +152,9 @@ class WikiController extends BaseController
 
     public function makeHomeWikiPageAction($slug, $id)
     {
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('makeHomeWikiPage', $request->get('token')))
+            return $this->redirect($this->generateUrl('sp_show_project_wiki', array('slug' => $slug)));
+
         $this->fetchProjectAndPreComputeRights($slug, false, true);
 
         if ($this->base == false) 
@@ -229,6 +233,9 @@ class WikiController extends BaseController
     public function editWikiPageAction(Request $request, $slug, $id)
     {
   
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('editWikiPage', $request->get('token')))
+            return new Response();
+
         $this->fetchProjectAndPreComputeRights($slug, false, true);
         $response = new Response();
 
@@ -318,6 +325,9 @@ class WikiController extends BaseController
     public function deleteWikiPageAction(Request $request, $slug, $id)
     {
   
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('deleteWikiPage', $request->get('token')))
+            return $this->redirect($this->generateUrl('sp_show_project_wiki', array('slug' => $slug)));
+
         $this->fetchProjectAndPreComputeRights($slug, false, true);
 
         if ($this->base != false) {

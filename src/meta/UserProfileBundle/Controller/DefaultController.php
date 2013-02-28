@@ -142,7 +142,7 @@ class DefaultController extends Controller
     /*
      * Create a form for a new user to signin AND process result if POST
      */
-    public function createAction(Request $request, $token)
+    public function createAction(Request $request, $inviteToken)
     {
         
         $authenticatedUser = $this->getUser();
@@ -157,12 +157,12 @@ class DefaultController extends Controller
             return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $authenticatedUser->getUsername())));
         }
 
-        // Checks the token
+        // Checks the inviteToken
 
         $tokenRepository = $this->getDoctrine()->getRepository('metaUserProfileBundle:UserInviteToken');
-        $token = $tokenRepository->findOneByToken($token);
+        $inviteToken = $tokenRepository->findOneByToken($inviteToken);
 
-        if ( !$token || $token->isUsed() ){
+        if ( !$inviteToken || $inviteToken->isUsed() ){
 
             $this->get('session')->setFlash(
                 'error',
@@ -185,8 +185,8 @@ class DefaultController extends Controller
                 $encoder = $factory->getEncoder($user);
                 $user->setPassword($encoder->encodePassword($user->getPassword(), $user->getSalt()));
 
-                // Use token
-                $token->setResultingUser($user);
+                // Use inviteToken
+                $inviteToken->setResultingUser($user);
 
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($user);
@@ -222,7 +222,7 @@ class DefaultController extends Controller
 
         }
 
-        return $this->render('metaUserProfileBundle:Default:create.html.twig', array('form' => $form->createView(), 'token' => $token));
+        return $this->render('metaUserProfileBundle:Default:create.html.twig', array('form' => $form->createView(), 'inviteToken' => $inviteToken));
 
     }
 
@@ -232,10 +232,13 @@ class DefaultController extends Controller
     public function editAction(Request $request, $username)
     {
 
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('edit', $request->get('token')))
+            return new Response();
+
         $authenticatedUser = $this->getUser();
         $response = new Response();
 
-        if ($authenticatedUser->getUsername() == $username) {
+        if ($authenticatedUser->getUsername() === $username) {
 
             $objectHasBeenModified = false;
 
@@ -337,13 +340,15 @@ class DefaultController extends Controller
     /*
      * Reset Avatar of user
      */
-    public function resetAvatarAction($username)
+    public function resetAvatarAction(Request $request, $username)
     {
 
-        $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
-        $user = $repository->findOneByUsername($username);
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('resetAvatar', $request->get('token')))
+            return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $this->getUser()->getUsername())));
 
-        if (!$user || $user != $this->getUser()) {
+        $authenticatedUser = $this->getUser();
+
+        if ($authenticatedUser->getUsername() !== $username) {
 
             $this->get('session')->setFlash(
                     'error',
@@ -367,7 +372,10 @@ class DefaultController extends Controller
 
     }
 
-    public function deleteAction($username){
+    public function deleteAction(Request $request, $username){
+
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('delete', $request->get('token')))
+            return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $this->getUser()->getUsername())));
 
         $authenticatedUser = $this->getUser();
 
@@ -411,7 +419,7 @@ class DefaultController extends Controller
                     'You cannot delete someone else\'s account.'
                 );
 
-            return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $username)));
+            return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $authenticatedUser->getUsername())));
         }
 
     }
@@ -419,50 +427,50 @@ class DefaultController extends Controller
     /*
      * Authenticated user follows the request user
      */
-    public function followUserAction($username)
+    public function followUserAction(Request $request, $username)
     {
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('followUser', $request->get('token')))
+            return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $username)));
+
         $authenticatedUser = $this->getUser();
 
         // The actually authenticated user now follows $user if they are not the same
-        if ($authenticatedUser) {
+        if ($username != $authenticatedUser->getUsername()){
 
-            if ($username != $authenticatedUser->getUsername()){
+            $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
+            $user = $repository->findOneByUsername($username);
 
-                $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
-                $user = $repository->findOneByUsername($username);
+            if ( !($this->getUser()->isFollowing($user)) ){
 
-                if ( !($this->getUser()->isFollowing($user)) ){
+                $authenticatedUser->addFollowing($user);
 
-                    $authenticatedUser->addFollowing($user);
+                $logService = $this->container->get('logService');
+                $logService->log($authenticatedUser, 'user_follow_user', $user, array());
 
-                    $logService = $this->container->get('logService');
-                    $logService->log($authenticatedUser, 'user_follow_user', $user, array());
+                $em = $this->getDoctrine()->getManager();
+                $em->flush();
 
-                    $em = $this->getDoctrine()->getManager();
-                    $em->flush();
-
-                    $this->get('session')->setFlash(
-                        'success',
-                        'You are now following '.$user->getFullName().'.'
-                    );
-
-                } else {
-
-                    $this->get('session')->setFlash(
-                        'warning',
-                        'You are already following '.$user->getFullName().'.'
-                    );
-
-                }
+                $this->get('session')->setFlash(
+                    'success',
+                    'You are now following '.$user->getFullName().'.'
+                );
 
             } else {
+
                 $this->get('session')->setFlash(
                     'warning',
-                    'You cannot follow yourself.'
+                    'You are already following '.$user->getFullName().'.'
                 );
+
             }
-            
+
+        } else {
+            $this->get('session')->setFlash(
+                'warning',
+                'You cannot follow yourself.'
+            );
         }
+
 
         return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $username)));
     }
@@ -470,49 +478,48 @@ class DefaultController extends Controller
     /*
      * Authenticated user unfollows the request user
      */
-    public function unfollowUserAction($username)
+    public function unfollowUserAction(Request $request, $username)
     {
+
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('unfollowUser', $request->get('token')))
+            return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $username)));
 
         $authenticatedUser = $this->getUser();
 
         // The actually authenticated user now follows $user if they are not the same
-        if ($authenticatedUser) {
+        if ($username != $authenticatedUser->getUsername()){
 
-            if ($username != $authenticatedUser->getUsername()){
+            $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
+            $user = $repository->findOneByUsername($username);
 
-                $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
-                $user = $repository->findOneByUsername($username);
+            if ( $this->getUser()->isFollowing($user) ){
 
-                if ( $this->getUser()->isFollowing($user) ){
+                $authenticatedUser->removeFollowing($user);
 
-                    $authenticatedUser->removeFollowing($user);
+                $em = $this->getDoctrine()->getManager();
+                $em->flush();
 
-                    $em = $this->getDoctrine()->getManager();
-                    $em->flush();
-
-                    $this->get('session')->setFlash(
-                        'success',
-                        'You are not following '.$user->getFullName().' anymore.'
-                    );
-
-                } else {
-
-                    $this->get('session')->setFlash(
-                        'warning',
-                        'You are not following '.$user->getFullName().'.'
-                    );
-
-                }
+                $this->get('session')->setFlash(
+                    'success',
+                    'You are not following '.$user->getFullName().' anymore.'
+                );
 
             } else {
+
                 $this->get('session')->setFlash(
                     'warning',
-                    'You cannot unfollow yourself.'
+                    'You are not following '.$user->getFullName().'.'
                 );
-            }
-            
-        }
 
+            }
+
+        } else {
+            $this->get('session')->setFlash(
+                'warning',
+                'You cannot unfollow yourself.'
+            );
+        }
+            
         return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $username)));
     }
 
@@ -574,6 +581,7 @@ class DefaultController extends Controller
             if ($user && isset($target['slug']) && isset($target['params']) ){
 
                 $target['params']['username'] = $username;
+                $target['params']['token'] = $request->get('token'); // For CSRF
                 return $this->redirect($this->generateUrl($target['slug'], $target['params']));
 
             } else {
@@ -597,7 +605,7 @@ class DefaultController extends Controller
                 return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $this->getUser()->getUsername())));
             }
 
-            return $this->render('metaUserProfileBundle:Default:choose.html.twig', array('users' => $users, 'targetAsBase64' => $targetAsBase64));
+            return $this->render('metaUserProfileBundle:Default:choose.html.twig', array('users' => $users, 'targetAsBase64' => $targetAsBase64, 'token' => $request->get('token')));
 
         }
 

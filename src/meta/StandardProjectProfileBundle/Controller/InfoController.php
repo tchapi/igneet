@@ -33,8 +33,11 @@ class InfoController extends BaseController
      *                          ADD USER
      *  #################################################### */
 
-    public function addParticipantOrOwnerAction($slug, $username, $owner)
+    public function addParticipantOrOwnerAction(Request $request, $slug, $username, $owner)
     {
+
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('addParticipantOrOwner', $request->get('token')))
+            return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $slug)));
 
         $this->fetchProjectAndPreComputeRights($slug, true, false);
 
@@ -95,8 +98,11 @@ class InfoController extends BaseController
         return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $slug)));
     }
 
-    public function removeParticipantOrOwnerAction($slug, $username, $owner)
+    public function removeParticipantOrOwnerAction(Request $request, $slug, $username, $owner)
     {
+
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('removeParticipantOrOwner', $request->get('token')))
+            return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $slug)));
 
         $this->fetchProjectAndPreComputeRights($slug, true, false);
 

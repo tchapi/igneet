@@ -15,7 +15,7 @@
 
 {% block content %}
 <div class="formContent">
-  <form action="{{ path('u_choose_user', { 'targetAsBase64' : targetAsBase64 }) }}" method="post" class="form-horizontal">
+  <form action="{{ path('u_choose_user', { 'targetAsBase64' : targetAsBase64, 'token': token }) }}" method="post" class="form-horizontal">
       <div class="control-group ">
         <label class="control-label"><label for="username" class="required">Choose a user : </label></label>
         <div class="controls">

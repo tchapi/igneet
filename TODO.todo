@@ -11,7 +11,8 @@ Todo - General / Users :
  ☐ Filtrer les timelines ?
  ☐ login et signup : focus sur le champ lors du chargement de la page
  ☐ Base.canEdit --> C'est très très con pour les wiki, les listes, car c'est que les éditeurs qui peuvent le voir anyway => transformer en un <span> qui permet d'avoir une preference "voir l'édition" ou pas
-
+ ☐ GA
+ 
  ✔ Faire le skin de la page 'Area restricted' @done (13-02-16 16:12)
  ✔ Signup : non public, faire une invitation par mail avec un token ? @done (13-02-27 21:22)
  ✔ ajouter la possibilité de supprimer une image de profile @done (13-02-10 23:09)
