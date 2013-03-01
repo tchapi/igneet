@@ -63,6 +63,7 @@
                '@metaGeneralBundle/Resources/public/js/general.behaviour.js' filter='?yui_js' %}
         <script src="{{ asset_url }}"></script>
 {% endjavascripts %}
+{% if ga_tracker_id != 0 %}
         <script type="text/javascript">
 
           var _gaq = _gaq || [];
@@ -76,6 +77,7 @@
           })();
 
         </script>
+{% endif %}
 {% endblock %}
 
         <footer>
