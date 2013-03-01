@@ -27,11 +27,12 @@ $(document).ready(function(){
 
     $.post($(this).attr('data-url'))
       .success(function(data, config) {
-        countBox.html(data); 
+        countBox.html(data);
         validationBox.toggleClass('validated');
+        setFlash('success', 'Your validation was added.');
       })
       .error(function(errors) {
-
+        setFlash('error', 'There was a problem with the validation of this comment.');
       });
 
   });
