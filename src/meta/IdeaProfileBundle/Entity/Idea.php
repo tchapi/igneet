@@ -105,12 +105,13 @@ class Idea extends Taggable
     private $resultingProjects;
 
     /**
-     * @var boolean
+     * @var \DateTime $archived_at
      *
-     * @ORM\Column(name="archived", type="boolean", nullable=true)
+     * @ORM\Column(name="archived_at", type="datetime")
+     * @Assert\NotBlank()
+     * @Assert\DateTime()
      */
-    private $archived;
-
+    private $archived_at;
 
     /**
      * Users watching me (REVERSE SIDE)
@@ -157,7 +158,7 @@ class Idea extends Taggable
         $this->comments = new ArrayCollection();
         $this->resultingProjects = new ArrayCollection();
 
-        $this->archived = false;
+        $this->archived_at = null;
 
     }
 
@@ -500,30 +501,52 @@ class Idea extends Taggable
     }
 
     /**
-     * Set archived
+     * Set archived_at
      *
-     * @param boolean $archived
+     * @param \DateTime  $archivedAt
      * @return Idea
      */
-    public function setArchived($archived)
+    public function setArchivedAt($archivedAt)
     {
-        $this->archived = $archived;
-    
+        $this->archived_at = $archivedAt;
         return $this;
     }
 
     /**
      * Get archived
      *
-     * @return boolean 
+     * @return \DateTime
      */
-    public function getArchived()
+    public function getArchivedAt()
     {
-        return $this->archived;
+        return $this->archived_at;
     }
+
     public function isArchived()
     {
-        return $this->getArchived();
+        return !($this->archived_at === null);
+    }
+
+    /**
+     * Archive the idea
+     *
+     * @return Idea
+     */
+    public function archive()
+    {
+        $this->archived_at = new \DateTime('now');
+        return $this;
+    }
+
+    /**
+     * Recycle the idea
+     *
+     * @return Idea
+     */
+    public function recycle()
+    {
+        $this->archived_at = null;
+        return $this;
     }
 
     /**
