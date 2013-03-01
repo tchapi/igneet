@@ -57,7 +57,9 @@ abstract class Taggable
      */
     public function addTag(\meta\GeneralBundle\Entity\Behaviour\Tag $tag)
     {
-        $tag->addTaggedObject($this);
+        if (!is_null($tag)){
+            $tag->addTaggedObject($this);
+        }
         $this->tags[] = $tag;
     
         return $this;
@@ -70,8 +72,10 @@ abstract class Taggable
      */
     public function removeTag(\meta\GeneralBundle\Entity\Behaviour\Tag $tag)
     { 
+        if(!is_null($tag)){
+            $tag->removeTaggedObject($this);
+        }
         $this->tags->removeElement($tag);
-        $tag->removeTaggedObject($this);
     }
 
     /**
@@ -86,12 +90,16 @@ abstract class Taggable
 
     /**
      * Clears all tags
+     *
+     * @return Taggable
      */
     public function clearTags()
     {
         foreach ($this->tags as $tag) {
             $this->removeTag($tag);
         }
+
+        return $this;
     }
 
 

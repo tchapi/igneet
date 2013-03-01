@@ -93,7 +93,6 @@ class Skill
     public function setSlug($slug)
     {
         $this->slug = $slug;
-    
         return $this;
     }
 
@@ -116,7 +115,6 @@ class Skill
     public function setName($name)
     {
         $this->name = $name;
-    
         return $this;
     }
 
@@ -139,7 +137,6 @@ class Skill
     public function setDescription($description)
     {
         $this->description = $description;
-    
         return $this;
     }
 
@@ -162,7 +159,6 @@ class Skill
     public function setColor($color)
     {
         $this->color = $color;
-    
         return $this;
     }
 
@@ -177,22 +173,23 @@ class Skill
     }
 
     /**
-     * Add skilledUsers
+     * Add skilledUser
      *
-     * @param meta\UserProfileBundle\Entity\User $skilledUsers
+     * BINDING LOGIC IS DONE IN 'USER' CLASS 
+     * @param meta\UserProfileBundle\Entity\User $skilledUser
      * @return Skill
      */
     public function addSkilledUser(\meta\UserProfileBundle\Entity\User $skilledUser)
     {
         $this->skilledUsers[] = $skilledUser;
-    
         return $this;
     }
 
     /**
-     * Remove skilledUsers
+     * Remove skilledUser
      *
-     * @param meta\UserProfileBundle\Entity\User $skilledUsers
+     * BINDING LOGIC IS DONE IN 'USER' CLASS 
+     * @param meta\UserProfileBundle\Entity\User $skilledUser
      */
     public function removeSkilledUser(\meta\UserProfileBundle\Entity\User $skilledUser)
     {
@@ -210,26 +207,27 @@ class Skill
     }
 
     /**
-     * Add skilledStandardProjects
+     * Add skilledStandardProject
      *
-     * @param meta\StandardProjectProfileBundle\Entity\StandardProject $skilledStandardProjects
+     * BINDING LOGIC IS DONE IN 'STANDARDPROJECT' CLASS 
+     * @param meta\StandardProjectProfileBundle\Entity\StandardProject $skilledStandardProject
      * @return Skill
      */
-    public function addSkilledStandardProject(\meta\StandardProjectProfileBundle\Entity\StandardProject $skilledStandardProjects)
+    public function addSkilledStandardProject(\meta\StandardProjectProfileBundle\Entity\StandardProject $skilledStandardProject)
     {
-        $this->skilledStandardProjects[] = $skilledStandardProjects;
-    
+        $this->skilledStandardProjects[] = $skilledStandardProject;
         return $this;
     }
 
     /**
-     * Remove skilledStandardProjects
+     * Remove skilledStandardProject
      *
-     * @param meta\StandardProjectProfileBundle\Entity\StandardProject $skilledStandardProjects
+     * BINDING LOGIC IS DONE IN 'STANDARDPROJECT' CLASS 
+     * @param meta\StandardProjectProfileBundle\Entity\StandardProject $skilledStandardProject
      */
-    public function removeSkilledStandardProject(\meta\StandardProjectProfileBundle\Entity\StandardProject $skilledStandardProjects)
+    public function removeSkilledStandardProject(\meta\StandardProjectProfileBundle\Entity\StandardProject $skilledStandardProject)
     {
-        $this->skilledStandardProjects->removeElement($skilledStandardProjects);
+        $this->skilledStandardProjects->removeElement($skilledStandardProject);
     }
 
     /**

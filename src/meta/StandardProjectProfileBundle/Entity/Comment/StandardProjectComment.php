@@ -43,13 +43,13 @@ class StandardProjectComment extends BaseComment
     /**
      * Set standardProject
      *
+     * BINDING LOGIC IS DONE IN 'STANDARDPROJECT' CLASS 
      * @param \meta\StandardProjectProfileBundle\Entity\StandardProject $standardProject
      * @return StandardProjectComment
      */
     public function setStandardProject(\meta\StandardProjectProfileBundle\Entity\StandardProject $standardProject = null)
     {
         $this->standardProject = $standardProject;
-    
         return $this;
     }
 

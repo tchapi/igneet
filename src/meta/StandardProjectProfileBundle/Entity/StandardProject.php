@@ -208,7 +208,6 @@ class StandardProject extends Taggable
     public function setName($name)
     {
         $this->name = $name;
-    
         return $this;
     }
 
@@ -231,7 +230,6 @@ class StandardProject extends Taggable
     public function setHeadline($headline)
     {
         $this->headline = $headline;
-    
         return $this;
     }
 
@@ -254,7 +252,6 @@ class StandardProject extends Taggable
     public function setPicture($picture)
     {
         $this->picture = $picture;
-    
         return $this;
     }
 
@@ -356,7 +353,6 @@ class StandardProject extends Taggable
     public function setCreatedAt($createdAt)
     {
         $this->created_at = $createdAt;
-    
         return $this;
     }
 
@@ -379,7 +375,6 @@ class StandardProject extends Taggable
     public function setUpdatedAt($updatedAt)
     {
         $this->updated_at = $updatedAt;
-    
         return $this;
     }
 
@@ -402,7 +397,6 @@ class StandardProject extends Taggable
     public function setAbout($about)
     {
         $this->about = $about;
-    
         return $this;
     }
 
@@ -424,9 +418,11 @@ class StandardProject extends Taggable
      */
     public function addNeededSkill(\meta\UserProfileBundle\Entity\Skill $neededSkill)
     {
-        $neededSkill->addSkilledStandardProject($this);
+        if (!is_null($neededSkill)){
+            $neededSkill->addSkilledStandardProject($this);
+        }
+
         $this->neededSkills[] = $neededSkill;
-    
         return $this;
     }
 
@@ -437,8 +433,10 @@ class StandardProject extends Taggable
      */
     public function removeNeededSkill(\meta\UserProfileBundle\Entity\Skill $neededSkill)
     {
+        if (!is_null($neededSkill)){
+            $neededSkill->removeSkilledStandardProject($this);
+        }
         $this->neededSkills->removeElement($neededSkill);
-        $neededSkill->removeSkilledStandardProject($this);
     }
 
     /**
@@ -452,21 +450,22 @@ class StandardProject extends Taggable
     }
 
     /**
-     * Set neededSkills
+     * Clear neededSkills
      *
-     * @param Array $neededSkills
      * @return StandardProject
      */
-    public function setNeededSkills($neededSkills)
+    public function clearNeededSkills()
     {
-        $this->neededSkills = $neededSkills;
-        
+        foreach($this->neededSkills as $skill){
+            $this->removeNeededSkill($skill);
+        }
         return $this;
     }
 
     /**
      * Add owners
      *
+     * BINDING LOGIC IS DONE IN 'USER' CLASS 
      * @param meta\UserProfileBundle\Entity\User $owners
      * @return StandardProject
      */
@@ -480,6 +479,7 @@ class StandardProject extends Taggable
     /**
      * Remove owners
      *
+     * BINDING LOGIC IS DONE IN 'USER' CLASS 
      * @param meta\UserProfileBundle\Entity\User $owners
      */
     public function removeOwner(\meta\UserProfileBundle\Entity\User $owners)
@@ -500,19 +500,20 @@ class StandardProject extends Taggable
     /**
      * Add participants
      *
+     * BINDING LOGIC IS DONE IN 'USER' CLASS 
      * @param meta\UserProfileBundle\Entity\User $participants
      * @return StandardProject
      */
     public function addParticipant(\meta\UserProfileBundle\Entity\User $participants)
     {
         $this->participants[] = $participants;
-    
         return $this;
     }
 
     /**
      * Remove participants
      *
+     * BINDING LOGIC IS DONE IN 'USER' CLASS 
      * @param meta\UserProfileBundle\Entity\User $participants
      */
     public function removeParticipant(\meta\UserProfileBundle\Entity\User $participants)
@@ -572,37 +573,27 @@ class StandardProject extends Taggable
     }
 
     /**
-     * Add watchers
+     * Add watcher
      *
-     * @param meta\UserProfileBundle\Entity\User $watchers
+     * BINDING LOGIC IS DONE IN 'USER' CLASS 
+     * @param meta\UserProfileBundle\Entity\User $watcher
      * @return StandardProject
      */
-    public function addWatcher(\meta\UserProfileBundle\Entity\User $watchers)
+    public function addWatcher(\meta\UserProfileBundle\Entity\User $watcher)
     {
-        $this->watchers[] = $watchers;
-    
+        $this->watchers[] = $watcher;
         return $this;
     }
 
     /**
-     * Remove watchers
+     * Remove watcher
      *
-     * @param meta\UserProfileBundle\Entity\User $watchers
+     * BINDING LOGIC IS DONE IN 'USER' CLASS 
+     * @param meta\UserProfileBundle\Entity\User $watcher
      */
-    public function removeWatcher(\meta\UserProfileBundle\Entity\User $watchers)
+    public function removeWatcher(\meta\UserProfileBundle\Entity\User $watcher)
     {
-        $this->watchers->removeElement($watchers);
-    }
-
-    /**
-     * Set watchers
-     *
-     * @return StandardProject 
-     */
-    public function setWatchers(\Doctrine\Common\Collections\Collection $watchers)
-    {
-        $this->watchers = $watchers;
-        return $this;
+        $this->watchers->removeElement($watcher);
     }
 
     /**
@@ -646,7 +637,9 @@ class StandardProject extends Taggable
      */
     public function addCommonList(\meta\StandardProjectProfileBundle\Entity\CommonList $commonList)
     {
-        $commonList->setProject($this);
+        if(!is_null($commonList)){
+            $commonList->setProject($this);
+        }
         $this->commonLists[] = $commonList;
 
         return $this;
@@ -659,6 +652,9 @@ class StandardProject extends Taggable
      */
     public function removeCommonList(\meta\StandardProjectProfileBundle\Entity\CommonList $commonList)
     {
+        if(!is_null($commonList)){
+            $commonList->setProject(null);
+        }
         $this->commonLists->removeElement($commonList);
     }
 
@@ -690,7 +686,12 @@ class StandardProject extends Taggable
      */
     public function setWiki(\meta\StandardProjectProfileBundle\Entity\Wiki $wiki = null)
     {
-        if ($wiki) $wiki->setProject($this);
+        if (!is_null($wiki)){
+            $wiki->setProject($this);
+        } elseif (!is_null($this->wiki)){
+            $this->wiki->setProject(null);
+        }
+
         $this->wiki = $wiki;
     
         return $this;
@@ -707,29 +708,6 @@ class StandardProject extends Taggable
     }
 
     /**
-     * Set meta
-     *
-     * @param \meta\StandardProjectProfileBundle\Entity\MetaProject $meta
-     * @return StandardProject
-     */
-    public function setMeta(\meta\StandardProjectProfileBundle\Entity\MetaProject $meta = null)
-    {
-        $this->meta = $meta;
-    
-        return $this;
-    }
-
-    /**
-     * Get meta
-     *
-     * @return \meta\StandardProjectProfileBundle\Entity\MetaProject 
-     */
-    public function getMeta()
-    {
-        return $this->meta;
-    }
-
-    /**
      * Set originalIdea
      *
      * @param \meta\IdeaProfileBundle\Entity\Idea $originalIdea
@@ -737,11 +715,12 @@ class StandardProject extends Taggable
      */
     public function setOriginalIdea(\meta\IdeaProfileBundle\Entity\Idea $originalIdea = null)
     {
-        if ($originalIdea){
+        if (!is_null($originalIdea)){
             $originalIdea->setResultingProject($this);
-        } else {
+        } elseif (!is_null($this->originalIdea)){
             $this->originalIdea->setResultingProject(null);
         }
+
         $this->originalIdea = $originalIdea;
     
         return $this;
@@ -765,20 +744,24 @@ class StandardProject extends Taggable
      */
     public function addComment(\meta\StandardProjectProfileBundle\Entity\Comment\StandardProjectComment $comment)
     {
-        $comment->setStandardProject($this);
+        if (!is_null($comment)){
+            $comment->setStandardProject($this);
+        }
         $this->comments[] = $comment;
     
         return $this;
     }
 
     /**
-     * Remove comments
+     * Remove comment
      *
      * @param \meta\StandardProjectProfileBundle\Entity\Comment\StandardProjectComment $comment
      */
     public function removeComment(\meta\StandardProjectProfileBundle\Entity\Comment\StandardProjectComment $comment)
     {
-        $comment->setStandardProject(null);
+        if (!is_null($comment)){
+            $comment->setStandardProject(null);
+        }
         $this->comments->removeElement($comment);
     }
 
@@ -795,24 +778,25 @@ class StandardProject extends Taggable
     /**
      * Add logEntries
      *
-     * @param \meta\GeneralBundle\Entity\Log\StandardProjectLogEntry $logEntries
+     * BINDING LOGIC IS DONE IN 'STANDARDPROJECTLOGENTRY' CLASS 
+     * @param \meta\GeneralBundle\Entity\Log\StandardProjectLogEntry $logEntry
      * @return StandardProject
      */
-    public function addLogEntrie(\meta\GeneralBundle\Entity\Log\StandardProjectLogEntry $logEntries)
+    public function addLogEntrie(\meta\GeneralBundle\Entity\Log\StandardProjectLogEntry $logEntry)
     {
-        $this->logEntries[] = $logEntries;
-    
+        $this->logEntries[] = $logEntry;
         return $this;
     }
 
     /**
      * Remove logEntries
      *
-     * @param \meta\GeneralBundle\Entity\Log\StandardProjectLogEntry $logEntries
+     * BINDING LOGIC IS DONE IN 'STANDARDPROJECTLOGENTRY' CLASS 
+     * @param \meta\GeneralBundle\Entity\Log\StandardProjectLogEntry $logEntry
      */
-    public function removeLogEntrie(\meta\GeneralBundle\Entity\Log\StandardProjectLogEntry $logEntries)
+    public function removeLogEntrie(\meta\GeneralBundle\Entity\Log\StandardProjectLogEntry $logEntry)
     {
-        $this->logEntries->removeElement($logEntries);
+        $this->logEntries->removeElement($logEntry);
     }
 
     /**
@@ -826,28 +810,33 @@ class StandardProject extends Taggable
     }
 
     /**
-     * Add resources
+     * Add resource
      *
      * @param \meta\StandardProjectProfileBundle\Entity\Resource $resource
      * @return StandardProject
      */
     public function addResource(\meta\StandardProjectProfileBundle\Entity\Resource $resource)
     {
-        $resource->setProject($this);
+        if (!is_null($resource)){
+            $resource->setProject($this);
+        }
         $this->resources[] = $resource;
     
         return $this;
     }
 
     /**
-     * Remove resources
+     * Remove resource
      *
      * @param \meta\StandardProjectProfileBundle\Entity\Resource $resource
      */
     public function removeResource(\meta\StandardProjectProfileBundle\Entity\Resource $resource)
-    {
+    {        
+        if (!is_null($resource)){
+            $resource->setProject(null);
+        }
         $this->resources->removeElement($resource);
-        $resource->setProject(null);
+
     }
 
     /**
@@ -858,5 +847,28 @@ class StandardProject extends Taggable
     public function getResources()
     {
         return $this->resources;
+    }
+
+    /**
+     * Set meta
+     *
+     * @param \meta\StandardProjectProfileBundle\Entity\MetaProject $meta
+     * @return StandardProject
+     */
+    public function setMeta(\meta\StandardProjectProfileBundle\Entity\MetaProject $meta = null)
+    {
+        $this->meta = $meta;
+    
+        return $this;
+    }
+
+    /**
+     * Get meta
+     *
+     * @return \meta\StandardProjectProfileBundle\Entity\MetaProject 
+     */
+    public function getMeta()
+    {
+        return $this->meta;
     }
 }

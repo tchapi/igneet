@@ -354,7 +354,6 @@ class User implements UserInterface
     public function setEmail($email)
     {
         $this->email = $email;
-    
         return $this;
     }
 
@@ -377,7 +376,6 @@ class User implements UserInterface
     public function setFirstName($firstName)
     {
         $this->first_name = $firstName;
-    
         return $this;
     }
 
@@ -400,7 +398,6 @@ class User implements UserInterface
     public function setLastName($lastName)
     {
         $this->last_name = $lastName;
-    
         return $this;
     }
 
@@ -433,7 +430,6 @@ class User implements UserInterface
     public function setCity($city)
     {
         $this->city = $city;
-    
         return $this;
     }
 
@@ -456,7 +452,6 @@ class User implements UserInterface
     public function setAvatar($avatar)
     {
         $this->avatar = $avatar;
-    
         return $this;
     }
 
@@ -585,7 +580,6 @@ class User implements UserInterface
     public function setCreatedAt($createdAt)
     {
         $this->created_at = $createdAt;
-    
         return $this;
     }
 
@@ -608,7 +602,6 @@ class User implements UserInterface
     public function setUpdatedAt($updatedAt)
     {
         $this->updated_at = $updatedAt;
-    
         return $this;
     }
 
@@ -631,7 +624,6 @@ class User implements UserInterface
     public function setHeadline($headline)
     {
         $this->headline = $headline;
-    
         return $this;
     }
 
@@ -654,7 +646,6 @@ class User implements UserInterface
     public function setAbout($about)
     {
         $this->about = $about;
-    
         return $this;
     }
 
@@ -669,28 +660,33 @@ class User implements UserInterface
     }
 
     /**
-     * Add skills
+     * Add skill
      *
      * @param meta\UserProfileBundle\Entity\Skill $skills
      * @return User
      */
     public function addSkill(\meta\UserProfileBundle\Entity\Skill $skill)
     {
-        $skill->addSkilledUser($this);
+        if (!is_null($skill)){
+            $skill->addSkilledUser($this);
+        }
         $this->skills[] = $skill;
     
         return $this;
     }
 
     /**
-     * Remove skills
+     * Remove skill
      *
      * @param meta\UserProfileBundle\Entity\Skill $skills
      */
     public function removeSkill(\meta\UserProfileBundle\Entity\Skill $skill)
     {
+        if (!is_null($skill)){
+            $skill->removeSkilledUser($this);
+        }
         $this->skills->removeElement($skill);
-        $skill->removeSkilledUser($this);
+        
     }
 
     /**
@@ -704,34 +700,22 @@ class User implements UserInterface
     }
 
     /**
-     * Set skills
-     *
-     * @param Array $skills
-     * @return Skill
-     */
-    public function setSkills($skills)
-    {
-        $this->skills = $skills;
-
-        return $this;
-    }
-
-    /**
      * Add followers
      *
+     * BINDING LOGIC IS DONE IN 'USER' CLASS > addFollowing
      * @param meta\UserProfileBundle\Entity\User $followers
      * @return User
      */
     public function addFollower(\meta\UserProfileBundle\Entity\User $follower)
     {
         $this->followers[] = $follower;
-    
         return $this;
     }
 
     /**
      * Remove followers
      *
+     * BINDING LOGIC IS DONE IN 'USER' CLASS > removeFollowing
      * @param meta\UserProfileBundle\Entity\User $followers
      */
     public function removeFollower(\meta\UserProfileBundle\Entity\User $follower)
@@ -757,9 +741,11 @@ class User implements UserInterface
      */
     public function addFollowing(\meta\UserProfileBundle\Entity\User $following)
     {
-        $following->addFollower($this);
+        if (!is_null($following)){
+            $following->addFollower($this);
+        }
+
         $this->following[] = $following;
-    
         return $this;
     }
 
@@ -770,8 +756,11 @@ class User implements UserInterface
      */
     public function removeFollowing(\meta\UserProfileBundle\Entity\User $following)
     {
+        if (!is_null($following)){
+            $following->removeFollower($this);
+        }
+
         $this->following->removeElement($following);
-        $following->removeFollower($this);
     }
 
     /**
@@ -803,7 +792,6 @@ class User implements UserInterface
     public function setPassword($password)
     {
         $this->password = $password;
-
         return $this;
     }
 
@@ -826,7 +814,6 @@ class User implements UserInterface
     public function setSalt($salt)
     {
         $this->salt = $salt;
-    
         return $this;
     }
 
@@ -855,7 +842,6 @@ class User implements UserInterface
     public function setUsername($username)
     {
         $this->username = $username;
-    
         return $this;
     }
 
@@ -878,7 +864,6 @@ class User implements UserInterface
     public function setRoles($roles)
     {
         $this->roles = $roles;
-    
         return $this;
     }
 
@@ -900,9 +885,11 @@ class User implements UserInterface
      */
     public function addProjectsOwned(\meta\StandardProjectProfileBundle\Entity\StandardProject $projectOwned)
     {
-        $projectOwned->addOwner($this);
+        if (!is_null($projectOwned)){
+            $projectOwned->addOwner($this);
+        }
+
         $this->projectsOwned[] = $projectOwned;
-    
         return $this;
     }
 
@@ -913,8 +900,11 @@ class User implements UserInterface
      */
     public function removeProjectsOwned(\meta\StandardProjectProfileBundle\Entity\StandardProject $projectOwned)
     {
+        if (!is_null($projectOwned)){
+            $projectOwned->removeOwner($this);
+        }
+
         $this->projectsOwned->removeElement($projectOwned);
-        $projectOwned->removeOwner($this);
     }
 
     /**
@@ -959,7 +949,9 @@ class User implements UserInterface
      */
     public function addProjectsParticipatedIn(\meta\StandardProjectProfileBundle\Entity\StandardProject $projectParticipatedIn)
     {
-        $projectParticipatedIn->addParticipant($this);
+        if (!is_null($projectParticipatedIn)){
+            $projectParticipatedIn->addParticipant($this);
+        }
         $this->projectsParticipatedIn[] = $projectParticipatedIn;
     
         return $this;
@@ -972,8 +964,10 @@ class User implements UserInterface
      */
     public function removeProjectsParticipatedIn(\meta\StandardProjectProfileBundle\Entity\StandardProject $projectParticipatedIn)
     {
+        if (!is_null($projectParticipatedIn)){
+            $projectParticipatedIn->removeParticipant($this);
+        }
         $this->projectsParticipatedIn->removeElement($projectParticipatedIn);
-        $projectParticipatedIn->removeParticipant($this);
     }
 
     /**
@@ -1014,7 +1008,9 @@ class User implements UserInterface
      */
     public function addProjectsWatched(\meta\StandardProjectProfileBundle\Entity\StandardProject $projectWatched)
     {
-        $projectWatched->addWatcher($this);
+        if (!is_null($projectWatched)){
+            $projectWatched->addWatcher($this);
+        }
         $this->projectsWatched[] = $projectWatched;
     
         return $this;
@@ -1027,8 +1023,10 @@ class User implements UserInterface
      */
     public function removeProjectsWatched(\meta\StandardProjectProfileBundle\Entity\StandardProject $projectWatched)
     {
+        if (!is_null($projectWatched)){
+            $projectWatched->removeWatcher($this);
+        }
         $this->projectsWatched->removeElement($projectWatched);
-        $projectWatched->removeWatcher($this);
     }
 
     /**
@@ -1054,19 +1052,20 @@ class User implements UserInterface
     /**
      * Add comments
      *
+     * BINDING LOGIC IS DONE IN 'BASECOMMENT' CLASS
      * @param \meta\GeneralBundle\Entity\Comment\BaseComment $comment
      * @return User
      */
     public function addComment(\meta\GeneralBundle\Entity\Comment\BaseComment $comment)
     {
         $this->comments[] = $comment;
-    
         return $this;
     }
 
     /**
      * Remove comments
      *
+     * BINDING LOGIC IS DONE IN 'BASECOMMENT' CLASS
      * @param \meta\GeneralBundle\Entity\Comment\BaseComment $comment
      */
     public function removeComment(\meta\GeneralBundle\Entity\Comment\BaseComment $comment)
@@ -1094,26 +1093,25 @@ class User implements UserInterface
         $count = 0;
 
         foreach ($this->comments as $comment) {
-            
-            if ($comment->isPublic())
-                $count++;
-
+            if ($comment->isPublic()) $count++;
         }
 
         return $count;
     }
 
     /**
-     * Add ideasWatched
+     * Add ideaWatched
      *
      * @param \meta\IdeaProfileBundle\Entity\Idea $ideaWatched
      * @return User
      */
     public function addIdeasWatched(\meta\IdeaProfileBundle\Entity\Idea $ideaWatched)
     {
-        $ideaWatched->addWatcher($this);
+        if (!is_null($ideaWatched)){
+            $ideaWatched->addWatcher($this);
+        }
+
         $this->ideasWatched[] = $ideaWatched;
-    
         return $this;
     }
 
@@ -1128,14 +1126,17 @@ class User implements UserInterface
     }
 
     /**
-     * Remove ideasWatched
+     * Remove ideaWatched
      *
      * @param \meta\IdeaProfileBundle\Entity\Idea $ideaWatched
      */
     public function removeIdeasWatched(\meta\IdeaProfileBundle\Entity\Idea $ideaWatched)
     {
+        if (!is_null($ideaWatched)){
+            $ideaWatched->removeWatcher($this);
+        }
         $this->ideasWatched->removeElement($ideaWatched);
-        $ideaWatched->removeWatcher($this);
+        
     }
 
     /**
@@ -1157,11 +1158,8 @@ class User implements UserInterface
     {
         $count = 0;
 
-        foreach ($this->ideasWatched as $idea) {
-            
-            if ( !($idea->isArchived()) )
-                $count++;
-
+        foreach ($this->ideasWatched as $idea) {    
+            if ( !($idea->isArchived()) ) $count++;
         }
 
         return $count;
@@ -1170,15 +1168,35 @@ class User implements UserInterface
     /**
      * Add ideasCreated
      *
+     * BINDING LOGIC IS DONE IN 'IDEA' CLASS
      * @param \meta\IdeaProfileBundle\Entity\Idea $ideaCreated
      * @return User
      */
     public function addIdeasCreated(\meta\IdeaProfileBundle\Entity\Idea $ideaCreated)
     {
-        $ideaCreated->addCreator($this);
         $this->ideasCreated[] = $ideaCreated;
-    
         return $this;
+    }
+
+    /**
+     * Remove ideasCreated
+     *
+     * BINDING LOGIC IS DONE IN 'IDEA' CLASS
+     * @param \meta\IdeaProfileBundle\Entity\Idea $ideaCreated
+     */
+    public function removeIdeasCreated(\meta\IdeaProfileBundle\Entity\Idea $ideaCreated)
+    {
+        $this->ideasCreated->removeElement($ideaCreated);
+    }
+
+    /**
+     * Get ideasCreated
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getIdeasCreated()
+    {
+        return $this->ideasCreated;
     }
 
     /**
@@ -1190,35 +1208,11 @@ class User implements UserInterface
     {
         $count = 0;
 
-        foreach ($this->ideasCreated as $idea) {
-            
-            if ( !($idea->isArchived()) )
-                $count++;
-
+        foreach ($this->ideasCreated as $idea) {   
+            if ( !($idea->isArchived()) ) $count++;
         }
 
         return $count;
-    }
-
-    /**
-     * Remove ideasCreated
-     *
-     * @param \meta\IdeaProfileBundle\Entity\Idea $ideaCreated
-     */
-    public function removeIdeasCreated(\meta\IdeaProfileBundle\Entity\Idea $ideaCreated)
-    {
-        $this->ideasCreated->removeElement($ideaCreated);
-        $ideaCreated->removeCreator($this);
-    }
-
-    /**
-     * Get ideasCreated
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getIdeasCreated()
-    {
-        return $this->ideasCreated;
     }
 
     /**
@@ -1239,21 +1233,27 @@ class User implements UserInterface
      */
     public function addIdeasParticipatedIn(\meta\IdeaProfileBundle\Entity\Idea $ideaParticipatedIn)
     {
-        $ideaParticipatedIn->addParticipant($this);
+        if (!is_null($ideaParticipatedIn)){
+            $ideaParticipatedIn->addParticipant($this);
+        }
+
         $this->ideasParticipatedIn[] = $ideaParticipatedIn;
-    
         return $this;
     }
 
     /**
-     * Remove ideasParticipatedIn
+     * Remove ideaParticipatedIn
      *
      * @param \meta\IdeaProfileBundle\Entity\Idea $ideaParticipatedIn
      */
     public function removeIdeasParticipatedIn(\meta\IdeaProfileBundle\Entity\Idea $ideaParticipatedIn)
     {
+        if (!is_null($ideaParticipatedIn)){
+            $ideaParticipatedIn->removeParticipant($this);
+        }
+
         $this->ideasParticipatedIn->removeElement($ideaParticipatedIn);
-        $ideaParticipatedIn->removeParticipant($this);
+        
     }
 
     /**
@@ -1269,6 +1269,7 @@ class User implements UserInterface
     /**
      * Is already participating in an idea
      *
+     * @param \meta\IdeaProfileBundle\Entity\Idea $idea
      * @return boolean 
      */
     public function isParticipatingInIdea(\meta\IdeaProfileBundle\Entity\Idea $idea)
@@ -1276,28 +1277,28 @@ class User implements UserInterface
         return $this->ideasParticipatedIn->contains($idea);
     }
 
-
     /**
      * Add logEntries
      *
-     * @param \meta\GeneralBundle\Entity\Log\BaseLogEntry $logEntries
+     * BINDING LOGIC IS DONE IN 'USERLOGENTRY' CLASS 
+     * @param \meta\GeneralBundle\Entity\Log\BaseLogEntry $logEntry
      * @return User
      */
-    public function addLogEntrie(\meta\GeneralBundle\Entity\Log\BaseLogEntry $logEntries)
+    public function addLogEntrie(\meta\GeneralBundle\Entity\Log\BaseLogEntry $logEntry)
     {
-        $this->logEntries[] = $logEntries;
-    
+        $this->logEntries[] = $logEntry;
         return $this;
     }
 
     /**
      * Remove logEntries
      *
-     * @param \meta\GeneralBundle\Entity\Log\BaseLogEntry $logEntries
+     * BINDING LOGIC IS DONE IN 'USERLOGENTRY' CLASS 
+     * @param \meta\GeneralBundle\Entity\Log\BaseLogEntry $logEntry
      */
-    public function removeLogEntrie(\meta\GeneralBundle\Entity\Log\BaseLogEntry $logEntries)
+    public function removeLogEntrie(\meta\GeneralBundle\Entity\Log\BaseLogEntry $logEntry)
     {
-        $this->logEntries->removeElement($logEntries);
+        $this->logEntries->removeElement($logEntry);
     }
 
     /**
@@ -1313,24 +1314,25 @@ class User implements UserInterface
     /**
      * Add initiatedLogEntries
      *
-     * @param \meta\GeneralBundle\Entity\Log\BaseLogEntry $initiatedLogEntries
+     * BINDING LOGIC IS DONE IN 'BASELOGENTRY' CLASS
+     * @param \meta\GeneralBundle\Entity\Log\BaseLogEntry $initiatedLogEntry
      * @return User
      */
-    public function addInitiatedLogEntrie(\meta\GeneralBundle\Entity\Log\BaseLogEntry $initiatedLogEntries)
+    public function addInitiatedLogEntrie(\meta\GeneralBundle\Entity\Log\BaseLogEntry $initiatedLogEntry)
     {
-        $this->initiatedLogEntries[] = $initiatedLogEntries;
-    
+        $this->initiatedLogEntries[] = $initiatedLogEntry;
         return $this;
     }
 
     /**
      * Remove initiatedLogEntries
      *
-     * @param \meta\GeneralBundle\Entity\Log\BaseLogEntry $initiatedLogEntries
+     * BINDING LOGIC IS DONE IN 'BASELOGENTRY' CLASS
+     * @param \meta\GeneralBundle\Entity\Log\BaseLogEntry $initiatedLogEntry
      */
-    public function removeInitiatedLogEntrie(\meta\GeneralBundle\Entity\Log\BaseLogEntry $initiatedLogEntries)
+    public function removeInitiatedLogEntrie(\meta\GeneralBundle\Entity\Log\BaseLogEntry $initiatedLogEntry)
     {
-        $this->initiatedLogEntries->removeElement($initiatedLogEntries);
+        $this->initiatedLogEntries->removeElement($initiatedLogEntry);
     }
 
     /**
@@ -1352,7 +1354,6 @@ class User implements UserInterface
     public function setLastSeenAt($lastSeenAt)
     {
         $this->last_seen_at = $lastSeenAt;
-    
         return $this;
     }
 
@@ -1367,8 +1368,44 @@ class User implements UserInterface
     }
 
     /**
+     * Add validatedComments
+     *
+     * BINDING LOGIC IS DONE IN 'BASECOMMENT' CLASS 
+     * @param \meta\GeneralBundle\Entity\Comment\BaseComment $validatedComment
+     * @return User
+     */
+    public function addValidatedComment(\meta\GeneralBundle\Entity\Comment\BaseComment $validatedComment)
+    {
+        $this->validatedComments[] = $validatedComment;
+    
+        return $this;
+    }
+
+    /**
+     * Remove validatedComments
+     *
+     * BINDING LOGIC IS DONE IN 'BASECOMMENT' CLASS 
+     * @param \meta\GeneralBundle\Entity\Comment\BaseComment $validatedComment
+     */
+    public function removeValidatedComment(\meta\GeneralBundle\Entity\Comment\BaseComment $validatedComment)
+    {
+        $this->validatedComments->removeElement($validatedComment);
+    }
+
+    /**
+     * Get validatedComments
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getValidatedComments()
+    {
+        return $this->validatedComments;
+    }
+    
+    /**
      * Set originatingToken
      *
+     * BINDING LOGIC IS DONE IN 'USERINVITETOKEN' CLASS 
      * @param \meta\UserProfileBundle\Entity\UserInviteToken $originatingToken
      * @return User
      */
@@ -1392,6 +1429,7 @@ class User implements UserInterface
     /**
      * Add createdTokens
      *
+     * BINDING LOGIC IS DONE IN 'USERINVITETOKEN' CLASS 
      * @param \meta\UserProfileBundle\Entity\UserInviteToken $createdTokens
      * @return User
      */
@@ -1405,6 +1443,7 @@ class User implements UserInterface
     /**
      * Remove createdTokens
      *
+     * BINDING LOGIC IS DONE IN 'USERINVITETOKEN' CLASS 
      * @param \meta\UserProfileBundle\Entity\UserInviteToken $createdTokens
      */
     public function removeCreatedToken(\meta\UserProfileBundle\Entity\UserInviteToken $createdTokens)
@@ -1422,36 +1461,4 @@ class User implements UserInterface
         return $this->createdTokens;
     }
 
-    /**
-     * Add validatedComments
-     *
-     * @param \meta\GeneralBundle\Entity\Comment\BaseComment $validatedComment
-     * @return User
-     */
-    public function addValidatedComment(\meta\GeneralBundle\Entity\Comment\BaseComment $validatedComment)
-    {
-        $this->validatedComments[] = $validatedComment;
-    
-        return $this;
-    }
-
-    /**
-     * Remove validatedComments
-     *
-     * @param \meta\GeneralBundle\Entity\Comment\BaseComment $validatedComment
-     */
-    public function removeValidatedComment(\meta\GeneralBundle\Entity\Comment\BaseComment $validatedComment)
-    {
-        $this->validatedComments->removeElement($validatedComment);
-    }
-
-    /**
-     * Get validatedComments
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getValidatedComments()
-    {
-        return $this->validatedComments;
-    }
 }

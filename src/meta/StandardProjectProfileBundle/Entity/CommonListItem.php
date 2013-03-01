@@ -122,7 +122,6 @@ class CommonListItem
     public function setCreatedAt($createdAt)
     {
         $this->created_at = $createdAt;
-    
         return $this;
     }
 
@@ -145,7 +144,6 @@ class CommonListItem
     public function setUpdatedAt($updatedAt)
     {
         $this->updated_at = $updatedAt;
-    
         return $this;
     }
 
@@ -214,13 +212,13 @@ class CommonListItem
     /**
      * Set commonList
      *
+     * BINDING LOGIC IS DONE IN 'COMMONLIST' CLASS
      * @param meta\StandardProjectProfileBundle\Entity\CommonList $commonList
      * @return CommonListItem
      */
     public function setCommonList(\meta\StandardProjectProfileBundle\Entity\CommonList $commonList = null)
     {
         $this->commonList = $commonList;
-    
         return $this;
     }
 

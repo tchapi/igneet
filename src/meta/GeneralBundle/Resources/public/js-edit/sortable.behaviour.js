@@ -7,16 +7,15 @@ $(document).ready(function(){
     group: 'nested', // if <ul> in <li>
     afterMove: function (placeholder, container) {
       if(oldContainer != container){
-        if(oldContainer)
-          oldContainer.el.removeClass("highlight")
-        container.el.addClass("highlight")
+        if(oldContainer) oldContainer.el.removeClass("highlight");
+        container.el.addClass("highlight");
         
-        oldContainer = container
+        oldContainer = container;
       }
     },
     onDragStart: function (item, group, _super) {
-      oldIndex = item.index()
-      _super(item)
+      oldIndex = item.index();
+      _super(item);
     },
     onDrop: function (item, container, _super) {
 
@@ -33,10 +32,12 @@ $(document).ready(function(){
         ranks: ranks
       })
       .success(function(data, config) {
-         //console.log("Ranks saved.");       
+        //console.log("Ranks saved.");
+        setFlash('success', 'Your changes have been saved.');
       })
       .error(function(errors) {
          //console.log("Error saving ranks.");
+        setFlash('error', 'There was an error saving changes.');
       });
 
 
@@ -46,13 +47,15 @@ $(document).ready(function(){
         value: container.el.attr('data-value')
       })
       .success(function(data, config) {
-         //console.log("Parenting changes saved.");       
+        //console.log("Parenting changes saved.");
+        setFlash('success', 'Your changes have been saved.');
       })
       .error(function(errors) {
          //console.log("Error saving parenting changes.");
+        setFlash('error', 'There was an error saving changes.');
       });
 
-      container.el.removeClass("highlight")
+      container.el.removeClass("highlight");
       _super(item);
     }
   });

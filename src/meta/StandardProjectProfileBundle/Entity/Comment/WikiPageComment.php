@@ -41,13 +41,13 @@ class WikiPageComment extends BaseComment
     /**
      * Set wikiPage
      *
+     * BINDING LOGIC IS DONE IN 'WIKIPAGE' CLASS 
      * @param \meta\StandardProjectProfileBundle\Entity\WikiPage $wikiPage
      * @return WikiPageComment
      */
     public function setWikiPage(\meta\StandardProjectProfileBundle\Entity\WikiPage $wikiPage = null)
     {
         $this->wikiPage = $wikiPage;
-    
         return $this;
     }
 

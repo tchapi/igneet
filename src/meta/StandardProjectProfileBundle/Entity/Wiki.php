@@ -63,13 +63,13 @@ class Wiki
     /**
      * Set project
      *
+     * BINDING LOGIC IS DONE IN 'STANDARDPROJECT' CLASS
      * @param \meta\StandardProjectProfileBundle\Entity\StandardProject $project
      * @return Wiki
      */
     public function setProject(\meta\StandardProjectProfileBundle\Entity\StandardProject $project = null)
     {
         $this->project = $project;
-    
         return $this;
     }
 
@@ -92,7 +92,9 @@ class Wiki
      */
     public function addPage(\meta\StandardProjectProfileBundle\Entity\WikiPage $page)
     {
-        $page->setWiki($this);
+        if (!is_null($page)){
+            $page->setWiki($this);
+        }
         $this->pages[] = $page;
     
         return $this;
@@ -105,6 +107,9 @@ class Wiki
      */
     public function removePage(\meta\StandardProjectProfileBundle\Entity\WikiPage $page)
     {
+        if (!is_null($page)){
+            $page->setWiki(null);
+        }
         $this->pages->removeElement($page);
     }
 
@@ -121,13 +126,14 @@ class Wiki
     /**
      * Set homePage
      *
+     * NO REVERSE BINDING
      * @param \meta\StandardProjectProfileBundle\Entity\WikiPage $homePage
      * @return Wiki
      */
     public function setHomePage(\meta\StandardProjectProfileBundle\Entity\WikiPage $homePage = null)
     {
+        // No reverse binding necessary
         $this->homePage = $homePage;
-    
         return $this;
     }
 

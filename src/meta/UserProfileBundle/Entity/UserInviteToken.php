@@ -12,6 +12,7 @@ use Doctrine\Common\Collections\ArrayCollection,
  *
  * @ORM\Table(name="UserInviteToken")
  * @ORM\Entity
+ * @UniqueEntity("token")
  */
 class UserInviteToken
 {
@@ -78,7 +79,7 @@ class UserInviteToken
         $this->used_at = null;
 
         $this->email = $mail;
-        $this->referalUser = $referalUser;
+        $this->setReferalUser($referalUser);
 
         $this->token = md5(uniqid(null, true));
 
@@ -103,7 +104,6 @@ class UserInviteToken
     public function setToken($token)
     {
         $this->token = $token;
-    
         return $this;
     }
 
@@ -126,7 +126,6 @@ class UserInviteToken
     public function setEmail($email)
     {
         $this->email = $email;
-    
         return $this;
     }
 
@@ -149,7 +148,6 @@ class UserInviteToken
     public function setCreatedAt($createdAt)
     {
         $this->created_at = $createdAt;
-    
         return $this;
     }
 
@@ -172,7 +170,6 @@ class UserInviteToken
     public function setUsedAt($usedAt)
     {
         $this->used_at = $usedAt;
-    
         return $this;
     }
 
@@ -231,8 +228,12 @@ class UserInviteToken
      */
     public function setReferalUser(\meta\UserProfileBundle\Entity\User $referalUser = null)
     {
+        if (!is_null($referalUser)){
+            $referalUser->addCreatedToken($this);
+        } elseif (!is_null($this->referalUser)){
+            $this->referalUser->removeCreatedToken($this);
+        }
         $this->referalUser = $referalUser;
-    
         return $this;
     }
 
