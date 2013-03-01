@@ -47,10 +47,9 @@ class Tag
     /**
      * Constructor
      */
-    public function __construct($tag = null)
+    public function __construct($tagName)
     {
-        $this->name = $tag;
-        $this->color = '';
+        $this->name = $tagName;
         $this->tagged_objects = new ArrayCollection();
     }
     
@@ -68,19 +67,20 @@ class Tag
     /**
      * Add tagged_objects
      *
+     * BINDING LOGIC IS DONE IN 'TAGGABLE' CLASS 
      * @param \meta\GeneralBundle\Entity\Behaviour\Taggable $taggedObject
      * @return Tag
      */
     public function addTaggedObject(\meta\GeneralBundle\Entity\Behaviour\Taggable $taggedObject)
     {
         $this->tagged_objects[] = $taggedObject;
-    
         return $this;
     }
 
     /**
      * Remove tagged_objects
      *
+     * BINDING LOGIC IS DONE IN 'TAGGABLE' CLASS 
      * @param \meta\GeneralBundle\Entity\Behaviour\Taggable $taggedObject
      */
     public function removeTaggedObject(\meta\GeneralBundle\Entity\Behaviour\Taggable $taggedObject)
@@ -107,7 +107,6 @@ class Tag
     public function setName($name)
     {
         $this->name = $name;
-    
         return $this;
     }
 
@@ -130,7 +129,6 @@ class Tag
     public function setColor($color)
     {
         $this->color = $color;
-    
         return $this;
     }
 

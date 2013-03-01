@@ -188,7 +188,6 @@ class Idea extends Taggable
     public function setCreatedAt($createdAt)
     {
         $this->created_at = $createdAt;
-    
         return $this;
     }
 
@@ -211,7 +210,6 @@ class Idea extends Taggable
     public function setUpdatedAt($updatedAt)
     {
         $this->updated_at = $updatedAt;
-    
         return $this;
     }
 
@@ -234,7 +232,6 @@ class Idea extends Taggable
     public function setName($name)
     {
         $this->name = $name;
-    
         return $this;
     }
 
@@ -257,7 +254,6 @@ class Idea extends Taggable
     public function setHeadline($headline)
     {
         $this->headline = $headline;
-    
         return $this;
     }
 
@@ -280,7 +276,6 @@ class Idea extends Taggable
     public function setConceptText($conceptText)
     {
         $this->concept_text = $conceptText;
-    
         return $this;
     }
 
@@ -303,7 +298,6 @@ class Idea extends Taggable
     public function setKnowledgeText($knowledgeText)
     {
         $this->knowledge_text = $knowledgeText;
-    
         return $this;
     }
 
@@ -320,13 +314,13 @@ class Idea extends Taggable
     /**
      * Set resultingProject
      *
+     * BINDING LOGIC IS DONE IN 'STANDARDPROJECT' CLASS 
      * @param \meta\StandardProjectProfileBundle\Entity\StandardProject $resultingProject
      * @return Idea
      */
     public function setResultingProject(\meta\StandardProjectProfileBundle\Entity\StandardProject $resultingProject = null)
     {
         $this->resultingProject = $resultingProject;
-    
         return $this;
     }
 
@@ -341,37 +335,27 @@ class Idea extends Taggable
     }
 
     /**
-     * Add watchers
+     * Add watcher
      *
-     * @param \meta\UserProfileBundle\Entity\User $watchers
+     * BINDING LOGIC IS DONE IN 'USER' CLASS 
+     * @param \meta\UserProfileBundle\Entity\User $watcher
      * @return Idea
      */
-    public function addWatcher(\meta\UserProfileBundle\Entity\User $watchers)
+    public function addWatcher(\meta\UserProfileBundle\Entity\User $watcher)
     {
-        $this->watchers[] = $watchers;
-    
+        $this->watchers[] = $watcher;
         return $this;
     }
 
     /**
-     * Remove watchers
+     * Remove watcher
      *
-     * @param \meta\UserProfileBundle\Entity\User $watchers
+     * BINDING LOGIC IS DONE IN 'USER' CLASS 
+     * @param \meta\UserProfileBundle\Entity\User $watcher
      */
-    public function removeWatcher(\meta\UserProfileBundle\Entity\User $watchers)
+    public function removeWatcher(\meta\UserProfileBundle\Entity\User $watcher)
     {
-        $this->watchers->removeElement($watchers);
-    }
-
-    /**
-     * Set watchers
-     *
-     * @return Idea 
-     */
-    public function setWatchers(\Doctrine\Common\Collections\Collection $watchers)
-    {
-        $this->watchers = $watchers;
-        return $this;
+        $this->watchers->removeElement($watcher);
     }
 
     /**
@@ -406,7 +390,6 @@ class Idea extends Taggable
     public function setPicture($picture)
     {
         $this->picture = $picture;
-    
         return $this;
     }
 
@@ -508,7 +491,6 @@ class Idea extends Taggable
     public function setArchived($archived)
     {
         $this->archived = $archived;
-    
         return $this;
     }
 
@@ -529,19 +511,20 @@ class Idea extends Taggable
     /**
      * Add participants
      *
+     * BINDING LOGIC IS DONE IN 'USER' CLASS 
      * @param \meta\UserProfileBundle\Entity\User $participant
      * @return Idea
      */
     public function addParticipant(\meta\UserProfileBundle\Entity\User $participant)
     {
         $this->participants[] = $participant;
-    
         return $this;
     }
 
     /**
      * Remove participants
      *
+     * BINDING LOGIC IS DONE IN 'USER' CLASS 
      * @param \meta\UserProfileBundle\Entity\User $participant
      */
     public function removeParticipant(\meta\UserProfileBundle\Entity\User $participant)
@@ -562,24 +545,25 @@ class Idea extends Taggable
     /**
      * Add logEntries
      *
-     * @param \meta\GeneralBundle\Entity\Log\IdeaLogEntry $logEntries
+     * BINDING LOGIC IS DONE IN 'IDEALOGENTRY' CLASS 
+     * @param \meta\GeneralBundle\Entity\Log\IdeaLogEntry $logEntry
      * @return Idea
      */
-    public function addLogEntrie(\meta\GeneralBundle\Entity\Log\IdeaLogEntry $logEntries)
+    public function addLogEntrie(\meta\GeneralBundle\Entity\Log\IdeaLogEntry $logEntry)
     {
-        $this->logEntries[] = $logEntries;
-    
+        $this->logEntries[] = $logEntry;
         return $this;
     }
 
     /**
      * Remove logEntries
      *
-     * @param \meta\GeneralBundle\Entity\Log\IdeaLogEntry $logEntries
+     * BINDING LOGIC IS DONE IN 'IDEALOGENTRY' CLASS 
+     * @param \meta\GeneralBundle\Entity\Log\IdeaLogEntry $logEntry
      */
-    public function removeLogEntrie(\meta\GeneralBundle\Entity\Log\IdeaLogEntry $logEntries)
+    public function removeLogEntrie(\meta\GeneralBundle\Entity\Log\IdeaLogEntry $logEntry)
     {
-        $this->logEntries->removeElement($logEntries);
+        $this->logEntries->removeElement($logEntry);
     }
 
     /**
@@ -600,7 +584,9 @@ class Idea extends Taggable
      */
     public function addComment(\meta\IdeaProfileBundle\Entity\Comment\IdeaComment $comment)
     {
-        $comment->setIdea($this);
+        if (!is_null($comment)){
+            $comment->setIdea($this);
+        }
         $this->comments[] = $comment;
     
         return $this;
@@ -613,7 +599,9 @@ class Idea extends Taggable
      */
     public function removeComment(\meta\IdeaProfileBundle\Entity\Comment\IdeaComment $comment)
     {
-        $comment->setIdea(null);
+        if (!is_null($comment)){
+            $comment->setIdea(null);
+        }
         $this->comments->removeElement($comment);
     }
 
@@ -636,7 +624,6 @@ class Idea extends Taggable
     public function setSlug($slug)
     {
         $this->slug = $slug;
-    
         return $this;
     }
 
@@ -653,19 +640,20 @@ class Idea extends Taggable
     /**
      * Add resultingProjects
      *
+     * BINDING LOGIC IS DONE IN 'STANDARDPROJECT' CLASS
      * @param \meta\StandardProjectProfileBundle\Entity\StandardProject $resultingProject
      * @return Idea
      */
     public function addResultingProject(\meta\StandardProjectProfileBundle\Entity\StandardProject $resultingProject)
     {
         $this->resultingProjects[] = $resultingProject;
-    
         return $this;
     }
 
     /**
      * Remove resultingProjects
      *
+     * BINDING LOGIC IS DONE IN 'STANDARDPROJECT' CLASS
      * @param \meta\StandardProjectProfileBundle\Entity\StandardProject $resultingProject
      */
     public function removeResultingProject(\meta\StandardProjectProfileBundle\Entity\StandardProject $resultingProject)
@@ -692,7 +680,6 @@ class Idea extends Taggable
     public function setAbout($about)
     {
         $this->about = $about;
-    
         return $this;
     }
 
@@ -707,26 +694,32 @@ class Idea extends Taggable
     }
 
     /**
-     * Add creators
+     * Add creator
      *
-     * @param \meta\UserProfileBundle\Entity\User $creators
+     * @param \meta\UserProfileBundle\Entity\User $creator
      * @return Idea
      */
-    public function addCreator(\meta\UserProfileBundle\Entity\User $creators)
+    public function addCreator(\meta\UserProfileBundle\Entity\User $creator)
     {
-        $this->creators[] = $creators;
-    
+        if(!is_null($creator)){
+            $creator->addIdeasCreated($this);
+        }
+
+        $this->creators[] = $creator;
         return $this;
     }
 
     /**
-     * Remove creators
+     * Remove creator
      *
-     * @param \meta\UserProfileBundle\Entity\User $creators
+     * @param \meta\UserProfileBundle\Entity\User $creator
      */
-    public function removeCreator(\meta\UserProfileBundle\Entity\User $creators)
+    public function removeCreator(\meta\UserProfileBundle\Entity\User $creator)
     {
-        $this->creators->removeElement($creators);
+        if(!is_null($creator)){
+            $creator->removeIdeasCreated($this);
+        }
+        $this->creators->removeElement($creator);
     }
 
     /**

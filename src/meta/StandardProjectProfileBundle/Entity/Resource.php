@@ -119,7 +119,6 @@ class Resource extends Taggable
     public function setUrl($url)
     {
         $this->url = $url;
-    
         return $this;
     }
 
@@ -130,9 +129,7 @@ class Resource extends Taggable
      */
     public function getUrl()
     {
-
         return $this->getUrlWebPath();
-
     }
 
     public function getAbsoluteUrlPath()
@@ -215,7 +212,6 @@ class Resource extends Taggable
      */
     public function removeUpload()
     {
-
         if ( ($file = $this->getAbsoluteUrlPath()) && 
              $this->original_filename != null) {
             unlink($file);
@@ -249,7 +245,6 @@ class Resource extends Taggable
     public function setName($name)
     {
         $this->name = $name;
-    
         return $this;
     }
 
@@ -272,7 +267,6 @@ class Resource extends Taggable
     public function setCreatedAt($createdAt)
     {
         $this->created_at = $createdAt;
-    
         return $this;
     }
 
@@ -295,7 +289,6 @@ class Resource extends Taggable
     public function setTitle($title)
     {
         $this->title = $title;
-    
         return $this;
     }
 
@@ -318,7 +311,6 @@ class Resource extends Taggable
     public function setType($type)
     {
         $this->type = $type;
-    
         return $this;
     }
 
@@ -335,13 +327,13 @@ class Resource extends Taggable
     /**
      * Set project
      *
+     * BINDING LOGIC IS DONE IN 'STANDARDPROJECT' CLASS
      * @param \meta\StandardProjectProfileBundle\Entity\StandardProject $project
      * @return Resource
      */
     public function setProject(\meta\StandardProjectProfileBundle\Entity\StandardProject $project = null)
     {
         $this->project = $project;
-    
         return $this;
     }
 
@@ -364,7 +356,6 @@ class Resource extends Taggable
     public function setUpdatedAt($updatedAt)
     {
         $this->updated_at = $updatedAt;
-    
         return $this;
     }
 
@@ -387,7 +378,6 @@ class Resource extends Taggable
     public function setOriginalFilename($originalFilename)
     {
         $this->original_filename = $originalFilename;
-    
         return $this;
     }
 
@@ -410,7 +400,6 @@ class Resource extends Taggable
     public function setProvider($provider)
     {
         $this->provider = $provider;
-    
         return $this;
     }
 

@@ -28,8 +28,6 @@ class IdeaLogEntry extends BaseLogEntry
      **/
     private $idea;
 
-
-
     /**
      * Get id
      *
@@ -48,9 +46,7 @@ class IdeaLogEntry extends BaseLogEntry
      */
     public function setSubject(\meta\IdeaProfileBundle\Entity\Idea $idea = null)
     {
-        $this->idea = $idea;
-    
-        return $this;
+        return $this->setIdea($idea);
     }
 
     /**
@@ -60,7 +56,7 @@ class IdeaLogEntry extends BaseLogEntry
      */
     public function getSubject()
     {
-        return $this->idea;
+        return $this->getIdea();
     }
 
     /**
@@ -71,8 +67,13 @@ class IdeaLogEntry extends BaseLogEntry
      */
     public function setIdea(\meta\IdeaProfileBundle\Entity\Idea $idea = null)
     {
+        if (!is_null($idea)){
+            $idea->addLogEntrie($this);
+        } elseif (!is_null($this->idea)){
+            $this->idea->removeLogEntrie($this);
+        }
+        
         $this->idea = $idea;
-    
         return $this;
     }
 

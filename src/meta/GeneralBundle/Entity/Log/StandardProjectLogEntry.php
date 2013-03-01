@@ -28,8 +28,6 @@ class StandardProjectLogEntry extends BaseLogEntry
      **/
     private $standardProject;
 
-
-
     /**
      * Get id
      *
@@ -48,9 +46,7 @@ class StandardProjectLogEntry extends BaseLogEntry
      */
     public function setSubject(\meta\StandardProjectProfileBundle\Entity\StandardProject $standardProject = null)
     {
-        $this->standardProject = $standardProject;
-
-        return $this;
+        return $this->setStandardProject($standardProject);
     }
 
     /**
@@ -60,7 +56,7 @@ class StandardProjectLogEntry extends BaseLogEntry
      */
     public function getSubject()
     {
-        return $this->standardProject;
+        return $this->getStandardProject();
     }
 
     /**
@@ -71,8 +67,13 @@ class StandardProjectLogEntry extends BaseLogEntry
      */
     public function setStandardProject(\meta\StandardProjectProfileBundle\Entity\StandardProject $standardProject = null)
     {
+        if (!is_null($standardProject)){
+            $standardProject->addLogEntrie($this);
+        } elseif (!is_null($this->standardProject)){
+            $this->standardProject->removeLogEntrie($this);
+        }
+
         $this->standardProject = $standardProject;
-    
         return $this;
     }
 
