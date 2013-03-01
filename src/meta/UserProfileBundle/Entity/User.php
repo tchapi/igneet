@@ -236,8 +236,7 @@ class User implements UserInterface
 
     /**
      * Ideas I have created (OWNING SIDE)
-     * @ORM\ManyToMany(targetEntity="meta\IdeaProfileBundle\Entity\Idea", inversedBy="creators")
-     * @ORM\JoinTable(name="User_created_Idea")
+     * @ORM\ManyToMany(targetEntity="meta\IdeaProfileBundle\Entity\Idea", mappedBy="creators")
      **/
     private $ideasCreated;
 
