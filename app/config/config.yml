@@ -40,6 +40,8 @@ services:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    globals:
+        ga_tracker_id: "%ga_tracker_id%"
 
 # Assetic Configuration
 assetic:
