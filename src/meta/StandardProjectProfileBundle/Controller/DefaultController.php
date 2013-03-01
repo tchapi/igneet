@@ -139,7 +139,10 @@ class DefaultController extends BaseController
                     $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:Skill');
                     $skills = $repository->findSkillsByArrayOfSlugs($skillSlugsAsArray);
                     
-                    $this->base['standardProject']->setNeededSkills($skills);
+                    $this->base['standardProject']->clearNeededSkills();
+                    foreach($skills as $skill){
+                        $this->base['standardProject']->addNeededSkill($skill);
+                    }
                     $objectHasBeenModified = true;
                     break;
             }

@@ -129,7 +129,6 @@ class CommonList extends Taggable
     public function setName($name)
     {
         $this->name = $name;
-    
         return $this;
     }
 
@@ -152,7 +151,6 @@ class CommonList extends Taggable
     public function setDescription($description)
     {
         $this->description = $description;
-    
         return $this;
     }
 
@@ -176,7 +174,6 @@ class CommonList extends Taggable
     public function setSlug($slug)
     {
         $this->slug = $slug;
-    
         return $this;
     }
 
@@ -191,26 +188,31 @@ class CommonList extends Taggable
     }
 
     /**
-     * Add items
+     * Add item
      *
      * @param meta\StandardProjectProfileBundle\Entity\CommonListItem $item
      * @return CommonList
      */
     public function addItem(\meta\StandardProjectProfileBundle\Entity\CommonListItem $item)
     {
-        $item->setCommonList($this);
+        if(!is_null($item)){
+            $item->setCommonList($this);
+        }
         $this->items[] = $item;
     
         return $this;
     }
 
     /**
-     * Remove items
+     * Remove item
      *
      * @param meta\StandardProjectProfileBundle\Entity\CommonListItem $item
      */
     public function removeItem(\meta\StandardProjectProfileBundle\Entity\CommonListItem $item)
     {
+        if(!is_null($item)){
+            $item->setCommonList(null);
+        }
         $this->items->removeElement($item);
     }
 
@@ -227,13 +229,13 @@ class CommonList extends Taggable
     /**
      * Set project
      *
+     * BINDING LOGIC IS DONE IN 'STANDARDPROJECT' CLASS
      * @param meta\StandardProjectProfileBundle\Entity\StandardProject $project
      * @return CommonList
      */
     public function setProject(\meta\StandardProjectProfileBundle\Entity\StandardProject $project = null)
     {
         $this->project = $project;
-    
         return $this;
     }
 
@@ -256,7 +258,6 @@ class CommonList extends Taggable
     public function setCreatedAt($createdAt)
     {
         $this->created_at = $createdAt;
-    
         return $this;
     }
 
@@ -279,7 +280,6 @@ class CommonList extends Taggable
     public function setUpdatedAt($updatedAt)
     {
         $this->updated_at = $updatedAt;
-    
         return $this;
     }
 
@@ -301,7 +301,9 @@ class CommonList extends Taggable
      */
     public function addComment(\meta\StandardProjectProfileBundle\Entity\Comment\CommonListComment $comment)
     {
-        $comment->setCommonList($this);
+        if(!is_null($comment)){
+            $comment->setCommonList($this);
+        }
         $this->comments[] = $comment;
     
         return $this;
@@ -314,7 +316,9 @@ class CommonList extends Taggable
      */
     public function removeComment(\meta\StandardProjectProfileBundle\Entity\Comment\CommonListComment $comment)
     {
-        $comment->setCommonList(null);
+        if(!is_null($comment)){
+            $comment->setCommonList(null);
+        }
         $this->comments->removeElement($comment);
     }
 
@@ -338,7 +342,6 @@ class CommonList extends Taggable
     public function setRank($rank)
     {
         $this->rank = $rank;
-    
         return $this;
     }
 

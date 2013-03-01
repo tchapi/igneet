@@ -294,7 +294,10 @@ class DefaultController extends Controller
                     $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:Skill');
                     $skills = $repository->findSkillsByArrayOfSlugs($skillSlugsAsArray);
                     
-                    $authenticatedUser->setSkills($skills);
+                    $authenticatedUser->clearSkills();
+                    foreach($skills as $skill){
+                        $authenticatedUser->addSkill($skill);
+                    }
                     $objectHasBeenModified = true;
                     break;
             }

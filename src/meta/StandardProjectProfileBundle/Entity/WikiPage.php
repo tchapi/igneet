@@ -131,13 +131,13 @@ class WikiPage extends Taggable
     /**
      * Set wiki
      *
-     * @param \stdClass $wiki
+     * BINDING LOGIC IS DONE IN 'WIKI' CLASS
+     * @param \meta\StandardProjectProfileBundle\Entity\Wiki $wiki
      * @return WikiPage
      */
-    public function setWiki($wiki)
+    public function setWiki(\meta\StandardProjectProfileBundle\Entity\Wiki $wiki)
     {
         $this->wiki = $wiki;
-    
         return $this;
     }
 
@@ -183,19 +183,20 @@ class WikiPage extends Taggable
     /**
      * Add children
      *
+     * BINDING LOGIC IS DONE IN 'WIKIPAGE' CLASS > setParent
      * @param \meta\StandardProjectProfileBundle\Entity\WikiPage $children
      * @return WikiPage
      */
     public function addChildren(\meta\StandardProjectProfileBundle\Entity\WikiPage $children)
     {
         $this->children[] = $children;
-    
         return $this;
     }
 
     /**
      * Remove children
      *
+     * BINDING LOGIC IS DONE IN 'WIKIPAGE' CLASS > setParent
      * @param \meta\StandardProjectProfileBundle\Entity\WikiPage $children
      */
     public function removeChildren(\meta\StandardProjectProfileBundle\Entity\WikiPage $children)
@@ -222,7 +223,6 @@ class WikiPage extends Taggable
     public function setTitle($title)
     {
         $this->title = $title;
-    
         return $this;
     }
 
@@ -245,7 +245,6 @@ class WikiPage extends Taggable
     public function setContent($content)
     {
         $this->content = $content;
-    
         return $this;
     }
 
@@ -268,7 +267,6 @@ class WikiPage extends Taggable
     public function setSlug($slug)
     {
         $this->slug = $slug;
-    
         return $this;
     }
 
@@ -283,29 +281,6 @@ class WikiPage extends Taggable
     }
 
     /**
-     * Set rootWiki
-     *
-     * @param \meta\StandardProjectProfileBundle\Entity\Wiki $rootWiki
-     * @return WikiPage
-     */
-    public function setRootWiki(\meta\StandardProjectProfileBundle\Entity\Wiki $rootWiki = null)
-    {
-        $this->rootWiki = $rootWiki;
-    
-        return $this;
-    }
-
-    /**
-     * Get rootWiki
-     *
-     * @return \meta\StandardProjectProfileBundle\Entity\Wiki 
-     */
-    public function getRootWiki()
-    {
-        return $this->rootWiki;
-    }
-
-    /**
      * Set created_at
      *
      * @param \DateTime $createdAt
@@ -314,7 +289,6 @@ class WikiPage extends Taggable
     public function setCreatedAt($createdAt)
     {
         $this->created_at = $createdAt;
-    
         return $this;
     }
 
@@ -337,7 +311,6 @@ class WikiPage extends Taggable
     public function setUpdatedAt($updatedAt)
     {
         $this->updated_at = $updatedAt;
-    
         return $this;
     }
 
@@ -359,7 +332,9 @@ class WikiPage extends Taggable
      */
     public function addComment(\meta\StandardProjectProfileBundle\Entity\Comment\WikiPageComment $comment)
     {
-        $comment->setWikiPage($this);
+        if (!is_null($comment)){
+            $comment->setWikiPage($this);
+        }
         $this->comments[] = $comment;
     
         return $this;
@@ -372,7 +347,9 @@ class WikiPage extends Taggable
      */
     public function removeComment(\meta\StandardProjectProfileBundle\Entity\Comment\WikiPageComment $comment)
     {
-        $comment->setWikiPage(null);
+        if (!is_null($comment)){
+            $comment->setWikiPage(null);
+        }
         $this->comments->removeElement($comment);
     }
 
@@ -396,7 +373,6 @@ class WikiPage extends Taggable
     public function setRank($rank)
     {
         $this->rank = $rank;
-    
         return $this;
     }
 

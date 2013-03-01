@@ -28,7 +28,7 @@
             </div>
           </div>
         </header>
-
+        <div id="flashes">
         {% if app.session.hasFlash('success') %}
           <div class="alert alert-success">
               {{ app.session.flash('success') }}
@@ -47,7 +47,7 @@
               <button type="button" class="close" data-dismiss="alert">×</button>
           </div>
         {% endif %}
-
+        </div>
         <div id="workspace">
           <div class="cardContainer">
             <div class="card">
@@ -59,7 +59,8 @@
 {% block javascripts %}
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 {% javascripts '@metaGeneralBundle/Resources/public/js/bootstrap.js'
-               '@metaGeneralBundle/Resources/public/js/select2.js' filter='?yui_js' %}
+               '@metaGeneralBundle/Resources/public/js/select2.js'
+               '@metaGeneralBundle/Resources/public/js/general.behaviour.js' filter='?yui_js' %}
         <script src="{{ asset_url }}"></script>
 {% endjavascripts %}
         <script type="text/javascript">

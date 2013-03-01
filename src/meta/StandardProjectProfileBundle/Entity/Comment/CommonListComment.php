@@ -28,7 +28,6 @@ class CommonListComment extends BaseComment
      **/
     private $commonList;
 
-
     /**
      * Get id
      *
@@ -42,13 +41,13 @@ class CommonListComment extends BaseComment
     /**
      * Set commonList
      *
+     * BINDING LOGIC IS DONE IN 'COMMONLIST' CLASS 
      * @param \meta\StandardProjectProfileBundle\Entity\CommonList $commonList
      * @return CommonListComment
      */
     public function setCommonList(\meta\StandardProjectProfileBundle\Entity\CommonList $commonList = null)
     {
         $this->commonList = $commonList;
-    
         return $this;
     }
 

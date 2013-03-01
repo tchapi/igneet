@@ -3,16 +3,6 @@
 
 Pour la publicité : tout est read-only tout public, la modif reste aux owners+participants des projets ou idées, sauf pour les commentaires où tout le monde peut commenter partout.
 
-Passe globale sur les entités: 
-userInviteToken OK
-standardProject OK
-Skill OK
-BaseComment OK
-User TODO
-Idea TODO
-ALL items in StandardProject TODO
-ALL items in GeneralBundle TODO
-
 Todo - General / Users :
 
  ☐ Faire une set_flash en javascript

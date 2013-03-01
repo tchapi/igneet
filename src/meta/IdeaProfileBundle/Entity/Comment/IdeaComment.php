@@ -28,7 +28,6 @@ class IdeaComment extends BaseComment
      **/
     private $idea;
 
-
     /**
      * Get id
      *
@@ -39,17 +38,16 @@ class IdeaComment extends BaseComment
         return $this->id;
     }
 
-
     /**
      * Set Idea
      *
+     * BINDING LOGIC IS DONE IN 'IDEA' CLASS 
      * @param \meta\IdeaProfileBundle\Entity\Idea $idea
      * @return IdeaComment
      */
     public function setIdea(\meta\IdeaProfileBundle\Entity\Idea $idea = null)
     {
         $this->idea = $idea;
-    
         return $this;
     }
 
