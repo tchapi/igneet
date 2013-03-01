@@ -52,7 +52,7 @@ class IdeaRepository extends EntityRepository
 
     return $qb->select('i')
             ->from('metaIdeaProfileBundle:Idea', 'i')
-            ->join('i.creator', 'u')
+            ->join('i.creators', 'u')
             ->where('u.id = :userId')
             ->setParameter('userId', $userId)
             ->orderBy('i.updated_at', 'DESC')
