@@ -346,10 +346,11 @@ class DefaultController extends Controller
             }
 
             $em->flush();
-
+            
+            $action = $archive?'archive':'recycle';
             $this->get('session')->setFlash(
                     'success',
-                    'The idea '.$this->base['idea']->getName().' has been ' . $archive?'archive':'recycle' . 'd successfully.'
+                    'The idea '.$this->base['idea']->getName().' has been ' . $action . 'd successfully.'
                 );
             
             return $this->redirect($this->generateUrl('i_list_ideas'));

@@ -107,8 +107,7 @@ class Idea extends Taggable
     /**
      * @var \DateTime $archived_at
      *
-     * @ORM\Column(name="archived_at", type="datetime")
-     * @Assert\NotBlank()
+     * @ORM\Column(name="archived_at", type="datetime", nullable=true)
      * @Assert\DateTime()
      */
     private $archived_at;

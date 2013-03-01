@@ -14,11 +14,12 @@ class IdeaRepository extends EntityRepository
   public function findRecentlyCreatedIdeas($limit, $archived = false)
   {
     
+    $modifier = $archived?'NOT ':'';
     $qb = $this->getEntityManager()->createQueryBuilder();
 
     return $qb->select('i')
             ->from('metaIdeaProfileBundle:Idea', 'i')
-            ->where('i.archived IS ' . $archived?'NOT ':'' . 'NULL')
+            ->where('i.archived_at IS ' . $modifier . 'NULL')
             ->orderBy('i.created_at', 'DESC')
             ->setMaxResults($limit)
             ->getQuery()
@@ -29,11 +30,12 @@ class IdeaRepository extends EntityRepository
   public function findRecentlyUpdatedIdeas($limit, $archived = false)
   {
     
+    $modifier = $archived?'NOT ':'';
     $qb = $this->getEntityManager()->createQueryBuilder();
 
     return $qb->select('i')
             ->from('metaIdeaProfileBundle:Idea', 'i')
-            ->where('i.archived IS ' . $archived?'NOT ':'' . 'NULL')
+            ->where('i.archived_at IS ' . $modifier . 'NULL')
             ->orderBy('i.updated_at', 'DESC')
             ->setMaxResults($limit)
             ->getQuery()
@@ -44,12 +46,13 @@ class IdeaRepository extends EntityRepository
   public function findTopIdeasForUser($userId, $max = 3, $archived = false)
   {
     
+    $modifier = $archived?'NOT ':'';
     $qb = $this->getEntityManager()->createQueryBuilder();
 
     return $qb->select('i')
             ->from('metaIdeaProfileBundle:Idea', 'i')
             ->join('i.creators', 'u')
-            ->where('i.archived IS ' . $archived?'NOT ':'' . 'NULL')
+            ->where('i.archived_at IS ' . $modifier . 'NULL')
             ->andWhere('u.id = :userId')
             ->setParameter('userId', $userId)
             ->orderBy('i.updated_at', 'DESC')
@@ -62,6 +65,7 @@ class IdeaRepository extends EntityRepository
   public function computeWeekActivityForIdeas($ideas, $archived = false)
   {
  
+    $modifier = $archived?'NOT ':'';
     $qb = $this->getEntityManager()->createQueryBuilder();
 
     return $qb->select('l AS log')
@@ -79,7 +83,7 @@ class IdeaRepository extends EntityRepository
             ->leftJoin('l2.user', 'u')
             ->leftJoin('i.comments', 'c', 'WITH', 'SUBSTRING(c.created_at,1,10) = SUBSTRING(l.created_at,1,10)')
 
-            ->where('i.archived IS ' . $archived?'NOT ':'' . 'NULL')
+            ->where('i.archived_at IS ' . $modifier . 'NULL')
             ->andWhere('i IN (:iids)')
             ->setParameter('iids', $ideas)
             ->andWhere("l.created_at > DATE_SUB(CURRENT_DATE(),7,'DAY')")

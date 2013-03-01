@@ -72,12 +72,12 @@ class IdeaComment extends BaseComment
     {
         $standardProjectComment = new StandardProjectComment();
 
-        $standardProjectComment->setText($this->text)
-                               ->setPublic($this->public)
-                               ->setCreatedAt($this->created_at)
-                               ->setUser($this->user);
+        $standardProjectComment->setText($this->getText())
+                               ->setPublic($this->getPublic())
+                               ->setCreatedAt($this->getCreatedAt())
+                               ->setUser($this->getUser());
 
-        foreach ($this->validators as $user) {
+        foreach ($this->getValidators() as $user) {
             $standardProjectComment->addValidator($user);
         }
 
