@@ -135,7 +135,7 @@ class WikiPage extends Taggable
      * @param \meta\StandardProjectProfileBundle\Entity\Wiki $wiki
      * @return WikiPage
      */
-    public function setWiki(\meta\StandardProjectProfileBundle\Entity\Wiki $wiki)
+    public function setWiki($wiki)
     {
         $this->wiki = $wiki;
         return $this;

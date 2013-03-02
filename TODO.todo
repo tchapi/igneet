@@ -1,19 +1,18 @@
 
 ## TODO ##
 
-Pour la publicité : tout est read-only tout public, la modif reste aux owners+participants des projets ou idées, sauf pour les commentaires où tout le monde peut commenter partout.
-
 Todo - General / Users :
 
  ☐ Clustering des activityLogs : vérifier que l'object correspond en récupérant le findOneBY, et pas faire le test dans le if après
  ☐ Mettre maxUsersInListings en parameters de l'appli a récupérer dans Twig
  ☐ Ne pas passer le nom complet de l'action en base64 lors d'un chooseFile ou User mais mettre seulement qqs parametres puis reconstruire après ?
- ☐ Pagination générale sur les objets
  ☐ Filtrer les timelines ?
  ☐ login et signup : focus sur le champ lors du chargement de la page
+ ☐ Pagination timeline
+ ☐ soft-delete des idées et projets et users
+   \__ notamment pour les idées archivées qui ne peuvent pas etre delete sinon 
  
- ☐ soft-delete des idées et projets et users 
- 
+ ✔ Pagination générale sur les objets @done (13-03-02 12:52)
  ✔ Faire une set_flash en javascript @done (13-03-01 19:57)
  ✔ Google Analytics @done (13-03-01 16:55)
  ✔ GA : mettre un switch si ga_ = 0 @done (13-03-01 20:13)
@@ -135,17 +134,15 @@ Todo - Home :
 Todo - Meta:
 
  ☐ tous les meta sont publics pour les gens qui y sont et pas pour les autres
-
- ☐ une idée est publique dans la meta
-   - discussion
-    tagger 'concept' ou 'connaissance' dans le fil de discussion
-
- ☐ au niveau meta, la timeline ne ressort que les trucs publics des projets en dessous
-
  ☐ Afficher le meta dans les infos d'un projet
 
  ☐ Commentaires
    \_ MetaComment = shoutbox-like
+
+ ✔ une idée est publique dans la meta @done (13-03-02 12:52)
+   ✘ - discussion @cancelled (13-03-02 12:52)
+      tagger 'concept' ou 'connaissance' dans le fil de discussion
+ ✘ au niveau meta, la timeline ne ressort que les trucs publics des projets en dessous @cancelled (13-03-02 12:53)
 
 Todo - Search:
 
