@@ -19,7 +19,7 @@ class CommentController extends BaseController
 
     public function addStandardProjectCommentAction(Request $request, $slug){
 
-        $this->fetchProjectAndPreComputeRights($slug, false, true);
+        $this->fetchProjectAndPreComputeRights($slug, false, false);
 
         if ($this->base != false) {
 
@@ -73,7 +73,7 @@ class CommentController extends BaseController
 
     public function addWikiPageCommentAction(Request $request, $slug, $id){
 
-        $this->fetchProjectAndPreComputeRights($slug, false, true);
+        $this->fetchProjectAndPreComputeRights($slug, false, false);
 
         if ($this->base != false) {
 
@@ -140,7 +140,7 @@ class CommentController extends BaseController
 
     public function addCommonListCommentAction(Request $request, $slug, $id){
 
-        $this->fetchProjectAndPreComputeRights($slug, false, true);
+        $this->fetchProjectAndPreComputeRights($slug, false, false);
 
         if ($this->base != false) {
 

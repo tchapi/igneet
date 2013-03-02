@@ -15,7 +15,7 @@ class TimelineController extends BaseController
 
     public function showTimelineAction($slug, $page)
     {
-        $this->fetchProjectAndPreComputeRights($slug, false, true);
+        $this->fetchProjectAndPreComputeRights($slug, false, false);
 
         if ($this->base == false) 
           return $this->forward('metaStandardProjectProfileBundle:Base:showRestricted', array('slug' => $slug));
@@ -26,7 +26,7 @@ class TimelineController extends BaseController
 
     public function historyAction($slug, $page){
 
-        $this->fetchProjectAndPreComputeRights($slug, false, true);
+        $this->fetchProjectAndPreComputeRights($slug, false, false);
 
         if ($this->base == false) 
           return $this->forward('metaStandardProjectProfileBundle:Base:showRestricted', array('slug' => $slug));

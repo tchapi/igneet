@@ -50,6 +50,7 @@
   </div>
 </section>
 {% endif %}
+{% if base.canEdit %}
 <form action="{{ path('sp_show_project_resources', {'slug': base.standardProject.slug}) }}" method="post" {{ form_enctype(form) }}>
   <section>
     <h4>Add a new resource :</h4>
@@ -62,4 +63,9 @@
     </div>
   </section>
 </form>
+{% else %}
+<section>
+No resource yet.
+</section>
+{% endif %}
 {% endblock %}

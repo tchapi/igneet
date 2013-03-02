@@ -225,7 +225,7 @@ class DefaultController extends BaseController
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('resetPicture', $request->get('token')))
             return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $slug)));
 
-        $this->fetchProjectAndPreComputeRights($slug, true, false);
+        $this->fetchProjectAndPreComputeRights($slug, false, true);
 
         if ($this->base != false) {
 

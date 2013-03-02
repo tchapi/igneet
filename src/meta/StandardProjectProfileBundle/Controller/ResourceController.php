@@ -22,7 +22,7 @@ class ResourceController extends BaseController
 
     public function showResourcesAction(Request $request, $slug, $page)
     {
-        $this->fetchProjectAndPreComputeRights($slug, false, true);
+        $this->fetchProjectAndPreComputeRights($slug, false, false);
 
         if ($this->base == false) 
           return $this->forward('metaStandardProjectProfileBundle:Base:showRestricted', array('slug' => $slug));
@@ -213,7 +213,7 @@ class ResourceController extends BaseController
     public function downloadResourceAction(Request $request, $slug, $id)
     {
   
-        $this->fetchProjectAndPreComputeRights($slug, false, true);
+        $this->fetchProjectAndPreComputeRights($slug, false, false);
 
         if ($this->base != false) {
 

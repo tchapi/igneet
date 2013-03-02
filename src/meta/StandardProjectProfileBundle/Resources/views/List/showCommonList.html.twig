@@ -59,7 +59,7 @@
     <li><a href="{{ path('sp_show_project_listitem_new', {'slug': base.standardProject.slug, 'listId': commonList.id}) }}"><i class="icon-plus"></i>New item</a></li>
   </ul>
 {% else %}
-  <p class="muted">No list item yet ! <a href="{{ path('sp_show_project_listitem_new', {'slug': base.standardProject.slug, 'listId': commonList.id}) }}">Create one ...</a></p>
+  <p class="muted">No list item yet ! {% if base.canEdit %}<a href="{{ path('sp_show_project_listitem_new', {'slug': base.standardProject.slug, 'listId': commonList.id}) }}">Create one ...</a></p>{% endif %}
 {% endif %}
 </section>
 <section>
