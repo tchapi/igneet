@@ -65,11 +65,23 @@
 
     </div>
 
+    
+    <div>
+      {% if base.vacantSkills|length > 0 %}
+      <i class="icon-exclamation-sign"></i> Vacant skills :
+      <ul class="skills">
+    {% for skill in base.vacantSkills %}<li class="label" style="background-color: #{{ skill.color }}" rel="{{ skill.slug }}">{{ skill.name }}</li>{% endfor %}
+      </ul>
+      {% else %}
+      <i class="icon-ok-sign"></i> All skills are endowed !
+      {% endif %}
+    </div>
+
   </div>
 
   <div class="projectAbout">
     <div>{{ base.standardProject.owners|length }} owner{% if base.standardProject.owners|length > 1 %}s{% endif %}</div>
-    <div>{{ base.standardProject. participants|length }} participating</div>
+    <div>{{ base.standardProject.participants|length }} participating</div>
     <div>{{ base.standardProject.watchers|length }} watching</div>
   </div>
 {% endblock %}
