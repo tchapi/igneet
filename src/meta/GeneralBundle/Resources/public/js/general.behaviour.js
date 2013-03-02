@@ -1,7 +1,3 @@
-$(document).ready(function(){
-  
-});
-
 var setFlash = function(type, message){
 
   $('<div/>',{
