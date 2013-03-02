@@ -44,11 +44,9 @@ class UserLogEntry extends BaseLogEntry
      * @param \meta\UserProfileBundle\Entity\User $other_user
      * @return UserLogEntry
      */
-    public function setSubject(\meta\UserProfileBundle\Entity\User $other_user = null)
+    public function setSubject(\meta\UserProfileBundle\Entity\User $otherUser = null)
     {
-        $this->other_user = $other_user;
-    
-        return $this;
+        return $this->setOtherUser($otherUser);
     }
 
     /**
@@ -58,7 +56,7 @@ class UserLogEntry extends BaseLogEntry
      */
     public function getSubject()
     {
-        return $this->other_user;
+        return $this->getOtherUser();
     }
 
     /**
@@ -69,8 +67,13 @@ class UserLogEntry extends BaseLogEntry
      */
     public function setOtherUser(\meta\UserProfileBundle\Entity\User $otherUser = null)
     {
+        if (!is_null($otherUser)){
+            $otherUser->addLogEntrie($this);
+        } elseif (!is_null($this->other_user)){
+            $this->other_user->removeLogEntrie($this);
+        }
+
         $this->other_user = $otherUser;
-    
         return $this;
     }
 

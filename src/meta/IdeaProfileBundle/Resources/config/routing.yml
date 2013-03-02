@@ -1,12 +1,16 @@
 # IDEAS
 
 i_list_ideas:
-    pattern:  /ideas
-    defaults: { _controller: metaIdeaProfileBundle:Default:list, max: 10, onlyArchived: false }
+    pattern:  /ideas/{page}
+    defaults: { _controller: metaIdeaProfileBundle:Default:list, page: 1, archived: false }
+    requirements:
+        page: \d+
 
 i_list_archived_ideas:
-    pattern:  /ideas/archived
-    defaults: { _controller: metaIdeaProfileBundle:Default:list, max: 10, onlyArchived: true }
+    pattern:  /ideas/archived/{page}
+    defaults: { _controller: metaIdeaProfileBundle:Default:list, page: 1, archived: true }
+    requirements:
+        page: \d+
 
 i_new_idea:
     pattern:  /ideas/new
@@ -35,6 +39,7 @@ i_show_idea_timeline:
     defaults: { _controller: metaIdeaProfileBundle:Default:showTimeline, slug: _, page: 1}
     requirements:
         id: \d+
+        page: \d+
 
 i_edit_idea:
     pattern:  /idea/edit/{id}

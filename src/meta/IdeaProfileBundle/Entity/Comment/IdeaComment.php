@@ -5,6 +5,8 @@ namespace meta\IdeaProfileBundle\Entity\Comment;
 use meta\GeneralBundle\Entity\Comment\BaseComment;
 use Doctrine\ORM\Mapping as ORM;
 
+use  meta\StandardProjectProfileBundle\Entity\Comment\StandardProjectComment;
+
 /**
  * IdeaComment
  *
@@ -28,7 +30,6 @@ class IdeaComment extends BaseComment
      **/
     private $idea;
 
-
     /**
      * Get id
      *
@@ -39,17 +40,16 @@ class IdeaComment extends BaseComment
         return $this->id;
     }
 
-
     /**
      * Set Idea
      *
+     * BINDING LOGIC IS DONE IN 'IDEA' CLASS 
      * @param \meta\IdeaProfileBundle\Entity\Idea $idea
      * @return IdeaComment
      */
     public function setIdea(\meta\IdeaProfileBundle\Entity\Idea $idea = null)
     {
         $this->idea = $idea;
-    
         return $this;
     }
 
@@ -61,5 +61,26 @@ class IdeaComment extends BaseComment
     public function getIdea()
     {
         return $this->idea;
+    }
+
+    /**
+     * Create a standardProject Comment from an idea Comment
+     *
+     * @return meta\StandardProjectProfileBundle\Entity\Comment\StandardProjectComment
+     */
+    public function createStandardProjectComment()
+    {
+        $standardProjectComment = new StandardProjectComment();
+
+        $standardProjectComment->setText($this->getText())
+                               ->setPublic($this->getPublic())
+                               ->setCreatedAt($this->getCreatedAt())
+                               ->setUser($this->getUser());
+
+        foreach ($this->getValidators() as $user) {
+            $standardProjectComment->addValidator($user);
+        }
+
+        return $standardProjectComment;
     }
 }

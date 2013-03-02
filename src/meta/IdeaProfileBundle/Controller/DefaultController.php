@@ -65,14 +65,16 @@ class DefaultController extends Controller
      *                    IDEA LIST
      *  #################################################### */
 
-    public function listAction($max, $onlyArchived)
+    public function listAction($page, $archived)
     {
 
         $repository = $this->getDoctrine()->getRepository('metaIdeaProfileBundle:Idea');
 
-        $ideas = $repository->findRecentlyCreatedIdeas($max, $onlyArchived);
+        $totalIdeas = $repository->countIdeas($archived);
+        $ideas = $repository->findRecentlyCreatedIdeas($page, $this->container->getParameter('listings.number_of_items_per_page'), $archived);
 
-        return $this->render('metaIdeaProfileBundle:Default:list.html.twig', array('ideas' => $ideas, 'archived' => $onlyArchived));
+        $pagination = array( 'page' => $page, 'totalIdeas' => $totalIdeas);
+        return $this->render('metaIdeaProfileBundle:Default:list.html.twig', array('ideas' => $ideas, 'archived' => $archived, 'pagination' => $pagination));
 
     }
 
@@ -336,15 +338,21 @@ class DefaultController extends Controller
         $this->fetchIdeaAndPreComputeRights($id, true, false);
 
         if ($this->base != false) {
-        
 
             $em = $this->getDoctrine()->getManager();
-            $this->base['idea']->setArchived($archive);
-            $em->flush();
+            
+            if ($archive === true){
+                $this->base['idea']->archive();
+            } else {
+                $this->base['idea']->recycle();
+            }
 
+            $em->flush();
+            
+            $action = $archive?'archive':'recycle';
             $this->get('session')->setFlash(
                     'success',
-                    'The idea '.$this->base['idea']->getName().' has been archived successfully.'
+                    'The idea '.$this->base['idea']->getName().' has been ' . $action . 'd successfully.'
                 );
             
             return $this->redirect($this->generateUrl('i_list_ideas'));
@@ -353,7 +361,7 @@ class DefaultController extends Controller
 
             $this->get('session')->setFlash(
                     'warning',
-                    'You do not have sufficient privileges to archive this idea.'
+                    'You do not have sufficient privileges to archive or recycle this idea.'
                 );
 
             return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
@@ -405,12 +413,12 @@ class DefaultController extends Controller
 
         if ($this->base != false && $this->base['idea']->isArchived() === false){
 
-            $this->base['idea']->setArchived(true);
+            $em = $this->getDoctrine()->getManager();
 
             $project = new StandardProject();
                 $project->setName($this->base['idea']->getName());
                 $project->setHeadline($this->base['idea']->getHeadline());
-                $project->setAbout("Originated from idea #" . $this->base['idea']->getId());
+                $project->setAbout("Originated from idea #" . $this->base['idea']->getId() . " : " . $this->base['idea']->getName() );
                 $project->setPicture($this->base['idea']->getRawPicture());
                 $project->setCreatedAt($this->base['idea']->getCreatedAt());
 
@@ -426,15 +434,25 @@ class DefaultController extends Controller
                     $creator->addProjectsOwned($project);
                 }
 
-                $project->setOriginalIdea($this->base['idea']);
-
-                if ($request->request->get('slug') === ""){
-                    $textService = $this->container->get('textService');
-                    $project->setSlug($textService->slugify($project->getName()));
-                } else {
-                    $project->setSlug(trim($request->request->get('slug')));
+                foreach ($this->base['idea']->getComments() as $comment) {
+                    $newComment = $comment->createStandardProjectComment();
+                    
+                    $project->addComment($newComment);
+                    $em->persist($newComment);
                 }
 
+            $project->setOriginalIdea($this->base['idea']);
+
+            if ($request->request->get('slug') === ""){
+                $textService = $this->container->get('textService');
+                $project->setSlug($textService->slugify($project->getName()));
+            } else {
+                $project->setSlug(trim($request->request->get('slug')));
+            }
+
+            $em->persist($project);
+
+            // Wiki 
             $wiki = new Wiki();
 
                 $project->setWiki($wiki);
@@ -451,16 +469,18 @@ class DefaultController extends Controller
                 $wiki->addPage($wikiPageConcept);
                 $wiki->addPage($wikiPageKnowledge);
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($project);
             $em->persist($wiki);
             $em->persist($wikiPageConcept);
             $em->persist($wikiPageKnowledge);
+
             $em->flush();
+
+            // We archive the idea
+            $this->base['idea']->archive();
 
             $logService = $this->container->get('logService');
             $logService->log($this->getUser(), 'user_transform_idea_in_project', $this->base['idea'], array( 'project' => array('routing' => 'project', 'logName' => $project->getLogName(), 'args' => $project->getLogArgs() )));
-
+            $logService->log($this->getUser(), 'user_create_project_from_idea', $project, array( 'idea' => array('routing' => 'idea', 'logName' => $this->base['idea']->getLogName(), 'args' => $this->base['idea']->getLogArgs() )));
 
             $this->get('session')->setFlash(
                     'success',

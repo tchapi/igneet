@@ -93,7 +93,6 @@ class BaseComment
     public function setText($text)
     {
         $this->text = $text;
-    
         return $this;
     }
 
@@ -116,7 +115,6 @@ class BaseComment
     public function setPublic($public)
     {
         $this->public = $public;
-    
         return $this;
     }
 
@@ -149,7 +147,6 @@ class BaseComment
     public function setCreatedAt($createdAt)
     {
         $this->created_at = $createdAt;
-    
         return $this;
     }
 
@@ -171,14 +168,13 @@ class BaseComment
      */
     public function setUser(\meta\UserProfileBundle\Entity\User $user = null)
     {
-        if ($user) {
+        if (!is_null($user)) {
             $user->addComment($this);
-            $this->user = $user;
-        } else {
+        } elseif (!is_null($this->user)) {
             $this->user->removeComment($this);
-            $this->user = null;
         }
-    
+        
+        $this->user = $user;
         return $this;
     }
 
@@ -193,14 +189,14 @@ class BaseComment
     }
 
     /**
-     * Add validators
+     * Add validator
      *
      * @param \meta\UserProfileBundle\Entity\User $validator
      * @return BaseComment
      */
     public function addValidator(\meta\UserProfileBundle\Entity\User $validator)
     {
-        if( $validator !== null && $this->validators->indexOf($validator) === false ) {
+        if(!is_null($validator) && $this->validators->indexOf($validator) === false ) {
             $validator->addValidatedComment($this);
             $this->validators[] = $validator;
         }
@@ -209,13 +205,13 @@ class BaseComment
     }
 
     /**
-     * Remove validators
+     * Remove validator
      *
      * @param \meta\UserProfileBundle\Entity\User $validator
      */
     public function removeValidator(\meta\UserProfileBundle\Entity\User $validator)
     {
-        if( $validator !== null) {
+        if(!is_null($validator)) {
             $validator->removeValidatedComment($this);
         }
 
@@ -223,13 +219,13 @@ class BaseComment
     }
 
     /**
-     * Toggle validators
+     * Toggle validator
      *
      * @param \meta\UserProfileBundle\Entity\User $validator
      */
     public function toggleValidator(\meta\UserProfileBundle\Entity\User $validator)
     {
-        if( $validator !== null){
+        if(!is_null($validator)){
             if ($this->validators->indexOf($validator) === false ) {
                 $validator->addValidatedComment($this);
                 $this->validators[] = $validator;

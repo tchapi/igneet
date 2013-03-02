@@ -27,6 +27,10 @@ parameters:
       type: project
       icon: beaker
       text: %%user$s created a new project %%project$s.
+    user_create_project_from_idea: # DONE
+      type: project
+      icon: beaker
+      text: %%user$s created a new project %%project$s from the idea %%idea$s.
     user_is_made_owner_project: # DONE
       type: project
       icon: key

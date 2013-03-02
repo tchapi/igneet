@@ -54,6 +54,9 @@ class DefaultController extends Controller
 
     }
 
+    /*
+     * Toggles validation for a comment
+     */
     public function validateCommentAction($id)
     {
         $authenticatedUser = $this->getUser();
@@ -65,7 +68,6 @@ class DefaultController extends Controller
 
             if ($comment){
 
-                // S'il est deja validé ???
                 $comment->toggleValidator($authenticatedUser);
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
@@ -76,5 +78,20 @@ class DefaultController extends Controller
         }
 
         return new Response();
+    }
+
+    /*
+     * Renders pagination
+     */
+    public function paginationAction($route, $page, $total)
+    {
+        
+        $objects_per_page  = $this->container->getParameter('listings.number_of_items_per_page');
+        $last_page         = ceil($total / $objects_per_page);
+        $previous_page     = $page > 1 ? $page - 1 : 1;
+        $next_page         = $page < $last_page ? $page + 1 : $last_page;
+
+        return $this->render('metaGeneralBundle:Default:pagination.html.twig', array('route' => $route, 'current_page' => $page, 'total' => $total, 'objects_per_page' => $objects_per_page, 'last_page' => $last_page, 'previous_page' => $previous_page, 'next_page' => $next_page));
+
     }
 }

@@ -22,7 +22,7 @@ class WikiController extends BaseController
 
     public function showWikiHomeAction($slug)
     {
-        $this->fetchProjectAndPreComputeRights($slug, false, true);
+        $this->fetchProjectAndPreComputeRights($slug, false, false);
 
         if ($this->base == false) 
           return $this->forward('metaStandardProjectProfileBundle:Base:showRestricted', array('slug' => $slug));
@@ -62,7 +62,7 @@ class WikiController extends BaseController
 
     public function showWikiPageAction($slug, $id, $pageSlug)
     {
-        $this->fetchProjectAndPreComputeRights($slug, false, true);
+        $this->fetchProjectAndPreComputeRights($slug, false, false);
 
         if ($this->base == false) 
           return $this->forward('metaStandardProjectProfileBundle:Base:showRestricted', array('slug' => $slug));
@@ -150,7 +150,7 @@ class WikiController extends BaseController
 
     }
 
-    public function makeHomeWikiPageAction($slug, $id)
+    public function makeHomeWikiPageAction(Request $request, $slug, $id)
     {
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('makeHomeWikiPage', $request->get('token')))
             return $this->redirect($this->generateUrl('sp_show_project_wiki', array('slug' => $slug)));

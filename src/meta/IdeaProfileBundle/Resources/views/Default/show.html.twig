@@ -48,6 +48,11 @@
     <div>
       <i class="icon-calendar"></i> Created on {{ base.idea.createdAt|date("d/m/Y") }}
     </div>
+    {% if base.idea.archivedAt %}
+    <div>
+      <i class="icon-save"></i> Archived on {{ base.idea.archivedAt|date("d/m/Y") }}
+    </div>
+    {% endif %}
     {% if base.isCreator %}
     <div>
       {% if not base.idea.archived %}<i class="icon-external-link"></i> Turn this idea <a data-confirm="Are you sure you want to turn this idea into a project ?" href="{{ path('sp_choose_slug', {'targetAsBase64': base.projectizeAsBase64, 'token': csrf_token('projectize')  }) }}">into a project</a> or <a data-confirm="Are you sure you want to archive this idea ?" href="{{ path('i_archive_idea', {'id': base.idea.id, 'token': csrf_token('archiveOrRecycle') }) }}">archive</a> it.{% else %}<i class="icon-refresh"></i> <a data-confirm="Are you sure you want to recycle this idea ?" href="{{ path('i_recycle_idea', {'id': base.idea.id, 'token': csrf_token('archiveOrRecycle') }) }}">Recycle</a> this idea{% endif %}

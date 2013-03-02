@@ -20,14 +20,17 @@ class DefaultController extends BaseController
      *                    PROJECT LIST
      *  #################################################### */
 
-    public function listAction($max)
+    public function listAction($page)
     {
 
         $repository = $this->getDoctrine()->getRepository('metaStandardProjectProfileBundle:StandardProject');
 
-        $standardProjects = $repository->findRecentlyCreatedStandardProjects($max);
+        $totalProjects = $repository->countProjects();
+        $standardProjects = $repository->findRecentlyCreatedStandardProjects($page, $this->container->getParameter('listings.number_of_items_per_page'));
 
-        return $this->render('metaStandardProjectProfileBundle:Default:list.html.twig', array('standardProjects' => $standardProjects));
+        $pagination = array( 'page' => $page, 'totalProjects' => $totalProjects);
+
+        return $this->render('metaStandardProjectProfileBundle:Default:list.html.twig', array('standardProjects' => $standardProjects, 'pagination' => $pagination));
 
     }
 
@@ -139,7 +142,10 @@ class DefaultController extends BaseController
                     $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:Skill');
                     $skills = $repository->findSkillsByArrayOfSlugs($skillSlugsAsArray);
                     
-                    $this->base['standardProject']->setNeededSkills($skills);
+                    $this->base['standardProject']->clearNeededSkills();
+                    foreach($skills as $skill){
+                        $this->base['standardProject']->addNeededSkill($skill);
+                    }
                     $objectHasBeenModified = true;
                     break;
             }
@@ -222,7 +228,7 @@ class DefaultController extends BaseController
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('resetPicture', $request->get('token')))
             return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $slug)));
 
-        $this->fetchProjectAndPreComputeRights($slug, true, false);
+        $this->fetchProjectAndPreComputeRights($slug, false, true);
 
         if ($this->base != false) {
 

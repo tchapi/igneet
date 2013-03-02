@@ -92,7 +92,6 @@ class BaseLogEntry
     public function setType($type)
     {
         $this->type = $type;
-    
         return $this;
     }
 
@@ -115,7 +114,6 @@ class BaseLogEntry
     public function setCreatedAt($createdAt)
     {
         $this->created_at = $createdAt;
-    
         return $this;
     }
 
@@ -137,8 +135,12 @@ class BaseLogEntry
      */
     public function setUser(\meta\UserProfileBundle\Entity\User $user = null)
     {
+        if(!is_null($user)){
+            $user->addInitiatedLogEntrie($this);
+        } elseif (!is_null($this->user)){
+            $this->user->removeInitiatedLogEntrie($this);
+        }
         $this->user = $user;
-    
         return $this;
     }
 
@@ -158,10 +160,9 @@ class BaseLogEntry
      * @param array $objects
      * @return LogEntry
      */
-    public function setObjects($objects)
+    public function setObjects($objectsAsArray)
     {
-        $this->objects = $objects;
-    
+        $this->objects = $objectsAsArray;
         return $this;
     }
 
@@ -184,7 +185,6 @@ class BaseLogEntry
     public function setCombinedCount($combinedCount)
     {
         $this->combined_count = $combinedCount;
-    
         return $this;
     }
 
@@ -196,8 +196,7 @@ class BaseLogEntry
      */
     public function incrementCombinedCount()
     {
-        $this->combined_count +=1 ;
-    
+        $this->combined_count += 1 ;
         return $this;
     }
 

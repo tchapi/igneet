@@ -5,18 +5,18 @@ Pour la publicité : tout est read-only tout public, la modif reste aux owners+p
 
 Todo - General / Users :
 
- ☐ Faire une set_flash en javascript
  ☐ Clustering des activityLogs : vérifier que l'object correspond en récupérant le findOneBY, et pas faire le test dans le if après
  ☐ Mettre maxUsersInListings en parameters de l'appli a récupérer dans Twig
  ☐ Ne pas passer le nom complet de l'action en base64 lors d'un chooseFile ou User mais mettre seulement qqs parametres puis reconstruire après ?
  ☐ Pagination générale sur les objets
  ☐ Filtrer les timelines ?
  ☐ login et signup : focus sur le champ lors du chargement de la page
- ☐ Base.canEdit --> C'est très très con pour les wiki, les listes, car c'est que les éditeurs qui peuvent le voir anyway => transformer en un <span> qui permet d'avoir une preference "voir l'édition" ou pas
- ☐ GA
-
+ 
  ☐ soft-delete des idées et projets et users 
  
+ ✔ Faire une set_flash en javascript @done (13-03-01 19:57)
+ ✔ Google Analytics @done (13-03-01 16:55)
+ ✔ GA : mettre un switch si ga_ = 0 @done (13-03-01 20:13)
  ✔ Faire le skin de la page 'Area restricted' @done (13-02-16 16:12)
  ✔ Signup : non public, faire une invitation par mail avec un token ? @done (13-02-27 21:22)
  ✔ ajouter la possibilité de supprimer une image de profile @done (13-02-10 23:09)
@@ -56,6 +56,7 @@ Todo - General / Users :
    \__ si, ça a un intérêt
  ✘ watch ou participant sur unde idée : a voir ? @cancelled (13-01-26 11:25)
    \__ si, ça a un intérêt
+ ✘ Base.canEdit --> C'est très très con pour les wiki, les listes, car c'est que les éditeurs qui peuvent le voir anyway => transformer en un <span> qui permet d'avoir une preference "voir l'édition" ou pas @cancelled (13-03-01 16:56)
 
 Todo - entité "CommonList":
 
@@ -66,7 +67,7 @@ Todo - entité "CommonList":
 
 Todo - entité "Wiki":
 
- ☐ Ajax pour new wiki page
+ ☐ Ajax pour new wiki page ??
 
  ✔ tagging des pages wiki et des listes @done (13-01-28 21:58)
  ✔ make homepage du wiki @done (13-01-31 22:56)
@@ -101,11 +102,7 @@ Todo - entité "Comment":
 
 Todo - entité "Idea":
 
- ☐ tagguer dans le fil de discussion Concept ou Knowledge
- ☐ pouvoir tagguer un commentaire en 'valuable'
-     --> passer automatiquement un commentaire dans l'un ou l'autre des champs textes
- ☐ Transform into project : tout les commentaires de l'idée sont réassociés avec une marque <hr> dans la timeline pour séparer quand c'est devenu un projet
-
+ ✔ Transform into project : tout les commentaires de l'idée sont réassociés avec une marque (log) dans la timeline pour séparer quand c'est devenu un projet @done (13-03-01 17:41)
  ✔ log des modifs sur les ideas : reste l'affichage sur une timeline ? @done (13-02-13 18:49)
  ✔ Description / Info @done (13-01-16 21:18)
   \_ description textuelle principale OK OK
@@ -123,6 +120,10 @@ Todo - entité "Idea":
   \__ transform n'archive pas l'idée mais propose de le faire
  ✔ projectise : slug pas unique !!! ARGH !!! @done (13-02-24 23:13)
 
+ ✘ tagguer dans le fil de discussion Concept ou Knowledge @cancelled (13-03-01 20:14)
+ ✘ pouvoir tagguer un commentaire en 'valuable' @cancelled (13-03-01 20:15)
+   \ --> passer automatiquement ce commentaire dans le champ HTML correspondant ("insert as a comment into concept")
+
 Todo - Home :
 
  ☐ Home : doit driver l'utilisateur en avant
@@ -134,9 +135,8 @@ Todo - Home :
 Todo - Meta:
 
  ☐ tous les meta sont publics pour les gens qui y sont et pas pour les autres
- ☐ projects: page info est publique + shoutbox quand les posts sont taggés 'outside'
 
-  ☐ une idée est publique dans la meta
+ ☐ une idée est publique dans la meta
    - discussion
     tagger 'concept' ou 'connaissance' dans le fil de discussion
 

@@ -4,8 +4,9 @@ body > header{
 body > header .navbar a.brand{
   margin-left: 0;
 }
-body > div.alert{
-  border-radius: 0 0 3px 3px;
+body > #flashes > div.alert{
+  border-radius: 0;
+  margin-bottom: 1px;
 }
 
 body > footer{

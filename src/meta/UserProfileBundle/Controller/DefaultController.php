@@ -294,7 +294,10 @@ class DefaultController extends Controller
                     $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:Skill');
                     $skills = $repository->findSkillsByArrayOfSlugs($skillSlugsAsArray);
                     
-                    $authenticatedUser->setSkills($skills);
+                    $authenticatedUser->clearSkills();
+                    foreach($skills as $skill){
+                        $authenticatedUser->addSkill($skill);
+                    }
                     $objectHasBeenModified = true;
                     break;
             }
@@ -526,13 +529,16 @@ class DefaultController extends Controller
     /*
      * List recently created users
      */
-    public function listRecentlyCreatedAction($max = 3)
+    public function listRecentlyCreatedAction($page)
     {
 
         $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
-        $users = $repository->findRecentlyCreatedUsers($max);
 
-        return $this->render('metaUserProfileBundle:Default:list.html.twig', array('users' => $users));
+        $totalUsers = $repository->countUsers();
+        $users = $repository->findRecentlyCreatedUsers($page, $this->container->getParameter('listings.number_of_items_per_page'));
+
+        $pagination = array( 'page' => $page, 'totalUsers' => $totalUsers);
+        return $this->render('metaUserProfileBundle:Default:list.html.twig', array('users' => $users, 'pagination' => $pagination));
 
     }
 

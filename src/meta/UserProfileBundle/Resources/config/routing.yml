@@ -49,8 +49,10 @@ u_delete_user_profile:
         _method:  GET
 
 u_show_list_recent_created:
-    pattern:  /people
-    defaults: { _controller: metaUserProfileBundle:Default:listRecentlyCreated, max: 10 }
+    pattern:  /people/{page}
+    defaults: { _controller: metaUserProfileBundle:Default:listRecentlyCreated, page: 1 }
+    requirements:
+        page: \d+
 
 u_choose_user:
     pattern:  /people/choose/{targetAsBase64}
