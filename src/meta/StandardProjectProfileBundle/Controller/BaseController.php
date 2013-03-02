@@ -27,6 +27,27 @@ class BaseController extends Controller
         
         $targetPictureAsBase64 = array ('slug' => 'metaStandardProjectProfileBundle:Default:edit', 'params' => array('slug' => $slug ), 'crop' => true);
 
+        // Compute endowed/vacant skills
+        $vacantSkills = array();
+        foreach ($standardProject->getNeededSkills() as $skill) {
+          $found = false;
+          foreach ($standardProject->getOwners() as $owner) {
+            if ($owner->getSkills()->contains($skill)) {
+              $found = true;
+              break;
+            }
+          }
+          if (!$found){
+            foreach ($standardProject->getParticipants() as $participant) {
+              if ($participant->getSkills()->contains($skill)) {
+                $found = true;
+                break;
+              }
+            }
+          }
+          if (!$found) $vacantSkills[] = $skill;
+        }
+
         if ( ($mustBeOwner && !$isOwning) || ($mustParticipate && (!$isParticipatingIn && !$isOwning) )) {
           $this->base = false;
         } else {
@@ -35,7 +56,8 @@ class BaseController extends Controller
                               'isParticipatingIn' => $isParticipatingIn,
                               'isOwning' => $isOwning,
                               'targetPictureAsBase64' => base64_encode(json_encode($targetPictureAsBase64)),
-                              'canEdit' =>  $isOwning || $isParticipatingIn
+                              'canEdit' =>  $isOwning || $isParticipatingIn,
+                              'vacantSkills' => $vacantSkills
                             );
         }
 
