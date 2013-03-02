@@ -1,16 +1,25 @@
 
 ## TODO ##
 
+Sprint 1
+Soft-delete des objets (notamment idées archivées car 500 aujourd'hui)
+Skills déclarés : dans la vue publique, voir les Skills qui ne sont pas comblés dans le projet...
+Supprimer un de ses commentaires (mais garder une trace : 'This comment has been deleted')
+Sprint 2
+Filtres Timeline
+Ordre de tri des Listes d'Objets (created / updated / community strongest)
+Sprint 3
+Améliorer le clustering de la timeline
+Pagination de la timeline
+Sprint 4
+Implémenter le password recovery
+
 Todo - General / Users :
 
  ☐ Clustering des activityLogs : vérifier que l'object correspond en récupérant le findOneBY, et pas faire le test dans le if après
  ☐ Mettre maxUsersInListings en parameters de l'appli a récupérer dans Twig
  ☐ Ne pas passer le nom complet de l'action en base64 lors d'un chooseFile ou User mais mettre seulement qqs parametres puis reconstruire après ?
- ☐ Filtrer les timelines ?
  ☐ login et signup : focus sur le champ lors du chargement de la page
- ☐ Pagination timeline
- ☐ soft-delete des idées et projets et users
-   \__ notamment pour les idées archivées qui ne peuvent pas etre delete sinon 
  
  ✔ Pagination générale sur les objets @done (13-03-02 12:52)
  ✔ Faire une set_flash en javascript @done (13-03-01 19:57)
