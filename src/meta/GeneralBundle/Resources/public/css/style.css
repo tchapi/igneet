@@ -6,7 +6,7 @@ body > header .navbar a.brand{
 }
 body > #flashes > div.alert{
   border-radius: 0;
-  margin-bottom: 20px;
+  margin-bottom: 1px;
 }
 
 body > footer{
