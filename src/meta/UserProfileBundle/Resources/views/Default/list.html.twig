@@ -53,6 +53,13 @@
 
 </section>
 {% endfor %}
+<section>
+{% render "metaGeneralBundle:Default:pagination" with { 'route': 'u_show_list_recent_created', 'page' : pagination.page, 'total' : pagination.totalUsers } %}
+</section>
+{% else %}
+<section>
+No ideas yet !
+</section>
 {% endif %}
 
 {% endblock %}
