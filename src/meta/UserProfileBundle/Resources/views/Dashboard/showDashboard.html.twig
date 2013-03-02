@@ -81,7 +81,7 @@
         {% endif %}
       </div>
       <h5>Last contributor :</h5>
-      {% if top3projectsActivity[top3projects[0].id][0] is defined %}<span>{% if top3projectsActivity[top3projects[0].id][0].username is not null %}{{ top3projectsActivity[top3projects[0].id][0].username }}{% else %}{{ top3projects[0].logEntries[top3projects[0].logEntries|length - 1].user.username }}{% endif %} ({{ top3projectsActivity[top3projects[0].id][0].last_activity|date("d/m/Y, H:i:s") }})</span>{% else %}N/A{% endif %}
+      {% if top3projectsActivity[top3projects[0].id][0] is defined %}<span>{{ top3projects[0].logEntries[top3projects[0].logEntries|length - 1].user.getFullName }} ({{ top3projects[0].logEntries[top3projects[0].logEntries|length - 1].createdAt|date("d/m/Y, H:i:s") }})</span>{% else %}N/A{% endif %}
       <h5>Community :</h5>
       <ul>
         <li>{{ top3projects[0].owners|length }} owner(s)</li>
@@ -106,7 +106,7 @@
         {% endif %}
       </div>
       <h5>Last contributor :</h5>
-      {% if top3projectsActivity[top3projects[1].id][0] is defined %}<span>{% if top3projectsActivity[top3projects[1].id][0].username is not null %}{{ top3projectsActivity[top3projects[1].id][0].username }}{% else %}{{ top3projects[1].logEntries[top3projects[1].logEntries|length - 1].user.username }}{% endif %} ({{ top3projectsActivity[top3projects[1].id][0].last_activity|date("d/m/Y, H:i:s") }})</span>{% else %}N/A{% endif %}
+      {% if top3projectsActivity[top3projects[1].id][0] is defined %}<span>{{ top3projects[1].logEntries[top3projects[1].logEntries|length - 1].user.getFullName }} ({{ top3projects[1].logEntries[top3projects[1].logEntries|length - 1].createdAt|date("d/m/Y, H:i:s") }})</span>{% else %}N/A{% endif %}
       <h5>Community :</h5>
       <ul>
         <li>{{ top3projects[1].owners|length }} owner(s)</li>
@@ -122,7 +122,7 @@
       {% if top3projects[2] is defined %}
       <h4><a href="{{ path('sp_show_project_timeline', {'slug': top3projects[2].slug }) }}" ><span class="avatar"><img src="{{ asset(top3projects[2].picture) }}"  width="20" height="20" class="miniAvatar" /></span> {{ top3projects[2].name }}</a></h4>
       <div class>
-        {% if top3projectsActivity[top3projects[2].id] is defined and top3projectsActivity[top3projects[2].id][0].username is not null  %}
+        {% if top3projectsActivity[top3projects[2].id] is defined %}
         <div class="graph" graph-data='{{ top3projectsActivity[top3projects[2].id]|json_encode|raw }}' graph-width="310" graph-height="100">
           <!-- loader !!! -->
         </div>
@@ -131,7 +131,7 @@
         {% endif %}
       </div>
       <h5>Last contributor :</h5>
-      {% if top3projectsActivity[top3projects[2].id][0] is defined %}<span>{% if top3projectsActivity[top3projects[2].id][0].username is not null %}{{ top3projectsActivity[top3projects[2].id][0].username }}{% else %}{{ top3projects[2].logEntries[top3projects[2].logEntries|length - 1].user.username }}{% endif %} ({{ top3projectsActivity[top3projects[2].id][0].last_activity|date("d/m/Y, H:i:s") }})</span>{% else %}N/A{% endif %}
+      {% if top3projectsActivity[top3projects[2].id][0] is defined %}<span>{{ top3projects[2].logEntries[top3projects[2].logEntries|length - 1].user.getFullName }} ({{ top3projects[2].logEntries[top3projects[2].logEntries|length - 1].createdAt|date("d/m/Y, H:i:s") }})</span>{% else %}N/A{% endif %}
       <h5>Community :</h5>
       <ul>
         <li>{{ top3projects[2].owners|length }} owner(s)</li>
@@ -164,7 +164,7 @@
         {% endif %}
       </div>
       <h5>Last contributor :</h5>
-      {% if top3ideasActivity[top3ideas[0].id][0] is defined %}<span>{% if top3ideasActivity[top3ideas[0].id][0].username is not null %}{{ top3ideasActivity[top3ideas[0].id][0].username }}{% else %}{{ top3ideas[0].logEntries[top3ideas[0].logEntries|length - 1].user.username }}{% endif %} ({{ top3ideasActivity[top3ideas[0].id][0].last_activity|date("d/m/Y, H:i:s") }})</span>{% else %}N/A{% endif %}
+      {% if top3ideasActivity[top3ideas[0].id][0] is defined %}<span>{{ top3ideas[0].logEntries[top3ideas[0].logEntries|length - 1].user.getFullName }} ({{ top3ideas[0].logEntries[top3ideas[0].logEntries|length - 1].createdAt|date("d/m/Y, H:i:s") }})</span>{% else %}N/A{% endif %}
       <h5>Community :</h5>
       <ul>
         <li>{{ top3ideas[0].participants|length }} participant(s)</li>
@@ -188,7 +188,7 @@
         {% endif %}
       </div>
       <h5>Last contributor :</h5>
-      {% if top3ideasActivity[top3ideas[1].id][0] is defined %}<span>{% if top3ideasActivity[top3ideas[1].id][0].username is not null %}{{ top3ideasActivity[top3ideas[1].id][0].username }}{% else %}{{ top3ideas[1].logEntries[top3ideas[1].logEntries|length - 1].user.username }}{% endif %} ({{ top3ideasActivity[top3ideas[1].id][0].last_activity|date("d/m/Y, H:i:s") }})</span>{% else %}N/A{% endif %}
+      {% if top3ideasActivity[top3ideas[1].id][0] is defined %}<span>{{ top3ideas[1].logEntries[top3ideas[1].logEntries|length - 1].user.getFullName }} ({{ top3ideas[1].logEntries[top3ideas[1].logEntries|length - 1].createdAt|date("d/m/Y, H:i:s") }})</span>{% else %}N/A{% endif %}
       <h5>Community :</h5>
       <ul>
         <li>{{ top3ideas[1].participants|length }} participant(s)</li>
@@ -212,7 +212,7 @@
         {% endif %}
       </div>
       <h5>Last contributor :</h5>
-      {% if top3ideasActivity[top3ideas[2].id][0] is defined %}<span>{% if top3ideasActivity[top3ideas[2].id][0].username is not null %}{{ top3ideasActivity[top3ideas[2].id][0].username }}{% else %}{{ top3ideas[2].logEntries[top3ideas[2].logEntries|length - 1].user.username }}{% endif %} ({{ top3ideasActivity[top3ideas[2].id][0].last_activity|date("d/m/Y, H:i:s") }})</span>{% else %}N/A{% endif %}
+      {% if top3ideasActivity[top3ideas[2].id][0] is defined %}<span>{{ top3ideas[2].logEntries[top3ideas[2].logEntries|length - 1].user.getFullName }} ({{ top3ideas[2].logEntries[top3ideas[2].logEntries|length - 1].createdAt|date("d/m/Y, H:i:s") }})</span>{% else %}N/A{% endif %}
       <h5>Community :</h5>
       <ul>
         <li>{{ top3ideas[2].participants|length }} participant(s)</li>
