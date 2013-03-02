@@ -38,7 +38,7 @@ class LogService
 
         // Find the type of LogEntry
         $type = $this->log_types[$logActionName]['type'];
-
+        
         switch ($type) {
             case 'idea':
                  $entry = new IdeaLogEntry();
@@ -61,11 +61,6 @@ class LogService
                  break;
          }
             
-        $entry->setUser($user);
-        $entry->setType($logActionName);
-        $entry->setSubject($subject);
-        $entry->setObjects($objects);
-
         // Merge concurrent log updates
         // Check if there is a similar log less than X seconds ago
         $repository = $this->em->getRepository($repositoryName);
@@ -78,7 +73,13 @@ class LogService
             $lastEntry->setCreatedAt(new \Datetime('now'));
             $lastEntry->incrementCombinedCount();
         } else {
+
             // else persists the new log
+            $entry->setUser($user);
+            $entry->setType($logActionName);
+            $entry->setSubject($subject);
+            $entry->setObjects($objects);
+
             $this->em->persist($entry);
         }
 
