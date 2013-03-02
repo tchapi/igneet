@@ -65,14 +65,16 @@ class DefaultController extends Controller
      *                    IDEA LIST
      *  #################################################### */
 
-    public function listAction($max, $archived)
+    public function listAction($page, $archived)
     {
 
         $repository = $this->getDoctrine()->getRepository('metaIdeaProfileBundle:Idea');
 
-        $ideas = $repository->findRecentlyCreatedIdeas($max, $archived);
+        $totalIdeas = $repository->countIdeas($archived);
+        $ideas = $repository->findRecentlyCreatedIdeas($page, $this->container->getParameter('listings.number_of_items_per_page'), $archived);
 
-        return $this->render('metaIdeaProfileBundle:Default:list.html.twig', array('ideas' => $ideas, 'archived' => $archived));
+        $pagination = array( 'page' => $page, 'totalIdeas' => $totalIdeas);
+        return $this->render('metaIdeaProfileBundle:Default:list.html.twig', array('ideas' => $ideas, 'archived' => $archived, 'pagination' => $pagination));
 
     }
 

@@ -54,7 +54,13 @@
 
 </section>
 {% endfor %}
-
+<section>
+{% render "metaGeneralBundle:Default:pagination" with { 'route': 'sp_list_projects', 'page' : pagination.page, 'total' : pagination.totalProjects } %}
+</section>
+{% else %}
+<section>
+No projects yet !
+</section>
 {% endif %}
 
 {% endblock %}

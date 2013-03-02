@@ -13,7 +13,19 @@ use Doctrine\ORM\EntityRepository;
 class StandardProjectRepository extends EntityRepository
 {
 
-  public function findRecentlyCreatedStandardProjects($limit)
+  public function countProjects()
+  {
+    
+    $qb = $this->getEntityManager()->createQueryBuilder();
+
+    return $qb->select('COUNT(sp)')
+            ->from('metaStandardProjectProfileBundle:StandardProject', 'sp')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+  }
+
+  public function findRecentlyCreatedStandardProjects($page, $limit)
   {
     
     $qb = $this->getEntityManager()->createQueryBuilder();
@@ -21,13 +33,14 @@ class StandardProjectRepository extends EntityRepository
     return $qb->select('sp')
             ->from('metaStandardProjectProfileBundle:StandardProject', 'sp')
             ->orderBy('sp.created_at', 'DESC')
+            ->setFirstResult(($page-1)*$limit)
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult();
 
   }
 
-  public function findRecentlyUpdatedStandardProjects($limit)
+  public function findRecentlyUpdatedStandardProjects($page, $limit)
   {
     
     $qb = $this->getEntityManager()->createQueryBuilder();
@@ -35,6 +48,7 @@ class StandardProjectRepository extends EntityRepository
     return $qb->select('sp')
             ->from('metaStandardProjectProfileBundle:StandardProject', 'sp')
             ->orderBy('sp.updated_at', 'DESC')
+            ->setFirstResult(($page-1)*$limit)
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult();

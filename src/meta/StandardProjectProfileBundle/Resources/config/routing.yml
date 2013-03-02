@@ -20,8 +20,10 @@ mp_edit_meta:
 
 # STANDARD PROJECTS
 sp_list_projects:
-    pattern:  /projects
-    defaults: { _controller: metaStandardProjectProfileBundle:Default:list, max: 10 }
+    pattern:  /projects/{page}
+    defaults: { _controller: metaStandardProjectProfileBundle:Default:list, page: 1, max: 10 }
+    requirements:
+        page: \d+
 
 sp_new_project:
     pattern:  /projects/new

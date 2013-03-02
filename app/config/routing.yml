@@ -13,8 +13,3 @@ meta_standard_project_profile:
 meta_user_profile:
     resource: "@metaUserProfileBundle/Resources/config/routing.yml"
     prefix:   /
-
-# Internal routing configuration to handle ESI
-#_internal:
-#    resource: "@FrameworkBundle/Resources/config/routing/internal.xml"
-#    prefix:   /_internal

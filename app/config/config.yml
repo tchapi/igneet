@@ -81,6 +81,7 @@ swiftmailer:
     password:  "%mailer_password%"
     spool:     { type: memory }
 
-# User profile specific
+# Application specific
 parameters:
     gravatar.default_style: 'retro'
+    listings.number_of_items_per_page: 8

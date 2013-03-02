@@ -11,7 +11,19 @@ use Doctrine\ORM\EntityRepository;
 class IdeaRepository extends EntityRepository
 {
 
-  public function findRecentlyCreatedIdeas($limit, $archived = false)
+  public function countIdeas()
+  {
+    
+    $qb = $this->getEntityManager()->createQueryBuilder();
+
+    return $qb->select('COUNT(i)')
+            ->from('metaIdeaProfileBundle:Idea', 'i')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+  }
+
+  public function findRecentlyCreatedIdeas($page, $limit, $archived = false)
   {
     
     $modifier = $archived?'NOT ':'';
@@ -21,13 +33,14 @@ class IdeaRepository extends EntityRepository
             ->from('metaIdeaProfileBundle:Idea', 'i')
             ->where('i.archived_at IS ' . $modifier . 'NULL')
             ->orderBy('i.created_at', 'DESC')
+            ->setFirstResult(($page-1)*$limit)
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult();
 
   }
 
-  public function findRecentlyUpdatedIdeas($limit, $archived = false)
+  public function findRecentlyUpdatedIdeas($page, $limit, $archived = false)
   {
     
     $modifier = $archived?'NOT ':'';
@@ -37,6 +50,7 @@ class IdeaRepository extends EntityRepository
             ->from('metaIdeaProfileBundle:Idea', 'i')
             ->where('i.archived_at IS ' . $modifier . 'NULL')
             ->orderBy('i.updated_at', 'DESC')
+            ->setFirstResult(($page-1)*$limit)
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult();

@@ -53,7 +53,12 @@
 
 </section>
 {% endfor %}
-
+<section>
+{% render "metaGeneralBundle:Default:pagination" with { 'route': 'i_list_ideas', 'page' : pagination.page, 'total' : pagination.totalIdeas } %}
+</section>
+{% else %}
+<section>
+No ideas yet !
+</section>
 {% endif %}
-
 {% endblock %}
