@@ -15,7 +15,7 @@ class BaseController extends Controller
         $repository = $this->getDoctrine()->getRepository('metaStandardProjectProfileBundle:StandardProject');
         $standardProject = $repository->findOneBySlug($slug);
 
-        if (!$standardProject){
+        if (!$standardProject || $standardProject->isDeleted()){
           throw $this->createNotFoundException('This project does not exist');
         }
 
