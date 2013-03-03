@@ -51,7 +51,7 @@ $(document).ready(function(){
                return y(d.nb_actions);
             })
             .attr('fill', function(d) {
-               return d3.hsl(actions_hue, 0.5, 0.4 + y(d.nb_actions)/h/2);
+               return d3.hsl(actions_hue, 0.5, 0.9 - (y(d.nb_actions)/h/2) );
             });
       }
       if (dataset[0].nb_comments) {
@@ -70,7 +70,7 @@ $(document).ready(function(){
                return y(d.nb_comments);
             })
             .attr('fill', function(d) {
-               return d3.hsl(comments_hue, 0.5, 0.4 + y(d.nb_comments)/h/2);
+               return d3.hsl(comments_hue, 0.5, 0.9 - (y(d.nb_comments)/h/2) );
             });
       }
 
