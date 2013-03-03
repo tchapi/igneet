@@ -1159,7 +1159,7 @@ class User implements UserInterface
         $count = 0;
 
         foreach ($this->ideasWatched as $idea) {    
-            if ( !($idea->isArchived()) ) $count++;
+            if ( !($idea->isArchived() || $idea->isDeleted()) ) $count++;
         }
 
         return $count;
@@ -1209,7 +1209,7 @@ class User implements UserInterface
         $count = 0;
 
         foreach ($this->ideasCreated as $idea) {   
-            if ( !($idea->isArchived()) ) $count++;
+            if ( !($idea->isArchived() || $idea->isDeleted()) ) $count++;
         }
 
         return $count;

@@ -33,7 +33,6 @@ $(document).ready(function(){
       })
       .success(function(data, config) {
         //console.log("Ranks saved.");
-        setFlash('success', 'Your changes have been saved.');
       })
       .error(function(errors) {
          //console.log("Error saving ranks.");
@@ -48,7 +47,6 @@ $(document).ready(function(){
       })
       .success(function(data, config) {
         //console.log("Parenting changes saved.");
-        setFlash('success', 'Your changes have been saved.');
       })
       .error(function(errors) {
          //console.log("Error saving parenting changes.");

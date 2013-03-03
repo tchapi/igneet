@@ -26,7 +26,7 @@ class DefaultController extends Controller
         $repository = $this->getDoctrine()->getRepository('metaIdeaProfileBundle:Idea');
         $idea = $repository->findOneById($id);
 
-        if (!$idea){
+        if (!$idea || $idea->isDeleted()){
           throw $this->createNotFoundException('This idea does not exist');
         }
 
@@ -307,7 +307,7 @@ class DefaultController extends Controller
         if ($this->base != false) {
         
             $em = $this->getDoctrine()->getManager();
-            $em->remove($this->base['idea']);
+            $this->base['idea']->delete();
             $em->flush();
 
             $this->get('session')->setFlash(

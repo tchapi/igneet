@@ -113,6 +113,14 @@ class Idea extends Taggable
     private $archived_at;
 
     /**
+     * @var \DateTime $deleted_at
+     *
+     * @ORM\Column(name="deleted_at", type="datetime", nullable=true)
+     * @Assert\DateTime()
+     */
+    private $deleted_at;
+
+    /**
      * Users watching me (REVERSE SIDE)
      * @ORM\ManyToMany(targetEntity="meta\UserProfileBundle\Entity\User", mappedBy="ideasWatched")
      **/
@@ -754,4 +762,49 @@ class Idea extends Taggable
     {
         return $this->creators;
     }
+
+    /**
+     * Set deleted_at
+     *
+     * @param \DateTime $deletedAt
+     * @return Idea
+     */
+    public function setDeletedAt($deletedAt)
+    {
+        $this->deleted_at = $deletedAt;
+    
+        return $this;
+    }
+
+    /**
+     * Get deleted_at
+     *
+     * @return \DateTime 
+     */
+    public function getDeletedAt()
+    {
+        return $this->deleted_at;
+    }
+
+    /**
+     * Is deleted
+     *
+     * @return boolean 
+     */
+    public function isDeleted()
+    {
+        return !($this->deleted_at === NULL);
+    }
+
+    /**
+     * Deletes
+     *
+     * @return Idea 
+     */
+    public function delete()
+    {
+        $this->deleted_at = new \DateTime('now');
+        return $this;
+    }
+
 }

@@ -159,7 +159,7 @@
 <div class="sectionTitle">Ideas I watch :</div>
 <ul class="projects sectionContent">
 {% for idea in user.ideasWatched %}
-  {% if not idea.isArchived %}
+  {% if not idea.isArchived and not idea.isDeleted %}
     <li>
       <a href="{{ path('i_show_idea', {'id': idea.id}) }}">
         <img src="{{ idea.picture }}" width="70" height="70" class="smallAvatar"/>
@@ -215,7 +215,7 @@
 <div class="sectionTitle">Ideas I initiated :</div>
 <ul class="projects sectionContent">
 {% for idea in user.ideasCreated %}
-  {% if not idea.isArchived %}
+  {% if not idea.isArchived and not idea.isDeleted %}
     <li>
       <a href="{{ path('i_show_idea', {'id': idea.id}) }}">
         <img src="{{ idea.picture }}" width="70" height="70" class="smallAvatar"/>
