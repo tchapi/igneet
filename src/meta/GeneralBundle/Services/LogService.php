@@ -123,7 +123,7 @@ class LogService
             $user = $logEntryOrComment->getUser();
             $date = $logEntryOrComment->getCreatedAt();
 
-            return $this->twig->render($this->template_item_comment, array('user' => $user, 'text' => $text, 'date' => $date));
+            return $this->twig->render($this->template_item_comment, array('user' => $user, 'comment' => $logEntryOrComment));
             
         } else {
 

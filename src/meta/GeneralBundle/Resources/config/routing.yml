@@ -10,3 +10,10 @@ g_validate_comment:
     requirements:
       _method: POST
       id: \d+
+
+g_delete_comment:
+    pattern: /comment/delete/{id}
+    defaults: { _controller: metaGeneralBundle:Default:deleteComment }
+    requirements:
+      _method: POST
+      id: \d+
