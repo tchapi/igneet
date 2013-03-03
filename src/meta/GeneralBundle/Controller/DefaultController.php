@@ -57,8 +57,12 @@ class DefaultController extends Controller
     /*
      * Toggles validation for a comment
      */
-    public function validateCommentAction($id)
+    public function validateCommentAction(Request $request, $id)
     {
+
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('validateComment', $request->get('token')))
+            return new Response();
+
         $authenticatedUser = $this->getUser();
 
         if ($authenticatedUser){
@@ -66,13 +70,41 @@ class DefaultController extends Controller
             $repository = $this->getDoctrine()->getRepository('metaGeneralBundle:Comment\BaseComment');
             $comment = $repository->findOneById($id);
 
-            if ($comment){
+            if ($comment && !$comment->isDeleted()){
 
                 $comment->toggleValidator($authenticatedUser);
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
 
                 return new Response(count($comment->getValidators()));
+
+            }
+        }
+
+        return new Response();
+    }
+
+    /*
+     * Deletes a comment
+     */
+    public function deleteCommentAction(Request $request, $id)
+    {
+
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('deleteComment', $request->get('token')))
+            return new Response();
+
+        $authenticatedUser = $this->getUser();
+
+        if ($authenticatedUser){
+
+            $repository = $this->getDoctrine()->getRepository('metaGeneralBundle:Comment\BaseComment');
+            $comment = $repository->findOneById($id);
+
+            if ($comment && $comment->getUser() === $authenticatedUser){
+
+                $comment->delete();
+                $em = $this->getDoctrine()->getManager();
+                $em->flush();
 
             }
         }
