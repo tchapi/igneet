@@ -21,6 +21,8 @@ Todo - General / Users :
  ☐ Ne pas passer le nom complet de l'action en base64 lors d'un chooseFile ou User mais mettre seulement qqs parametres puis reconstruire après ?
  ☐ login et signup : focus sur le champ lors du chargement de la page
  
+ ☐ replace setFlashes if same
+
  ✔ Pagination générale sur les objets @done (13-03-02 12:52)
  ✔ Faire une set_flash en javascript @done (13-03-01 19:57)
  ✔ Google Analytics @done (13-03-01 16:55)
