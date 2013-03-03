@@ -90,6 +90,14 @@ class StandardProject extends Taggable
     private $updated_at;
 
     /**
+     * @var \DateTime $deleted_at
+     *
+     * @ORM\Column(name="deleted_at", type="datetime", nullable=true)
+     * @Assert\DateTime()
+     */
+    private $deleted_at;
+
+    /**
      * @var string $about
      *
      * @ORM\Column(name="about", type="text", nullable=true)
@@ -848,6 +856,52 @@ class StandardProject extends Taggable
     {
         return $this->resources;
     }
+
+    /**
+     * Set deleted_at
+     *
+     * @param \DateTime $deletedAt
+     * @return StandardProject
+     */
+    public function setDeletedAt($deletedAt)
+    {
+        $this->deleted_at = $deletedAt;
+    
+        return $this;
+    }
+
+    /**
+     * Get deleted_at
+     *
+     * @return \DateTime 
+     */
+    public function getDeletedAt()
+    {
+        return $this->deleted_at;
+    }
+
+    /**
+     * Is deleted
+     *
+     * @return boolean 
+     */
+    public function isDeleted()
+    {
+        return !($this->deleted_at === NULL);
+    }
+
+    /**
+     * Deletes
+     *
+     * @return StandardProject 
+     */
+    public function delete()
+    {
+        $this->deleted_at = new \DateTime('now');
+        return $this;
+    }
+
+    /* --------------------------------------------------------------------------------------------------------- */
 
     /**
      * Set meta

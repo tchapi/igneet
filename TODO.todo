@@ -22,6 +22,8 @@ Todo - General / Users :
  ☐ login et signup : focus sur le champ lors du chargement de la page
  
  ☐ envoyer des responses() avec des codes corrects
+ ☐ logger les updates correctements avec $this->base['standardProject']->update(); dans toutes les actions
+
 
  ✔ replace setFlashes if same @done (13-03-03 20:30)
  ✔ Pagination générale sur les objets @done (13-03-02 12:52)

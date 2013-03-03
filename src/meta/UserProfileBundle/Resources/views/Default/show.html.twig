@@ -136,11 +136,12 @@
 </section>
 {% endif %}
 
-{% if isMe and user.projectsWatched|length > 0 %}
+{% if isMe and user.countProjectsWatched > 0 %}
 <section class="colored">
 <div class="sectionTitle">Projects I watch :</div>
 <ul class="projects sectionContent">
 {% for watchedProject in user.projectsWatched %}
+  {% if not watchedProject.isDeleted %}
     <li>
       <a href="{{ path('sp_show_project', {'slug': watchedProject.slug}) }}">
         <img src="{{ watchedProject.picture }}" width="70" height="70" class="smallAvatar"/>
@@ -149,6 +150,7 @@
         </div>
       </a>
     </li>
+  {% endif %}
 {% endfor %}
 </ul>
 </section>
@@ -174,11 +176,12 @@
 </section>
 {% endif %}
 
-{% if user.projectsOwned|length > 0 %}
+{% if user.countProjectsOwned > 0 %}
 <section class="colored">
 <div class="sectionTitle">Projects I own :</div>
 <ul class="projects sectionContent">
 {% for ownedProject in user.projectsOwned %}
+  {% if not ownedProject.isDeleted %}
     <li>
       <a href="{{ path('sp_show_project', {'slug': ownedProject.slug}) }}">
         <img src="{{ ownedProject.picture }}" width="70" height="70" class="smallAvatar"/>
@@ -187,16 +190,18 @@
         </div>
       </a>
     </li>
+  {% endif %}
 {% endfor %}
 </ul>
 </section>
 {% endif %}
 
-{% if user.projectsParticipatedIn|length > 0 %}
+{% if user.countProjectsParticipatedIn > 0 %}
 <section class="colored">
 <div class="sectionTitle">Projects I'm in :</div>
 <ul class="projects sectionContent">
 {% for participatedInProject in user.projectsParticipatedIn %}
+  {% if not participatedInProject.isDeleted %}
     <li>
       <a href="{{ path('sp_show_project', {'slug': participatedInProject.slug}) }}">
         <img src="{{ participatedInProject.picture }}" width="70" height="70" class="smallAvatar"/>
@@ -205,6 +210,7 @@
         </div>
       </a>
     </li>
+  {% endif %}
 {% endfor %}
 </ul>
 </section>
@@ -215,6 +221,26 @@
 <div class="sectionTitle">Ideas I initiated :</div>
 <ul class="projects sectionContent">
 {% for idea in user.ideasCreated %}
+  {% if not idea.isArchived and not idea.isDeleted %}
+    <li>
+      <a href="{{ path('i_show_idea', {'id': idea.id}) }}">
+        <img src="{{ idea.picture }}" width="70" height="70" class="smallAvatar"/>
+        <div class="smallObjectInfos">
+          <span>{{ idea.name }}</span>
+        </div>
+      </a>
+    </li>
+  {% endif %}
+{% endfor %}
+</ul>
+</section>
+{% endif %}
+
+{% if user.countNotArchivedIdeasParticipatedIn > 0 %}
+<section class="colored">
+<div class="sectionTitle">Ideas I participate in :</div>
+<ul class="projects sectionContent">
+{% for idea in user.ideasParticipatedIn %}
   {% if not idea.isArchived and not idea.isDeleted %}
     <li>
       <a href="{{ path('i_show_idea', {'id': idea.id}) }}">
