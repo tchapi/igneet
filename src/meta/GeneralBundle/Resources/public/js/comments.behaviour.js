@@ -39,11 +39,13 @@ $(document).ready(function(){
   // Deletes in AJAX
   $('.delete-trigger').click(function(){
 
-    var commentBox = $(this).closest('.actions').siblings('.comment').find('div');
+    var actionBox = $(this).closest('.actions');
+    var commentBox = actionBox.siblings('.comment').find('div');
 
     $.post($(this).attr('data-url'))
       .success(function(data, config) {
         commentBox.html('<p class="muted"><em>Deleted comment</em></p>');
+        actionBox.fadeOut();
         setFlash('success', 'Your comment was deleted.');
       })
       .error(function(errors) {
