@@ -27,7 +27,7 @@
     <div class="ellipsis">{{ user.headline }}</div>
     <div class="muted"><i class="icon-calendar"></i> Member since {{ user.createdAt|date("d/m/Y") }}</div>
   </div>
-
+  {% if user.projectsOwned|length > 0 %}
   <div class="listingItemRelatedObjects">
 
     <div class="type">
@@ -50,6 +50,7 @@
       {% endfor %}
     </ul>
   </div>
+  {% endif %}
 
 </section>
 {% endfor %}

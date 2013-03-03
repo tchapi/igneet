@@ -942,6 +942,22 @@ class User implements UserInterface
     }
 
     /**
+     * Count projects owned 
+     *
+     * @return integer
+     */
+    public function countProjectsOwned()
+    {
+        $count = 0;
+
+        foreach ($this->projectsOwned as $project) {   
+            if ( !($project->isDeleted()) ) $count++;
+        }
+
+        return $count;
+    }
+
+    /**
      * Add projectsParticipatedIn
      *
      * @param meta\StandardProjectProfileBundle\Entity\StandardProject $projectParticipatedIn
@@ -988,6 +1004,22 @@ class User implements UserInterface
     public function isParticipatingIn(\meta\StandardProjectProfileBundle\Entity\StandardProject $project)
     {
         return $this->projectsParticipatedIn->contains($project);
+    }
+
+    /**
+     * Count projects participated in 
+     *
+     * @return integer
+     */
+    public function countProjectsParticipatedIn()
+    {
+        $count = 0;
+
+        foreach ($this->projectsParticipatedIn as $project) {   
+            if ( !($project->isDeleted()) ) $count++;
+        }
+
+        return $count;
     }
 
     /**
@@ -1047,6 +1079,22 @@ class User implements UserInterface
     public function isWatchingProject(\meta\StandardProjectProfileBundle\Entity\StandardProject $project)
     {
         return $this->projectsWatched->contains($project);
+    }
+
+    /**
+     * Count projects watched 
+     *
+     * @return integer
+     */
+    public function countProjectsWatched()
+    {
+        $count = 0;
+
+        foreach ($this->projectsWatched as $project) {   
+            if ( !($project->isDeleted()) ) $count++;
+        }
+
+        return $count;
     }
 
     /**
@@ -1159,7 +1207,7 @@ class User implements UserInterface
         $count = 0;
 
         foreach ($this->ideasWatched as $idea) {    
-            if ( !($idea->isArchived()) ) $count++;
+            if ( !($idea->isArchived() || $idea->isDeleted()) ) $count++;
         }
 
         return $count;
@@ -1209,7 +1257,7 @@ class User implements UserInterface
         $count = 0;
 
         foreach ($this->ideasCreated as $idea) {   
-            if ( !($idea->isArchived()) ) $count++;
+            if ( !($idea->isArchived() || $idea->isDeleted()) ) $count++;
         }
 
         return $count;
@@ -1275,6 +1323,22 @@ class User implements UserInterface
     public function isParticipatingInIdea(\meta\IdeaProfileBundle\Entity\Idea $idea)
     {
         return $this->ideasParticipatedIn->contains($idea);
+    }
+
+    /**
+     * Count ideas participated in not archived
+     *
+     * @return integer
+     */
+    public function countNotArchivedIdeasParticipatedIn()
+    {
+        $count = 0;
+
+        foreach ($this->ideasParticipatedIn as $idea) {   
+            if ( !($idea->isArchived() || $idea->isDeleted()) ) $count++;
+        }
+
+        return $count;
     }
 
     /**

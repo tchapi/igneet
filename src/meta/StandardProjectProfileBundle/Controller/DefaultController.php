@@ -197,7 +197,7 @@ class DefaultController extends BaseController
         if ($this->base != false) {
         
             $em = $this->getDoctrine()->getManager();
-            $em->remove($this->base['standardProject']);
+            $this->base['standardProject']->delete();
             $em->flush();
 
             $this->get('session')->setFlash(

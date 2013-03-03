@@ -20,6 +20,7 @@ class StandardProjectRepository extends EntityRepository
 
     return $qb->select('COUNT(sp)')
             ->from('metaStandardProjectProfileBundle:StandardProject', 'sp')
+            ->where('sp.deleted_at IS NULL')
             ->getQuery()
             ->getSingleScalarResult();
 
@@ -32,6 +33,7 @@ class StandardProjectRepository extends EntityRepository
 
     return $qb->select('sp')
             ->from('metaStandardProjectProfileBundle:StandardProject', 'sp')
+            ->where('sp.deleted_at IS NULL')
             ->orderBy('sp.created_at', 'DESC')
             ->setFirstResult(($page-1)*$limit)
             ->setMaxResults($limit)
@@ -47,6 +49,7 @@ class StandardProjectRepository extends EntityRepository
 
     return $qb->select('sp')
             ->from('metaStandardProjectProfileBundle:StandardProject', 'sp')
+            ->where('sp.deleted_at IS NULL')
             ->orderBy('sp.updated_at', 'DESC')
             ->setFirstResult(($page-1)*$limit)
             ->setMaxResults($limit)
@@ -65,6 +68,7 @@ class StandardProjectRepository extends EntityRepository
             ->join('sp.owners', 'u')
             ->where('u.id = :userId')
             ->setParameter('userId', $userId)
+            ->andWhere('sp.deleted_at IS NULL')
             ->orderBy('sp.updated_at', 'DESC')
             ->setMaxResults($max)
             ->getQuery()
@@ -93,6 +97,8 @@ class StandardProjectRepository extends EntityRepository
             ->andWhere('sp IN (:pids)')
             ->setParameter('pids', $projects)
             ->andWhere("l.created_at > DATE_SUB(CURRENT_DATE(),7,'DAY')")
+            
+            ->andWhere('sp.deleted_at IS NULL')
             
             ->groupBy('sp.id, date')
             ->orderBy('sp.updated_at', 'DESC')

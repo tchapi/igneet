@@ -3,8 +3,8 @@
 
 Sprint 1
 Soft-delete des objets (notamment idées archivées car 500 aujourd'hui)
-Skills déclarés : dans la vue publique, voir les Skills qui ne sont pas comblés dans le projet...
-Supprimer un de ses commentaires (mais garder une trace : 'This comment has been deleted')
+[OK] Skills déclarés : dans la vue publique, voir les Skills qui ne sont pas comblés dans le projet...
+[OK] Supprimer un de ses commentaires (mais garder une trace : 'This comment has been deleted')
 Sprint 2
 Filtres Timeline
 Ordre de tri des Listes d'Objets (created / updated / community strongest)
@@ -21,6 +21,11 @@ Todo - General / Users :
  ☐ Ne pas passer le nom complet de l'action en base64 lors d'un chooseFile ou User mais mettre seulement qqs parametres puis reconstruire après ?
  ☐ login et signup : focus sur le champ lors du chargement de la page
  
+ ☐ envoyer des responses() avec des codes corrects
+ ☐ logger les updates correctements avec $this->base['standardProject']->update(); dans toutes les actions
+
+
+ ✔ replace setFlashes if same @done (13-03-03 20:30)
  ✔ Pagination générale sur les objets @done (13-03-02 12:52)
  ✔ Faire une set_flash en javascript @done (13-03-01 19:57)
  ✔ Google Analytics @done (13-03-01 16:55)

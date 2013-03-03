@@ -11,13 +11,16 @@ use Doctrine\ORM\EntityRepository;
 class IdeaRepository extends EntityRepository
 {
 
-  public function countIdeas()
+  public function countIdeas($archived = false)
   {
-    
+
+    $modifier = $archived?'NOT ':'';
     $qb = $this->getEntityManager()->createQueryBuilder();
 
     return $qb->select('COUNT(i)')
             ->from('metaIdeaProfileBundle:Idea', 'i')
+            ->where('i.archived_at IS ' . $modifier . 'NULL')
+            ->andWhere('i.deleted_at IS NULL')
             ->getQuery()
             ->getSingleScalarResult();
 
@@ -32,6 +35,7 @@ class IdeaRepository extends EntityRepository
     return $qb->select('i')
             ->from('metaIdeaProfileBundle:Idea', 'i')
             ->where('i.archived_at IS ' . $modifier . 'NULL')
+            ->andWhere('i.deleted_at IS NULL')
             ->orderBy('i.created_at', 'DESC')
             ->setFirstResult(($page-1)*$limit)
             ->setMaxResults($limit)
@@ -48,7 +52,8 @@ class IdeaRepository extends EntityRepository
 
     return $qb->select('i')
             ->from('metaIdeaProfileBundle:Idea', 'i')
-            ->where('i.archived_at IS ' . $modifier . 'NULL')
+            ->where('i.archived_at IS ' . $modifier . 'NULL') 
+            ->andWhere('i.deleted_at IS NULL')
             ->orderBy('i.updated_at', 'DESC')
             ->setFirstResult(($page-1)*$limit)
             ->setMaxResults($limit)
@@ -68,6 +73,7 @@ class IdeaRepository extends EntityRepository
             ->join('i.creators', 'u')
             ->where('i.archived_at IS ' . $modifier . 'NULL')
             ->andWhere('u.id = :userId')
+            ->andWhere('i.deleted_at IS NULL')
             ->setParameter('userId', $userId)
             ->orderBy('i.updated_at', 'DESC')
             ->setMaxResults($max)
@@ -99,7 +105,8 @@ class IdeaRepository extends EntityRepository
             ->andWhere('i IN (:iids)')
             ->setParameter('iids', $ideas)
             ->andWhere("l.created_at > DATE_SUB(CURRENT_DATE(),7,'DAY')")
-            
+            ->andWhere('i.deleted_at IS NULL')
+
             ->groupBy('i.id, date')
             ->orderBy('i.updated_at', 'DESC')
             ->addOrderBy('date','DESC')

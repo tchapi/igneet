@@ -641,19 +641,31 @@ ul.comments li{
   padding: 10px 0;
   border-bottom: 1px solid #EEE;
 }
-ul.comments li div.comment,
+ul.comments li div.comment{
+  display: inline-block;
+  width: 579px;
+}
 ul.timeline li div.comment{
   display: inline-block;
-  width: 564px;
+  width: 835px;
 }
-ul.comments li div.validations{
+
+ul.comments .actions,
+ul.timeline .actions{
+
   display: inline-block;
   width: 35px;
-  padding-left: 5px;
   vertical-align: top;
+  text-align: right;
+}
+
+ul.comments li div.validations,
+ul.timeline li div.validations{
+  padding: 0 2px;
   background: #EEE;
 }
-ul.comments li div.validations.validated{
+ul.comments li div.validations.validated,
+ul.timeline li div.validations.validated{
   background: lightGreen;
 }
 .validate-trigger{

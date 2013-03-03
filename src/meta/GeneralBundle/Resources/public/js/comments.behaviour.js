@@ -29,10 +29,27 @@ $(document).ready(function(){
       .success(function(data, config) {
         countBox.html(data);
         validationBox.toggleClass('validated');
-        setFlash('success', 'Your validation was added.');
       })
       .error(function(errors) {
-        setFlash('error', 'There was a problem with the validation of this comment.');
+        setFlash('error', 'There was a problem validating this comment.');
+      });
+
+  });
+
+  // Deletes in AJAX
+  $('.delete-trigger').click(function(){
+
+    var actionBox = $(this).closest('.actions');
+    var commentBox = actionBox.siblings('.comment').find('div');
+
+    $.post($(this).attr('data-url'))
+      .success(function(data, config) {
+        commentBox.html('<p class="muted"><em>Deleted comment</em></p>');
+        actionBox.fadeOut();
+        setFlash('success', 'Your comment was deleted.');
+      })
+      .error(function(errors) {
+        setFlash('error', 'There was a problem with the deletion of this comment.');
       });
 
   });
