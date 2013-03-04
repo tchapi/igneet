@@ -63,13 +63,15 @@ class StandardProjectRepository extends EntityRepository
     
     $qb = $this->getEntityManager()->createQueryBuilder();
 
-    return $qb->select('sp')
+    return $qb->select('sp, MAX(l.created_at) AS last_update')
             ->from('metaStandardProjectProfileBundle:StandardProject', 'sp')
+            ->join('sp.logEntries', 'l')
             ->join('sp.owners', 'u')
             ->where('u.id = :userId')
             ->setParameter('userId', $userId)
             ->andWhere('sp.deleted_at IS NULL')
-            ->orderBy('sp.updated_at', 'DESC')
+            ->groupBy('sp.id')
+            ->orderBy('last_update', 'DESC')
             ->setMaxResults($max)
             ->getQuery()
             ->getResult();

@@ -68,14 +68,16 @@ class IdeaRepository extends EntityRepository
     $modifier = $archived?'NOT ':'';
     $qb = $this->getEntityManager()->createQueryBuilder();
 
-    return $qb->select('i')
+    return $qb->select('i, MAX(l.created_at) as last_update')
             ->from('metaIdeaProfileBundle:Idea', 'i')
+            ->join('i.logEntries', 'l')
             ->join('i.creators', 'u')
             ->where('i.archived_at IS ' . $modifier . 'NULL')
             ->andWhere('u.id = :userId')
             ->andWhere('i.deleted_at IS NULL')
             ->setParameter('userId', $userId)
-            ->orderBy('i.updated_at', 'DESC')
+            ->groupBy('i.id')
+            ->orderBy('last_update', 'DESC')
             ->setMaxResults($max)
             ->getQuery()
             ->getResult();
