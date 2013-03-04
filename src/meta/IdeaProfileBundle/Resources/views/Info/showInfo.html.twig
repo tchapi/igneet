@@ -27,6 +27,7 @@
   <div class="sectionTitle">Creators : </div>
   <ul class="users sectionContent">
   {% for creatorUser in base.idea.creators %}
+    {% if not creatorUser.isDeleted %}
       <li>
         <a href="{{ path('u_show_user_profile', {'username': creatorUser.username}) }}">
           <img src="{{ creatorUser.avatar }}" width="70" height="70" class="smallAvatar"/>
@@ -35,13 +36,15 @@
           </div>
         </a>
       </li>
+    {% endif %}
   {% endfor %}
   </ul>
 </section>
 <section class="colored">
-  <div class="sectionTitle">{% if base.idea.participants|length > 0 or base.isCreator %}Participants : {% else %}No participant yet ...{% endif %}</div>
+  <div class="sectionTitle">{% if base.idea.countParticipants > 0 or base.isCreator %}Participants : {% else %}No participant yet ...{% endif %}</div>
   <ul class="users sectionContent">
   {% for participatingUser in base.idea.participants %}
+    {% if not participatingUser.isDeleted %}
       <li>
         <a href="{{ path('u_show_user_profile', {'username': participatingUser.username}) }}">
           <img src="{{ participatingUser.avatar }}" width="70" height="70" class="smallAvatar"/>
@@ -51,6 +54,7 @@
         </a>
         {% if base.isCreator %}<a class="removeUserIcon" href="{{ path('i_remove_participant_to_idea', { 'id': base.idea.id, 'username' : participatingUser.username, 'token': csrf_token('removeParticipant') }) }}"><i class="icon-remove-sign icon-large"></i></a>{% endif %}
       </li>
+    {% endif %}
   {% endfor %}
   {% if base.canEdit %}
       <li>

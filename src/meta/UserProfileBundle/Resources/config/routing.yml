@@ -50,7 +50,7 @@ u_delete_user_profile:
 
 u_show_list_recent_created:
     pattern:  /people/{page}
-    defaults: { _controller: metaUserProfileBundle:Default:listRecentlyCreated, page: 1 }
+    defaults: { _controller: metaUserProfileBundle:Default:list, page: 1 }
     requirements:
         page: \d+
 

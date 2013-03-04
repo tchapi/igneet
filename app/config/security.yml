@@ -34,7 +34,7 @@ security:
                 path: /logout
                 target: /
             remember_me:
-                key: MeTa
+                key: iGnEeT
                 lifetime: 86400
                 path: /.*
                 domain: ~

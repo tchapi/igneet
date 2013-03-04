@@ -153,9 +153,9 @@ class LogService
 
         $parameters["user"] = $this->twig->render($this->template_link, 
                                                 array( 'object' => $logEntry->getUser()->getLogName(),
-                                                       'routing' => array( 'path' => $this->log_routing['user'], 
+                                                       'routing' => (!$logEntry->getUser()->isDeleted())?array( 'path' => $this->log_routing['user'], 
                                                                            'args' => $logEntry->getUser()->getLogArgs()
-                                                                           )
+                                                                    ):null
                                                        )
                                                 );
         $parameters["$type"] = $this->twig->render($this->template_link, 

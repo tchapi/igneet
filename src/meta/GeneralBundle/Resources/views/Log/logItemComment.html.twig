@@ -1,5 +1,5 @@
 <div class="avatar">
-  {% if user %}
+  {% if not user.isDeleted %}
   <img src="{{ user.avatar }}" width="30" height="30" class="avatar"/>
   {% else %}
   <img src="{{ asset("/bundles/metageneral/img/defaults/user.png") }}" width="30" height="30" class="avatar"/>
@@ -7,10 +7,10 @@
 </div>
 <div class="comment">
   <header>
-    {% if user %}
-    <a href="{{ path('u_show_user_profile', {'username': user.username}) }}">{{ user.firstName }}</a>
-    {% else %}<span class="muted">Deleted user</span>{% endif %}
-     — <span>{{ comment.createdAt|date("d/m/Y H:i") }}</span></header>
+    {% if not user.isDeleted %}
+                <a href="{{ path('u_show_user_profile', {'username': user.username}) }}">{{ user.getFullName }}</a>
+                {% else %}<span>{{ user.getFullName }}</span>{% endif %}
+                 — <span>{{ comment.createdAt|date("d/m/Y H:i") }}</span></header>
   <div>
     {% if comment.isDeleted %}
     <p class="muted"><em>Deleted comment</em></p>

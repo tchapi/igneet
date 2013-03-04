@@ -18,6 +18,7 @@ class UserRepository extends EntityRepository
 
     return $qb->select('COUNT(u)')
             ->from('metaUserProfileBundle:User', 'u')
+            ->where('u.deleted_at IS NULL')
             ->getQuery()
             ->getSingleScalarResult();
 
@@ -30,6 +31,7 @@ class UserRepository extends EntityRepository
 
     return $qb->select('u')
             ->from('metaUserProfileBundle:User', 'u')
+            ->where('u.deleted_at IS NULL')
             ->orderBy('u.created_at', 'DESC')
             ->setFirstResult(($page-1)*$limit)
             ->setMaxResults($limit)
@@ -45,6 +47,7 @@ class UserRepository extends EntityRepository
 
     return $qb->select('u')
             ->from('metaUserProfileBundle:User', 'u')
+            ->where('u.deleted_at IS NULL')
             ->orderBy('u.updated_at', 'DESC')
             ->setFirstResult(($page-1)*$limit)
             ->setMaxResults($limit)
@@ -60,7 +63,8 @@ class UserRepository extends EntityRepository
 
     return $qb->select('u')
             ->from('metaUserProfileBundle:User', 'u')
-            ->where('u.id <> :userId')
+            ->where('u.deleted_at IS NULL')
+            ->andWhere('u.id <> :userId')
             ->setParameter('userId', $userId)
             ->getQuery()
             ->getResult();

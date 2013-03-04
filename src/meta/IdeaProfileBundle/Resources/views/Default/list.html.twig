@@ -28,26 +28,28 @@
     <div class="muted"><i class="icon-calendar"></i> Created on {{ idea.createdAt|date("d/m/Y") }} by {{ idea.creators|length }} people</div>
   </div>
 
-  {% if (idea.watchers|length) > 0 %}
+  {% if idea.countWatchers > 0 %}
   <div class="listingItemRelatedObjects">
     
     <div class="type">
-      <div class="muted pull-right">{{ idea.watchers|length }} 
-        user{% if (idea.watchers|length) > 1 %}s{% endif %} watching</div>
+      <div class="muted pull-right">{{ idea.countWatchers }} 
+        user{% if idea.countWatchers > 1 %}s{% endif %} watching</div>
     </div>
 
     <ul>
-      {% if idea.watchers|length > 5 %}
+      {% if idea.countWatchers > 5 %}
       <li>
         <div class="miniTextAvatar">...</div>
       </li>
       {% endif %}
       {% for watcher in idea.getRandomWatchers(5) %}
-      <li>
-        <a href="{{ path('u_show_user_profile', {'username': watcher.username}) }}">
-          <img src="{{ watcher.avatar }}" title="{{ watcher.firstName }} {{ watcher.lastName|upper }}" width="30" height="30" class="miniAvatar"/>
-        </a>
-      </li>
+        {% if not watcher.isDeleted %}
+        <li>
+          <a href="{{ path('u_show_user_profile', {'username': watcher.username}) }}">
+            <img src="{{ watcher.avatar }}" title="{{ watcher.firstName }} {{ watcher.lastName|upper }}" width="30" height="30" class="miniAvatar"/>
+          </a>
+        </li>
+        {% endif %}
       {% endfor %}
     </ul>
   </div>

@@ -80,9 +80,9 @@
   </div>
 
   <div class="projectAbout">
-    <div>{{ base.standardProject.owners|length }} owner{% if base.standardProject.owners|length > 1 %}s{% endif %}</div>
-    <div>{{ base.standardProject.participants|length }} participating</div>
-    <div>{{ base.standardProject.watchers|length }} watching</div>
+    <div>{{ base.standardProject.countOwners }} owner{% if base.standardProject.countOwners > 1 %}s{% endif %}</div>
+    <div>{{ base.standardProject.countParticipants }} participating</div>
+    <div>{{ base.standardProject.countWatchers }} watching</div>
   </div>
 {% endblock %}
 
