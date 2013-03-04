@@ -84,9 +84,9 @@
       {% if top3projectsActivity[top3projects[0][0].id][0] is defined %}<span>{{ top3projects[0][0].logEntries[top3projects[0][0].logEntries|length - 1].user.getFullName }} ({{ top3projects[0][0].logEntries[top3projects[0][0].logEntries|length - 1].createdAt|date("d/m/Y, H:i:s") }})</span>{% else %}N/A{% endif %}
       <h5>Community :</h5>
       <ul>
-        <li>{{ top3projects[0][0].owners|length }} owner(s)</li>
-        <li>{{ top3projects[0][0].participants|length }} participant(s)</li>
-        <li>{{ top3projects[0][0].watchers|length }} watcher(s)</li>
+        <li>{{ top3projects[0][0].countOwners }} owner(s)</li>
+        <li>{{ top3projects[0][0].countParticipants }} participant(s)</li>
+        <li>{{ top3projects[0][0].countWatchers }} watcher(s)</li>
       </ul>
       {% else %}
       <div class="blank_dashboard_item">No project here ? <a href="{{ path('sp_new_project') }}" class="btn btn-success">create a new one</a></div>
@@ -109,9 +109,9 @@
       {% if top3projectsActivity[top3projects[1][0].id][0] is defined %}<span>{{ top3projects[1][0].logEntries[top3projects[1][0].logEntries|length - 1].user.getFullName }} ({{ top3projects[1][0].logEntries[top3projects[1][0].logEntries|length - 1].createdAt|date("d/m/Y, H:i:s") }})</span>{% else %}N/A{% endif %}
       <h5>Community :</h5>
       <ul>
-        <li>{{ top3projects[1][0].owners|length }} owner(s)</li>
-        <li>{{ top3projects[1][0].participants|length }} participant(s)</li>
-        <li>{{ top3projects[1][0].watchers|length }} watcher(s)</li>
+        <li>{{ top3projects[1][0].countOwners }} owner(s)</li>
+        <li>{{ top3projects[1][0].countParticipants }} participant(s)</li>
+        <li>{{ top3projects[1][0].countWatchers }} watcher(s)</li>
       </ul>
       {% else %}
       <div class="blank_dashboard_item">No project here ? <a href="{{ path('sp_new_project') }}" class="btn btn-success">create a new one</a></div>
@@ -134,9 +134,9 @@
       {% if top3projectsActivity[top3projects[2][0].id][0] is defined %}<span>{{ top3projects[2][0].logEntries[top3projects[2][0].logEntries|length - 1].user.getFullName }} ({{ top3projects[2][0].logEntries[top3projects[2][0].logEntries|length - 1].createdAt|date("d/m/Y, H:i:s") }})</span>{% else %}N/A{% endif %}
       <h5>Community :</h5>
       <ul>
-        <li>{{ top3projects[2][0].owners|length }} owner(s)</li>
-        <li>{{ top3projects[2][0].participants|length }} participant(s)</li>
-        <li>{{ top3projects[2][0].watchers|length }} watcher(s)</li>
+        <li>{{ top3projects[2][0].countOwners }} owner(s)</li>
+        <li>{{ top3projects[2][0].countParticipants }} participant(s)</li>
+        <li>{{ top3projects[2][0].countWatchers }} watcher(s)</li>
       </ul>
       {% else %}
       <div class="blank_dashboard_item">No project here ? <a href="{{ path('sp_new_project') }}" class="btn btn-success">create a new one</a></div>
@@ -167,8 +167,8 @@
       {% if top3ideasActivity[top3ideas[0][0].id][0] is defined %}<span>{{ top3ideas[0][0].logEntries[top3ideas[0][0].logEntries|length - 1].user.getFullName }} ({{ top3ideas[0][0].logEntries[top3ideas[0][0].logEntries|length - 1].createdAt|date("d/m/Y, H:i:s") }})</span>{% else %}N/A{% endif %}
       <h5>Community :</h5>
       <ul>
-        <li>{{ top3ideas[0][0].participants|length }} participant(s)</li>
-        <li>{{ top3ideas[0][0].watchers|length }} watcher(s)</li>
+        <li>{{ top3ideas[0][0].countParticipants }} participant(s)</li>
+        <li>{{ top3ideas[0][0].countWatchers }} watcher(s)</li>
       </ul>
       {% else %}
       <div class="blank_dashboard_item">No idea here ? <a href="{{ path('i_new_idea') }}" class="btn btn-success">initiate a new one</a></div>
@@ -191,8 +191,8 @@
       {% if top3ideasActivity[top3ideas[1][0].id][0] is defined %}<span>{{ top3ideas[1][0].logEntries[top3ideas[1][0].logEntries|length - 1].user.getFullName }} ({{ top3ideas[1][0].logEntries[top3ideas[1][0].logEntries|length - 1].createdAt|date("d/m/Y, H:i:s") }})</span>{% else %}N/A{% endif %}
       <h5>Community :</h5>
       <ul>
-        <li>{{ top3ideas[1][0].participants|length }} participant(s)</li>
-        <li>{{ top3ideas[1][0].watchers|length }} watcher(s)</li>
+        <li>{{ top3ideas[1][0].countParticipants }} participant(s)</li>
+        <li>{{ top3ideas[1][0].countWatchers }} watcher(s)</li>
       </ul>
       {% else %}
       <div class="blank_dashboard_item">No idea here ? <a href="{{ path('i_new_idea') }}" class="btn btn-success">initiate a new one</a></div>
@@ -215,8 +215,8 @@
       {% if top3ideasActivity[top3ideas[2][0].id][0] is defined %}<span>{{ top3ideas[2][0].logEntries[top3ideas[2][0].logEntries|length - 1].user.getFullName }} ({{ top3ideas[2][0].logEntries[top3ideas[2][0].logEntries|length - 1].createdAt|date("d/m/Y, H:i:s") }})</span>{% else %}N/A{% endif %}
       <h5>Community :</h5>
       <ul>
-        <li>{{ top3ideas[2][0].participants|length }} participant(s)</li>
-        <li>{{ top3ideas[2][0].watchers|length }} watcher(s)</li>
+        <li>{{ top3ideas[2][0].countParticipants }} participant(s)</li>
+        <li>{{ top3ideas[2][0].countWatchers }} watcher(s)</li>
       </ul>
       {% else %}
       <div class="blank_dashboard_item">No idea here ? <a href="{{ path('i_new_idea') }}" class="btn btn-success">initiate a new one</a></div>
