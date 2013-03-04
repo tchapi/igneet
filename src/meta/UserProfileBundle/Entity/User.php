@@ -556,22 +556,6 @@ class User implements UserInterface
     }
 
     /**
-     * @ORM\PrePersist
-     */
-    public function setCreatedAtValue()
-    {
-        $this->created_at = new \DateTime();
-    }
-
-    /**
-     * @ORM\PreUpdate
-     */
-    public function setUpdatedAtValue()
-    {
-        $this->updated_at = new \DateTime();
-    }
-
-    /**
      * Set created_at
      *
      * @param \DateTime $createdAt
@@ -615,6 +599,14 @@ class User implements UserInterface
         return $this->updated_at;
     }
 
+    /**
+     * @ORM\PreUpdate()
+     */
+    public function update()
+    {
+        $this->updated_at = new \DateTime('now');
+    }
+    
     /**
      * Set headline
      *

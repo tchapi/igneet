@@ -370,6 +370,14 @@ class Resource extends Taggable
     }
 
     /**
+     * @ORM\PreUpdate()
+     */
+    public function update()
+    {
+        $this->updated_at = new \DateTime('now');
+    }
+    
+    /**
      * Set original_filename
      *
      * @param string $originalFilename

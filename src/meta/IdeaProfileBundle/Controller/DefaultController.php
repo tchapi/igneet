@@ -264,8 +264,6 @@ class DefaultController extends Controller
             $errors = $validator->validate($this->base['idea']);
 
             if ($objectHasBeenModified === true && count($errors) == 0){
-                $this->base['idea']->setUpdatedAt(new \DateTime('now'));
-
                 $logService = $this->container->get('logService');
                 $logService->log($this->getUser(), 'user_update_idea_info', $this->base['idea'], array());
 

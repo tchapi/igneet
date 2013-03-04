@@ -307,8 +307,6 @@ class DefaultController extends Controller
             $errors = $validator->validate($authenticatedUser);
 
             if ($objectHasBeenModified === true && count($errors) == 0){
-                $authenticatedUser->setUpdatedAt(new \DateTime('now'));
-
                 $logService = $this->container->get('logService');
                 $logService->log($authenticatedUser, 'user_update_profile', $authenticatedUser, array());
 

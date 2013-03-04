@@ -302,12 +302,10 @@ class WikiController extends BaseController
                 $errors = $validator->validate($wikiPage);
 
                 if ($objectHasBeenModified === true && count($errors) == 0){
-                    $wikiPage->setUpdatedAt(new \DateTime('now'));
                     $em->flush();
 
                     $logService = $this->container->get('logService');
                     $logService->log($this->getUser(), 'user_update_wikipage', $this->base['standardProject'], array( 'wikipage' => array( 'routing' => 'wikipage', 'logName' => $wikiPage->getLogName(), 'args' => $wikiPage->getLogArgs() ) ));
-
                 } elseif (count($errors) > 0) {
                     $response->setStatusCode(406);
                     $response->setContent($errors[0]->getMessage());
