@@ -232,6 +232,14 @@ class Idea extends Taggable
     }
 
     /**
+     * @ORM\PreUpdate()
+     */
+    public function update()
+    {
+        $this->updated_at = new \DateTime('now');
+    }
+
+    /**
      * Set name
      *
      * @param string $name

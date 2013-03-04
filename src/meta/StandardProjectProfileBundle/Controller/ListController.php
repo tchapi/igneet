@@ -200,12 +200,10 @@ class ListController extends BaseController
             $errors = $validator->validate($commonList);
 
             if ($objectHasBeenModified === true && count($errors) == 0){
-                $commonList->setUpdatedAt(new \DateTime('now'));
                 $em->flush();
 
                 $logService = $this->container->get('logService');
                 $logService->log($this->getUser(), 'user_update_list', $this->base['standardProject'], array( 'list' => array( 'routing' => 'list', 'logName' => $commonList->getLogName(), 'args' => $commonList->getLogArgs() ) ));
-
             } elseif (count($errors) > 0) {
                 $response->setStatusCode(406);
                 $response->setContent($errors[0]->getMessage());
@@ -326,14 +324,12 @@ class ListController extends BaseController
             $errors = $validator->validate($commonListItem);
 
             if ($objectHasBeenModified === true && count($errors) == 0){
-                $commonListItem->setUpdatedAt(new \DateTime('now'));
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
 
                 $logService = $this->container->get('logService');
                 $logService->log($this->getUser(), 'user_update_list_item', $this->base['standardProject'], array( 'list' => array( 'routing' => 'list', 'logName' => $commonList->getLogName(), 'args' => $commonList->getLogArgs()),
                                                                                                                    'list_item' => array( 'routing' => null, 'logName' => $commonListItem->getLogName() )) );
-
             } elseif (count($errors) > 0) {
                 $error = $errors[0]->getMessage(); 
             }
@@ -406,8 +402,7 @@ class ListController extends BaseController
             if ($commonListItem){
 
                 $commonListItem->setDone($do);
-
-                $commonListItem->setUpdatedAt(new \DateTime('now'));
+                
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
 

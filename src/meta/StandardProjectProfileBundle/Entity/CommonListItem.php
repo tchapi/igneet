@@ -158,6 +158,14 @@ class CommonListItem
     }
 
     /**
+     * @ORM\PreUpdate()
+     */
+    public function update()
+    {
+        $this->updated_at = new \DateTime('now');
+    }
+    
+    /**
      * Set done
      *
      * @param boolean $done

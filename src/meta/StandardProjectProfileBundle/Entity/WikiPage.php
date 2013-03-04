@@ -325,6 +325,14 @@ class WikiPage extends Taggable
     }
 
     /**
+     * @ORM\PreUpdate()
+     */
+    public function update()
+    {
+        $this->updated_at = new \DateTime('now');
+    }
+    
+    /**
      * Add comments
      *
      * @param \meta\StandardProjectProfileBundle\Entity\Comment\WikiPageComment $comment

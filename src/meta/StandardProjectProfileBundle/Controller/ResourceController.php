@@ -152,13 +152,11 @@ class ResourceController extends BaseController
             $errors = $validator->validate($resource);
 
             if ($objectHasBeenModified === true && count($errors) == 0){
-                $resource->setUpdatedAt(new \DateTime('now'));
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
 
                 $logService = $this->container->get('logService');
                 $logService->log($this->getUser(), 'user_update_resource', $this->base['standardProject'], array( 'resource' => array( 'routing' => 'resource', 'logName' => $resource->getLogName(), 'args' => $resource->getLogArgs()) ) );
-
             } elseif (count($errors) > 0) {
                 $error = $errors[0]->getMessage(); 
             }

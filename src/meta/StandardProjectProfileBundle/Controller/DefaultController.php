@@ -154,13 +154,11 @@ class DefaultController extends BaseController
             $errors = $validator->validate($this->base['standardProject']);
 
             if ($objectHasBeenModified === true && count($errors) == 0){
-                $this->base['standardProject']->setUpdatedAt(new \DateTime('now'));
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
 
                 $logService = $this->container->get('logService');
                 $logService->log($this->getUser(), 'user_update_project_info', $this->base['standardProject'], array());
-
             } elseif (count($errors) > 0) {
                 $response->setStatusCode(406);
                 $response->setContent($errors[0]->getMessage());

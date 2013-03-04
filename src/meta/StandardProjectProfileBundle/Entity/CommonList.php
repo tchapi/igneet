@@ -284,6 +284,14 @@ class CommonList extends Taggable
     }
 
     /**
+     * @ORM\PreUpdate()
+     */
+    public function update()
+    {
+        $this->updated_at = new \DateTime('now');
+    }
+    
+    /**
      * Get updated_at
      *
      * @return \DateTime 
