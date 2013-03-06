@@ -5,7 +5,7 @@ namespace meta\UserProfileBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM,
     Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity,
-    Symfony\Component\Security\Core\User\UserInterface,
+    Symfony\Component\Security\Core\User\AdvancedUserInterface,
     Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -17,7 +17,7 @@ use Doctrine\Common\Collections\ArrayCollection,
  * @UniqueEntity(fields="username", message="This username is already taken")
  * @UniqueEntity(fields="email", message="This email is already registered")
  */
-class User implements UserInterface
+class User implements AdvancedUserInterface
 {
     
     private static $gravatar_default_style = 'retro';
@@ -146,6 +146,14 @@ class User implements UserInterface
      */
     private $last_seen_at;  
 
+    /**
+     * @var \DateTime $deleted_at
+     *
+     * @ORM\Column(name="deleted_at", type="datetime", nullable=true)
+     * @Assert\DateTime()
+     */
+    private $deleted_at;
+    
     /**
      * @var string $headline
      *
@@ -332,6 +340,29 @@ class User implements UserInterface
     public function __sleep(){
 
         return array("id", "first_name", "last_name", "username", "email", "avatar");
+    }
+
+    /*
+     * This is for the AdvancedUserInterface
+     */
+    public function isAccountNonExpired()
+    {
+        return true;
+    }
+
+    public function isAccountNonLocked()
+    {
+        return true;
+    }
+
+    public function isCredentialsNonExpired()
+    {
+        return true;
+    }
+
+    public function isEnabled()
+    {
+        return !$this->isDeleted();
     }
 
     /**
@@ -726,6 +757,22 @@ class User implements UserInterface
     }
 
     /**
+     * Count followers
+     *
+     * @return integer
+     */
+    public function countFollowers()
+    {
+        $count = 0;
+
+        foreach ($this->followers as $user) {   
+            if ( !($user->isDeleted()) ) $count++;
+        }
+
+        return $count;
+    }
+
+    /**
      * Add following
      *
      * @param meta\UserProfileBundle\Entity\User $following
@@ -773,6 +820,22 @@ class User implements UserInterface
     public function isFollowing(\meta\UserProfileBundle\Entity\User $user)
     {
         return $this->following->contains($user);
+    }
+
+    /**
+     * Count following
+     *
+     * @return integer
+     */
+    public function countFollowing()
+    {
+        $count = 0;
+
+        foreach ($this->following as $user) {   
+            if ( !($user->isDeleted()) ) $count++;
+        }
+
+        return $count;
     }
 
     /**
@@ -1515,6 +1578,50 @@ class User implements UserInterface
     public function getCreatedTokens()
     {
         return $this->createdTokens;
+    }
+
+    /**
+     * Set deleted_at
+     *
+     * @param \DateTime $deletedAt
+     * @return User
+     */
+    public function setDeletedAt($deletedAt)
+    {
+        $this->deleted_at = $deletedAt;
+    
+        return $this;
+    }
+
+    /**
+     * Get deleted_at
+     *
+     * @return \DateTime 
+     */
+    public function getDeletedAt()
+    {
+        return $this->deleted_at;
+    }
+
+    /**
+     * Is deleted
+     *
+     * @return boolean 
+     */
+    public function isDeleted()
+    {
+        return !($this->deleted_at === NULL);
+    }
+
+    /**
+     * Deletes
+     *
+     * @return User 
+     */
+    public function delete()
+    {
+        $this->deleted_at = new \DateTime('now');
+        return $this;
     }
 
 }

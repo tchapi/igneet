@@ -514,6 +514,22 @@ class StandardProject extends Taggable
     }
 
     /**
+     * Count owners
+     *
+     * @return integer
+     */
+    public function countOwners()
+    {
+        $count = 0;
+
+        foreach ($this->owners as $user) {   
+            if ( !($user->isDeleted()) ) $count++;
+        }
+
+        return $count;
+    }
+
+    /**
      * Add participants
      *
      * BINDING LOGIC IS DONE IN 'USER' CLASS 
@@ -545,6 +561,22 @@ class StandardProject extends Taggable
     public function getParticipants()
     {
         return $this->participants;
+    }
+
+    /**
+     * Count participants
+     *
+     * @return integer
+     */
+    public function countParticipants()
+    {
+        $count = 0;
+
+        foreach ($this->participants as $user) {   
+            if ( !($user->isDeleted()) ) $count++;
+        }
+
+        return $count;
     }
 
     /**
@@ -620,6 +652,22 @@ class StandardProject extends Taggable
     public function getWatchers()
     {
         return $this->watchers;
+    }
+
+    /**
+     * Count watchers
+     *
+     * @return integer
+     */
+    public function countWatchers()
+    {
+        $count = 0;
+
+        foreach ($this->watchers as $user) {   
+            if ( !($user->isDeleted()) ) $count++;
+        }
+
+        return $count;
     }
 
     /**

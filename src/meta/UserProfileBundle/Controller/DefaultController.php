@@ -28,8 +28,8 @@ class DefaultController extends Controller
 
         $user = $repository->findOneByUsername($username);
 
-        if (!$user) {
-            throw $this->createNotFoundException('This user does not exist');
+        if (!$user || $user->isDeleted()) {
+            throw $this->createNotFoundException('This user does not exist or has been deleted');
         }
 
         $authenticatedUser = $this->getUser();
@@ -89,20 +89,27 @@ class DefaultController extends Controller
         
         // Top 3 projects
         $top3projects = $standardProjectRepository->findTopProjectsForUser($authenticatedUser->getId(), 3);
-        $top3projectsActivity_raw = $standardProjectRepository->computeWeekActivityForProjects($top3projects);
-        
         $top3projectsActivity = array();
-        foreach ($top3projectsActivity_raw as $key => $value) {
-            $top3projectsActivity[$value['id']][] = $value;
+
+        if (count($top3projects)){
+            $top3projectsActivity_raw = $standardProjectRepository->computeWeekActivityForProjects($top3projects);
+            
+            foreach ($top3projectsActivity_raw as $key => $value) {
+                $top3projectsActivity[$value['id']][] = $value;
+            }
         }
 
         // Top 3 ideas
         $top3ideas = $ideaRepository->findTopIdeasForUser($authenticatedUser->getId(), 3);
-        $top3ideasActivity_raw = $ideaRepository->computeWeekActivityForIdeas($top3ideas);
-        
         $top3ideasActivity = array();
-        foreach ($top3ideasActivity_raw as $key => $value) {
-            $top3ideasActivity[$value['id']][] = $value;
+
+        if (count($top3ideas)){
+            $top3ideasActivity_raw = $ideaRepository->computeWeekActivityForIdeas($top3ideas);
+            
+            
+            foreach ($top3ideasActivity_raw as $key => $value) {
+                $top3ideasActivity[$value['id']][] = $value;
+            }
         }
 
         return $this->render('metaUserProfileBundle:Dashboard:showDashboard.html.twig', 
@@ -386,16 +393,11 @@ class DefaultController extends Controller
 
             // ideas must have a creator and projects must have at least an owner
             if ($authenticatedUser->countNotArchivedIdeasCreated() === 0 &&
-                $authenticatedUser->getProjectsOwned()->count() === 0 ) {
+                $authenticatedUser->countProjectsOwned() === 0 ) {
 
-                // Then reassign the comments to NULL
-                foreach ($authenticatedUser->getComments() as $comment) {
-                    $comment->setUser(null);
-                }
-
-                // Delete the user for real
+                // Delete the user
                 $em = $this->getDoctrine()->getManager();
-                $em->remove($authenticatedUser);
+                $authenticatedUser->delete();
                 $em->flush();
                 
                 $this->get('security.context')->setToken(null);
@@ -441,28 +443,31 @@ class DefaultController extends Controller
             $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
             $user = $repository->findOneByUsername($username);
 
-            if ( !($this->getUser()->isFollowing($user)) ){
+            if ($user && !$user->isDeleted()){
 
-                $authenticatedUser->addFollowing($user);
+                if (!($this->getUser()->isFollowing($user)) ){
 
-                $logService = $this->container->get('logService');
-                $logService->log($authenticatedUser, 'user_follow_user', $user, array());
+                    $authenticatedUser->addFollowing($user);
 
-                $em = $this->getDoctrine()->getManager();
-                $em->flush();
+                    $logService = $this->container->get('logService');
+                    $logService->log($authenticatedUser, 'user_follow_user', $user, array());
 
-                $this->get('session')->setFlash(
-                    'success',
-                    'You are now following '.$user->getFullName().'.'
-                );
+                    $em = $this->getDoctrine()->getManager();
+                    $em->flush();
 
-            } else {
+                    $this->get('session')->setFlash(
+                        'success',
+                        'You are now following '.$user->getFullName().'.'
+                    );
 
-                $this->get('session')->setFlash(
-                    'warning',
-                    'You are already following '.$user->getFullName().'.'
-                );
+                } else {
 
+                    $this->get('session')->setFlash(
+                        'warning',
+                        'You are already following '.$user->getFullName().'.'
+                    );
+
+                }
             }
 
         } else {
@@ -493,25 +498,28 @@ class DefaultController extends Controller
             $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
             $user = $repository->findOneByUsername($username);
 
-            if ( $this->getUser()->isFollowing($user) ){
+            if ($user && !$user->isDeleted()){
 
-                $authenticatedUser->removeFollowing($user);
+                if ($this->getUser()->isFollowing($user) ){
 
-                $em = $this->getDoctrine()->getManager();
-                $em->flush();
+                    $authenticatedUser->removeFollowing($user);
 
-                $this->get('session')->setFlash(
-                    'success',
-                    'You are not following '.$user->getFullName().' anymore.'
-                );
+                    $em = $this->getDoctrine()->getManager();
+                    $em->flush();
 
-            } else {
+                    $this->get('session')->setFlash(
+                        'success',
+                        'You are not following '.$user->getFullName().' anymore.'
+                    );
 
-                $this->get('session')->setFlash(
-                    'warning',
-                    'You are not following '.$user->getFullName().'.'
-                );
+                } else {
 
+                    $this->get('session')->setFlash(
+                        'warning',
+                        'You are not following '.$user->getFullName().'.'
+                    );
+
+                }
             }
 
         } else {
@@ -527,7 +535,7 @@ class DefaultController extends Controller
     /*
      * List recently created users
      */
-    public function listRecentlyCreatedAction($page)
+    public function listAction($page)
     {
 
         $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
@@ -582,7 +590,7 @@ class DefaultController extends Controller
             $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
             $user = $repository->findOneByUsername($username);
 
-            if ($user && isset($target['slug']) && isset($target['params']) ){
+            if ($user && !$user->isDeleted() && isset($target['slug']) && isset($target['params']) ){
 
                 $target['params']['username'] = $username;
                 $target['params']['token'] = $request->get('token'); // For CSRF

@@ -100,11 +100,12 @@
   </div>
 </section>
 
-{% if user.following|length > 0 %}
+{% if user.countFollowing > 0 %}
 <section class="colored first">
 <div class="sectionTitle">{{ user.firstName }} is following : </div>
 <ul class="users sectionContent">
 {% for followingUser in user.following %}
+  {% if not followingUser.isDeleted %}
     <li>
       <a href="{{ path('u_show_user_profile', {'username': followingUser.username}) }}">
         <img src="{{ followingUser.avatar }}" width="70" height="70" class="smallAvatar"/>
@@ -113,16 +114,18 @@
         </div>
       </a>
     </li>
+  {% endif %}
 {% endfor %}
 </ul>
 </section>
 {% endif %}
 
-{% if isMe and user.followers|length > 0 %}
+{% if isMe and user.countFollowers > 0 %}
 <section class="colored">
 <div class="sectionTitle">My followers : </div>
 <ul class="users sectionContent">
 {% for followerUser in user.followers %}
+  {% if not followerUser.isDeleted %}
     <li>
       <a href="{{ path('u_show_user_profile', {'username': followerUser.username}) }}">
         <img src="{{ followerUser.avatar }}" width="70" height="70" class="smallAvatar"/>
@@ -131,6 +134,7 @@
         </div>
       </a>
     </li>
+  {% endif %}
 {% endfor %}
 </ul>
 </section>

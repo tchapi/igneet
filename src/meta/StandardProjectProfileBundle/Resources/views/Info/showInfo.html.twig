@@ -33,6 +33,7 @@
   <div class="sectionTitle">Owners : </div>
   <ul class="users sectionContent">
   {% for owningUser in base.standardProject.owners %}
+    {% if not owningUser.isDeleted %}
       <li>
         <a href="{{ path('u_show_user_profile', {'username': owningUser.username}) }}">
           <img src="{{ owningUser.avatar }}" width="70" height="70" class="smallAvatar"/>
@@ -42,6 +43,7 @@
         </a>
         {% if base.isOwning and owningUser != app.user %}<a class="removeUserIcon" href="{{ path('sp_remove_owner_to_project', { 'slug': base.standardProject.slug, 'username' : owningUser.username, 'token': csrf_token('removeParticipantOrOwner') }) }}"><i class="icon-remove-sign icon-large"></i></a>{% endif %}
       </li>
+    {% endif %}
   {% endfor %}
   {% if base.isOwning %}
       <li>
@@ -55,11 +57,12 @@
   {% endif %}
   </ul>
 </section>
-{% if base.standardProject.participants|length > 0 or base.isOwning %}
+{% if base.standardProject.countParticipants > 0 or base.isOwning %}
 <section class="colored">
   <div class="sectionTitle">Participants : </div>
   <ul class="users sectionContent">
   {% for participatingUser in base.standardProject.participants %}
+    {% if not participatingUser.isDeleted %}
       <li>
         <a href="{{ path('u_show_user_profile', {'username': participatingUser.username}) }}">
           <img src="{{ participatingUser.avatar }}" width="70" height="70" class="smallAvatar"/>
@@ -69,6 +72,7 @@
         </a>
         {% if base.isOwning %}<a class="removeUserIcon" href="{{ path('sp_remove_participant_to_project', { 'slug': base.standardProject.slug, 'username' : participatingUser.username, 'token': csrf_token('removeParticipantOrOwner') }) }}"><i class="icon-remove-sign icon-large"></i></a>{% endif %}
       </li>
+    {% endif %}
   {% endfor %}
   {% if base.isOwning %}
       <li>

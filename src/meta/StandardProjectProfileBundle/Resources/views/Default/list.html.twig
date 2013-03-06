@@ -31,23 +31,25 @@
   <div class="listingItemRelatedObjects">
 
     <div class="type">
-      <div class="muted pull-right">{{ standardProject.owners|length }} 
-        owner{% if (standardProject.owners|length) > 1 %}s{% endif %} and {{ standardProject.participants|length }} 
-        participant{% if (standardProject.participants|length) > 1 %}s{% endif %}</div>
+      <div class="muted pull-right">{{ standardProject.countOwners}} 
+        owner{% if standardProject.countOwners > 1 %}s{% endif %} and {{ standardProject.countParticipants }} 
+        participant{% if standardProject.countParticipants > 1 %}s{% endif %}</div>
     </div>
 
     <ul>
-      {% if standardProject.participants|length > 5 %}
+      {% if standardProject.countParticipants > 5 %}
       <li>
         <div class="miniTextAvatar">...</div>
       </li>
       {% endif %}
       {% for user in standardProject.getRandomParticipantsAndOwners(5) %}
-      <li>
-        <a href="{{ path('u_show_user_profile', {'username': user.username}) }}">
-          <img src="{{ user.avatar }}" title="{{ user.firstName }} {{ user.lastName|upper }}" width="30" height="30" class="miniAvatar"/>
-        </a>
-      </li>
+        {% if not user.isDeleted %}
+        <li>
+          <a href="{{ path('u_show_user_profile', {'username': user.username}) }}">
+            <img src="{{ user.avatar }}" title="{{ user.firstName }} {{ user.lastName|upper }}" width="30" height="30" class="miniAvatar"/>
+          </a>
+        </li>
+        {% endif %}
       {% endfor %}
     </ul>
   </div>

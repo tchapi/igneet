@@ -396,6 +396,21 @@ class Idea extends Taggable
 
         return $sub_array;
     }
+    /**
+     * Count watchers
+     *
+     * @return integer
+     */
+    public function countWatchers()
+    {
+        $count = 0;
+
+        foreach ($this->watchers as $user) {   
+            if ( !($user->isDeleted()) ) $count++;
+        }
+
+        return $count;
+    }
 
     /**
      * Set picture
@@ -579,6 +594,22 @@ class Idea extends Taggable
     public function getParticipants()
     {
         return $this->participants;
+    }
+
+    /**
+     * Count participants
+     *
+     * @return integer
+     */
+    public function countParticipants()
+    {
+        $count = 0;
+
+        foreach ($this->participants as $user) {   
+            if ( !($user->isDeleted()) ) $count++;
+        }
+
+        return $count;
     }
 
     /**
