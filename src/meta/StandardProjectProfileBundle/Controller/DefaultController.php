@@ -131,6 +131,11 @@ class DefaultController extends BaseController
                         intval($request->request->get('h')));
                     imagepng($dst_r, $preparedFilename.".cropped");
 
+                    /* We need to update the date manually.
+                     * Otherwise, as file is not part of the mapping,
+                     * @ORM\PreUpdate will not be called and the file will not be persisted
+                     */
+                    $this->base['standardProject']->setUpdatedAt(new \DateTime('now')); 
                     $this->base['standardProject']->setFile(new File($preparedFilename.".cropped"));
 
                     $objectHasBeenModified = true;

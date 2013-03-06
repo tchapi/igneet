@@ -487,9 +487,9 @@ class Idea extends Taggable
      */
     public function preUpload()
     {
+
         if (null !== $this->file) {
             // Generate a unique name
-
             $filename = sha1(uniqid(mt_rand(), true));
             $this->picture = $filename.'.'.$this->file->guessExtension();
         }
