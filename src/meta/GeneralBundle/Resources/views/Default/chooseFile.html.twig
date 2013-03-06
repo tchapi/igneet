@@ -15,7 +15,7 @@
 
 {% block content %}
 <div class="formContent">
-  <form action="{{ path('g_choose_file', { 'targetAsBase64' : targetAsBase64 }) }}" method="post" class="form-horizontal" enctype="multipart/form-data">
+  <form action="{{ path('g_choose_file', { 'targetAsBase64' : targetAsBase64, 'token': token }) }}" method="post" class="form-horizontal" enctype="multipart/form-data">
       <div class="control-group ">
         <label class="control-label"><label for="file" class="required">Choose a file : </label></label>
         <div class="controls">

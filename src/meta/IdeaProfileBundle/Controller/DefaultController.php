@@ -237,6 +237,11 @@ class DefaultController extends Controller
                         intval($request->request->get('h')));
                     imagepng($dst_r, $preparedFilename.".cropped");
 
+                    /* We need to update the date manually.
+                     * Otherwise, as file is not part of the mapping,
+                     * @ORM\PreUpdate will not be called and the file will not be persisted
+                     */
+                    $this->base['idea']->setUpdatedAt(new \DateTime('now'));
                     $this->base['idea']->setFile(new File($preparedFilename.".cropped"));
 
                     $objectHasBeenModified = true;
@@ -275,7 +280,6 @@ class DefaultController extends Controller
             }
         }
 
-        
         if (isset($needsRedirect) && $needsRedirect) {
 
             if (count($errors) > 0) {

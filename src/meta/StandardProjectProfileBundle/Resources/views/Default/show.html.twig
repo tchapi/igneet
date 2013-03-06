@@ -28,7 +28,7 @@
 
 {% block header %}
   <div class="headerAvatarAndActions">
-    {% if base.canEdit %}<div class="changeAvatar"><a href="{{ path('sp_edit_project_reset_picture', {'slug': base.standardProject.slug, 'token': csrf_token('resetPicture') }) }}" alt="Reset to default picture"><i class="icon-trash"></i></a> | <a href="{{ path('g_choose_file', {'targetAsBase64': base.targetPictureAsBase64 }) }}"><i class="icon-pencil"></i> change</a></div>{% endif %}
+    {% if base.canEdit %}<div class="changeAvatar"><a href="{{ path('sp_edit_project_reset_picture', {'slug': base.standardProject.slug, 'token': csrf_token('resetPicture') }) }}" alt="Reset to default picture"><i class="icon-trash"></i></a> | <a href="{{ path('g_choose_file', {'targetAsBase64': base.targetPictureAsBase64, 'token': csrf_token('edit') }) }}"><i class="icon-pencil"></i> change</a></div>{% endif %}
     <img src="{{ asset(base.standardProject.getPicture()) }}" width="150" height="150" class="avatar"/>
 {% if base.isAlreadyWatching %}
     <a href="{{ path('sp_unwatch_project', {'slug': base.standardProject.slug, 'token': csrf_token('unwatch') }) }}" class="btn btn-info watchAction">Unwatch project</a>

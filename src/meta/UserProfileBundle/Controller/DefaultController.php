@@ -290,6 +290,11 @@ class DefaultController extends Controller
                     );
                     imagepng($dst_r, $preparedFilename.".cropped");
 
+                    /* We need to update the date manually.
+                     * Otherwise, as file is not part of the mapping,
+                     * @ORM\PreUpdate will not be called and the file will not be persisted
+                     */
+                    $authenticatedUser->setUpdatedAt(new \DateTime('now'));
                     $authenticatedUser->setFile(new File($preparedFilename.".cropped"));
 
                     $objectHasBeenModified = true;
