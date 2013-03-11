@@ -412,9 +412,30 @@ class DefaultController extends Controller
 
             } else {
 
+                $projects = $ideas = "";
+                foreach ($authenticatedUser->getProjectsOwned() as $project) {
+                    if (!$project->isDeleted()){
+                        $projects .= $project->getName(). ",";
+                    }
+                }
+
+                foreach ($authenticatedUser->getIdeasCreated() as $idea) {
+                    if (!$idea->isDeleted()){
+                        $ideas .= $idea->getName() . ",";
+                    }
+                }
+
+                if ($projects !== ""){
+                    $projects = " projects (" . substr($projects, 0, -1) . ")";
+                }
+                if ($ideas !== ""){
+                    if ($projects !== "") $projects .= " and";
+                    $ideas = " unarchived ideas (" . substr($ideas, 0, -1) . ")";
+                }
+
                 $this->get('session')->setFlash(
                     'error',
-                    'You cannot delete your account; you still own projects or unarchived ideas. Transfer idea ownership, make sure your projects have another owner and try again.'
+                    'You cannot delete your account; you still own'. $projects . $ideas . '. Transfer idea ownership, make sure your projects have another owner and try again.'
                 );
 
                 return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $username)));
