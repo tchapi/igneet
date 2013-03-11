@@ -2,7 +2,7 @@
 ## TODO ##
 
 Sprint 1
-Soft-delete des objets (notamment idées archivées car 500 aujourd'hui)
+[OK] Soft-delete des objets (notamment idées archivées car 500 aujourd'hui)
 [OK] Skills déclarés : dans la vue publique, voir les Skills qui ne sont pas comblés dans le projet...
 [OK] Supprimer un de ses commentaires (mais garder une trace : 'This comment has been deleted')
 Sprint 2
@@ -18,11 +18,10 @@ Todo - General / Users :
 
  ☐ Clustering des activityLogs : vérifier que l'object correspond en récupérant le findOneBY, et pas faire le test dans le if après
  ☐ Mettre maxUsersInListings en parameters de l'appli a récupérer dans Twig
- ☐ Ne pas passer le nom complet de l'action en base64 lors d'un chooseFile ou User mais mettre seulement qqs parametres puis reconstruire après ?
  ☐ login et signup : focus sur le champ lors du chargement de la page
- 
  ☐ envoyer des responses() avec des codes corrects
- 
+
+ ✔ Liste des users : pour chaque, rajouter 'last active on' et 'last updated on' @done (13-03-07 00:13)
  ✔ logger les updates correctements avec $this->base['standardProject']->update(); dans toutes les actions @done (13-03-04 21:02)
  ✔ replace setFlashes if same @done (13-03-03 20:30)
  ✔ Pagination générale sur les objets @done (13-03-02 12:52)
@@ -69,6 +68,7 @@ Todo - General / Users :
  ✘ watch ou participant sur unde idée : a voir ? @cancelled (13-01-26 11:25)
    \__ si, ça a un intérêt
  ✘ Base.canEdit --> C'est très très con pour les wiki, les listes, car c'est que les éditeurs qui peuvent le voir anyway => transformer en un <span> qui permet d'avoir une preference "voir l'édition" ou pas @cancelled (13-03-01 16:56)
+ ✘ Ne pas passer le nom complet de l'action en base64 lors d'un chooseFile ou User mais mettre seulement qqs parametres puis reconstruire après ? @cancelled (13-03-07 00:13)
 
 Todo - entité "CommonList":
 

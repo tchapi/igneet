@@ -24,36 +24,36 @@ class UserRepository extends EntityRepository
 
   }
 
-  public function findRecentlyCreatedUsers($page, $limit)
+  public function findUsers($page, $maxPerPage, $sort)
   {
     
     $qb = $this->getEntityManager()->createQueryBuilder();
-
-    return $qb->select('u')
+    $query = $qb->select('u')
             ->from('metaUserProfileBundle:User', 'u')
-            ->where('u.deleted_at IS NULL')
-            ->orderBy('u.created_at', 'DESC')
-            ->setFirstResult(($page-1)*$limit)
-            ->setMaxResults($limit)
+            ->where('u.deleted_at IS NULL');
+
+    switch ($sort) {
+      case 'update':
+        $query->orderBy('u.updated_at', 'DESC');
+        break;
+      case 'alpha':
+        $query->orderBy('u.first_name', 'ASC');
+        break;
+      case 'active':
+        $query->orderBy('u.last_seen_at', 'DESC');
+        break;
+      case 'newest':
+      default:
+        $query->orderBy('u.created_at', 'DESC');
+        break;
+    }
+
+    return $query
+            ->setFirstResult(($page-1)*$maxPerPage)
+            ->setMaxResults($maxPerPage)
             ->getQuery()
             ->getResult();
 
-  }
-
-  public function findRecentlyUpdatedUsers($page, $limit)
-  {
-    
-    $qb = $this->getEntityManager()->createQueryBuilder();
-
-    return $qb->select('u')
-            ->from('metaUserProfileBundle:User', 'u')
-            ->where('u.deleted_at IS NULL')
-            ->orderBy('u.updated_at', 'DESC')
-            ->setFirstResult(($page-1)*$limit)
-            ->setMaxResults($limit)
-            ->getQuery()
-            ->getResult();
-            
   }
 
   public function findAllUsersExceptMe($userId)

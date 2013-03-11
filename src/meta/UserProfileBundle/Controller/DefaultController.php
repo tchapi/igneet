@@ -575,16 +575,21 @@ class DefaultController extends Controller
     /*
      * List recently created users
      */
-    public function listAction($page)
+    public function listAction($page, $sort)
     {
-
         $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
 
         $totalUsers = $repository->countUsers();
-        $users = $repository->findRecentlyCreatedUsers($page, $this->container->getParameter('listings.number_of_items_per_page'));
+        $maxPerPage = $this->container->getParameter('listings.number_of_items_per_page');
+
+        if ( ($page-1) * $maxPerPage > $totalUsers) {
+            return $this->redirect($this->generateUrl('u_list_users', array('sort' => $sort)));
+        }
+
+        $users = $repository->findUsers($page, $maxPerPage, $sort);
 
         $pagination = array( 'page' => $page, 'totalUsers' => $totalUsers);
-        return $this->render('metaUserProfileBundle:Default:list.html.twig', array('users' => $users, 'pagination' => $pagination));
+        return $this->render('metaUserProfileBundle:Default:list.html.twig', array('users' => $users, 'pagination' => $pagination, 'sort' => $sort ));
 
     }
 
