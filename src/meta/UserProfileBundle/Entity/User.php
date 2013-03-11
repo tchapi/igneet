@@ -713,6 +713,19 @@ class User implements AdvancedUserInterface
     }
 
     /**
+     * Clear all skills
+     *
+     * @return User 
+     */
+    public function clearSkills()
+    {
+        foreach ($this->skills as $skill) {
+            $this->removeSkill($skill);
+        }
+        return $this;
+    }
+
+    /**
      * Get skills
      *
      * @return Doctrine\Common\Collections\Collection 

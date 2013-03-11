@@ -269,7 +269,7 @@
 {% if isMe %}
 <section class="colored warning">
   <div class="sectionTitle">Delete my account : </div>
-  <div class="sectionContent"><a class="btn btn-danger" data-confirm="Are you sure you want to delete yourself ?" href="{{ path('u_delete_user_profile', { 'username': user.username, 'token': csrf_token('delete') }) }}">Delete</a> <span class="muted">( <i class="icon-warning-sign"></i> Warning : you cannot undo this )</span></div>
+  <div class="sectionContent"><a class="btn btn-danger" data-confirm="Are you sure you want to delete yourself ? Ideas for which you are the only creator will be deleted as well." href="{{ path('u_delete_user_profile', { 'username': user.username, 'token': csrf_token('delete') }) }}">Delete</a> <span class="muted">( <i class="icon-warning-sign"></i> Warning : you cannot undo this )</span></div>
 </section>
 {% endif %}
 {% endblock %}

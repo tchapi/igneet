@@ -394,11 +394,25 @@ class DefaultController extends Controller
 
         if ($authenticatedUser->getUsername() === $username) {
         
+            $deletable = true;
+
             // Performs checks for ownerships
+            foreach ($authenticatedUser->getProjectsOwned() as $project) {
+                if (!$project->isDeleted() && $project->countOwners() == 1){
+                    // not good : we're the only owner
+                    $deletable = false;
+                    break;
+                }
+            }
+            foreach ($authenticatedUser->getIdeasCreated() as $idea) {
+                if (!$idea->isDeleted() && $idea->countCreators() == 1){
+                    // we're the only creator : we have to delete the idea
+                    $idea->delete();
+                }
+            }
 
             // ideas must have a creator and projects must have at least an owner
-            if ($authenticatedUser->countNotArchivedIdeasCreated() === 0 &&
-                $authenticatedUser->countProjectsOwned() === 0 ) {
+            if ($deletable === true ) {
 
                 // Delete the user
                 $em = $this->getDoctrine()->getManager();
@@ -412,9 +426,30 @@ class DefaultController extends Controller
 
             } else {
 
+                $projects = $ideas = "";
+                foreach ($authenticatedUser->getProjectsOwned() as $project) {
+                    if (!$project->isDeleted() && $project->countOwners() == 1){
+                        $projects .= $project->getName(). ",";
+                    }
+                }
+
+                foreach ($authenticatedUser->getIdeasCreated() as $idea) {
+                    if (!$idea->isDeleted() && $idea->countCreators() == 1 && $idea->countParticipants() == 0 ){
+                        $ideas .= $idea->getName() . ",";
+                    }
+                }
+
+                if ($projects !== ""){
+                    $projects = " projects (" . substr($projects, 0, -1) . ")";
+                }
+                if ($ideas !== ""){
+                    if ($projects !== "") $projects .= " and";
+                    $ideas = " ideas that will be orphaned (" . substr($ideas, 0, -1) . ")";
+                }
+
                 $this->get('session')->setFlash(
                     'error',
-                    'You cannot delete your account; you still own projects or unarchived ideas. Transfer idea ownership, make sure your projects have another owner and try again.'
+                    'You cannot delete your account; you still own'. $projects . $ideas . '. Make sure your projects have another owner, that your ideas have participants, and try again.'
                 );
 
                 return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $username)));
