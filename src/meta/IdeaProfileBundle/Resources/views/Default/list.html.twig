@@ -25,7 +25,7 @@
   <div class="listingItemInfo">
     <h4 class="ellipsis"><a href="{{ path('i_show_idea', {'id': idea.id, 'slug': idea.slug}) }}">{{ idea.name }}</a></h4>
     <div class="ellipsis">{{ idea.headline }}</div>
-    <div class="muted"><i class="icon-calendar"></i> Created on {{ idea.createdAt|date("d/m/Y") }} by {% if idea.creators|length == 1 %}{{ idea.creators[0].getFullName() }}{% else %}{{ idea.creators|length }} people{% endif %}</div>
+    <div class="muted"><i class="icon-calendar"></i> Created on {{ idea.createdAt|date("d/m/Y") }} by {% if idea.countCreators == 1 %}{{ idea.getACreator().getFullName() }}{% else %}{{ idea.countCreators }} people{% endif %}</div>
   </div>
 
   {% if idea.countWatchers > 0 %}

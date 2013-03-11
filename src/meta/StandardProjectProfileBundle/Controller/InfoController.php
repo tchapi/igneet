@@ -46,7 +46,7 @@ class InfoController extends BaseController
             $userRepository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
             $newParticipantOrOwner = $userRepository->findOneByUsername($username);
 
-            if ($newParticipantOrOwner && (( !($newParticipantOrOwner->isOwning($this->base['standardProject'])) && $owner === true) || ( !($newParticipantOrOwner->isParticipatingIn($this->base['standardProject'])) && $owner !== true))) {
+            if ($newParticipantOrOwner && (( !($newParticipantOrOwner->isOwning($this->base['standardProject'])) && $owner === true) || ( !($newParticipantOrOwner->isParticipatingIn($this->base['standardProject'])) && $owner !== true && $newParticipantOrOwner === $owner ))) {
 
                 if ($owner === true){
 

@@ -803,6 +803,36 @@ class Idea extends Taggable
     }
 
     /**
+     * Get a creator
+     *
+     * @return User
+     */
+    public function getACreator()
+    {
+        foreach ($this->creators as $user) {   
+            if ( !($user->isDeleted()) ) {
+                return $user;
+            }
+        }
+    }
+
+    /**
+     * Count creators
+     *
+     * @return integer
+     */
+    public function countCreators()
+    {
+        $count = 0;
+
+        foreach ($this->creators as $user) {   
+            if ( !($user->isDeleted()) ) $count++;
+        }
+
+        return $count;
+    }
+
+    /**
      * Set deleted_at
      *
      * @param \DateTime $deletedAt
