@@ -437,10 +437,11 @@ class DefaultController extends Controller
                 }
 
                 foreach ($this->base['idea']->getComments() as $comment) {
-                    $newComment = $comment->createStandardProjectComment();
-                    
-                    $project->addComment($newComment);
-                    $em->persist($newComment);
+                    if (!$comment->isDeleted()) {
+                        $newComment = $comment->createStandardProjectComment();
+                        $project->addComment($newComment);
+                        $em->persist($newComment);
+                    }
                 }
 
             $project->setOriginalIdea($this->base['idea']);
