@@ -104,9 +104,6 @@ div.content section > .sectionContent{
 div.content section.listing{
   border-bottom: 1px solid #DDD;
 }
-div.content section.listing:last-child{
-  border-bottom: none;
-}
 div.content form section > .sectionContent{
   width: auto;
 }
