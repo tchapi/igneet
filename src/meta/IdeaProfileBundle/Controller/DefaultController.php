@@ -772,7 +772,6 @@ class DefaultController extends Controller
 
         }
 
-
         return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
     }
 

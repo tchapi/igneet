@@ -48,11 +48,12 @@ u_delete_user_profile:
     requirements:
         _method:  GET
 
-u_show_list_recent_created:
-    pattern:  /people/{page}
-    defaults: { _controller: metaUserProfileBundle:Default:list, page: 1 }
+u_list_users:
+    pattern:  /people/{page}/{sort}
+    defaults: { _controller: metaUserProfileBundle:Default:list, page: 1, sort: newest }
     requirements:
         page: \d+
+        sort: newest|update|active|alpha
 
 u_choose_user:
     pattern:  /people/choose/{targetAsBase64}

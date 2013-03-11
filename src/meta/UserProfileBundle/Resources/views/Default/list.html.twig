@@ -9,7 +9,7 @@
   <div class="objectHeader">
     <h2>Users</h2>
     <h4>All the users are listed in this page.</h4>
-    <p>A profile is inherently public.</p>
+    <p>Sort by : <a href="{{ path('u_list_users', {'sort': 'newest', 'page' : pagination.page}) }}"><i class="icon-star"></i> Newest users</a> - <a href="{{ path('u_list_users', {'sort': 'update', 'page' : pagination.page}) }}"><i class="icon-time"></i> Recently updated</a> - <a href="{{ path('u_list_users', {'sort': 'active', 'page' : pagination.page}) }}"><i class="icon-dashboard"></i> Last active</a> - <a href="{{ path('u_list_users', {'sort': 'alpha', 'page' : pagination.page}) }}"><i class="icon-font"></i> Alphabetical</a></p>
   </div>
 {% endblock %}
 
@@ -26,6 +26,8 @@
     <h4 class="ellipsis"><a href="{{ path('u_show_user_profile', {'username': user.username}) }}">{{ user.firstName }} {{ user.lastName|upper }}</a></h4>
     <div class="ellipsis">{{ user.headline }}</div>
     <div class="muted"><i class="icon-calendar"></i> Member since {{ user.createdAt|date("d/m/Y") }}</div>
+    <div class="muted"><i class="icon-time"></i> Last updated {{ user.updatedAt|date("d/m/Y") }}{% if user.initiatedLogEntries|length > 0 %} and last activity on {{ user.initiatedLogEntries[user.initiatedLogEntries|length - 1].createdAt|date("d/m/Y H:i:s") }}{% endif %}</div>
+    
   </div>
   {% if user.countProjectsOwned > 0 %}
   <div class="listingItemRelatedObjects">
@@ -57,7 +59,7 @@
 </section>
 {% endfor %}
 <section>
-{% render "metaGeneralBundle:Default:pagination" with { 'route': 'u_show_list_recent_created', 'page' : pagination.page, 'total' : pagination.totalUsers } %}
+{% render "metaGeneralBundle:Default:pagination" with { 'route': 'u_list_users', 'page' : pagination.page, 'total' : pagination.totalUsers, 'params' : {'sort': sort } } %}
 </section>
 {% else %}
 <section>

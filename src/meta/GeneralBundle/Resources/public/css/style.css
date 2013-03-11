@@ -17,6 +17,10 @@ body > footer{
   font-size: 0.9em;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  margin: 2px 0;
+}
+
 div#workspace{
   transition: opacity 150ms 350ms ease-in;
   margin-top: 20px;
