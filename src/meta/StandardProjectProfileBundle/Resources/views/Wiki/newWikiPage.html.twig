@@ -1,6 +1,6 @@
 {% extends 'metaStandardProjectProfileBundle:Default:show.html.twig' %}
 
-{% block title %}{{ parent() }} > {{ base.standardProject.name }} | New Wiki Page{% endblock %}
+{% block title %}{{ parent() }} | New Wiki Page{% endblock %}
 
 {% block navbar %}
 {% render "metaStandardProjectProfileBundle:Default:navbar" with { 'activeMenu' : 'wiki', 'slug' : base.standardProject.slug } %}

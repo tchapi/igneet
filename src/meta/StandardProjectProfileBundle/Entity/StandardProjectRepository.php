@@ -26,37 +26,34 @@ class StandardProjectRepository extends EntityRepository
 
   }
 
-  public function findRecentlyCreatedStandardProjects($page, $limit)
+  public function findStandardProjects($page, $maxPerPage, $sort)
   {
     
     $qb = $this->getEntityManager()->createQueryBuilder();
-
-    return $qb->select('sp')
+    $query = $qb->select('sp')
             ->from('metaStandardProjectProfileBundle:StandardProject', 'sp')
-            ->where('sp.deleted_at IS NULL')
-            ->orderBy('sp.created_at', 'DESC')
-            ->setFirstResult(($page-1)*$limit)
-            ->setMaxResults($limit)
+            ->where('sp.deleted_at IS NULL');
+
+    switch ($sort) {
+      case 'update':
+        $query->orderBy('sp.updated_at', 'DESC');
+        break;
+      case 'alpha':
+        $query->orderBy('sp.name', 'ASC');
+        break;
+      case 'newest':
+      default:
+        $query->orderBy('sp.created_at', 'DESC');
+        break;
+    }
+
+    return $query->setFirstResult(($page-1)*$maxPerPage)
+            ->setMaxResults($maxPerPage)
             ->getQuery()
             ->getResult();
 
   }
 
-  public function findRecentlyUpdatedStandardProjects($page, $limit)
-  {
-    
-    $qb = $this->getEntityManager()->createQueryBuilder();
-
-    return $qb->select('sp')
-            ->from('metaStandardProjectProfileBundle:StandardProject', 'sp')
-            ->where('sp.deleted_at IS NULL')
-            ->orderBy('sp.updated_at', 'DESC')
-            ->setFirstResult(($page-1)*$limit)
-            ->setMaxResults($limit)
-            ->getQuery()
-            ->getResult();
-            
-  }
 
   public function findTopProjectsForUser($userId, $max = 3)
   {

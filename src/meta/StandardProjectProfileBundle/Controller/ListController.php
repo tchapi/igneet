@@ -84,6 +84,7 @@ class ListController extends BaseController
             }
 
             $em = $this->getDoctrine()->getManager();
+            $this->base['standardProject']->setUpdatedAt(new \DateTime('now'));
             $em->flush();
         
             return new Response();
@@ -120,6 +121,7 @@ class ListController extends BaseController
             if ($form->isValid()) {
 
                 $this->base['standardProject']->addCommonList($commonList);
+                $this->base['standardProject']->setUpdatedAt(new \DateTime('now'));
 
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($commonList);
@@ -207,6 +209,7 @@ class ListController extends BaseController
 
             if ($objectHasBeenModified === true && count($errors) == 0){
                 
+                $this->base['standardProject']->setUpdatedAt(new \DateTime('now'));
                 $em->flush();
 
                 $logService = $this->container->get('logService');
@@ -247,6 +250,7 @@ class ListController extends BaseController
             if ($commonList){
 
                 $this->base['standardProject']->removeCommonList($commonList);
+                $this->base['standardProject']->setUpdatedAt(new \DateTime('now'));
 
                 $logService = $this->container->get('logService');
                 $logService->log($this->getUser(), 'user_delete_list', $this->base['standardProject'], array( 'list' => array( 'routing' => null, 'logName' => $commonList->getLogName() )) );
@@ -289,6 +293,7 @@ class ListController extends BaseController
         $commonList = $repository->findOneByIdInProject($listId, $this->base['standardProject']->getId());
 
         $commonList->addItem($commonListItem);
+        $this->base['standardProject']->setUpdatedAt(new \DateTime('now'));
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($commonListItem);
@@ -342,6 +347,7 @@ class ListController extends BaseController
 
             if ($objectHasBeenModified === true && count($errors) == 0){
                 
+                $this->base['standardProject']->setUpdatedAt(new \DateTime('now'));
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
 
@@ -386,6 +392,7 @@ class ListController extends BaseController
             if ($commonList && $commonListItem){
 
                 $commonList->removeItem($commonListItem);
+                $this->base['standardProject']->setUpdatedAt(new \DateTime('now'));
 
                 $em = $this->getDoctrine()->getManager();
                 $em->remove($commonListItem);
@@ -430,6 +437,7 @@ class ListController extends BaseController
             if ($commonListItem){
 
                 $commonListItem->setDone($do);
+                $this->base['standardProject']->setUpdatedAt(new \DateTime('now'));
                 
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();

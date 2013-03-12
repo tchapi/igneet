@@ -26,40 +26,34 @@ class IdeaRepository extends EntityRepository
 
   }
 
-  public function findRecentlyCreatedIdeas($page, $limit, $archived = false)
+  public function findIdeas($page, $maxPerPage, $sort, $archived = false)
   {
     
     $modifier = $archived?'NOT ':'';
     $qb = $this->getEntityManager()->createQueryBuilder();
-
-    return $qb->select('i')
+    $query = $qb->select('i')
             ->from('metaIdeaProfileBundle:Idea', 'i')
             ->where('i.archived_at IS ' . $modifier . 'NULL')
-            ->andWhere('i.deleted_at IS NULL')
-            ->orderBy('i.created_at', 'DESC')
-            ->setFirstResult(($page-1)*$limit)
-            ->setMaxResults($limit)
+            ->andWhere('i.deleted_at IS NULL');
+
+    switch ($sort) {
+      case 'update':
+        $query->orderBy('i.updated_at', 'DESC');
+        break;
+      case 'alpha':
+        $query->orderBy('i.name', 'ASC');
+        break;
+      case 'newest':
+      default:
+        $query->orderBy('i.created_at', 'DESC');
+        break;
+    }
+
+    return $query
+            ->setFirstResult(($page-1)*$maxPerPage)
+            ->setMaxResults($maxPerPage)
             ->getQuery()
             ->getResult();
-
-  }
-
-  public function findRecentlyUpdatedIdeas($page, $limit, $archived = false)
-  {
-    
-    $modifier = $archived?'NOT ':'';
-    $qb = $this->getEntityManager()->createQueryBuilder();
-
-    return $qb->select('i')
-            ->from('metaIdeaProfileBundle:Idea', 'i')
-            ->where('i.archived_at IS ' . $modifier . 'NULL') 
-            ->andWhere('i.deleted_at IS NULL')
-            ->orderBy('i.updated_at', 'DESC')
-            ->setFirstResult(($page-1)*$limit)
-            ->setMaxResults($limit)
-            ->getQuery()
-            ->getResult();
-            
   }
 
   public function findTopIdeasForUser($userId, $max = 3, $archived = false)

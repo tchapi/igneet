@@ -26,7 +26,7 @@
     <h4 class="ellipsis"><a href="{{ path('u_show_user_profile', {'username': user.username}) }}">{{ user.firstName }} {{ user.lastName|upper }}</a></h4>
     <div class="ellipsis">{{ user.headline }}</div>
     <div class="muted"><i class="icon-calendar"></i> Member since {{ user.createdAt|date("d/m/Y") }}</div>
-    <div class="muted"><i class="icon-time"></i> Last updated {{ user.updatedAt|date("d/m/Y") }}{% if user.initiatedLogEntries|length > 0 %} and last activity on {{ user.initiatedLogEntries[user.initiatedLogEntries|length - 1].createdAt|date("d/m/Y H:i:s") }}{% endif %}</div>
+    <div class="muted"><i class="icon-time"></i> Last updated {{ user.updatedAt|date("d/m/Y H:i:s") }}{% if user.initiatedLogEntries|length > 0 %} and last activity on {{ user.initiatedLogEntries[user.initiatedLogEntries|length - 1].createdAt|date("d/m/Y H:i:s") }}{% endif %}</div>
     
   </div>
   {% if user.countProjectsOwned > 0 %}

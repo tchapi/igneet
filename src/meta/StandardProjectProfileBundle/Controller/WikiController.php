@@ -34,7 +34,8 @@ class WikiController extends BaseController
           $wiki = new Wiki();
 
           $this->base['standardProject']->setWiki($wiki);
-          
+          $this->base['standardProject']->setUpdatedAt(new \DateTime('now'));
+
           $em = $this->getDoctrine()->getManager();
           $em->persist($wiki);
           $em->flush();
@@ -120,6 +121,7 @@ class WikiController extends BaseController
             if ($form->isValid()) {
 
                 $this->base['standardProject']->getWiki()->addPage($wikiPage); /* ADD CHILD */
+                $this->base['standardProject']->setUpdatedAt(new \DateTime('now'));
 
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($wikiPage);
@@ -190,6 +192,7 @@ class WikiController extends BaseController
 
           $em = $this->getDoctrine()->getManager();
           $wiki->setHomePage($wikiPage);
+          $this->base['standardProject']->setUpdatedAt(new \DateTime('now'));
           $em->flush();
 
         }
@@ -219,6 +222,7 @@ class WikiController extends BaseController
                     if ($wikiPage) $wikiPage->setRank(intval($key));
                 }
 
+                $this->base['standardProject']->setUpdatedAt(new \DateTime('now'));
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
         
@@ -312,6 +316,7 @@ class WikiController extends BaseController
 
                 if ($objectHasBeenModified === true && count($errors) == 0){
                     
+                    $this->base['standardProject']->setUpdatedAt(new \DateTime('now'));
                     $em->flush();
 
                     $logService = $this->container->get('logService');
@@ -381,6 +386,8 @@ class WikiController extends BaseController
 
                   $em = $this->getDoctrine()->getManager();
                   $em->remove($wikiPage);
+                  $this->base['standardProject']->setUpdatedAt(new \DateTime('now'));
+
                   $em->flush();
 
                   $this->get('session')->setFlash(
