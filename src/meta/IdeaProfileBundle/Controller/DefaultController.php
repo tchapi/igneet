@@ -198,6 +198,7 @@ class DefaultController extends Controller
 
         $this->fetchIdeaAndPreComputeRights($id, false, true);
         $error = null;
+        $response = null;
 
         if ($this->base != false) {
         
@@ -217,9 +218,9 @@ class DefaultController extends Controller
                 case 'about':
                     $this->base['idea']->setAbout($request->request->get('value'));
                     $deepLinkingService = $this->container->get('meta.twig.deep_linking_extension');
-                        $response->setContent($deepLinkingService->convertDeepLinks(
-                          $this->container->get('markdown.parser')->transformMarkdown($request->request->get('value')))
-                        );
+                    $response = $deepLinkingService->convertDeepLinks(
+                      $this->container->get('markdown.parser')->transformMarkdown($request->request->get('value'))
+                    );
                     $objectHasBeenModified = true;
                     break;
                 case 'picture':
@@ -250,17 +251,17 @@ class DefaultController extends Controller
                 case 'concept_text':
                     $this->base['idea']->setConceptText($request->request->get('value'));
                     $deepLinkingService = $this->container->get('meta.twig.deep_linking_extension');
-                        $response->setContent($deepLinkingService->convertDeepLinks(
-                          $this->container->get('markdown.parser')->transformMarkdown($request->request->get('value')))
-                        );
+                    $response = $deepLinkingService->convertDeepLinks(
+                      $this->container->get('markdown.parser')->transformMarkdown($request->request->get('value'))
+                    );
                     $objectHasBeenModified = true;
                     break;
                 case 'knowledge_text':
                     $this->base['idea']->setKnowledgeText($request->request->get('value'));
                     $deepLinkingService = $this->container->get('meta.twig.deep_linking_extension');
-                        $response->setContent($deepLinkingService->convertDeepLinks(
-                          $this->container->get('markdown.parser')->transformMarkdown($request->request->get('value')))
-                        );
+                    $response = $deepLinkingService->convertDeepLinks(
+                      $this->container->get('markdown.parser')->transformMarkdown($request->request->get('value'))
+                    );
                     $objectHasBeenModified = true;
                     break;
             }
@@ -305,7 +306,7 @@ class DefaultController extends Controller
                 return new Response($error, 406);
             }
 
-            return new Response();
+            return new Response($response);
         }
 
     }
