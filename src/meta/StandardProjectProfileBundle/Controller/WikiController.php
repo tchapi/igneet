@@ -205,28 +205,36 @@ class WikiController extends BaseController
 
         if ($this->base != false) {
 
-          $wiki = $this->base['standardProject']->getWiki();
+            $wiki = $this->base['standardProject']->getWiki();
 
-          if ($wiki) {
+            if ($wiki) {
 
-            $ranks = explode(',', $request->request->get('ranks'));
-            $repository = $this->getDoctrine()->getRepository('metaStandardProjectProfileBundle:WikiPage');
+                $ranks = explode(',', $request->request->get('ranks'));
+                $repository = $this->getDoctrine()->getRepository('metaStandardProjectProfileBundle:WikiPage');
 
-            foreach($ranks as $key => $page_id)
-            {
-                if ($page_id == "") continue;
-                $wikiPage = $repository->findOneByIdInWiki(intval($page_id), $wiki->getId());
-                if ($wikiPage) $wikiPage->setRank(intval($key));
+                foreach($ranks as $key => $page_id)
+                {
+                    if ($page_id == "") continue;
+                    $wikiPage = $repository->findOneByIdInWiki(intval($page_id), $wiki->getId());
+                    if ($wikiPage) $wikiPage->setRank(intval($key));
+                }
+
+                $em = $this->getDoctrine()->getManager();
+                $em->flush();
+        
+                return new Response();
+              
+            } else {
+
+                return new Response('Invalid request', 400);
+
             }
 
-            $em = $this->getDoctrine()->getManager();
-            $em->flush();
-          
-          }
+        } else {
+
+            return new Response('Invalid request', 400);
 
         }
-
-        return new Response();
 
     }
 
@@ -234,10 +242,10 @@ class WikiController extends BaseController
     {
   
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('editWikiPage', $request->get('token')))
-            return new Response();
+            return new Response('Invalid token', 400);
 
         $this->fetchProjectAndPreComputeRights($slug, false, true);
-        $response = new Response();
+        $error = null;
 
         if ($this->base != false) {
 
@@ -302,22 +310,41 @@ class WikiController extends BaseController
                 $errors = $validator->validate($wikiPage);
 
                 if ($objectHasBeenModified === true && count($errors) == 0){
+                    
                     $em->flush();
 
                     $logService = $this->container->get('logService');
                     $logService->log($this->getUser(), 'user_update_wikipage', $this->base['standardProject'], array( 'wikipage' => array( 'routing' => 'wikipage', 'logName' => $wikiPage->getLogName(), 'args' => $wikiPage->getLogArgs() ) ));
+                
                 } elseif (count($errors) > 0) {
-                    $response->setStatusCode(406);
-                    $response->setContent($errors[0]->getMessage());
+
+                    $error = $errors[0]->getMessage();
                 }
                 
+              } else {
+
+                $error = 'Invalid request';
+
               }
+
+            } else {
+
+              $error = 'Invalid request';
 
             }
 
+        } else {
+
+            $error = 'Invalid request';
+
         }
 
-        return $response;
+        // Wraps up and return a response
+        if (!is_null($error)) {
+            return new Response($error, 406);
+        }
+
+        return new Response();
     }
 
     public function deleteWikiPageAction(Request $request, $slug, $id)

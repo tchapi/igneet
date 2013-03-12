@@ -152,18 +152,30 @@ class ResourceController extends BaseController
             $errors = $validator->validate($resource);
 
             if ($objectHasBeenModified === true && count($errors) == 0){
+
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
 
                 $logService = $this->container->get('logService');
                 $logService->log($this->getUser(), 'user_update_resource', $this->base['standardProject'], array( 'resource' => array( 'routing' => 'resource', 'logName' => $resource->getLogName(), 'args' => $resource->getLogArgs()) ) );
+            
             } elseif (count($errors) > 0) {
+
                 $error = $errors[0]->getMessage(); 
             }
             
+        } else {
+
+            $error = 'Invalid request';
+
         }
 
-        return new Response($error);
+        // Wraps up and return a response
+        if (!is_null($error)) {
+            return new Response($error, 406);
+        }
+
+        return new Response();
     }
 
     public function deleteResourceAction(Request $request, $slug, $id)

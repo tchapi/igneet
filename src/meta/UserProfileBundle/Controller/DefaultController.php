@@ -240,10 +240,10 @@ class DefaultController extends Controller
     {
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('edit', $request->get('token')))
-            return new Response();
+            return new Response('Invalid token', 400);
 
         $authenticatedUser = $this->getUser();
-        $response = new Response();
+        $error = null;
 
         if ($authenticatedUser->getUsername() === $username) {
 
@@ -288,14 +288,14 @@ class DefaultController extends Controller
                         intval($request->request->get('w')),
                         intval($request->request->get('h'))
                     );
-                    imagepng($dst_r, $preparedFilename.".cropped");
+                    imagepng($dst_r, $preparedFilename.'.cropped');
 
                     /* We need to update the date manually.
                      * Otherwise, as file is not part of the mapping,
                      * @ORM\PreUpdate will not be called and the file will not be persisted
                      */
                     $authenticatedUser->setUpdatedAt(new \DateTime('now'));
-                    $authenticatedUser->setFile(new File($preparedFilename.".cropped"));
+                    $authenticatedUser->setFile(new File($preparedFilename.'.cropped'));
 
                     $objectHasBeenModified = true;
                     $needsRedirect = true;
@@ -319,33 +319,42 @@ class DefaultController extends Controller
             $errors = $validator->validate($authenticatedUser);
 
             if ($objectHasBeenModified === true && count($errors) == 0){
+
                 $logService = $this->container->get('logService');
                 $logService->log($authenticatedUser, 'user_update_profile', $authenticatedUser, array());
 
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
+
             } elseif (count($errors) > 0) {
-                $response->setStatusCode(406);
-                $response->setContent($errors[0]->getMessage());
+
+                $error = $errors[0]->getMessage();
             }
 
-        }
+        } else {
 
+            $error = 'Invalid request';
+
+        }
         
+        // Wraps up and either return a response or redirect
         if (isset($needsRedirect) && $needsRedirect) {
 
-            if (count($errors) > 0) {
+            if (!is_null($error)) {
                 $this->get('session')->setFlash(
-                        'error',
-                        $errors[0]->getMessage()
+                        'error', $error
                     );
             }
 
             return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $username)));
 
         } else {
-        
-            return $response;
+            
+            if (!is_null($error)) {
+                return new Response($error, 406);
+            }
+
+            return new Response();
         }
 
     }

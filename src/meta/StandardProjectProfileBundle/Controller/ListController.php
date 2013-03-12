@@ -85,9 +85,15 @@ class ListController extends BaseController
 
             $em = $this->getDoctrine()->getManager();
             $em->flush();
+        
+            return new Response();
+
+        } else {
+
+            return new Response('Invalid request', 400);
+            
         }
 
-        return new Response();
 
     }
 
@@ -147,10 +153,10 @@ class ListController extends BaseController
     {
   
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('editCommonList', $request->get('token')))
-            return new Response();
+            return new Response('Invalid token', 400);
 
         $this->fetchProjectAndPreComputeRights($slug, false, true);
-        $response = new Response();
+        $error = null;
 
         if ($this->base != false) {
 
@@ -200,18 +206,29 @@ class ListController extends BaseController
             $errors = $validator->validate($commonList);
 
             if ($objectHasBeenModified === true && count($errors) == 0){
+                
                 $em->flush();
 
                 $logService = $this->container->get('logService');
                 $logService->log($this->getUser(), 'user_update_list', $this->base['standardProject'], array( 'list' => array( 'routing' => 'list', 'logName' => $commonList->getLogName(), 'args' => $commonList->getLogArgs() ) ));
+            
             } elseif (count($errors) > 0) {
-                $response->setStatusCode(406);
-                $response->setContent($errors[0]->getMessage());
+
+                $error = $errors[0]->getMessage();
             }
             
+        } else {
+
+            $error = 'Invalid request';
+
         }
 
-        return $response;
+        // Wraps up and return a response
+        if (!is_null($error)) {
+            return new Response($error, 406);
+        }
+
+        return new Response();
     }
 
     public function deleteCommonListAction(Request $request, $slug, $id)
@@ -294,7 +311,7 @@ class ListController extends BaseController
     {
   
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('editCommonListItem', $request->get('token')))
-            return new Response();
+            return new Response('Invalid token', 400);
 
         $this->fetchProjectAndPreComputeRights($slug, false, true);
         $error = null;
@@ -324,6 +341,7 @@ class ListController extends BaseController
             $errors = $validator->validate($commonListItem);
 
             if ($objectHasBeenModified === true && count($errors) == 0){
+                
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
 
@@ -331,12 +349,22 @@ class ListController extends BaseController
                 $logService->log($this->getUser(), 'user_update_list_item', $this->base['standardProject'], array( 'list' => array( 'routing' => 'list', 'logName' => $commonList->getLogName(), 'args' => $commonList->getLogArgs()),
                                                                                                                    'list_item' => array( 'routing' => null, 'logName' => $commonListItem->getLogName() )) );
             } elseif (count($errors) > 0) {
+
                 $error = $errors[0]->getMessage(); 
             }
             
+        } else {
+
+            $error = 'Invalid request';
+
         }
 
-        return new Response($error);
+        // Wraps up and return a response
+        if (!is_null($error)) {
+            return new Response($error, 406);
+        }
+
+        return new Response();
     }
 
     public function deleteCommonListItemAction(Request $request, $slug, $listId, $id)
