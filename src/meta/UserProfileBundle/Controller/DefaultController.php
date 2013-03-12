@@ -244,6 +244,7 @@ class DefaultController extends Controller
 
         $authenticatedUser = $this->getUser();
         $error = null;
+        $response = null;
 
         if ($authenticatedUser->getUsername() === $username) {
 
@@ -269,9 +270,9 @@ class DefaultController extends Controller
                 case 'about':
                     $authenticatedUser->setAbout($request->request->get('value'));
                     $deepLinkingService = $this->container->get('meta.twig.deep_linking_extension');
-                        $response->setContent($deepLinkingService->convertDeepLinks(
-                          $this->container->get('markdown.parser')->transformMarkdown($request->request->get('value')))
-                        );
+                    $response = $deepLinkingService->convertDeepLinks(
+                      $this->container->get('markdown.parser')->transformMarkdown($request->request->get('value'))
+                    );
                     $objectHasBeenModified = true;
                     break;
                 case 'picture':
@@ -354,7 +355,7 @@ class DefaultController extends Controller
                 return new Response($error, 406);
             }
 
-            return new Response();
+            return new Response($response);
         }
 
     }

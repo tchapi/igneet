@@ -246,6 +246,7 @@ class WikiController extends BaseController
 
         $this->fetchProjectAndPreComputeRights($slug, false, true);
         $error = null;
+        $response = null;
 
         if ($this->base != false) {
 
@@ -277,9 +278,9 @@ class WikiController extends BaseController
                         $wikiPage->setContent($request->request->get('value'));
                         $objectHasBeenModified = true;
                         $deepLinkingService = $this->container->get('meta.twig.deep_linking_extension');
-                        $response->setContent($deepLinkingService->convertDeepLinks(
-                          $this->container->get('markdown.parser')->transformMarkdown($request->request->get('value')))
-                        );
+                        $response = $deepLinkingService->convertDeepLinks(
+                          $this->container->get('markdown.parser')->transformMarkdown($request->request->get('value'))
+                          );
                         break;
                     case 'tags':
                         $tagsAsArray = $request->request->get('value');
@@ -344,7 +345,7 @@ class WikiController extends BaseController
             return new Response($error, 406);
         }
 
-        return new Response();
+        return new Response($response);
     }
 
     public function deleteWikiPageAction(Request $request, $slug, $id)
