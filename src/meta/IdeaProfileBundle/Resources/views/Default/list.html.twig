@@ -10,7 +10,7 @@
     <h2>{% if archived %}Archived {% endif %}Ideas</h2>
     <h4>All the {% if archived %}archived {% endif %}ideas accessible on meta are listed here.</h4>
     <p>Sort by : <a href="{{ path(archived?'i_list_archived_ideas':'i_list_ideas', {'sort': 'newest', 'page' : pagination.page}) }}"><i class="icon-star"></i> Newest ideas</a> - <a href="{{ path(archived?'i_list_archived_ideas':'i_list_ideas', {'sort': 'update', 'page' : pagination.page}) }}"><i class="icon-time"></i> Recently updated</a> - <a href="{{ path(archived?'i_list_archived_ideas':'i_list_ideas', {'sort': 'alpha', 'page' : pagination.page}) }}"><i class="icon-font"></i> Alphabetical</a></p>
-    <p><a href="{{ path('i_new_idea') }}" class="btn btn-success">New idea</a></p>
+    <p>{% if not archived %}<a href="{{ path('i_new_idea') }}" class="btn btn-success">New idea</a> <a href="{{ path('i_list_archived_ideas') }}" class="btn btn-warning">View archived ideas</a>{% else %}<a href="{{ path('i_list_ideas') }}" class="btn btn-primary">&laquo; View ideas</a>{% endif %}</p>
   </div>
 {% endblock %}
 
