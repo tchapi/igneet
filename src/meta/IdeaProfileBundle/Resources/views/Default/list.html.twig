@@ -9,6 +9,7 @@
   <div class="objectHeader">
     <h2>{% if archived %}Archived {% endif %}Ideas</h2>
     <h4>All the {% if archived %}archived {% endif %}ideas accessible on meta are listed here.</h4>
+    <p>Sort by : <a href="{{ path(archived?'i_list_archived_ideas':'i_list_ideas', {'sort': 'newest', 'page' : pagination.page}) }}"><i class="icon-star"></i> Newest ideas</a> - <a href="{{ path(archived?'i_list_archived_ideas':'i_list_ideas', {'sort': 'update', 'page' : pagination.page}) }}"><i class="icon-time"></i> Recently updated</a> - <a href="{{ path(archived?'i_list_archived_ideas':'i_list_ideas', {'sort': 'alpha', 'page' : pagination.page}) }}"><i class="icon-font"></i> Alphabetical</a></p>
     <p><a href="{{ path('i_new_idea') }}" class="btn btn-success">New idea</a></p>
   </div>
 {% endblock %}
@@ -26,6 +27,7 @@
     <h4 class="ellipsis"><a href="{{ path('i_show_idea', {'id': idea.id, 'slug': idea.slug}) }}">{{ idea.name }}</a></h4>
     <div class="ellipsis">{{ idea.headline }}</div>
     <div class="muted"><i class="icon-calendar"></i> Created on {{ idea.createdAt|date("d/m/Y") }} by {% if idea.countCreators == 1 %}{{ idea.getACreator().getFullName() }}{% else %}{{ idea.countCreators }} people{% endif %}</div>
+    <div class="muted"><i class="icon-time"></i> Last updated {{ idea.updatedAt|date("d/m/Y H:i:s") }}</div>
   </div>
 
   {% if idea.countWatchers > 0 %}
@@ -58,7 +60,7 @@
 </section>
 {% endfor %}
 <section>
-{% render "metaGeneralBundle:Default:pagination" with { 'route': archived?'i_list_archived_ideas':'i_list_ideas', 'page' : pagination.page, 'total' : pagination.totalIdeas } %}
+{% render "metaGeneralBundle:Default:pagination" with { 'route': archived?'i_list_archived_ideas':'i_list_ideas', 'page' : pagination.page, 'total' : pagination.totalIdeas, 'params' : {'sort': sort } } %}
 </section>
 {% else %}
 <section>

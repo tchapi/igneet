@@ -7,7 +7,7 @@ Sprint 1
 [OK] Supprimer un de ses commentaires (mais garder une trace : 'This comment has been deleted')
 Sprint 2
 Filtres Timeline
-Ordre de tri des Listes d'Objets (created / updated / community strongest)
+[OK] Ordre de tri des Listes d'Objets (created / updated / community strongest)
 Sprint 3
 Améliorer le clustering de la timeline
 Pagination de la timeline
@@ -19,8 +19,8 @@ Todo - General / Users :
  ☐ Clustering des activityLogs : vérifier que l'object correspond en récupérant le findOneBY, et pas faire le test dans le if après
  ☐ Mettre maxUsersInListings en parameters de l'appli a récupérer dans Twig
  ☐ login et signup : focus sur le champ lors du chargement de la page
- ☐ envoyer des responses() avec des codes corrects
 
+ ✔ envoyer des responses() avec des codes corrects @done (13-03-12 22:05)
  ✔ Liste des users : pour chaque, rajouter 'last active on' et 'last updated on' @done (13-03-07 00:13)
  ✔ logger les updates correctements avec $this->base['standardProject']->update(); dans toutes les actions @done (13-03-04 21:02)
  ✔ replace setFlashes if same @done (13-03-03 20:30)

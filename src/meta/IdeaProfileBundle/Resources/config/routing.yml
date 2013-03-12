@@ -1,16 +1,18 @@
 # IDEAS
 
 i_list_ideas:
-    pattern:  /ideas/{page}
-    defaults: { _controller: metaIdeaProfileBundle:Default:list, page: 1, archived: false }
+    pattern:  /ideas/{page}/{sort}
+    defaults: { _controller: metaIdeaProfileBundle:Default:list, page: 1, archived: false, sort: newest }
     requirements:
         page: \d+
+        sort: update|newest|alpha
 
 i_list_archived_ideas:
-    pattern:  /ideas/archived/{page}
-    defaults: { _controller: metaIdeaProfileBundle:Default:list, page: 1, archived: true }
+    pattern:  /ideas/archived/{page}/{sort}
+    defaults: { _controller: metaIdeaProfileBundle:Default:list, page: 1, archived: true, sort: newest }
     requirements:
         page: \d+
+        sort: update|newest|alpha
 
 i_new_idea:
     pattern:  /ideas/new

@@ -43,6 +43,7 @@ class ResourceController extends BaseController
               ($request->files->get('resource[file]', null, true) != null || preg_match( $pattern, $resource->getUrl() ) == 1 ) ) {
 
                 $this->base['standardProject']->addResource($resource);
+                $this->base['standardProject']->setUpdatedAt(new \DateTime('now'));
 
                 // Guess resource type and provider
 
@@ -153,6 +154,7 @@ class ResourceController extends BaseController
 
             if ($objectHasBeenModified === true && count($errors) == 0){
 
+                $this->base['standardProject']->setUpdatedAt(new \DateTime('now'));
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
 
@@ -192,6 +194,7 @@ class ResourceController extends BaseController
 
             if ($resource){
 
+                $this->base['standardProject']->setUpdatedAt(new \DateTime('now'));
                 $em = $this->getDoctrine()->getManager();
                 $em->remove($resource);
                 $em->flush();

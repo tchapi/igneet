@@ -9,6 +9,7 @@
   <div class="objectHeader">
     <h2>Projects</h2>
     <h4>All the projects accessible on meta are listed here.</h4>
+    <p>Sort by : <a href="{{ path('sp_list_projects', {'sort': 'newest', 'page' : pagination.page}) }}"><i class="icon-star"></i> Newest projects</a> - <a href="{{ path('sp_list_projects', {'sort': 'update', 'page' : pagination.page}) }}"><i class="icon-time"></i> Recently updated</a> - <a href="{{ path('sp_list_projects', {'sort': 'alpha', 'page' : pagination.page}) }}"><i class="icon-font"></i> Alphabetical</a></p>
     <p><a href="{{ path('sp_new_project') }}" class="btn btn-success">New project</a></p>
   </div>
 {% endblock %}
@@ -26,6 +27,7 @@
     <h4 class="ellipsis"><a href="{{ path('sp_show_project', {'slug': standardProject.slug}) }}">{{ standardProject.name }} ({{ standardProject.slug|lower }})</a></h4>
     <div class="ellipsis">{{ standardProject.headline }}</div>
     <div class="muted"><i class="icon-calendar"></i> Created on {{ standardProject.createdAt|date("d/m/Y") }}</div>
+    <div class="muted"><i class="icon-time"></i> Last updated {{ standardProject.updatedAt|date("d/m/Y H:i:s") }}</div>
   </div>
 
   <div class="listingItemRelatedObjects">
@@ -57,7 +59,7 @@
 </section>
 {% endfor %}
 <section>
-{% render "metaGeneralBundle:Default:pagination" with { 'route': 'sp_list_projects', 'page' : pagination.page, 'total' : pagination.totalProjects } %}
+{% render "metaGeneralBundle:Default:pagination" with { 'route': 'sp_list_projects', 'page' : pagination.page, 'total' : pagination.totalProjects, 'params' : {'sort': sort } } %}
 </section>
 {% else %}
 <section>

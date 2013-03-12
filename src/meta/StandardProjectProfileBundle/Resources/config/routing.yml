@@ -20,10 +20,11 @@ mp_edit_meta:
 
 # STANDARD PROJECTS
 sp_list_projects:
-    pattern:  /projects/{page}
-    defaults: { _controller: metaStandardProjectProfileBundle:Default:list, page: 1, max: 10 }
+    pattern:  /projects/{page}/{sort}
+    defaults: { _controller: metaStandardProjectProfileBundle:Default:list, page: 1, max: 10, sort: newest }
     requirements:
         page: \d+
+        sort: update|newest|alpha
 
 sp_new_project:
     pattern:  /projects/new

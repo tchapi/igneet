@@ -20,17 +20,22 @@ class DefaultController extends BaseController
      *                    PROJECT LIST
      *  #################################################### */
 
-    public function listAction($page)
+    public function listAction($page, $sort)
     {
 
         $repository = $this->getDoctrine()->getRepository('metaStandardProjectProfileBundle:StandardProject');
 
         $totalProjects = $repository->countProjects();
-        $standardProjects = $repository->findRecentlyCreatedStandardProjects($page, $this->container->getParameter('listings.number_of_items_per_page'));
+        $maxPerPage = $this->container->getParameter('listings.number_of_items_per_page');
+
+        if ( ($page-1) * $maxPerPage > $totalProjects) {
+            return $this->redirect($this->generateUrl('sp_list_projects', array('sort' => $sort)));
+        }
+
+        $standardProjects = $repository->findStandardProjects($page, $maxPerPage, $sort);
 
         $pagination = array( 'page' => $page, 'totalProjects' => $totalProjects);
-
-        return $this->render('metaStandardProjectProfileBundle:Default:list.html.twig', array('standardProjects' => $standardProjects, 'pagination' => $pagination));
+        return $this->render('metaStandardProjectProfileBundle:Default:list.html.twig', array('standardProjects' => $standardProjects, 'pagination' => $pagination, 'sort' => $sort));
 
     }
 
