@@ -63,27 +63,27 @@ class DefaultController extends Controller
     {
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('validateComment', $request->get('token')))
-            return new Response();
+            return new Response('Invalid token', 400);
 
         $authenticatedUser = $this->getUser();
 
-        if ($authenticatedUser){
+        $repository = $this->getDoctrine()->getRepository('metaGeneralBundle:Comment\BaseComment');
+        $comment = $repository->findOneById($id);
 
-            $repository = $this->getDoctrine()->getRepository('metaGeneralBundle:Comment\BaseComment');
-            $comment = $repository->findOneById($id);
+        if ($authenticatedUser && $comment && !$comment->isDeleted()){
 
-            if ($comment && !$comment->isDeleted()){
+            $comment->toggleValidator($authenticatedUser);
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
 
-                $comment->toggleValidator($authenticatedUser);
-                $em = $this->getDoctrine()->getManager();
-                $em->flush();
+            return new Response(count($comment->getValidators()));
 
-                return new Response(count($comment->getValidators()));
+        } else {
 
-            }
+            return new Response('Invalid request', 400);
+
         }
 
-        return new Response();
     }
 
     /*
@@ -93,25 +93,27 @@ class DefaultController extends Controller
     {
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('deleteComment', $request->get('token')))
-            return new Response();
+            return new Response('Invalid token', 400);
 
         $authenticatedUser = $this->getUser();
 
-        if ($authenticatedUser){
+        $repository = $this->getDoctrine()->getRepository('metaGeneralBundle:Comment\BaseComment');
+        $comment = $repository->findOneById($id);
 
-            $repository = $this->getDoctrine()->getRepository('metaGeneralBundle:Comment\BaseComment');
-            $comment = $repository->findOneById($id);
+        if ($authenticatedUser && $comment && $comment->getUser() === $authenticatedUser){
 
-            if ($comment && $comment->getUser() === $authenticatedUser){
+            $comment->delete();
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
 
-                $comment->delete();
-                $em = $this->getDoctrine()->getManager();
-                $em->flush();
+            return new Response();
+            
+        } else {
 
-            }
+            return new Response('Invalid request', 400);
+
         }
 
-        return new Response();
     }
 
     /*

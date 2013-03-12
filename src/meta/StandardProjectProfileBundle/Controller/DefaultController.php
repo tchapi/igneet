@@ -90,10 +90,10 @@ class DefaultController extends BaseController
     public function editAction(Request $request, $slug){
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('edit', $request->get('token')))
-            return new Response();
+            return new Response('Invalid token', 400);
 
         $this->fetchProjectAndPreComputeRights($slug, false, true);
-        $response = new Response();
+        $error = null;
 
         if ($this->base != false) {
         
@@ -159,25 +159,30 @@ class DefaultController extends BaseController
             $errors = $validator->validate($this->base['standardProject']);
 
             if ($objectHasBeenModified === true && count($errors) == 0){
+
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
 
                 $logService = $this->container->get('logService');
                 $logService->log($this->getUser(), 'user_update_project_info', $this->base['standardProject'], array());
+            
             } elseif (count($errors) > 0) {
-                $response->setStatusCode(406);
-                $response->setContent($errors[0]->getMessage());
+
+                $error = $errors[0]->getMessage();
             }
 
+        } else {
+
+            $error = 'Invalid request';
 
         }
 
+        // Wraps up and either return a response or redirect
         if (isset($needsRedirect) && $needsRedirect) {
 
-            if (count($errors) > 0) {
+            if (!is_null($error)) {
                 $this->get('session')->setFlash(
-                        'error',
-                        $errors[0]->getMessage()
+                        'error', $error
                     );
             }
 
@@ -185,7 +190,11 @@ class DefaultController extends BaseController
 
         } else {
         
-            return $response;
+            if (!is_null($error)) {
+                return new Response($error, 406);
+            }
+
+            return new Response();
         }
 
     }

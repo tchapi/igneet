@@ -35,7 +35,7 @@ $(document).ready(function(){
             .append("g")
             .attr("transform", "translate(0," + margin + ")");
 
-      if (dataset[0].nb_actions) {
+      if (dataset[0] && dataset[0].nb_actions) {
          svg.selectAll("g")
             .data(dataset)
             .enter()
@@ -54,7 +54,7 @@ $(document).ready(function(){
                return d3.hsl(actions_hue, 0.5, 0.9 - (y(d.nb_actions)/h/2) );
             });
       }
-      if (dataset[0].nb_comments) {
+      if (dataset[0] && dataset[0].nb_comments) {
          svg.selectAll("g")
             .data(dataset)
             .enter()
