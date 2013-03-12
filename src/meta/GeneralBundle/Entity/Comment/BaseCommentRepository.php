@@ -21,6 +21,7 @@ class BaseCommentRepository extends EntityRepository
             ->from('metaGeneralBundle:Comment\BaseComment', 'c')
             ->where('c.user = :uid')
             ->setParameter('uid', $userId)
+            ->andWhere("c.deleted_at IS NULL")
             ->andWhere("c.created_at > DATE_SUB(CURRENT_DATE(),7,'DAY')")
             ->groupBy('date')
             ->getQuery()
