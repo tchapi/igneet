@@ -9,12 +9,11 @@ META
 Libraries and plugins used
 ===
 
-### Jcrop - https://github.com/tapmodo/Jcrop
+### imgAreaSelect jQuery plugin - http://odyniec.net/projects/imgareaselect/
 
-Jcrop is free software under MIT License.
+Copyright (c) 2008-2013 Michal Wojciechowski (odyniec.net)
 
-Copyright (c) 2008-2012 Tapmodo Interactive LLC,
-http://github.com/tapmodo/Jcrop
+Dual licensed under the MIT and GPL licenses.
 
 - - - 
 
@@ -77,6 +76,7 @@ Dual-licensed under the BSD or MIT licenses
 ### D3.js by Michael Bostock - http://d3js.org/
 
 Copyright (c) 2013, Michael Bostock
+
 All rights reserved.
 
 - - - 
