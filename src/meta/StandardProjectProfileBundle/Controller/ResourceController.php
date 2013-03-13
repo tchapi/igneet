@@ -20,7 +20,7 @@ class ResourceController extends BaseController
      *                        RESOURCES
      *  #################################################### */
 
-    public function showResourcesAction(Request $request, $slug, $page)
+    public function listResourcesAction(Request $request, $slug, $page)
     {
         $this->fetchProjectAndPreComputeRights($slug, false, false);
 
@@ -88,7 +88,7 @@ class ResourceController extends BaseController
                     'Your resource '.$resource->getTitle().' has successfully been added to the project '.$this->base['standardProject']->getName().'.'
                 );
 
-                return $this->redirect($this->generateUrl('sp_show_project_resources', array('slug' => $this->base['standardProject']->getSlug())));
+                return $this->redirect($this->generateUrl('sp_show_project_list_resources', array('slug' => $this->base['standardProject']->getSlug())));
            
             } else {
                
@@ -101,8 +101,27 @@ class ResourceController extends BaseController
         }
 
 
-        return $this->render('metaStandardProjectProfileBundle:Resource:showResources.html.twig', 
+        return $this->render('metaStandardProjectProfileBundle:Resource:listResources.html.twig', 
             array('base' => $this->base, 'types' => $types, 'providers' => $providers, 'form' => $form->createView()));
+    }
+
+    public function showResourceAction($slug, $id)
+    {
+        $this->fetchProjectAndPreComputeRights($slug, false, false);
+
+        if ($this->base == false) 
+          return $this->forward('metaStandardProjectProfileBundle:Base:showRestricted', array('slug' => $slug));
+
+        $repository = $this->getDoctrine()->getRepository('metaStandardProjectProfileBundle:Resource');
+        $resource = $repository->findOneById($id);
+
+        if (!$resource){
+            throw $this->createNotFoundException('This resource does not exist');
+        }
+
+        return $this->render('metaStandardProjectProfileBundle:Resource:showResource.html.twig', 
+            array('base' => $this->base, 'resource' => $resource));
+
     }
 
     public function editResourceAction(Request $request, $slug, $id)
@@ -116,54 +135,73 @@ class ResourceController extends BaseController
             $repository = $this->getDoctrine()->getRepository('metaStandardProjectProfileBundle:Resource');
             $resource = $repository->findOneById($id);
 
-            $objectHasBeenModified = false;
-            $em = $this->getDoctrine()->getManager();
+            if ($resource) {
 
-            switch ($request->request->get('name')) {
-                case 'title':
-                    $resource->setTitle($request->request->get('value'));
-                    $objectHasBeenModified = true;
-                    break;
-                case 'tags':
-                    $tagsAsArray = $request->request->get('value');
-
-                    $resource->clearTags();
-
-                    $tagRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Behaviour\Tag');
-                    $existingTags = $tagRepository->findBy(array('name' => $tagsAsArray));
-                    $existingTagNames = array();
-
-                    foreach ($existingTags as $tag) {
-                      $resource->addTag($tag);
-                      $existingTagNames[] = $tag->getName();
-                    }
-
-                    foreach ($tagsAsArray as $name) {
-                      if ( in_array($name, $existingTagNames) ){ continue; }
-                      $tag = new Tag($name);
-                      $em->persist($tag);
-                      $resource->addTag($tag);
-                    }
-
-                    $objectHasBeenModified = true;
-                    break;
-            }
-
-            $validator = $this->get('validator');
-            $errors = $validator->validate($resource);
-
-            if ($objectHasBeenModified === true && count($errors) == 0){
-
-                $this->base['standardProject']->setUpdatedAt(new \DateTime('now'));
+                $objectHasBeenModified = false;
                 $em = $this->getDoctrine()->getManager();
-                $em->flush();
 
-                $logService = $this->container->get('logService');
-                $logService->log($this->getUser(), 'user_update_resource', $this->base['standardProject'], array( 'resource' => array( 'routing' => 'resource', 'logName' => $resource->getLogName(), 'args' => $resource->getLogArgs()) ) );
-            
-            } elseif (count($errors) > 0) {
+                switch ($request->request->get('name')) {
+                    case 'title':
+                        $resource->setTitle($request->request->get('value'));
+                        $objectHasBeenModified = true;
+                        break;
+// TODO TODO TODO TODO
+                    case 'url':
+                        $resource->setUrl($request->request->get('value'));
+                        $objectHasBeenModified = true;
+                        break;
+                    case 'file':
+                        $resource->setFile($request->request->get('value'));
+                        $resource->setUpdatedAt(new \DateTime('now')); 
+                        $objectHasBeenModified = true;
+                        break;
+// TODO TODO TODO TODO
+                    case 'tags':
+                        $tagsAsArray = $request->request->get('value');
 
-                $error = $errors[0]->getMessage(); 
+                        $resource->clearTags();
+
+                        $tagRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Behaviour\Tag');
+                        $existingTags = $tagRepository->findBy(array('name' => $tagsAsArray));
+                        $existingTagNames = array();
+
+                        foreach ($existingTags as $tag) {
+                          $resource->addTag($tag);
+                          $existingTagNames[] = $tag->getName();
+                        }
+
+                        foreach ($tagsAsArray as $name) {
+                          if ( in_array($name, $existingTagNames) ){ continue; }
+                          $tag = new Tag($name);
+                          $em->persist($tag);
+                          $resource->addTag($tag);
+                        }
+
+                        $objectHasBeenModified = true;
+                        break;
+                }
+
+                $validator = $this->get('validator');
+                $errors = $validator->validate($resource);
+
+                if ($objectHasBeenModified === true && count($errors) == 0){
+
+                    $this->base['standardProject']->setUpdatedAt(new \DateTime('now'));
+                    $em = $this->getDoctrine()->getManager();
+                    $em->flush();
+
+                    $logService = $this->container->get('logService');
+                    $logService->log($this->getUser(), 'user_update_resource', $this->base['standardProject'], array( 'resource' => array( 'routing' => 'resource', 'logName' => $resource->getLogName(), 'args' => $resource->getLogArgs()) ) );
+                
+                } elseif (count($errors) > 0) {
+
+                    $error = $errors[0]->getMessage(); 
+                }
+
+            } else {
+
+              $error = 'Invalid request';
+
             }
             
         } else {
@@ -183,7 +221,7 @@ class ResourceController extends BaseController
     public function deleteResourceAction(Request $request, $slug, $id)
     {
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('delete', $request->get('token')))
-            return $this->redirect($this->generateUrl('sp_show_project_resources', array('slug' => $slug)));
+            return $this->redirect($this->generateUrl('sp_show_project_list_resources', array('slug' => $slug)));
           
         $this->fetchProjectAndPreComputeRights($slug, false, true);
 
@@ -219,7 +257,7 @@ class ResourceController extends BaseController
             
         }
 
-        return $this->redirect($this->generateUrl('sp_show_project_resources', array('slug' => $slug)));
+        return $this->redirect($this->generateUrl('sp_show_project_list_resources', array('slug' => $slug)));
 
     }
 
@@ -253,7 +291,7 @@ class ResourceController extends BaseController
             
         }
 
-        return $this->redirect($this->generateUrl('sp_show_project_resources', array('slug' => $slug)));
+        return $this->redirect($this->generateUrl('sp_show_project_list_resources', array('slug' => $slug)));
 
     }
 

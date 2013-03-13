@@ -6,7 +6,7 @@ parameters:
     idea: i_show_idea
     other_user: u_show_user_profile
     list: sp_show_project_list
-    resource: sp_show_project_resources
+    resource: sp_show_project_resource
     wikipage: sp_show_project_wiki_show_page
   general.log_types:
 # User acting for his profile or on another user
