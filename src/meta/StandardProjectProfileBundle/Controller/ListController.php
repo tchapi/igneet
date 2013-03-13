@@ -238,7 +238,7 @@ class ListController extends BaseController
     {
   
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('deleteCommonList', $request->get('token')))
-            return $this->redirect($this->generateUrl('sp_show_project_resources', array('slug' => $slug)));
+            return $this->redirect($this->generateUrl('sp_show_project_list_home', array('slug' => $slug)));
 
         $this->fetchProjectAndPreComputeRights($slug, false, true);
 
