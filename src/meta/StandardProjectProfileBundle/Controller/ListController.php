@@ -165,59 +165,67 @@ class ListController extends BaseController
             $repository = $this->getDoctrine()->getRepository('metaStandardProjectProfileBundle:CommonList');
             $commonList = $repository->findOneByIdInProject($id, $this->base['standardProject']->getId());
 
-            $objectHasBeenModified = false;
-            $em = $this->getDoctrine()->getManager();
+            if ($commonList) {
 
-            switch ($request->request->get('name')) {
-                case 'name':
-                    $commonList->setName($request->request->get('value'));
-                      $textService = $this->container->get('textService');
-                      $commonList->setSlug($textService->slugify($commonList->getName()));
-                    $objectHasBeenModified = true;
-                    break;
-                case 'description':
-                    $commonList->setDescription($request->request->get('value'));
-                    $objectHasBeenModified = true;
-                    break;
-                case 'tags':
-                    $tagsAsArray = $request->request->get('value');
+                $objectHasBeenModified = false;
+                $em = $this->getDoctrine()->getManager();
 
-                    $commonList->clearTags();
+                switch ($request->request->get('name')) {
+                    case 'name':
+                        $commonList->setName($request->request->get('value'));
+                          $textService = $this->container->get('textService');
+                          $commonList->setSlug($textService->slugify($commonList->getName()));
+                        $objectHasBeenModified = true;
+                        break;
+                    case 'description':
+                        $commonList->setDescription($request->request->get('value'));
+                        $objectHasBeenModified = true;
+                        break;
+                    case 'tags':
+                        $tagsAsArray = $request->request->get('value');
 
-                    $tagRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Behaviour\Tag');
-                    $existingTags = $tagRepository->findBy(array('name' => $tagsAsArray));
-                    $existingTagNames = array();
+                        $commonList->clearTags();
 
-                    foreach ($existingTags as $tag) {
-                      $commonList->addTag($tag);
-                      $existingTagNames[] = $tag->getName();
-                    }
+                        $tagRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Behaviour\Tag');
+                        $existingTags = $tagRepository->findBy(array('name' => $tagsAsArray));
+                        $existingTagNames = array();
 
-                    foreach ($tagsAsArray as $name) {
-                      if ( in_array($name, $existingTagNames) ){ continue; }
-                      $tag = new Tag($name);
-                      $em->persist($tag);
-                      $commonList->addTag($tag);
-                    }
+                        foreach ($existingTags as $tag) {
+                          $commonList->addTag($tag);
+                          $existingTagNames[] = $tag->getName();
+                        }
 
-                    $objectHasBeenModified = true;
-                    break;
-            }
+                        foreach ($tagsAsArray as $name) {
+                          if ( in_array($name, $existingTagNames) ){ continue; }
+                          $tag = new Tag($name);
+                          $em->persist($tag);
+                          $commonList->addTag($tag);
+                        }
 
-            $validator = $this->get('validator');
-            $errors = $validator->validate($commonList);
+                        $objectHasBeenModified = true;
+                        break;
+                }
 
-            if ($objectHasBeenModified === true && count($errors) == 0){
+                $validator = $this->get('validator');
+                $errors = $validator->validate($commonList);
+
+                if ($objectHasBeenModified === true && count($errors) == 0){
+                    
+                    $this->base['standardProject']->setUpdatedAt(new \DateTime('now'));
+                    $em->flush();
+
+                    $logService = $this->container->get('logService');
+                    $logService->log($this->getUser(), 'user_update_list', $this->base['standardProject'], array( 'list' => array( 'routing' => 'list', 'logName' => $commonList->getLogName(), 'args' => $commonList->getLogArgs() ) ));
                 
-                $this->base['standardProject']->setUpdatedAt(new \DateTime('now'));
-                $em->flush();
+                } elseif (count($errors) > 0) {
 
-                $logService = $this->container->get('logService');
-                $logService->log($this->getUser(), 'user_update_list', $this->base['standardProject'], array( 'list' => array( 'routing' => 'list', 'logName' => $commonList->getLogName(), 'args' => $commonList->getLogArgs() ) ));
-            
-            } elseif (count($errors) > 0) {
+                    $error = $errors[0]->getMessage();
+                }
 
-                $error = $errors[0]->getMessage();
+            } else {
+
+              $error = 'Invalid request';
+
             }
             
         } else {
@@ -329,34 +337,42 @@ class ListController extends BaseController
             $repository = $this->getDoctrine()->getRepository('metaStandardProjectProfileBundle:CommonListItem');
             $commonListItem = $repository->findOneByIdInProjectAndList($id, $listId, $this->base['standardProject']->getId());
 
-            $objectHasBeenModified = false;
-
-            switch ($request->request->get('name')) {
-                case 'text':
-                    $commonListItem->setText($request->request->get('value'));
-                    $objectHasBeenModified = true;
-                    break;
-                case 'done':
-                    $commonListItem->setDone($request->request->get('value'));
-                    $objectHasBeenModified = true;
-                    break;
-            }
-
-            $validator = $this->get('validator');
-            $errors = $validator->validate($commonListItem);
-
-            if ($objectHasBeenModified === true && count($errors) == 0){
+            if ($commonList && $commonListItem) {
                 
-                $this->base['standardProject']->setUpdatedAt(new \DateTime('now'));
-                $em = $this->getDoctrine()->getManager();
-                $em->flush();
+                $objectHasBeenModified = false;
 
-                $logService = $this->container->get('logService');
-                $logService->log($this->getUser(), 'user_update_list_item', $this->base['standardProject'], array( 'list' => array( 'routing' => 'list', 'logName' => $commonList->getLogName(), 'args' => $commonList->getLogArgs()),
-                                                                                                                   'list_item' => array( 'routing' => null, 'logName' => $commonListItem->getLogName() )) );
-            } elseif (count($errors) > 0) {
+                switch ($request->request->get('name')) {
+                    case 'text':
+                        $commonListItem->setText($request->request->get('value'));
+                        $objectHasBeenModified = true;
+                        break;
+                    case 'done':
+                        $commonListItem->setDone($request->request->get('value'));
+                        $objectHasBeenModified = true;
+                        break;
+                }
 
-                $error = $errors[0]->getMessage(); 
+                $validator = $this->get('validator');
+                $errors = $validator->validate($commonListItem);
+
+                if ($objectHasBeenModified === true && count($errors) == 0){
+                    
+                    $this->base['standardProject']->setUpdatedAt(new \DateTime('now'));
+                    $em = $this->getDoctrine()->getManager();
+                    $em->flush();
+
+                    $logService = $this->container->get('logService');
+                    $logService->log($this->getUser(), 'user_update_list_item', $this->base['standardProject'], array( 'list' => array( 'routing' => 'list', 'logName' => $commonList->getLogName(), 'args' => $commonList->getLogArgs()),
+                                                                                                                       'list_item' => array( 'routing' => null, 'logName' => $commonListItem->getLogName() )) );
+                } elseif (count($errors) > 0) {
+
+                    $error = $errors[0]->getMessage(); 
+                }
+
+            } else {
+
+              $error = 'Invalid request';
+
             }
             
         } else {
