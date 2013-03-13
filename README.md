@@ -66,6 +66,14 @@ The Font Awesome pictograms are licensed under the CC BY 3.0 License - http://cr
 
 - - -
 
+### Nestable jQuery Plugin - https://github.com/dbushell/Nestable
+
+Copyright (c) 2013 David Bushell - http://dbushell.com/
+Contributions by tchapi (https://github.com/tchapi) - https://github.com/tchapi/Nestable
+Dual-licensed under the BSD or MIT licenses
+
+- - -
+
 ### D3.js by Michael Bostock - http://d3js.org/
 
 Copyright (c) 2013, Michael Bostock
