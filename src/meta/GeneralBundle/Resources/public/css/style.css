@@ -171,44 +171,13 @@ div.smallObjectInfos span{
 }
 
 /*******************/
-/* Sortable tweaks */
+/* Nestable tweaks */
 /*******************/
 
-body.dragging, body.dragging * {
-  cursor: move !important;
-}
-ul.highlight{
-  border: 1px dashed #555;
-  padding: 3px;
-}
-ul.nested{
-  background: #EEE;
-  margin-left: 0;
-}
-ul.nested li{
-  border-left: 1px dotted #888;
-  margin-left: 7px;
-}
-ul.nested li > a:first-child,
-ul.nested li ul
-{
-   padding-left: 4px;
-}
-li.dragged {
-  position: absolute;
-  opacity: 0.5;
-  z-index: 2000;
-}
-li.placeholder{
-  border: 1px dashed #AAA;
-  height: 20px;
-  margin: 0;
-  padding: 0;
-  position: relative;
-}
+/* TODO : CSS TO ADD HERE */
 
 /*********/
-/* X-editable tweeks */
+/* X-editable tweaks */
 /*********/
 
 .icon-code,

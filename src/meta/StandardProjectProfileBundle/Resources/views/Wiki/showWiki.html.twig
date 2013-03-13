@@ -9,8 +9,8 @@
 {% block javascripts %}
   {{ parent() }}
     {% if base.canEdit %}
-    {% javascripts '@metaGeneralBundle/Resources/public/js-edit/jquery-sortable.js'
-                   '@metaGeneralBundle/Resources/public/js-edit/sortable.behaviour.js'
+    {% javascripts '@metaGeneralBundle/Resources/public/js-edit/jquery-nestable.js'
+                   '@metaGeneralBundle/Resources/public/js-edit/nestable.behaviour.js'
             filter='?yui_js' %}
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
