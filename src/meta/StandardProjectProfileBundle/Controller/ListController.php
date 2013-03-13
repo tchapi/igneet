@@ -33,7 +33,7 @@ class ListController extends BaseController
 
         $commonLists = $repository->findAllInProject($this->base['standardProject']->getId());
 
-        if (!$commonList){
+        if (!$commonList && $this->base['canEdit']){
           return $this->forward('metaStandardProjectProfileBundle:List:newCommonList', array('slug' => $slug));
         }
 
