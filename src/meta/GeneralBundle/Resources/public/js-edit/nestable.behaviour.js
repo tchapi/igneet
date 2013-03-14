@@ -1,6 +1,6 @@
 $(document).ready(function(){
 
-  var sortableList = $("ul.sortable");
+  var sortableList = $(".dd");
 
   // Callback for ranks and nesting
   var updateRanksAndNesting = function(l, e) {
@@ -52,6 +52,7 @@ $(document).ready(function(){
 
   // Triggers nestable()
   sortableList.nestable({
+    listNodeName: 'ul',
     callback : updateRanksAndNesting
   });
 
