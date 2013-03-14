@@ -174,7 +174,77 @@ div.smallObjectInfos span{
 /* Nestable tweaks */
 /*******************/
 
-/* TODO : CSS TO ADD HERE */
+.dd-list { 
+  display: block; 
+  position: relative; 
+  margin: 0; 
+  padding: 0; 
+  list-style: none;
+}
+.dd-collapsed .dd-list { 
+  display: none;
+}
+.dd-handle{
+  padding-left: 1px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  cursor: move;
+  color: #777;
+}
+.dd-handle:hover{
+  color: black;
+}
+.dd-item{
+  padding-left: 20px;
+  position: relative;
+}
+.dd-placeholder,
+.dd-empty {
+  background: #f2fbff; 
+  border: 1px dashed #b6bcbf; 
+  box-sizing: border-box; 
+  -moz-box-sizing: border-box;
+}
+.dd-empty {
+  border: 1px dashed #bbb;
+  background-color: #e5e5e5;
+}
+.dd-dragel {
+  position: absolute;
+  pointer-events: none;
+  z-index: 9999;
+  border: 1px dashed #BBB;
+  background-color: #EEE;
+  opacity: 0.75;
+}
+.dd-dragel > .dd-item .dd-handle { margin-top: 0; }
+
+/* Nesting */
+.dd-list .dd-list {
+  margin-left: 0;
+  background: #EEE;
+}
+.dd-list .dd-list li ul {
+  padding-left: 4px;
+}
+.dd-list .dd-list li {
+  border-left: 1px dotted #888;
+}
+.dd-dragel .dd-list .dd-list {
+  background: transparent;
+}
+
+.dd-item > button { 
+  display: inline-block; 
+  position: relative; 
+  float: left;
+  width: 21px;
+  cursor: pointer;
+  padding: 0;
+  border: 0; 
+  background: transparent;
+}
 
 /*********/
 /* X-editable tweaks */
@@ -506,7 +576,7 @@ ul.lists li{
 ul.lists li.active{
   background: #DDD;
 }
-ul.lists li.active > a{
+ul.lists li.active > a.page_title{
   font-weight: bold;
 }
 div.menu_new{
