@@ -45,7 +45,7 @@ class WikiController extends BaseController
         $pages = $wiki->getPages();
         $homePage = $wiki->getHomePage();
 
-        if ( count($pages) == 0 ){
+        if ( count($pages) == 0 && $this->base['canEdit']){
           return $this->forward('metaStandardProjectProfileBundle:Wiki:newWikiPage', array('slug' => $slug));
         }
 
