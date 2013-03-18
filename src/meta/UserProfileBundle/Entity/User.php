@@ -631,14 +631,6 @@ class User implements AdvancedUserInterface
     }
 
     /**
-     * @ORM\PreUpdate()
-     */
-    public function update()
-    {
-        $this->updated_at = new \DateTime('now');
-    }
-    
-    /**
      * Set headline
      *
      * @param string $headline
