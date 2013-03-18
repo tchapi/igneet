@@ -554,6 +554,9 @@ class DefaultController extends Controller
                         'Your comment was successfully added.'
                     );
 
+                    $logService = $this->container->get('logService');
+                    $logService->log($this->getUser(), 'user_comment_idea', $this->base['idea'], array());
+
                 } else {
 
                    $this->get('session')->setFlash(
@@ -604,6 +607,8 @@ class DefaultController extends Controller
 
         foreach ($entries as $entry) {
           
+          if ($log_types[$entry->getType()]['combinable'] === false ) continue;
+
           $text = $logService->getHTML($entry);
           $createdAt = date_create($entry->getCreatedAt()->format('Y-m-d H:i:s'));
 
