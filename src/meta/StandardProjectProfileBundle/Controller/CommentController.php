@@ -41,6 +41,9 @@ class CommentController extends BaseController
                     $em->persist($comment);
                     $em->flush();
 
+                    $logService = $this->container->get('logService');
+                    $logService->log($this->getUser(), 'user_comment_project', $this->base['standardProject'], array());
+
                     $this->get('session')->setFlash(
                         'success',
                         'Your comment was successfully added.'
