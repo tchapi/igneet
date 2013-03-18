@@ -82,7 +82,7 @@ class StandardProjectRepository extends EntityRepository
 
     return $qb->select('l AS log')
             ->addSelect('sp.id as id')
-            ->addSelect('COUNT(DISTINCT l.id) AS nb_actions')
+            ->addSelect('COUNT(DISTINCT l.id) - COUNT(DISTINCT c.id) AS nb_actions')
             ->addSelect('COUNT(DISTINCT c.id) AS nb_comments')
             ->addSelect('SUBSTRING(l.created_at,1,10) AS date')
             ->addSelect('MAX(l.created_at) AS last_activity')

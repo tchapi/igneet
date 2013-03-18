@@ -59,14 +59,18 @@ class LogService
                  $entry = new BaseLogEntry();
                  $repositoryName = 'metaGeneralBundle:Log\BaseLogEntry';
                  break;
-         }
-            
-        // Merge concurrent log updates
-        // Check if there is a similar log less than X seconds ago
-        $repository = $this->em->getRepository($repositoryName);
-        $lastEntry = $repository->findOneBy(
-            array('user' => $user, 'type' =>  $logActionName, "$subject_type" => $subject),
-            array('created_at' => 'DESC'));
+        }
+        
+        $lastEntry = null;
+
+        if ($this->log_types[$logActionName]['combinable'] === true){
+            // Merge concurrent log updates
+            // Check if there is a similar log less than X seconds ago
+            $repository = $this->em->getRepository($repositoryName);
+            $lastEntry = $repository->findOneBy(
+                array('user' => $user, 'type' =>  $logActionName, "$subject_type" => $subject),
+                array('created_at' => 'DESC'));
+        }
 
         if ( !is_null($lastEntry) && $lastEntry->getObjects() == $objects && date_create($lastEntry->getCreatedAt()->format('Y-m-d H:i:s')) > date_create('now -'.$this->concurrent_merge_interval.' seconds')) {
             // if update < XX secondes , then update the date of the old one with the new date
