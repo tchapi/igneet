@@ -295,7 +295,7 @@ class DefaultController extends Controller
                      * Otherwise, as file is not part of the mapping,
                      * @ORM\PreUpdate will not be called and the file will not be persisted
                      */
-                    $authenticatedUser->setUpdatedAt(new \DateTime('now'));
+                    // $authenticatedUser->setUpdatedAt(new \DateTime('now'));
                     $authenticatedUser->setFile(new File($preparedFilename.'.cropped'));
 
                     $objectHasBeenModified = true;
@@ -321,6 +321,8 @@ class DefaultController extends Controller
 
             if ($objectHasBeenModified === true && count($errors) == 0){
 
+                /* We have no PreUpdate trigger on User to keep the last_seen_at behaviour */
+                $authenticatedUser->setUpdatedAt(new \DateTime('now'));
                 $logService = $this->container->get('logService');
                 $logService->log($authenticatedUser, 'user_update_profile', $authenticatedUser, array());
 
@@ -381,6 +383,7 @@ class DefaultController extends Controller
         } else {
 
             $this->getUser()->setAvatar(null);
+            $this->getUser()->setUpdatedAt(new \DateTime('now'));
             $em = $this->getDoctrine()->getManager();
             $em->flush();
 
