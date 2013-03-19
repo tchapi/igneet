@@ -9,8 +9,8 @@
 {% block javascripts %}
   {{ parent() }}
     {% if base.canEdit %}
-    {% javascripts '@metaGeneralBundle/Resources/public/js-edit/jquery-sortable.js'
-                   '@metaGeneralBundle/Resources/public/js-edit/sortable.behaviour.js'
+    {% javascripts '@metaGeneralBundle/Resources/public/js-edit/jquery-nestable.js'
+                   '@metaGeneralBundle/Resources/public/js-edit/nestable.behaviour.js'
             filter='?yui_js' %}
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
@@ -67,12 +67,13 @@
 {% render "metaStandardProjectProfileBundle:Comment:addCommonListComment" with { 'slug' : base.standardProject.slug, 'id': commonList.id } %}
 </section>
 </div>
-<div class="menu">
+<div class="menu dd">
   Lists :
-  <ul class="lists sortable" data-url="{{ path('sp_show_project_list_rank', {'slug': base.standardProject.slug}) }}">
+  <ul class="lists sortable dd-list" data-url="{{ path('sp_show_project_list_rank', {'slug': base.standardProject.slug}) }}">
   {% for list in commonLists %}
-      <li{% if list.id == commonList.id %} class="active"{% endif %} id="{{ list.id }}">
-        <i class="icon-list-ol"></i> {% if base.canEdit %}<a data-confirm="Are you sure you want to delete this list ?" href="{{ path('sp_show_project_list_delete', {'slug': base.standardProject.slug, 'id': list.id, 'token': csrf_token('deleteCommonList')}) }}"><i class="icon-remove-sign"></i></a>{% endif %} <a href="{{ path('sp_show_project_list', {'slug': base.standardProject.slug, 'id': list.id, 'commonListSlug': list.slug }) }}" title="{{ list.name }}">{{ list.name }}</a>
+      <li class="{% if list.id == commonList.id %}active {% endif %}{% if base.canEdit %}dd-item dd-nochildren{% endif %}" id="{{ list.id }}">
+        {% if base.canEdit %}<div class="dd-handle"><i class="icon-reorder"></i></div>{% endif %}
+        {% if base.canEdit %}<a data-confirm="Are you sure you want to delete this list ?" href="{{ path('sp_show_project_list_delete', {'slug': base.standardProject.slug, 'id': list.id, 'token': csrf_token('deleteCommonList')}) }}"><i class="icon-remove-sign"></i></a>{% endif %} <a href="{{ path('sp_show_project_list', {'slug': base.standardProject.slug, 'id': list.id, 'commonListSlug': list.slug }) }}" title="{{ list.name }}" class="page_title">{{ list.name }}</a>
       </li>
   {% endfor %}
   </ul>

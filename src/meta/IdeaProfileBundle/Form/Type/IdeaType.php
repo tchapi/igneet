@@ -17,6 +17,9 @@ class IdeaType extends AbstractType
             'required' => false, // We will add the authenticated user afterwards 
             'property' => 'fullName',
             'class' => 'meta\UserProfileBundle\Entity\User',
+            'query_builder' => function(Doctrine\ORM\EntityRepository $er){
+                return $er->createQueryBuilder("u")->where("u.deleted_at IS NULL")->orderBy("u.username", "ASC");
+            },
             'label' => 'Creators',
             'attr' => array('class' => 'select2-trigger')
             ));
