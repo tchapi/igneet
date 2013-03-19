@@ -738,6 +738,10 @@ ul.resources{
   list-style-type: none;
   margin: 0;
 }
+div.resourceDetail{
+  margin-left: 36px;
+  margin-top: 10px;
+}
 
 /*************/
 /* DASHBOARD */

@@ -20,6 +20,44 @@ class ResourceController extends BaseController
      *                        RESOURCES
      *  #################################################### */
 
+    // Utility function factored to guess file type and provider
+    private function guessProviderAndType($file, $url){
+
+        $types = $this->container->getParameter('standardproject.resource_types');
+        $providers = $this->container->getParameter('standardproject.resource_providers');
+
+        if ($file == null) {
+
+            $guessedProvider = 'other';
+
+            foreach ($providers as $provider => $provider_infos) {
+                if ($provider != 'other' && $provider != 'local' && preg_match($provider_infos['pattern'], $url)){
+                    $guessedProvider = $provider;
+                    break;
+                }
+            }
+
+            $guessedType = explode('.', $url);
+            $guessedType = $guessedType[count($guessedType)-1];
+
+        } else {
+
+            $guessedProvider = 'local';
+            $guessedType = $file->guessExtension();
+
+        }
+
+        // Guesses type
+        if (isset($types[$guessedType])){
+            $type = $guessedType;
+        } else {
+            $type = 'other';
+        }
+
+        return array('provider' => $guessedProvider, 'type' => $type);
+
+    }
+
     public function listResourcesAction(Request $request, $slug, $page)
     {
         $this->fetchProjectAndPreComputeRights($slug, false, false);
@@ -46,35 +84,9 @@ class ResourceController extends BaseController
                 $this->base['standardProject']->setUpdatedAt(new \DateTime('now'));
 
                 // Guess resource type and provider
-
-                // Tries to guess platform from absolute url
-                if ($request->files->get('resource[file]', null, true) == null) {
-
-                    $resource->setProvider('other');
-
-                    foreach ($providers as $provider => $provider_infos) {
-                        if ($provider != 'other' && $provider != 'local' && preg_match($provider_infos['pattern'], $resource->getUrl())){
-                            $resource->setProvider($provider);
-                            break;
-                        }
-                    }
-
-                    $guessedType = explode('.', $resource->getUrl());
-                    $guessedType = $guessedType[count($guessedType)-1];
-
-                } else {
-
-                    $resource->setProvider('local');
-                    $guessedType = $resource->getFile()->guessExtension();
-
-                }
-
-                // Guesses type
-                if (isset($types[$guessedType])){
-                    $resource->setType($guessedType);
-                } else {
-                    $resource->setType('other');
-                }
+                $guess = $this->guessProviderAndType($request->files->get('resource[file]', null, true), $resource->getUrl());
+                    $resource->setType($guess['type']);
+                    $resource->setProvider($guess['provider']);
 
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($resource);
@@ -112,6 +124,9 @@ class ResourceController extends BaseController
         if ($this->base == false) 
           return $this->forward('metaStandardProjectProfileBundle:Base:showRestricted', array('slug' => $slug));
 
+        $types = $this->container->getParameter('standardproject.resource_types');
+        $providers = $this->container->getParameter('standardproject.resource_providers');
+
         $repository = $this->getDoctrine()->getRepository('metaStandardProjectProfileBundle:Resource');
         $resource = $repository->findOneById($id);
 
@@ -119,16 +134,23 @@ class ResourceController extends BaseController
             throw $this->createNotFoundException('This resource does not exist');
         }
 
+        $newResource = new Resource();
+        $form = $this->createForm(new ResourceType(), $newResource)->remove('title');
+
         return $this->render('metaStandardProjectProfileBundle:Resource:showResource.html.twig', 
-            array('base' => $this->base, 'resource' => $resource));
+            array('base' => $this->base, 'types' => $types, 'providers' => $providers, 'form' => $form->createView(), 'resource' => $resource));
 
     }
 
     public function editResourceAction(Request $request, $slug, $id)
     {
-  
+
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('edit', $request->get('token')))
+            return $this->redirect($this->generateUrl('sp_show_project_list_resources', array('slug' => $slug)));
+          
         $this->fetchProjectAndPreComputeRights($slug, false, true);
         $error = null;
+        $response = null;
 
         if ($this->base != false) {
 
@@ -145,17 +167,24 @@ class ResourceController extends BaseController
                         $resource->setTitle($request->request->get('value'));
                         $objectHasBeenModified = true;
                         break;
-// TODO TODO TODO TODO
-                    case 'url':
-                        $resource->setUrl($request->request->get('value'));
+                    case 'urlOrFile':
+                        $uploadedFile = $request->files->get('resource[file]', null, true);
+                        if (null !== $uploadedFile) {
+                            $resource->setFile($uploadedFile);
+                            $resource->setLatestVersionUploadedAt(new \DateTime('now'));
+                        } else {
+                            $resource->setUrl($request->request->get('resource[url]', null, true));
+                            $resource->setOriginalFilename(null);
+                        }
+
+                        // Guess resource type and provider
+                        $guess = $this->guessProviderAndType($uploadedFile, $resource->getUrl());
+                            $resource->setType($guess['type']);
+                            $resource->setProvider($guess['provider']);
+
                         $objectHasBeenModified = true;
+                        $needsRedirect = true;
                         break;
-                    case 'file':
-                        $resource->setFile($request->request->get('value'));
-                        $resource->setUpdatedAt(new \DateTime('now')); 
-                        $objectHasBeenModified = true;
-                        break;
-// TODO TODO TODO TODO
                     case 'tags':
                         $tagsAsArray = $request->request->get('value');
 
@@ -186,6 +215,7 @@ class ResourceController extends BaseController
 
                 if ($objectHasBeenModified === true && count($errors) == 0){
 
+                    $resource->setUpdatedAt(new \DateTime('now')); 
                     $this->base['standardProject']->setUpdatedAt(new \DateTime('now'));
                     $em = $this->getDoctrine()->getManager();
                     $em->flush();
@@ -210,12 +240,25 @@ class ResourceController extends BaseController
 
         }
 
-        // Wraps up and return a response
-        if (!is_null($error)) {
-            return new Response($error, 406);
-        }
+        // Wraps up and either return a response or redirect
+        if (isset($needsRedirect) && $needsRedirect) {
 
-        return new Response();
+            if (!is_null($error)) {
+                $this->get('session')->setFlash(
+                        'error', $error
+                    );
+            }
+
+            return $this->redirect($this->generateUrl('sp_show_project_list_resources', array('slug' => $slug)));
+
+        } else {
+        
+            if (!is_null($error)) {
+                return new Response($error, 406);
+            }
+
+            return new Response($response);
+        }
     }
 
     public function deleteResourceAction(Request $request, $slug, $id)
