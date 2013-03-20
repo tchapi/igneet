@@ -87,6 +87,7 @@ class WikiPage extends Taggable
     /**
      * Children of this pages (first order children)
      * @ORM\OneToMany(targetEntity="WikiPage", mappedBy="parent")
+     * @ORM\OrderBy({"rank" = "ASC"})
      **/
     private $children;
 
