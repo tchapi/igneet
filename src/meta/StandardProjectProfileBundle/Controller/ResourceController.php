@@ -275,6 +275,9 @@ class ResourceController extends BaseController
 
             if ($resource){
 
+                $logService = $this->container->get('logService');
+                $logService->log($this->getUser(), 'user_delete_resource', $this->base['standardProject'], array( 'resource' => array( 'routing' => 'resource', 'logName' => $resource->getLogName(), 'args' => $resource->getLogArgs())) );
+
                 $this->base['standardProject']->setUpdatedAt(new \DateTime('now'));
                 $em = $this->getDoctrine()->getManager();
                 $em->remove($resource);
@@ -284,10 +287,6 @@ class ResourceController extends BaseController
                     'success',
                     'This resource has been successfully deleted.'
                 );
-
-                $logService = $this->container->get('logService');
-                $logService->log($this->getUser(), 'user_delete_resource', $this->base['standardProject'], array( 'resource' => array( 'routing' => 'resource', 'logName' => $resource->getLogName(), 'args' => $resource->getLogArgs())) );
-
 
             } else {
 
