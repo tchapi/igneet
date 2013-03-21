@@ -5,6 +5,7 @@ app/bootstrap*
 vendor/*
 */logs/*
 */cache/*
+web/uploads
 web/uploads/*
 web/bundles/*
 web/css/*
@@ -15,3 +16,4 @@ app/config/parameters.ini
 app/config/parameters.yml
 
 .DS_Store
+.htpasswd
