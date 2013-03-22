@@ -38,7 +38,7 @@ class TimelineController extends BaseController
                             'd-4'   => array( 'name' => date("M j", strtotime("-4 day")), 'data' => array() ),
                             'd-5'   => array( 'name' => date("M j", strtotime("-5 day")), 'data' => array() ),
                             'd-6'   => array( 'name' => date("M j", strtotime("-6 day")), 'data' => array() ),
-                            'before'=> array( 'name' => 'before', 'data' => array() )
+                            'before'=> array( 'name' => 'a week ago', 'data' => array() )
                             );
 
         $repository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\StandardProjectLogEntry');
