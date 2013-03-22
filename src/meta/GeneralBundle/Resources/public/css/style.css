@@ -504,17 +504,21 @@ a.removeUserIcon{
 ul.timeline{
   margin: 0;
 }
+ul.timeline div.date-wrapper {
+  margin-left: 414px;
+}
 ul.timeline div.date {
   text-align: center;
   list-style: none;
   background: #CCC;
   border: 5px solid #DDD;
-  height: 24px;
+  height: 70px;
   width: 70px;
   border-radius: 50px;
-  padding: 28px 5px;
-  margin-left: 414px;
+  padding: 5px;
   font-size: 1.5em;
+  display: table-cell;
+  vertical-align: middle;
 }
 ul.timeline li.dateWrapper:first-child div.date{
   background: lightGreen;
