@@ -37,15 +37,15 @@ class IdeaRepository extends EntityRepository
             ->andWhere('i.deleted_at IS NULL');
 
     switch ($sort) {
-      case 'update':
-        $query->orderBy('i.updated_at', 'DESC');
+      case 'newest':
+        $query->orderBy('i.created_at', 'DESC');
         break;
       case 'alpha':
         $query->orderBy('i.name', 'ASC');
         break;
-      case 'newest':
+      case 'update':
       default:
-        $query->orderBy('i.created_at', 'DESC');
+        $query->orderBy('i.updated_at', 'DESC');
         break;
     }
 
