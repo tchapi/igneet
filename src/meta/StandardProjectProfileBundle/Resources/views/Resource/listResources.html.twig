@@ -26,23 +26,23 @@
   <ul class="resources">
   {% for resource in base.standardProject.resources %}
       <li>
-        {% if base.canEdit %}<a data-confirm="Are you sure you want to delete this resource ?" href="{{ path('sp_show_project_resource_delete', {'slug': base.standardProject.slug, 'id': resource.id}) }}"><i class="icon-remove-sign"></i></a>{% endif %}
-        <img src="{{ asset('/bundles/metageneral/img/icons/' ~ providers[resource.provider].icon ~ '.png') }}" width="32px" height="32px"/> 
-        <img src="{{ asset('/bundles/metageneral/img/icons/' ~ types[resource.type].icon ~ '.png') }}" width="32px" height="32px"/>
-        <span class="editable" data-title="Change the title of this resource" data-name="title" data-url="{{ path('sp_show_project_resource_edit', {'slug': base.standardProject.slug, 'id': resource.id}) }}" data-type="text">{{ resource.title }}</span>{% if resource.originalfilename %} <em>({{ resource.originalfilename }})</em>{% endif %}
+        <a href="{{ path('sp_show_project_resource', {'slug': base.standardProject.slug, 'id': resource.id}) }}">
+          <img src="{{ asset('/bundles/metageneral/img/icons/' ~ providers[resource.provider].icon ~ '.png') }}" width="32px" height="32px"/> 
+          <img src="{{ asset('/bundles/metageneral/img/icons/' ~ types[resource.type].icon ~ '.png') }}" width="32px" height="32px"/>
+          <span>{{ resource.title }}</span>{% if resource.originalFilename %} <em>({{ resource.originalFilename }})</em>{% endif %}
+        </a>
         - 
         {% if types[resource.type].displayable or not providers[resource.provider].downloadable %}<a title="View in a new window" href="{{ resource.url }}" target="_blank"><i class="icon-external-link"></i></a>{% endif %}
         {% if providers[resource.provider].downloadable %}<a title="Download resource" href="{{ path('sp_show_project_resource_download', {'slug': base.standardProject.slug, 'id': resource.id})}}"><i class="icon-download"></i></a>{% endif %}
         <span>
           {% if resource.tags|length > 0 %}
             Tags :
-          {% elseif not base.canEdit %}
+          {% else %}
             No tags yet.
           {% endif %}
-          <ul data-toggle="manual" data-title="Indicate tags separated by a comma or space" data-emptytext="Add tags" data-url="{{ path('sp_show_project_resource_edit', {'slug': base.standardProject.slug, 'id' : resource.id }) }}" data-type="select2" data-name="tags" class="tags tags{{ resource.id }}-target editable-li" >
+          <ul class="tags" >
           {% for tag in resource.tags %}<li class="label" rel="{{ tag.name }}">{{ tag.name }}</li>{% endfor %}
           </ul>
-          {% if base.canEdit %} <a class="editable-trigger" data-target="tags{{ resource.id }}">&hellip;<i class="icon-pencil"></i></a>{% endif %}
         </span>
       </li>
   {% endfor %}
@@ -51,7 +51,7 @@
 </section>
 {% endif %}
 {% if base.canEdit %}
-<form action="{{ path('sp_show_project_resources', {'slug': base.standardProject.slug}) }}" method="post" {{ form_enctype(form) }}>
+<form action="{{ path('sp_show_project_list_resources', {'slug': base.standardProject.slug}) }}" method="post" {{ form_enctype(form) }}>
   <section>
     <h4>Add a new resource :</h4>
   </section>

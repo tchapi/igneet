@@ -30,7 +30,7 @@
     {% elseif not base.canEdit %}
       No tags yet.
     {% endif %}
-    <ul data-toggle="manual" data-title="Indicate tags separated by a comma or space" data-emptytext="Add tags" data-url="{{ path('sp_show_project_list_edit', {'slug': base.standardProject.slug, 'id': commonList.id, 'token': csrf_token('editCommonList') }) }}" data-type="select2" data-name="tags" class="tags tags-target editable-li" >
+    <ul data-toggle="manual" data-title="Indicate tags separated by a comma" data-emptytext="Add tags" data-url="{{ path('sp_show_project_list_edit', {'slug': base.standardProject.slug, 'id': commonList.id, 'token': csrf_token('editCommonList') }) }}" data-type="select2" data-name="tags" class="tags tags-target editable-li" >
     {% for tag in commonList.tags %}<li class="label" rel="{{ tag.name }}" style="background-color: #{{ tag.color }}">{{ tag.name }}</li>{% endfor %}
     </ul>
     {% if base.canEdit %} <a class="editable-trigger" data-target="tags">&hellip;<i class="icon-pencil"></i></a>{% endif %}

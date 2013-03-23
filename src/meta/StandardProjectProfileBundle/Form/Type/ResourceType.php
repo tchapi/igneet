@@ -15,8 +15,8 @@ class ResourceType extends AbstractType
         
         $builder->add('file', 'file', array('required' => false, 'label' => 'or Choose a file to upload'));
 
-    }
-    
+    }    
+
     public function getName()
     {
         return 'resource';

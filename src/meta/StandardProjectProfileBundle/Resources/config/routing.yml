@@ -62,11 +62,17 @@ sp_show_project_comment:
 # TABS --------------------------
 
 ## RESOURCES
-sp_show_project_resources:
+sp_show_project_list_resources:
     pattern:  /project/show/{slug}/resources/{page}
-    defaults: { _controller: metaStandardProjectProfileBundle:Resource:showResources, page: 1 }
+    defaults: { _controller: metaStandardProjectProfileBundle:Resource:listResources, page: 1 }
     requirements:
       page: \d+
+
+sp_show_project_resource:
+    pattern:  /project/show/{slug}/resource/{id}
+    defaults: { _controller: metaStandardProjectProfileBundle:Resource:showResource}
+    requirements:
+      id: \d+
 
 sp_show_project_resource_edit:
     pattern:  /project/show/{slug}/resource/edit/{id}
