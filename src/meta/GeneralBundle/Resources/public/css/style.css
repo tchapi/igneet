@@ -63,6 +63,12 @@ div.cart > footer{
   overflow: hidden;
 }
 
+.ellipsis-multiline{
+  text-overflow: ellipsis;
+  white-space: normal;
+  overflow: hidden;
+}
+
 hr {
   background: transparent url("../img/hr.png") repeat-x 0 0;
   border: 0 none;
