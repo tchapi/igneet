@@ -89,6 +89,14 @@ class Resource extends Taggable
     private $updated_at;  
 
     /**
+     * @var date $latest_version_uploaded_at
+     * 
+     * @ORM\Column(name="latest_version_uploaded_at", type="datetime", nullable=true)
+     * @Assert\DateTime()
+     */
+    private $latest_version_uploaded_at;
+
+    /**
      * Project this resource is linked to (REVERSE SIDE)
      * @ORM\ManyToOne(targetEntity="StandardProject", inversedBy="resources")
      **/
@@ -107,7 +115,7 @@ class Resource extends Taggable
         return $this->title;
     }
     public function getLogArgs(){
-        return array();
+        return array('id' => $this->id);
     }
 
     /**
@@ -185,6 +193,9 @@ class Resource extends Taggable
             $filename = sha1(uniqid(mt_rand(), true));
             $this->original_filename = $this->file->getClientOriginalName();
             $this->url = $filename.'.'.$this->file->guessExtension();
+
+            // Updates the date of the latest version of the file
+            $this->latest_version_uploaded_at = new \DateTime('now');
         }
     }
 
@@ -203,6 +214,7 @@ class Resource extends Taggable
             $this->file->move($this->getUploadRootDir(), $this->url);
 
             unset($this->file);
+
         }
 
     }
@@ -376,7 +388,29 @@ class Resource extends Taggable
     {
         $this->updated_at = new \DateTime('now');
     }
-    
+   
+    /**
+     * Set latest_version_uploaded_at
+     *
+     * @param \DateTime $latestVersionUploadedAt
+     * @return Resource
+     */
+    public function setLatestVersionUploadedAt($latestVersionUploadedAt)
+    {
+        $this->latest_version_uploaded_at = $latestVersionUploadedAt;
+        return $this;
+    }
+
+    /**
+     * Get latest_version_uploaded_at
+     *
+     * @return \DateTime 
+     */
+    public function getLatestVersionUploadedAt()
+    {
+        return $this->latest_version_uploaded_at;
+    }
+ 
     /**
      * Set original_filename
      *

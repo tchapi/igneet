@@ -22,7 +22,7 @@ parameters:
       name: resources
       title: Resources
       icon: icon-file
-      route: sp_show_project_resources
+      route: sp_show_project_list_resources
       private: true
     - 
       name: wiki
