@@ -35,15 +35,15 @@ class StandardProjectRepository extends EntityRepository
             ->where('sp.deleted_at IS NULL');
 
     switch ($sort) {
-      case 'update':
-        $query->orderBy('sp.updated_at', 'DESC');
+      case 'newest':
+        $query->orderBy('sp.created_at', 'DESC');
         break;
       case 'alpha':
         $query->orderBy('sp.name', 'ASC');
         break;
-      case 'newest':
+      case 'update':
+        $query->orderBy('sp.updated_at', 'DESC');
       default:
-        $query->orderBy('sp.created_at', 'DESC');
         break;
     }
 
