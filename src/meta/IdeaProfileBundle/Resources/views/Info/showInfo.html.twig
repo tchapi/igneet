@@ -31,7 +31,7 @@
       <li>
         <a href="{{ path('u_show_user_profile', {'username': creatorUser.username}) }}">
           <img src="{{ creatorUser.avatar }}" width="70" height="70" class="smallAvatar"/>
-          <div class="smallObjectInfos">
+          <div class="smallObjectInfos ellipsis-multiline">
             <span><div>{{ creatorUser.firstName }}</div><div>{{ creatorUser.lastName|upper }}</div></span>
           </div>
         </a>
@@ -48,7 +48,7 @@
       <li>
         <a href="{{ path('u_show_user_profile', {'username': participatingUser.username}) }}">
           <img src="{{ participatingUser.avatar }}" width="70" height="70" class="smallAvatar"/>
-          <div class="smallObjectInfos">
+          <div class="smallObjectInfos ellipsis-multiline">
             <span><div>{{ participatingUser.firstName }}</div><div>{{ participatingUser.lastName|upper }}</div></span>
           </div>
         </a>
@@ -60,7 +60,7 @@
       <li>
         <a href="{{ path('u_choose_user', {'targetAsBase64': targetParticipantAsBase64, 'token': csrf_token('addParticipant')  }) }}">
           <div class="smallTextAvatar"><i class="icon-plus-sign"></i></div>
-          <div class="smallObjectInfos">
+          <div class="smallObjectInfos ellipsis-multiline">
             <span>Add a Participant</span>
           </div>
         </a>
