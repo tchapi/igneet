@@ -2,14 +2,14 @@
 
 i_list_ideas:
     pattern:  /ideas/{page}/{sort}
-    defaults: { _controller: metaIdeaProfileBundle:Default:list, page: 1, archived: false, sort: newest }
+    defaults: { _controller: metaIdeaProfileBundle:Default:list, page: 1, archived: false, sort: update }
     requirements:
         page: \d+
         sort: update|newest|alpha
 
 i_list_archived_ideas:
     pattern:  /ideas/archived/{page}/{sort}
-    defaults: { _controller: metaIdeaProfileBundle:Default:list, page: 1, archived: true, sort: newest }
+    defaults: { _controller: metaIdeaProfileBundle:Default:list, page: 1, archived: true, sort: update }
     requirements:
         page: \d+
         sort: update|newest|alpha
