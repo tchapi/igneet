@@ -65,7 +65,7 @@
 
     </div>
 
-    
+    {% if base.standardProject.neededSkills|length > 0 %}
     <div>
       {% if base.vacantSkills|length > 0 %}
       <i class="icon-exclamation-sign"></i> Vacant skills :
@@ -76,6 +76,7 @@
       <i class="icon-ok-sign"></i> All skills are endowed !
       {% endif %}
     </div>
+    {% endif %}
 
   </div>
 
