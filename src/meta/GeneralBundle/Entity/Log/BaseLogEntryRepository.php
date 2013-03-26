@@ -11,6 +11,27 @@ use Doctrine\ORM\EntityRepository;
 class BaseLogEntryRepository extends EntityRepository
 {
 
+  public function findSimilarEntries($model, $user, $logActionName, $subjectType, $subject, $date)
+  {
+
+    $qb = $this->getEntityManager()->createQueryBuilder();
+
+    return $qb->select('l')
+            ->from($model, 'l')
+            ->where('l.user = :uid')
+            ->setParameter('uid', $user)
+            ->andWhere("l.created_at > :date")
+            ->setParameter('date', $date)
+            ->andWhere('l.type = :type')
+            ->setParameter('type', $logActionName)
+            ->andWhere('l.'.$subjectType.' = :subject')
+            ->setParameter('subject', $subject)
+            ->orderBy('l.created_at', 'DESC')
+            ->getQuery()
+            ->getResult();
+  
+  }
+
   public function computeWeekActivityForUser($userId)
   {
  

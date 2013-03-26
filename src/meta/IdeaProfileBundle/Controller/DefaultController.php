@@ -607,7 +607,7 @@ class DefaultController extends Controller
 
         foreach ($entries as $entry) {
           
-          if ($log_types[$entry->getType()]['combinable'] === false ) continue;
+          if ($log_types[$entry->getType()]['displayable'] === false ) continue;
 
           $text = $logService->getHTML($entry);
           $createdAt = date_create($entry->getCreatedAt()->format('Y-m-d H:i:s'));
