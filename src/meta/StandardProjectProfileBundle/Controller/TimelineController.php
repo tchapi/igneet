@@ -52,7 +52,7 @@ class TimelineController extends BaseController
 
         foreach ($entries as $entry) {
           
-          if ($log_types[$entry->getType()]['combinable'] === false ) continue; // We do not display them
+          if ($log_types[$entry->getType()]['displayable'] === false ) continue; // We do not display them
 
           $text = $logService->getHTML($entry);
           $createdAt = date_create($entry->getCreatedAt()->format('Y-m-d H:i:s'));
