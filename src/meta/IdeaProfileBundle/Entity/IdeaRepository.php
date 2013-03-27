@@ -106,7 +106,8 @@ class IdeaRepository extends EntityRepository
             ->andWhere('u.id = :id OR u2.id = :id')
             ->setParameter('id', $user->getId());
     } else {
-      $query->andWhere('i.community = :community')
+      $query->andWhere('i.community = :community');
+    }
        
     return $query->getQuery()
                  ->getResult();
