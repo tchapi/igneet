@@ -33,7 +33,7 @@ class DefaultController extends Controller
         }
 
         $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
-        $user = $repository->findOneByUsername($username);
+        $user = $repository->findOneByUsernameInCommunity($username, $authenticatedUser->getCurrentCommunity());
 
         // If user is deleted or doesn't exist
         if (!$user || $user->isDeleted()) {
