@@ -43,22 +43,20 @@ class LogService
             case 'idea':
                  $entry = new IdeaLogEntry();
                  $repositoryName = 'metaGeneralBundle:Log\IdeaLogEntry';
-                 $subject_type = "idea";
+                 $subjectType = "idea";
                  break;
             case 'project':
                  $entry = new StandardProjectLogEntry();
                  $repositoryName = 'metaGeneralBundle:Log\StandardProjectLogEntry';
-                 $subject_type = "standardProject";
+                 $subjectType = "standardProject";
                  break;
             case 'other_user':
                  $entry = new UserLogEntry();
                  $repositoryName = 'metaGeneralBundle:Log\UserLogEntry';
-                 $subject_type = "other_user";
+                 $subjectType = "other_user";
                  break;   
             default:
-                 $entry = new BaseLogEntry();
-                 $repositoryName = 'metaGeneralBundle:Log\BaseLogEntry';
-                 break;
+                 return;
         }
         
         $lastEntry = null;
@@ -66,13 +64,18 @@ class LogService
         if ($this->log_types[$logActionName]['combinable'] === true){
             // Merge concurrent log updates
             // Check if there is a similar log less than X seconds ago
-            $repository = $this->em->getRepository($repositoryName);
-            $lastEntry = $repository->findOneBy(
-                array('user' => $user, 'type' =>  $logActionName, "$subject_type" => $subject),
-                array('created_at' => 'DESC'));
+            $repository = $this->em->getRepository('metaGeneralBundle:Log\BaseLogEntry');
+            $lastEntries = $repository->findSimilarEntries($repositoryName, $user, $logActionName, $subjectType, $subject, date_create('now -'.$this->concurrent_merge_interval.' seconds'));
+
+            foreach ($lastEntries as $entry) {
+                if ( $entry->getObjects() == $objects ) {
+                    $lastEntry = $entry;
+                    break;
+                }
+            }
         }
 
-        if ( !is_null($lastEntry) && $lastEntry->getObjects() == $objects && date_create($lastEntry->getCreatedAt()->format('Y-m-d H:i:s')) > date_create('now -'.$this->concurrent_merge_interval.' seconds')) {
+        if ( !is_null($lastEntry) ) {
             // if update < XX secondes , then update the date of the old one with the new date
             $lastEntry->setCreatedAt(new \Datetime('now'));
             $lastEntry->incrementCombinedCount();
