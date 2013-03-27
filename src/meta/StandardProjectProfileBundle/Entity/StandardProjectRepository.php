@@ -85,6 +85,74 @@ class StandardProjectRepository extends EntityRepository
             ->getResult();
   }
 
+  /* 
+   * Fetch projects in community for user (taking in account guest, privacy and community)
+   * where owner is an owner of the projects
+   */
+  public function findAllProjectsInCommunityForUserOwnedBy($community, $user, $owner)
+  {
+
+    $guestCriteria = $user->isGuestInCurrentCommunity()?'':'sp.private = 0 OR ';
+
+    $qb = $this->getEntityManager()->createQueryBuilder();
+    $query = $qb->select('sp')
+            ->from('metaStandardProjectProfileBundle:StandardProject', 'sp')
+            ->join('sp.owners', 'u')
+            ->leftJoin('sp.participants', 'u2')
+            ->join('sp.owners', 'u3')
+            ->where('sp.deleted_at IS NULL')
+            ->andWhere( $guestCriteria .'u = :user OR u2 = :user')
+            ->setParameter('user', $user)
+            ->andWhere('u3 = :owner')
+            ->setParameter('owner', $owner);
+
+    if ($community === null){
+      $query->andWhere('sp.community IS NULL');
+    } else {
+      $query->andWhere('sp.community = :community')
+            ->setParameter('community', $community);
+    }
+
+    return $query
+            ->groupBy('sp.id')
+            ->getQuery()
+            ->getResult();
+  }
+
+  /* 
+   * Fetch projects in community for user (taking in account guest, privacy and community)
+   * where participant is a participant of the projects
+   */
+  public function findAllProjectsInCommunityForUserParticipatedInBy($community, $user, $participant)
+  {
+
+    $guestCriteria = $user->isGuestInCurrentCommunity()?'':'sp.private = 0 OR ';
+
+    $qb = $this->getEntityManager()->createQueryBuilder();
+    $query = $qb->select('sp')
+            ->from('metaStandardProjectProfileBundle:StandardProject', 'sp')
+            ->join('sp.owners', 'u')
+            ->leftJoin('sp.participants', 'u2')
+            ->join('sp.participants', 'u3')
+            ->where('sp.deleted_at IS NULL')
+            ->andWhere( $guestCriteria .'u = :user OR u2 = :user')
+            ->setParameter('user', $user)
+            ->andWhere('u3 = :participant')
+            ->setParameter('participant', $participant);
+
+    if ($community === null){
+      $query->andWhere('sp.community IS NULL');
+    } else {
+      $query->andWhere('sp.community = :community')
+            ->setParameter('community', $community);
+    }
+
+    return $query
+            ->groupBy('sp.id')
+            ->getQuery()
+            ->getResult();
+  }
+
   /*
    * Fetch top N projects for the user in the given community
    */

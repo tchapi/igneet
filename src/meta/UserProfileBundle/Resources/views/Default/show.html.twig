@@ -180,41 +180,37 @@
 </section>
 {% endif %}
 
-{% if user.countProjectsOwned > 0 %}
+{% if projectsOwned|length > 0 %}
 <section class="colored">
 <div class="sectionTitle">Projects I own :</div>
 <ul class="projects sectionContent">
-{% for ownedProject in user.projectsOwned %}
-  {% if not ownedProject.isDeleted %}
-    <li>
-      <a href="{{ path('sp_show_project', {'slug': ownedProject.slug}) }}">
-        <img src="{{ ownedProject.picture }}" width="70" height="70" class="smallAvatar"/>
-        <div class="smallObjectInfos ellipsis-multiline">
-          <span>{{ ownedProject.name }}</span>
-        </div>
-      </a>
-    </li>
-  {% endif %}
+{% for ownedProject in projectsOwned %}
+  <li>
+    <a href="{{ path('sp_show_project', {'slug': ownedProject.slug}) }}">
+      <img src="{{ ownedProject.picture }}" width="70" height="70" class="smallAvatar"/>
+      <div class="smallObjectInfos ellipsis-multiline">
+        <span>{{ ownedProject.name }}</span>
+      </div>
+    </a>
+  </li>
 {% endfor %}
 </ul>
 </section>
 {% endif %}
 
-{% if user.countProjectsParticipatedIn > 0 %}
+{% if projectsParticipatedIn|length > 0 %}
 <section class="colored">
 <div class="sectionTitle">Projects I'm in :</div>
 <ul class="projects sectionContent">
-{% for participatedInProject in user.projectsParticipatedIn %}
-  {% if not participatedInProject.isDeleted %}
-    <li>
-      <a href="{{ path('sp_show_project', {'slug': participatedInProject.slug}) }}">
-        <img src="{{ participatedInProject.picture }}" width="70" height="70" class="smallAvatar"/>
-        <div class="smallObjectInfos ellipsis-multiline">
-          <span>{{ participatedInProject.name }}</span>
-        </div>
-      </a>
-    </li>
-  {% endif %}
+{% for participatedInProject in projectsParticipatedIn %}
+  <li>
+    <a href="{{ path('sp_show_project', {'slug': participatedInProject.slug}) }}">
+      <img src="{{ participatedInProject.picture }}" width="70" height="70" class="smallAvatar"/>
+      <div class="smallObjectInfos ellipsis-multiline">
+        <span>{{ participatedInProject.name }}</span>
+      </div>
+    </a>
+  </li>
 {% endfor %}
 </ul>
 </section>

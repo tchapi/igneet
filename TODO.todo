@@ -59,12 +59,22 @@ PROJECT gestion des users dans le private space : ne pas avoir d'user !
  ✔ dans l'action project => addParticipant, il faut qu'on puisse accepter des username qui ne sont pas dans la communauté, ou des emails @done (13-03-27 21:16)
 
  ☐ profil utilisateur (des autres) : ne pas afficher les projets privés (ou avec user guest dans la communauté) ou les idées des communautés ou je suis guest
- ☐ Attention dans la liste des users, il y a des projets listés !!!! enlever si guest ??
  ☐ mon profil : contextuel a ma communauté (au niveau des infos en dessous : mes projets mes idées tout ca)
+   ☐  followers following
+   ☐ projects
+     ☐ watchés
+     ✔ owners @done (13-03-27 22:17)
+     ✔ participants @done (13-03-27 22:18)
+   ☐ idées -> plus simples car les guests n'ont pas le droit de voir les idées
+     ☐ watchés
+     ☐ creators
+     ☐ participants
 
- ☐ users normaux et guests d'une communauté doivent pouvoir voir les guests de leur communauté (liste : marquer guest a coté)
+
  ☐ garder les notifications email quand tu es deja user et que tu rentres dans une communauté ? non -> les enlever
 
+ ✔ Attention dans la liste des users, il y a des projets listés !!!! enlever si guest ?? @done (13-03-27 22:16)
+ ✔ users normaux et guests d'une communauté doivent pouvoir voir les guests de leur communauté (liste : marquer guest a coté) @done (13-03-27 21:53)
  ✔ signup : mettre alphanumérique dans la création du nom d'utilisateur @done (13-03-27 21:18)
  ✔ follow de gens pas dans ma communauté : impossible @done (13-03-27 13:43)
  ✔ voir les profils users dans le private space : non ! @done (13-03-26 22:09)

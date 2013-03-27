@@ -29,32 +29,6 @@
     <div class="muted"><i class="icon-time"></i> Last updated {{ user.updatedAt|date("d/m/Y H:i:s") }}{% if user.initiatedLogEntries|length > 0 %} and last activity on {{ user.initiatedLogEntries[user.initiatedLogEntries|length - 1].createdAt|date("d/m/Y H:i:s") }}{% endif %}</div>
     
   </div>
-  {% if user.countProjectsOwned > 0 %}
-  <div class="listingItemRelatedObjects">
-
-    <div class="type">
-      <div class="muted pull-right">{{ user.countProjectsOwned }} 
-        project{% if (user.countProjectsOwned) > 1 %}s{% endif %} owned</div>
-    </div>
-
-    <ul>
-      {% if user.countProjectsOwned > 5 %}
-      <li>
-        <div class="miniTextAvatar">...</div>
-      </li>
-      {% endif %}
-      {% for project in user.getRandomProjectsOwned(5) %}
-        {% if not project.isDeleted %}
-        <li>
-          <a href="{{ path('sp_show_project', {'slug': project.slug}) }}">
-            <img src="{{ project.picture }}" title="{{ project.name }} ({{ project.slug|lower }})" width="30" height="30" class="miniAvatar"/>
-          </a>
-        </li>
-        {% endif %}
-      {% endfor %}
-    </ul>
-  </div>
-  {% endif %}
 
 </section>
 {% endfor %}

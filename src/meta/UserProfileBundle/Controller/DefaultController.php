@@ -47,13 +47,28 @@ class DefaultController extends Controller
         $alreadyFollowing = $authenticatedUser->isFollowing($user);
         $isMe = ($authenticatedUser->getUsername() == $username);
 
+        // Get projects / ideas lists
+        $projectRepository = $this->getDoctrine()->getRepository('metaStandardProjectProfileBundle:StandardProject');
+        $projectsOwned = $projectRepository->findAllProjectsInCommunityForUserOwnedBy($authenticatedUser->getCurrentCommunity(), $authenticatedUser, $user);
+        $projectsParticipatedIn = $projectRepository->findAllProjectsInCommunityForUserParticipatedInBy($authenticatedUser->getCurrentCommunity(), $authenticatedUser, $user);
+
+/*
+        $ideaRepository = $this->getDoctrine()->getRepository('metaIdeaProfileBundle:Idea');
+        $ideasOwned = $projectRepository->findAllIdeasInCommunityForUserOwnedBy($authenticatedUser->getCurrentCommunity(), $authenticatedUser, $user);
+        $ideasParticipatedIn = $projectRepository->findAllIdeasInCommunityForUserParticipatedInBy($authenticatedUser->getCurrentCommunity(), $authenticatedUser, $user);
+*/
+
         $targetAvatarAsBase64 = array ('slug' => 'metaUserProfileBundle:Default:edit', 'params' => array('username' => $username ), 'crop' => true);
 
         return $this->render('metaUserProfileBundle:Default:show.html.twig', 
             array('user' => $user,
                   'alreadyFollowing' => $alreadyFollowing,
                   'isMe' => $isMe,
-                  'targetAvatarAsBase64' => base64_encode(json_encode($targetAvatarAsBase64))
+                  'targetAvatarAsBase64' => base64_encode(json_encode($targetAvatarAsBase64)),
+                  'projectsOwned' => $projectsOwned,
+                  'projectsParticipatedIn' => $projectsParticipatedIn /*,
+                  'ideasOwned' => $ideasOwned,
+                  'ideasParticipatedIn' => $ideasParticipatedIn */
                 ));
     }
 
