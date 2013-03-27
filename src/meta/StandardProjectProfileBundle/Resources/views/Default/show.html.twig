@@ -56,7 +56,7 @@
     </div>
     {% elseif base.standardProject.community is null %}
     <div>
-      <i class="icon-group"></i> <a href="{{ path('g_choose_community', {'targetAsBase64': targetProposeToCommunityAsBase64 , 'token': csrf_token('edit') }) }}">Propose this project</a> to a community
+      <i class="icon-group"></i> <a href="{{ path('g_choose_community', {'targetAsBase64': base.targetProposeToCommunityAsBase64 , 'token': csrf_token('edit') }) }}">Propose this project</a> to a community
     </div>
     {% endif %}
 

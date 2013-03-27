@@ -17,6 +17,9 @@ use meta\StandardProjectProfileBundle\Entity\Comment\WikiPageComment,
 class CommentController extends BaseController
 {
 
+    /*
+     * Output the comment form for an project or add a comment to an project when POST
+     */
     public function addStandardProjectCommentAction(Request $request, $slug){
 
         $menu = $this->container->getParameter('standardproject.menu');
@@ -75,6 +78,9 @@ class CommentController extends BaseController
 
     }
 
+    /*
+     * Output the comment form for a wiki page or add a comment to a wiki page when POST
+     */
     public function addWikiPageCommentAction(Request $request, $slug, $id){
 
         $menu = $this->container->getParameter('standardproject.menu');
@@ -143,6 +149,9 @@ class CommentController extends BaseController
 
     }
 
+    /*
+     * Output the comment form for a list or add a comment to a list when POST
+     */
     public function addCommonListCommentAction(Request $request, $slug, $id){
 
         $menu = $this->container->getParameter('standardproject.menu');

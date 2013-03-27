@@ -9,10 +9,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller,
 class TimelineController extends BaseController
 {
 
-    /*  ####################################################
-     *                        TIMELINE
-     *  #################################################### */
-
+    /*
+     * Display the timeline tab of a project
+     */
     public function showTimelineAction($slug, $page)
     {
         $menu = $this->container->getParameter('standardproject.menu');
@@ -25,6 +24,13 @@ class TimelineController extends BaseController
             array('base' => $this->base));
     }
 
+    /* ********************************************************************* */
+    /*                           Non-routed actions                          */
+    /* ********************************************************************* */
+
+    /*
+     * Output the timeline history
+     */
     public function historyAction($slug, $page)
     {
 

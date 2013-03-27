@@ -16,10 +16,9 @@ use meta\StandardProjectProfileBundle\Entity\StandardProject,
 class DefaultController extends BaseController
 {
 
-    /*  ####################################################
-     *  Lists the projects in the community, available for the user
-     *  #################################################### */
-
+    /*
+     * List all projects in the given community, for the user
+     */
     public function listAction($page, $sort)
     {
 
@@ -41,10 +40,9 @@ class DefaultController extends BaseController
 
     }
 
-    /*  ####################################################
-     *  Creates a form for a new project AND process result if POST
-     *  #################################################### */
-
+    /*
+     * Create a project
+     */
     public function createAction(Request $request)
     {
         
@@ -58,8 +56,8 @@ class DefaultController extends BaseController
             return $this->redirect($this->generateUrl('sp_list_projects'));
         }
 
-        $standardProject = new StandardProject();
-        $form = $this->createForm(new StandardProjectType(), $standardProject);
+        $project = new StandardProject();
+        $form = $this->createForm(new StandardProjectType(), $project);
 
         if ($request->isMethod('POST')) {
 
@@ -67,27 +65,27 @@ class DefaultController extends BaseController
 
             if ($form->isValid()) {
                 
-                $authenticatedUser->addProjectsOwned($standardProject);
+                $authenticatedUser->addProjectsOwned($project);
 
                 if (!is_null($authenticatedUser->getCurrentCommunity())){
-                    $authenticatedUser->getCurrentCommunity()->addProject($standardProject);
+                    $authenticatedUser->getCurrentCommunity()->addProject($project);
                 } else {
-                    $standardProject->setPrivate(true); // When in private space, we force privacy
+                    $project->setPrivate(true); // When in private space, we force privacy
                 }
 
                 $em = $this->getDoctrine()->getManager();
-                $em->persist($standardProject);
+                $em->persist($project);
                 $em->flush();
 
                 $logService = $this->container->get('logService');
-                $logService->log($authenticatedUser, 'user_create_project', $standardProject, array() );
+                $logService->log($authenticatedUser, 'user_create_project', $project, array() );
 
                 $this->get('session')->setFlash(
                     'success',
-                    'Your new project '.$standardProject->getName().' has successfully been created.'
+                    'Your new project '.$project->getName().' has successfully been created.'
                 );
 
-                return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $standardProject->getSlug())));
+                return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $project->getSlug())));
            
             } else {
                
@@ -104,10 +102,9 @@ class DefaultController extends BaseController
 
     }
 
-    /*  ####################################################
-     *  Edits the project (via POST)
-     *  #################################################### */
-
+    /*
+     * Edit a project (via X-Editable)
+     */
     public function editAction(Request $request, $slug){
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('edit', $request->get('token')))
@@ -145,17 +142,10 @@ class DefaultController extends BaseController
                         
                         if ($community && $this->getUser()->belongsTo($community)){
                             $community->addProject($this->base['standardProject']);
-                            $this->getUser()->setCurrentCommunity($community);
-
                             $this->get('session')->setFlash(
                                 'success',
                                 'This project is now part of the community ' . $community->getName() . '.'
                             );
-                            $this->get('session')->setFlash(
-                                'info',
-                                'You have automatically been switched to the community ' . $community->getName() . '.'
-                            );
-
                             $objectHasBeenModified = true;
                             $needsRedirect = true;
                         }
@@ -244,10 +234,9 @@ class DefaultController extends BaseController
 
     }
 
-    /*  ####################################################
-     *  Deletes a project
-     *  #################################################### */
-
+    /*
+     * Delete a project
+     */
     public function deleteAction(Request $request, $slug){
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('delete', $request->get('token')))
@@ -281,10 +270,9 @@ class DefaultController extends BaseController
     }
 
     
-    /*  ####################################################
-     *  Resets the picture for a project
-     *  #################################################### */
-
+    /*
+     * Reset the picture of a project
+     */
     public function resetPictureAction(Request $request, $slug)
     {
 
@@ -317,10 +305,9 @@ class DefaultController extends BaseController
     }
 
     
-    /*  ####################################################
-     *  Make a project public (only if this project is in a community)
-     *  #################################################### */
-
+    /*
+     * Make a project public (it must be in a community before hand)
+     */
     public function makePublicAction(Request $request, $slug)
     {
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('makePublic', $request->get('token')))
@@ -328,7 +315,7 @@ class DefaultController extends BaseController
 
         $this->fetchProjectAndPreComputeRights($slug, true, false);
 
-        if ($this->base != false && $this->base['standardProject']->getCommunity() !== null) {
+        if ($this->base != false && !is_null($this->base['standardProject']->getCommunity())) {
             // A project in the private space cannot be public
 
             $this->base['standardProject']->setPrivate(false);
@@ -336,16 +323,16 @@ class DefaultController extends BaseController
             $em->flush();
 
             $this->get('session')->setFlash(
-                        'success',
-                        'This project is now public.'
-                    );
+                'success',
+                'This project is now public.'
+            );
 
         } else {
     
             $this->get('session')->setFlash(
-                    'error',
-                    'You cannot make this project public.'
-                );
+                'error',
+                'You cannot make this project public.'
+            );
         }
 
         return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $slug)));
@@ -353,11 +340,10 @@ class DefaultController extends BaseController
     }
 
     
-    /*  ####################################################
-     *  Allows to choose a slug and validates it is not already existing. 
-     *  Generally forwards to editAction
-     *  #################################################### */
-
+    /*
+     *  Allow to choose a slug and validate it is not already existing. 
+     *  Generally forward to editAction
+     */
     public function chooseSlugAction(Request $request, $targetAsBase64)
     {
 
@@ -392,10 +378,9 @@ class DefaultController extends BaseController
 
     }
 
-    /*  ####################################################
-     *                   WATCH / UNWATCH
-     *  #################################################### */
-
+    /*
+     * Authenticated user now watches the project
+     */
     public function watchAction(Request $request, $slug)
     {
 
@@ -409,30 +394,26 @@ class DefaultController extends BaseController
 
             $authenticatedUser = $this->getUser();
 
-            // The actually authenticated user now watches the project with $slug
-            $repository = $this->getDoctrine()->getRepository('metaStandardProjectProfileBundle:StandardProject');
-            $standardProject = $repository->findOneBySlug($slug);
+            if ( !($authenticatedUser->isWatchingProject($this->base['standardProject'])) ){
 
-            if ( !($authenticatedUser->isWatchingProject($standardProject)) ){
-
-                $authenticatedUser->addProjectsWatched($standardProject);
+                $authenticatedUser->addProjectsWatched($this->base['standardProject']);
 
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
 
                 $logService = $this->container->get('logService');
-                $logService->log($authenticatedUser, 'user_watch_project', $standardProject, array());
+                $logService->log($authenticatedUser, 'user_watch_project', $this->base['standardProject'], array());
 
                 $this->get('session')->setFlash(
                     'success',
-                    'You are now watching '.$standardProject->getName().'.'
+                    'You are now watching '.$this->base['standardProject']->getName().'.'
                 );
 
             } else {
 
                 $this->get('session')->setFlash(
                     'warning',
-                    'You are already watching '.$standardProject->getName().'.'
+                    'You are already watching '.$this->base['standardProject']->getName().'.'
                 );
 
             }
@@ -448,6 +429,9 @@ class DefaultController extends BaseController
         return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $slug)));
     }
 
+    /*
+     * Authenticated user now unwatches the project
+     */
     public function unwatchAction(Request $request, $slug)
     {
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('unwatch', $request->get('token')))
@@ -460,27 +444,23 @@ class DefaultController extends BaseController
 
             $authenticatedUser = $this->getUser();
 
-            // The actually authenticated user now follows $user if they are not the same
-            $repository = $this->getDoctrine()->getRepository('metaStandardProjectProfileBundle:StandardProject');
-            $standardProject = $repository->findOneBySlug($slug);
+            if ( $authenticatedUser->isWatchingProject($this->base['standardProject']) ){
 
-            if ( $authenticatedUser->isWatchingProject($standardProject) ){
-
-                $authenticatedUser->removeProjectsWatched($standardProject);
+                $authenticatedUser->removeProjectsWatched($this->base['standardProject']);
 
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
 
                 $this->get('session')->setFlash(
                     'success',
-                    'You are not watching '.$standardProject->getName().' anymore.'
+                    'You are not watching '.$this->base['standardProject']->getName().' anymore.'
                 );
 
             } else {
 
                 $this->get('session')->setFlash(
                     'warning',
-                    'You are not watching '.$standardProject->getName().'.'
+                    'You are not watching '.$this->base['standardProject']->getName().'.'
                 );
 
             }

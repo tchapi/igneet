@@ -58,13 +58,13 @@ PROJECT gestion des users dans le private space : ne pas avoir d'user !
   str_contains('@') => email
  ☐ Attention : pour une idée ne pas permettre d'inviter en dehors de la communauté
 
- ☐ dans l'action addParticipant, il faut qu'on puisse accepter des username qui ne sont pas dans la communauté
+ ☐ dans l'action project => addParticipant, il faut qu'on puisse accepter des username qui ne sont pas dans la communauté, ou des emails
 
  ☐ profil utilisateur (des autres) : ne pas afficher les projets privés (ou avec user guest dans la communauté) ou les idées des communautés ou je suis guest
  ☐ Attention dans la liste des users, il y a des projets listés !!!! enlever si guest ??
  ☐ mon profil : contextuel a ma communauté (au niveau des infos en dessous : mes projets mes idées tout ca)
 
- ☐ follow de gens pas dans ma communauté : impossible
+ ✔ follow de gens pas dans ma communauté : impossible @done (13-03-27 13:43)
 
  ✔ voir les profils users dans le private space : non ! @done (13-03-26 22:09)
  ✔ projet / idées dans mon private space : je suis seul créateur / owner (??) @done (13-03-25 22:41)
@@ -74,10 +74,10 @@ PROJECT gestion des users dans le private space : ne pas avoir d'user !
 
 Todo - General / Users :
 
- ☐ Clustering des activityLogs : vérifier que l'object correspond en récupérant le findOneBY, et pas faire le test dans le if après
  ☐ Mettre maxUsersInListings en parameters de l'appli a récupérer dans Twig
- ☐ login et signup : focus sur le champ lors du chargement de la page
-
+ 
+ ✔ login et signup : focus sur le champ lors du chargement de la page @done (13-03-27 16:37)
+ ✔ Clustering des activityLogs : vérifier que l'object correspond en récupérant le findOneBY, et pas faire le test dans le if après @done (13-03-27 16:29)
  ✔ envoyer des responses() avec des codes corrects @done (13-03-12 22:05)
  ✔ Liste des users : pour chaque, rajouter 'last active on' et 'last updated on' @done (13-03-07 00:13)
  ✔ logger les updates correctements avec $this->base['standardProject']->update(); dans toutes les actions @done (13-03-04 21:02)

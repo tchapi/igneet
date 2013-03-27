@@ -9,10 +9,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller,
 class InfoController extends BaseController
 {
     
-    /*  ####################################################
-     *                        INFO
-     *  #################################################### */
-
+    /*
+     * Show the info tab
+     */
     public function showInfoAction($slug)
     {
         $menu = $this->container->getParameter('standardproject.menu');
@@ -23,19 +22,16 @@ class InfoController extends BaseController
 
         $targetOwnerAsBase64 = array('slug' => 'metaStandardProjectProfileBundle:Info:addParticipantOrOwner', 'params' => array('slug' => $slug, 'owner' => true));
         $targetParticipantAsBase64 = array('slug' => 'metaStandardProjectProfileBundle:Info:addParticipantOrOwner', 'params' => array('slug' => $slug, 'owner' => false));
-        $targetProposeToCommunityAsBase64 = array('slug' => 'metaStandardProjectProfileBundle:Default:edit', 'params' => array('slug' => $slug));
 
         return $this->render('metaStandardProjectProfileBundle:Info:showInfo.html.twig', 
             array('base' => $this->base, 
                   'targetOwnerAsBase64' => base64_encode(json_encode($targetOwnerAsBase64)), 
-                  'targetParticipantAsBase64' => base64_encode(json_encode($targetParticipantAsBase64)),
-                  'targetProposeToCommunityAsBase64' => base64_encode(json_encode($targetProposeToCommunityAsBase64)) ));
+                  'targetParticipantAsBase64' => base64_encode(json_encode($targetParticipantAsBase64)) ));
     }
 
-    /*  ####################################################
-     *                          ADD USER
-     *  #################################################### */
-
+    /*
+     * Add a participant to a project
+     */
     public function addParticipantOrOwnerAction(Request $request, $slug, $username, $owner)
     {
 
@@ -100,15 +96,17 @@ class InfoController extends BaseController
 
             $this->get('session')->setFlash(
                 'error',
-                'You are not an owner of this project.'
+                'You are not allowed to add a participant or owner in this project.'
             );
 
         }
 
-
         return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $slug)));
     }
 
+    /*
+     * Remove a participant from a project
+     */
     public function removeParticipantOrOwnerAction(Request $request, $slug, $username, $owner)
     {
 
@@ -170,7 +168,7 @@ class InfoController extends BaseController
 
             $this->get('session')->setFlash(
                 'error',
-                'You are not allowed to add a participant or owner in this project.'
+                'You are not allowed to remove a participant or owner in this project.'
             );
 
         }

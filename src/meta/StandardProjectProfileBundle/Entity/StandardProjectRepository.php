@@ -11,6 +11,9 @@ use Doctrine\ORM\EntityRepository;
 class StandardProjectRepository extends EntityRepository
 {
 
+  /* 
+   * Count projects in community for user (taking in account guest, privacy and community)
+   */
   public function countProjectsInCommunityForUser($community, $user)
   {
     
@@ -38,6 +41,9 @@ class StandardProjectRepository extends EntityRepository
 
   }
 
+  /* 
+   * Fetch projects in community for user (taking in account guest, privacy and community)
+   */
   public function findProjectsInCommunityForUser($community, $user, $page, $maxPerPage, $sort)
   {
 
@@ -79,6 +85,9 @@ class StandardProjectRepository extends EntityRepository
             ->getResult();
   }
 
+  /*
+   * Fetch top N projects for the user in the given community
+   */
   public function findTopProjectsInCommunityForUser($community, $userId, $max = 3)
   {
     
@@ -107,6 +116,9 @@ class StandardProjectRepository extends EntityRepository
 
   }
 
+  /*
+   * Compute log activity for a project over a week (7 rolling days)
+   */
   public function computeWeekActivityForProjects($projects)
   {
  
