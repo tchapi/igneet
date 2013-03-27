@@ -87,23 +87,24 @@ class DefaultController extends Controller
     public function listAction($page, $archived, $sort)
     {
 
+        $authenticatedUser = $this->getUser();
+        $community = $this->getUser()->GetCurrentCommunity();
+
         // User is guest in community
-        if ($this->getUser()->isGuestInCurrentCommunity()){
+        if ($authenticatedUser->isGuestInCurrentCommunity()){
             throw new AccessDeniedHttpException('You do not have access to this page as a guest in the community.', null);
         }
 
         $repository = $this->getDoctrine()->getRepository('metaIdeaProfileBundle:Idea');
 
-        $authenticatedUser = $this->getUser();
-
-        $totalIdeas = $repository->countIdeasInCommunityForUser($authenticatedUser->GetCurrentCommunity(), $authenticatedUser, $archived);
+        $totalIdeas = $repository->countIdeasInCommunityForUser($community, $authenticatedUser, $archived);
         $maxPerPage = $this->container->getParameter('listings.number_of_items_per_page');
 
         if ( ($page-1) * $maxPerPage > $totalIdeas) {
             return $this->redirect($this->generateUrl('i_list_ideas', array('sort' => $sort)));
         }
 
-        $ideas = $repository->findIdeasInCommunityForUser($authenticatedUser->GetCurrentCommunity(), $authenticatedUser, $page, $maxPerPage, $sort, $archived);
+        $ideas = $repository->findIdeasInCommunityForUser($community, $authenticatedUser, $page, $maxPerPage, $sort, $archived);
 
         $pagination = array( 'page' => $page, 'totalIdeas' => $totalIdeas);
         return $this->render('metaIdeaProfileBundle:Default:list.html.twig', array('ideas' => $ideas, 'archived' => $archived, 'pagination' => $pagination, 'sort' => $sort));

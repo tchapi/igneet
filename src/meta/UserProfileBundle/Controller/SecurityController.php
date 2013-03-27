@@ -14,6 +14,9 @@ use meta\UserProfileBundle\Entity\UserInviteToken;
  
 class SecurityController extends Controller
 {
+    /*
+     * Login a user
+     */
     public function loginAction()
     {
 
@@ -46,37 +49,16 @@ class SecurityController extends Controller
         ));
     }
 
-    public function currentUserMenuAction()
-    {
-        $authenticatedUser = $this->getUser();
-
-        if ($authenticatedUser) {
-
-            // Logs last activity
-            $em = $this->getDoctrine()->getManager();
-            $authenticatedUser->setLastSeenAt(new \DateTime('now'));
-            $em->flush();
-
-            return $this->render(
-                'metaUserProfileBundle:Security:_authenticated.html.twig',
-                array('user' => $authenticatedUser)
-            );
-
-        } else {
-
-            return $this->render('metaUserProfileBundle:Security:_anonymous.html.twig');
-
-        }
-
-    }
-
+    /*
+     * Display invite page or invite a user in a community by username or email
+     */
     public function inviteAction(Request $request)
     {
 
         $authenticatedUser = $this->getUser();
         $community = $authenticatedUser->getCurrentCommunity();
 
-        if ($community !== null && !$authenticatedUser->isGuestInCurrentCommunity() ) {
+        if ( !is_null($community) && !$authenticatedUser->isGuestInCurrentCommunity() ) {
 
             if ($request->isMethod('POST')) {
             
@@ -84,7 +66,7 @@ class SecurityController extends Controller
                 $mailOrUsername = $request->request->get('mailOrUsername');
                 $isEmail = filter_var($mailOrUsername, FILTER_VALIDATE_EMAIL);
 
-                // It might be a user
+                // It might be a user already
                 $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
                 $em = $this->getDoctrine()->getManager();
 
@@ -185,6 +167,37 @@ class SecurityController extends Controller
             );
 
             return $this->redirect($this->generateUrl('home'));
+
+        }
+
+    }
+
+    /* ********************************************************************* */
+    /*                           Non-routed actions                          */
+    /* ********************************************************************* */
+
+    /*
+     * Output the top header menu
+     */
+    public function currentUserMenuAction()
+    {
+        $authenticatedUser = $this->getUser();
+
+        if ($authenticatedUser) {
+
+            // Logs last activity
+            $em = $this->getDoctrine()->getManager();
+            $authenticatedUser->setLastSeenAt(new \DateTime('now'));
+            $em->flush();
+
+            return $this->render(
+                'metaUserProfileBundle:Security:_authenticated.html.twig',
+                array('user' => $authenticatedUser)
+            );
+
+        } else {
+
+            return $this->render('metaUserProfileBundle:Security:_anonymous.html.twig');
 
         }
 

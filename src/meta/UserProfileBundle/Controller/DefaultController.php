@@ -20,36 +20,28 @@ class DefaultController extends Controller
 {
 
     /*
-     * Show My user profile
-     */
-    public function showMeAction()
-    {
-        return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $this->getUser()->getUsername())));
-    }
-
-    /*
      * Show a user profile
      */
     public function showAction($username)
     {
 
+        $authenticatedUser = $this->getUser();
+
         // No users in private space
-        if (is_null($this->getUser()->getCurrentCommunity())){
+        if (is_null($authenticatedUser->getCurrentCommunity())){
             throw $this->createNotFoundException('This user does not exist');
         }
 
         $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
-
         $user = $repository->findOneByUsername($username);
 
+        // If user is deleted or doesn't exist
         if (!$user || $user->isDeleted()) {
-            throw $this->createNotFoundException('This user does not exist or has been deleted');
+            throw $this->createNotFoundException('This user does not exist');
         }
 
-        $authenticatedUser = $this->getUser();
-
-        $alreadyFollowing = $authenticatedUser && $authenticatedUser->isFollowing($user);
-        $isMe = $authenticatedUser && ($authenticatedUser->getUsername() == $username);
+        $alreadyFollowing = $authenticatedUser->isFollowing($user);
+        $isMe = ($authenticatedUser->getUsername() == $username);
 
         $targetAvatarAsBase64 = array ('slug' => 'metaUserProfileBundle:Default:edit', 'params' => array('username' => $username ), 'crop' => true);
 
@@ -61,17 +53,56 @@ class DefaultController extends Controller
                 ));
     }
 
+    /* 
+     * Show My own user profile
+     */
+    public function showMeAction()
+    {
+        return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $this->getUser()->getUsername())));
+    }
+
+    /*
+     * List users
+     */
+    public function listAction($page, $sort)
+    {
+
+        $community = $this->getUser()->getCurrentCommunity();
+
+        // In private space : no users
+        if (is_null($community)) {
+            throw $this->createNotFoundException('There are no users in your private space');
+        }
+
+        $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
+
+        $totalUsers = $repository->countUsersInCommunity($community);
+        $maxPerPage = $this->container->getParameter('listings.number_of_items_per_page');
+
+        if ( ($page-1) * $maxPerPage > $totalUsers) {
+            return $this->redirect($this->generateUrl('u_list_users', array('sort' => $sort)));
+        }
+
+        $users = $repository->findUsersInCommunity($community, $page, $maxPerPage, $sort);
+
+        $pagination = array( 'page' => $page, 'totalUsers' => $totalUsers);
+        return $this->render('metaUserProfileBundle:Default:list.html.twig', array('users' => $users, 'pagination' => $pagination, 'sort' => $sort ));
+
+    }
+
     /*
      * Show a user dashboard
      */
     public function showDashboardAction()
     {
 
-        if (is_null($this->getUser()->getCurrentCommunity()) || $this->getUser()->isGuestInCurrentCommunity() ) {
+        $authenticatedUser = $this->getUser();
+
+        if (is_null($authenticatedUser->getCurrentCommunity()) || $authenticatedUser->isGuestInCurrentCommunity() ) {
 
             $this->get('session')->setFlash(
                 'error',
-                'There is no dashboard in your private space or in a community in which you are guest.'
+                'There is no dashboard in your private space or in a community in which you are a guest.'
             );
 
             return $this->redirect($this->generateUrl('u_me'));
@@ -118,7 +149,6 @@ class DefaultController extends Controller
         if (count($top3ideas)){
             $top3ideasActivity_raw = $ideaRepository->computeWeekActivityForIdeas($top3ideas);
             
-            
             foreach ($top3ideasActivity_raw as $key => $value) {
                 $top3ideasActivity[$value['id']][] = $value;
             }
@@ -139,7 +169,7 @@ class DefaultController extends Controller
 
 
     /*
-     * Create a form for a new user to signin AND process result if POST
+     * Create a form for a new user to signin AND process the result when POSTed
      */
     public function createAction(Request $request, $inviteToken)
     {
@@ -240,7 +270,7 @@ class DefaultController extends Controller
     }
 
     /*
-     * Authenticated user can edit via X-editable
+     * Edit a user (via X-editable)
      */
     public function editAction(Request $request, $username)
     {
@@ -297,11 +327,10 @@ class DefaultController extends Controller
                     );
                     imagepng($dst_r, $preparedFilename.'.cropped');
 
-                    /* We need to update the date manually.
+                    /* We need to update the date manually : it's done later in the action.
                      * Otherwise, as file is not part of the mapping,
                      * @ORM\PreUpdate will not be called and the file will not be persisted
                      */
-                    // $authenticatedUser->setUpdatedAt(new \DateTime('now'));
                     $authenticatedUser->setFile(new File($preparedFilename.'.cropped'));
 
                     $objectHasBeenModified = true;
@@ -321,9 +350,7 @@ class DefaultController extends Controller
                     break;
             }
 
-
-            $validator = $this->get('validator');
-            $errors = $validator->validate($authenticatedUser);
+            $errors = $this->get('validator')->validate($authenticatedUser);
 
             if ($objectHasBeenModified === true && count($errors) == 0){
 
@@ -351,8 +378,8 @@ class DefaultController extends Controller
 
             if (!is_null($error)) {
                 $this->get('session')->setFlash(
-                        'error', $error
-                    );
+                    'error', $error
+                );
             }
 
             return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $username)));
@@ -369,7 +396,7 @@ class DefaultController extends Controller
     }
 
     /*
-     * Reset Avatar of user
+     * Reset the avatar of a user
      */
     public function resetAvatarAction(Request $request, $username)
     {
@@ -382,9 +409,9 @@ class DefaultController extends Controller
         if ($authenticatedUser->getUsername() !== $username) {
 
             $this->get('session')->setFlash(
-                    'error',
-                    'You cannot reset the avatar for this user.'
-                );
+                'error',
+                'You cannot reset the avatar for this user.'
+            );
 
         } else {
 
@@ -394,9 +421,9 @@ class DefaultController extends Controller
             $em->flush();
 
             $this->get('session')->setFlash(
-                        'success',
-                        'Your avatar has successfully been reset.'
-                    );
+                'success',
+                'Your avatar has successfully been reset.'
+            );
     
         }
 
@@ -404,7 +431,11 @@ class DefaultController extends Controller
 
     }
 
-    public function deleteAction(Request $request, $username){
+    /*
+     * Delete a user
+     */
+    public function deleteAction(Request $request, $username)
+    {
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('delete', $request->get('token')))
             return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $this->getUser()->getUsername())));
@@ -430,7 +461,7 @@ class DefaultController extends Controller
                 }
             }
 
-            // ideas must have a creator and projects must have at least an owner
+            // Projects must have at least an owner
             if ($deletable === true ) {
 
                 // Delete the user
@@ -445,30 +476,17 @@ class DefaultController extends Controller
 
             } else {
 
-                $projects = $ideas = "";
+                $projects = "";
                 foreach ($authenticatedUser->getProjectsOwned() as $project) {
                     if (!$project->isDeleted() && $project->countOwners() == 1){
                         $projects .= $project->getName(). ",";
                     }
                 }
 
-                foreach ($authenticatedUser->getIdeasCreated() as $idea) {
-                    if (!$idea->isDeleted() && $idea->countCreators() == 1 && $idea->countParticipants() == 0 ){
-                        $ideas .= $idea->getName() . ",";
-                    }
-                }
-
-                if ($projects !== ""){
-                    $projects = " projects (" . substr($projects, 0, -1) . ")";
-                }
-                if ($ideas !== ""){
-                    if ($projects !== "") $projects .= " and";
-                    $ideas = " ideas that will be orphaned (" . substr($ideas, 0, -1) . ")";
-                }
-
+                // Let's notify the user with the projects he still owns alone
                 $this->get('session')->setFlash(
                     'error',
-                    'You cannot delete your account; you still own'. $projects . $ideas . '. Make sure your projects have another owner, that your ideas have participants, and try again.'
+                    'You cannot delete your account; you still own projects (' . substr($projects, 0, -1) . '). Make sure your projects have another owner, that your ideas have participants, and try again.'
                 );
 
                 return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $username)));
@@ -477,9 +495,9 @@ class DefaultController extends Controller
         } else {
 
             $this->get('session')->setFlash(
-                    'error',
-                    'You cannot delete someone else\'s account.'
-                );
+                'error',
+                'You cannot delete someone else\'s account.'
+            );
 
             return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $authenticatedUser->getUsername())));
         }
@@ -487,34 +505,7 @@ class DefaultController extends Controller
     }
 
     /*
-     * List recently created users
-     */
-    public function listAction($page, $sort)
-    {
-
-        // In private space : no users
-        if (is_null($this->getUser()->getCurrentCommunity())) {
-            throw $this->createNotFoundException('There are no users in your private space');
-        }
-
-        $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
-
-        $totalUsers = $repository->countUsers();
-        $maxPerPage = $this->container->getParameter('listings.number_of_items_per_page');
-
-        if ( ($page-1) * $maxPerPage > $totalUsers) {
-            return $this->redirect($this->generateUrl('u_list_users', array('sort' => $sort)));
-        }
-
-        $users = $repository->findUsers($page, $maxPerPage, $sort);
-
-        $pagination = array( 'page' => $page, 'totalUsers' => $totalUsers);
-        return $this->render('metaUserProfileBundle:Default:list.html.twig', array('users' => $users, 'pagination' => $pagination, 'sort' => $sort ));
-
-    }
-
-    /*
-     * List all skills for X-editable
+     * List all skills (for X-editable)
      */
     public function listSkillsAction(Request $request)
     {
@@ -546,8 +537,10 @@ class DefaultController extends Controller
     public function chooseAction(Request $request, $targetAsBase64)
     {
 
+        $authenticatedUser = $this->getUser();
+
         // In private space : no users
-        if (is_null($this->getUser()->getCurrentCommunity())) {
+        if (is_null($authenticatedUser->getCurrentCommunity())) {
             throw $this->createNotFoundException('There are no users in your private space');
         }
 
@@ -567,7 +560,7 @@ class DefaultController extends Controller
                 je dois pouvoir inviter seulement
 
             */
-            $user = $repository->findOneByUsernameInCommunity($username, $this->getUser()->getCurrentCommunity());
+            $user = $repository->findOneByUsernameInCommunity($username, $authenticatedUser->getCurrentCommunity());
 
             if ($user && !$user->isDeleted() && isset($target['slug']) && isset($target['params']) ){
 
@@ -584,16 +577,16 @@ class DefaultController extends Controller
         } else {
 
             $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
-            $users = $repository->findAllUsersInCommunityExceptMe($this->getUser(), $this->getUser()->getCurrentCommunity());
+            $users = $repository->findAllUsersInCommunityExceptMe($authenticatedUser, $authenticatedUser->getCurrentCommunity());
 
-            if (count($users) == 0 ){
+            if (count($users) === 0 ){
 
                 $this->get('session')->setFlash(
                         'warning',
                         'You\'re alone, mate.'
                     );
 
-                return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $this->getUser()->getUsername())));
+                return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $authenticatedUser->getUsername())));
             }
 
             return $this->render('metaUserProfileBundle:Default:choose.html.twig', array('users' => $users, 'targetAsBase64' => $targetAsBase64, 'token' => $request->get('token')));
@@ -613,10 +606,10 @@ class DefaultController extends Controller
         $authenticatedUser = $this->getUser();
 
         // The actually authenticated user now follows $user if they are not the same
-        if ($username != $authenticatedUser->getUsername()){
+        if ($username !== $authenticatedUser->getUsername()){
 
             $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
-            $user = $repository->findOneByUsername($username);
+            $user = $repository->findOneByUsernameInCommunity($username, $authenticatedUser->getCurrentCommunity());
 
             if ($user && !$user->isDeleted()){
 
@@ -643,6 +636,14 @@ class DefaultController extends Controller
                     );
 
                 }
+
+            } else {
+
+               $this->get('session')->setFlash(
+                    'error',
+                    'You cannot follow this user.'
+                ); 
+
             }
 
         } else {
@@ -651,7 +652,6 @@ class DefaultController extends Controller
                 'You cannot follow yourself.'
             );
         }
-
 
         return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $username)));
     }
@@ -668,10 +668,10 @@ class DefaultController extends Controller
         $authenticatedUser = $this->getUser();
 
         // The actually authenticated user now follows $user if they are not the same
-        if ($username != $authenticatedUser->getUsername()){
+        if ($username !== $authenticatedUser->getUsername()){
 
             $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
-            $user = $repository->findOneByUsername($username);
+            $user = $repository->findOneByUsernameInCommunity($username, $authenticatedUser->getCurrentCommunity());
 
             if ($user && !$user->isDeleted()){
 
@@ -695,6 +695,14 @@ class DefaultController extends Controller
                     );
 
                 }
+
+            } else {
+
+               $this->get('session')->setFlash(
+                    'error',
+                    'You cannot unfollow this user.'
+                ); 
+
             }
 
         } else {

@@ -11,26 +11,44 @@ use Doctrine\ORM\EntityRepository;
 class UserRepository extends EntityRepository
 {
 
-  public function countUsers()
+  /*
+   * Count all users in a given community
+   */
+  public function countUsersInCommunity($community)
   {
     
+    if ($community === null){
+      return 0;
+    }
+
     $qb = $this->getEntityManager()->createQueryBuilder();
 
     return $qb->select('COUNT(u)')
             ->from('metaUserProfileBundle:User', 'u')
             ->where('u.deleted_at IS NULL')
+            ->andWhere('u.community = :community')
+            ->setParameter('community', $community)
             ->getQuery()
             ->getSingleScalarResult();
 
   }
 
-  public function findUsers($page, $maxPerPage, $sort)
+  /*
+   * Fetch all users in a given community
+   */
+  public function findAllUsersInCommunity($community, $page, $maxPerPage, $sort)
   {
     
+    if ($community === null){
+      return null;
+    }
+
     $qb = $this->getEntityManager()->createQueryBuilder();
     $query = $qb->select('u')
             ->from('metaUserProfileBundle:User', 'u')
-            ->where('u.deleted_at IS NULL');
+            ->where('u.deleted_at IS NULL')
+            ->andWhere('u.community = :community')
+            ->setParameter('community', $community);
 
     switch ($sort) {
       case 'update':
@@ -56,8 +74,40 @@ class UserRepository extends EntityRepository
 
   }
 
+  /*
+   * Fetch all users in a given community, except the user $user
+   */
+  public function findAllUsersInCommunityExceptMe($user, $community)
+  {
+    
+    if ($community === null){
+      return null;
+    }
+
+    $qb = $this->getEntityManager()->createQueryBuilder();
+
+    return $qb->select('u')
+            ->from('metaUserProfileBundle:User', 'u')
+            ->join('u.communities', 'c')
+            ->where('u.deleted_at IS NULL')
+            ->andWhere('u <> :user')
+            ->setParameter('user', $user)
+            ->andWhere('c = :community')
+            ->setParameter('community', $community)
+            ->getQuery()
+            ->getResult();
+
+  }
+
+  /*
+   * Find a user by its username in a given community
+   */
   public function findOneByUsernameInCommunity($username, $community)
   {
+
+    if ($community === null){
+      return null;
+    }
 
     $qb = $this->getEntityManager()->createQueryBuilder();
 
@@ -80,21 +130,4 @@ class UserRepository extends EntityRepository
     return $result;
   }
 
-  public function findAllUsersInCommunityExceptMe($user, $community)
-  {
-    
-    $qb = $this->getEntityManager()->createQueryBuilder();
-
-    return $qb->select('u')
-            ->from('metaUserProfileBundle:User', 'u')
-            ->join('u.communities', 'c')
-            ->where('u.deleted_at IS NULL')
-            ->andWhere('u <> :user')
-            ->setParameter('user', $user)
-            ->andWhere('c = :community')
-            ->setParameter('community', $community)
-            ->getQuery()
-            ->getResult();
-
-  }
 }

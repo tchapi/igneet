@@ -11,6 +11,9 @@ use Doctrine\ORM\EntityRepository;
 class SkillRepository extends EntityRepository
 {
 
+  /*
+   * Fetch all skills which slugs are in the given array
+   */
   public function findSkillsByArrayOfSlugs($arrayOfSlugs)
   {
     
