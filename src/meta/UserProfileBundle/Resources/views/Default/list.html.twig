@@ -8,7 +8,7 @@
   </div>
   <div class="objectHeader">
     <h2>Users</h2>
-    <h4>All the users are listed in this page.</h4>
+    <h4>All the users in the community {{ app.user.currentCommunity.name }} are listed in this page.</h4>
     <p>Sort by : <a href="{{ path('u_list_users', {'sort': 'newest', 'page' : pagination.page}) }}"><i class="icon-star"></i> Newest users</a> - <a href="{{ path('u_list_users', {'sort': 'update', 'page' : pagination.page}) }}"><i class="icon-time"></i> Recently updated</a> - <a href="{{ path('u_list_users', {'sort': 'active', 'page' : pagination.page}) }}"><i class="icon-dashboard"></i> Last active</a> - <a href="{{ path('u_list_users', {'sort': 'alpha', 'page' : pagination.page}) }}"><i class="icon-font"></i> Alphabetical</a></p>
   </div>
 {% endblock %}

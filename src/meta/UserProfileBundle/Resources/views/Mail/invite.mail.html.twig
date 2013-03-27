@@ -1,9 +1,16 @@
 <h3>Hello,</h3>
 
-<p>{{ user.getFullName() }} has invited you to join her/him on igneet !</p>
+{% if not invitee %}
+  <p>{{ user.getFullName() }} has invited you to join her/him in the community {{ user.getCurrentCommunity().name }} on igneet !</p> 
 
-<p>Click on the following link to sign up and create your profile :</p>
-<p><a href="{{ url('u_signup', { 'inviteToken': inviteToken } ) }}">{{ url('u_signup', { 'inviteToken': inviteToken } ) }}</a></p>
+  <p>Click on the following link to sign up and create your profile :</p>
+  <p><a href="{{ url('u_signup', { 'inviteToken': inviteToken } ) }}">{{ url('u_signup', { 'inviteToken': inviteToken } ) }}</a></p>
+{% else %}
+  <p>{{ user.getFullName() }} has made you a member of the community {{ user.getCurrentCommunity().name }} on igneet !</p> 
+
+  <p>Click on the following link to login and go to your profile :</p>
+  <p><a href="{{ url('u_me' ) }}">{{ url('u_me' ) }}</a></p>
+{% endif %}
 
 <p><em>This is an automated message from igneet, but you can answer directly to {{ user.getFullName() }} by replying to this message</em></p>
 <p><strong>The igneet team</strong></p>

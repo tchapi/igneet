@@ -15,6 +15,7 @@ class BaseController extends Controller
         $repository = $this->getDoctrine()->getRepository('metaStandardProjectProfileBundle:StandardProject');
         $standardProject = $repository->findOneBySlug($slug);
 
+        // Unexistant or deleted project
         if (!$standardProject || $standardProject->isDeleted()){
           throw $this->createNotFoundException('This project does not exist');
         }
@@ -25,6 +26,21 @@ class BaseController extends Controller
         $isOwning = $authenticatedUser && ($authenticatedUser->isOwning($standardProject));
         $isParticipatingIn = $authenticatedUser && ($authenticatedUser->isParticipatingIn($standardProject));
         
+        // Private project of which I'm not owner nor participant
+        if ($standardProject->isPrivate() && !$isOwning && !$isParticipatingIn){
+          throw $this->createNotFoundException('This project does not exist');
+        }
+
+        // User is guest in community
+        if ($authenticatedUser->isGuestInCurrentCommunity() && !$isOwning && !$isParticipatingIn){
+            throw $this->createNotFoundException('This project does not exist');
+        }
+
+        // Project not in community
+        if ($standardProject->getCommunity() !== $authenticatedUser->getCurrentCommunity()){
+          throw $this->createNotFoundException('This project does not exist in this community space. Please switch to the right community before accessing this project.');
+        }
+
         $targetPictureAsBase64 = array ('slug' => 'metaStandardProjectProfileBundle:Default:edit', 'params' => array('slug' => $slug ), 'crop' => true);
 
         // Compute endowed/vacant skills

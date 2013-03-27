@@ -18,11 +18,25 @@ use meta\UserProfileBundle\Entity\User,
 
 class DefaultController extends Controller
 {
+
+    /*
+     * Show My user profile
+     */
+    public function showMeAction()
+    {
+        return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $this->getUser()->getUsername())));
+    }
+
     /*
      * Show a user profile
      */
     public function showAction($username)
     {
+
+        // No users in private space
+        if (is_null($this->getUser()->getCurrentCommunity())){
+            throw $this->createNotFoundException('This user does not exist');
+        }
 
         $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
 
@@ -53,16 +67,14 @@ class DefaultController extends Controller
     public function showDashboardAction()
     {
 
-        $authenticatedUser = $this->getUser();
-
-        if (!$authenticatedUser) {
+        if (is_null($this->getUser()->getCurrentCommunity()) || $this->getUser()->isGuestInCurrentCommunity() ) {
 
             $this->get('session')->setFlash(
                 'error',
-                'Please login to access your account.'
+                'There is no dashboard in your private space or in a community in which you are guest.'
             );
 
-            return $this->redirect($this->generateUrl('login'));
+            return $this->redirect($this->generateUrl('u_me'));
         } 
 
         // So let's get the stuff
@@ -88,7 +100,7 @@ class DefaultController extends Controller
         $last7daysCommentActivity = $commentRepository->computeWeekCommentActivityForUser($authenticatedUser->getId());
         
         // Top 3 projects
-        $top3projects = $standardProjectRepository->findTopProjectsForUser($authenticatedUser->getId(), 3);
+        $top3projects = $standardProjectRepository->findTopProjectsInCommunityForUser($authenticatedUser->getCurrentCommunity(), $authenticatedUser->getId(), 3);
         $top3projectsActivity = array();
 
         if (count($top3projects)){
@@ -100,7 +112,7 @@ class DefaultController extends Controller
         }
 
         // Top 3 ideas
-        $top3ideas = $ideaRepository->findTopIdeasForUser($authenticatedUser->getId(), 3);
+        $top3ideas = $ideaRepository->findTopIdeasInCommunityForUser($authenticatedUser->getCurrentCommunity(), $authenticatedUser->getId(), 3);
         $top3ideasActivity = array();
 
         if (count($top3ideas)){
@@ -125,26 +137,6 @@ class DefaultController extends Controller
                 ));
     }
 
-    /*
-     * Show My user profile
-     */
-    public function showMeAction()
-    {
-
-        $authenticatedUser = $this->getUser();
-
-        if ($authenticatedUser) {
-            return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $authenticatedUser->getUsername())));
-        } 
-
-        $this->get('session')->setFlash(
-                'error',
-                'Please login to access your account.'
-            );
-
-        return $this->redirect($this->generateUrl('login'));
-
-    }
 
     /*
      * Create a form for a new user to signin AND process result if POST
@@ -165,18 +157,25 @@ class DefaultController extends Controller
         }
 
         // Checks the inviteToken
+        if ( !is_null($inviteToken) ) {
 
-        $tokenRepository = $this->getDoctrine()->getRepository('metaUserProfileBundle:UserInviteToken');
-        $inviteToken = $tokenRepository->findOneByToken($inviteToken);
+            $tokenRepository = $this->getDoctrine()->getRepository('metaUserProfileBundle:UserInviteToken');
+            $inviteTokenObject = $tokenRepository->findOneByToken($inviteToken);
 
-        if ( !$inviteToken || $inviteToken->isUsed() ){
+            if ( $inviteTokenObject && $inviteTokenObject->isUsed() ){
 
-            $this->get('session')->setFlash(
-                'error',
-                'This signup link is not valid. Make sure it has not been used.'
-            );
+                $this->get('session')->setFlash(
+                    'error',
+                    'This signup link has already been used.'
+                );
 
-            return $this->redirect($this->generateUrl('login'));   
+                $inviteTokenObject = null;
+            }
+
+        } else {
+
+            $inviteTokenObject = null;
+        
         }
 
         $user = new User();
@@ -193,7 +192,14 @@ class DefaultController extends Controller
                 $user->setPassword($encoder->encodePassword($user->getPassword(), $user->getSalt()));
 
                 // Use inviteToken
-                $inviteToken->setResultingUser($user);
+                if (!is_null($inviteTokenObject)){
+                    $inviteTokenObject->setResultingUser($user);
+                    $community = $inviteTokenObject->getCommunity();
+                    if ($community){
+                        $community->addUser($user);
+                        $user->setCurrentCommunity($community);
+                    }
+                }
 
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($user);
@@ -481,6 +487,122 @@ class DefaultController extends Controller
     }
 
     /*
+     * List recently created users
+     */
+    public function listAction($page, $sort)
+    {
+
+        // In private space : no users
+        if (is_null($this->getUser()->getCurrentCommunity())) {
+            throw $this->createNotFoundException('There are no users in your private space');
+        }
+
+        $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
+
+        $totalUsers = $repository->countUsers();
+        $maxPerPage = $this->container->getParameter('listings.number_of_items_per_page');
+
+        if ( ($page-1) * $maxPerPage > $totalUsers) {
+            return $this->redirect($this->generateUrl('u_list_users', array('sort' => $sort)));
+        }
+
+        $users = $repository->findUsers($page, $maxPerPage, $sort);
+
+        $pagination = array( 'page' => $page, 'totalUsers' => $totalUsers);
+        return $this->render('metaUserProfileBundle:Default:list.html.twig', array('users' => $users, 'pagination' => $pagination, 'sort' => $sort ));
+
+    }
+
+    /*
+     * List all skills for X-editable
+     */
+    public function listSkillsAction(Request $request)
+    {
+
+        if ($request->isXmlHttpRequest()){
+
+            $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:Skill');
+            $skills = $repository->findAll();
+
+            $skillsAsArray = array();
+
+            foreach($skills as $skill){
+                $skillsAsArray[] = array('value' => $skill->getSlug(), 'text' => $skill->getName());
+            }
+
+            return new Response(json_encode($skillsAsArray));
+
+        } else {
+
+            throw $this->createNotFoundException();
+
+        }
+
+    }
+
+    /*
+     * Allow to choose for a user
+     */
+    public function chooseAction(Request $request, $targetAsBase64)
+    {
+
+        // In private space : no users
+        if (is_null($this->getUser()->getCurrentCommunity())) {
+            throw $this->createNotFoundException('There are no users in your private space');
+        }
+
+        $target = json_decode(base64_decode($targetAsBase64), true);
+
+        if ($request->isMethod('POST')) {
+
+            $username = $request->request->get('username');
+
+            $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
+            /*
+
+            si je suis membre
+                je dois pouvoir ajouter un user de ma communauté OK
+                + inviter un utilisateur
+            si je suis guest
+                je dois pouvoir inviter seulement
+
+            */
+            $user = $repository->findOneByUsernameInCommunity($username, $this->getUser()->getCurrentCommunity());
+
+            if ($user && !$user->isDeleted() && isset($target['slug']) && isset($target['params']) ){
+
+                $target['params']['username'] = $username;
+                $target['params']['token'] = $request->get('token'); // For CSRF
+                return $this->forward($target['slug'], $target['params']);
+
+            } else {
+
+                throw $this->createNotFoundException('This user does not exist.');
+
+            }
+
+        } else {
+
+            $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
+            $users = $repository->findAllUsersInCommunityExceptMe($this->getUser(), $this->getUser()->getCurrentCommunity());
+
+            if (count($users) == 0 ){
+
+                $this->get('session')->setFlash(
+                        'warning',
+                        'You\'re alone, mate.'
+                    );
+
+                return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $this->getUser()->getUsername())));
+            }
+
+            return $this->render('metaUserProfileBundle:Default:choose.html.twig', array('users' => $users, 'targetAsBase64' => $targetAsBase64, 'token' => $request->get('token')));
+
+        }
+
+    }
+
+    /*
      * Authenticated user follows the request user
      */
     public function followUserAction(Request $request, $username)
@@ -585,99 +707,4 @@ class DefaultController extends Controller
         return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $username)));
     }
 
-    /*
-     * List recently created users
-     */
-    public function listAction($page, $sort)
-    {
-        $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
-
-        $totalUsers = $repository->countUsers();
-        $maxPerPage = $this->container->getParameter('listings.number_of_items_per_page');
-
-        if ( ($page-1) * $maxPerPage > $totalUsers) {
-            return $this->redirect($this->generateUrl('u_list_users', array('sort' => $sort)));
-        }
-
-        $users = $repository->findUsers($page, $maxPerPage, $sort);
-
-        $pagination = array( 'page' => $page, 'totalUsers' => $totalUsers);
-        return $this->render('metaUserProfileBundle:Default:list.html.twig', array('users' => $users, 'pagination' => $pagination, 'sort' => $sort ));
-
-    }
-
-    /*
-     * List all skills for X-editable
-     */
-    public function listSkillsAction(Request $request)
-    {
-
-        if ($request->isXmlHttpRequest()){
-
-            $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:Skill');
-            $skills = $repository->findAll();
-
-            $skillsAsArray = array();
-
-            foreach($skills as $skill){
-                $skillsAsArray[] = array('value' => $skill->getSlug(), 'text' => $skill->getName());
-            }
-
-            return new Response(json_encode($skillsAsArray));
-
-        } else {
-
-            throw $this->createNotFoundException();
-
-        }
-
-    }
-
-    /*
-     * Allow to choose for a user
-     */
-    public function chooseAction(Request $request, $targetAsBase64)
-    {
-
-        $target = json_decode(base64_decode($targetAsBase64), true);
-
-        if ($request->isMethod('POST')) {
-
-            $username = $request->request->get('username');
-
-            $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
-            $user = $repository->findOneByUsername($username);
-
-            if ($user && !$user->isDeleted() && isset($target['slug']) && isset($target['params']) ){
-
-                $target['params']['username'] = $username;
-                $target['params']['token'] = $request->get('token'); // For CSRF
-                return $this->redirect($this->generateUrl($target['slug'], $target['params']));
-
-            } else {
-
-                throw $this->createNotFoundException();
-
-            }
-
-        } else {
-
-            $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
-            $users = $repository->findAllUsersExceptMe($this->getUser()->getId());
-
-            if (count($users) == 0 ){
-
-                $this->get('session')->setFlash(
-                        'warning',
-                        'You\'re alone, mate.'
-                    );
-
-                return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $this->getUser()->getUsername())));
-            }
-
-            return $this->render('metaUserProfileBundle:Default:choose.html.twig', array('users' => $users, 'targetAsBase64' => $targetAsBase64, 'token' => $request->get('token')));
-
-        }
-
-    }
 }

@@ -45,7 +45,7 @@
       </li>
     {% endif %}
   {% endfor %}
-  {% if base.isOwning %}
+  {% if base.isOwning and base.standardProject.community is not null %}
       <li>
         <a href="{{ path('u_choose_user', {'targetAsBase64': targetOwnerAsBase64, 'token': csrf_token('addParticipantOrOwner') }) }}">
           <div class="smallTextAvatar"><i class="icon-plus-sign"></i></div>
@@ -57,7 +57,7 @@
   {% endif %}
   </ul>
 </section>
-{% if base.standardProject.countParticipants > 0 or base.isOwning %}
+{% if (base.standardProject.countParticipants > 0 or base.isOwning) and base.standardProject.community is not null %}
 <section class="colored">
   <div class="sectionTitle">Participants : </div>
   <ul class="users sectionContent">
@@ -74,7 +74,7 @@
       </li>
     {% endif %}
   {% endfor %}
-  {% if base.isOwning %}
+  {% if base.isOwning and base.standardProject.community is not null %}
       <li>
         <a href="{{ path('u_choose_user', {'targetAsBase64': targetParticipantAsBase64, 'token': csrf_token('addParticipantOrOwner') }) }}">
           <div class="smallTextAvatar"><i class="icon-plus-sign"></i></div>

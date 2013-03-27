@@ -19,7 +19,8 @@ class CommentController extends BaseController
 
     public function addStandardProjectCommentAction(Request $request, $slug){
 
-        $this->fetchProjectAndPreComputeRights($slug, false, false);
+        $menu = $this->container->getParameter('standardproject.menu');
+        $this->fetchProjectAndPreComputeRights($slug, false, $menu['timeline']['private']);
 
         if ($this->base != false) {
 
@@ -76,7 +77,8 @@ class CommentController extends BaseController
 
     public function addWikiPageCommentAction(Request $request, $slug, $id){
 
-        $this->fetchProjectAndPreComputeRights($slug, false, false);
+        $menu = $this->container->getParameter('standardproject.menu');
+        $this->fetchProjectAndPreComputeRights($slug, false, $menu['wiki']['private']);
 
         if ($this->base != false) {
 
@@ -143,7 +145,8 @@ class CommentController extends BaseController
 
     public function addCommonListCommentAction(Request $request, $slug, $id){
 
-        $this->fetchProjectAndPreComputeRights($slug, false, false);
+        $menu = $this->container->getParameter('standardproject.menu');
+        $this->fetchProjectAndPreComputeRights($slug, false, $menu['lists']['private']);
 
         if ($this->base != false) {
 

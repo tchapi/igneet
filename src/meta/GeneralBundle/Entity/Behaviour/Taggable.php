@@ -12,7 +12,7 @@ use Doctrine\Common\Collections\ArrayCollection,
  * @ORM\Entity
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="taggable_type", type="string")
- * @ORM\DiscriminatorMap({"wikipage" = "meta\StandardProjectProfileBundle\Entity\WikiPage", "resource" = "meta\StandardProjectProfileBundle\Entity\Resource","meta" = "meta\StandardProjectProfileBundle\Entity\MetaProject","idea" = "meta\IdeaProfileBundle\Entity\Idea","project" = "meta\StandardProjectProfileBundle\Entity\StandardProject","list" = "meta\StandardProjectProfileBundle\Entity\CommonList"})
+ * @ORM\DiscriminatorMap({"wikipage" = "meta\StandardProjectProfileBundle\Entity\WikiPage", "resource" = "meta\StandardProjectProfileBundle\Entity\Resource","idea" = "meta\IdeaProfileBundle\Entity\Idea","project" = "meta\StandardProjectProfileBundle\Entity\StandardProject","list" = "meta\StandardProjectProfileBundle\Entity\CommonList"})
  */
 abstract class Taggable
 {

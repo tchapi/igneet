@@ -17,7 +17,7 @@ class DefaultController extends BaseController
 {
 
     /*  ####################################################
-     *                    PROJECT LIST
+     *  Lists the projects in the community, available for the user
      *  #################################################### */
 
     public function listAction($page, $sort)
@@ -25,28 +25,38 @@ class DefaultController extends BaseController
 
         $repository = $this->getDoctrine()->getRepository('metaStandardProjectProfileBundle:StandardProject');
 
-        $totalProjects = $repository->countProjects();
+        $authenticatedUser = $this->getUser();
+
+        $totalProjects = $repository->countProjectsInCommunityForUser($authenticatedUser->getCurrentCommunity(), $authenticatedUser);
         $maxPerPage = $this->container->getParameter('listings.number_of_items_per_page');
 
         if ( ($page-1) * $maxPerPage > $totalProjects) {
             return $this->redirect($this->generateUrl('sp_list_projects', array('sort' => $sort)));
         }
 
-        $standardProjects = $repository->findStandardProjects($page, $maxPerPage, $sort);
+        $projects = $repository->findProjectsInCommunityForUser($authenticatedUser->getCurrentCommunity(), $authenticatedUser, $page, $maxPerPage, $sort);
 
         $pagination = array( 'page' => $page, 'totalProjects' => $totalProjects);
-        return $this->render('metaStandardProjectProfileBundle:Default:list.html.twig', array('standardProjects' => $standardProjects, 'pagination' => $pagination, 'sort' => $sort));
+        return $this->render('metaStandardProjectProfileBundle:Default:list.html.twig', array('standardProjects' => $projects, 'pagination' => $pagination, 'sort' => $sort));
 
     }
 
+    /*  ####################################################
+     *  Creates a form for a new project AND process result if POST
+     *  #################################################### */
 
-    /*
-     * Create a form for a new project AND process result if POST
-     */
     public function createAction(Request $request)
     {
         
         $authenticatedUser = $this->getUser();
+
+        if ($authenticatedUser->isGuestInCurrentCommunity()){
+            $this->get('session')->setFlash(
+                'error',
+                'You cannot create projects in this community.'
+            );
+            return $this->redirect($this->generateUrl('sp_list_projects'));
+        }
 
         $standardProject = new StandardProject();
         $form = $this->createForm(new StandardProjectType(), $standardProject);
@@ -58,6 +68,12 @@ class DefaultController extends BaseController
             if ($form->isValid()) {
                 
                 $authenticatedUser->addProjectsOwned($standardProject);
+
+                if (!is_null($authenticatedUser->getCurrentCommunity())){
+                    $authenticatedUser->getCurrentCommunity()->addProject($standardProject);
+                } else {
+                    $standardProject->setPrivate(true); // When in private space, we force privacy
+                }
 
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($standardProject);
@@ -89,7 +105,7 @@ class DefaultController extends BaseController
     }
 
     /*  ####################################################
-     *                       PROJECT EDITION 
+     *  Edits the project (via POST)
      *  #################################################### */
 
     public function editAction(Request $request, $slug){
@@ -121,6 +137,29 @@ class DefaultController extends BaseController
                       $this->container->get('markdown.parser')->transformMarkdown($request->request->get('value'))
                     );
                     $objectHasBeenModified = true;
+                    break;
+                case 'community':
+                    if ($this->base['standardProject']->getCommunity() === null){ 
+                        $repository = $this->getDoctrine()->getRepository('metaGeneralBundle:Community\Community');
+                        $community = $repository->findOneById($request->request->get('value'));
+                        
+                        if ($community && $this->getUser()->belongsTo($community)){
+                            $community->addProject($this->base['standardProject']);
+                            $this->getUser()->setCurrentCommunity($community);
+
+                            $this->get('session')->setFlash(
+                                'success',
+                                'This project is now part of the community ' . $community->getName() . '.'
+                            );
+                            $this->get('session')->setFlash(
+                                'info',
+                                'You have automatically been switched to the community ' . $community->getName() . '.'
+                            );
+
+                            $objectHasBeenModified = true;
+                            $needsRedirect = true;
+                        }
+                    }
                     break;
                 case 'picture':
                     $preparedFilename = trim(__DIR__.'/../../../../web'.$request->request->get('value'));
@@ -205,6 +244,10 @@ class DefaultController extends BaseController
 
     }
 
+    /*  ####################################################
+     *  Deletes a project
+     *  #################################################### */
+
     public function deleteAction(Request $request, $slug){
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('delete', $request->get('token')))
@@ -237,9 +280,11 @@ class DefaultController extends BaseController
 
     }
 
-    /*
-     * Reset picture of project
-     */
+    
+    /*  ####################################################
+     *  Resets the picture for a project
+     *  #################################################### */
+
     public function resetPictureAction(Request $request, $slug)
     {
 
@@ -271,9 +316,48 @@ class DefaultController extends BaseController
 
     }
 
-    /*
-     * Choose a slug
-     */
+    
+    /*  ####################################################
+     *  Make a project public (only if this project is in a community)
+     *  #################################################### */
+
+    public function makePublicAction(Request $request, $slug)
+    {
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('makePublic', $request->get('token')))
+            return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $slug)));
+
+        $this->fetchProjectAndPreComputeRights($slug, true, false);
+
+        if ($this->base != false && $this->base['standardProject']->getCommunity() !== null) {
+            // A project in the private space cannot be public
+
+            $this->base['standardProject']->setPrivate(false);
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+
+            $this->get('session')->setFlash(
+                        'success',
+                        'This project is now public.'
+                    );
+
+        } else {
+    
+            $this->get('session')->setFlash(
+                    'error',
+                    'You cannot make this project public.'
+                );
+        }
+
+        return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $slug)));
+
+    }
+
+    
+    /*  ####################################################
+     *  Allows to choose a slug and validates it is not already existing. 
+     *  Generally forwards to editAction
+     *  #################################################### */
+
     public function chooseSlugAction(Request $request, $targetAsBase64)
     {
 
@@ -292,7 +376,7 @@ class DefaultController extends BaseController
 
                     $this->get('session')->setFlash(
                         'error',
-                        'This project (and its slug) already exists. Try to choose a different slug.'
+                        'This slug cannot be chosen at this time. Try to choose a different slug.'
                     );
 
                 } else {
@@ -318,11 +402,14 @@ class DefaultController extends BaseController
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('watch', $request->get('token')))
             return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $slug)));
 
-        $authenticatedUser = $this->getUser();
+        $menu = $this->container->getParameter('standardproject.menu');
+        $this->fetchProjectAndPreComputeRights($slug, false, $menu['info']['private']);
 
-        // The actually authenticated user now watches the project with $slug
-        if ($authenticatedUser) {
+        if ($this->base != false) {
 
+            $authenticatedUser = $this->getUser();
+
+            // The actually authenticated user now watches the project with $slug
             $repository = $this->getDoctrine()->getRepository('metaStandardProjectProfileBundle:StandardProject');
             $standardProject = $repository->findOneBySlug($slug);
 
@@ -350,6 +437,12 @@ class DefaultController extends BaseController
 
             }
 
+        } else {
+
+            $this->get('session')->setFlash(
+                'warning',
+                'You cannot watch this project.'
+            );
         }
 
         return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $slug)));
@@ -360,11 +453,14 @@ class DefaultController extends BaseController
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('unwatch', $request->get('token')))
             return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $slug)));
 
-        $authenticatedUser = $this->getUser();
+        $menu = $this->container->getParameter('standardproject.menu');
+        $this->fetchProjectAndPreComputeRights($slug, false, $menu['info']['private']);
 
-        // The actually authenticated user now follows $user if they are not the same
-        if ($authenticatedUser) {
+        if ($this->base != false) {
 
+            $authenticatedUser = $this->getUser();
+
+            // The actually authenticated user now follows $user if they are not the same
             $repository = $this->getDoctrine()->getRepository('metaStandardProjectProfileBundle:StandardProject');
             $standardProject = $repository->findOneBySlug($slug);
 
@@ -389,6 +485,12 @@ class DefaultController extends BaseController
 
             }
 
+        } else {
+
+            $this->get('session')->setFlash(
+                'warning',
+                'You cannot watch this project.'
+            );
         }
 
         return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $slug)));

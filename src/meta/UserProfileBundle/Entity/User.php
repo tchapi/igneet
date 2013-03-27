@@ -279,6 +279,26 @@ class User implements AdvancedUserInterface
      **/
     private $logEntries;
 
+    /**
+     * Communities this user is in
+     * @ORM\ManyToMany(targetEntity="meta\GeneralBundle\Entity\Community\Community", inversedBy="users")
+     * @ORM\JoinTable(name="User_belongsTo_Community")
+     **/
+    private $communities;
+
+    /**
+     * Communities this user has access due to projects he's part of
+     * @ORM\ManyToMany(targetEntity="meta\GeneralBundle\Entity\Community\Community", inversedBy="guests")
+     * @ORM\JoinTable(name="User_isGuestIn_Community")
+     **/
+    private $restrictedCommunities;
+
+    /**
+     * Current Community this user is in
+     * @ORM\ManyToOne(targetEntity="meta\GeneralBundle\Entity\Community\Community")
+     **/
+    private $current_community;
+
     public function __construct() {
         
         /* Links to Skills */
@@ -303,6 +323,10 @@ class User implements AdvancedUserInterface
 
         $this->createdTokens = new ArrayCollection();
 
+        $this->communities = new ArrayCollection();
+        $this->restrictedCommunities = new ArrayCollection();
+        $current_community = null;
+        
         /* init */
         $this->salt = md5(uniqid(null, true));
         $this->roles = array('ROLE_USER');
@@ -1629,4 +1653,129 @@ class User implements AdvancedUserInterface
         return $this;
     }
 
+
+    /**
+     * Add community
+     * BINDING LOGIC IS DONE IN 'COMMUNITY' CLASS 
+     * @param \meta\GeneralBundle\Entity\Community\Community $community
+     * @return User
+     */
+    public function addCommunitie(\meta\GeneralBundle\Entity\Community\Community $community)
+    {
+        $this->communities[] = $community;
+    
+        return $this;
+    }
+
+    /**
+     * Remove community
+     * BINDING LOGIC IS DONE IN 'COMMUNITY' CLASS 
+     * @param \meta\GeneralBundle\Entity\Community\Community $community
+     */
+    public function removeCommunitie(\meta\GeneralBundle\Entity\Community\Community $community)
+    {
+        $this->communities->removeElement($community);
+    }
+
+    /**
+     * Get communities
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCommunities()
+    {
+        return $this->communities;
+    }
+
+
+    /**
+     * Add restricted community
+     * BINDING LOGIC IS DONE IN 'COMMUNITY' CLASS 
+     * @param \meta\GeneralBundle\Entity\Community\Community $community
+     * @return User
+     */
+    public function addRestrictedCommunitie(\meta\GeneralBundle\Entity\Community\Community $community)
+    {
+        $this->restrictedCommunities[] = $community;
+    
+        return $this;
+    }
+
+    /**
+     * Remove restricted community
+     * BINDING LOGIC IS DONE IN 'COMMUNITY' CLASS 
+     * @param \meta\GeneralBundle\Entity\Community\Community $community
+     */
+    public function removeRestrictedCommunitie(\meta\GeneralBundle\Entity\Community\Community $community)
+    {
+        $this->restrictedCommunities->removeElement($community);
+    }
+
+    /**
+     * Get restricted communities
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getRestrictedCommunities()
+    {
+        return $this->restrictedCommunities;
+    }
+
+    /**
+     * User belongs to a community
+     *
+     * @return boolean
+     */
+    public function belongsTo(\meta\GeneralBundle\Entity\Community\Community $community)
+    {
+        return $this->communities->contains($community);
+    }
+
+    /**
+     * User belongs to a restricted community
+     *
+     * @return boolean
+     */
+    public function isGuestOf(\meta\GeneralBundle\Entity\Community\Community $community)
+    {
+        return $this->restrictedCommunities->contains($community);
+    }
+
+    /**
+     * User belongs to a restricted community
+     *
+     * @return boolean
+     */
+    public function isGuestInCurrentCommunity()
+    {
+        if (is_null($this->current_community)){
+            // Private space
+            return false;
+        }
+
+        return $this->isGuestOf($this->current_community);
+    }
+
+    /**
+     * Set current_community
+     *
+     * @param \meta\GeneralBundle\Entity\Community\Community $currentCommunity
+     * @return User
+     */
+    public function setCurrentCommunity(\meta\GeneralBundle\Entity\Community\Community $currentCommunity = null)
+    {
+        $this->current_community = $currentCommunity;
+    
+        return $this;
+    }
+
+    /**
+     * Get current_community
+     *
+     * @return \meta\GeneralBundle\Entity\Community\Community 
+     */
+    public function getCurrentCommunity()
+    {
+        return $this->current_community;
+    }
 }

@@ -7,12 +7,68 @@ Sprint 1
 [OK] Supprimer un de ses commentaires (mais garder une trace : 'This comment has been deleted')
 Sprint 2
 [OK] Ordre de tri des Listes d'Objets (created / updated / community strongest)
+
 Filtres Timeline
+ checkbox "show my activity" pas cochée par défaut
+ select2 avec filtre JS : (rajouter un "filter_groups: [wiki, updates, ...]" dans log_types)
+  comments
+  wiki
+  lists
+  resources
+  general information
+  community
+  -----
+  creations
+  updates
+  deletions
+rajouter des objets qui décrivent ces groupes
+
 Sprint 3
 Améliorer le clustering de la timeline
 Pagination de la timeline
 Sprint 4
 Implémenter le password recovery
+
+Dashboard rajouter 3 derniers idees, 3 derniers projets dans la communauté
+
+possibilité de changer email dans le profil pour les users
+
+Community :
+
+un mec n'a pas le droit de créer une communauté pour l'instant
+
+IDEES gestion des users dans le private space : ne pas avoir d'user !
+ ✔ - idées / créateurs @done (13-03-25 22:41)
+ ✔ - ajouter un owner/ participant : non @done (13-03-25 23:02)
+ ✔ - création d'une idée : ne pas pouvoir définir d'autres createurs @done (13-03-25 22:42)
+
+PROJECT gestion des users dans le private space : ne pas avoir d'user !
+ ✔ - ajouter un owner/ participant : non @done (13-03-25 23:14)
+
+ ✔ statut d'invité dans une communauté ok @done (13-03-25 23:15)
+
+ ✔ marquer le nom de la communauté dans les listes (accessible in "meta" ..) @done (13-03-26 22:09)
+
+ invites / choose people
+ ✔ private = private || (public && user->isGuest()) sauf. user->isParticipatingIn() ou user->isOwner() @done (13-03-26 22:09)
+
+ ☐ inviter par email a un projet
+  ☐ - gerer les cas ou le mec est deja sur igneet / est deja guest
+  ☐ - input : username if you know it or email
+  str_contains('@') => email
+ ☐ Attention : pour une idée ne pas permettre d'inviter en dehors de la communauté
+
+ ☐ profil utilisateur (des autres) : ne pas afficher les projets privés (ou avec user guest dans la communauté) ou les idées des communautés ou je suis guest
+ ☐ Attention dans la liste des users, il y a des projets listés !!!! enlever si guest ??
+ ☐ mon profil : contextuel a ma communauté (au niveau des infos en dessous : mes projets mes idées tout ca)
+
+ ☐ follow de gens pas dans ma communauté : impossible
+
+ ✔ voir les profils users dans le private space : non ! @done (13-03-26 22:09)
+ ✔ projet / idées dans mon private space : je suis seul créateur / owner (??) @done (13-03-25 22:41)
+
+ ☐ page réactivation de compte quand il a été supprimé
+ ☐ page lost password
 
 Todo - General / Users :
 
@@ -165,6 +221,7 @@ Todo - Search:
 Site statique:
 
  ☐ Page credits avec les attributions des icones, librairies JS, etc
+ ☐ Page Licence CC avec explication que tous les contenus sont soumis au copyright etc ...
 
  ✔ Copie du README.md @done (13-02-12 22:53)
 

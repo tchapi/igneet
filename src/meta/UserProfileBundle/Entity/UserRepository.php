@@ -56,16 +56,43 @@ class UserRepository extends EntityRepository
 
   }
 
-  public function findAllUsersExceptMe($userId)
+  public function findOneByUsernameInCommunity($username, $community)
+  {
+
+    $qb = $this->getEntityManager()->createQueryBuilder();
+
+    $query = $qb->select('u')
+            ->from('metaUserProfileBundle:User', 'u')
+            ->join('u.communities', 'c')
+            ->where('u.deleted_at IS NULL')
+            ->andWhere('u.username = :username')
+            ->setParameter('username', $username)
+            ->andWhere('c = :community')
+            ->setParameter('community', $community)
+            ->getQuery();
+
+    try {
+        $result = $query->getSingleResult();
+    } catch (\Doctrine\Orm\NoResultException $e) {
+        $result = null;
+    }
+
+    return $result;
+  }
+
+  public function findAllUsersInCommunityExceptMe($user, $community)
   {
     
     $qb = $this->getEntityManager()->createQueryBuilder();
 
     return $qb->select('u')
             ->from('metaUserProfileBundle:User', 'u')
+            ->join('u.communities', 'c')
             ->where('u.deleted_at IS NULL')
-            ->andWhere('u.id <> :userId')
-            ->setParameter('userId', $userId)
+            ->andWhere('u <> :user')
+            ->setParameter('user', $user)
+            ->andWhere('c = :community')
+            ->setParameter('community', $community)
             ->getQuery()
             ->getResult();
 

@@ -11,22 +11,34 @@ use Doctrine\ORM\EntityRepository;
 class IdeaRepository extends EntityRepository
 {
 
-  public function countIdeas($archived = false)
+  public function countIdeasInCommunityForUser($community, $user, $archived = false)
   {
 
     $modifier = $archived?'NOT ':'';
     $qb = $this->getEntityManager()->createQueryBuilder();
 
-    return $qb->select('COUNT(i)')
+    $query = $qb->select('COUNT(i)')
             ->from('metaIdeaProfileBundle:Idea', 'i')
             ->where('i.archived_at IS ' . $modifier . 'NULL')
-            ->andWhere('i.deleted_at IS NULL')
-            ->getQuery()
-            ->getSingleScalarResult();
+            ->andWhere('i.deleted_at IS NULL');
+
+    if ($community === null){
+      $query->join('i.creators', 'u')
+            ->leftJoin('i.participants', 'u2')
+            ->andWhere('i.community IS NULL')
+            ->andWhere('u.id = :id OR u2.id = :id')
+            ->setParameter('id', $user->getId());
+    } else {
+      $query->andWhere('i.community = :community')
+            ->setParameter('community', $community);
+    }
+
+    return $query->getQuery()
+                 ->getSingleScalarResult();
 
   }
 
-  public function findIdeas($page, $maxPerPage, $sort, $archived = false)
+  public function findIdeasInCommunityForUser($community, $user, $page, $maxPerPage, $sort, $archived = false)
   {
     
     $modifier = $archived?'NOT ':'';
@@ -35,6 +47,17 @@ class IdeaRepository extends EntityRepository
             ->from('metaIdeaProfileBundle:Idea', 'i')
             ->where('i.archived_at IS ' . $modifier . 'NULL')
             ->andWhere('i.deleted_at IS NULL');
+
+    if ($community === null){
+      $query->join('i.creators', 'u')
+            ->leftJoin('i.participants', 'u2')
+            ->andWhere('i.community IS NULL')
+            ->andWhere('u.id = :id OR u2.id = :id')
+            ->setParameter('id', $user->getId());
+    } else {
+      $query->andWhere('i.community = :community')
+            ->setParameter('community', $community);
+    }
 
     switch ($sort) {
       case 'newest':
@@ -56,21 +79,29 @@ class IdeaRepository extends EntityRepository
             ->getResult();
   }
 
-  public function findTopIdeasForUser($userId, $max = 3, $archived = false)
+  public function findTopIdeasInCommunityForUser($community, $userId, $max = 3, $archived = false)
   {
     
     $modifier = $archived?'NOT ':'';
     $qb = $this->getEntityManager()->createQueryBuilder();
 
-    return $qb->select('i, MAX(l.created_at) as last_update')
+    $query = $qb->select('i, MAX(l.created_at) as last_update')
             ->from('metaIdeaProfileBundle:Idea', 'i')
             ->join('i.logEntries', 'l')
             ->join('i.creators', 'u')
             ->where('i.archived_at IS ' . $modifier . 'NULL')
             ->andWhere('u.id = :userId')
             ->andWhere('i.deleted_at IS NULL')
-            ->setParameter('userId', $userId)
-            ->groupBy('i.id')
+            ->setParameter('userId', $userId);
+
+    if ($community === null){
+      $query->andWhere('i.community IS NULL');
+    } else {
+      $query->andWhere('i.community = :community')
+            ->setParameter('community', $community);
+    }
+    
+    return $query->groupBy('i.id')
             ->orderBy('last_update', 'DESC')
             ->setMaxResults($max)
             ->getQuery()

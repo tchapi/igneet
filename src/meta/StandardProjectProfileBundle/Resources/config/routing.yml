@@ -1,23 +1,3 @@
-# META PROJECTS
-# TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
-mp_list_meta:
-    pattern:  /metas
-    defaults: { _controller: metaStandardProjectProfileBundle:Default:list, max: 10 }
-
-mp_new_meta:
-    pattern:  /metas/new
-    defaults: { _controller: metaStandardProjectProfileBundle:Default:create}
-
-mp_show_meta:
-    pattern:  /meta/{slug}
-    defaults: { _controller: metaStandardProjectProfileBundle:Info:showInfo}
-
-mp_edit_meta:
-    pattern:  /meta/{slug}/edit
-    defaults: { _controller: metaStandardProjectProfileBundle:Info:edit }
-    requirements:
-        _method:  POST
-
 # STANDARD PROJECTS
 sp_list_projects:
     pattern:  /projects/{page}/{sort}
@@ -51,6 +31,10 @@ sp_delete_project:
 sp_choose_slug:
     pattern:  /project/slug/{targetAsBase64}
     defaults: { _controller: metaStandardProjectProfileBundle:Default:chooseSlug}
+
+sp_make_public:
+    pattern:  /project/publicize/{slug}
+    defaults: { _controller: metaStandardProjectProfileBundle:Default:makePublic}
 
 # COMMENTS
 sp_show_project_comment:

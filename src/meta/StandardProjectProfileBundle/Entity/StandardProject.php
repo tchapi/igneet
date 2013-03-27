@@ -16,7 +16,6 @@ use meta\GeneralBundle\Entity\Behaviour\Taggable;
  * @ORM\Entity(repositoryClass="meta\StandardProjectProfileBundle\Entity\StandardProjectRepository")
  * @ORM\HasLifecycleCallbacks
  * @UniqueEntity("slug")
- * @ORM\MappedSuperclass
  */
 class StandardProject extends Taggable
 {
@@ -53,6 +52,13 @@ class StandardProject extends Taggable
      * @ORM\Column(name="headline", type="string", length=255, nullable=true)
      */
     private $headline;
+
+    /**
+     * @var boolean $private
+     *
+     * @ORM\Column(name="private", type="boolean", nullable=true)
+     */
+    private $private;
 
     /** Original Idea
      * @ORM\ManyToOne(targetEntity="meta\IdeaProfileBundle\Entity\Idea", inversedBy="resultingProject")
@@ -133,10 +139,10 @@ class StandardProject extends Taggable
     private $watchers;
 
     /**
-     * Meta this project is linked to
-     * @ORM\ManyToOne(targetEntity="MetaProject", inversedBy="projects")
+     * Community this project is linked to
+     * @ORM\ManyToOne(targetEntity="meta\GeneralBundle\Entity\Community\Community", inversedBy="projects")
      **/
-    private $meta;
+    private $community;
 
     /**
      * Comments on this project (OWNING SIDE)
@@ -186,6 +192,9 @@ class StandardProject extends Taggable
 
         $this->commonLists = new ArrayCollection();
         $this->resources = new ArrayCollection();
+
+        $this->community = null; // This project does not belong to any community
+        $this->private = false;
 
     }
 
@@ -960,25 +969,58 @@ class StandardProject extends Taggable
     /* --------------------------------------------------------------------------------------------------------- */
 
     /**
-     * Set meta
-     *
-     * @param \meta\StandardProjectProfileBundle\Entity\MetaProject $meta
+     * Set community
+     * BINDING LOGIC IS DONE IN 'COMMUNITY' CLASS 
+     * @param \meta\GeneralBundle\Entity\Community\Community $community
      * @return StandardProject
      */
-    public function setMeta(\meta\StandardProjectProfileBundle\Entity\MetaProject $meta = null)
+    public function setCommunity(\meta\GeneralBundle\Entity\Community\Community $community = null)
     {
-        $this->meta = $meta;
+        $this->community = $community;
     
         return $this;
     }
 
     /**
-     * Get meta
-     *
-     * @return \meta\StandardProjectProfileBundle\Entity\MetaProject 
+     * Get community
+     * BINDING LOGIC IS DONE IN 'COMMUNITY' CLASS 
+     * @return \meta\GeneralBundle\Entity\Community\Community 
      */
-    public function getMeta()
+    public function getCommunity()
     {
-        return $this->meta;
+        return $this->community;
+    }
+
+    /**
+     * Set private
+     *
+     * @param boolean $private
+     * @return StandardProject
+     */
+    public function setPrivate($private)
+    {
+        $this->private = $private;
+    
+        return $this;
+    }
+
+    /**
+     * Get private
+     *
+     * @return boolean 
+     */
+    public function getPrivate()
+    {
+        return $this->private;
+    }
+
+    /**
+     * Is private
+     *
+     * @return boolean 
+     */
+    public function isPrivate()
+    {
+        return $this->private;
     }
 }

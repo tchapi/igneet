@@ -15,18 +15,21 @@ class InfoController extends BaseController
 
     public function showInfoAction($slug)
     {
-        $this->fetchProjectAndPreComputeRights($slug, false, false);
+        $menu = $this->container->getParameter('standardproject.menu');
+        $this->fetchProjectAndPreComputeRights($slug, false, $menu['info']['private']);
 
         if ($this->base == false) 
           return $this->forward('metaStandardProjectProfileBundle:Default:showRestricted', array('slug' => $slug));
 
-        $targetOwnerAsBase64 = array ('slug' => 'sp_add_owner_to_project', 'params' => array('slug' => $slug, 'owner' => true));
-        $targetParticipantAsBase64 = array ('slug' => 'sp_add_participant_to_project', 'params' => array('slug' => $slug, 'owner' => false));
+        $targetOwnerAsBase64 = array('slug' => 'metaStandardProjectProfileBundle:Info:addParticipantOrOwner', 'params' => array('slug' => $slug, 'owner' => true));
+        $targetParticipantAsBase64 = array('slug' => 'metaStandardProjectProfileBundle:Info:addParticipantOrOwner', 'params' => array('slug' => $slug, 'owner' => false));
+        $targetProposeToCommunityAsBase64 = array('slug' => 'metaStandardProjectProfileBundle:Default:edit', 'params' => array('slug' => $slug));
 
         return $this->render('metaStandardProjectProfileBundle:Info:showInfo.html.twig', 
             array('base' => $this->base, 
                   'targetOwnerAsBase64' => base64_encode(json_encode($targetOwnerAsBase64)), 
-                  'targetParticipantAsBase64' => base64_encode(json_encode($targetParticipantAsBase64)) ));
+                  'targetParticipantAsBase64' => base64_encode(json_encode($targetParticipantAsBase64)),
+                  'targetProposeToCommunityAsBase64' => base64_encode(json_encode($targetProposeToCommunityAsBase64)) ));
     }
 
     /*  ####################################################
@@ -41,16 +44,24 @@ class InfoController extends BaseController
 
         $this->fetchProjectAndPreComputeRights($slug, true, false);
 
-        if ($this->base != false) {
+        if ($this->base != false && !is_null($this->base['standardProject']->getCommunity())) {
 
             $userRepository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
             $newParticipantOrOwner = $userRepository->findOneByUsername($username);
 
-            if ($newParticipantOrOwner && (( !($newParticipantOrOwner->isOwning($this->base['standardProject'])) && $owner === true) || ( !($newParticipantOrOwner->isParticipatingIn($this->base['standardProject'])) && $owner !== true && $newParticipantOrOwner !== $owner ))) {
+            if ($newParticipantOrOwner &&
+                !($newParticipantOrOwner->isOwning($this->base['standardProject'])) &&
+                ( !($newParticipantOrOwner->isParticipatingIn($this->base['standardProject'])) || $owner === true )
+               ) {
 
                 if ($owner === true){
 
                   $newParticipantOrOwner->addProjectsOwned($this->base['standardProject']);
+
+                  if ($newParticipantOrOwner->isParticipatingIn($this->base['standardProject'])){
+                    // We must remove its participation since it is now owner
+                    $newParticipantOrOwner->removeProjectsParticipatedIn($this->base['standardProject']);
+                  }
 
                   $logService = $this->container->get('logService');
                   $logService->log($newParticipantOrOwner, 'user_is_made_owner_project', $this->base['standardProject'], array( 'other_user' => array( 'routing' => 'user', 'logName' => $this->getUser()->getLogName(), 'args' => $this->getUser()->getLogArgs()) ));
@@ -80,7 +91,7 @@ class InfoController extends BaseController
             } else {
 
                 $this->get('session')->setFlash(
-                    'error',
+                    'warning',
                     'This user does not exist or is already part of this project.'
                 );
             }
@@ -106,7 +117,7 @@ class InfoController extends BaseController
 
         $this->fetchProjectAndPreComputeRights($slug, true, false);
 
-        if ($this->base != false) {
+        if ($this->base != false && !is_null($this->base['standardProject']->getCommunity())) {
 
             $userRepository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
             $toRemoveParticipantOrOwner = $userRepository->findOneByUsername($username);
@@ -159,7 +170,7 @@ class InfoController extends BaseController
 
             $this->get('session')->setFlash(
                 'error',
-                'You are not an owner of the project "'.$this->base['standardProject']->getName().'".'
+                'You are not allowed to add a participant or owner in this project.'
             );
 
         }

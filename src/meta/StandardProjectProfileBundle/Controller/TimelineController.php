@@ -15,7 +15,8 @@ class TimelineController extends BaseController
 
     public function showTimelineAction($slug, $page)
     {
-        $this->fetchProjectAndPreComputeRights($slug, false, false);
+        $menu = $this->container->getParameter('standardproject.menu');
+        $this->fetchProjectAndPreComputeRights($slug, false, $menu['timeline']['private']);
 
         if ($this->base == false) 
           return $this->forward('metaStandardProjectProfileBundle:Base:showRestricted', array('slug' => $slug));
@@ -24,9 +25,11 @@ class TimelineController extends BaseController
             array('base' => $this->base));
     }
 
-    public function historyAction($slug, $page){
+    public function historyAction($slug, $page)
+    {
 
-        $this->fetchProjectAndPreComputeRights($slug, false, false);
+        $menu = $this->container->getParameter('standardproject.menu');
+        $this->fetchProjectAndPreComputeRights($slug, false, $menu['timeline']['private']);
 
         if ($this->base == false) 
           return $this->forward('metaStandardProjectProfileBundle:Base:showRestricted', array('slug' => $slug));

@@ -22,7 +22,8 @@ class WikiController extends BaseController
 
     public function showWikiHomeAction($slug)
     {
-        $this->fetchProjectAndPreComputeRights($slug, false, false);
+        $menu = $this->container->getParameter('standardproject.menu');
+        $this->fetchProjectAndPreComputeRights($slug, false, $menu['wiki']['private']);
 
         if ($this->base == false) 
           return $this->forward('metaStandardProjectProfileBundle:Base:showRestricted', array('slug' => $slug));
@@ -63,7 +64,8 @@ class WikiController extends BaseController
 
     public function showWikiPageAction($slug, $id, $pageSlug)
     {
-        $this->fetchProjectAndPreComputeRights($slug, false, false);
+        $menu = $this->container->getParameter('standardproject.menu');
+        $this->fetchProjectAndPreComputeRights($slug, false, $menu['wiki']['private']);
 
         if ($this->base == false) 
           return $this->forward('metaStandardProjectProfileBundle:Base:showRestricted', array('slug' => $slug));

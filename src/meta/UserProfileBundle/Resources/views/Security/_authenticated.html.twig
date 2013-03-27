@@ -1,17 +1,26 @@
 <ul class="nav">
-  <li class="active"><a href="#">Home</a></li>
+  <li class="active"><a href="#">Home ({% if user.currentCommunity is null %}Private{% else %}{{ user.currentCommunity.name }}{% if user.isGuestInCurrentCommunity() %} <i class="icon-lock"></i>{% endif %}{% endif %})</a></li>
   <li><a href="{{ path('sp_list_projects') }}">All Projects</a></li>
+  {% if not user.isGuestInCurrentCommunity() %}
   <li><a href="{{ path('i_list_ideas') }}">All Ideas</a></li>
+  {% endif %}
+  {% if user.currentCommunity is not null %}
   <li><a href="{{ path('u_list_users') }}">All Users</a></li>
+  {% endif %}
 </ul>
 <div class="pull-right">
   <ul class="nav pull-right">
       <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-          <i class='icon-circle'></i>
+          <i class="icon-comments icon-large"></i> <span class="badge badge-important">6</span>
         </a>
         <ul class="dropdown-menu">
-            <li><a>Notifications [WIP]</a></li>
+            <li><a><icon class="icon-remove-circle"></i> Clear all</a></li>
+            <li class="divider"></li>
+            <li><a>Notification 1</a></li>
+            <li><a>Notification 2</a></li>
+            <li><a>Notification 3</a></li>
+            <li><a>Notification 4</a></li>
         </ul>
       </li>
   </ul>
@@ -24,9 +33,21 @@
         </a>
         <ul class="dropdown-menu">
             <li><a href="{{ path('u_me') }}"><i class="icon-user"></i> My profile</a></li>
-            <li><a href="{{ path('u_show_user_dashboard') }}"><i class="icon-dashboard"></i> My dashboard</a></li>
+            {% if user.currentCommunity is not null and not user.isGuestInCurrentCommunity() %}
+            <li><a href="{{ path('u_show_user_dashboard') }}"><i class="icon-dashboard"></i> My dashboard</a>
+            {% endif %}
+            </li><li class="divider"></li>
+            <li><a href="{{ path('g_switch_private_space', {'token': csrf_token('switchCommunity') }) }}"><i class="icon-{% if user.currentCommunity is null %}ok{% endif %}"></i> My Private Space</a></li>
+            {% for community in user.communities %}
+              <li><a href="{{ path('g_switch_community', { 'id': community.id, 'token': csrf_token('switchCommunity') } ) }}"><i class="icon-{% if user.currentCommunity == community %}ok{% endif %}"></i> {{ community.name }}</a></li>
+            {% endfor %}
+            {% for community in user.restrictedCommunities %}
+              <li><a href="{{ path('g_switch_community', { 'id': community.id, 'token': csrf_token('switchCommunity') } ) }}"><i class="icon-{% if user.currentCommunity == community %}ok{% endif %}"></i> {{ community.name }} <i class="icon-lock"></i></a></li>
+            {% endfor %}
+            {% if user.currentCommunity is not null and not user.isGuestInCurrentCommunity() %}
             <li class="divider"></li>
             <li><a href="{{ path('invite') }}"><i class="icon-envelope"></i> Invite Someone</a></li>
+            {% endif %}
             <li class="divider"></li>
             <li><a href="{{ path('logout') }}"><i class="icon-off"></i> Logout</a></li>
         </ul>

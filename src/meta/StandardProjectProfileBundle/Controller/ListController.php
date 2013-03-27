@@ -22,7 +22,8 @@ class ListController extends BaseController
 
     public function showCommonListHomeAction($slug)
     {
-        $this->fetchProjectAndPreComputeRights($slug, false, false);
+        $menu = $this->container->getParameter('standardproject.menu');
+        $this->fetchProjectAndPreComputeRights($slug, false, $menu['lists']['private']);
 
         if ($this->base == false) 
           return $this->forward('metaStandardProjectProfileBundle:Base:showRestricted', array('slug' => $slug));
@@ -46,7 +47,8 @@ class ListController extends BaseController
 
     public function showCommonListAction($slug, $id, $commonListSlug)
     {
-        $this->fetchProjectAndPreComputeRights($slug, false, false);
+        $menu = $this->container->getParameter('standardproject.menu');
+        $this->fetchProjectAndPreComputeRights($slug, false, $menu['lists']['private']);
 
         if ($this->base == false) 
           return $this->forward('metaStandardProjectProfileBundle:Base:showRestricted', array('slug' => $slug));

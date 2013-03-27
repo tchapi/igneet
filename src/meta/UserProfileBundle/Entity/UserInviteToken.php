@@ -59,6 +59,13 @@ class UserInviteToken
     private $used_at;
 
     /**
+     *  The community
+     *
+     * @ORM\ManyToOne(targetEntity="meta\GeneralBundle\Entity\Community\Community")
+     */
+    private $community;
+
+    /**
      *  The referal user (the one who invites)
      *
      * @ORM\ManyToOne(targetEntity="User", inversedBy="createdTokens")
@@ -81,6 +88,10 @@ class UserInviteToken
         $this->email = $mail;
         $this->setReferalUser($referalUser);
 
+        if (!is_null($referalUser)){
+           $this->community = $referalUser->getCurrentCommunity();
+        }
+        
         $this->token = md5(uniqid(null, true));
 
     }
@@ -245,5 +256,28 @@ class UserInviteToken
     public function getReferalUser()
     {
         return $this->referalUser;
+    }
+
+    /**
+     * Set community
+     *
+     * @param \meta\GeneralBundle\Entity\Community $community
+     * @return UserInviteToken
+     */
+    public function setCommunity(\meta\GeneralBundle\Entity\Community $community = null)
+    {
+        $this->community = $community;
+    
+        return $this;
+    }
+
+    /**
+     * Get community
+     *
+     * @return \meta\GeneralBundle\Entity\Community 
+     */
+    public function getCommunity()
+    {
+        return $this->community;
     }
 }

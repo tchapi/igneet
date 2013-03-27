@@ -60,7 +60,8 @@ class ResourceController extends BaseController
 
     public function listResourcesAction(Request $request, $slug, $page)
     {
-        $this->fetchProjectAndPreComputeRights($slug, false, false);
+        $menu = $this->container->getParameter('standardproject.menu');
+        $this->fetchProjectAndPreComputeRights($slug, false, $menu['resources']['private']);
 
         if ($this->base == false) 
           return $this->forward('metaStandardProjectProfileBundle:Base:showRestricted', array('slug' => $slug));
@@ -119,7 +120,8 @@ class ResourceController extends BaseController
 
     public function showResourceAction($slug, $id)
     {
-        $this->fetchProjectAndPreComputeRights($slug, false, false);
+        $menu = $this->container->getParameter('standardproject.menu');
+        $this->fetchProjectAndPreComputeRights($slug, false, $menu['resources']['private']);
 
         if ($this->base == false) 
           return $this->forward('metaStandardProjectProfileBundle:Base:showRestricted', array('slug' => $slug));
@@ -305,8 +307,8 @@ class ResourceController extends BaseController
 
     public function downloadResourceAction(Request $request, $slug, $id)
     {
-  
-        $this->fetchProjectAndPreComputeRights($slug, false, false);
+        $menu = $this->container->getParameter('standardproject.menu');
+        $this->fetchProjectAndPreComputeRights($slug, false, $menu['resources']['private']);
 
         if ($this->base != false) {
 
