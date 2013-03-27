@@ -28,13 +28,17 @@ class DefaultController extends Controller
         $authenticatedUser = $this->getUser();
 
         // No users in private space
-        if (is_null($authenticatedUser->getCurrentCommunity())){
+        if (is_null($authenticatedUser->getCurrentCommunity()) && $username !== $authenticatedUser->getUsername()){
             throw $this->createNotFoundException('This user does not exist');
         }
 
-        $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
-        $user = $repository->findOneByUsernameInCommunity($username, $authenticatedUser->getCurrentCommunity());
-
+        if ($username !== $authenticatedUser->getUsername()){
+            $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
+            $user = $repository->findOneByUsernameInCommunity($username, $authenticatedUser->getCurrentCommunity());
+        } else {
+            $user = $authenticatedUser;
+        }
+        
         // If user is deleted or doesn't exist
         if (!$user || $user->isDeleted()) {
             throw $this->createNotFoundException('This user does not exist');
