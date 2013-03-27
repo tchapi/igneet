@@ -83,7 +83,7 @@ class DefaultController extends Controller
             return $this->redirect($this->generateUrl('u_list_users', array('sort' => $sort)));
         }
 
-        $users = $repository->findUsersInCommunity($community, $page, $maxPerPage, $sort);
+        $users = $repository->findAllUsersInCommunity($community, $page, $maxPerPage, $sort);
 
         $pagination = array( 'page' => $page, 'totalUsers' => $totalUsers);
         return $this->render('metaUserProfileBundle:Default:list.html.twig', array('users' => $users, 'pagination' => $pagination, 'sort' => $sort ));

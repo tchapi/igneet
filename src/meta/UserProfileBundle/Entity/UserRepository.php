@@ -25,8 +25,9 @@ class UserRepository extends EntityRepository
 
     return $qb->select('COUNT(u)')
             ->from('metaUserProfileBundle:User', 'u')
+            ->join('u.communities', 'c')
             ->where('u.deleted_at IS NULL')
-            ->andWhere('u.community = :community')
+            ->andWhere('c = :community')
             ->setParameter('community', $community)
             ->getQuery()
             ->getSingleScalarResult();
@@ -46,8 +47,9 @@ class UserRepository extends EntityRepository
     $qb = $this->getEntityManager()->createQueryBuilder();
     $query = $qb->select('u')
             ->from('metaUserProfileBundle:User', 'u')
+            ->join('u.communities', 'c')
             ->where('u.deleted_at IS NULL')
-            ->andWhere('u.community = :community')
+            ->andWhere('c = :community')
             ->setParameter('community', $community);
 
     switch ($sort) {
