@@ -114,7 +114,7 @@ class IdeaRepository extends EntityRepository
   }
 
   /*
-   * Find the top N idea for a user in a given community
+   * Fetch the top N idea for a user in a given community
    */
   public function findTopIdeasInCommunityForUser($community, $userId, $max = 3, $archived = false)
   {
