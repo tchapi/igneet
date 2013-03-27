@@ -59,11 +59,34 @@ class UserInviteToken
     private $used_at;
 
     /**
-     *  The community
+     *  The invited community, if any
      *
      * @ORM\ManyToOne(targetEntity="meta\GeneralBundle\Entity\Community\Community")
      */
     private $community;
+
+    /**
+     *  The type of invitation(user, guest) for the community, if any
+     * @var boolean $community_type
+     *
+     * @ORM\Column(name="community_type", type="string", length=255, nullable=true)
+     */
+    private $community_type;
+
+    /**
+     *  The invited project, if any
+     *
+     * @ORM\ManyToOne(targetEntity="meta\StandardProjectProfileBundle\Entity\StandardProject")
+     */
+    private $project;
+
+    /**
+     *  The type of invitation(owner, participant) for the project, if any
+     * @var boolean $project_type
+     *
+     * @ORM\Column(name="project_type", type="string", length=255, nullable=true)
+     */
+    private $project_type;
 
     /**
      *  The referal user (the one who invites)
@@ -79,7 +102,7 @@ class UserInviteToken
      */
     private $resultingUser;
 
-    public function __construct($referalUser, $mail = null)
+    public function __construct($referalUser, $mail, $community = null, $community_type = 'guest', $project = null, $project_type = 'participant')
     {
 
         $this->created_at = new \DateTime('now');
@@ -88,9 +111,10 @@ class UserInviteToken
         $this->email = $mail;
         $this->setReferalUser($referalUser);
 
-        if (!is_null($referalUser)){
-           $this->community = $referalUser->getCurrentCommunity();
-        }
+        $this->community = $community;
+        $this->community_type = $community_type;
+        $this->project = $project;
+        $this->project_type = $project_type;
         
         $this->token = md5(uniqid(null, true));
 
@@ -279,5 +303,74 @@ class UserInviteToken
     public function getCommunity()
     {
         return $this->community;
+    }
+
+    /**
+     * Set project
+     *
+     * @param \meta\StandardProjectProfileBundle\Entity\StandardProject $project
+     * @return UserInviteToken
+     */
+    public function setProject(\meta\StandardProjectProfileBundle\Entity\StandardProject $project = null)
+    {
+        $this->project = $project;
+    
+        return $this;
+    }
+
+    /**
+     * Get project
+     *
+     * @return \meta\StandardProjectProfileBundle\Entity\StandardProject 
+     */
+    public function getProject()
+    {
+        return $this->project;
+    }
+
+    /**
+     * Set community_type
+     *
+     * @param string $communityType
+     * @return UserInviteToken
+     */
+    public function setCommunityType($communityType)
+    {
+        $this->community_type = $communityType;
+    
+        return $this;
+    }
+
+    /**
+     * Get community_type
+     *
+     * @return string 
+     */
+    public function getCommunityType()
+    {
+        return $this->community_type;
+    }
+
+    /**
+     * Set project_type
+     *
+     * @param string $projectType
+     * @return UserInviteToken
+     */
+    public function setProjectType($projectType)
+    {
+        $this->project_type = $projectType;
+    
+        return $this;
+    }
+
+    /**
+     * Get project_type
+     *
+     * @return string 
+     */
+    public function getProjectType()
+    {
+        return $this->project_type;
     }
 }

@@ -44,38 +44,38 @@ IDEES gestion des users dans le private space : ne pas avoir d'user !
 
 PROJECT gestion des users dans le private space : ne pas avoir d'user !
  ✔ - ajouter un owner/ participant : non @done (13-03-25 23:14)
-
  ✔ statut d'invité dans une communauté ok @done (13-03-25 23:15)
-
  ✔ marquer le nom de la communauté dans les listes (accessible in "meta" ..) @done (13-03-26 22:09)
 
  invites / choose people
  ✔ private = private || (public && user->isGuest()) sauf. user->isParticipatingIn() ou user->isOwner() @done (13-03-26 22:09)
 
- ☐ inviter par email a un projet
-  ☐ - gerer les cas ou le mec est deja sur igneet / est deja guest
-  ☐ - input : username if you know it or email
-  str_contains('@') => email
- ☐ Attention : pour une idée ne pas permettre d'inviter en dehors de la communauté
+ ✔ inviter par email a un projet @done (13-03-27 21:09)
+  ✔ - gerer les cas ou le mec est deja sur igneet / est deja guest @done (13-03-27 21:09)
+  ✔ - input : username if you know it or email @done (13-03-27 21:09)
+  ✔ str_contains('@') => email @done (13-03-27 21:09)
+ ✔ Attention : pour une idée ne pas permettre d'inviter en dehors de la communauté @done (13-03-27 21:16)
 
- ☐ dans l'action project => addParticipant, il faut qu'on puisse accepter des username qui ne sont pas dans la communauté, ou des emails
+ ✔ dans l'action project => addParticipant, il faut qu'on puisse accepter des username qui ne sont pas dans la communauté, ou des emails @done (13-03-27 21:16)
 
  ☐ profil utilisateur (des autres) : ne pas afficher les projets privés (ou avec user guest dans la communauté) ou les idées des communautés ou je suis guest
  ☐ Attention dans la liste des users, il y a des projets listés !!!! enlever si guest ??
  ☐ mon profil : contextuel a ma communauté (au niveau des infos en dessous : mes projets mes idées tout ca)
 
- ✔ follow de gens pas dans ma communauté : impossible @done (13-03-27 13:43)
+ ☐ users normaux et guests d'une communauté doivent pouvoir voir les guests de leur communauté (liste : marquer guest a coté)
+ ☐ garder les notifications email quand tu es deja user et que tu rentres dans une communauté ? non -> les enlever
 
+ ✔ signup : mettre alphanumérique dans la création du nom d'utilisateur @done (13-03-27 21:18)
+ ✔ follow de gens pas dans ma communauté : impossible @done (13-03-27 13:43)
  ✔ voir les profils users dans le private space : non ! @done (13-03-26 22:09)
  ✔ projet / idées dans mon private space : je suis seul créateur / owner (??) @done (13-03-25 22:41)
-
- ☐ page réactivation de compte quand il a été supprimé
- ☐ page lost password
 
 Todo - General / Users :
 
  ☐ Mettre maxUsersInListings en parameters de l'appli a récupérer dans Twig
- 
+ ☐ Page de réactivation de compte quand il a été supprimé
+ ☐ Page de renvoi de mot de passe // lost password
+
  ✔ login et signup : focus sur le champ lors du chargement de la page @done (13-03-27 16:37)
  ✔ Clustering des activityLogs : vérifier que l'object correspond en récupérant le findOneBY, et pas faire le test dans le if après @done (13-03-27 16:29)
  ✔ envoyer des responses() avec des codes corrects @done (13-03-12 22:05)
@@ -131,13 +131,13 @@ Todo - General / Users :
 Todo - entité "CommonList":
 
  ☐ Ajax pour new item, new list avec input a la place du 'New item' ?
- ☐ Faire un routing pour les listItems qui 'hightlight' le bon list item ? idem pour les resources 
+ ☐ Faire un routing pour les listItems qui 'hightlight' le bon list item
 
  ✔ Highlight la page en cours dans la liste de gauche @done (13-01-22 00:00)
 
 Todo - entité "Wiki":
 
- ☐ Ajax pour new wiki page ??
+ ☐ Ajax pour new wiki page ?
 
  ✔ tagging des pages wiki et des listes @done (13-01-28 21:58)
  ✔ make homepage du wiki @done (13-01-31 22:56)
@@ -202,15 +202,12 @@ Todo - Home :
    \_ tout ca doit se faire en JS a priori
    \_ avoir du deep-linking dans le wiki
 
-Todo - Meta:
-
- ☐ tous les meta sont publics pour les gens qui y sont et pas pour les autres
- ☐ Afficher le meta dans les infos d'un projet
+Todo - Community:
 
  ☐ Commentaires
-   \_ MetaComment = shoutbox-like
+   \_ CommunityComment = shoutbox-like
 
- ✔ une idée est publique dans la meta @done (13-03-02 12:52)
+ ✔ une idée est publique dans la communauté @done (13-03-02 12:52)
    ✘ - discussion @cancelled (13-03-02 12:52)
       tagger 'concept' ou 'connaissance' dans le fil de discussion
  ✘ au niveau meta, la timeline ne ressort que les trucs publics des projets en dessous @cancelled (13-03-02 12:53)

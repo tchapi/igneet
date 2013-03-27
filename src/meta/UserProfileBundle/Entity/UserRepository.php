@@ -25,9 +25,10 @@ class UserRepository extends EntityRepository
 
     return $qb->select('COUNT(u)')
             ->from('metaUserProfileBundle:User', 'u')
-            ->join('u.communities', 'c')
+            ->leftJoin('u.communities', 'c')
+            ->leftJoin('u.restrictedCommunities', 'rc')
             ->where('u.deleted_at IS NULL')
-            ->andWhere('c = :community')
+            ->andWhere('c = :community OR rc = :community')
             ->setParameter('community', $community)
             ->getQuery()
             ->getSingleScalarResult();
@@ -47,9 +48,10 @@ class UserRepository extends EntityRepository
     $qb = $this->getEntityManager()->createQueryBuilder();
     $query = $qb->select('u')
             ->from('metaUserProfileBundle:User', 'u')
-            ->join('u.communities', 'c')
+            ->leftJoin('u.communities', 'c')
+            ->leftJoin('u.restrictedCommunities', 'rc')
             ->where('u.deleted_at IS NULL')
-            ->andWhere('c = :community')
+            ->andWhere('c = :community OR rc = :community')
             ->setParameter('community', $community);
 
     switch ($sort) {
@@ -90,12 +92,13 @@ class UserRepository extends EntityRepository
 
     return $qb->select('u')
             ->from('metaUserProfileBundle:User', 'u')
-            ->join('u.communities', 'c')
+            ->leftJoin('u.communities', 'c')
+            ->leftJoin('u.restrictedCommunities', 'rc')
             ->where('u.deleted_at IS NULL')
+            ->andWhere('c = :community OR rc = :community')
+            ->setParameter('community', $community)
             ->andWhere('u <> :user')
             ->setParameter('user', $user)
-            ->andWhere('c = :community')
-            ->setParameter('community', $community)
             ->getQuery()
             ->getResult();
 
@@ -115,12 +118,13 @@ class UserRepository extends EntityRepository
 
     $query = $qb->select('u')
             ->from('metaUserProfileBundle:User', 'u')
-            ->join('u.communities', 'c')
+            ->leftJoin('u.communities', 'c')
+            ->leftJoin('u.restrictedCommunities', 'rc')
             ->where('u.deleted_at IS NULL')
+            ->andWhere('c = :community OR rc = :community')
+            ->setParameter('community', $community)
             ->andWhere('u.username = :username')
             ->setParameter('username', $username)
-            ->andWhere('c = :community')
-            ->setParameter('community', $community)
             ->getQuery();
 
     try {

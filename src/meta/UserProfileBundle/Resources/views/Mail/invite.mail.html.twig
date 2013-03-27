@@ -1,7 +1,7 @@
 <h3>Hello,</h3>
 
 {% if not invitee %}
-  <p>{{ user.getFullName() }} has invited you to join her/him in the community {{ user.getCurrentCommunity().name }} on igneet !</p> 
+  <p>{{ user.getFullName() }} has invited you to join her/him in the {% if community is not null %}community {{ community.name }}{% else %}project {{ project.name }}{% endif %} on igneet !</p> 
 
   <p>Click on the following link to sign up and create your profile :</p>
   <p><a href="{{ url('u_signup', { 'inviteToken': inviteToken } ) }}">{{ url('u_signup', { 'inviteToken': inviteToken } ) }}</a></p>

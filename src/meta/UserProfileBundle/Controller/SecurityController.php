@@ -78,7 +78,7 @@ class SecurityController extends Controller
 
                 if ($user && !$user->isDeleted()) {
 
-                    $mail = $user->getEmail();
+                    $mailOrUsername = $user->getEmail();
                     $token = null;
 
                     // If the user is already in the community
@@ -116,7 +116,7 @@ class SecurityController extends Controller
                 } elseif ($isEmail) {
 
                     // Create token linked to email
-                    $token = new UserInviteToken($authenticatedUser, $mailOrUsername);
+                    $token = new UserInviteToken($authenticatedUser, $mailOrUsername, $community, 'user', null, null);
                     $em->persist($token);
                 
                     $this->get('session')->setFlash(
@@ -145,7 +145,7 @@ class SecurityController extends Controller
                     ->setBody(
                         $this->renderView(
                             'metaUserProfileBundle:Mail:invite.mail.html.twig',
-                            array('user' => $authenticatedUser, 'inviteToken' => $token?$token->getToken():null, 'invitee' => ($user && !$user->isDeleted()) )
+                            array('user' => $authenticatedUser, 'inviteToken' => $token?$token->getToken():null, 'invitee' => ($user && !$user->isDeleted()), 'community' => $community, 'project' => null )
                         ), 'text/html'
                     )
                 ;

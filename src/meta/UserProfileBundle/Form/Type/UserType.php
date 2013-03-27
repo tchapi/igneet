@@ -9,7 +9,7 @@ class UserType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('username', null, array('label' => 'Username', 'attr' => array('class' => 'input-xxlarge', 'help' => 'Your profile page will be available at /who/{username}')));
+        $builder->add('username', null, array('label' => 'Username', 'attr' => array('class' => 'input-xxlarge', 'help' => 'Only alphanumeric values are allowed. Your profile page will be available at /who/{username}')));
         $builder->add('first_name', null, array('label' => 'First Name', 'attr' => array('class' => 'input-xxlarge')));
         $builder->add('last_name', null, array('label' => 'Last Name', 'attr' => array('class' => 'input-xxlarge')));
         $builder->add('email', 'email', array('label' => 'E-mail', 'attr' => array('class' => 'input-xxlarge')));

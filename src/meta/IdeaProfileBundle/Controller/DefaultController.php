@@ -128,7 +128,7 @@ class DefaultController extends Controller
 
         $this->fetchIdeaAndPreComputeRights($id, false, false);
         
-        $targetParticipantAsBase64 = array ('slug' => 'metaIdeaProfileBundle:Default:addParticipant', 'params' => array('id' => $id, 'owner' => false));
+        $targetParticipantAsBase64 = array ('slug' => 'metaIdeaProfileBundle:Default:addParticipant', 'external' => false, 'params' => array('id' => $id, 'owner' => false));
 
         return $this->render('metaIdeaProfileBundle:Info:showInfo.html.twig', 
             array('base' => $this->base,
@@ -644,7 +644,7 @@ class DefaultController extends Controller
     /*
      * Add a participant
      */
-    public function addParticipantAction(Request $request, $id, $username)
+    public function addParticipantAction(Request $request, $id, $mailOrUsername)
     {
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('addParticipant', $request->get('token')))
@@ -655,7 +655,7 @@ class DefaultController extends Controller
         if ($this->base != false && !is_null($this->base['idea']->getCommunity()) ) {
 
             $userRepository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
-            $newParticipant = $userRepository->findOneByUsernameInCommunity($username, $this->base['idea']->getCommunity());
+            $newParticipant = $userRepository->findOneByUsernameInCommunity($mailOrUsername, $this->base['idea']->getCommunity());
 
             if ($newParticipant && 
                 !($newParticipant->hasCreatedIdea($this->base['idea'])) &&

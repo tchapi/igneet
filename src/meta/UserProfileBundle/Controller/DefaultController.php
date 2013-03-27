@@ -38,7 +38,7 @@ class DefaultController extends Controller
         } else {
             $user = $authenticatedUser;
         }
-        
+
         // If user is deleted or doesn't exist
         if (!$user || $user->isDeleted()) {
             throw $this->createNotFoundException('This user does not exist');
@@ -227,11 +227,29 @@ class DefaultController extends Controller
 
                 // Use inviteToken
                 if (!is_null($inviteTokenObject)){
+
                     $inviteTokenObject->setResultingUser($user);
-                    $community = $inviteTokenObject->getCommunity();
-                    if ($community){
-                        $community->addUser($user);
-                        $user->setCurrentCommunity($community);
+
+                    if (!is_null($inviteTokenObject->getCommunity())){
+
+                        if ($inviteTokenObject->getCommunityType() === 'user'){
+                            $inviteTokenObject->getCommunity()->addUser($user);
+                        } else {
+                            $inviteTokenObject->getCommunity()->addGuest($user);
+                        }
+                        
+                        $user->setCurrentCommunity($inviteTokenObject->getCommunity());
+
+                    }
+
+                    if (!is_null($inviteTokenObject->getProject())){
+
+                        if ($inviteTokenObject->getProjectType() === 'owner'){
+                            $user->addProjectsOwned($inviteTokenObject->getProject());
+                        } else {
+                            $user->addProjectsParticipatedIn($inviteTokenObject->getProject());
+                        }
+
                     }
                 }
 
@@ -552,29 +570,23 @@ class DefaultController extends Controller
 
         if ($request->isMethod('POST')) {
 
-            $username = $request->request->get('username');
+            // Checking the username is delegated to the resulting action
+            if (isset($target['slug']) && isset($target['params']) ){
 
-            $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
-            /*
+                $external = trim($request->request->get('mailOrUsername'));
 
-            si je suis membre
-                je dois pouvoir ajouter un user de ma communauté OK
-                + inviter un utilisateur
-            si je suis guest
-                je dois pouvoir inviter seulement
+                if ($target['external'] === true){
+                    $target['params']['mailOrUsername'] = ($external=="")?trim($request->request->get('username')):$external;
+                } else {
+                    $target['params']['mailOrUsername'] = trim($request->request->get('username'));
+                }
 
-            */
-            $user = $repository->findOneByUsernameInCommunity($username, $authenticatedUser->getCurrentCommunity());
-
-            if ($user && !$user->isDeleted() && isset($target['slug']) && isset($target['params']) ){
-
-                $target['params']['username'] = $username;
                 $target['params']['token'] = $request->get('token'); // For CSRF
                 return $this->forward($target['slug'], $target['params']);
 
             } else {
 
-                throw $this->createNotFoundException('This user does not exist.');
+                throw $this->createNotFoundException('Invalid request');
 
             }
 
@@ -593,7 +605,7 @@ class DefaultController extends Controller
                 return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $authenticatedUser->getUsername())));
             }
 
-            return $this->render('metaUserProfileBundle:Default:choose.html.twig', array('users' => $users, 'targetAsBase64' => $targetAsBase64, 'token' => $request->get('token')));
+            return $this->render('metaUserProfileBundle:Default:choose.html.twig', array('users' => $users, 'external' => $target['external'], 'targetAsBase64' => $targetAsBase64, 'token' => $request->get('token')));
 
         }
 
