@@ -11,6 +11,9 @@ use Doctrine\ORM\EntityRepository;
 class IdeaRepository extends EntityRepository
 {
 
+  /*
+   * Count ideas in the given community, accessible to the user (for the private space)
+   */
   public function countIdeasInCommunityForUser($community, $user, $archived = false)
   {
 
@@ -38,6 +41,9 @@ class IdeaRepository extends EntityRepository
 
   }
 
+ /*
+  * Fetch ideas in the given communities, accessible to the user (for the private space)
+  */
   public function findIdeasInCommunityForUser($community, $user, $page, $maxPerPage, $sort, $archived = false)
   {
     
@@ -79,6 +85,37 @@ class IdeaRepository extends EntityRepository
             ->getResult();
   }
 
+  /*
+   * Find a user by id in a given community
+   */
+  public function findOneByIdInCommunityForUser($id, $community, $user, $archived = false)
+  {
+
+    $modifier = $archived?'NOT ':'';
+    $qb = $this->getEntityManager()->createQueryBuilder();
+
+    $query = $qb->select('i')
+            ->from('metaIdeaProfileBundle:Idea', 'i')
+            ->where('i.archived_at IS ' . $modifier . 'NULL')
+            ->andWhere('i.deleted_at IS NULL');
+
+    if ($community === null){
+      $query->join('i.creators', 'u')
+            ->leftJoin('i.participants', 'u2')
+            ->andWhere('i.community IS NULL')
+            ->andWhere('u.id = :id OR u2.id = :id')
+            ->setParameter('id', $user->getId());
+    } else {
+      $query->andWhere('i.community = :community')
+       
+    return $query->getQuery()
+                 ->getResult();
+
+  }
+
+  /*
+   * Find the top N idea for a user in a given community
+   */
   public function findTopIdeasInCommunityForUser($community, $userId, $max = 3, $archived = false)
   {
     
@@ -109,6 +146,9 @@ class IdeaRepository extends EntityRepository
 
   }
 
+  /*
+   * Compute log activity for an idea over a week (7 rolling days)
+   */
   public function computeWeekActivityForIdeas($ideas, $archived = false)
   {
  

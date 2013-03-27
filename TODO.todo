@@ -58,6 +58,8 @@ PROJECT gestion des users dans le private space : ne pas avoir d'user !
   str_contains('@') => email
  ☐ Attention : pour une idée ne pas permettre d'inviter en dehors de la communauté
 
+ ☐ dans l'action addParticipant, il faut qu'on puisse accepter des username qui ne sont pas dans la communauté
+
  ☐ profil utilisateur (des autres) : ne pas afficher les projets privés (ou avec user guest dans la communauté) ou les idées des communautés ou je suis guest
  ☐ Attention dans la liste des users, il y a des projets listés !!!! enlever si guest ??
  ☐ mon profil : contextuel a ma communauté (au niveau des infos en dessous : mes projets mes idées tout ca)

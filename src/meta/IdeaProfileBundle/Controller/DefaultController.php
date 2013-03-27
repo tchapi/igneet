@@ -21,11 +21,14 @@ use meta\IdeaProfileBundle\Entity\Idea,
 class DefaultController extends Controller
 {
         
+    /*
+     * Common helper to fetch idea and rights
+     */
     public function fetchIdeaAndPreComputeRights($id, $mustBeCreator = false, $mustParticipate = false)
     {
 
         $repository = $this->getDoctrine()->getRepository('metaIdeaProfileBundle:Idea');
-        $idea = $repository->findOneById($id);
+        $idea = $repository->findOneById($id); // We do not enforce community here to be able to switch the user later on
 
         // Unexistant or deleted
         if (!$idea || $idea->isDeleted()){
@@ -33,13 +36,14 @@ class DefaultController extends Controller
         }
 
         $authenticatedUser = $this->getUser();
+        $community = $idea->getCommunity();
 
         $isAlreadyWatching = $authenticatedUser->isWatchingIdea($idea);
         $isCreator = $idea->getCreators()->contains($authenticatedUser);
         $isParticipatingIn = $authenticatedUser->isParticipatingInIdea($idea);
 
-        // Idea in private space, but not owner nor participant
-        if (is_null($idea->getCommunity()) && !$isCreator && !$isParticipatingIn){
+        // Idea in private space, but not creator nor participant
+        if (is_null($community) && !$isCreator && !$isParticipatingIn){
           throw $this->createNotFoundException('This idea does not exist');
         }
 
@@ -48,9 +52,21 @@ class DefaultController extends Controller
             throw $this->createNotFoundException('This idea does not exist');
         }
 
-        // Idea not in community
-        if ($idea->getCommunity() !== $authenticatedUser->getCurrentCommunity()){
-          throw $this->createNotFoundException('This idea does not exist in this community space. Please switch to the right community before accessing this idea.');
+        // Idea not in community, we might switch 
+        if ($community !== $authenticatedUser->getCurrentCommunity()){
+
+            if ($user->belongsTo($community)){
+                $this->getUser()->setCurrentCommunity($community);
+                $em = $this->getDoctrine()->getManager();
+                $em->flush();
+
+                $this->get('session')->setFlash(
+                    'info',
+                    'You have automatically been switched to the community ' . $community->getName() . '.'
+                );
+            } else {
+                throw $this->createNotFoundException('This idea does not exist');
+            }
         }
         
         $targetPictureAsBase64 = array('slug' => 'metaIdeaProfileBundle:Default:edit', 'params' => array('id' => $id ), 'crop' => true);
@@ -73,22 +89,15 @@ class DefaultController extends Controller
 
     }
 
-    public function navbarAction($activeMenu, $id, $slug)
-    {
-        $menu = $this->container->getParameter('idea.menu');
 
-        return $this->render('metaIdeaProfileBundle:Default:navbar.html.twig', array('menu' => $menu, 'activeMenu' => $activeMenu, 'id' => $id, 'slug' => $slug));
-    }
-
-    /*  ####################################################
-     *                    IDEA LIST
-     *  #################################################### */
-
+    /*
+     * List all the ideas in the community
+     */
     public function listAction($page, $archived, $sort)
     {
 
         $authenticatedUser = $this->getUser();
-        $community = $this->getUser()->GetCurrentCommunity();
+        $community = $authenticatedUser->GetCurrentCommunity();
 
         // User is guest in community
         if ($authenticatedUser->isGuestInCurrentCommunity()){
@@ -110,23 +119,10 @@ class DefaultController extends Controller
         return $this->render('metaIdeaProfileBundle:Default:list.html.twig', array('ideas' => $ideas, 'archived' => $archived, 'pagination' => $pagination, 'sort' => $sort));
 
     }
-
-    /*  ####################################################
-     *                        TIMELINE
-     *  #################################################### */
-
-    public function showTimelineAction($id, $slug, $page)
-    {
-        $this->fetchIdeaAndPreComputeRights($id, false, false);
-
-        return $this->render('metaIdeaProfileBundle:Timeline:showTimeline.html.twig', 
-            array('base' => $this->base));
-    }
     
-    /*  ####################################################
-     *                        SHOW
-     *  #################################################### */
-
+    /*
+     * Show an idea
+     */
     public function showAction($id, $slug)
     {
 
@@ -139,29 +135,32 @@ class DefaultController extends Controller
                 'targetParticipantAsBase64' => base64_encode(json_encode($targetParticipantAsBase64)) ));
     }
 
-    /*  ####################################################
-     *                        SHOW
-     *  #################################################### */
+    /*
+     * Show an idea's timeline
+     */
+    public function showTimelineAction($id, $slug, $page)
+    {
+        $this->fetchIdeaAndPreComputeRights($id, false, false);
 
+        return $this->render('metaIdeaProfileBundle:Timeline:showTimeline.html.twig', 
+            array('base' => $this->base));
+    }
+
+
+    /*
+     * Show an idea's concept or knowledge
+     */
     public function showConceptOrKnowledgeAction($id, $slug, $type)
     {
 
         $this->fetchIdeaAndPreComputeRights($id, false, false);
         
-        $targetParticipantAsBase64 = array ('slug' => 'metaIdeaProfileBundle:Default:addParticipant', 'params' => array('id' => $id, 'owner' => false));
-
         return $this->render('metaIdeaProfileBundle:Info:show' . ucfirst($type) . '.html.twig', 
-            array('base' => $this->base,
-                'targetParticipantAsBase64' => base64_encode(json_encode($targetParticipantAsBase64)) ));
+            array('base' => $this->base));
     }
 
-
-    /*  ####################################################
-     *                       IDEA CREATION 
-     *  #################################################### */
-
     /*
-     * Create a form for a new project AND process result if POST
+     * Create a form for a new idea AND process result when POSTed
      */
     public function createAction(Request $request)
     {
@@ -171,7 +170,7 @@ class DefaultController extends Controller
         if ($authenticatedUser->isGuestInCurrentCommunity()){
             $this->get('session')->setFlash(
                 'error',
-                'You cannot create ideas in this community.'
+                'You cannot create ideas in a community in which you are a guest.'
             );
             return $this->redirect($this->generateUrl('i_list_ideas'));
         }
@@ -187,7 +186,7 @@ class DefaultController extends Controller
             $idea->setSlug($textService->slugify($idea->getName()));
 
             // Prevents users in the private space from creating ideas with other creators
-            if ($form->isValid()  && ( !is_null($authenticatedUser->getCurrentCommunity()) || count($idea->getCreators()) === 0 ) ) {
+            if ($form->isValid() && ( !is_null($authenticatedUser->getCurrentCommunity()) || count($idea->getCreators()) === 0 ) ) {
 
                 if ( !$idea->getCreators()->contains($authenticatedUser) ){
                     $idea->addCreator($authenticatedUser);
@@ -226,10 +225,9 @@ class DefaultController extends Controller
 
     }
 
-    /*  ####################################################
-     *                       IDEA EDITION 
-     *  #################################################### */
-
+    /*
+     * Edit an idea (via X-Editable)
+     */
     public function editAction(Request $request, $id)
     {
 
@@ -262,17 +260,10 @@ class DefaultController extends Controller
                         
                         if ($community && $this->getUser()->belongsTo($community)){
                             $community->addIdea($this->base['idea']);
-                            $this->getUser()->setCurrentCommunity($community);
-
                             $this->get('session')->setFlash(
                                 'success',
                                 'This idea is now part of the community ' . $community->getName() . '.'
                             );
-                            $this->get('session')->setFlash(
-                                'info',
-                                'You have automatically been switched to the community ' . $community->getName() . '.'
-                            );
-
                             $objectHasBeenModified = true;
                             $needsRedirect = true;
                         }
@@ -356,9 +347,9 @@ class DefaultController extends Controller
 
             if (!is_null($error)) {
                 $this->get('session')->setFlash(
-                        'error',
-                        $error
-                    );
+                    'error',
+                    $error
+                );
             }
 
             return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
@@ -374,6 +365,9 @@ class DefaultController extends Controller
 
     }
 
+    /*
+     * Delete an idea
+     */
     public function deleteAction(Request $request, $id)
     {
 
@@ -389,24 +383,27 @@ class DefaultController extends Controller
             $em->flush();
 
             $this->get('session')->setFlash(
-                    'success',
-                    'The idea '.$this->base['idea']->getName().' has been deleted successfully.'
-                );
+                'success',
+                'The idea '.$this->base['idea']->getName().' has been deleted successfully.'
+            );
             
             return $this->redirect($this->generateUrl('i_list_ideas'));
 
         } else {
 
             $this->get('session')->setFlash(
-                    'warning',
-                    'You do not have sufficient privileges to delete this idea.'
-                );
+                'warning',
+                'You do not have sufficient privileges to delete this idea.'
+            );
 
             return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
         }
 
     }
 
+    /*
+     * Archive or recycle (unarchive) an idea
+     */
     public function archiveOrRecycleAction(Request $request, $id, $archive)
     {
 
@@ -429,18 +426,18 @@ class DefaultController extends Controller
             
             $action = $archive?'archive':'recycle';
             $this->get('session')->setFlash(
-                    'success',
-                    'The idea '.$this->base['idea']->getName().' has been ' . $action . 'd successfully.'
-                );
-            
+                'success',
+                'The idea '.$this->base['idea']->getName().' has been ' . $action . 'd successfully.'
+            );
+        
             return $this->redirect($this->generateUrl('i_list_ideas'));
 
         } else {
 
             $this->get('session')->setFlash(
-                    'warning',
-                    'You do not have sufficient privileges to archive or recycle this idea.'
-                );
+                'warning',
+                'You do not have sufficient privileges to archive or recycle this idea.'
+            );
 
             return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
         }
@@ -465,22 +462,25 @@ class DefaultController extends Controller
             $em->flush();
 
             $this->get('session')->setFlash(
-                        'success',
-                        'The picture of this idea has successfully been reset.'
-                    );
+                'success',
+                'The picture of this idea has successfully been reset.'
+            );
 
         } else {
     
             $this->get('session')->setFlash(
-                    'error',
-                    'You cannot reset the picture for this idea.'
-                );
+                'error',
+                'You cannot reset the picture for this idea.'
+            );
         }
 
         return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
 
     }
 
+    /*
+     * Transform an idea into a project
+     */
     public function projectizeAction(Request $request, $id)
     {
 
@@ -562,18 +562,18 @@ class DefaultController extends Controller
             $logService->log($this->getUser(), 'user_create_project_from_idea', $project, array( 'idea' => array('routing' => 'idea', 'logName' => $this->base['idea']->getLogName(), 'args' => $this->base['idea']->getLogArgs() )));
 
             $this->get('session')->setFlash(
-                    'success',
-                    'Your idea has successfully been transformed into a project.'
-                );
+                'success',
+                'Your idea has successfully been transformed into a project.'
+            );
 
             return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $project->getSlug())));
 
         } else {
 
             $this->get('session')->setFlash(
-                    'error',
-                    'You are not allowed to transform this idea into the project since you have not created it or it is already archived.'
-                );
+                'error',
+                'You are not allowed to transform this idea into the project since you have not created it or it is already archived.'
+            );
 
             return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
         }
@@ -581,7 +581,9 @@ class DefaultController extends Controller
 
     }
 
-
+    /*
+     * Output the comment form for an idea or add a comment to an idea when POST
+     */
     public function addIdeaCommentAction(Request $request, $id){
 
         $this->fetchIdeaAndPreComputeRights($id, false, false);
@@ -639,6 +641,237 @@ class DefaultController extends Controller
 
     }
 
+    /*
+     * Add a participant
+     */
+    public function addParticipantAction(Request $request, $id, $username)
+    {
+
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('addParticipant', $request->get('token')))
+            return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
+
+        $this->fetchIdeaAndPreComputeRights($id, false, true);
+
+        if ($this->base != false && !is_null($this->base['idea']->getCommunity()) ) {
+
+            $userRepository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
+            $newParticipant = $userRepository->findOneByUsernameInCommunity($username, $this->base['idea']->getCommunity());
+
+            if ($newParticipant && 
+                !($newParticipant->hasCreatedIdea($this->base['idea'])) &&
+                !($newParticipant->isParticipatingInIdea($this->base['idea']))
+               ) {
+
+                $newParticipant->addIdeasParticipatedIn($this->base['idea']);
+
+                $this->get('session')->setFlash(
+                    'success',
+                    'The user '.$newParticipant->getFullName().' now participates in the idea "'.$this->base['idea']->getName().'".'
+                );
+
+                $logService = $this->container->get('logService');
+                $logService->log($newParticipant, 'user_is_made_participant_idea', $this->base['idea'], array( 'other_user' => array( 'routing' => 'user', 'logName' => $this->getUser()->getLogName(), 'args' => $this->getUser()->getLogArgs()) ));
+
+                $em = $this->getDoctrine()->getManager();
+                $em->flush();
+                
+            } else {
+
+                $this->get('session')->setFlash(
+                    'warning',
+                    'This user does not exist or is already part of this idea.'
+                );
+            }
+
+        } else {
+
+            $this->get('session')->setFlash(
+                'error',
+                'You are not allowed to add a participant to this idea.'
+            );
+
+        }
+
+        return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
+    }
+
+    /*
+     * Remove a participant
+     */ 
+    public function removeParticipantAction(Request $request, $id, $username)
+    {
+
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('removeParticipant', $request->get('token')))
+            return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
+
+        $this->fetchIdeaAndPreComputeRights($id, true, false);
+
+        if ($this->base != false && !is_null($this->base['idea']->getCommunity())) {
+
+            $userRepository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
+            $toRemoveParticipant = $userRepository->findOneByUsernameInCommunity($username, $this->base['idea']->getCommunity());
+
+            if ($toRemoveParticipant && $toRemoveParticipant->isParticipatingInIdea($this->base['idea']) ) {
+                
+                $toRemoveParticipant->removeIdeasParticipatedIn($this->base['idea']);
+
+                $this->get('session')->setFlash(
+                    'success',
+                    'The user '.$toRemoveParticipant->getFullName().' does not participate in the idea "'.$this->base['idea']->getName().'" anymore .'
+                );
+
+                $em = $this->getDoctrine()->getManager();
+                $em->flush();
+                
+            } else {
+
+                $this->get('session')->setFlash(
+                    'error',
+                    'This user does not exist with this role in the idea.'
+                );
+            }
+
+        } else {
+
+            $this->get('session')->setFlash(
+                'error',
+                'You are not allowed to remove a participant of this idea.'
+            );
+
+        }
+
+        return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
+    }
+
+    /*
+     * Authenticated user now watches the idea
+     */
+    public function watchAction(Request $request, $id)
+    {
+
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('watch', $request->get('token')))
+            return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
+
+        $authenticatedUser = $this->getUser();
+
+        // User is guest in community
+        if ($authenticatedUser->isGuestInCurrentCommunity()){
+            throw $this->createNotFoundException('This idea does not exist');
+        }
+
+        // The actually authenticated user now watches the idea with $id
+        $repository = $this->getDoctrine()->getRepository('metaIdeaProfileBundle:Idea');
+        $idea = $repository->findOneByIdInCommunity($id, $authenticatedUser->getCurrentCommunity(), $authenticatedUser, false);
+
+        if ($idea){
+
+            if ( !($authenticatedUser->isWatchingIdea($idea)) ){
+
+                $authenticatedUser->addIdeasWatched($idea);
+
+                $logService = $this->container->get('logService');
+                $logService->log($authenticatedUser, 'user_watch_idea', $idea, array());
+
+                $em = $this->getDoctrine()->getManager();
+                $em->flush();
+
+                $this->get('session')->setFlash(
+                    'success',
+                    'You are now watching '.$idea->getName().'.'
+                );
+
+            } else {
+
+                $this->get('session')->setFlash(
+                    'warning',
+                    'You are already watching '.$idea->getName().'.'
+                );
+
+            }
+
+        } else {
+
+           $this->get('session')->setFlash(
+                'error',
+                'You cannot watch this idea.'
+            ); 
+
+        }
+
+        return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
+    }
+
+    /*
+     * Authenticated user now unwatches the idea
+     */
+    public function unwatchAction(Request $request, $id)
+    {
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('unwatch', $request->get('token')))
+            return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
+
+        $authenticatedUser = $this->getUser();
+
+        // User is guest in community
+        if ($authenticatedUser->isGuestInCurrentCommunity()){
+            throw $this->createNotFoundException('This idea does not exist');
+        }
+
+        // The actually authenticated user now unwatches idea with $id
+        $repository = $this->getDoctrine()->getRepository('metaIdeaProfileBundle:Idea');
+        $idea = $repository->findOneByIdInCommunity($id, $authenticatedUser->getCurrentCommunity(), $authenticatedUser, false);
+
+        if ($idea){
+
+            if ( $authenticatedUser->isWatchingIdea($idea) ){
+
+                $authenticatedUser->removeIdeasWatched($idea);
+
+                $em = $this->getDoctrine()->getManager();
+                $em->flush();
+
+                $this->get('session')->setFlash(
+                    'success',
+                    'You are not watching '.$idea->getName().' anymore.'
+                );
+
+            } else {
+
+                $this->get('session')->setFlash(
+                    'warning',
+                    'You are not watching '.$idea->getName().'.'
+                );
+
+            }
+
+        } else {
+
+           $this->get('session')->setFlash(
+                'error',
+                'You cannot unwatch this idea.'
+            ); 
+
+        }
+
+        return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
+    }
+
+    /* ********************************************************************* */
+    /*                           Non-routed actions                          */
+    /* ********************************************************************* */
+
+    /*
+     * Output the navbar for the idea
+     */
+    public function navbarAction($activeMenu, $id, $slug)
+    {
+        $menu = $this->container->getParameter('idea.menu');
+
+        return $this->render('metaIdeaProfileBundle:Default:navbar.html.twig', array('menu' => $menu, 'activeMenu' => $activeMenu, 'id' => $id, 'slug' => $slug));
+    }
+
+    /*
+     * Output the timeline history
+     */
     public function historyAction($id, $page){
 
         $this->fetchIdeaAndPreComputeRights($id, false, false);
@@ -724,195 +957,4 @@ class DefaultController extends Controller
 
     }
 
-    /*  ####################################################
-     *                          ADD USER
-     *  #################################################### */
-
-    public function addParticipantAction(Request $request, $id, $username)
-    {
-
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('addParticipant', $request->get('token')))
-            return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
-
-        $this->fetchIdeaAndPreComputeRights($id, false, true);
-
-        if ($this->base != false && !is_null($this->base['idea']->getCommunity()) ) {
-
-            $userRepository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
-            $newParticipant = $userRepository->findOneByUsername($username);
-
-            if ($newParticipant && 
-                !($newParticipant->hasCreatedIdea($this->base['idea'])) &&
-                !($newParticipant->isParticipatingInIdea($this->base['idea']))
-               ) {
-
-                $newParticipant->addIdeasParticipatedIn($this->base['idea']);
-
-                $this->get('session')->setFlash(
-                  'success',
-                  'The user '.$newParticipant->getFullName().' now participates in the idea "'.$this->base['idea']->getName().'".'
-                );
-
-                $logService = $this->container->get('logService');
-                $logService->log($newParticipant, 'user_is_made_participant_idea', $this->base['idea'], array( 'other_user' => array( 'routing' => 'user', 'logName' => $this->getUser()->getLogName(), 'args' => $this->getUser()->getLogArgs()) ));
-
-
-                $em = $this->getDoctrine()->getManager();
-                $em->flush();
-                
-            } else {
-
-                $this->get('session')->setFlash(
-                    'warning',
-                    'This user does not exist or is already part of this idea.'
-                );
-            }
-
-        } else {
-
-            $this->get('session')->setFlash(
-                'error',
-                'You are not allowed to add a participant to this idea.'
-            );
-
-        }
-
-        return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
-    }
-
-    public function removeParticipantAction(Request $request, $id, $username)
-    {
-
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('removeParticipant', $request->get('token')))
-            return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
-
-        $this->fetchIdeaAndPreComputeRights($id, true, false);
-
-        if ($this->base != false && !is_null($this->base['idea']->getCommunity())) {
-
-            $userRepository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
-            $toRemoveParticipant = $userRepository->findOneByUsername($username);
-
-            if ($toRemoveParticipant && $toRemoveParticipant->isParticipatingInIdea($this->base['idea']) ) {
-                
-                $toRemoveParticipant->removeIdeasParticipatedIn($this->base['idea']);
-
-                $this->get('session')->setFlash(
-                  'success',
-                  'The user '.$toRemoveParticipant->getFullName().' does not participate in the idea "'.$this->base['idea']->getName().'" anymore .'
-                );
-
-                $em = $this->getDoctrine()->getManager();
-                $em->flush();
-                
-            } else {
-
-                $this->get('session')->setFlash(
-                    'error',
-                    'This user does not exist with this role in the idea.'
-                );
-            }
-
-        } else {
-
-            $this->get('session')->setFlash(
-                'error',
-                'You are not allowed to remove a participant of this idea.'
-            );
-
-        }
-
-        return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
-    }
-
-    /*  ####################################################
-     *                   WATCH / UNWATCH
-     *  #################################################### */
-
-    public function watchAction(Request $request, $id)
-    {
-
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('watch', $request->get('token')))
-            return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
-
-        $authenticatedUser = $this->getUser();
-
-        // User is guest in community
-        if ($authenticatedUser->isGuestInCurrentCommunity()){
-            throw $this->createNotFoundException('This idea does not exist');
-        }
-
-        // The actually authenticated user now watches the idea with $id
-        $repository = $this->getDoctrine()->getRepository('metaIdeaProfileBundle:Idea');
-        $idea = $repository->findOneById($id);
-
-        if ( !($authenticatedUser->isWatchingIdea($idea)) ){
-
-            $authenticatedUser->addIdeasWatched($idea);
-
-            $logService = $this->container->get('logService');
-            $logService->log($authenticatedUser, 'user_watch_idea', $idea, array());
-
-
-            $em = $this->getDoctrine()->getManager();
-            $em->flush();
-
-            $this->get('session')->setFlash(
-                'success',
-                'You are now watching '.$idea->getName().'.'
-            );
-
-        } else {
-
-            $this->get('session')->setFlash(
-                'warning',
-                'You are already watching '.$idea->getName().'.'
-            );
-
-        }
-
-        return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
-    }
-
-    public function unwatchAction(Request $request, $id)
-    {
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('unwatch', $request->get('token')))
-            return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
-
-        $authenticatedUser = $this->getUser();
-
-        // User is guest in community
-        if ($authenticatedUser->isGuestInCurrentCommunity()){
-            throw $this->createNotFoundException('This idea does not exist');
-        }
-
-        // The actually authenticated user now follows $user if they are not the same
-        $repository = $this->getDoctrine()->getRepository('metaIdeaProfileBundle:Idea');
-        $idea = $repository->findOneById($id);
-
-        if ( $authenticatedUser->isWatchingIdea($idea) ){
-
-            $authenticatedUser->removeIdeasWatched($idea);
-
-            $em = $this->getDoctrine()->getManager();
-            $em->flush();
-
-            $this->get('session')->setFlash(
-                'success',
-                'You are not watching '.$idea->getName().' anymore.'
-            );
-
-        } else {
-
-            $this->get('session')->setFlash(
-                'warning',
-                'You are not watching '.$idea->getName().'.'
-            );
-
-        }
-
-        return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
-    }
-
-  
 }
