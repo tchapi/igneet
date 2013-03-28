@@ -1,0 +1,39 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}{{ parent() }} > {% if app.user.currentCommunity is null %}My Private Space{% else %}{{ app.user.currentCommunity.name }}{%endif %} | Home{% endblock %}
+
+{% block body %}
+<header class="home">
+  <div class="headerAvatarAndActions">
+    <div class="textAvatar"><i class="icon-home"></i></div>
+  </div>
+  <div class="objectHeader">
+    <h2>{% if app.user.currentCommunity is null %}My Private Space{% else %}{{ app.user.currentCommunity.name }}{%endif %}</h2>
+    <h4>Welcome to the home of your {% if app.user.currentCommunity is null %}private space{% else %}community{%endif %}.</h4>
+    <p></p>
+  </div>
+</header>
+<div class="content home clearfix">
+<section>
+    <h1>Community Ideas</h1>
+    <p>Ideas are public entities in the community. You can view and comment them.<br />Participants and creators can edit their concept and knowledge associated.</p>
+    <p>
+      <a href="{{ path('i_list_ideas')}}" class="btn btn-primary btn-large">
+        Show ideas
+      </a>
+    </p>
+</section>
+<section>
+    <h1>Community Projects</h1>
+    <p>Projects have more limited visibility. You can view their public details and comment them.<br />Participants and creators can edit lists, wiki and resources associated.</p>
+    <p>
+      <a href="{{ path('sp_list_projects')}}" class="btn btn-primary btn-large">
+        Show projects
+      </a>
+    </p>
+</section>
+</div>
+<footer>
+{% block footer %}{% endblock %}
+</footer>
+{% endblock %}
