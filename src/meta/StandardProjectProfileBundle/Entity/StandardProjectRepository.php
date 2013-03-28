@@ -154,6 +154,32 @@ class StandardProjectRepository extends EntityRepository
   }
 
   /*
+   * Fetch all projects watched by the user in the given community
+   */
+  public function findAllProjectsWatchedInCommunityForUser($community, $user)
+  {
+    
+    $qb = $this->getEntityManager()->createQueryBuilder();
+    $query = $qb->select('sp')
+            ->from('metaStandardProjectProfileBundle:StandardProject', 'sp')
+            ->join('sp.watchers', 'u')
+            ->andWhere('sp.deleted_at IS NULL')
+            ->andWhere('u = :user')
+            ->setParameter('user', $user);
+
+    if ($community === null){
+      $query->andWhere('sp.community IS NULL')
+    } else {
+      $query->andWhere('sp.community = :community')
+            ->setParameter('community', $community);
+    }
+
+    return $query
+            ->getQuery()
+            ->getResult();
+  }
+
+  /*
    * Fetch top N projects for the user in the given community
    */
   public function findTopProjectsInCommunityForUser($community, $userId, $max = 3)

@@ -61,8 +61,8 @@ class DefaultController extends Controller
         $following = $repository->findAllFollowingInCommunityForUser($community, $user);
 
         // Watching projects / ideas
-        $ideasWatched = $repository->findAllIdeasWatchedInCommunityForUser($community, $user);
-        $projectsWatched = $repository->findAllProjectsWatchedInCommunityForUser($community, $user);
+        $ideasWatched = $ideaRepository->findAllIdeasWatchedInCommunityForUser($community, $user);
+        $projectsWatched = $projectRepository->findAllProjectsWatchedInCommunityForUser($community, $user);
 
         $targetAvatarAsBase64 = array ('slug' => 'metaUserProfileBundle:Default:edit', 'params' => array('username' => $username ), 'crop' => true);
 

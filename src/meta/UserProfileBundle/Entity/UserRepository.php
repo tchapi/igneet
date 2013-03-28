@@ -155,22 +155,6 @@ class UserRepository extends EntityRepository
   }
 
   /*
-   * Fetch all ideas watched by the user in the given community
-   */
-  public function findAllIdeasWatchedInCommunityForUser($community, $user)
-  {
-
-  }
-
-  /*
-   * Fetch all projects watched by the user in the given community
-   */
-  public function findAllProjectsWatchedInCommunityForUser($community, $user)
-  {
-
-  }
-
-  /*
    * Find a user by its username in a given community
    */
   public function findOneByUsernameInCommunity($username, $community)

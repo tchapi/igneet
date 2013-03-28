@@ -144,6 +144,33 @@ class IdeaRepository extends EntityRepository
   }
 
   /*
+   * Fetch all ideas watched by the user in the given community
+   */
+  public function findAllIdeasWatchedInCommunityForUser($community, $user)
+  {
+    
+    $qb = $this->getEntityManager()->createQueryBuilder();
+    $query = $qb->select('i')
+            ->from('metaIdeaProfileBundle:Idea', 'i')
+            ->join('i.watchers', 'u')
+            ->where('i.archived_at IS NULL')
+            ->andWhere('i.deleted_at IS NULL')
+            ->andWhere('u = :user')
+            ->setParameter('user', $user);
+
+    if ($community === null){
+      $query->andWhere('i.community IS NULL')
+    } else {
+      $query->andWhere('i.community = :community')
+            ->setParameter('community', $community);
+    }
+
+    return $query
+            ->getQuery()
+            ->getResult();
+  }
+
+  /*
    * Find a user by id in a given community
    */
   public function findOneByIdInCommunityForUser($id, $community, $user, $archived = false)
