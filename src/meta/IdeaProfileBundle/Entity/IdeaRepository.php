@@ -98,7 +98,7 @@ class IdeaRepository extends EntityRepository
             ->where('i.archived_at IS NULL')
             ->andWhere('i.deleted_at IS NULL')
             ->andWhere('u = :user')
-            ->setParameter('user', $user);
+            ->setParameter('user', $creator);
 
     if ($community === null){
       // We do not have to worry about accessing another user profile
@@ -127,7 +127,7 @@ class IdeaRepository extends EntityRepository
             ->where('i.archived_at IS NULL')
             ->andWhere('i.deleted_at IS NULL')
             ->andWhere('u = :user')
-            ->setParameter('user', $user);
+            ->setParameter('user', $participant);
 
     if ($community === null){
       // We do not have to worry about accessing another user profile
@@ -159,7 +159,7 @@ class IdeaRepository extends EntityRepository
             ->setParameter('user', $user);
 
     if ($community === null){
-      $query->andWhere('i.community IS NULL')
+      $query->andWhere('i.community IS NULL');
     } else {
       $query->andWhere('i.community = :community')
             ->setParameter('community', $community);

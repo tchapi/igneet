@@ -58,17 +58,16 @@ PROJECT gestion des users dans le private space : ne pas avoir d'user !
 
  ✔ dans l'action project => addParticipant, il faut qu'on puisse accepter des username qui ne sont pas dans la communauté, ou des emails @done (13-03-27 21:16)
 
- ☐ profil utilisateur (des autres) : ne pas afficher les projets privés (ou avec user guest dans la communauté) ou les idées des communautés ou je suis guest
- ☐ mon profil : contextuel a ma communauté (au niveau des infos en dessous : mes projets mes idées tout ca)
-   ☐  followers following
-   ☐ projects
-     ☐ watchés
+ ✔ mon profil : contextuel a ma communauté / privacy / guesticity (au niveau des infos en dessous : mes projets mes idées tout ca) @done (13-03-28 19:03)
+   ✔ followers following @done (13-03-28 19:03)
+   ✔ projects @done (13-03-28 19:03)
+     ✔ watchés @done (13-03-28 19:03)
      ✔ owners @done (13-03-27 22:17)
      ✔ participants @done (13-03-27 22:18)
-   ☐ idées -> plus simples car les guests n'ont pas le droit de voir les idées
-     ☐ watchés
-     ☐ creators
-     ☐ participants
+   ✔ idées -> plus simples car les guests n'ont pas le droit de voir les idées @done (13-03-28 19:03)
+     ✔ watchés @done (13-03-28 19:02)
+     ✔ creators @done (13-03-28 19:02)
+     ✔ participants @done (13-03-28 19:02)
 
 
  ☐ garder les notifications email quand tu es deja user et que tu rentres dans une communauté ? non -> les enlever
@@ -82,10 +81,10 @@ PROJECT gestion des users dans le private space : ne pas avoir d'user !
 
 Todo - General / Users :
 
- ☐ Mettre maxUsersInListings en parameters de l'appli a récupérer dans Twig
  ☐ Page de réactivation de compte quand il a été supprimé
  ☐ Page de renvoi de mot de passe // lost password
 
+ ✔ Mettre maxUsersInListings en parameters de l'appli a récupérer dans Twig @done (13-03-28 00:54)
  ✔ login et signup : focus sur le champ lors du chargement de la page @done (13-03-27 16:37)
  ✔ Clustering des activityLogs : vérifier que l'object correspond en récupérant le findOneBY, et pas faire le test dans le if après @done (13-03-27 16:29)
  ✔ envoyer des responses() avec des codes corrects @done (13-03-12 22:05)

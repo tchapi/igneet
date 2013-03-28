@@ -32,8 +32,8 @@ class DefaultController extends Controller
             throw $this->createNotFoundException('This user does not exist');
         }
 
+        $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
         if ($username !== $authenticatedUser->getUsername()){
-            $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
             $user = $repository->findOneByUsernameInCommunity($username, $authenticatedUser->getCurrentCommunity());
         } else {
             $user = $authenticatedUser;
@@ -46,15 +46,16 @@ class DefaultController extends Controller
 
         $alreadyFollowing = $authenticatedUser->isFollowing($user);
         $isMe = ($authenticatedUser->getUsername() == $username);
+        $community = $authenticatedUser->getCurrentCommunity();
 
         // Get projects / ideas lists
         $projectRepository = $this->getDoctrine()->getRepository('metaStandardProjectProfileBundle:StandardProject');
-        $projectsOwned = $projectRepository->findAllProjectsInCommunityForUserOwnedBy($authenticatedUser->getCurrentCommunity(), $authenticatedUser, $user);
-        $projectsParticipatedIn = $projectRepository->findAllProjectsInCommunityForUserParticipatedInBy($authenticatedUser->getCurrentCommunity(), $authenticatedUser, $user);
+        $projectsOwned = $projectRepository->findAllProjectsInCommunityForUserOwnedBy($community, $authenticatedUser, $user);
+        $projectsParticipatedIn = $projectRepository->findAllProjectsInCommunityForUserParticipatedInBy($community, $authenticatedUser, $user);
 
         $ideaRepository = $this->getDoctrine()->getRepository('metaIdeaProfileBundle:Idea');
-        $ideasCreated = $projectRepository->findAllIdeasInCommunityCreatedBy($authenticatedUser->getCurrentCommunity(), $user);
-        $ideasParticipatedIn = $projectRepository->findAllIdeasInCommunityParticipatedInBy($authenticatedUser->getCurrentCommunity(), $user);
+        $ideasCreated = $ideaRepository->findAllIdeasInCommunityCreatedBy($community, $user);
+        $ideasParticipatedIn = $ideaRepository->findAllIdeasInCommunityParticipatedInBy($community, $user);
 
         // Followers / Followings
         $followers = $repository->findAllFollowersInCommunityForUser($community, $user);
