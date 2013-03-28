@@ -191,11 +191,21 @@ class IdeaRepository extends EntityRepository
             ->andWhere('u = :user OR u2 = :user')
             ->setParameter('user', $user);
     } else {
-      $query->andWhere('i.community = :community');
+      $query->andWhere('i.community = :community')
+            ->setParameter('community', $community);
     }
        
-    return $query->getQuery()
-                 ->getResult();
+    $query = $query->andWhere('i.id = :id')
+                   ->setParameter('id', $id)
+                   ->getQuery();
+
+    try {
+        $result = $query->getSingleResult();
+    } catch (\Doctrine\Orm\NoResultException $e) {
+        $result = null;
+    }
+
+    return $result;
 
   }
 

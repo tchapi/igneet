@@ -176,7 +176,7 @@ class DefaultController extends Controller
         }
 
         $idea = new Idea();
-        $form = $this->createForm(new IdeaType(), $idea, array('allowCreators' => !is_null($authenticatedUser->getCurrentCommunity()) ));
+        $form = $this->createForm(new IdeaType(), $idea, array('allowCreators' => !is_null($authenticatedUser->getCurrentCommunity()), 'community' => $authenticatedUser->getCurrentCommunity() ));
 
         if ($request->isMethod('POST')) {
 
@@ -761,7 +761,7 @@ class DefaultController extends Controller
 
         // The actually authenticated user now watches the idea with $id
         $repository = $this->getDoctrine()->getRepository('metaIdeaProfileBundle:Idea');
-        $idea = $repository->findOneByIdInCommunity($id, $authenticatedUser->getCurrentCommunity(), $authenticatedUser, false);
+        $idea = $repository->findOneByIdInCommunityForUser($id, $authenticatedUser->getCurrentCommunity(), $authenticatedUser, false);
 
         if ($idea){
 
@@ -818,7 +818,7 @@ class DefaultController extends Controller
 
         // The actually authenticated user now unwatches idea with $id
         $repository = $this->getDoctrine()->getRepository('metaIdeaProfileBundle:Idea');
-        $idea = $repository->findOneByIdInCommunity($id, $authenticatedUser->getCurrentCommunity(), $authenticatedUser, false);
+        $idea = $repository->findOneByIdInCommunityForUser($id, $authenticatedUser->getCurrentCommunity(), $authenticatedUser, false);
 
         if ($idea){
 

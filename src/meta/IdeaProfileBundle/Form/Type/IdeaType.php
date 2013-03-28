@@ -14,14 +14,21 @@ class IdeaType extends AbstractType
 
         // In the case where we are in the private space, 
         // we do not allow the creator to add creators to this idea
+        // If we are in a community we restrict what users are available
+        $community = $options['community'];
         if ( isset($options['allowCreators']) &&  $options['allowCreators'] === true){
             $builder->add('creators', 'entity', array(
                 'multiple' => true, 
                 'required' => false, // We will add the authenticated user afterwards 
                 'property' => 'fullName',
                 'class' => 'meta\UserProfileBundle\Entity\User',
-                'query_builder' => function(\Doctrine\ORM\EntityRepository $er){
-                    return $er->createQueryBuilder("u")->where("u.deleted_at IS NULL")->orderBy("u.username", "ASC");
+                'query_builder' => function(\Doctrine\ORM\EntityRepository $er) use ($community){
+                    return $er->createQueryBuilder("u")
+                              ->join('u.communities', 'c')
+                              ->where("u.deleted_at IS NULL")
+                              ->where("c = :community")
+                              ->setParameter('community', $community)
+                              ->orderBy("u.username", "ASC");
                 },
                 'label' => 'Creators',
                 'attr' => array('class' => 'select2-trigger')
@@ -32,7 +39,8 @@ class IdeaType extends AbstractType
     public function getDefaultOptions(array $options)
     {
         return array(
-            'allowCreators' => false
+            'allowCreators' => false,
+            'community' => null
         );
     }
     
