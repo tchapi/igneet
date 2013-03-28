@@ -194,7 +194,7 @@
 <section class="colored">
 <div class="sectionTitle">Ideas I watch :</div>
 <ul class="projects sectionContent">
-{% for idea in user.ideasWatched %}
+{% for idea in ideasWatched %}
   <li>
     <a href="{{ path('i_show_idea', {'id': idea.id}) }}">
       <img src="{{ idea.picture }}" width="70" height="70" class="smallAvatar"/>
@@ -230,7 +230,7 @@
 <section class="colored">
 <div class="sectionTitle">Ideas I participate in :</div>
 <ul class="projects sectionContent">
-{% for idea in user.ideasParticipatedIn %}
+{% for idea in ideasParticipatedIn %}
   <li>
     <a href="{{ path('i_show_idea', {'id': idea.id}) }}">
       <img src="{{ idea.picture }}" width="70" height="70" class="smallAvatar"/>

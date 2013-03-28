@@ -159,12 +159,15 @@ class IdeaRepository extends EntityRepository
             ->setParameter('user', $user);
 
     if ($community === null){
-      $query->andWhere('i.community IS NULL');
+      $query->andWhere('i.community IS NULL')
+            ->join('i.creators', 'c') // In the private space, it needs to be the user's own idea
+            ->andWhere('c = :user')
+            ->setParameter('user', $user);
     } else {
       $query->andWhere('i.community = :community')
             ->setParameter('community', $community);
     }
-
+//var_dump($query->getQuery()->getSql()); die;
     return $query
             ->getQuery()
             ->getResult();

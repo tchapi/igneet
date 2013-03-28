@@ -168,7 +168,10 @@ class StandardProjectRepository extends EntityRepository
             ->setParameter('user', $user);
 
     if ($community === null){
-      $query->andWhere('sp.community IS NULL');
+      $query->andWhere('sp.community IS NULL')
+            ->join('sp.owners', 'c') // In the private space, it needs to be the user's own project
+            ->andWhere('c = :user')
+            ->setParameter('user', $user);;
     } else {
       $query->andWhere('sp.community = :community')
             ->setParameter('community', $community);

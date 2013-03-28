@@ -55,7 +55,7 @@ class DefaultController extends Controller
         // Idea not in community, we might switch 
         if ($community !== $authenticatedUser->getCurrentCommunity()){
 
-            if ($user->belongsTo($community)){
+            if ($authenticatedUser->belongsTo($community)){
                 $this->getUser()->setCurrentCommunity($community);
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
