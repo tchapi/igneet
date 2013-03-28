@@ -105,6 +105,72 @@ class UserRepository extends EntityRepository
   }
 
   /*
+   * Fetch all followers of a user in the given community
+   */
+  public function findAllFollowersInCommunityForUser($community, $user)
+  {
+
+    if ($community === null){
+      return null;
+    }
+
+    $qb = $this->getEntityManager()->createQueryBuilder();
+    
+    return $qb->select('u')
+            ->from('metaUserProfileBundle:User', 'u')
+            ->join('u.following', 'f')
+            ->join('u.community', 'c')
+            ->where('u.deleted_at IS NULL')
+            ->andWhere('f = :user')
+            ->setParameter('user', $user)
+            ->andWhere('c = :community')
+            ->setParameter('community', $community)
+            ->getQuery()
+            ->getResult();
+  }
+
+  /*
+   * Fetch all followings of a user in the given community
+   */
+  public function findAllFollowingInCommunityForUser($community, $user)
+  {
+
+    if ($community === null){
+      return null;
+    }
+
+    $qb = $this->getEntityManager()->createQueryBuilder();
+    
+    return $qb->select('u')
+            ->from('metaUserProfileBundle:User', 'u')
+            ->join('u.followers', 'f')
+            ->join('u.community', 'c')
+            ->where('u.deleted_at IS NULL')
+            ->andWhere('f = :user')
+            ->setParameter('user', $user)
+            ->andWhere('c = :community')
+            ->setParameter('community', $community)
+            ->getQuery()
+            ->getResult();
+  }
+
+  /*
+   * Fetch all ideas watched by the user in the given community
+   */
+  public function findAllIdeasWatchedInCommunityForUser($community, $user)
+  {
+
+  }
+
+  /*
+   * Fetch all projects watched by the user in the given community
+   */
+  public function findAllProjectsWatchedInCommunityForUser($community, $user)
+  {
+
+  }
+
+  /*
    * Find a user by its username in a given community
    */
   public function findOneByUsernameInCommunity($username, $community)

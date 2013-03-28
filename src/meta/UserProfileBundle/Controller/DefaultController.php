@@ -52,11 +52,17 @@ class DefaultController extends Controller
         $projectsOwned = $projectRepository->findAllProjectsInCommunityForUserOwnedBy($authenticatedUser->getCurrentCommunity(), $authenticatedUser, $user);
         $projectsParticipatedIn = $projectRepository->findAllProjectsInCommunityForUserParticipatedInBy($authenticatedUser->getCurrentCommunity(), $authenticatedUser, $user);
 
-/*
         $ideaRepository = $this->getDoctrine()->getRepository('metaIdeaProfileBundle:Idea');
-        $ideasOwned = $projectRepository->findAllIdeasInCommunityForUserOwnedBy($authenticatedUser->getCurrentCommunity(), $authenticatedUser, $user);
-        $ideasParticipatedIn = $projectRepository->findAllIdeasInCommunityForUserParticipatedInBy($authenticatedUser->getCurrentCommunity(), $authenticatedUser, $user);
-*/
+        $ideasCreated = $projectRepository->findAllIdeasInCommunityCreatedBy($authenticatedUser->getCurrentCommunity(), $user);
+        $ideasParticipatedIn = $projectRepository->findAllIdeasInCommunityParticipatedInBy($authenticatedUser->getCurrentCommunity(), $user);
+
+        // Followers / Followings
+        $followers = $repository->findAllFollowersInCommunityForUser($community, $user);
+        $following = $repository->findAllFollowingInCommunityForUser($community, $user);
+
+        // Watching projects / ideas
+        $ideasWatched = $repository->findAllIdeasWatchedInCommunityForUser($community, $user);
+        $projectsWatched = $repository->findAllProjectsWatchedInCommunityForUser($community, $user);
 
         $targetAvatarAsBase64 = array ('slug' => 'metaUserProfileBundle:Default:edit', 'params' => array('username' => $username ), 'crop' => true);
 
@@ -66,9 +72,13 @@ class DefaultController extends Controller
                   'isMe' => $isMe,
                   'targetAvatarAsBase64' => base64_encode(json_encode($targetAvatarAsBase64)),
                   'projectsOwned' => $projectsOwned,
-                  'projectsParticipatedIn' => $projectsParticipatedIn /*,
-                  'ideasOwned' => $ideasOwned,
-                  'ideasParticipatedIn' => $ideasParticipatedIn */
+                  'projectsParticipatedIn' => $projectsParticipatedIn,
+                  'ideasCreated' => $ideasCreated,
+                  'ideasParticipatedIn' => $ideasParticipatedIn,
+                  'followers' => $followers,
+                  'following' => $following,
+                  'projectsWatched' => $projectsWatched,
+                  'ideasWatched' => $ideasWatched
                 ));
     }
 

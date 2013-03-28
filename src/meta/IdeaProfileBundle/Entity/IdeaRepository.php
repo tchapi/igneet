@@ -29,8 +29,8 @@ class IdeaRepository extends EntityRepository
       $query->join('i.creators', 'u')
             ->leftJoin('i.participants', 'u2')
             ->andWhere('i.community IS NULL')
-            ->andWhere('u.id = :id OR u2.id = :id')
-            ->setParameter('id', $user->getId());
+            ->andWhere('u = :user OR u2 = :user')
+            ->setParameter('user', $user);
     } else {
       $query->andWhere('i.community = :community')
             ->setParameter('community', $community);
@@ -58,8 +58,8 @@ class IdeaRepository extends EntityRepository
       $query->join('i.creators', 'u')
             ->leftJoin('i.participants', 'u2')
             ->andWhere('i.community IS NULL')
-            ->andWhere('u.id = :id OR u2.id = :id')
-            ->setParameter('id', $user->getId());
+            ->andWhere('u = :user OR u2 = :user')
+            ->setParameter('user', $user);
     } else {
       $query->andWhere('i.community = :community')
             ->setParameter('community', $community);
@@ -86,6 +86,64 @@ class IdeaRepository extends EntityRepository
   }
 
   /*
+   * Fetch all ideas in a given community, created by $creator
+   */
+  public function findAllIdeasInCommunityCreatedBy($community, $creator)
+  {
+    
+    $qb = $this->getEntityManager()->createQueryBuilder();
+    $query = $qb->select('i')
+            ->from('metaIdeaProfileBundle:Idea', 'i')
+            ->join('i.creators', 'u')
+            ->where('i.archived_at IS NULL')
+            ->andWhere('i.deleted_at IS NULL')
+            ->andWhere('u = :user')
+            ->setParameter('user', $user);
+
+    if ($community === null){
+      // We do not have to worry about accessing another user profile
+      // when community is null (only our own profile is available in private space)
+      $query->andWhere('i.community IS NULL');
+    } else {
+      $query->andWhere('i.community = :community')
+            ->setParameter('community', $community);
+    }
+
+    return $query
+            ->getQuery()
+            ->getResult();
+  }
+
+  /*
+   * Fetch all ideas in a given community, where $participant participates in
+   */
+  public function findAllIdeasInCommunityParticipatedInBy($community, $participant)
+  {
+    
+    $qb = $this->getEntityManager()->createQueryBuilder();
+    $query = $qb->select('i')
+            ->from('metaIdeaProfileBundle:Idea', 'i')
+            ->join('i.participants', 'u')
+            ->where('i.archived_at IS NULL')
+            ->andWhere('i.deleted_at IS NULL')
+            ->andWhere('u = :user')
+            ->setParameter('user', $user);
+
+    if ($community === null){
+      // We do not have to worry about accessing another user profile
+      // when community is null (only our own profile is available in private space)
+      $query->andWhere('i.community IS NULL');
+    } else {
+      $query->andWhere('i.community = :community')
+            ->setParameter('community', $community);
+    }
+
+    return $query
+            ->getQuery()
+            ->getResult();
+  }
+
+  /*
    * Find a user by id in a given community
    */
   public function findOneByIdInCommunityForUser($id, $community, $user, $archived = false)
@@ -100,11 +158,11 @@ class IdeaRepository extends EntityRepository
             ->andWhere('i.deleted_at IS NULL');
 
     if ($community === null){
-      $query->join('i.creators', 'u')
+      $query->join('i.creators', 'u') 
             ->leftJoin('i.participants', 'u2')
             ->andWhere('i.community IS NULL')
-            ->andWhere('u.id = :id OR u2.id = :id')
-            ->setParameter('id', $user->getId());
+            ->andWhere('u = :user OR u2 = :user')
+            ->setParameter('user', $user);
     } else {
       $query->andWhere('i.community = :community');
     }

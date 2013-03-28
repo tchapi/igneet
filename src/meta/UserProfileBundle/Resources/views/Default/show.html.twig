@@ -100,81 +100,55 @@
   </div>
 </section>
 
-{% if user.countFollowing > 0 %}
+{% if following|length > 0 %}
 <section class="colored first">
 <div class="sectionTitle">{{ user.firstName }} is following : </div>
 <ul class="users sectionContent">
-{% for followingUser in user.following %}
-  {% if not followingUser.isDeleted %}
-    <li>
-      <a href="{{ path('u_show_user_profile', {'username': followingUser.username}) }}">
-        <img src="{{ followingUser.avatar }}" width="70" height="70" class="smallAvatar"/>
-        <div class="smallObjectInfos ellipsis-multiline">
-          <span><div>{{ followingUser.firstName }}</div><div>{{ followingUser.lastName|upper }}</div></span>
-        </div>
-      </a>
-    </li>
-  {% endif %}
+{% for followingUser in following %}
+  <li>
+    <a href="{{ path('u_show_user_profile', {'username': followingUser.username}) }}">
+      <img src="{{ followingUser.avatar }}" width="70" height="70" class="smallAvatar"/>
+      <div class="smallObjectInfos ellipsis-multiline">
+        <span><div>{{ followingUser.firstName }}</div><div>{{ followingUser.lastName }}</div></span>
+      </div>
+    </a>
+  </li>
 {% endfor %}
 </ul>
 </section>
 {% endif %}
 
-{% if isMe and user.countFollowers > 0 %}
+{% if isMe and followers|length > 0 %}
 <section class="colored">
 <div class="sectionTitle">My followers : </div>
 <ul class="users sectionContent">
-{% for followerUser in user.followers %}
-  {% if not followerUser.isDeleted %}
-    <li>
-      <a href="{{ path('u_show_user_profile', {'username': followerUser.username}) }}">
-        <img src="{{ followerUser.avatar }}" width="70" height="70" class="smallAvatar"/>
-        <div class="smallObjectInfos ellipsis-multiline">
-          <span><div>{{ followerUser.firstName }}</div><div>{{ followerUser.lastName|upper }}</div></span>
-        </div>
-      </a>
-    </li>
-  {% endif %}
+{% for followerUser in followers %}
+  <li>
+    <a href="{{ path('u_show_user_profile', {'username': followerUser.username}) }}">
+      <img src="{{ followerUser.avatar }}" width="70" height="70" class="smallAvatar"/>
+      <div class="smallObjectInfos ellipsis-multiline">
+        <span><div>{{ followerUser.firstName }}</div><div>{{ followerUser.lastName }}</div></span>
+      </div>
+    </a>
+  </li>
 {% endfor %}
 </ul>
 </section>
 {% endif %}
 
-{% if isMe and user.countProjectsWatched > 0 %}
+{% if isMe and projectsWatched|length > 0 %}
 <section class="colored">
 <div class="sectionTitle">Projects I watch :</div>
 <ul class="projects sectionContent">
-{% for watchedProject in user.projectsWatched %}
-  {% if not watchedProject.isDeleted %}
-    <li>
-      <a href="{{ path('sp_show_project', {'slug': watchedProject.slug}) }}">
-        <img src="{{ watchedProject.picture }}" width="70" height="70" class="smallAvatar"/>
-        <div class="smallObjectInfos ellipsis-multiline">
-          <span>{{ watchedProject.name }}</span>
-        </div>
-      </a>
-    </li>
-  {% endif %}
-{% endfor %}
-</ul>
-</section>
-{% endif %}
-
-{% if isMe and user.countNotArchivedIdeasWatched() > 0 %}
-<section class="colored">
-<div class="sectionTitle">Ideas I watch :</div>
-<ul class="projects sectionContent">
-{% for idea in user.ideasWatched %}
-  {% if not idea.isArchived and not idea.isDeleted %}
-    <li>
-      <a href="{{ path('i_show_idea', {'id': idea.id}) }}">
-        <img src="{{ idea.picture }}" width="70" height="70" class="smallAvatar"/>
-        <div class="smallObjectInfos ellipsis-multiline">
-          <span>{{ idea.name }}</span>
-        </div>
-      </a>
-    </li>
-  {% endif %}
+{% for watchedProject in projectsWatched %}
+  <li>
+    <a href="{{ path('sp_show_project', {'slug': watchedProject.slug}) }}">
+      <img src="{{ watchedProject.picture }}" width="70" height="70" class="smallAvatar"/>
+      <div class="smallObjectInfos ellipsis-multiline">
+        <span>{{ watchedProject.name }}</span>
+      </div>
+    </a>
+  </li>
 {% endfor %}
 </ul>
 </section>
@@ -216,41 +190,55 @@
 </section>
 {% endif %}
 
-{% if user.countNotArchivedIdeasCreated > 0 %}
+{% if isMe and ideasWatched|length > 0 %}
 <section class="colored">
-<div class="sectionTitle">Ideas I initiated :</div>
+<div class="sectionTitle">Ideas I watch :</div>
 <ul class="projects sectionContent">
-{% for idea in user.ideasCreated %}
-  {% if not idea.isArchived and not idea.isDeleted %}
-    <li>
-      <a href="{{ path('i_show_idea', {'id': idea.id}) }}">
-        <img src="{{ idea.picture }}" width="70" height="70" class="smallAvatar"/>
-        <div class="smallObjectInfos ellipsis-multiline">
-          <span>{{ idea.name }}</span>
-        </div>
-      </a>
-    </li>
-  {% endif %}
+{% for idea in user.ideasWatched %}
+  <li>
+    <a href="{{ path('i_show_idea', {'id': idea.id}) }}">
+      <img src="{{ idea.picture }}" width="70" height="70" class="smallAvatar"/>
+      <div class="smallObjectInfos ellipsis-multiline">
+        <span>{{ idea.name }}</span>
+      </div>
+    </a>
+  </li>
 {% endfor %}
 </ul>
 </section>
 {% endif %}
 
-{% if user.countNotArchivedIdeasParticipatedIn > 0 %}
+{% if ideasCreated|length > 0 %}
+<section class="colored">
+<div class="sectionTitle">Ideas I initiated :</div>
+<ul class="projects sectionContent">
+{% for idea in ideasCreated %}
+  <li>
+    <a href="{{ path('i_show_idea', {'id': idea.id}) }}">
+      <img src="{{ idea.picture }}" width="70" height="70" class="smallAvatar"/>
+      <div class="smallObjectInfos ellipsis-multiline">
+        <span>{{ idea.name }}</span>
+      </div>
+    </a>
+  </li>
+{% endfor %}
+</ul>
+</section>
+{% endif %}
+
+{% if ideasParticipatedIn|length > 0 %}
 <section class="colored">
 <div class="sectionTitle">Ideas I participate in :</div>
 <ul class="projects sectionContent">
 {% for idea in user.ideasParticipatedIn %}
-  {% if not idea.isArchived and not idea.isDeleted %}
-    <li>
-      <a href="{{ path('i_show_idea', {'id': idea.id}) }}">
-        <img src="{{ idea.picture }}" width="70" height="70" class="smallAvatar"/>
-        <div class="smallObjectInfos ellipsis-multiline">
-          <span>{{ idea.name }}</span>
-        </div>
-      </a>
-    </li>
-  {% endif %}
+  <li>
+    <a href="{{ path('i_show_idea', {'id': idea.id}) }}">
+      <img src="{{ idea.picture }}" width="70" height="70" class="smallAvatar"/>
+      <div class="smallObjectInfos ellipsis-multiline">
+        <span>{{ idea.name }}</span>
+      </div>
+    </a>
+  </li>
 {% endfor %}
 </ul>
 </section>
