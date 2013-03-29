@@ -274,14 +274,25 @@ class SecurityController extends Controller
     public function changePasswordAction($token)
     {
 
-        $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
-        $user = $repository->findOneByToken($token);
+        if ($request->isMethod('POST')) {
 
-        if (is_null($token) || !$user || $user == false){
-            throw $this->createNotFoundException();
-        }
+            
+
+        } else {
+
+            $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
+            $user = $repository->findOneByToken($token);
+
+            $token_parts = explode(':',base64_decode($token));
+            $flavour = $token_parts[0];
+
+            if (is_null($token) || !$user || $user == false){
+                throw $this->createNotFoundException();
+            }
+            
+            return $this->render('metaUserProfileBundle:Security:changePassword.html.twig', array('token' => $token, 'flavour' => $flavour));
         
-        return $this->render('metaUserProfileBundle:Security:changePassword.html.twig', array('token' => $token));
+        }
 
     }
 
