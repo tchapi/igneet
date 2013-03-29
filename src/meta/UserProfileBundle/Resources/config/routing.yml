@@ -12,6 +12,18 @@ invite:
     pattern: /invite
     defaults: { _controller: metaUserProfileBundle:Security:invite }
 
+reactivate:
+    pattern: /reactivate
+    defaults: { _controller: metaUserProfileBundle:Security:reactivateOrRecover, flavour: reactivate }
+
+recover:
+    pattern: /recover
+    defaults: { _controller: metaUserProfileBundle:Security:reactivateOrRecover, flavour: recover }
+
+change_password:
+    pattern: /change/password/{token}
+    defaults: { _controller: metaUserProfileBundle:Security:changePassword }
+
 u_signup:
     pattern:  /signup/{inviteToken}
     defaults: { _controller: metaUserProfileBundle:Default:create, inviteToken: null }

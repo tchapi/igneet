@@ -1,0 +1,40 @@
+{% extends 'metaUserProfileBundle::layout.html.twig' %}
+
+{% block title %}{{ parent() }} > {% if flavour == 'reactivate' %}Reactivate your account{% else %}Recover your lost password{% endif %}{% endblock %}
+
+{% block header %}
+  <div class="headerAvatarAndActions">
+    <div class="textAvatar"><i class="icon-refresh"></i></div>
+  </div>
+  <div class="objectHeader">
+  {% if flavour == 'reactivate' %}
+    <h2>Account reactivation</h2>
+    <h4>Your account has been deleted</h4>
+    <p>If you wish to regain access to it, please provide the email address used for signup. A mail will be sent with a link to reactivate it</p>
+  {% else %}
+    <h2>Password recovery</h2>
+    <h4>You have lost your password</h4>
+    <p>If you wish to regain access to your account by changing your password, please provide the email address used for signup. A mail will be sent with a link to change it</p>
+  {% endif %}
+  </div>
+{% endblock %}
+
+{% block content %}
+{% if error %}
+<div class="alert alert-error">{{ error.message }}</div>
+{% endif %}
+<form action="{{ path(flavour) }}" method="POST">
+  <section>
+    <div class="sectionTitle"><label for="mail">Email :</label></div>
+    <div class="sectionContent">
+      <input type="text" id="mail" name="mail" value=""/>
+    </div>
+  </section>
+  <section>
+    <div class="sectionTitle"></div>
+    <div class="sectionContent">
+      <input type="submit" name="Continue" class="btn btn-info"/>
+    </div>
+  </section>
+</form>
+{% endblock %}

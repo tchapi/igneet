@@ -82,7 +82,14 @@ PROJECT gestion des users dans le private space : ne pas avoir d'user !
 Todo - General / Users :
 
  ☐ Page de réactivation de compte quand il a été supprimé
+   - rentre son adresse email
+   - recoit un mail avec un token
+   - lien?login=login&token=token
+   - page de choix nouveau mot de passe
+   - flush et login
  ☐ Page de renvoi de mot de passe // lost password
+   - idem 
+
 
  ✔ Mettre maxUsersInListings en parameters de l'appli a récupérer dans Twig @done (13-03-28 00:54)
  ✔ login et signup : focus sur le champ lors du chargement de la page @done (13-03-27 16:37)

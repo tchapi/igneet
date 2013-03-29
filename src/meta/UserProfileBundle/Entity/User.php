@@ -120,6 +120,13 @@ class User implements AdvancedUserInterface
     private $createdTokens;
 
     /**
+     * @var string $token
+     *
+     * @ORM\Column(name="token", type="string", length=255, nullable=true)
+     */
+    private $token;
+
+    /**
      * @var date $created_at
      * 
      * @ORM\Column(name="created_at", type="datetime")
@@ -1511,6 +1518,23 @@ class User implements AdvancedUserInterface
     public function getCreatedTokens()
     {
         return $this->createdTokens;
+    }
+
+    /**
+     * Create a token for recovery
+     *
+     */
+    public function createNewRecoverToken()
+    {
+        $this->token = base64_encode("recover:" . md5(uniqid(null, true)));
+    }
+    /**
+     * Create a token for reactivation
+     *
+     */
+    public function createNewReactivateToken()
+    {
+        $this->token = base64_encode("reactivate:" . md5(uniqid(null, true)));
     }
 
     /**
