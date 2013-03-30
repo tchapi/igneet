@@ -174,7 +174,7 @@ class SecurityController extends Controller
     /*
      * Reactivate a user account by sending a mail with an invite
      */
-    public function reactivateOrRecoverAction($flavour)
+    public function reactivateOrRecoverAction(Request $request, $flavour)
     {
 
         // You should not be logged

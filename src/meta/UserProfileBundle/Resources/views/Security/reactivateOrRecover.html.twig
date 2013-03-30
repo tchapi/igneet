@@ -20,9 +20,6 @@
 {% endblock %}
 
 {% block content %}
-{% if error %}
-<div class="alert alert-error">{{ error.message }}</div>
-{% endif %}
 <form action="{{ path(flavour) }}" method="POST">
   <section>
     <div class="sectionTitle"><label for="mail">Email :</label></div>

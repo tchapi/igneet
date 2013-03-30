@@ -42,5 +42,7 @@ security:
             anonymous: ~
     access_control:
         - { path: /login.*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: /reactivate, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: /recover, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: /signup, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: /.*, roles: ROLE_USER }
