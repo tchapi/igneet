@@ -174,7 +174,7 @@ class SecurityController extends Controller
     /*
      * Reactivate a user account by sending a mail with an invite
      */
-    public function reactivateOrRecoverAction($email, $flavour)
+    public function reactivateOrRecoverAction($flavour)
     {
 
         // You should not be logged
@@ -286,7 +286,7 @@ class SecurityController extends Controller
             $token_parts = explode(':',base64_decode($token));
             $flavour = $token_parts[0];
 
-            if (is_null($token) || !$user || $user == false){
+            if (is_null($token) || !$user || $user == false){
                 throw $this->createNotFoundException();
             }
             
