@@ -271,24 +271,84 @@ class SecurityController extends Controller
     /*
      * Allows to change a password
      */
-    public function changePasswordAction($token)
+    public function changePasswordAction(Request $request, $token)
     {
+
+        $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
+        $user = $repository->findOneByToken($token);
+
+        $token_parts = explode(':',base64_decode($token));
+        $flavour = $token_parts[0];
+
+        if (is_null($token) || !$user || $user == false){
+            throw $this->createNotFoundException();
+        }
 
         if ($request->isMethod('POST')) {
 
+            $newPassword = $request->request->get('password');
+            $newPassword_2 = $request->request->get('password_2');
+
+            if ($newPassword !== $newPassword_2){
+
+                $this->get('session')->setFlash(
+                    'error',
+                    'Password entries do not match.'
+                );
+
+                return $this->render('metaUserProfileBundle:Security:changePassword.html.twig', array('token' => $token, 'flavour' => $flavour));
+        
+            } else {
+
+                $factory = $this->get('security.encoder_factory');
+                $user->setPassword($newPassword);
+                $encoder = $factory->getEncoder($user);
+
+                // Changes password
+                $user->setSalt(md5(uniqid(null, true)));
+                $user->setToken(null);
+
+                if ($flavour === 'reactivate'){
+
+                    $this->get('session')->setFlash(
+                        'info',
+                        'Your account has been reactivated.'
+                    );
+
+                    $user->setDeletedAt(null);
+
+                }
+
+                $errors = $this->get('validator')->validate($user);
             
+                if( count($errors) === 0){
+
+                    // Now that it is validated
+                    $user->setPassword($encoder->encodePassword($user->getPassword(), $user->getSalt()));
+                    $em = $this->getDoctrine()->getManager();
+                    $em->flush();
+
+                    $this->get('session')->setFlash(
+                        'success',
+                        'Your password has been changed, you can now login.'
+                    );
+
+                    return $this->redirect($this->generateUrl('login'));
+
+                } else {
+
+                    $this->get('session')->setFlash(
+                        'error',
+                        $errors[0]->getMessage()
+                    );
+
+                    return $this->render('metaUserProfileBundle:Security:changePassword.html.twig', array('token' => $token, 'flavour' => $flavour));
+        
+                }
+
+            }
 
         } else {
-
-            $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
-            $user = $repository->findOneByToken($token);
-
-            $token_parts = explode(':',base64_decode($token));
-            $flavour = $token_parts[0];
-
-            if (is_null($token) || !$user || $user == false){
-                throw $this->createNotFoundException();
-            }
             
             return $this->render('metaUserProfileBundle:Security:changePassword.html.twig', array('token' => $token, 'flavour' => $flavour));
         
