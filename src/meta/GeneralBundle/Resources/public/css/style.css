@@ -77,7 +77,7 @@ hr {
   padding: 0;
 }
 /* sections */
-div.content{ position: relative;}
+div.content{ position: relative; word-wrap: break-word;}
 div.content section{
   position: relative;
   padding: 10px 20px;
