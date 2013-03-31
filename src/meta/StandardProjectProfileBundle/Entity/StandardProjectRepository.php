@@ -26,8 +26,8 @@ class StandardProjectRepository extends EntityRepository
             ->join('sp.owners', 'u')
             ->leftJoin('sp.participants', 'u2')
             ->where('sp.deleted_at IS NULL')
-            ->andWhere( $guestCriteria .'u.id = :id OR u2.id = :id')
-            ->setParameter('id', $user->getId());
+            ->andWhere( $guestCriteria .'u = :user OR u2 = :user')
+            ->setParameter('user', $user);
 
     if ($community === null){
       $query->andWhere('sp.community IS NULL');
@@ -55,8 +55,8 @@ class StandardProjectRepository extends EntityRepository
             ->join('sp.owners', 'u')
             ->leftJoin('sp.participants', 'u2')
             ->where('sp.deleted_at IS NULL')
-            ->andWhere( $guestCriteria .'u.id = :id OR u2.id = :id')
-            ->setParameter('id', $user->getId());
+            ->andWhere( $guestCriteria .'u = :user OR u2 = :user')
+            ->setParameter('user', $user);
 
     if ($community === null){
       $query->andWhere('sp.community IS NULL');
@@ -159,12 +159,17 @@ class StandardProjectRepository extends EntityRepository
   public function findAllProjectsWatchedInCommunityForUser($community, $user)
   {
     
+    $guestCriteria = $user->isGuestInCurrentCommunity()?'':'sp.private = 0 OR ';
+
     $qb = $this->getEntityManager()->createQueryBuilder();
     $query = $qb->select('sp')
             ->from('metaStandardProjectProfileBundle:StandardProject', 'sp')
-            ->join('sp.watchers', 'u')
+            ->join('sp.owners', 'u')
+            ->leftJoin('sp.participants', 'u2')
+            ->join('sp.watchers', 'u3')
             ->andWhere('sp.deleted_at IS NULL')
-            ->andWhere('u = :user')
+            ->andWhere( $guestCriteria .'u = :user OR u2 = :user')
+            ->andWhere('u3 = :user')
             ->setParameter('user', $user);
 
     if ($community === null){
@@ -185,17 +190,16 @@ class StandardProjectRepository extends EntityRepository
   /*
    * Fetch top N projects for the user in the given community
    */
-  public function findTopProjectsInCommunityForUser($community, $userId, $max = 3)
+  public function findTopProjectsInCommunityForUser($community, $user, $max = 3)
   {
     
     $qb = $this->getEntityManager()->createQueryBuilder();
-
     $query = $qb->select('sp, MAX(l.created_at) AS last_update')
             ->from('metaStandardProjectProfileBundle:StandardProject', 'sp')
             ->join('sp.logEntries', 'l')
             ->join('sp.owners', 'u')
-            ->where('u.id = :userId')
-            ->setParameter('userId', $userId)
+            ->where('u = :user')
+            ->setParameter('user', $user)
             ->andWhere('sp.deleted_at IS NULL');
 
     if ($community === null){
@@ -211,6 +215,37 @@ class StandardProjectRepository extends EntityRepository
             ->getQuery()
             ->getResult();
 
+  }
+
+   /*
+   * Fetch last N projects for the user in the given community
+   */
+  public function findLastProjectsInCommunityForUser($community, $user, $max = 3)
+  {
+ 
+    $guestCriteria = $user->isGuestInCurrentCommunity()?'':'sp.private = 0 OR ';
+
+    $qb = $this->getEntityManager()->createQueryBuilder();
+    $query = $qb->select('sp')
+            ->from('metaStandardProjectProfileBundle:StandardProject', 'sp')
+            ->join('sp.owners', 'u')
+            ->leftJoin('sp.participants', 'u2')
+            ->where('sp.deleted_at IS NULL')
+            ->andWhere( $guestCriteria .'u = :user OR u2 = :user')
+            ->setParameter('user', $user);
+
+    if ($community === null){
+      $query->andWhere('sp.community IS NULL');
+    } else {
+      $query->andWhere('sp.community = :community')
+            ->setParameter('community', $community);
+    }
+
+    return $query->groupBy('sp.id')
+            ->orderBy('sp.created_at', 'DESC')
+            ->setMaxResults($max)
+            ->getQuery()
+            ->getResult();
   }
 
   /*

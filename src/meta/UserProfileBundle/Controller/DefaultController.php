@@ -161,7 +161,7 @@ class DefaultController extends Controller
         $last7daysCommentActivity = $commentRepository->computeWeekCommentActivityForUser($authenticatedUser->getId());
         
         // Top 3 projects
-        $top3projects = $standardProjectRepository->findTopProjectsInCommunityForUser($authenticatedUser->getCurrentCommunity(), $authenticatedUser->getId(), 3);
+        $top3projects = $standardProjectRepository->findTopProjectsInCommunityForUser($authenticatedUser->getCurrentCommunity(), $authenticatedUser, 3);
         $top3projectsActivity = array();
 
         if (count($top3projects)){
@@ -172,8 +172,11 @@ class DefaultController extends Controller
             }
         }
 
+        // Last 3 projects created in the community for user (private taken into account)
+        $last3projects = $standardProjectRepository->findLastProjectsInCommunityForUser($authenticatedUser->getCurrentCommunity(), $authenticatedUser, 3);
+        
         // Top 3 ideas
-        $top3ideas = $ideaRepository->findTopIdeasInCommunityForUser($authenticatedUser->getCurrentCommunity(), $authenticatedUser->getId(), 3);
+        $top3ideas = $ideaRepository->findTopIdeasInCommunityForUser($authenticatedUser->getCurrentCommunity(), $authenticatedUser, 3);
         $top3ideasActivity = array();
 
         if (count($top3ideas)){
@@ -184,6 +187,9 @@ class DefaultController extends Controller
             }
         }
 
+        // Last 3 ideas created in the community
+        $last3ideas = $ideaRepository->findLastIdeasInCommunityForUser($authenticatedUser->getCurrentCommunity(), $authenticatedUser, 3);
+
         return $this->render('metaUserProfileBundle:Dashboard:showDashboard.html.twig', 
             array('user' => $authenticatedUser,
                   'lastActivity' => $lastActivity['date'],
@@ -192,8 +198,10 @@ class DefaultController extends Controller
                   'lastSocial' => $lastSocial,
                   'top3projects' => $top3projects,
                   'top3projectsActivity' => $top3projectsActivity,
+                  'last3projects' => $last3projects,
                   'top3ideas' => $top3ideas,
-                  'top3ideasActivity' => $top3ideasActivity
+                  'top3ideasActivity' => $top3ideasActivity,
+                  'last3ideas' => $last3ideas
                 ));
     }
 
