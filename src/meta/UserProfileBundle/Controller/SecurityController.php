@@ -300,30 +300,30 @@ class SecurityController extends Controller
         
             } else {
 
-                $factory = $this->get('security.encoder_factory');
                 $user->setPassword($newPassword);
-                $encoder = $factory->getEncoder($user);
 
                 // Changes password
                 $user->setSalt(md5(uniqid(null, true)));
                 $user->setToken(null);
 
-                if ($flavour === 'reactivate'){
-
-                    $this->get('session')->setFlash(
-                        'info',
-                        'Your account has been reactivated.'
-                    );
-
-                    $user->setDeletedAt(null);
-
-                }
-
                 $errors = $this->get('validator')->validate($user);
             
                 if( count($errors) === 0){
 
-                    // Now that it is validated
+                    if ($flavour === 'reactivate'){
+
+                        $this->get('session')->setFlash(
+                            'info',
+                            'Your account has been reactivated.'
+                        );
+
+                        $user->setDeletedAt(null);
+
+                    }
+
+                    // Now that it is validated, let's crypt the whole thing
+                    $factory = $this->get('security.encoder_factory');
+                    $encoder = $factory->getEncoder($user);
                     $user->setPassword($encoder->encodePassword($user->getPassword(), $user->getSalt()));
                     $em = $this->getDoctrine()->getManager();
                     $em->flush();
@@ -372,6 +372,7 @@ class SecurityController extends Controller
             // Logs last activity
             $em = $this->getDoctrine()->getManager();
             $authenticatedUser->setLastSeenAt(new \DateTime('now'));
+            $authenticatedUser->setToken(null); // Protect a bit more in case someone has a token that is not his
             $em->flush();
 
             return $this->render(
