@@ -1,0 +1,12 @@
+<h3>Hello,</h3>
+
+{% if flavour == 'reactivate' %}
+  <p>In order to reactivate your account, click on the link below. A password change will be required :</p> 
+{% else %}
+  <p>Please click on the following link to change your password :</p> 
+{% endif %}
+
+  <p><a href="{{ url('change_password', { 'token': token } ) }}">{{ url('change_password', { 'token': token } ) }}</a></p>
+
+<p><em>This is an automated message from igneet, please do not reply to this message.</em></p>
+<p><strong>The igneet team</strong></p>

@@ -147,8 +147,7 @@ class SecurityController extends Controller
                             'metaUserProfileBundle:Mail:invite.mail.html.twig',
                             array('user' => $authenticatedUser, 'inviteToken' => $token?$token->getToken():null, 'invitee' => ($user && !$user->isDeleted()), 'community' => $community, 'project' => null )
                         ), 'text/html'
-                    )
-                ;
+                    );
                 $this->get('mailer')->send($message);
 
                 return $this->redirect($this->generateUrl('u_me'));
@@ -172,6 +171,191 @@ class SecurityController extends Controller
 
     }
 
+    /*
+     * Reactivate a user account by sending a mail with an invite
+     */
+    public function reactivateOrRecoverAction(Request $request, $flavour)
+    {
+
+        // You should not be logged
+        if ($this->getUser()){
+            
+            $this->get('session')->setFlash(
+                'error',
+                'You are already logged.'
+            );
+
+            return $this->redirect($this->generateUrl('u_me'));
+        }
+
+        if ($request->isMethod('POST')) {
+
+            $mail = $request->request->get('mail');
+
+            $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
+            $em = $this->getDoctrine()->getManager();
+            
+            $user = $repository->findOneByEmail($mail);
+
+            if ( $user && $flavour === 'reactivate' && $user->isDeleted() ){
+
+                $user->createNewReactivateToken();
+                $em->flush();
+
+                $this->get('session')->setFlash(
+                    'success',
+                    'An email was sent to ' . $mail . ' so you can reactivate your account.'
+                );
+
+                // Sends mail to invitee
+                $message = \Swift_Message::newInstance()
+                    ->setSubject('Reactivate your account')
+                    ->setFrom($this->container->getParameter('mailer_from'))
+                    ->setTo($mail)
+                    ->setBody(
+                        $this->renderView(
+                            'metaUserProfileBundle:Mail:reactivateOrRecover.mail.html.twig',
+                            array('user' => $user, 'token' => $user->getToken(), 'flavour' => $flavour )
+                        ), 'text/html'
+                    );
+
+                $this->get('mailer')->send($message);
+
+                return $this->redirect($this->generateUrl('login'));
+
+            } elseif ( $user && $flavour === 'recover' && !$user->isDeleted() ){
+
+                $user->createNewRecoverToken();
+                $em->flush();
+
+                $this->get('session')->setFlash(
+                    'success',
+                    'An email was sent to ' . $mail . ' so you can change your password.'
+                );
+
+                // Sends mail to invitee
+                $message = \Swift_Message::newInstance()
+                    ->setSubject('Recover your password')
+                    ->setFrom($this->container->getParameter('mailer_from'))
+                    ->setTo($mail)
+                    ->setBody(
+                        $this->renderView(
+                            'metaUserProfileBundle:Mail:reactivateOrRecover.mail.html.twig',
+                            array('user' => $user, 'token' => $user->getToken(), 'flavour' => $flavour )
+                        ), 'text/html'
+                    );
+
+                $this->get('mailer')->send($message);
+
+                return $this->redirect($this->generateUrl('login'));
+
+            } else {
+
+                $this->get('session')->setFlash(
+                    'error',
+                    'You cannot recover your account.'
+                );
+
+                return $this->redirect($this->generateUrl('u_me'));
+
+            }
+            
+        } else {
+
+            return $this->render('metaUserProfileBundle:Security:reactivateOrRecover.html.twig', array( 'flavour' => $flavour));
+        
+        }
+    
+    }
+
+    /*
+     * Allows to change a password
+     */
+    public function changePasswordAction(Request $request, $token)
+    {
+
+        $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
+        $user = $repository->findOneByToken($token);
+
+        $token_parts = explode(':',base64_decode($token));
+        $flavour = $token_parts[0];
+
+        if (is_null($token) || !$user || $user == false){
+            throw $this->createNotFoundException();
+        }
+
+        if ($request->isMethod('POST')) {
+
+            $newPassword = $request->request->get('password');
+            $newPassword_2 = $request->request->get('password_2');
+
+            if ($newPassword !== $newPassword_2){
+
+                $this->get('session')->setFlash(
+                    'error',
+                    'Password entries do not match.'
+                );
+
+                return $this->render('metaUserProfileBundle:Security:changePassword.html.twig', array('token' => $token, 'flavour' => $flavour));
+        
+            } else {
+
+                $user->setPassword($newPassword);
+
+                // Changes password
+                $user->setSalt(md5(uniqid(null, true)));
+                $user->setToken(null);
+
+                $errors = $this->get('validator')->validate($user);
+            
+                if( count($errors) === 0){
+
+                    if ($flavour === 'reactivate'){
+
+                        $this->get('session')->setFlash(
+                            'info',
+                            'Your account has been reactivated.'
+                        );
+
+                        $user->setDeletedAt(null);
+
+                    }
+
+                    // Now that it is validated, let's crypt the whole thing
+                    $factory = $this->get('security.encoder_factory');
+                    $encoder = $factory->getEncoder($user);
+                    $user->setPassword($encoder->encodePassword($user->getPassword(), $user->getSalt()));
+                    $em = $this->getDoctrine()->getManager();
+                    $em->flush();
+
+                    $this->get('session')->setFlash(
+                        'success',
+                        'Your password has been changed, you can now login.'
+                    );
+
+                    return $this->redirect($this->generateUrl('login'));
+
+                } else {
+
+                    $this->get('session')->setFlash(
+                        'error',
+                        $errors[0]->getMessage()
+                    );
+
+                    return $this->render('metaUserProfileBundle:Security:changePassword.html.twig', array('token' => $token, 'flavour' => $flavour));
+        
+                }
+
+            }
+
+        } else {
+            
+            return $this->render('metaUserProfileBundle:Security:changePassword.html.twig', array('token' => $token, 'flavour' => $flavour));
+        
+        }
+
+    }
+
     /* ********************************************************************* */
     /*                           Non-routed actions                          */
     /* ********************************************************************* */
@@ -188,6 +372,7 @@ class SecurityController extends Controller
             // Logs last activity
             $em = $this->getDoctrine()->getManager();
             $authenticatedUser->setLastSeenAt(new \DateTime('now'));
+            $authenticatedUser->setToken(null); // Protect a bit more in case someone has a token that is not his
             $em->flush();
 
             return $this->render(

@@ -10,8 +10,8 @@
     <h2>Welcome !</h2>
     <h4>Please log in to access the full content of the site.</h4>
     <p>If you do not have an account, you can <a href="{{ path('u_signup')}}" />signup</a> here.</p>
-    <p>If you have lost your password, you can follow the full recovery procedure <a href="#">here</a> to get a new one.<br/>
-      If you have deleted your account and want to recover it, click <a href=""/>here</a>.</p>
+    <p>If you have lost your password, you can follow the full recovery procedure <a href="{{ path('recover')}}">here</a> to get a new one.<br/>
+      If you have deleted your account and want to recover it, click <a href="{{ path('reactivate')}}"/>here</a>.</p>
   </div>
 {% endblock %}
 

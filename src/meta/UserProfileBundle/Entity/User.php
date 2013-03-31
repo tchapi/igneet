@@ -120,6 +120,13 @@ class User implements AdvancedUserInterface
     private $createdTokens;
 
     /**
+     * @var string $token
+     *
+     * @ORM\Column(name="token", type="string", length=255, nullable=true)
+     */
+    private $token;
+
+    /**
      * @var date $created_at
      * 
      * @ORM\Column(name="created_at", type="datetime")
@@ -1514,6 +1521,23 @@ class User implements AdvancedUserInterface
     }
 
     /**
+     * Create a token for recovery
+     *
+     */
+    public function createNewRecoverToken()
+    {
+        $this->token = base64_encode("recover:" . md5(uniqid(null, true)));
+    }
+    /**
+     * Create a token for reactivation
+     *
+     */
+    public function createNewReactivateToken()
+    {
+        $this->token = base64_encode("reactivate:" . md5(uniqid(null, true)));
+    }
+
+    /**
      * Set deleted_at
      *
      * @param \DateTime $deletedAt
@@ -1681,5 +1705,28 @@ class User implements AdvancedUserInterface
     public function getCurrentCommunity()
     {
         return $this->current_community;
+    }
+
+    /**
+     * Set token
+     *
+     * @param string $token
+     * @return User
+     */
+    public function setToken($token)
+    {
+        $this->token = $token;
+    
+        return $this;
+    }
+
+    /**
+     * Get token
+     *
+     * @return string 
+     */
+    public function getToken()
+    {
+        return $this->token;
     }
 }

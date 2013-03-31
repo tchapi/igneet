@@ -374,6 +374,9 @@ div.listingItemInfo{
   width: 570px;
   display: inline-block;
 }
+.user div.listingItemInfo{
+  width: 790px;
+}
 div.listingItemRelatedObjects{
   position: absolute;
   right: 20px;
