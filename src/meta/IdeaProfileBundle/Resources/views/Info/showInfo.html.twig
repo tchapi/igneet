@@ -40,6 +40,7 @@
   {% endfor %}
   </ul>
 </section>
+{% if base.idea.community is not null %}
 <section class="colored">
   <div class="sectionTitle">{% if base.idea.countParticipants > 0 or base.isCreator %}Participants : {% else %}No participant yet ...{% endif %}</div>
   <ul class="users sectionContent">
@@ -68,6 +69,7 @@
   {% endif %}
   </ul>
 </section>
+{% endif %}
 {% if base.isCreator %}
 <section class="colored warning">
   <div class="sectionTitle">Delete this idea : </div>

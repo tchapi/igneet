@@ -18,24 +18,52 @@ use meta\UserProfileBundle\Entity\User,
 
 class DefaultController extends Controller
 {
+
     /*
      * Show a user profile
      */
     public function showAction($username)
     {
 
-        $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
-
-        $user = $repository->findOneByUsername($username);
-
-        if (!$user || $user->isDeleted()) {
-            throw $this->createNotFoundException('This user does not exist or has been deleted');
-        }
-
         $authenticatedUser = $this->getUser();
 
-        $alreadyFollowing = $authenticatedUser && $authenticatedUser->isFollowing($user);
-        $isMe = $authenticatedUser && ($authenticatedUser->getUsername() == $username);
+        // No users in private space
+        if (is_null($authenticatedUser->getCurrentCommunity()) && $username !== $authenticatedUser->getUsername()){
+            throw $this->createNotFoundException('This user does not exist');
+        }
+
+        $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
+        if ($username !== $authenticatedUser->getUsername()){
+            $user = $repository->findOneByUsernameInCommunity($username, $authenticatedUser->getCurrentCommunity());
+        } else {
+            $user = $authenticatedUser;
+        }
+
+        // If user is deleted or doesn't exist
+        if (!$user || $user->isDeleted()) {
+            throw $this->createNotFoundException('This user does not exist');
+        }
+
+        $alreadyFollowing = $authenticatedUser->isFollowing($user);
+        $isMe = ($authenticatedUser->getUsername() == $username);
+        $community = $authenticatedUser->getCurrentCommunity();
+
+        // Get projects / ideas lists
+        $projectRepository = $this->getDoctrine()->getRepository('metaStandardProjectProfileBundle:StandardProject');
+        $projectsOwned = $projectRepository->findAllProjectsInCommunityForUserOwnedBy($community, $authenticatedUser, $user);
+        $projectsParticipatedIn = $projectRepository->findAllProjectsInCommunityForUserParticipatedInBy($community, $authenticatedUser, $user);
+
+        $ideaRepository = $this->getDoctrine()->getRepository('metaIdeaProfileBundle:Idea');
+        $ideasCreated = $ideaRepository->findAllIdeasInCommunityCreatedBy($community, $user);
+        $ideasParticipatedIn = $ideaRepository->findAllIdeasInCommunityParticipatedInBy($community, $user);
+
+        // Followers / Followings
+        $followers = $repository->findAllFollowersInCommunityForUser($community, $user);
+        $following = $repository->findAllFollowingInCommunityForUser($community, $user);
+
+        // Watching projects / ideas
+        $ideasWatched = $ideaRepository->findAllIdeasWatchedInCommunityForUser($community, $user);
+        $projectsWatched = $projectRepository->findAllProjectsWatchedInCommunityForUser($community, $user);
 
         $targetAvatarAsBase64 = array ('slug' => 'metaUserProfileBundle:Default:edit', 'params' => array('username' => $username ), 'crop' => true);
 
@@ -43,8 +71,53 @@ class DefaultController extends Controller
             array('user' => $user,
                   'alreadyFollowing' => $alreadyFollowing,
                   'isMe' => $isMe,
-                  'targetAvatarAsBase64' => base64_encode(json_encode($targetAvatarAsBase64))
+                  'targetAvatarAsBase64' => base64_encode(json_encode($targetAvatarAsBase64)),
+                  'projectsOwned' => $projectsOwned,
+                  'projectsParticipatedIn' => $projectsParticipatedIn,
+                  'ideasCreated' => $ideasCreated,
+                  'ideasParticipatedIn' => $ideasParticipatedIn,
+                  'followers' => $followers,
+                  'following' => $following,
+                  'projectsWatched' => $projectsWatched,
+                  'ideasWatched' => $ideasWatched
                 ));
+    }
+
+    /* 
+     * Show My own user profile
+     */
+    public function showMeAction()
+    {
+        return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $this->getUser()->getUsername())));
+    }
+
+    /*
+     * List users
+     */
+    public function listAction($page, $sort)
+    {
+
+        $community = $this->getUser()->getCurrentCommunity();
+
+        // In private space : no users
+        if (is_null($community)) {
+            throw $this->createNotFoundException('There are no users in your private space');
+        }
+
+        $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
+
+        $totalUsers = $repository->countUsersInCommunity($community);
+        $maxPerPage = $this->container->getParameter('listings.number_of_items_per_page');
+
+        if ( ($page-1) * $maxPerPage > $totalUsers) {
+            return $this->redirect($this->generateUrl('u_list_users', array('sort' => $sort)));
+        }
+
+        $users = $repository->findAllUsersInCommunity($community, $page, $maxPerPage, $sort);
+
+        $pagination = array( 'page' => $page, 'totalUsers' => $totalUsers);
+        return $this->render('metaUserProfileBundle:Default:list.html.twig', array('users' => $users, 'pagination' => $pagination, 'sort' => $sort ));
+
     }
 
     /*
@@ -55,14 +128,14 @@ class DefaultController extends Controller
 
         $authenticatedUser = $this->getUser();
 
-        if (!$authenticatedUser) {
+        if (is_null($authenticatedUser->getCurrentCommunity()) || $authenticatedUser->isGuestInCurrentCommunity() ) {
 
             $this->get('session')->setFlash(
                 'error',
-                'Please login to access your account.'
+                'There is no dashboard in your private space or in a community in which you are a guest.'
             );
 
-            return $this->redirect($this->generateUrl('login'));
+            return $this->redirect($this->generateUrl('u_me'));
         } 
 
         // So let's get the stuff
@@ -88,7 +161,7 @@ class DefaultController extends Controller
         $last7daysCommentActivity = $commentRepository->computeWeekCommentActivityForUser($authenticatedUser->getId());
         
         // Top 3 projects
-        $top3projects = $standardProjectRepository->findTopProjectsForUser($authenticatedUser->getId(), 3);
+        $top3projects = $standardProjectRepository->findTopProjectsInCommunityForUser($authenticatedUser->getCurrentCommunity(), $authenticatedUser, 3);
         $top3projectsActivity = array();
 
         if (count($top3projects)){
@@ -99,18 +172,23 @@ class DefaultController extends Controller
             }
         }
 
+        // Last 3 projects created in the community for user (private taken into account)
+        $last3projects = $standardProjectRepository->findLastProjectsInCommunityForUser($authenticatedUser->getCurrentCommunity(), $authenticatedUser, 3);
+        
         // Top 3 ideas
-        $top3ideas = $ideaRepository->findTopIdeasForUser($authenticatedUser->getId(), 3);
+        $top3ideas = $ideaRepository->findTopIdeasInCommunityForUser($authenticatedUser->getCurrentCommunity(), $authenticatedUser, 3);
         $top3ideasActivity = array();
 
         if (count($top3ideas)){
             $top3ideasActivity_raw = $ideaRepository->computeWeekActivityForIdeas($top3ideas);
             
-            
             foreach ($top3ideasActivity_raw as $key => $value) {
                 $top3ideasActivity[$value['id']][] = $value;
             }
         }
+
+        // Last 3 ideas created in the community
+        $last3ideas = $ideaRepository->findLastIdeasInCommunityForUser($authenticatedUser->getCurrentCommunity(), $authenticatedUser, 3);
 
         return $this->render('metaUserProfileBundle:Dashboard:showDashboard.html.twig', 
             array('user' => $authenticatedUser,
@@ -120,34 +198,16 @@ class DefaultController extends Controller
                   'lastSocial' => $lastSocial,
                   'top3projects' => $top3projects,
                   'top3projectsActivity' => $top3projectsActivity,
+                  'last3projects' => $last3projects,
                   'top3ideas' => $top3ideas,
-                  'top3ideasActivity' => $top3ideasActivity
+                  'top3ideasActivity' => $top3ideasActivity,
+                  'last3ideas' => $last3ideas
                 ));
     }
 
-    /*
-     * Show My user profile
-     */
-    public function showMeAction()
-    {
-
-        $authenticatedUser = $this->getUser();
-
-        if ($authenticatedUser) {
-            return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $authenticatedUser->getUsername())));
-        } 
-
-        $this->get('session')->setFlash(
-                'error',
-                'Please login to access your account.'
-            );
-
-        return $this->redirect($this->generateUrl('login'));
-
-    }
 
     /*
-     * Create a form for a new user to signin AND process result if POST
+     * Create a form for a new user to signin AND process the result when POSTed
      */
     public function createAction(Request $request, $inviteToken)
     {
@@ -165,18 +225,25 @@ class DefaultController extends Controller
         }
 
         // Checks the inviteToken
+        if ( !is_null($inviteToken) ) {
 
-        $tokenRepository = $this->getDoctrine()->getRepository('metaUserProfileBundle:UserInviteToken');
-        $inviteToken = $tokenRepository->findOneByToken($inviteToken);
+            $tokenRepository = $this->getDoctrine()->getRepository('metaUserProfileBundle:UserInviteToken');
+            $inviteTokenObject = $tokenRepository->findOneByToken($inviteToken);
 
-        if ( !$inviteToken || $inviteToken->isUsed() ){
+            if ( $inviteTokenObject && $inviteTokenObject->isUsed() ){
 
-            $this->get('session')->setFlash(
-                'error',
-                'This signup link is not valid. Make sure it has not been used.'
-            );
+                $this->get('session')->setFlash(
+                    'error',
+                    'This signup link has already been used.'
+                );
 
-            return $this->redirect($this->generateUrl('login'));   
+                $inviteTokenObject = null;
+            }
+
+        } else {
+
+            $inviteTokenObject = null;
+        
         }
 
         $user = new User();
@@ -193,7 +260,32 @@ class DefaultController extends Controller
                 $user->setPassword($encoder->encodePassword($user->getPassword(), $user->getSalt()));
 
                 // Use inviteToken
-                $inviteToken->setResultingUser($user);
+                if (!is_null($inviteTokenObject)){
+
+                    $inviteTokenObject->setResultingUser($user);
+
+                    if (!is_null($inviteTokenObject->getCommunity())){
+
+                        if ($inviteTokenObject->getCommunityType() === 'user'){
+                            $inviteTokenObject->getCommunity()->addUser($user);
+                        } else {
+                            $inviteTokenObject->getCommunity()->addGuest($user);
+                        }
+                        
+                        $user->setCurrentCommunity($inviteTokenObject->getCommunity());
+
+                    }
+
+                    if (!is_null($inviteTokenObject->getProject())){
+
+                        if ($inviteTokenObject->getProjectType() === 'owner'){
+                            $user->addProjectsOwned($inviteTokenObject->getProject());
+                        } else {
+                            $user->addProjectsParticipatedIn($inviteTokenObject->getProject());
+                        }
+
+                    }
+                }
 
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($user);
@@ -234,7 +326,7 @@ class DefaultController extends Controller
     }
 
     /*
-     * Authenticated user can edit via X-editable
+     * Edit a user (via X-editable)
      */
     public function editAction(Request $request, $username)
     {
@@ -291,11 +383,10 @@ class DefaultController extends Controller
                     );
                     imagepng($dst_r, $preparedFilename.'.cropped');
 
-                    /* We need to update the date manually.
+                    /* We need to update the date manually : it's done later in the action.
                      * Otherwise, as file is not part of the mapping,
                      * @ORM\PreUpdate will not be called and the file will not be persisted
                      */
-                    // $authenticatedUser->setUpdatedAt(new \DateTime('now'));
                     $authenticatedUser->setFile(new File($preparedFilename.'.cropped'));
 
                     $objectHasBeenModified = true;
@@ -315,9 +406,7 @@ class DefaultController extends Controller
                     break;
             }
 
-
-            $validator = $this->get('validator');
-            $errors = $validator->validate($authenticatedUser);
+            $errors = $this->get('validator')->validate($authenticatedUser);
 
             if ($objectHasBeenModified === true && count($errors) == 0){
 
@@ -345,8 +434,8 @@ class DefaultController extends Controller
 
             if (!is_null($error)) {
                 $this->get('session')->setFlash(
-                        'error', $error
-                    );
+                    'error', $error
+                );
             }
 
             return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $username)));
@@ -363,7 +452,7 @@ class DefaultController extends Controller
     }
 
     /*
-     * Reset Avatar of user
+     * Reset the avatar of a user
      */
     public function resetAvatarAction(Request $request, $username)
     {
@@ -376,9 +465,9 @@ class DefaultController extends Controller
         if ($authenticatedUser->getUsername() !== $username) {
 
             $this->get('session')->setFlash(
-                    'error',
-                    'You cannot reset the avatar for this user.'
-                );
+                'error',
+                'You cannot reset the avatar for this user.'
+            );
 
         } else {
 
@@ -388,9 +477,9 @@ class DefaultController extends Controller
             $em->flush();
 
             $this->get('session')->setFlash(
-                        'success',
-                        'Your avatar has successfully been reset.'
-                    );
+                'success',
+                'Your avatar has successfully been reset.'
+            );
     
         }
 
@@ -398,7 +487,11 @@ class DefaultController extends Controller
 
     }
 
-    public function deleteAction(Request $request, $username){
+    /*
+     * Delete a user
+     */
+    public function deleteAction(Request $request, $username)
+    {
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('delete', $request->get('token')))
             return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $this->getUser()->getUsername())));
@@ -424,7 +517,7 @@ class DefaultController extends Controller
                 }
             }
 
-            // ideas must have a creator and projects must have at least an owner
+            // Projects must have at least an owner
             if ($deletable === true ) {
 
                 // Delete the user
@@ -439,30 +532,17 @@ class DefaultController extends Controller
 
             } else {
 
-                $projects = $ideas = "";
+                $projects = "";
                 foreach ($authenticatedUser->getProjectsOwned() as $project) {
                     if (!$project->isDeleted() && $project->countOwners() == 1){
                         $projects .= $project->getName(). ",";
                     }
                 }
 
-                foreach ($authenticatedUser->getIdeasCreated() as $idea) {
-                    if (!$idea->isDeleted() && $idea->countCreators() == 1 && $idea->countParticipants() == 0 ){
-                        $ideas .= $idea->getName() . ",";
-                    }
-                }
-
-                if ($projects !== ""){
-                    $projects = " projects (" . substr($projects, 0, -1) . ")";
-                }
-                if ($ideas !== ""){
-                    if ($projects !== "") $projects .= " and";
-                    $ideas = " ideas that will be orphaned (" . substr($ideas, 0, -1) . ")";
-                }
-
+                // Let's notify the user with the projects he still owns alone
                 $this->get('session')->setFlash(
                     'error',
-                    'You cannot delete your account; you still own'. $projects . $ideas . '. Make sure your projects have another owner, that your ideas have participants, and try again.'
+                    'You cannot delete your account; you still own projects (' . substr($projects, 0, -1) . '). Make sure your projects have another owner, that your ideas have participants, and try again.'
                 );
 
                 return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $username)));
@@ -471,9 +551,9 @@ class DefaultController extends Controller
         } else {
 
             $this->get('session')->setFlash(
-                    'error',
-                    'You cannot delete someone else\'s account.'
-                );
+                'error',
+                'You cannot delete someone else\'s account.'
+            );
 
             return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $authenticatedUser->getUsername())));
         }
@@ -481,133 +561,7 @@ class DefaultController extends Controller
     }
 
     /*
-     * Authenticated user follows the request user
-     */
-    public function followUserAction(Request $request, $username)
-    {
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('followUser', $request->get('token')))
-            return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $username)));
-
-        $authenticatedUser = $this->getUser();
-
-        // The actually authenticated user now follows $user if they are not the same
-        if ($username != $authenticatedUser->getUsername()){
-
-            $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
-            $user = $repository->findOneByUsername($username);
-
-            if ($user && !$user->isDeleted()){
-
-                if (!($this->getUser()->isFollowing($user)) ){
-
-                    $authenticatedUser->addFollowing($user);
-
-                    $logService = $this->container->get('logService');
-                    $logService->log($authenticatedUser, 'user_follow_user', $user, array());
-
-                    $em = $this->getDoctrine()->getManager();
-                    $em->flush();
-
-                    $this->get('session')->setFlash(
-                        'success',
-                        'You are now following '.$user->getFullName().'.'
-                    );
-
-                } else {
-
-                    $this->get('session')->setFlash(
-                        'warning',
-                        'You are already following '.$user->getFullName().'.'
-                    );
-
-                }
-            }
-
-        } else {
-            $this->get('session')->setFlash(
-                'warning',
-                'You cannot follow yourself.'
-            );
-        }
-
-
-        return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $username)));
-    }
-
-    /*
-     * Authenticated user unfollows the request user
-     */
-    public function unfollowUserAction(Request $request, $username)
-    {
-
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('unfollowUser', $request->get('token')))
-            return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $username)));
-
-        $authenticatedUser = $this->getUser();
-
-        // The actually authenticated user now follows $user if they are not the same
-        if ($username != $authenticatedUser->getUsername()){
-
-            $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
-            $user = $repository->findOneByUsername($username);
-
-            if ($user && !$user->isDeleted()){
-
-                if ($this->getUser()->isFollowing($user) ){
-
-                    $authenticatedUser->removeFollowing($user);
-
-                    $em = $this->getDoctrine()->getManager();
-                    $em->flush();
-
-                    $this->get('session')->setFlash(
-                        'success',
-                        'You are not following '.$user->getFullName().' anymore.'
-                    );
-
-                } else {
-
-                    $this->get('session')->setFlash(
-                        'warning',
-                        'You are not following '.$user->getFullName().'.'
-                    );
-
-                }
-            }
-
-        } else {
-            $this->get('session')->setFlash(
-                'warning',
-                'You cannot unfollow yourself.'
-            );
-        }
-            
-        return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $username)));
-    }
-
-    /*
-     * List recently created users
-     */
-    public function listAction($page, $sort)
-    {
-        $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
-
-        $totalUsers = $repository->countUsers();
-        $maxPerPage = $this->container->getParameter('listings.number_of_items_per_page');
-
-        if ( ($page-1) * $maxPerPage > $totalUsers) {
-            return $this->redirect($this->generateUrl('u_list_users', array('sort' => $sort)));
-        }
-
-        $users = $repository->findUsers($page, $maxPerPage, $sort);
-
-        $pagination = array( 'page' => $page, 'totalUsers' => $totalUsers);
-        return $this->render('metaUserProfileBundle:Default:list.html.twig', array('users' => $users, 'pagination' => $pagination, 'sort' => $sort ));
-
-    }
-
-    /*
-     * List all skills for X-editable
+     * List all skills (for X-editable)
      */
     public function listSkillsAction(Request $request)
     {
@@ -639,45 +593,176 @@ class DefaultController extends Controller
     public function chooseAction(Request $request, $targetAsBase64)
     {
 
+        $authenticatedUser = $this->getUser();
+
+        // In private space : no users
+        if (is_null($authenticatedUser->getCurrentCommunity())) {
+            throw $this->createNotFoundException('There are no users in your private space');
+        }
+
         $target = json_decode(base64_decode($targetAsBase64), true);
 
         if ($request->isMethod('POST')) {
 
-            $username = $request->request->get('username');
+            // Checking the username is delegated to the resulting action
+            if (isset($target['slug']) && isset($target['params']) ){
 
-            $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
-            $user = $repository->findOneByUsername($username);
+                $external = trim($request->request->get('mailOrUsername'));
 
-            if ($user && !$user->isDeleted() && isset($target['slug']) && isset($target['params']) ){
+                if ($target['external'] === true){
+                    $target['params']['mailOrUsername'] = ($external=="")?trim($request->request->get('username')):$external;
+                } else {
+                    $target['params']['mailOrUsername'] = trim($request->request->get('username'));
+                }
 
-                $target['params']['username'] = $username;
                 $target['params']['token'] = $request->get('token'); // For CSRF
-                return $this->redirect($this->generateUrl($target['slug'], $target['params']));
+                return $this->forward($target['slug'], $target['params']);
 
             } else {
 
-                throw $this->createNotFoundException();
+                throw $this->createNotFoundException('Invalid request');
 
             }
 
         } else {
 
             $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
-            $users = $repository->findAllUsersExceptMe($this->getUser()->getId());
+            $users = $repository->findAllUsersInCommunityExceptMe($authenticatedUser, $authenticatedUser->getCurrentCommunity());
 
-            if (count($users) == 0 ){
+            if (count($users) === 0 ){
 
                 $this->get('session')->setFlash(
                         'warning',
                         'You\'re alone, mate.'
                     );
 
-                return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $this->getUser()->getUsername())));
+                return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $authenticatedUser->getUsername())));
             }
 
-            return $this->render('metaUserProfileBundle:Default:choose.html.twig', array('users' => $users, 'targetAsBase64' => $targetAsBase64, 'token' => $request->get('token')));
+            return $this->render('metaUserProfileBundle:Default:choose.html.twig', array('users' => $users, 'external' => $target['external'], 'targetAsBase64' => $targetAsBase64, 'token' => $request->get('token')));
 
         }
 
     }
+
+    /*
+     * Authenticated user follows the request user
+     */
+    public function followUserAction(Request $request, $username)
+    {
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('followUser', $request->get('token')))
+            return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $username)));
+
+        $authenticatedUser = $this->getUser();
+
+        // The actually authenticated user now follows $user if they are not the same
+        if ($username !== $authenticatedUser->getUsername()){
+
+            $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
+            $user = $repository->findOneByUsernameInCommunity($username, $authenticatedUser->getCurrentCommunity());
+
+            if ($user && !$user->isDeleted()){
+
+                if (!($this->getUser()->isFollowing($user)) ){
+
+                    $authenticatedUser->addFollowing($user);
+
+                    $logService = $this->container->get('logService');
+                    $logService->log($authenticatedUser, 'user_follow_user', $user, array());
+
+                    $em = $this->getDoctrine()->getManager();
+                    $em->flush();
+
+                    $this->get('session')->setFlash(
+                        'success',
+                        'You are now following '.$user->getFullName().'.'
+                    );
+
+                } else {
+
+                    $this->get('session')->setFlash(
+                        'warning',
+                        'You are already following '.$user->getFullName().'.'
+                    );
+
+                }
+
+            } else {
+
+               $this->get('session')->setFlash(
+                    'error',
+                    'You cannot follow this user.'
+                ); 
+
+            }
+
+        } else {
+            $this->get('session')->setFlash(
+                'warning',
+                'You cannot follow yourself.'
+            );
+        }
+
+        return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $username)));
+    }
+
+    /*
+     * Authenticated user unfollows the request user
+     */
+    public function unfollowUserAction(Request $request, $username)
+    {
+
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('unfollowUser', $request->get('token')))
+            return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $username)));
+
+        $authenticatedUser = $this->getUser();
+
+        // The actually authenticated user now follows $user if they are not the same
+        if ($username !== $authenticatedUser->getUsername()){
+
+            $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
+            $user = $repository->findOneByUsernameInCommunity($username, $authenticatedUser->getCurrentCommunity());
+
+            if ($user && !$user->isDeleted()){
+
+                if ($this->getUser()->isFollowing($user) ){
+
+                    $authenticatedUser->removeFollowing($user);
+
+                    $em = $this->getDoctrine()->getManager();
+                    $em->flush();
+
+                    $this->get('session')->setFlash(
+                        'success',
+                        'You are not following '.$user->getFullName().' anymore.'
+                    );
+
+                } else {
+
+                    $this->get('session')->setFlash(
+                        'warning',
+                        'You are not following '.$user->getFullName().'.'
+                    );
+
+                }
+
+            } else {
+
+               $this->get('session')->setFlash(
+                    'error',
+                    'You cannot unfollow this user.'
+                ); 
+
+            }
+
+        } else {
+            $this->get('session')->setFlash(
+                'warning',
+                'You cannot unfollow yourself.'
+            );
+        }
+            
+        return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $username)));
+    }
+
 }

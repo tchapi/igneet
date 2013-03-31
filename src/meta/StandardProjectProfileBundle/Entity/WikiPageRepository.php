@@ -11,6 +11,9 @@ use Doctrine\ORM\EntityRepository;
 class WikiPageRepository extends EntityRepository
 {
 
+  /*
+   * Fetch a page by id in the given Wiki
+   */
   public function findOneByIdInWiki($id, $wikiId)
   {
  
@@ -35,6 +38,9 @@ class WikiPageRepository extends EntityRepository
 
   }
 
+  /*
+   * Find the first page of the wiki (according to rank)
+   */
   public function findFirstInWiki($wikiId)
   {
     
@@ -59,6 +65,9 @@ class WikiPageRepository extends EntityRepository
 
   }
 
+  /*
+   * Fetch all pages of a wiki
+   */
   public function findAllInWiki($wikiId)
   {
 
@@ -74,6 +83,9 @@ class WikiPageRepository extends EntityRepository
             ->getResult();
   }
 
+  /*
+   * Find all level0 (root) pages in a wiki
+   */
   public function findAllRootInWiki($wikiId)
   {
 

@@ -11,26 +11,48 @@ use Doctrine\ORM\EntityRepository;
 class UserRepository extends EntityRepository
 {
 
-  public function countUsers()
+  /*
+   * Count all users in a given community
+   */
+  public function countUsersInCommunity($community)
   {
     
+    if ($community === null){
+      return 0;
+    }
+
     $qb = $this->getEntityManager()->createQueryBuilder();
 
     return $qb->select('COUNT(u)')
             ->from('metaUserProfileBundle:User', 'u')
+            ->leftJoin('u.communities', 'c')
+            ->leftJoin('u.restrictedCommunities', 'rc')
             ->where('u.deleted_at IS NULL')
+            ->andWhere('c = :community OR rc = :community')
+            ->setParameter('community', $community)
             ->getQuery()
             ->getSingleScalarResult();
 
   }
 
-  public function findUsers($page, $maxPerPage, $sort)
+  /*
+   * Fetch all users in a given community
+   */
+  public function findAllUsersInCommunity($community, $page, $maxPerPage, $sort)
   {
     
+    if ($community === null){
+      return null;
+    }
+
     $qb = $this->getEntityManager()->createQueryBuilder();
     $query = $qb->select('u')
             ->from('metaUserProfileBundle:User', 'u')
-            ->where('u.deleted_at IS NULL');
+            ->leftJoin('u.communities', 'c')
+            ->leftJoin('u.restrictedCommunities', 'rc')
+            ->where('u.deleted_at IS NULL')
+            ->andWhere('c = :community OR rc = :community')
+            ->setParameter('community', $community);
 
     switch ($sort) {
       case 'update':
@@ -56,18 +78,112 @@ class UserRepository extends EntityRepository
 
   }
 
-  public function findAllUsersExceptMe($userId)
+  /*
+   * Fetch all users in a given community, except the user $user
+   */
+  public function findAllUsersInCommunityExceptMe($user, $community)
   {
     
+    if ($community === null){
+      return null;
+    }
+
     $qb = $this->getEntityManager()->createQueryBuilder();
 
     return $qb->select('u')
             ->from('metaUserProfileBundle:User', 'u')
+            ->leftJoin('u.communities', 'c')
+            ->leftJoin('u.restrictedCommunities', 'rc')
             ->where('u.deleted_at IS NULL')
-            ->andWhere('u.id <> :userId')
-            ->setParameter('userId', $userId)
+            ->andWhere('c = :community OR rc = :community')
+            ->setParameter('community', $community)
+            ->andWhere('u <> :user')
+            ->setParameter('user', $user)
             ->getQuery()
             ->getResult();
 
   }
+
+  /*
+   * Fetch all followers of a user in the given community
+   */
+  public function findAllFollowersInCommunityForUser($community, $user)
+  {
+
+    if ($community === null){
+      return null;
+    }
+
+    $qb = $this->getEntityManager()->createQueryBuilder();
+    
+    return $qb->select('u')
+            ->from('metaUserProfileBundle:User', 'u')
+            ->join('u.following', 'f')
+            ->join('u.communities', 'c')
+            ->where('u.deleted_at IS NULL')
+            ->andWhere('f = :user')
+            ->setParameter('user', $user)
+            ->andWhere('c = :community')
+            ->setParameter('community', $community)
+            ->getQuery()
+            ->getResult();
+  }
+
+  /*
+   * Fetch all followings of a user in the given community
+   */
+  public function findAllFollowingInCommunityForUser($community, $user)
+  {
+
+    if ($community === null){
+      return null;
+    }
+
+    $qb = $this->getEntityManager()->createQueryBuilder();
+    
+    return $qb->select('u')
+            ->from('metaUserProfileBundle:User', 'u')
+            ->join('u.followers', 'f')
+            ->join('u.communities', 'c')
+            ->where('u.deleted_at IS NULL')
+            ->andWhere('f = :user')
+            ->setParameter('user', $user)
+            ->andWhere('c = :community')
+            ->setParameter('community', $community)
+            ->getQuery()
+            ->getResult();
+  }
+
+  /*
+   * Find a user by its username in a given community
+   */
+  public function findOneByUsernameInCommunity($username, $community)
+  {
+
+    if ($community === null){
+      return null;
+    }
+
+    $qb = $this->getEntityManager()->createQueryBuilder();
+
+    $query = $qb->select('u')
+            ->from('metaUserProfileBundle:User', 'u')
+            ->leftJoin('u.communities', 'c')
+            ->leftJoin('u.restrictedCommunities', 'rc')
+            ->where('u.deleted_at IS NULL')
+            ->andWhere('c = :community OR rc = :community')
+            ->setParameter('community', $community)
+            ->andWhere('u.username = :username')
+            ->setParameter('username', $username)
+            ->getQuery();
+
+    try {
+        $result = $query->getSingleResult();
+    } catch (\Doctrine\Orm\NoResultException $e) {
+        $result = null;
+    }
+
+    return $result;
+  }
+
 }

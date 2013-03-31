@@ -9,13 +9,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller,
 class TimelineController extends BaseController
 {
 
-    /*  ####################################################
-     *                        TIMELINE
-     *  #################################################### */
-
+    /*
+     * Display the timeline tab of a project
+     */
     public function showTimelineAction($slug, $page)
     {
-        $this->fetchProjectAndPreComputeRights($slug, false, false);
+        $menu = $this->container->getParameter('standardproject.menu');
+        $this->fetchProjectAndPreComputeRights($slug, false, $menu['timeline']['private']);
 
         if ($this->base == false) 
           return $this->forward('metaStandardProjectProfileBundle:Base:showRestricted', array('slug' => $slug));
@@ -24,9 +24,18 @@ class TimelineController extends BaseController
             array('base' => $this->base));
     }
 
-    public function historyAction($slug, $page){
+    /* ********************************************************************* */
+    /*                           Non-routed actions                          */
+    /* ********************************************************************* */
 
-        $this->fetchProjectAndPreComputeRights($slug, false, false);
+    /*
+     * Output the timeline history
+     */
+    public function historyAction($slug, $page)
+    {
+
+        $menu = $this->container->getParameter('standardproject.menu');
+        $this->fetchProjectAndPreComputeRights($slug, false, $menu['timeline']['private']);
 
         if ($this->base == false) 
           return $this->forward('metaStandardProjectProfileBundle:Base:showRestricted', array('slug' => $slug));

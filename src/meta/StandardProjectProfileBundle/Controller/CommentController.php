@@ -17,9 +17,13 @@ use meta\StandardProjectProfileBundle\Entity\Comment\WikiPageComment,
 class CommentController extends BaseController
 {
 
+    /*
+     * Output the comment form for an project or add a comment to an project when POST
+     */
     public function addStandardProjectCommentAction(Request $request, $slug){
 
-        $this->fetchProjectAndPreComputeRights($slug, false, false);
+        $menu = $this->container->getParameter('standardproject.menu');
+        $this->fetchProjectAndPreComputeRights($slug, false, $menu['timeline']['private']);
 
         if ($this->base != false) {
 
@@ -74,9 +78,13 @@ class CommentController extends BaseController
 
     }
 
+    /*
+     * Output the comment form for a wiki page or add a comment to a wiki page when POST
+     */
     public function addWikiPageCommentAction(Request $request, $slug, $id){
 
-        $this->fetchProjectAndPreComputeRights($slug, false, false);
+        $menu = $this->container->getParameter('standardproject.menu');
+        $this->fetchProjectAndPreComputeRights($slug, false, $menu['wiki']['private']);
 
         if ($this->base != false) {
 
@@ -141,9 +149,13 @@ class CommentController extends BaseController
 
     }
 
+    /*
+     * Output the comment form for a list or add a comment to a list when POST
+     */
     public function addCommonListCommentAction(Request $request, $slug, $id){
 
-        $this->fetchProjectAndPreComputeRights($slug, false, false);
+        $menu = $this->container->getParameter('standardproject.menu');
+        $this->fetchProjectAndPreComputeRights($slug, false, $menu['lists']['private']);
 
         if ($this->base != false) {
 

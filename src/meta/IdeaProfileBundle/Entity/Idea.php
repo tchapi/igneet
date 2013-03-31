@@ -152,6 +152,12 @@ class Idea extends Taggable
      **/
     private $comments;
 
+    /**
+     * Community this idea is linked to
+     * @ORM\ManyToOne(targetEntity="meta\GeneralBundle\Entity\Community\Community", inversedBy="ideas")
+     **/
+    private $community;
+
     public function __construct()
     {
         
@@ -164,6 +170,8 @@ class Idea extends Taggable
 
         $this->comments = new ArrayCollection();
         $this->resultingProjects = new ArrayCollection();
+
+        $this->community = null;
 
         $this->archived_at = null;
 
@@ -874,6 +882,31 @@ class Idea extends Taggable
     {
         $this->deleted_at = new \DateTime('now');
         return $this;
+    }
+
+    /* --------------------------------------------------------------------------------------------------------- */
+
+    /**
+     * Set community
+     * BINDING LOGIC IS DONE IN 'COMMUNITY' CLASS 
+     * @param \meta\GeneralBundle\Entity\Community\Community $community
+     * @return Idea
+     */
+    public function setCommunity(\meta\GeneralBundle\Entity\Community\Community $community = null)
+    {
+        $this->community = $community;
+    
+        return $this;
+    }
+
+    /**
+     * Get community
+     * BINDING LOGIC IS DONE IN 'COMMUNITY' CLASS 
+     * @return \meta\GeneralBundle\Entity\Community\Community 
+     */
+    public function getCommunity()
+    {
+        return $this->community;
     }
 
 }

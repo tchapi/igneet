@@ -8,7 +8,7 @@
   </div>
   <div class="objectHeader">
     <h2>Users</h2>
-    <h4>All the users are listed in this page.</h4>
+    <h4>All the users in the community {{ app.user.currentCommunity.name }} are listed in this page.</h4>
     <p>Sort by : <a href="{{ path('u_list_users', {'sort': 'newest', 'page' : pagination.page}) }}"><i class="icon-star"></i> Newest users</a> - <a href="{{ path('u_list_users', {'sort': 'update', 'page' : pagination.page}) }}"><i class="icon-time"></i> Recently updated</a> - <a href="{{ path('u_list_users', {'sort': 'active', 'page' : pagination.page}) }}"><i class="icon-dashboard"></i> Last active</a> - <a href="{{ path('u_list_users', {'sort': 'alpha', 'page' : pagination.page}) }}"><i class="icon-font"></i> Alphabetical</a></p>
   </div>
 {% endblock %}
@@ -23,38 +23,12 @@
   </a>
 
   <div class="listingItemInfo">
-    <h4 class="ellipsis"><a href="{{ path('u_show_user_profile', {'username': user.username}) }}">{{ user.getFullName() }}</a></h4>
+    <h4 class="ellipsis"><a href="{{ path('u_show_user_profile', {'username': user.username}) }}">{{ user.getFullName() }}</a>{% if user.isGuestOf(app.user.currentCommunity) %} (Guest){% endif %}</h4>
     <div class="ellipsis">{{ user.headline }}</div>
     <div class="muted"><i class="icon-calendar"></i> Member since {{ user.createdAt|date("d/m/Y") }}</div>
     <div class="muted"><i class="icon-time"></i> Last updated {{ user.updatedAt|date("d/m/Y H:i:s") }}{% if user.initiatedLogEntries|length > 0 %} and last activity on {{ user.initiatedLogEntries[user.initiatedLogEntries|length - 1].createdAt|date("d/m/Y H:i:s") }}{% endif %}</div>
     
   </div>
-  {% if user.countProjectsOwned > 0 %}
-  <div class="listingItemRelatedObjects">
-
-    <div class="type">
-      <div class="muted pull-right">{{ user.countProjectsOwned }} 
-        project{% if (user.countProjectsOwned) > 1 %}s{% endif %} owned</div>
-    </div>
-
-    <ul>
-      {% if user.countProjectsOwned > 5 %}
-      <li>
-        <div class="miniTextAvatar">...</div>
-      </li>
-      {% endif %}
-      {% for project in user.getRandomProjectsOwned(5) %}
-        {% if not project.isDeleted %}
-        <li>
-          <a href="{{ path('sp_show_project', {'slug': project.slug}) }}">
-            <img src="{{ project.picture }}" title="{{ project.name }} ({{ project.slug|lower }})" width="30" height="30" class="miniAvatar"/>
-          </a>
-        </li>
-        {% endif %}
-      {% endfor %}
-    </ul>
-  </div>
-  {% endif %}
 
 </section>
 {% endfor %}
@@ -63,7 +37,7 @@
 </section>
 {% else %}
 <section>
-No ideas yet !
+No users !
 </section>
 {% endif %}
 

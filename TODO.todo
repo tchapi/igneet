@@ -7,19 +7,86 @@ Sprint 1
 [OK] Supprimer un de ses commentaires (mais garder une trace : 'This comment has been deleted')
 Sprint 2
 [OK] Ordre de tri des Listes d'Objets (created / updated / community strongest)
+
 Filtres Timeline
+ checkbox "show my activity" pas cochée par défaut
+ select2 avec filtre JS : (rajouter un "filter_groups: [wiki, updates, ...]" dans log_types)
+  comments
+  wiki
+  lists
+  resources
+  general information
+  community
+  -----
+  creations
+  updates
+  deletions
+rajouter des objets qui décrivent ces groupes
+
 Sprint 3
 Améliorer le clustering de la timeline
 Pagination de la timeline
 Sprint 4
 Implémenter le password recovery
 
+Dashboard rajouter 3 derniers idees, 3 derniers projets dans la communauté
+
+possibilité de changer email dans le profil pour les users
+
+Community :
+
+un mec n'a pas le droit de créer une communauté pour l'instant
+
+IDEES gestion des users dans le private space : ne pas avoir d'user !
+ ✔ - idées / créateurs @done (13-03-25 22:41)
+ ✔ - ajouter un owner/ participant : non @done (13-03-25 23:02)
+ ✔ - création d'une idée : ne pas pouvoir définir d'autres createurs @done (13-03-25 22:42)
+
+PROJECT gestion des users dans le private space : ne pas avoir d'user !
+ ✔ - ajouter un owner/ participant : non @done (13-03-25 23:14)
+ ✔ statut d'invité dans une communauté ok @done (13-03-25 23:15)
+ ✔ marquer le nom de la communauté dans les listes (accessible in "meta" ..) @done (13-03-26 22:09)
+
+ invites / choose people
+ ✔ private = private || (public && user->isGuest()) sauf. user->isParticipatingIn() ou user->isOwner() @done (13-03-26 22:09)
+
+ ✔ inviter par email a un projet @done (13-03-27 21:09)
+  ✔ - gerer les cas ou le mec est deja sur igneet / est deja guest @done (13-03-27 21:09)
+  ✔ - input : username if you know it or email @done (13-03-27 21:09)
+  ✔ str_contains('@') => email @done (13-03-27 21:09)
+ ✔ Attention : pour une idée ne pas permettre d'inviter en dehors de la communauté @done (13-03-27 21:16)
+
+ ✔ dans l'action project => addParticipant, il faut qu'on puisse accepter des username qui ne sont pas dans la communauté, ou des emails @done (13-03-27 21:16)
+
+ ✔ mon profil : contextuel a ma communauté / privacy / guesticity (au niveau des infos en dessous : mes projets mes idées tout ca) @done (13-03-28 19:03)
+   ✔ followers following @done (13-03-28 19:03)
+   ✔ projects @done (13-03-28 19:03)
+     ✔ watchés @done (13-03-28 19:03)
+     ✔ owners @done (13-03-27 22:17)
+     ✔ participants @done (13-03-27 22:18)
+   ✔ idées -> plus simples car les guests n'ont pas le droit de voir les idées @done (13-03-28 19:03)
+     ✔ watchés @done (13-03-28 19:02)
+     ✔ creators @done (13-03-28 19:02)
+     ✔ participants @done (13-03-28 19:02)
+
+
+ ☐ garder les notifications email quand tu es deja user et que tu rentres dans une communauté ? non -> les enlever
+
+ ✔ Attention dans la liste des users, il y a des projets listés !!!! enlever si guest ?? @done (13-03-27 22:16)
+ ✔ users normaux et guests d'une communauté doivent pouvoir voir les guests de leur communauté (liste : marquer guest a coté) @done (13-03-27 21:53)
+ ✔ signup : mettre alphanumérique dans la création du nom d'utilisateur @done (13-03-27 21:18)
+ ✔ follow de gens pas dans ma communauté : impossible @done (13-03-27 13:43)
+ ✔ voir les profils users dans le private space : non ! @done (13-03-26 22:09)
+ ✔ projet / idées dans mon private space : je suis seul créateur / owner (??) @done (13-03-25 22:41)
+
 Todo - General / Users :
 
- ☐ Clustering des activityLogs : vérifier que l'object correspond en récupérant le findOneBY, et pas faire le test dans le if après
- ☐ Mettre maxUsersInListings en parameters de l'appli a récupérer dans Twig
- ☐ login et signup : focus sur le champ lors du chargement de la page
+ ☐ Page de réactivation de compte quand il a été supprimé
+ ☐ Page de renvoi de mot de passe // lost password
 
+ ✔ Mettre maxUsersInListings en parameters de l'appli a récupérer dans Twig @done (13-03-28 00:54)
+ ✔ login et signup : focus sur le champ lors du chargement de la page @done (13-03-27 16:37)
+ ✔ Clustering des activityLogs : vérifier que l'object correspond en récupérant le findOneBY, et pas faire le test dans le if après @done (13-03-27 16:29)
  ✔ envoyer des responses() avec des codes corrects @done (13-03-12 22:05)
  ✔ Liste des users : pour chaque, rajouter 'last active on' et 'last updated on' @done (13-03-07 00:13)
  ✔ logger les updates correctements avec $this->base['standardProject']->update(); dans toutes les actions @done (13-03-04 21:02)
@@ -73,13 +140,13 @@ Todo - General / Users :
 Todo - entité "CommonList":
 
  ☐ Ajax pour new item, new list avec input a la place du 'New item' ?
- ☐ Faire un routing pour les listItems qui 'hightlight' le bon list item ? idem pour les resources 
+ ☐ Faire un routing pour les listItems qui 'hightlight' le bon list item
 
  ✔ Highlight la page en cours dans la liste de gauche @done (13-01-22 00:00)
 
 Todo - entité "Wiki":
 
- ☐ Ajax pour new wiki page ??
+ ☐ Ajax pour new wiki page ?
 
  ✔ tagging des pages wiki et des listes @done (13-01-28 21:58)
  ✔ make homepage du wiki @done (13-01-31 22:56)
@@ -144,15 +211,12 @@ Todo - Home :
    \_ tout ca doit se faire en JS a priori
    \_ avoir du deep-linking dans le wiki
 
-Todo - Meta:
-
- ☐ tous les meta sont publics pour les gens qui y sont et pas pour les autres
- ☐ Afficher le meta dans les infos d'un projet
+Todo - Community:
 
  ☐ Commentaires
-   \_ MetaComment = shoutbox-like
+   \_ CommunityComment = shoutbox-like
 
- ✔ une idée est publique dans la meta @done (13-03-02 12:52)
+ ✔ une idée est publique dans la communauté @done (13-03-02 12:52)
    ✘ - discussion @cancelled (13-03-02 12:52)
       tagger 'concept' ou 'connaissance' dans le fil de discussion
  ✘ au niveau meta, la timeline ne ressort que les trucs publics des projets en dessous @cancelled (13-03-02 12:53)
@@ -165,6 +229,7 @@ Todo - Search:
 Site statique:
 
  ☐ Page credits avec les attributions des icones, librairies JS, etc
+ ☐ Page Licence CC avec explication que tous les contenus sont soumis au copyright etc ...
 
  ✔ Copie du README.md @done (13-02-12 22:53)
 

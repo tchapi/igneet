@@ -16,13 +16,13 @@ use meta\StandardProjectProfileBundle\Entity\CommonList,
 class ListController extends BaseController
 {
     
-    /*  ####################################################
-     *                    Common LISTS
-     *  #################################################### */
-
+    /*
+     * Show the lists tab
+     */
     public function showCommonListHomeAction($slug)
     {
-        $this->fetchProjectAndPreComputeRights($slug, false, false);
+        $menu = $this->container->getParameter('standardproject.menu');
+        $this->fetchProjectAndPreComputeRights($slug, false, $menu['lists']['private']);
 
         if ($this->base == false) 
           return $this->forward('metaStandardProjectProfileBundle:Base:showRestricted', array('slug' => $slug));
@@ -44,9 +44,13 @@ class ListController extends BaseController
 
     }
 
+    /*
+     * Show the lists tab on a specific list
+     */
     public function showCommonListAction($slug, $id, $commonListSlug)
     {
-        $this->fetchProjectAndPreComputeRights($slug, false, false);
+        $menu = $this->container->getParameter('standardproject.menu');
+        $this->fetchProjectAndPreComputeRights($slug, false, $menu['lists']['private']);
 
         if ($this->base == false) 
           return $this->forward('metaStandardProjectProfileBundle:Base:showRestricted', array('slug' => $slug));
@@ -67,6 +71,9 @@ class ListController extends BaseController
                   'commonList' => $commonList));
     }
 
+    /*
+     * Rank the lists (via X-Editable)
+     */
     public function rankCommonListsAction(Request $request, $slug)
     {
         $this->fetchProjectAndPreComputeRights($slug, false, true);
@@ -98,6 +105,9 @@ class ListController extends BaseController
 
     }
 
+    /*
+     * Display the form for a new list and process via POST
+     */
     public function newCommonListAction(Request $request, $slug)
     {
         $this->fetchProjectAndPreComputeRights($slug, false, true);
@@ -151,6 +161,9 @@ class ListController extends BaseController
 
     }
 
+    /*
+     * Edit a list (via X-Editable)
+     */
     public function editCommonListAction(Request $request, $slug, $id)
     {
   
@@ -206,8 +219,7 @@ class ListController extends BaseController
                         break;
                 }
 
-                $validator = $this->get('validator');
-                $errors = $validator->validate($commonList);
+                $errors = $this->get('validator')->validate($commonList);
 
                 if ($objectHasBeenModified === true && count($errors) == 0){
                     
@@ -242,6 +254,9 @@ class ListController extends BaseController
         return new Response();
     }
 
+    /*
+     * Delete a list
+     */
     public function deleteCommonListAction(Request $request, $slug, $id)
     {
   
@@ -287,6 +302,9 @@ class ListController extends BaseController
 
     }
 
+    /*
+     * Create a new list item
+     */
     public function newCommonListItemAction($slug, $listId, $name)
     {
         $this->fetchProjectAndPreComputeRights($slug, false, true);
@@ -313,13 +331,16 @@ class ListController extends BaseController
 
         $this->get('session')->setFlash(
             'success',
-            'Your new item was successfully created.'
+            'Your new list item was successfully created.'
         );
 
         return $this->redirect($this->generateUrl('sp_show_project_list', array('slug' => $slug, 'id' => $commonList->getId(), 'commonListSlug' => $commonList->getSlug())));
 
     }
 
+    /*
+     * Edit a list item (via X-Editable)
+     */
     public function editCommonListItemAction(Request $request, $slug, $listId, $id)
     {
   
@@ -389,6 +410,9 @@ class ListController extends BaseController
         return new Response();
     }
 
+    /*
+     * Delete a list item
+     */
     public function deleteCommonListItemAction(Request $request, $slug, $listId, $id)
     {
   
@@ -434,6 +458,9 @@ class ListController extends BaseController
 
     }
 
+    /*
+     * Toggle a list item
+     */
     public function toggleCommonListItemAction(Request $request, $slug, $listId, $id, $do)
     {
   

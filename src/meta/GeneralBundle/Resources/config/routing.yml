@@ -1,8 +1,30 @@
+# Community
+
+home:
+    pattern: /
+    defaults: { _controller: metaGeneralBundle:Home:home }
+
+g_switch_community:
+    pattern: /switch/community/{id}
+    defaults: { _controller: metaGeneralBundle:Default:switchCommunity }
+    requirements:
+      id: \d+
+
+g_switch_private_space:
+    pattern: /switch/privatespace
+    defaults: { _controller: metaGeneralBundle:Default:switchCommunity, id: null }
+
 # General
 
 g_choose_file:
     pattern:  /file/upload/{targetAsBase64}
     defaults: { _controller: metaGeneralBundle:Default:chooseFile }
+
+g_choose_community:
+    pattern:  /community/choose/{targetAsBase64}
+    defaults: { _controller: metaGeneralBundle:Default:chooseCommunity }
+
+# Comments
 
 g_validate_comment:
     pattern: /comment/validate/{id}

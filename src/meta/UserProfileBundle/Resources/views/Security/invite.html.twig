@@ -8,24 +8,25 @@
   </div>
   <div class="objectHeader">
     <h2>Invite a user</h2>
-    <h4>You need to indicate a valid e-mail address to invite a new user.</h4>
+    <h4>The user will be invited in the community {{ community.name }}.</h4>
+    <p>You need to indicate a valid e-mail address or username to invite a new user.</p>
   </div>
 {% endblock %}
 
 
 {% block content %}
-<div class="formContent">
-  <form action="{{ path('invite') }}" method="post" class="form-horizontal">
-      <div class="control-group ">
-        <label class="control-label"><label for="mail" class="required">Indicate a valid e-mail : </label></label>
-        <div class="controls">
-          <input type="text" id="mail" name="mail" required="required">
-        </div>
-      </div>
-      <div class="form-actions">
-        <a class="btn" href="javascript:history.back()">Cancel</a>
-        <input type="submit" value="Invite this user" class="btn btn-success" />
-      </div>
-  </form>
-</div>
+<section>
+If this user does not have an igneet account, he will be able to create one right from the link that he will receive. If he is already registered with this email address, he will join the {{ community.name }} community directly and will be notified.
+</section>
+<form action="{{ path('invite') }}" method="post" class="form-horizontal">
+  <section>
+    <div class="sectionTitle"><label for="mailOrUsername" class="required">Indicate a valid e-mail or username : </label></div>
+    <div class="sectionContent"><input type="text" id="mailOrUsername" name="mailOrUsername" required="required"></div>
+  </section>
+  <section>
+    <div class="sectionTitle"></div>
+    <div class="sectionContent"><a class="btn" href="javascript:history.back()">Cancel</a>
+      <input type="submit" value="Invite this user" class="btn btn-success" /></div>
+  </section>
+</form>
 {% endblock %}

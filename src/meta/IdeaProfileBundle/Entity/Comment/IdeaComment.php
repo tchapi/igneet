@@ -5,7 +5,7 @@ namespace meta\IdeaProfileBundle\Entity\Comment;
 use meta\GeneralBundle\Entity\Comment\BaseComment;
 use Doctrine\ORM\Mapping as ORM;
 
-use  meta\StandardProjectProfileBundle\Entity\Comment\StandardProjectComment;
+use meta\StandardProjectProfileBundle\Entity\Comment\StandardProjectComment;
 
 /**
  * IdeaComment

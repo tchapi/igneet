@@ -47,6 +47,12 @@
               <button type="button" class="close" data-dismiss="alert">×</button>
           </div>
         {% endif %}
+        {% if app.session.hasFlash('info') %}
+          <div class="alert alert-info">
+              {{ app.session.flash('info') }}
+              <button type="button" class="close" data-dismiss="alert">×</button>
+          </div>
+        {% endif %}
         </div>
         <div id="workspace">
           <div class="cardContainer">

@@ -14,7 +14,7 @@ invite:
 
 u_signup:
     pattern:  /signup/{inviteToken}
-    defaults: { _controller: metaUserProfileBundle:Default:create }
+    defaults: { _controller: metaUserProfileBundle:Default:create, inviteToken: null }
 
 u_me:
     pattern:  /me

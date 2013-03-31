@@ -8,9 +8,9 @@
   </div>
   <div class="objectHeader">
     <h2>Projects</h2>
-    <h4>All the projects accessible on meta are listed here.</h4>
+    <h4>All the projects accessible in {% if app.user.currentCommunity is not null %}the community {{ app.user.currentCommunity.name }}{% else %}your private space{% endif %} are listed here.</h4>
     <p>Sort by : <a href="{{ path('sp_list_projects', {'sort': 'newest', 'page' : pagination.page}) }}"><i class="icon-star"></i> Newest projects</a> - <a href="{{ path('sp_list_projects', {'sort': 'update', 'page' : pagination.page}) }}"><i class="icon-time"></i> Recently updated</a> - <a href="{{ path('sp_list_projects', {'sort': 'alpha', 'page' : pagination.page}) }}"><i class="icon-font"></i> Alphabetical</a></p>
-    <p><a href="{{ path('sp_new_project') }}" class="btn btn-success">New project</a></p>
+    {% if not app.user.isGuestInCurrentCommunity() %}<p><a href="{{ path('sp_new_project') }}" class="btn btn-success">New project</a></p>{% endif %}
   </div>
 {% endblock %}
 

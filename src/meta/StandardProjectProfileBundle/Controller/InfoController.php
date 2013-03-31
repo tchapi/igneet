@@ -6,22 +6,24 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller,
     Symfony\Component\HttpFoundation\Request,
     Symfony\Component\HttpFoundation\Response;
 
+use meta\UserProfileBundle\Entity\UserInviteToken;
+
 class InfoController extends BaseController
 {
     
-    /*  ####################################################
-     *                        INFO
-     *  #################################################### */
-
+    /*
+     * Show the info tab
+     */
     public function showInfoAction($slug)
     {
-        $this->fetchProjectAndPreComputeRights($slug, false, false);
+        $menu = $this->container->getParameter('standardproject.menu');
+        $this->fetchProjectAndPreComputeRights($slug, false, $menu['info']['private']);
 
         if ($this->base == false) 
           return $this->forward('metaStandardProjectProfileBundle:Default:showRestricted', array('slug' => $slug));
 
-        $targetOwnerAsBase64 = array ('slug' => 'sp_add_owner_to_project', 'params' => array('slug' => $slug, 'owner' => true));
-        $targetParticipantAsBase64 = array ('slug' => 'sp_add_participant_to_project', 'params' => array('slug' => $slug, 'owner' => false));
+        $targetOwnerAsBase64 = array('slug' => 'metaStandardProjectProfileBundle:Info:addParticipantOrOwner', 'external' => true, 'params' => array('slug' => $slug,'owner' => true));
+        $targetParticipantAsBase64 = array('slug' => 'metaStandardProjectProfileBundle:Info:addParticipantOrOwner', 'external' => true, 'params' => array('slug' => $slug,'owner' => false));
 
         return $this->render('metaStandardProjectProfileBundle:Info:showInfo.html.twig', 
             array('base' => $this->base, 
@@ -29,11 +31,79 @@ class InfoController extends BaseController
                   'targetParticipantAsBase64' => base64_encode(json_encode($targetParticipantAsBase64)) ));
     }
 
-    /*  ####################################################
-     *                          ADD USER
-     *  #################################################### */
+    /*
+     *
+     */
+    private function inviteOrPass($mailOrUsername, $project, $owner)
+    {
 
-    public function addParticipantOrOwnerAction(Request $request, $slug, $username, $owner)
+      $authenticatedUser = $this->getUser();
+      $isEmail = filter_var($mailOrUsername, FILTER_VALIDATE_EMAIL);
+
+      // It might be a user already
+      $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
+      $em = $this->getDoctrine()->getManager();
+
+      if($isEmail){
+          $user = $repository->findOneByEmail($mailOrUsername);
+      } else {
+          $user = $repository->findOneByUsername($mailOrUsername);
+      }
+      
+      $community = $project->getCommunity();
+
+      if ($user && !$user->isDeleted()) {
+
+          // If the user is already in the community, might be a guest
+          if ($user->belongsTo($community) || $user->isGuestOf($community)){
+
+              return $user;
+
+          // The user has no link with the current community, we must add him as a guest
+          } else {
+
+              $community->addGuest($user);
+              $em->flush();
+
+              return $user;
+
+          }
+
+      } elseif ($isEmail) {
+
+          // Create token linked to email
+          $token = new UserInviteToken($authenticatedUser, $mailOrUsername, $community, 'guest', $project, $owner?'owner':'participant');
+          $em->persist($token);
+          $em->flush();
+
+          // Sends mail to invitee
+          $message = \Swift_Message::newInstance()
+              ->setSubject('You\'ve been invited to a project on igneet')
+              ->setFrom($this->container->getParameter('mailer_from'))
+              ->setReplyTo($authenticatedUser->getEmail())
+              ->setTo($mailOrUsername)
+              ->setBody(
+                  $this->renderView(
+                      'metaUserProfileBundle:Mail:invite.mail.html.twig',
+                      array('user' => $authenticatedUser, 'inviteToken' => $token->getToken(), 'invitee' => null, 'community' => null, 'project' => $project )
+                  ), 'text/html'
+              )
+          ;
+          $this->get('mailer')->send($message);
+
+          return 'invited';
+
+      } else {
+
+          return null;
+      }
+
+    }
+
+    /*
+     * Add a participant to a project
+     */
+    public function addParticipantOrOwnerAction(Request $request, $slug, $mailOrUsername, $owner)
     {
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('addParticipantOrOwner', $request->get('token')))
@@ -41,16 +111,24 @@ class InfoController extends BaseController
 
         $this->fetchProjectAndPreComputeRights($slug, true, false);
 
-        if ($this->base != false) {
+        if ($this->base != false && !is_null($this->base['standardProject']->getCommunity())) {
 
-            $userRepository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
-            $newParticipantOrOwner = $userRepository->findOneByUsername($username);
+            // Check legitimity and invite if needed
+            $newParticipantOrOwner = $this->inviteOrPass($mailOrUsername, $this->base['standardProject'], $owner);
 
-            if ($newParticipantOrOwner && (( !($newParticipantOrOwner->isOwning($this->base['standardProject'])) && $owner === true) || ( !($newParticipantOrOwner->isParticipatingIn($this->base['standardProject'])) && $owner !== true && $newParticipantOrOwner !== $owner ))) {
+            if ($newParticipantOrOwner && $newParticipantOrOwner !== 'invited' &&
+                !($newParticipantOrOwner->isOwning($this->base['standardProject'])) &&
+                ( !($newParticipantOrOwner->isParticipatingIn($this->base['standardProject'])) || $owner === true )
+               ) {
 
                 if ($owner === true){
 
                   $newParticipantOrOwner->addProjectsOwned($this->base['standardProject']);
+
+                  if ($newParticipantOrOwner->isParticipatingIn($this->base['standardProject'])){
+                    // We must remove its participation since it is now owner
+                    $newParticipantOrOwner->removeProjectsParticipatedIn($this->base['standardProject']);
+                  }
 
                   $logService = $this->container->get('logService');
                   $logService->log($newParticipantOrOwner, 'user_is_made_owner_project', $this->base['standardProject'], array( 'other_user' => array( 'routing' => 'user', 'logName' => $this->getUser()->getLogName(), 'args' => $this->getUser()->getLogArgs()) ));
@@ -77,10 +155,17 @@ class InfoController extends BaseController
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
                 
+            } elseif ( $newParticipantOrOwner === 'invited') {
+
+                $this->get('session')->setFlash(
+                    'success',
+                    'An invitation was sent to ' . $mailOrUsername . ' on your behalf. He will be added to the project when she/he signs up.'
+                );
+
             } else {
 
                 $this->get('session')->setFlash(
-                    'error',
+                    'warning',
                     'This user does not exist or is already part of this project.'
                 );
             }
@@ -89,15 +174,17 @@ class InfoController extends BaseController
 
             $this->get('session')->setFlash(
                 'error',
-                'You are not an owner of this project.'
+                'You are not allowed to add a participant or owner in this project.'
             );
 
         }
 
-
         return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $slug)));
     }
 
+    /*
+     * Remove a participant from a project
+     */
     public function removeParticipantOrOwnerAction(Request $request, $slug, $username, $owner)
     {
 
@@ -106,7 +193,7 @@ class InfoController extends BaseController
 
         $this->fetchProjectAndPreComputeRights($slug, true, false);
 
-        if ($this->base != false) {
+        if ($this->base != false && !is_null($this->base['standardProject']->getCommunity())) {
 
             $userRepository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
             $toRemoveParticipantOrOwner = $userRepository->findOneByUsername($username);
@@ -159,7 +246,7 @@ class InfoController extends BaseController
 
             $this->get('session')->setFlash(
                 'error',
-                'You are not an owner of the project "'.$this->base['standardProject']->getName().'".'
+                'You are not allowed to remove a participant or owner in this project.'
             );
 
         }

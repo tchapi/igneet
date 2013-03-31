@@ -50,6 +50,16 @@
       <span class="muted">{% if base.standardProject.originalIdea %} from the idea "{{ base.standardProject.originalIdea.name }}"{% endif %}</span>
     </div>
 
+    {% if base.standardProject.private and base.standardProject.community is not null %}
+    <div>
+      <i class="icon-minus-sign"></i> This project is private (<a data-confirm="Are you sure you want to make this project public ?" href="{{ path('sp_make_public', {'slug': base.standardProject.slug, 'token': csrf_token('makePublic') }) }}">make it public</a>)
+    </div>
+    {% elseif base.standardProject.community is null %}
+    <div>
+      <i class="icon-group"></i> <a href="{{ path('g_choose_community', {'targetAsBase64': base.targetProposeToCommunityAsBase64 , 'token': csrf_token('edit') }) }}">Propose this project</a> to a community
+    </div>
+    {% endif %}
+
     <div>
       <i class="icon-beaker"></i> 
 
@@ -88,5 +98,5 @@
 {% endblock %}
 
 {% block navbar %}
-{% render "metaStandardProjectProfileBundle:Default:navbar" with { 'activeMenu' : 'info', 'slug' : base.standardProject.slug } %}
+{% render "metaStandardProjectProfileBundle:Default:navbar" with { 'activeMenu' : null, 'slug' : base.standardProject.slug } %}
 {% endblock %}

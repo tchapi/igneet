@@ -10,3 +10,11 @@ var setFlash = function(type, message){
   window.setTimeout(function(){ $('#' + uniqid).fadeOut(); }, 2000);
 
 };
+
+$(document).ready(function(){
+
+  // Focus the first field of the first form found on the page
+  // (Useful for login / invite /etc )
+  $('form').find('input').first().focus();
+
+});

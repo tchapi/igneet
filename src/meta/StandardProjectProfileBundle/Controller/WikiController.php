@@ -16,13 +16,13 @@ use meta\StandardProjectProfileBundle\Entity\Wiki,
 class WikiController extends BaseController
 {
 
-    /*  ####################################################
-     *                          WIKI
-     *  #################################################### */
-
+    /*
+     * Display the home of the wiki for a project
+     */
     public function showWikiHomeAction($slug)
     {
-        $this->fetchProjectAndPreComputeRights($slug, false, false);
+        $menu = $this->container->getParameter('standardproject.menu');
+        $this->fetchProjectAndPreComputeRights($slug, false, $menu['wiki']['private']);
 
         if ($this->base == false) 
           return $this->forward('metaStandardProjectProfileBundle:Base:showRestricted', array('slug' => $slug));
@@ -61,9 +61,13 @@ class WikiController extends BaseController
                   'wikiPage' => $wikiPage));
     }
 
+    /*
+     * Display a page of the wiki for a project
+     */
     public function showWikiPageAction($slug, $id, $pageSlug)
     {
-        $this->fetchProjectAndPreComputeRights($slug, false, false);
+        $menu = $this->container->getParameter('standardproject.menu');
+        $this->fetchProjectAndPreComputeRights($slug, false, $menu['wiki']['private']);
 
         if ($this->base == false) 
           return $this->forward('metaStandardProjectProfileBundle:Base:showRestricted', array('slug' => $slug));
@@ -92,6 +96,9 @@ class WikiController extends BaseController
 
     }
 
+    /*
+     * Output the form to create a new page and process the POST
+     */
     public function newWikiPageAction(Request $request, $slug)
     {
 
@@ -152,6 +159,9 @@ class WikiController extends BaseController
 
     }
 
+    /*
+     * Make a wiki page the home page of the wiki
+     */
     public function makeHomeWikiPageAction(Request $request, $slug, $id)
     {
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('makeHomeWikiPage', $request->get('token')))
@@ -179,16 +189,16 @@ class WikiController extends BaseController
         if ($wiki->getHomePage() == $wikiPage){
 
           $this->get('session')->setFlash(
-                    'error',
-                    'This page is already the home of this wiki.'
-                );
+              'error',
+              'This page is already the home of this wiki.'
+          );
 
         } else {
 
           $this->get('session')->setFlash(
-                    'success',
-                    'Your page "'.$wikiPage->getTitle().'" was successfully promoted to home page for this wiki.'
-                );
+              'success',
+              'Your page "'.$wikiPage->getTitle().'" was successfully promoted to home page for this wiki.'
+          );
 
           $em = $this->getDoctrine()->getManager();
           $wiki->setHomePage($wikiPage);
@@ -199,9 +209,11 @@ class WikiController extends BaseController
 
         return $this->redirect($this->generateUrl('sp_show_project_wiki', array('slug' => $slug)));
            
-
     }
 
+    /*
+     * Rank wiki pages
+     */
     public function rankWikiPagesAction(Request $request, $slug)
     {
         $this->fetchProjectAndPreComputeRights($slug, false, true);
@@ -242,6 +254,9 @@ class WikiController extends BaseController
 
     }
 
+    /*
+     * Edit a wiki page (via X-Editable)
+     */
     public function editWikiPageAction(Request $request, $slug, $id)
     {
   
@@ -311,8 +326,7 @@ class WikiController extends BaseController
                         break;
                 }
 
-                $validator = $this->get('validator');
-                $errors = $validator->validate($wikiPage);
+                $errors = $this->get('validator')->validate($wikiPage);
 
                 if ($objectHasBeenModified === true && count($errors) == 0){
                     
@@ -353,6 +367,9 @@ class WikiController extends BaseController
         return new Response($response);
     }
 
+    /*
+     * Delete a wiki page
+     */
     public function deleteWikiPageAction(Request $request, $slug, $id)
     {
   

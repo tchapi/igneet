@@ -14,6 +14,9 @@ use meta\UserProfileBundle\Entity\UserInviteToken;
  
 class SecurityController extends Controller
 {
+    /*
+     * Login a user
+     */
     public function loginAction()
     {
 
@@ -46,6 +49,136 @@ class SecurityController extends Controller
         ));
     }
 
+    /*
+     * Display invite page or invite a user in a community by username or email
+     */
+    public function inviteAction(Request $request)
+    {
+
+        $authenticatedUser = $this->getUser();
+        $community = $authenticatedUser->getCurrentCommunity();
+
+        if ( !is_null($community) && !$authenticatedUser->isGuestInCurrentCommunity() ) {
+
+            if ($request->isMethod('POST')) {
+            
+                // Gets mail or username
+                $mailOrUsername = $request->request->get('mailOrUsername');
+                $isEmail = filter_var($mailOrUsername, FILTER_VALIDATE_EMAIL);
+
+                // It might be a user already
+                $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
+                $em = $this->getDoctrine()->getManager();
+
+                if($isEmail){
+                    $user = $repository->findOneByEmail($mailOrUsername);
+                } else {
+                    $user = $repository->findOneByUsername($mailOrUsername);
+                }
+
+                if ($user && !$user->isDeleted()) {
+
+                    $mailOrUsername = $user->getEmail();
+                    $token = null;
+
+                    // If the user is already in the community
+                    if ($user->belongsTo($community)){
+
+                        $this->get('session')->setFlash(
+                            'warning',
+                            'The user ' . $user->getFullName() . ' is already a member of the community ' . $community->getName() . '.'
+                        );
+
+                        return $this->redirect($this->generateUrl('invite'));
+
+                    // If the user is already a guest in the community
+                    } elseif ($user->isGuestOf($community)) {
+
+                        $community->removeGuest($user);
+                        $community->addUser($user);
+
+                        $this->get('session')->setFlash(
+                            'success',
+                            'The user ' . $user->getFullName() . ' now belongs to the community ' . $community->getName() . '. A notification mail was sent on your behalf.'
+                        );
+
+                    // The user has no link with the current community
+                    } else {
+
+                        $community->addUser($user);
+
+                        $this->get('session')->setFlash(
+                            'success',
+                            'The user ' . $user->getFullName() . ' now belongs to the community ' . $community->getName() . '. A notification mail was sent on your behalf.'
+                        );
+                    }
+
+                } elseif ($isEmail) {
+
+                    // Create token linked to email
+                    $token = new UserInviteToken($authenticatedUser, $mailOrUsername, $community, 'user', null, null);
+                    $em->persist($token);
+                
+                    $this->get('session')->setFlash(
+                        'success',
+                        'An invitation was sent to ' . $mailOrUsername . ' on your behalf.'
+                    );
+
+                } else {
+
+                    $this->get('session')->setFlash(
+                        'error',
+                        'Neither the email you have indicated is valid, nor it is a valid username.'
+                    );
+
+                    return $this->redirect($this->generateUrl('invite'));
+                }
+
+                $em->flush();
+
+                // Sends mail to invitee
+                $message = \Swift_Message::newInstance()
+                    ->setSubject('You\'ve been invited to a community on igneet')
+                    ->setFrom($this->container->getParameter('mailer_from'))
+                    ->setReplyTo($authenticatedUser->getEmail())
+                    ->setTo($mailOrUsername)
+                    ->setBody(
+                        $this->renderView(
+                            'metaUserProfileBundle:Mail:invite.mail.html.twig',
+                            array('user' => $authenticatedUser, 'inviteToken' => $token?$token->getToken():null, 'invitee' => ($user && !$user->isDeleted()), 'community' => $community, 'project' => null )
+                        ), 'text/html'
+                    )
+                ;
+                $this->get('mailer')->send($message);
+
+                return $this->redirect($this->generateUrl('u_me'));
+
+            } else {
+
+                return $this->render('metaUserProfileBundle:Security:invite.html.twig', array('community' => $community) );
+
+            }
+
+        } else {
+
+            $this->get('session')->setFlash(
+                'error',
+                'You need to be in a non-guest community space to invite someone.'
+            );
+
+            return $this->redirect($this->generateUrl('home'));
+
+        }
+
+    }
+
+    /* ********************************************************************* */
+    /*                           Non-routed actions                          */
+    /* ********************************************************************* */
+
+    /*
+     * Output the top header menu
+     */
     public function currentUserMenuAction()
     {
         $authenticatedUser = $this->getUser();
@@ -65,70 +198,6 @@ class SecurityController extends Controller
         } else {
 
             return $this->render('metaUserProfileBundle:Security:_anonymous.html.twig');
-
-        }
-
-    }
-
-    public function inviteAction(Request $request)
-    {
-
-        $authenticatedUser = $this->getUser();
-
-        if ($authenticatedUser) {
-
-            if ($request->isMethod('POST')) {
-            
-                // Gets mail 
-                $mail = $request->request->get('mail');
-
-                if(filter_var($mail, FILTER_VALIDATE_EMAIL)){
-
-                    // Create token linked to email
-                    $token = new UserInviteToken($authenticatedUser, $mail);
-
-                    $em = $this->getDoctrine()->getManager();
-                    $em->persist($token);
-                    $em->flush();
-
-                    // Sends mail to invitee
-                    $message = \Swift_Message::newInstance()
-                        ->setSubject('You\'ve been invited on igneet')
-                        ->setFrom($this->container->getParameter('mailer_from'))
-                        ->setReplyTo($authenticatedUser->getEmail())
-                        ->setTo($mail)
-                        ->setBody(
-                            $this->renderView(
-                                'metaUserProfileBundle:Mail:invite.mail.html.twig',
-                                array('user' => $authenticatedUser, 'inviteToken' => $token->getToken())
-                            ), 'text/html'
-                        )
-                    ;
-                    $this->get('mailer')->send($message);
-
-                    $this->get('session')->setFlash(
-                        'success',
-                        'An invitation was sent to ' . $mail . ' on your behalf.'
-                    );
-
-                    return $this->redirect($this->generateUrl('u_me'));
-                }
-
-
-            } else {
-
-                return $this->render('metaUserProfileBundle:Security:invite.html.twig');
-
-            }
-
-        } else {
-
-            $this->get('session')->setFlash(
-                'error',
-                'You need to be logged in to invite someone.'
-            );
-
-            return $this->redirect($this->generateUrl('login'));
 
         }
 

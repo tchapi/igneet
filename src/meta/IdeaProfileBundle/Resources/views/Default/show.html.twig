@@ -55,7 +55,13 @@
     {% endif %}
     {% if base.isCreator %}
     <div>
-      {% if not base.idea.archived %}<i class="icon-external-link"></i> Turn this idea <a data-confirm="Are you sure you want to turn this idea into a project ?" href="{{ path('sp_choose_slug', {'targetAsBase64': base.projectizeAsBase64, 'token': csrf_token('projectize')  }) }}">into a project</a> or <a data-confirm="Are you sure you want to archive this idea ?" href="{{ path('i_archive_idea', {'id': base.idea.id, 'token': csrf_token('archiveOrRecycle') }) }}">archive</a> it.{% else %}<i class="icon-refresh"></i> <a data-confirm="Are you sure you want to recycle this idea ?" href="{{ path('i_recycle_idea', {'id': base.idea.id, 'token': csrf_token('archiveOrRecycle') }) }}">Recycle</a> this idea{% endif %}
+      {% if not base.idea.archived %}<i class="icon-external-link"></i> Turn this idea <a data-confirm="Are you sure you want to turn this idea into a project ?" href="{{ path('sp_choose_slug', {'targetAsBase64': base.targetProjectizeAsBase64, 'token': csrf_token('projectize')  }) }}">into a project</a> or <a data-confirm="Are you sure you want to archive this idea ?" href="{{ path('i_archive_idea', {'id': base.idea.id, 'token': csrf_token('archiveOrRecycle') }) }}">archive</a> it.{% else %}<i class="icon-refresh"></i> <a data-confirm="Are you sure you want to recycle this idea ?" href="{{ path('i_recycle_idea', {'id': base.idea.id, 'token': csrf_token('archiveOrRecycle') }) }}">Recycle</a> this idea{% endif %}
+    </div>
+    {% endif %}
+
+    {% if base.idea.community is null %}
+    <div>
+      <i class="icon-group"></i> <a href="{{ path('g_choose_community', {'targetAsBase64': base.targetProposeToCommunityAsBase64 , 'token': csrf_token('edit') }) }}">Propose this idea</a> to a community
     </div>
     {% endif %}
   </div>

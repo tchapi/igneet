@@ -16,11 +16,9 @@ use meta\StandardProjectProfileBundle\Entity\Resource,
 class ResourceController extends BaseController
 {
 
-    /*  ####################################################
-     *                        RESOURCES
-     *  #################################################### */
-
-    // Utility function factored to guess file type and provider
+    /*
+     * Helper function to guess the provider and the type of a newly created or updated resource
+     */
     private function guessProviderAndType($file, $url){
 
         $types = $this->container->getParameter('standardproject.resource_types');
@@ -58,9 +56,13 @@ class ResourceController extends BaseController
 
     }
 
+    /*
+     * List all the resources of the project
+     */
     public function listResourcesAction(Request $request, $slug, $page)
     {
-        $this->fetchProjectAndPreComputeRights($slug, false, false);
+        $menu = $this->container->getParameter('standardproject.menu');
+        $this->fetchProjectAndPreComputeRights($slug, false, $menu['resources']['private']);
 
         if ($this->base == false) 
           return $this->forward('metaStandardProjectProfileBundle:Base:showRestricted', array('slug' => $slug));
@@ -117,9 +119,13 @@ class ResourceController extends BaseController
             array('base' => $this->base, 'types' => $types, 'providers' => $providers, 'form' => $form->createView()));
     }
 
+    /*
+     * Show a resource of a project
+     */
     public function showResourceAction($slug, $id)
     {
-        $this->fetchProjectAndPreComputeRights($slug, false, false);
+        $menu = $this->container->getParameter('standardproject.menu');
+        $this->fetchProjectAndPreComputeRights($slug, false, $menu['resources']['private']);
 
         if ($this->base == false) 
           return $this->forward('metaStandardProjectProfileBundle:Base:showRestricted', array('slug' => $slug));
@@ -142,6 +148,9 @@ class ResourceController extends BaseController
 
     }
 
+    /*
+     * Edit a resource (via X-Editable)
+     */
     public function editResourceAction(Request $request, $slug, $id)
     {
 
@@ -245,8 +254,8 @@ class ResourceController extends BaseController
 
             if (!is_null($error)) {
                 $this->get('session')->setFlash(
-                        'error', $error
-                    );
+                    'error', $error
+                );
             }
 
             return $this->redirect($this->generateUrl('sp_show_project_list_resources', array('slug' => $slug)));
@@ -261,6 +270,9 @@ class ResourceController extends BaseController
         }
     }
 
+    /*
+     * Delete a resource in the project
+     */
     public function deleteResourceAction(Request $request, $slug, $id)
     {
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('delete', $request->get('token')))
@@ -303,17 +315,20 @@ class ResourceController extends BaseController
 
     }
 
+    /*
+     * Download a resource
+     */
     public function downloadResourceAction(Request $request, $slug, $id)
     {
-  
-        $this->fetchProjectAndPreComputeRights($slug, false, false);
+        $menu = $this->container->getParameter('standardproject.menu');
+        $this->fetchProjectAndPreComputeRights($slug, false, $menu['resources']['private']);
 
         if ($this->base != false) {
 
             $repository = $this->getDoctrine()->getRepository('metaStandardProjectProfileBundle:Resource');
             $resource = $repository->findOneById($id);
 
-            if ($resource){
+            if ($resource && $resource->getOriginalFilename() !== ""){
 
               $response = new Response();
               $response->headers->set('Content-type', 'application/octet-stream');
