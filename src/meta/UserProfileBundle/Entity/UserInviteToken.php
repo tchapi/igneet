@@ -285,10 +285,10 @@ class UserInviteToken
     /**
      * Set community
      *
-     * @param \meta\GeneralBundle\Entity\Community $community
+     * @param \meta\GeneralBundle\Entity\Community\Community $community
      * @return UserInviteToken
      */
-    public function setCommunity(\meta\GeneralBundle\Entity\Community $community = null)
+    public function setCommunity(\meta\GeneralBundle\Entity\Community\Community $community = null)
     {
         $this->community = $community;
     
@@ -298,7 +298,7 @@ class UserInviteToken
     /**
      * Get community
      *
-     * @return \meta\GeneralBundle\Entity\Community 
+     * @return \meta\GeneralBundle\Entity\Community\Community 
      */
     public function getCommunity()
     {
