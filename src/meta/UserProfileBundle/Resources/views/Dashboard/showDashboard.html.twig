@@ -39,6 +39,32 @@
 {% block content %}
 
 <section>
+  <div class="heading"><i class="icon-home"></i> Recently in the community</div>
+  <div class="row-fluid">
+
+    <div class="content span5">
+      <h4>Last ideas</h4>
+      <ul>
+        {% if last3ideas[0] is defined %}<li><a href="{{ path('i_show_idea', {'id' : last3ideas[0].id }) }}">{{ last3ideas[0].name|raw }}</a> - <em>Created on {{ last3ideas[0].createdAt|date("d/m/Y, H:i:s") }}</em></li>{% else %}<li>No new idea in the community ...</li>{% endif %}
+        {% if last3ideas[1] is defined %}<li><a href="{{ path('i_show_idea', {'id' : last3ideas[1].id }) }}">{{ last3ideas[1].name|raw }}</a> - <em>Created on {{ last3ideas[1].createdAt|date("d/m/Y, H:i:s") }}</em></li>{% endif %}
+        {% if last3ideas[2] is defined %}<li><a href="{{ path('i_show_idea', {'id' : last3ideas[2].id }) }}">{{ last3ideas[2].name|raw }}</a> - <em>Created on {{ last3ideas[2].createdAt|date("d/m/Y, H:i:s") }}</em></li>{% endif %}
+      </ul>
+    </div>
+
+    <div class="content span6 offset1">
+      <h4>Last projects</h4>
+       <ul>
+        {% if last3projects[0] is defined %}<li><a href="{{ path('sp_show_project', { 'slug': last3projects[0].slug }) }}">{{ last3projects[0].name|raw }}</a> - <em>Created on {{ last3projects[0].createdAt|date("d/m/Y, H:i:s") }}</em></li>{% else %}<li>No new project in the community ...</li>{% endif %}
+        {% if last3projects[1] is defined %}<li><a href="{{ path('sp_show_project', { 'slug': last3projects[1].slug }) }}">{{ last3projects[1].name|raw }}</a> - <em>Created on {{ last3projects[1].createdAt|date("d/m/Y, H:i:s") }}</em></li>{% endif %}
+        {% if last3projects[2] is defined %}<li><a href="{{ path('sp_show_project', { 'slug': last3projects[2].slug }) }}">{{ last3projects[2].name|raw }}</a> - <em>Created on {{ last3projects[2].createdAt|date("d/m/Y, H:i:s") }}</em></li>{% endif %}
+      </ul>
+    </div>
+
+  </div>
+
+</section>
+
+<section>
   <div class="heading"><i class="icon-group"></i> Social</div>
   <div class="row-fluid">
 
