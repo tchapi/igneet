@@ -562,6 +562,12 @@ ul.timeline li.logWrapper:last-child:after{
   border-left: 1px dotted #AAA;
   height: 20px;
 }
+ul.timeline li.logWrapper .fullDate{
+  display: none;
+}
+ul.timeline li.logWrapper.full .fullDate{
+  display: inline-block;
+}
 ul.timeline div.log{
   border-top: 1px solid #DDD;
   background: #EEE;

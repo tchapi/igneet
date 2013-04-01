@@ -1,7 +1,7 @@
 <div class="timeline_filters">
   <select id="timeline_filters" class="select2-trigger" multiple="multiple">
-    {% for group, name in filter_groups %}
-    <option value={{ group }}>{{ name }}</option>
+    {% for group in filter_groups %}
+    <option value={{ group }}>{{ filter_groups_names[group] }}</option>
     {% endfor %}
   </select>
   <button class="btn" id="timeline_reset">Reset filters</button>
@@ -12,7 +12,7 @@
   <li class="dateWrapper date"><div class="date-wrapper"><div class="date">{{ step.name}}</div></div></li>
 
   {% for item in step.data %}
-    <li class="logWrapper" {{ item.groups|join(' ') }}><div class="log">{{ item.text|raw }}</div></li>
+    <li class="logWrapper{% if loop.parent.loop.last %} full{% endif %}" {{ item.groups|join(' ') }}><div class="log">{{ item.text|raw }}</div></li>
   {% endfor %}
 
   {% else %}

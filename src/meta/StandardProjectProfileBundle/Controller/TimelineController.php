@@ -76,7 +76,7 @@ class TimelineController extends BaseController
           $text = $logService->getHTML($comment);
           $createdAt = date_create($comment->getCreatedAt()->format('Y-m-d H:i:s'));
 
-          $history[] = array( 'createdAt' => $createdAt , 'text' => $text, 'groups' => 'comments' );
+          $history[] = array( 'createdAt' => $createdAt , 'text' => $text, 'groups' => array('comments') );
 
         }
 
@@ -91,6 +91,7 @@ class TimelineController extends BaseController
         // Now put the entries in the correct timeframes
         $startOfToday = date_create('midnight');
         $before = date_create('midnight 6 days ago');
+        $filter_groups = array();
 
         foreach ($history as $historyEntry) {
           
@@ -112,16 +113,19 @@ class TimelineController extends BaseController
             array_unshift($this->timeframe['d-'.$days]['data'], array( 'text' => $historyEntry['text'], 'groups' => $historyEntry['groups']) );
 
           }
+          
+          $filter_groups = array_merge_recursive($filter_groups,$historyEntry['groups']);
 
         }
 
         // Filters
-        $filter_groups = $this->container->getParameter('general.log_filter_groups');
+        $filter_groups_names = $this->container->getParameter('general.log_filter_groups');
         
         return $this->render('metaStandardProjectProfileBundle:Timeline:timelineHistory.html.twig', 
             array('base' => $this->base,
                   'timeframe' => $this->timeframe,
-                  'filter_groups' => $filter_groups));
+                  'filter_groups_names' => $filter_groups_names,
+                  'filter_groups' => array_unique($filter_groups)));
 
     }
 
