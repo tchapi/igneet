@@ -66,7 +66,7 @@ class TimelineController extends BaseController
           $text = $logService->getHTML($entry);
           $createdAt = date_create($entry->getCreatedAt()->format('Y-m-d H:i:s'));
 
-          $history[] = array( 'createdAt' => $createdAt , 'text' => $text );
+          $history[] = array( 'createdAt' => $createdAt , 'text' => $text, 'groups' => $log_types[$entry->getType()]['filter_groups']);
         
         }
 
@@ -76,7 +76,7 @@ class TimelineController extends BaseController
           $text = $logService->getHTML($comment);
           $createdAt = date_create($comment->getCreatedAt()->format('Y-m-d H:i:s'));
 
-          $history[] = array( 'createdAt' => $createdAt , 'text' => $text );
+          $history[] = array( 'createdAt' => $createdAt , 'text' => $text, 'groups' => 'comments' );
 
         }
 
@@ -97,27 +97,31 @@ class TimelineController extends BaseController
           if ( $historyEntry['createdAt'] > $startOfToday ) {
             
             // Today
-            array_unshift($this->timeframe['today']['data'], $historyEntry['text'] );
+            array_unshift($this->timeframe['today']['data'], array( 'text' => $historyEntry['text'], 'groups' => $historyEntry['groups']) );
 
           } else if ( $historyEntry['createdAt'] < $before ) {
 
             // Before
-            array_unshift($this->timeframe['before']['data'], $historyEntry['text'] );
+            array_unshift($this->timeframe['before']['data'], array( 'text' => $historyEntry['text'], 'groups' => $historyEntry['groups']) );
 
           } else {
 
             // Last seven days, by day
             $days = date_diff($historyEntry['createdAt'], $startOfToday)->days + 1;
 
-            array_unshift($this->timeframe['d-'.$days]['data'], $historyEntry['text'] );
+            array_unshift($this->timeframe['d-'.$days]['data'], array( 'text' => $historyEntry['text'], 'groups' => $historyEntry['groups']) );
 
           }
 
         }
 
+        // Filters
+        $filter_groups = $this->container->getParameter('general.log_filter_groups');
+        
         return $this->render('metaStandardProjectProfileBundle:Timeline:timelineHistory.html.twig', 
             array('base' => $this->base,
-                  'timeframe' => $this->timeframe));
+                  'timeframe' => $this->timeframe,
+                  'filter_groups' => $filter_groups));
 
     }
 

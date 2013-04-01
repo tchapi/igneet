@@ -510,6 +510,9 @@ a.removeUserIcon{
 /*************/
 /* TIMELINE  */
 /*************/
+div.timeline_filters{
+  margin: 0 0 20px 0;
+}
 ul.timeline{
   margin: 0;
 }

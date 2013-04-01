@@ -2,6 +2,14 @@
 
 {% block title %}{{ parent() }} | Timeline{% endblock %}
 
+{% block javascripts %}
+  {{ parent() }}
+    {% javascripts '@metaGeneralBundle/Resources/public/js/select2.behaviour.js' 
+            filter='?yui_js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
 {% block content %}
 <section>
 {% render "metaIdeaProfileBundle:Default:addIdeaComment" with { 'id' : base.idea.id } %}
