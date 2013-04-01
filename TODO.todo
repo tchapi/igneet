@@ -1,10 +1,7 @@
 
 ## TODO ##
 
- ☐ Community notifications
-
  ☐ Pagination de la timeline => bof ?
-
  ☐ possibilité de changer email dans le profil pour les users
  ☐ garder les notifications email quand tu es deja user et que tu rentres dans une communauté ? non -> les enlever
 
@@ -43,6 +40,7 @@ PROJECT gestion des users dans le private space : ne pas avoir d'user !
  ✔ follow de gens pas dans ma communauté : impossible @done (13-03-27 13:43)
  ✔ voir les profils users dans le private space : non ! @done (13-03-26 22:09)
  ✔ projet / idées dans mon private space : je suis seul créateur / owner (??) @done (13-03-25 22:41)
+ ✔ Community notifications @done (13-04-01 21:31)
 
 Todo - General / Users :
 
