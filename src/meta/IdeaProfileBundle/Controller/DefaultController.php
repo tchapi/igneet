@@ -264,6 +264,8 @@ class DefaultController extends Controller
                                 'success',
                                 'This idea is now part of the community ' . $community->getName() . '.'
                             );
+                            $logService = $this->container->get('logService');
+                            $logService->log($this->getUser(), 'idea_enters_community', $this->base['idea'], array( 'community' => array( 'routing' => 'community', 'logName' => $community->getLogName(), 'args' => null) ) );
                             $objectHasBeenModified = true;
                             $needsRedirect = true;
                         }

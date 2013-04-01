@@ -96,7 +96,9 @@ class SecurityController extends Controller
 
                         $community->removeGuest($user);
                         $community->addUser($user);
-
+                        $logService = $this->container->get('logService');
+                        $logService->log($this->getUser(), 'user_enters_community', $user, array( 'community' => array( 'routing' => 'community', 'logName' => $community->getLogName(), 'args' => null) ) );
+                            
                         $this->get('session')->setFlash(
                             'success',
                             'The user ' . $user->getFullName() . ' now belongs to the community ' . $community->getName() . '. A notification mail was sent on your behalf.'
@@ -106,7 +108,9 @@ class SecurityController extends Controller
                     } else {
 
                         $community->addUser($user);
-
+                        $logService = $this->container->get('logService');
+                        $logService->log($this->getUser(), 'user_enters_community', $user, array( 'community' => array( 'routing' => 'community', 'logName' => $community->getLogName(), 'args' => null) ) );
+                            
                         $this->get('session')->setFlash(
                             'success',
                             'The user ' . $user->getFullName() . ' now belongs to the community ' . $community->getName() . '. A notification mail was sent on your behalf.'

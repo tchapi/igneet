@@ -233,7 +233,7 @@ parameters:
     user_transform_idea_in_project: # DONE
       combinable: true
       displayable: true
-      filter_groups: [creations, project, ideas]
+      filter_groups: [creations, projects, ideas]
       type: idea
       icon: upload-alt
       text: %%user$s has created a new project %%project$s from the idea %%idea$s.

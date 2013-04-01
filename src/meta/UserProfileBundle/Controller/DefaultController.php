@@ -268,6 +268,8 @@ class DefaultController extends Controller
 
                         if ($inviteTokenObject->getCommunityType() === 'user'){
                             $inviteTokenObject->getCommunity()->addUser($user);
+                            $logService = $this->container->get('logService');
+                            $logService->log($this->getUser(), 'user_enters_community', $user, array( 'community' => array( 'routing' => 'community', 'logName' => $inviteTokenObject->getCommunity()->getLogName(), 'args' => null) ) );
                         } else {
                             $inviteTokenObject->getCommunity()->addGuest($user);
                         }
@@ -280,8 +282,12 @@ class DefaultController extends Controller
 
                         if ($inviteTokenObject->getProjectType() === 'owner'){
                             $user->addProjectsOwned($inviteTokenObject->getProject());
+                            $logService = $this->container->get('logService');
+                            $logService->log($user, 'user_is_made_owner_project', $inviteTokenObject->getProject(), array( 'other_user' => array( 'routing' => 'user', 'logName' => $inviteTokenObject->getReferalUser()->getLogName(), 'args' => $inviteTokenObject->getReferalUser()->getLogArgs()) ));
                         } else {
                             $user->addProjectsParticipatedIn($inviteTokenObject->getProject());
+                            $logService = $this->container->get('logService');
+                            $logService->log($user, 'user_is_made_participant_project', $inviteTokenObject->getProject(), array( 'other_user' => array( 'routing' => 'user', 'logName' => $inviteTokenObject->getReferalUser()->getLogName(), 'args' => $inviteTokenObject->getReferalUser()->getLogArgs()) ));
                         }
 
                     }

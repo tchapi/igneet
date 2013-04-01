@@ -146,6 +146,8 @@ class DefaultController extends BaseController
                                 'success',
                                 'This project is now part of the community ' . $community->getName() . '.'
                             );
+                            $logService = $this->container->get('logService');
+                            $logService->log($this->getUser(), 'project_enters_community', $this->base['standardProject'], array( 'community' => array( 'routing' => 'community', 'logName' => $community->getLogName(), 'args' => null) ) );
                             $objectHasBeenModified = true;
                             $needsRedirect = true;
                         }
