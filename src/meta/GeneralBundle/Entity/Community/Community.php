@@ -84,6 +84,10 @@ class Community
         $this->guests = new ArrayCollection();
     }
     
+    public function getLogName()
+    {
+        return $this->name;
+    }
 
     /**
      * Get id

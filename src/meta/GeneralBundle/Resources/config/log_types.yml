@@ -46,7 +46,7 @@ parameters:
       type: other_user
       icon: pushpin
       text: %%user$s has started following %%other_user$s.
-    user_enters_community:
+    user_enters_community: # DONE
       combinable: false
       displayable: true
       filter_groups: [general, users, social, community]
@@ -54,7 +54,7 @@ parameters:
       icon: globe
       text: %%user$s is now part of the community %%community$s.
 # User acting on a project
-    project_enters_community:
+    project_enters_community: # DONE
       combinable: false
       displayable: true
       filter_groups: [creations, community, projects]
@@ -223,7 +223,7 @@ parameters:
       icon: trash
       text: %%user$s has deleted the resource %%resource$s of the project %%project$s.
 # User acting on an idea
-    idea_enters_community:
+    idea_enters_community: # DONE
       combinable: false
       displayable: true
       filter_groups: [creations, community, ideas]
