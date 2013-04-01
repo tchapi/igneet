@@ -529,6 +529,9 @@ class DefaultController extends Controller
                 $project->setSlug(trim($request->request->get('slug')));
             }
 
+            // Community
+            $project->setCommunity($this->base['idea']->getCommunity());
+
             $em->persist($project);
 
             // Wiki 
