@@ -21,8 +21,8 @@ recover:
     defaults: { _controller: metaUserProfileBundle:Security:reactivateOrRecover, flavour: recover }
 
 change_password:
-    pattern: /change/password/{token}
-    defaults: { _controller: metaUserProfileBundle:Security:changePassword }
+    pattern: /change/password/{passwordToken}
+    defaults: { _controller: metaUserProfileBundle:Security:changePassword, passwordToken: null }
 
 u_signup:
     pattern:  /signup/{inviteToken}

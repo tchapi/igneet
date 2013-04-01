@@ -275,17 +275,34 @@ class SecurityController extends Controller
     /*
      * Allows to change a password
      */
-    public function changePasswordAction(Request $request, $token)
+    public function changePasswordAction(Request $request, $passwordToken)
     {
 
-        $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
-        $user = $repository->findOneByToken($token);
+        // It may be an internal request
+        if(is_null($passwordToken) && $this->getUser()){
+            
+            if (!$this->get('form.csrf_provider')->isCsrfTokenValid('changePassword', $request->get('token'))){
+                throw $this->createNotFoundException();
+            } else {
+                $em = $this->getDoctrine()->getManager();
+                $this->getUser()->createNewRecoverToken();
+                $em->flush();
 
-        $token_parts = explode(':',base64_decode($token));
-        $flavour = $token_parts[0];
+                return $this->redirect($this->generateUrl('change_password', array('passwordToken' => $this->getUser()->getToken())));
+            }
 
-        if (is_null($token) || !$user || $user == false){
-            throw $this->createNotFoundException();
+        } else {
+
+            $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
+            $user = $repository->findOneByToken($passwordToken);
+
+            $token_parts = explode(':',base64_decode($passwordToken));
+            $flavour = $token_parts[0];
+
+            if (!$user || $user == false){
+                throw $this->createNotFoundException();
+            }
+
         }
 
         if ($request->isMethod('POST')) {
@@ -300,7 +317,7 @@ class SecurityController extends Controller
                     'Password entries do not match.'
                 );
 
-                return $this->render('metaUserProfileBundle:Security:changePassword.html.twig', array('token' => $token, 'flavour' => $flavour));
+                return $this->render('metaUserProfileBundle:Security:changePassword.html.twig', array('passwordToken' => $passwordToken, 'flavour' => $flavour));
         
             } else {
 
@@ -334,10 +351,10 @@ class SecurityController extends Controller
 
                     $this->get('session')->setFlash(
                         'success',
-                        'Your password has been changed, you can now login.'
+                        'Your password has been changed successfully.'
                     );
 
-                    return $this->redirect($this->generateUrl('login'));
+                    return $this->redirect($this->generateUrl('u_me'));
 
                 } else {
 
@@ -346,7 +363,7 @@ class SecurityController extends Controller
                         $errors[0]->getMessage()
                     );
 
-                    return $this->render('metaUserProfileBundle:Security:changePassword.html.twig', array('token' => $token, 'flavour' => $flavour));
+                    return $this->render('metaUserProfileBundle:Security:changePassword.html.twig', array('passwordToken' => $passwordToken, 'flavour' => $flavour));
         
                 }
 
@@ -354,7 +371,7 @@ class SecurityController extends Controller
 
         } else {
             
-            return $this->render('metaUserProfileBundle:Security:changePassword.html.twig', array('token' => $token, 'flavour' => $flavour));
+            return $this->render('metaUserProfileBundle:Security:changePassword.html.twig', array('passwordToken' => $passwordToken, 'flavour' => $flavour));
         
         }
 
@@ -376,7 +393,6 @@ class SecurityController extends Controller
             // Logs last activity
             $em = $this->getDoctrine()->getManager();
             $authenticatedUser->setLastSeenAt(new \DateTime('now'));
-            $authenticatedUser->setToken(null); // Protect a bit more in case someone has a token that is not his
             $em->flush();
 
             return $this->render(
