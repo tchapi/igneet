@@ -349,6 +349,7 @@ class ListController extends BaseController
 
         $this->fetchProjectAndPreComputeRights($slug, false, true);
         $error = null;
+        $response = null;
 
         if ($this->base != false) {
 
@@ -365,6 +366,8 @@ class ListController extends BaseController
                 switch ($request->request->get('name')) {
                     case 'text':
                         $commonListItem->setText($request->request->get('value'));
+                        $deepLinkingService = $this->container->get('meta.twig.deep_linking_extension');
+                        $response = $deepLinkingService->convertDeepLinks($request->request->get('value'));
                         $objectHasBeenModified = true;
                         break;
                     case 'done':
@@ -407,7 +410,7 @@ class ListController extends BaseController
             return new Response($error, 406);
         }
 
-        return new Response();
+        return new Response($response);
     }
 
     /*

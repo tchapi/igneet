@@ -2,8 +2,13 @@
 ## TODO ##
 
  ☐ Pagination de la timeline => bof ?
- ☐ possibilité de changer email dans le profil pour les users
- ☐ garder les notifications email quand tu es deja user et que tu rentres dans une communauté ? non -> les enlever
+
+ ☐ Enable / Disable edition
+   $('#enable').click(function() {
+       $('.editable').editable('toggleDisabled');
+   });    
+    
+ ☐  Faire une passe sur les titles des liens d'éditions (les icon-pencils)
 
 Todo - Entity "Community" :
 
@@ -52,6 +57,7 @@ Todo - General / Users :
    - flush et login
  ✔ Page de renvoi de mot de passe // lost password @done (13-04-01 10:21)
    - idem 
+ ✔ possibilité de changer email dans le profil pour les users @done (13-04-02 21:22)
  ✔ Dashboard rajouter 3 derniers idees, 3 derniers projets dans la communauté @done (13-04-01 10:21)
  ✔ Mettre maxUsersInListings en parameters de l'appli a récupérer dans Twig @done (13-03-28 00:54)
  ✔ login et signup : focus sur le champ lors du chargement de la page @done (13-03-27 16:37)
@@ -111,6 +117,7 @@ Todo - entité "CommonList":
  ☐ Ajax pour new item, new list avec input a la place du 'New item' ?
  ☐ Faire un routing pour les listItems qui 'hightlight' le bon list item
 
+ ✔ deeplinks dans les items de liste @done (13-04-04 23:30)
  ✔ Highlight la page en cours dans la liste de gauche @done (13-01-22 00:00)
 
 Todo - entité "Wiki":

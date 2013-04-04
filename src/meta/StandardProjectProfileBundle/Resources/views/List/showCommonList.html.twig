@@ -41,18 +41,18 @@
   <ul class="list">
   {% for item in commonList.items %}
     <li class="{{ cycle(["even", "odd"], loop.index) }}{% if item.done %} done muted{% endif %}">
-      <i class="icon-caret-right"></i>
-      <span class="text editable text-target" data-pk="{{ item.id }}" data-name="text" data-url="{{ path('sp_show_project_listitem_edit', {'slug': base.standardProject.slug, 'listId': commonList.id, 'id': item.id, 'token': csrf_token('editCommonListItem') }) }}" data-type="text">{{ item.text }}</span>
+      <span data-toggle="manual" class="text editable text-target editable-server-response listitem-{{ item.id }}-target" data-pk="{{ item.id }}" data-name="text" data-url="{{ path('sp_show_project_listitem_edit', {'slug': base.standardProject.slug, 'listId': commonList.id, 'id': item.id, 'token': csrf_token('editCommonListItem') }) }}" data-type="text" data-value="{{ item.text }}">{{ item.text|deeplinks|raw }}</span>
       {% if base.canEdit %}
       <div class="actions">
         {% if item.done %}
         <span class="muted date">done on {{ item.doneAt|date('d-m-Y') }}</span>
-        <a href="{{ path('sp_show_project_listitem_undo', {'slug': base.standardProject.slug, 'listId': commonList.id, 'id': item.id, 'token': csrf_token('toggleCommonListItem') }) }}"><i class="icon-repeat"></i></a>
+        <a href="{{ path('sp_show_project_listitem_undo', {'slug': base.standardProject.slug, 'listId': commonList.id, 'id': item.id, 'token': csrf_token('toggleCommonListItem') }) }}" title="Recycle this item"><i class="icon-repeat"></i></a>
         {% else %}
         <span class="muted date">created on {{ item.createdAt|date('d-m-Y') }}</span>
-        <a href="{{ path('sp_show_project_listitem_do', {'slug': base.standardProject.slug, 'listId': commonList.id, 'id': item.id, 'token': csrf_token('toggleCommonListItem') }) }}"><i class="icon-ok text-success"></i></a>
+        <a href="{{ path('sp_show_project_listitem_do', {'slug': base.standardProject.slug, 'listId': commonList.id, 'id': item.id, 'token': csrf_token('toggleCommonListItem') }) }}" title="Finish this item"><i class="icon-ok text-success"></i></a>
         {% endif %}
-        <a href="{{ path('sp_show_project_listitem_delete', {'slug': base.standardProject.slug, 'listId': commonList.id, 'id': item.id, 'token': csrf_token('deleteCommonListItem') }) }}"><i class="icon-remove text-error"></i></a>
+        <a class="editable-trigger" data-target="listitem-{{ item.id }}" title="Edit this item"><i class="icon-pencil"></i></a> | 
+        <a href="{{ path('sp_show_project_listitem_delete', {'slug': base.standardProject.slug, 'listId': commonList.id, 'id': item.id, 'token': csrf_token('deleteCommonListItem') }) }}" title="Delete this item"><i class="icon-remove text-error"></i></a>
       </div>
       {% endif %}
     </li>
