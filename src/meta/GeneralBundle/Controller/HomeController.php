@@ -14,8 +14,18 @@ class HomeController extends Controller
      */
     public function homeAction(Request $request)
     {
+        $authenticatedUser = $this->getUser();
+        $community = $authenticatedUser->GetCurrentCommunity();
+
+        $ideaRepository = $this->getDoctrine()->getRepository('metaIdeaProfileBundle:Idea');
+        $totalIdeas = $ideaRepository->countIdeasInCommunityForUser($community, $authenticatedUser, false);
         
-        return $this->render('metaGeneralBundle:Home:home.html.twig');
+        $projectRepository = $this->getDoctrine()->getRepository('metaStandardProjectProfileBundle:StandardProject');
+        $totalProjects = $projectRepository->countProjectsInCommunityForUser($community, $authenticatedUser);
+        
+        return $this->render('metaGeneralBundle:Home:home.html.twig', array(
+          'totalProjects' => $totalProjects,
+          'totalIdeas' => $totalIdeas));
 
     }
 

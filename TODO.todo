@@ -3,14 +3,34 @@
 
  ☐ Pagination de la timeline => bof ?
 
- ☐ Enable / Disable edition
+ ☐ Enable / Disable edition dans le menu utilisateur ?
    $('#enable').click(function() {
        $('.editable').editable('toggleDisabled');
    });    
     
- ☐  Faire une passe sur les titles des liens d'éditions (les icon-pencils)
+ ☐  Faire une passe sur les titles/alt des liens d'éditions (les icon-pencils)
+
+ ☐ pages statiques
+   \__ home (corporate) => présentation du produit
+   \__ company / team
+   \__ contact
+   \__ terms of use
 
 Todo - Entity "Community" :
+
+Home de community (penser au private space !!)
+ - infos basiques (description / headline / created_at / number of users / number of projects / number of ideas)
+ ' "Home of XX ideas and YY projects" '
+ - liste des managers
+ - wiki avec wikipages (idem project)
+ - resources ?? Vraiment besoin ?
+ - listes ?? idem ??
+ - timeline avec les updates propres à la communautés
+   \__ remonter des infos des projets, idées et users de la communauté => hardos !!
+ 
+Managers qui peuvent éditer la communauté et inviter
+"Request a manager to invite XXXX" => le manager a un tableau de validation
+
 
 Un user n'a pas le droit de créer une communauté pour l'instant
 IDEES gestion des users dans le private space : ne pas avoir d'user !
@@ -185,7 +205,6 @@ Todo - Home :
  ☐ listes : reconnaitre les urls en mettre un lien pour y aller directement a coté ;)
  ☐ lien vers des droplr avec apercu auto
    \_ tout ca doit se faire en JS a priori
-   \_ avoir du deep-linking dans le wiki
 
 Todo - Community:
 

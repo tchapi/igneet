@@ -9,8 +9,10 @@
   </div>
   <div class="objectHeader">
     <h2>{% if app.user.currentCommunity is null %}My Private Space{% else %}{{ app.user.currentCommunity.name }}{%endif %}</h2>
-    <h4>Welcome to the home of your {% if app.user.currentCommunity is null %}private space{% else %}community{%endif %}.</h4>
-    <p></p>
+    <h4>Home of {{ totalProjects }} projects and {{ totalIdeas }} ideas.</h4>
+    {% if app.user.currentCommunity is not null %}
+    <p>{{ app.user.currentCommunity.users|length }} users contribute to this community, along with {{ app.user.currentCommunity.guests|length }} guests.</p>
+    {% endif %}
   </div>
 </header>
 <div class="content home clearfix">
