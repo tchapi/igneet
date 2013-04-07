@@ -659,7 +659,7 @@ class DefaultController extends Controller
 
         if ($this->base != false && !is_null($this->base['idea']->getCommunity()) ) {
 
-            $userRepository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
+            $userRepository = $this->getDoctrine()->getRepository('metaUserBundle:User');
             $newParticipant = $userRepository->findOneByUsernameInCommunity($mailOrUsername, $this->base['idea']->getCommunity());
 
             if ($newParticipant && 
@@ -713,7 +713,7 @@ class DefaultController extends Controller
 
         if ($this->base != false && !is_null($this->base['idea']->getCommunity())) {
 
-            $userRepository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
+            $userRepository = $this->getDoctrine()->getRepository('metaUserBundle:User');
             $toRemoveParticipant = $userRepository->findOneByUsernameInCommunity($username, $this->base['idea']->getCommunity());
 
             if ($toRemoveParticipant && $toRemoveParticipant->isParticipatingInIdea($this->base['idea']) ) {

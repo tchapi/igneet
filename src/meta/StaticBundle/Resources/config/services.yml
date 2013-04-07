@@ -1,0 +1,7 @@
+parameters:
+#    meta_static.example.class: meta\StaticBundle\Example
+
+services:
+#    meta_static.example:
+#        class: %meta_static.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

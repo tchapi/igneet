@@ -1,0 +1,41 @@
+{% extends 'metaUserBundle::layout.html.twig' %}
+
+{% block title %}{{ parent() }} > Choose a user{% endblock %}
+
+{% block header %}
+  <div class="headerAvatarAndActions">
+    <div class="textAvatar"><i class="icon-search"></i></div>
+  </div>
+  <div class="objectHeader">
+    <h2>Choose a user</h2>
+    <h4>You need to indicate a specific user to continue with your request.</h4>
+  </div>
+{% endblock %}
+
+
+{% block content %}
+<form action="{{ path('u_choose_user', { 'targetAsBase64' : targetAsBase64, 'token': token }) }}" method="post" class="form-horizontal">
+    <section>
+      <div class="sectionTitle"><label for="username" class="required">Choose a user from the community : </label></div>
+      <div class="sectionContent">
+        <select id="username" name="username">
+          {% for user in users %}
+          <option value="{{ user.username }}">{{ user.getFullName() }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </section>
+    {% if external %}
+    <section>
+      <div class="sectionTitle"><label for="mailOrUsername" class="required">Or indicate a valid e-mail or username : </label></div>
+      <div class="sectionContent"><input type="text" id="mailOrUsername" name="mailOrUsername"></div>
+    </section>
+    {% endif %}
+    <section>
+      <div class="sectionTitle"></div>
+      <div class="sectionContent"><a class="btn" href="javascript:history.back()">Cancel</a>
+        <input type="submit" value="Choose this user" class="btn btn-success" /></div>
+    </section>
+</form>
+
+{% endblock %}

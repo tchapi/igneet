@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller,
     Symfony\Component\HttpFoundation\Request,
     Symfony\Component\HttpFoundation\Response;
 
-use meta\UserProfileBundle\Entity\UserInviteToken;
+use meta\UserBundle\Entity\UserInviteToken;
 
 class InfoController extends BaseController
 {
@@ -41,7 +41,7 @@ class InfoController extends BaseController
       $isEmail = filter_var($mailOrUsername, FILTER_VALIDATE_EMAIL);
 
       // It might be a user already
-      $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
+      $repository = $this->getDoctrine()->getRepository('metaUserBundle:User');
       $em = $this->getDoctrine()->getManager();
 
       if($isEmail){
@@ -84,7 +84,7 @@ class InfoController extends BaseController
               ->setTo($mailOrUsername)
               ->setBody(
                   $this->renderView(
-                      'metaUserProfileBundle:Mail:invite.mail.html.twig',
+                      'metaUserBundle:Mail:invite.mail.html.twig',
                       array('user' => $authenticatedUser, 'inviteToken' => $token->getToken(), 'invitee' => null, 'community' => null, 'project' => $project )
                   ), 'text/html'
               )
@@ -195,7 +195,7 @@ class InfoController extends BaseController
 
         if ($this->base != false && !is_null($this->base['standardProject']->getCommunity())) {
 
-            $userRepository = $this->getDoctrine()->getRepository('metaUserProfileBundle:User');
+            $userRepository = $this->getDoctrine()->getRepository('metaUserBundle:User');
             $toRemoveParticipantOrOwner = $userRepository->findOneByUsername($username);
 
             if ($toRemoveParticipantOrOwner && (($toRemoveParticipantOrOwner->isOwning($this->base['standardProject']) && $owner === true) || ($toRemoveParticipantOrOwner->isParticipatingIn($this->base['standardProject']) && $owner !== true)) ) {

@@ -4,7 +4,7 @@ namespace meta\GeneralBundle\Services;
 
 use Doctrine\ORM\EntityManager;
 
-use meta\UserProfileBundle\Entity\User,
+use meta\UserBundle\Entity\User,
     meta\GeneralBundle\Entity\Log\UserLogEntry,
     meta\GeneralBundle\Entity\Log\IdeaLogEntry,
     meta\GeneralBundle\Entity\Log\StandardProjectLogEntry,

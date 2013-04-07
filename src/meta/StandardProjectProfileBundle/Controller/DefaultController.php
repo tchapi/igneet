@@ -181,7 +181,7 @@ class DefaultController extends BaseController
                 case 'skills':
                     $skillSlugsAsArray = $request->request->get('value');
                     
-                    $repository = $this->getDoctrine()->getRepository('metaUserProfileBundle:Skill');
+                    $repository = $this->getDoctrine()->getRepository('metaUserBundle:Skill');
                     $skills = $repository->findSkillsByArrayOfSlugs($skillSlugsAsArray);
                     
                     $this->base['standardProject']->clearNeededSkills();

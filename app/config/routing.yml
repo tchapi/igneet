@@ -1,15 +1,21 @@
+# Static site
+static:
+    resource: "@metaStaticBundle/Resources/config/routing.yml"
+    prefix:   /
+
+# Application
 general:
     resource: "@metaGeneralBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix:   /app/
 
-meta_idea_profile:
+idea_profile:
     resource: "@metaIdeaProfileBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix:   /app/
 
-meta_standard_project_profile:
+standard_project_profile:
     resource: "@metaStandardProjectProfileBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix:   /app/
 
-meta_user_profile:
-    resource: "@metaUserProfileBundle/Resources/config/routing.yml"
-    prefix:   /
+user:
+    resource: "@metaUserBundle/Resources/config/routing.yml"
+    prefix:   /app/

@@ -19,7 +19,7 @@ class StandardProjectType extends AbstractType
             'multiple' => true, 
             'required' => false, 
             'property' => 'name',
-            'class' => 'meta\UserProfileBundle\Entity\Skill',
+            'class' => 'meta\UserBundle\Entity\Skill',
             'label' => 'Skills needed for this project (if any)',
             'attr' => array('class' => 'select2-trigger')
             ));

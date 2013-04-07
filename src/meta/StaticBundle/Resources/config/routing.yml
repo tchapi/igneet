@@ -1,0 +1,3 @@
+meta_static_homepage:
+    pattern:  /hello/{name}
+    defaults: { _controller: metaStaticBundle:Default:index }

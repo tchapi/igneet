@@ -54,7 +54,7 @@ class BaseLogEntry
 
     /**
      * User that did this (OWNING SIDE)
-     * @ORM\ManyToOne(targetEntity="meta\UserProfileBundle\Entity\User", inversedBy="initiatedLogEntries")
+     * @ORM\ManyToOne(targetEntity="meta\UserBundle\Entity\User", inversedBy="initiatedLogEntries")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      **/
     private $user;
@@ -130,10 +130,10 @@ class BaseLogEntry
     /**
      * Set user
      *
-     * @param \meta\UserProfileBundle\Entity\User $user
+     * @param \meta\UserBundle\Entity\User $user
      * @return LogEntry
      */
-    public function setUser(\meta\UserProfileBundle\Entity\User $user = null)
+    public function setUser(\meta\UserBundle\Entity\User $user = null)
     {
         if(!is_null($user)){
             $user->addInitiatedLogEntrie($this);
@@ -147,7 +147,7 @@ class BaseLogEntry
     /**
      * Get user
      *
-     * @return \meta\UserProfileBundle\Entity\User 
+     * @return \meta\UserBundle\Entity\User 
      */
     public function getUser()
     {

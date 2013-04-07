@@ -122,20 +122,20 @@ class Idea extends Taggable
 
     /**
      * Users watching me (REVERSE SIDE)
-     * @ORM\ManyToMany(targetEntity="meta\UserProfileBundle\Entity\User", mappedBy="ideasWatched")
+     * @ORM\ManyToMany(targetEntity="meta\UserBundle\Entity\User", mappedBy="ideasWatched")
      **/
     private $watchers;
 
     /**
      * Creators of the idea (OWNING SIDE)
-     * @ORM\ManyToMany(targetEntity="meta\UserProfileBundle\Entity\User", inversedBy="ideasCreated")
+     * @ORM\ManyToMany(targetEntity="meta\UserBundle\Entity\User", inversedBy="ideasCreated")
      * @ORM\JoinTable(name="User_created_Idea")
      **/
     private $creators;
 
     /**
      * Users participating in me (REVERSE SIDE)
-     * @ORM\ManyToMany(targetEntity="meta\UserProfileBundle\Entity\User", mappedBy="ideasParticipatedIn")
+     * @ORM\ManyToMany(targetEntity="meta\UserBundle\Entity\User", mappedBy="ideasParticipatedIn")
      **/
     private $participants;
 
@@ -362,10 +362,10 @@ class Idea extends Taggable
      * Add watcher
      *
      * BINDING LOGIC IS DONE IN 'USER' CLASS 
-     * @param \meta\UserProfileBundle\Entity\User $watcher
+     * @param \meta\UserBundle\Entity\User $watcher
      * @return Idea
      */
-    public function addWatcher(\meta\UserProfileBundle\Entity\User $watcher)
+    public function addWatcher(\meta\UserBundle\Entity\User $watcher)
     {
         $this->watchers[] = $watcher;
         return $this;
@@ -375,9 +375,9 @@ class Idea extends Taggable
      * Remove watcher
      *
      * BINDING LOGIC IS DONE IN 'USER' CLASS 
-     * @param \meta\UserProfileBundle\Entity\User $watcher
+     * @param \meta\UserBundle\Entity\User $watcher
      */
-    public function removeWatcher(\meta\UserProfileBundle\Entity\User $watcher)
+    public function removeWatcher(\meta\UserBundle\Entity\User $watcher)
     {
         $this->watchers->removeElement($watcher);
     }
@@ -574,10 +574,10 @@ class Idea extends Taggable
      * Add participants
      *
      * BINDING LOGIC IS DONE IN 'USER' CLASS 
-     * @param \meta\UserProfileBundle\Entity\User $participant
+     * @param \meta\UserBundle\Entity\User $participant
      * @return Idea
      */
-    public function addParticipant(\meta\UserProfileBundle\Entity\User $participant)
+    public function addParticipant(\meta\UserBundle\Entity\User $participant)
     {
         $this->participants[] = $participant;
         return $this;
@@ -587,9 +587,9 @@ class Idea extends Taggable
      * Remove participants
      *
      * BINDING LOGIC IS DONE IN 'USER' CLASS 
-     * @param \meta\UserProfileBundle\Entity\User $participant
+     * @param \meta\UserBundle\Entity\User $participant
      */
-    public function removeParticipant(\meta\UserProfileBundle\Entity\User $participant)
+    public function removeParticipant(\meta\UserBundle\Entity\User $participant)
     {
         $this->participants->removeElement($participant);
     }
@@ -774,10 +774,10 @@ class Idea extends Taggable
     /**
      * Add creator
      *
-     * @param \meta\UserProfileBundle\Entity\User $creator
+     * @param \meta\UserBundle\Entity\User $creator
      * @return Idea
      */
-    public function addCreator(\meta\UserProfileBundle\Entity\User $creator)
+    public function addCreator(\meta\UserBundle\Entity\User $creator)
     {
         if(!is_null($creator)){
             $creator->addIdeasCreated($this);
@@ -790,9 +790,9 @@ class Idea extends Taggable
     /**
      * Remove creator
      *
-     * @param \meta\UserProfileBundle\Entity\User $creator
+     * @param \meta\UserBundle\Entity\User $creator
      */
-    public function removeCreator(\meta\UserProfileBundle\Entity\User $creator)
+    public function removeCreator(\meta\UserBundle\Entity\User $creator)
     {
         if(!is_null($creator)){
             $creator->removeIdeasCreated($this);

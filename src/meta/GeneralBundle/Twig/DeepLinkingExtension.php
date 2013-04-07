@@ -52,7 +52,7 @@ class DeepLinkingExtension extends \Twig_Extension
 
                 switch ($matches[1][$i]) {
                     case 'user':
-                        $repository = $this->em->getRepository('metaUserProfileBundle:User');
+                        $repository = $this->em->getRepository('metaUserBundle:User');
                         $user = $repository->findOneByUsername($matches[2][$i]);
                         if ($user){
                             $args = array( 'username' => $user->getUsername());

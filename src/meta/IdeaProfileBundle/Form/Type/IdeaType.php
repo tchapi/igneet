@@ -21,7 +21,7 @@ class IdeaType extends AbstractType
                 'multiple' => true, 
                 'required' => false, // We will add the authenticated user afterwards 
                 'property' => 'fullName',
-                'class' => 'meta\UserProfileBundle\Entity\User',
+                'class' => 'meta\UserBundle\Entity\User',
                 'query_builder' => function(\Doctrine\ORM\EntityRepository $er) use ($community){
                     return $er->createQueryBuilder("u")
                               ->join('u.communities', 'c')

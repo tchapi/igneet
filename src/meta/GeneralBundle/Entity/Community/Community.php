@@ -61,13 +61,13 @@ class Community
     
     /**
      * Users in this community
-     * @ORM\ManyToMany(targetEntity="meta\UserProfileBundle\Entity\User", mappedBy="communities")
+     * @ORM\ManyToMany(targetEntity="meta\UserBundle\Entity\User", mappedBy="communities")
      **/
     private $users;
 
     /**
      * Guests in this community
-     * @ORM\ManyToMany(targetEntity="meta\UserProfileBundle\Entity\User", mappedBy="restrictedCommunities")
+     * @ORM\ManyToMany(targetEntity="meta\UserBundle\Entity\User", mappedBy="restrictedCommunities")
      **/
     private $guests;
 
@@ -180,10 +180,10 @@ class Community
     /**
      * Add user
      *
-     * @param \meta\UserProfileBundle\Entity\User $user
+     * @param \meta\UserBundle\Entity\User $user
      * @return Community
      */
-    public function addUser(\meta\UserProfileBundle\Entity\User $user)
+    public function addUser(\meta\UserBundle\Entity\User $user)
     {
         if (!is_null($user)){
             $user->addCommunitie($this);
@@ -196,9 +196,9 @@ class Community
     /**
      * Remove user
      *
-     * @param \meta\UserProfileBundle\Entity\User $user
+     * @param \meta\UserBundle\Entity\User $user
      */
-    public function removeUser(\meta\UserProfileBundle\Entity\User $user)
+    public function removeUser(\meta\UserBundle\Entity\User $user)
     {
         if (!is_null($user)){
             $user->removeCommunitie($this);
@@ -219,10 +219,10 @@ class Community
     /**
      * Add guest
      *
-     * @param \meta\UserProfileBundle\Entity\User $guest
+     * @param \meta\UserBundle\Entity\User $guest
      * @return Community
      */
-    public function addGuest(\meta\UserProfileBundle\Entity\User $guest)
+    public function addGuest(\meta\UserBundle\Entity\User $guest)
     {
         if (!is_null($guest)){
             $guest->addRestrictedCommunitie($this);
@@ -235,9 +235,9 @@ class Community
     /**
      * Remove guest
      *
-     * @param \meta\UserProfileBundle\Entity\User $guest
+     * @param \meta\UserBundle\Entity\User $guest
      */
-    public function removeGuest(\meta\UserProfileBundle\Entity\User $guest)
+    public function removeGuest(\meta\UserBundle\Entity\User $guest)
     {
         if (!is_null($guest)){
             $guest->removeRestrictedCommunitie($this);

@@ -62,14 +62,14 @@ class BaseComment
     
     /**
      * User that created this comment (OWNING SIDE)
-     * @ORM\ManyToOne(targetEntity="meta\UserProfileBundle\Entity\User", inversedBy="comments")
+     * @ORM\ManyToOne(targetEntity="meta\UserBundle\Entity\User", inversedBy="comments")
      **/
     private $user;
 
     /**
      * Users that validate this comment
      * @ORM\JoinTable(name="User_validates_Comment")
-     * @ORM\ManyToMany(targetEntity="meta\UserProfileBundle\Entity\User", inversedBy="validatedComments")
+     * @ORM\ManyToMany(targetEntity="meta\UserBundle\Entity\User", inversedBy="validatedComments")
      **/
     private $validators;
     
@@ -171,10 +171,10 @@ class BaseComment
     /**
      * Set user
      *
-     * @param \meta\UserProfileBundle\Entity\User $user
+     * @param \meta\UserBundle\Entity\User $user
      * @return BaseComment
      */
-    public function setUser(\meta\UserProfileBundle\Entity\User $user = null)
+    public function setUser(\meta\UserBundle\Entity\User $user = null)
     {
         if (!is_null($user)) {
             $user->addComment($this);
@@ -189,7 +189,7 @@ class BaseComment
     /**
      * Get user
      *
-     * @return \meta\UserProfileBundle\Entity\User 
+     * @return \meta\UserBundle\Entity\User 
      */
     public function getUser()
     {
@@ -199,10 +199,10 @@ class BaseComment
     /**
      * Add validator
      *
-     * @param \meta\UserProfileBundle\Entity\User $validator
+     * @param \meta\UserBundle\Entity\User $validator
      * @return BaseComment
      */
-    public function addValidator(\meta\UserProfileBundle\Entity\User $validator)
+    public function addValidator(\meta\UserBundle\Entity\User $validator)
     {
         if(!is_null($validator) && $this->validators->indexOf($validator) === false ) {
             $validator->addValidatedComment($this);
@@ -215,9 +215,9 @@ class BaseComment
     /**
      * Remove validator
      *
-     * @param \meta\UserProfileBundle\Entity\User $validator
+     * @param \meta\UserBundle\Entity\User $validator
      */
-    public function removeValidator(\meta\UserProfileBundle\Entity\User $validator)
+    public function removeValidator(\meta\UserBundle\Entity\User $validator)
     {
         if(!is_null($validator)) {
             $validator->removeValidatedComment($this);
@@ -229,9 +229,9 @@ class BaseComment
     /**
      * Toggle validator
      *
-     * @param \meta\UserProfileBundle\Entity\User $validator
+     * @param \meta\UserBundle\Entity\User $validator
      */
-    public function toggleValidator(\meta\UserProfileBundle\Entity\User $validator)
+    public function toggleValidator(\meta\UserBundle\Entity\User $validator)
     {
         if(!is_null($validator)){
             if ($this->validators->indexOf($validator) === false ) {

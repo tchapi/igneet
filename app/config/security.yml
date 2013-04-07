@@ -1,6 +1,6 @@
 security:
     encoders:
-        meta\UserProfileBundle\Entity\User:
+        meta\UserBundle\Entity\User:
             algorithm: sha1
             encode-as-base64: false
             iterations: 1
@@ -11,7 +11,7 @@ security:
 
     providers:
         user_db:
-            entity: { class: meta\UserProfileBundle\Entity\User, property: username }
+            entity: { class: meta\UserBundle\Entity\User, property: username }
 
     firewalls:
         assets_and_dev:
@@ -27,11 +27,11 @@ security:
             pattern:    ^/
             provider: user_db
             form_login:
-                login_path: /login
-                check_path: /login_check
+                login_path: /app/login
+                check_path: /app/login_check
                 remember_me: true
             logout:
-                path: /logout
+                path: /app/logout
                 target: /
             remember_me:
                 key: iGnEeT
@@ -41,9 +41,15 @@ security:
             security: true
             anonymous: ~
     access_control:
-        - { path: /login.*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: /reactivate, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: /recover, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: /change/password, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: /signup, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: /.*, roles: ROLE_USER }
+        # Application
+        - { path: /app/login.*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: /app/reactivate, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: /app/recover, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: /app/change/password, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: /app/signup, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: /app/.*, roles: ROLE_USER }
+        # Static site
+        - { path: /about, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: /team, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: /pricing, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: /, roles: IS_AUTHENTICATED_ANONYMOUSLY }

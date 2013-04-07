@@ -112,7 +112,7 @@ class StandardProject extends Taggable
 
     /**
      * Skills I would need as a project (OWNING SIDE)
-     * @ORM\ManyToMany(targetEntity="meta\UserProfileBundle\Entity\Skill", inversedBy="skilledStandardProjects")
+     * @ORM\ManyToMany(targetEntity="meta\UserBundle\Entity\Skill", inversedBy="skilledStandardProjects")
      * @ORM\JoinTable(name="StandardProject_need_Skill",
      *      joinColumns={@ORM\JoinColumn(name="standard_project_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="skill_id", referencedColumnName="id")}
@@ -122,19 +122,19 @@ class StandardProject extends Taggable
 
     /**
      * Users owning me (REVERSE SIDE)
-     * @ORM\ManyToMany(targetEntity="meta\UserProfileBundle\Entity\User", mappedBy="projectsOwned")
+     * @ORM\ManyToMany(targetEntity="meta\UserBundle\Entity\User", mappedBy="projectsOwned")
      **/
     private $owners;
 
     /**
      * Users participating in me (REVERSE SIDE)
-     * @ORM\ManyToMany(targetEntity="meta\UserProfileBundle\Entity\User", mappedBy="projectsParticipatedIn")
+     * @ORM\ManyToMany(targetEntity="meta\UserBundle\Entity\User", mappedBy="projectsParticipatedIn")
      **/
     private $participants;
 
     /**
      * Users watching me (REVERSE SIDE)
-     * @ORM\ManyToMany(targetEntity="meta\UserProfileBundle\Entity\User", mappedBy="projectsWatched")
+     * @ORM\ManyToMany(targetEntity="meta\UserBundle\Entity\User", mappedBy="projectsWatched")
      **/
     private $watchers;
 
@@ -438,10 +438,10 @@ class StandardProject extends Taggable
     /**
      * Add neededSkills
      *
-     * @param meta\UserProfileBundle\Entity\Skill $neededSkill
+     * @param meta\UserBundle\Entity\Skill $neededSkill
      * @return StandardProject
      */
-    public function addNeededSkill(\meta\UserProfileBundle\Entity\Skill $neededSkill)
+    public function addNeededSkill(\meta\UserBundle\Entity\Skill $neededSkill)
     {
         if (!is_null($neededSkill)){
             $neededSkill->addSkilledStandardProject($this);
@@ -454,9 +454,9 @@ class StandardProject extends Taggable
     /**
      * Remove neededSkills
      *
-     * @param meta\UserProfileBundle\Entity\Skill $neededSkill
+     * @param meta\UserBundle\Entity\Skill $neededSkill
      */
-    public function removeNeededSkill(\meta\UserProfileBundle\Entity\Skill $neededSkill)
+    public function removeNeededSkill(\meta\UserBundle\Entity\Skill $neededSkill)
     {
         if (!is_null($neededSkill)){
             $neededSkill->removeSkilledStandardProject($this);
@@ -491,10 +491,10 @@ class StandardProject extends Taggable
      * Add owners
      *
      * BINDING LOGIC IS DONE IN 'USER' CLASS 
-     * @param meta\UserProfileBundle\Entity\User $owners
+     * @param meta\UserBundle\Entity\User $owners
      * @return StandardProject
      */
-    public function addOwner(\meta\UserProfileBundle\Entity\User $owners)
+    public function addOwner(\meta\UserBundle\Entity\User $owners)
     {
         $this->owners[] = $owners;
     
@@ -505,9 +505,9 @@ class StandardProject extends Taggable
      * Remove owners
      *
      * BINDING LOGIC IS DONE IN 'USER' CLASS 
-     * @param meta\UserProfileBundle\Entity\User $owners
+     * @param meta\UserBundle\Entity\User $owners
      */
-    public function removeOwner(\meta\UserProfileBundle\Entity\User $owners)
+    public function removeOwner(\meta\UserBundle\Entity\User $owners)
     {
         $this->owners->removeElement($owners);
     }
@@ -542,10 +542,10 @@ class StandardProject extends Taggable
      * Add participants
      *
      * BINDING LOGIC IS DONE IN 'USER' CLASS 
-     * @param meta\UserProfileBundle\Entity\User $participants
+     * @param meta\UserBundle\Entity\User $participants
      * @return StandardProject
      */
-    public function addParticipant(\meta\UserProfileBundle\Entity\User $participants)
+    public function addParticipant(\meta\UserBundle\Entity\User $participants)
     {
         $this->participants[] = $participants;
         return $this;
@@ -555,9 +555,9 @@ class StandardProject extends Taggable
      * Remove participants
      *
      * BINDING LOGIC IS DONE IN 'USER' CLASS 
-     * @param meta\UserProfileBundle\Entity\User $participants
+     * @param meta\UserBundle\Entity\User $participants
      */
-    public function removeParticipant(\meta\UserProfileBundle\Entity\User $participants)
+    public function removeParticipant(\meta\UserBundle\Entity\User $participants)
     {
         $this->participants->removeElement($participants);
     }
@@ -633,10 +633,10 @@ class StandardProject extends Taggable
      * Add watcher
      *
      * BINDING LOGIC IS DONE IN 'USER' CLASS 
-     * @param meta\UserProfileBundle\Entity\User $watcher
+     * @param meta\UserBundle\Entity\User $watcher
      * @return StandardProject
      */
-    public function addWatcher(\meta\UserProfileBundle\Entity\User $watcher)
+    public function addWatcher(\meta\UserBundle\Entity\User $watcher)
     {
         $this->watchers[] = $watcher;
         return $this;
@@ -646,9 +646,9 @@ class StandardProject extends Taggable
      * Remove watcher
      *
      * BINDING LOGIC IS DONE IN 'USER' CLASS 
-     * @param meta\UserProfileBundle\Entity\User $watcher
+     * @param meta\UserBundle\Entity\User $watcher
      */
-    public function removeWatcher(\meta\UserProfileBundle\Entity\User $watcher)
+    public function removeWatcher(\meta\UserBundle\Entity\User $watcher)
     {
         $this->watchers->removeElement($watcher);
     }
