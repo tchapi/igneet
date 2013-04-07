@@ -63,7 +63,7 @@ class DefaultController extends Controller
     {
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('validateComment', $request->get('token')))
-            return new Response('Invalid token', 400);
+            return new Response($this->get('translator')->trans('invalid.token', array(), 'errors'), 400);
 
         $authenticatedUser = $this->getUser();
 
@@ -80,7 +80,7 @@ class DefaultController extends Controller
 
         } else {
 
-            return new Response('Invalid request', 400);
+            return new Response($this->get('translator')->trans('invalid.request', array(), 'errors'), 400);
 
         }
 
@@ -93,7 +93,7 @@ class DefaultController extends Controller
     {
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('deleteComment', $request->get('token')))
-            return new Response('Invalid token', 400);
+            return new Response($this->get('translator')->trans('invalid.token', array(), 'errors'), 400);
 
         $authenticatedUser = $this->getUser();
 
@@ -110,7 +110,7 @@ class DefaultController extends Controller
             
         } else {
 
-            return new Response('Invalid request', 400);
+            return new Response($this->get('translator')->trans('invalid.request', array(), 'errors'), 400);
 
         }
 
@@ -164,7 +164,7 @@ class DefaultController extends Controller
 
                 $this->get('session')->setFlash(
                         'warning',
-                        'You do not belong to any community at this time.'
+                        $this->get('translator')->trans('user.have.no.community')
                     );
 
                 return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $this->getUser()->getUsername())));
@@ -183,7 +183,7 @@ class DefaultController extends Controller
             
             $this->get('session')->setFlash(
                 'error',
-                'Your token is invalid.'
+                $this->get('translator')->trans('invalid.token', array(), 'errors')
             );
 
             return $this->redirect($this->generateUrl('u_me'));
@@ -193,7 +193,7 @@ class DefaultController extends Controller
 
             $this->get('session')->setFlash(
                 'success',
-                'You are now back in your private space.'
+                $this->get('translator')->trans('user.in.private.space')
             );
 
             $em = $this->getDoctrine()->getManager();
@@ -211,7 +211,7 @@ class DefaultController extends Controller
             
             $this->get('session')->setFlash(
                 'success',
-                'You are now browsing the ' . $community->getName() . ' community space.'
+                $this->get('translator')->trans('user.in.community', array( '%community%' => $community->getName()))
             );
 
             $em = $this->getDoctrine()->getManager();
@@ -222,7 +222,7 @@ class DefaultController extends Controller
 
         } else {
             
-            throw $this->createNotFoundException('This community does not exist'); // Which is false, but we should not reveal its existence
+            throw $this->createNotFoundException($this->get('translator')->trans('community.notFound')); // Which is false, but we should not reveal its existence
 
         }
 

@@ -1,0 +1,5 @@
+user.have.no.community: "You do not belong to any community at this time."
+user.in:
+  community: "You are now browsing the %community% community space."
+  private.space: "You are now back in your private space."
+community.notFound: "This community does not exist."
