@@ -76,7 +76,7 @@ class UserInviteToken
     /**
      *  The invited project, if any
      *
-     * @ORM\ManyToOne(targetEntity="meta\StandardProjectProfileBundle\Entity\StandardProject")
+     * @ORM\ManyToOne(targetEntity="meta\ProjectBundle\Entity\StandardProject")
      */
     private $project;
 
@@ -308,10 +308,10 @@ class UserInviteToken
     /**
      * Set project
      *
-     * @param \meta\StandardProjectProfileBundle\Entity\StandardProject $project
+     * @param \meta\ProjectBundle\Entity\StandardProject $project
      * @return UserInviteToken
      */
-    public function setProject(\meta\StandardProjectProfileBundle\Entity\StandardProject $project = null)
+    public function setProject(\meta\ProjectBundle\Entity\StandardProject $project = null)
     {
         $this->project = $project;
     
@@ -321,7 +321,7 @@ class UserInviteToken
     /**
      * Get project
      *
-     * @return \meta\StandardProjectProfileBundle\Entity\StandardProject 
+     * @return \meta\ProjectBundle\Entity\StandardProject 
      */
     public function getProject()
     {

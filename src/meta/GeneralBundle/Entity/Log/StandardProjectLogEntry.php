@@ -23,7 +23,7 @@ class StandardProjectLogEntry extends BaseLogEntry
 
     /**
      * Subject : StandardProject
-     * @ORM\ManyToOne(targetEntity="\meta\StandardProjectProfileBundle\Entity\StandardProject", inversedBy="logEntries")
+     * @ORM\ManyToOne(targetEntity="\meta\ProjectBundle\Entity\StandardProject", inversedBy="logEntries")
      * @ORM\JoinColumn(name="standardProject_id", referencedColumnName="id", onDelete="CASCADE")
      **/
     private $standardProject;
@@ -41,10 +41,10 @@ class StandardProjectLogEntry extends BaseLogEntry
     /**
      * Set subject
      *
-     * @param \meta\StandardProjectProfileBundle\Entity\StandardProject $standardProject
+     * @param \meta\ProjectBundle\Entity\StandardProject $standardProject
      * @return StandardProjectLogEntry
      */
-    public function setSubject(\meta\StandardProjectProfileBundle\Entity\StandardProject $standardProject = null)
+    public function setSubject(\meta\ProjectBundle\Entity\StandardProject $standardProject = null)
     {
         return $this->setStandardProject($standardProject);
     }
@@ -52,7 +52,7 @@ class StandardProjectLogEntry extends BaseLogEntry
     /**
      * Get subject
      *
-     * @return \meta\StandardProjectProfileBundle\Entity\StandardProject 
+     * @return \meta\ProjectBundle\Entity\StandardProject 
      */
     public function getSubject()
     {
@@ -62,10 +62,10 @@ class StandardProjectLogEntry extends BaseLogEntry
     /**
      * Set standardProject
      *
-     * @param \meta\StandardProjectProfileBundle\Entity\StandardProject $standardProject
+     * @param \meta\ProjectBundle\Entity\StandardProject $standardProject
      * @return StandardProjectLogEntry
      */
-    public function setStandardProject(\meta\StandardProjectProfileBundle\Entity\StandardProject $standardProject = null)
+    public function setStandardProject(\meta\ProjectBundle\Entity\StandardProject $standardProject = null)
     {
         if (!is_null($standardProject)){
             $standardProject->addLogEntrie($this);
@@ -80,7 +80,7 @@ class StandardProjectLogEntry extends BaseLogEntry
     /**
      * Get standardProject
      *
-     * @return \meta\StandardProjectProfileBundle\Entity\StandardProject 
+     * @return \meta\ProjectBundle\Entity\StandardProject 
      */
     public function getStandardProject()
     {

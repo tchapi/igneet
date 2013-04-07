@@ -16,11 +16,12 @@
    \__ contact
    \__ terms of use
 
+ ☐ projects dont je ne suis pas participant : je vois les trucs ou pas ???
+
 Todo - Entity "Community" :
 
 Home de community (penser au private space !!)
- - infos basiques (description / headline / created_at / number of users / number of projects / number of ideas)
- ' "Home of XX ideas and YY projects" '
+ - infos basiques (description / headline / created_at)
  - liste des managers
  - wiki avec wikipages (idem project)
  - resources ?? Vraiment besoin ?

@@ -1,0 +1,91 @@
+{% extends 'metaProjectBundle:Default:show.html.twig' %}
+
+{% block title %}{{ parent() }}{% if commonList %} | List : {{ commonList.name }}{% endif %}{% endblock %}
+
+{% block navbar %}
+{% render "metaProjectBundle:Default:navbar" with { 'activeMenu' : 'lists', 'slug' : base.standardProject.slug } %}
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+    {% if base.canEdit %}
+    {% javascripts '@metaGeneralBundle/Resources/public/js-edit/jquery-nestable.js'
+                   '@metaGeneralBundle/Resources/public/js-edit/nestable.behaviour.js'
+            filter='?yui_js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+{% if commonLists|length > 0 %}
+<div class="column">
+<section class="listInfo">
+  <h4 class="editable" data-title="Change the name of this list" data-name="name" data-url="{{ path('sp_show_project_list_edit', {'slug': base.standardProject.slug, 'id': commonList.id, 'token': csrf_token('editCommonList') }) }}" data-type="text">{{ commonList.name }} </h4>
+  <p><span class="editable description-target" data-title="You can provide an optional description for this list" data-name="description" data-url="{{ path('sp_show_project_list_edit', {'slug': base.standardProject.slug, 'id': commonList.id, 'token': csrf_token('editCommonList') }) }}" data-toggle="manual" data-type="textarea" data-emptytext="Provide an optional description">{{ commonList.description }}</span>
+  {% if base.canEdit %} <a class="editable-trigger" data-target="description">&hellip;<i class="icon-pencil"></i></a>{% endif %}</p>
+  <div>
+    {% if commonList.tags|length > 0 %}
+      Tags :
+    {% elseif not base.canEdit %}
+      No tags yet.
+    {% endif %}
+    <ul data-toggle="manual" data-title="Indicate tags separated by a comma" data-emptytext="Add tags" data-url="{{ path('sp_show_project_list_edit', {'slug': base.standardProject.slug, 'id': commonList.id, 'token': csrf_token('editCommonList') }) }}" data-type="select2" data-name="tags" class="tags tags-target editable-li" >
+    {% for tag in commonList.tags %}<li class="label" rel="{{ tag.name }}" style="background-color: #{{ tag.color }}">{{ tag.name }}</li>{% endfor %}
+    </ul>
+    {% if base.canEdit %} <a class="editable-trigger" data-target="tags">&hellip;<i class="icon-pencil"></i></a>{% endif %}
+  </div>
+</section>
+<section>
+{% if commonList.items|length > 0 %}
+  <ul class="list">
+  {% for item in commonList.items %}
+    <li class="{{ cycle(["even", "odd"], loop.index) }}{% if item.done %} done muted{% endif %}">
+      <span data-toggle="manual" class="text editable text-target editable-server-response listitem-{{ item.id }}-target" data-pk="{{ item.id }}" data-name="text" data-url="{{ path('sp_show_project_listitem_edit', {'slug': base.standardProject.slug, 'listId': commonList.id, 'id': item.id, 'token': csrf_token('editCommonListItem') }) }}" data-type="text" data-value="{{ item.text }}">{{ item.text|deeplinks|raw }}</span>
+      {% if base.canEdit %}
+      <div class="actions">
+        {% if item.done %}
+        <span class="muted date">done on {{ item.doneAt|date('d-m-Y') }}</span>
+        <a href="{{ path('sp_show_project_listitem_undo', {'slug': base.standardProject.slug, 'listId': commonList.id, 'id': item.id, 'token': csrf_token('toggleCommonListItem') }) }}" title="Recycle this item"><i class="icon-repeat"></i></a>
+        {% else %}
+        <span class="muted date">created on {{ item.createdAt|date('d-m-Y') }}</span>
+        <a href="{{ path('sp_show_project_listitem_do', {'slug': base.standardProject.slug, 'listId': commonList.id, 'id': item.id, 'token': csrf_token('toggleCommonListItem') }) }}" title="Finish this item"><i class="icon-ok text-success"></i></a>
+        {% endif %}
+        <a class="editable-trigger" data-target="listitem-{{ item.id }}" title="Edit this item"><i class="icon-pencil"></i></a> | 
+        <a href="{{ path('sp_show_project_listitem_delete', {'slug': base.standardProject.slug, 'listId': commonList.id, 'id': item.id, 'token': csrf_token('deleteCommonListItem') }) }}" title="Delete this item"><i class="icon-remove text-error"></i></a>
+      </div>
+      {% endif %}
+    </li>
+  {% endfor %}
+    <li><a href="{{ path('sp_show_project_listitem_new', {'slug': base.standardProject.slug, 'listId': commonList.id}) }}"><i class="icon-plus"></i>New item</a></li>
+  </ul>
+{% else %}
+  <p class="muted">No list item yet ! {% if base.canEdit %}<a href="{{ path('sp_show_project_listitem_new', {'slug': base.standardProject.slug, 'listId': commonList.id}) }}">Create one ...</a></p>{% endif %}
+{% endif %}
+</section>
+<section>
+{% render "metaProjectBundle:Comment:addCommonListComment" with { 'slug' : base.standardProject.slug, 'id': commonList.id } %}
+</section>
+</div>
+<div class="menu dd">
+  Lists :
+  <ul class="lists sortable dd-list" data-url="{{ path('sp_show_project_list_rank', {'slug': base.standardProject.slug}) }}">
+  {% for list in commonLists %}
+      <li class="{% if list.id == commonList.id %}active {% endif %}{% if base.canEdit %}dd-item dd-nochildren{% endif %}" id="{{ list.id }}">
+        {% if base.canEdit %}<div class="dd-handle"><i class="icon-reorder"></i></div>{% endif %}
+        {% if base.canEdit %}<a data-confirm="Are you sure you want to delete this list ?" href="{{ path('sp_show_project_list_delete', {'slug': base.standardProject.slug, 'id': list.id, 'token': csrf_token('deleteCommonList')}) }}"><i class="icon-remove-sign"></i></a>{% endif %} <a href="{{ path('sp_show_project_list', {'slug': base.standardProject.slug, 'id': list.id, 'commonListSlug': list.slug }) }}" title="{{ list.name }}" class="page_title">{{ list.name }}</a>
+      </li>
+  {% endfor %}
+  </ul>
+  {% if base.canEdit %}
+  <div class="menu_new">
+    <a href="{{ path('sp_show_project_list_new', {'slug': base.standardProject.slug}) }}"><i class="icon-plus-sign"></i> New list</a>
+  </div>
+  {% endif %}
+</div>
+{% else %}
+<section>
+No list yet.
+</section>
+{% endif %}
+{% endblock %}

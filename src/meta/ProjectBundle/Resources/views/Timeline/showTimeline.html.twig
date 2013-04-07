@@ -1,0 +1,24 @@
+{% extends 'metaProjectBundle:Default:show.html.twig' %}
+
+{% block title %}{{ parent() }} | Timeline{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+    {% javascripts '@metaGeneralBundle/Resources/public/js/select2.behaviour.js' 
+            filter='?yui_js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block navbar %}
+{% render "metaProjectBundle:Default:navbar" with { 'activeMenu' : 'timeline', 'slug' : base.standardProject.slug } %}
+{% endblock %}
+
+{% block content %}
+<section>
+{% render "metaProjectBundle:Comment:addStandardProjectComment" with { 'slug' : base.standardProject.slug } %}
+</section>
+<section>
+{% render "metaProjectBundle:Timeline:history" with { 'slug' : base.standardProject.slug, 'page' : 1 } %}
+</section>
+{% endblock %}

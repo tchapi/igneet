@@ -26,8 +26,8 @@ class AppKernel extends Kernel
 
             new meta\GeneralBundle\metaGeneralBundle(),
             new meta\UserBundle\metaUserBundle(),
-            new meta\StandardProjectProfileBundle\metaStandardProjectProfileBundle(),
-            new meta\IdeaProfileBundle\metaIdeaProfileBundle(),
+            new meta\ProjectBundle\metaProjectBundle(),
+            new meta\IdeaBundle\metaIdeaBundle(),
             new meta\StaticBundle\metaStaticBundle(),
         );
 

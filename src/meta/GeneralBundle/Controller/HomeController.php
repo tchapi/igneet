@@ -17,10 +17,10 @@ class HomeController extends Controller
         $authenticatedUser = $this->getUser();
         $community = $authenticatedUser->GetCurrentCommunity();
 
-        $ideaRepository = $this->getDoctrine()->getRepository('metaIdeaProfileBundle:Idea');
+        $ideaRepository = $this->getDoctrine()->getRepository('metaIdeaBundle:Idea');
         $totalIdeas = $ideaRepository->countIdeasInCommunityForUser($community, $authenticatedUser, false);
         
-        $projectRepository = $this->getDoctrine()->getRepository('metaStandardProjectProfileBundle:StandardProject');
+        $projectRepository = $this->getDoctrine()->getRepository('metaProjectBundle:StandardProject');
         $totalProjects = $projectRepository->countProjectsInCommunityForUser($community, $authenticatedUser);
         
         return $this->render('metaGeneralBundle:Home:home.html.twig', array(

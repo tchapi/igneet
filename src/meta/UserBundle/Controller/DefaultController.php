@@ -49,11 +49,11 @@ class DefaultController extends Controller
         $community = $authenticatedUser->getCurrentCommunity();
 
         // Get projects / ideas lists
-        $projectRepository = $this->getDoctrine()->getRepository('metaStandardProjectProfileBundle:StandardProject');
+        $projectRepository = $this->getDoctrine()->getRepository('metaProjectBundle:StandardProject');
         $projectsOwned = $projectRepository->findAllProjectsInCommunityForUserOwnedBy($community, $authenticatedUser, $user);
         $projectsParticipatedIn = $projectRepository->findAllProjectsInCommunityForUserParticipatedInBy($community, $authenticatedUser, $user);
 
-        $ideaRepository = $this->getDoctrine()->getRepository('metaIdeaProfileBundle:Idea');
+        $ideaRepository = $this->getDoctrine()->getRepository('metaIdeaBundle:Idea');
         $ideasCreated = $ideaRepository->findAllIdeasInCommunityCreatedBy($community, $user);
         $ideasParticipatedIn = $ideaRepository->findAllIdeasInCommunityParticipatedInBy($community, $user);
 
@@ -141,8 +141,8 @@ class DefaultController extends Controller
         // So let's get the stuff
         $logRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\BaseLogEntry');
         $commentRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Comment\BaseComment');
-        $standardProjectRepository = $this->getDoctrine()->getRepository('metaStandardProjectProfileBundle:StandardProject');
-        $ideaRepository = $this->getDoctrine()->getRepository('metaIdeaProfileBundle:Idea');
+        $standardProjectRepository = $this->getDoctrine()->getRepository('metaProjectBundle:StandardProject');
+        $ideaRepository = $this->getDoctrine()->getRepository('metaIdeaBundle:Idea');
 
         // Last recorded activity
         $lastActivity = $logRepository->findLastActivityDateForUser($authenticatedUser->getId());

@@ -63,7 +63,7 @@ class Skill
     /**
      * Bidirectional - Many skills are possessed by many standard projects (INVERSE SIDE)
      *
-     * @ORM\ManyToMany(targetEntity="meta\StandardProjectProfileBundle\Entity\StandardProject", mappedBy="neededSkills")
+     * @ORM\ManyToMany(targetEntity="meta\ProjectBundle\Entity\StandardProject", mappedBy="neededSkills")
      */
     private $skilledStandardProjects;
 
@@ -210,10 +210,10 @@ class Skill
      * Add skilledStandardProject
      *
      * BINDING LOGIC IS DONE IN 'STANDARDPROJECT' CLASS 
-     * @param meta\StandardProjectProfileBundle\Entity\StandardProject $skilledStandardProject
+     * @param meta\ProjectBundle\Entity\StandardProject $skilledStandardProject
      * @return Skill
      */
-    public function addSkilledStandardProject(\meta\StandardProjectProfileBundle\Entity\StandardProject $skilledStandardProject)
+    public function addSkilledStandardProject(\meta\ProjectBundle\Entity\StandardProject $skilledStandardProject)
     {
         $this->skilledStandardProjects[] = $skilledStandardProject;
         return $this;
@@ -223,9 +223,9 @@ class Skill
      * Remove skilledStandardProject
      *
      * BINDING LOGIC IS DONE IN 'STANDARDPROJECT' CLASS 
-     * @param meta\StandardProjectProfileBundle\Entity\StandardProject $skilledStandardProject
+     * @param meta\ProjectBundle\Entity\StandardProject $skilledStandardProject
      */
-    public function removeSkilledStandardProject(\meta\StandardProjectProfileBundle\Entity\StandardProject $skilledStandardProject)
+    public function removeSkilledStandardProject(\meta\ProjectBundle\Entity\StandardProject $skilledStandardProject)
     {
         $this->skilledStandardProjects->removeElement($skilledStandardProject);
     }

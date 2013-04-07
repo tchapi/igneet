@@ -211,7 +211,7 @@ class User implements AdvancedUserInterface
 
     /**
      * Projects I own (OWNING SIDE)
-     * @ORM\ManyToMany(targetEntity="meta\StandardProjectProfileBundle\Entity\StandardProject", inversedBy="owners")
+     * @ORM\ManyToMany(targetEntity="meta\ProjectBundle\Entity\StandardProject", inversedBy="owners")
      * @ORM\JoinTable(name="User_owns_StandardProject",
      *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="standard_project_id", referencedColumnName="id")}
@@ -221,7 +221,7 @@ class User implements AdvancedUserInterface
 
     /**
      * Projects I participate in (OWNING SIDE)
-     * @ORM\ManyToMany(targetEntity="meta\StandardProjectProfileBundle\Entity\StandardProject", inversedBy="participants")
+     * @ORM\ManyToMany(targetEntity="meta\ProjectBundle\Entity\StandardProject", inversedBy="participants")
      * @ORM\JoinTable(name="User_participatesIn_StandardProject",
      *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="standard_project_id", referencedColumnName="id")}
@@ -231,7 +231,7 @@ class User implements AdvancedUserInterface
 
     /**
      * Projects I watch (OWNING SIDE)
-     * @ORM\ManyToMany(targetEntity="meta\StandardProjectProfileBundle\Entity\StandardProject", inversedBy="watchers")
+     * @ORM\ManyToMany(targetEntity="meta\ProjectBundle\Entity\StandardProject", inversedBy="watchers")
      * @ORM\JoinTable(name="User_watches_StandardProject",
      *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="standard_project_id", referencedColumnName="id")}
@@ -241,7 +241,7 @@ class User implements AdvancedUserInterface
 
     /**
      * Ideas I watch (OWNING SIDE)
-     * @ORM\ManyToMany(targetEntity="meta\IdeaProfileBundle\Entity\Idea", inversedBy="watchers")
+     * @ORM\ManyToMany(targetEntity="meta\IdeaBundle\Entity\Idea", inversedBy="watchers")
      * @ORM\JoinTable(name="User_watches_Idea",
      *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="idea_id", referencedColumnName="id")}
@@ -251,13 +251,13 @@ class User implements AdvancedUserInterface
 
     /**
      * Ideas I have created (OWNING SIDE)
-     * @ORM\ManyToMany(targetEntity="meta\IdeaProfileBundle\Entity\Idea", mappedBy="creators")
+     * @ORM\ManyToMany(targetEntity="meta\IdeaBundle\Entity\Idea", mappedBy="creators")
      **/
     private $ideasCreated;
 
     /**
      * Ideas I participate in (OWNING SIDE)
-     * @ORM\ManyToMany(targetEntity="meta\IdeaProfileBundle\Entity\Idea", inversedBy="participants")
+     * @ORM\ManyToMany(targetEntity="meta\IdeaBundle\Entity\Idea", inversedBy="participants")
      * @ORM\JoinTable(name="User_participatesIn_Idea")
      **/
     private $ideasParticipatedIn;
@@ -971,10 +971,10 @@ class User implements AdvancedUserInterface
     /**
      * Add projectsOwned
      *
-     * @param meta\StandardProjectProfileBundle\Entity\StandardProject $projectOwned
+     * @param meta\ProjectBundle\Entity\StandardProject $projectOwned
      * @return User
      */
-    public function addProjectsOwned(\meta\StandardProjectProfileBundle\Entity\StandardProject $projectOwned)
+    public function addProjectsOwned(\meta\ProjectBundle\Entity\StandardProject $projectOwned)
     {
         if (!is_null($projectOwned)){
             $projectOwned->addOwner($this);
@@ -987,9 +987,9 @@ class User implements AdvancedUserInterface
     /**
      * Remove projectsOwned
      *
-     * @param meta\StandardProjectProfileBundle\Entity\StandardProject $projectOwned
+     * @param meta\ProjectBundle\Entity\StandardProject $projectOwned
      */
-    public function removeProjectsOwned(\meta\StandardProjectProfileBundle\Entity\StandardProject $projectOwned)
+    public function removeProjectsOwned(\meta\ProjectBundle\Entity\StandardProject $projectOwned)
     {
         if (!is_null($projectOwned)){
             $projectOwned->removeOwner($this);
@@ -1027,7 +1027,7 @@ class User implements AdvancedUserInterface
      *
      * @return boolean 
      */
-    public function isOwning(\meta\StandardProjectProfileBundle\Entity\StandardProject $project)
+    public function isOwning(\meta\ProjectBundle\Entity\StandardProject $project)
     {
         return $this->projectsOwned->contains($project);
     }
@@ -1035,10 +1035,10 @@ class User implements AdvancedUserInterface
     /**
      * Add projectsParticipatedIn
      *
-     * @param meta\StandardProjectProfileBundle\Entity\StandardProject $projectParticipatedIn
+     * @param meta\ProjectBundle\Entity\StandardProject $projectParticipatedIn
      * @return User
      */
-    public function addProjectsParticipatedIn(\meta\StandardProjectProfileBundle\Entity\StandardProject $projectParticipatedIn)
+    public function addProjectsParticipatedIn(\meta\ProjectBundle\Entity\StandardProject $projectParticipatedIn)
     {
         if (!is_null($projectParticipatedIn)){
             $projectParticipatedIn->addParticipant($this);
@@ -1051,9 +1051,9 @@ class User implements AdvancedUserInterface
     /**
      * Remove projectsParticipatedIn
      *
-     * @param meta\StandardProjectProfileBundle\Entity\StandardProject $projectParticipatedIn
+     * @param meta\ProjectBundle\Entity\StandardProject $projectParticipatedIn
      */
-    public function removeProjectsParticipatedIn(\meta\StandardProjectProfileBundle\Entity\StandardProject $projectParticipatedIn)
+    public function removeProjectsParticipatedIn(\meta\ProjectBundle\Entity\StandardProject $projectParticipatedIn)
     {
         if (!is_null($projectParticipatedIn)){
             $projectParticipatedIn->removeParticipant($this);
@@ -1076,7 +1076,7 @@ class User implements AdvancedUserInterface
      *
      * @return boolean 
      */
-    public function isParticipatingIn(\meta\StandardProjectProfileBundle\Entity\StandardProject $project)
+    public function isParticipatingIn(\meta\ProjectBundle\Entity\StandardProject $project)
     {
         return $this->projectsParticipatedIn->contains($project);
     }
@@ -1086,7 +1086,7 @@ class User implements AdvancedUserInterface
      *
      * @return boolean 
      */
-    public function canEditProject(\meta\StandardProjectProfileBundle\Entity\StandardProject $project)
+    public function canEditProject(\meta\ProjectBundle\Entity\StandardProject $project)
     {
         return $this->isParticipatingIn($project) || $this->isOwning($project);
     }
@@ -1094,10 +1094,10 @@ class User implements AdvancedUserInterface
     /**
      * Add projectsWatched
      *
-     * @param meta\StandardProjectProfileBundle\Entity\StandardProject $projectWatched
+     * @param meta\ProjectBundle\Entity\StandardProject $projectWatched
      * @return User
      */
-    public function addProjectsWatched(\meta\StandardProjectProfileBundle\Entity\StandardProject $projectWatched)
+    public function addProjectsWatched(\meta\ProjectBundle\Entity\StandardProject $projectWatched)
     {
         if (!is_null($projectWatched)){
             $projectWatched->addWatcher($this);
@@ -1110,9 +1110,9 @@ class User implements AdvancedUserInterface
     /**
      * Remove projectsWatched
      *
-     * @param meta\StandardProjectProfileBundle\Entity\StandardProject $projectWatched
+     * @param meta\ProjectBundle\Entity\StandardProject $projectWatched
      */
-    public function removeProjectsWatched(\meta\StandardProjectProfileBundle\Entity\StandardProject $projectWatched)
+    public function removeProjectsWatched(\meta\ProjectBundle\Entity\StandardProject $projectWatched)
     {
         if (!is_null($projectWatched)){
             $projectWatched->removeWatcher($this);
@@ -1135,7 +1135,7 @@ class User implements AdvancedUserInterface
      *
      * @return boolean 
      */
-    public function isWatchingProject(\meta\StandardProjectProfileBundle\Entity\StandardProject $project)
+    public function isWatchingProject(\meta\ProjectBundle\Entity\StandardProject $project)
     {
         return $this->projectsWatched->contains($project);
     }
@@ -1193,10 +1193,10 @@ class User implements AdvancedUserInterface
     /**
      * Add ideaWatched
      *
-     * @param \meta\IdeaProfileBundle\Entity\Idea $ideaWatched
+     * @param \meta\IdeaBundle\Entity\Idea $ideaWatched
      * @return User
      */
-    public function addIdeasWatched(\meta\IdeaProfileBundle\Entity\Idea $ideaWatched)
+    public function addIdeasWatched(\meta\IdeaBundle\Entity\Idea $ideaWatched)
     {
         if (!is_null($ideaWatched)){
             $ideaWatched->addWatcher($this);
@@ -1211,7 +1211,7 @@ class User implements AdvancedUserInterface
      *
      * @return boolean 
      */
-    public function isWatchingIdea(\meta\IdeaProfileBundle\Entity\Idea $idea)
+    public function isWatchingIdea(\meta\IdeaBundle\Entity\Idea $idea)
     {
         return $this->ideasWatched->contains($idea);
     }
@@ -1219,9 +1219,9 @@ class User implements AdvancedUserInterface
     /**
      * Remove ideaWatched
      *
-     * @param \meta\IdeaProfileBundle\Entity\Idea $ideaWatched
+     * @param \meta\IdeaBundle\Entity\Idea $ideaWatched
      */
-    public function removeIdeasWatched(\meta\IdeaProfileBundle\Entity\Idea $ideaWatched)
+    public function removeIdeasWatched(\meta\IdeaBundle\Entity\Idea $ideaWatched)
     {
         if (!is_null($ideaWatched)){
             $ideaWatched->removeWatcher($this);
@@ -1244,10 +1244,10 @@ class User implements AdvancedUserInterface
      * Add ideasCreated
      *
      * BINDING LOGIC IS DONE IN 'IDEA' CLASS
-     * @param \meta\IdeaProfileBundle\Entity\Idea $ideaCreated
+     * @param \meta\IdeaBundle\Entity\Idea $ideaCreated
      * @return User
      */
-    public function addIdeasCreated(\meta\IdeaProfileBundle\Entity\Idea $ideaCreated)
+    public function addIdeasCreated(\meta\IdeaBundle\Entity\Idea $ideaCreated)
     {
         $this->ideasCreated[] = $ideaCreated;
         return $this;
@@ -1257,9 +1257,9 @@ class User implements AdvancedUserInterface
      * Remove ideasCreated
      *
      * BINDING LOGIC IS DONE IN 'IDEA' CLASS
-     * @param \meta\IdeaProfileBundle\Entity\Idea $ideaCreated
+     * @param \meta\IdeaBundle\Entity\Idea $ideaCreated
      */
-    public function removeIdeasCreated(\meta\IdeaProfileBundle\Entity\Idea $ideaCreated)
+    public function removeIdeasCreated(\meta\IdeaBundle\Entity\Idea $ideaCreated)
     {
         $this->ideasCreated->removeElement($ideaCreated);
     }
@@ -1279,7 +1279,7 @@ class User implements AdvancedUserInterface
      *
      * @return boolean 
      */
-    public function hasCreatedIdea(\meta\IdeaProfileBundle\Entity\Idea $idea)
+    public function hasCreatedIdea(\meta\IdeaBundle\Entity\Idea $idea)
     {
         return $this->ideasCreated->contains($idea);
     }
@@ -1287,10 +1287,10 @@ class User implements AdvancedUserInterface
     /**
      * Add ideasParticipatedIn
      *
-     * @param \meta\IdeaProfileBundle\Entity\Idea $ideaParticipatedIn
+     * @param \meta\IdeaBundle\Entity\Idea $ideaParticipatedIn
      * @return User
      */
-    public function addIdeasParticipatedIn(\meta\IdeaProfileBundle\Entity\Idea $ideaParticipatedIn)
+    public function addIdeasParticipatedIn(\meta\IdeaBundle\Entity\Idea $ideaParticipatedIn)
     {
         if (!is_null($ideaParticipatedIn)){
             $ideaParticipatedIn->addParticipant($this);
@@ -1303,9 +1303,9 @@ class User implements AdvancedUserInterface
     /**
      * Remove ideaParticipatedIn
      *
-     * @param \meta\IdeaProfileBundle\Entity\Idea $ideaParticipatedIn
+     * @param \meta\IdeaBundle\Entity\Idea $ideaParticipatedIn
      */
-    public function removeIdeasParticipatedIn(\meta\IdeaProfileBundle\Entity\Idea $ideaParticipatedIn)
+    public function removeIdeasParticipatedIn(\meta\IdeaBundle\Entity\Idea $ideaParticipatedIn)
     {
         if (!is_null($ideaParticipatedIn)){
             $ideaParticipatedIn->removeParticipant($this);
@@ -1328,10 +1328,10 @@ class User implements AdvancedUserInterface
     /**
      * Is already participating in an idea
      *
-     * @param \meta\IdeaProfileBundle\Entity\Idea $idea
+     * @param \meta\IdeaBundle\Entity\Idea $idea
      * @return boolean 
      */
-    public function isParticipatingInIdea(\meta\IdeaProfileBundle\Entity\Idea $idea)
+    public function isParticipatingInIdea(\meta\IdeaBundle\Entity\Idea $idea)
     {
         return $this->ideasParticipatedIn->contains($idea);
     }

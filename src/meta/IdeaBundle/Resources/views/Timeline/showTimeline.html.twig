@@ -1,0 +1,24 @@
+{% extends 'metaIdeaBundle:Default:show.html.twig' %}
+
+{% block title %}{{ parent() }} | Timeline{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+    {% javascripts '@metaGeneralBundle/Resources/public/js/select2.behaviour.js' 
+            filter='?yui_js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block content %}
+<section>
+{% render "metaIdeaBundle:Default:addIdeaComment" with { 'id' : base.idea.id } %}
+</section>
+<section>
+{% render "metaIdeaBundle:Default:history" with { 'id' : base.idea.id, 'page' : 1 } %}
+</section>
+{% endblock %}
+
+{% block navbar %}
+{% render "metaIdeaBundle:Default:navbar" with { 'activeMenu' : 'timeline', 'id' : base.idea.id, 'slug' : base.idea.slug } %}
+{% endblock %}

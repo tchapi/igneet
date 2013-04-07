@@ -1,0 +1,70 @@
+{% extends 'metaProjectBundle::layout.html.twig' %}
+
+{% block title %}{{ parent() }} > All Projects{% endblock %}
+
+{% block header %}
+  <div class="headerAvatarAndActions">
+    <div class="textAvatar"><i class="icon-list-alt"></i></div>
+  </div>
+  <div class="objectHeader">
+    <h2>Projects</h2>
+    <h4>All the projects accessible in {% if app.user.currentCommunity is not null %}the community {{ app.user.currentCommunity.name }}{% else %}your private space{% endif %} are listed here.</h4>
+    <p>Sort by : <a href="{{ path('sp_list_projects', {'sort': 'newest', 'page' : pagination.page}) }}"><i class="icon-star"></i> Newest projects</a> - <a href="{{ path('sp_list_projects', {'sort': 'update', 'page' : pagination.page}) }}"><i class="icon-time"></i> Recently updated</a> - <a href="{{ path('sp_list_projects', {'sort': 'alpha', 'page' : pagination.page}) }}"><i class="icon-font"></i> Alphabetical</a></p>
+    {% if not app.user.isGuestInCurrentCommunity() %}<p><a href="{{ path('sp_new_project') }}" class="btn btn-success">New project</a></p>{% endif %}
+  </div>
+{% endblock %}
+
+{% block content %}
+{% if standardProjects %}
+{% for standardProject in standardProjects %}
+<section class="listing">
+  
+  <a href="{{ path('sp_show_project', {'slug': standardProject.slug}) }}">
+    <img src="{{ asset(standardProject.getPicture()) }}" width="100" height="100"/>
+  </a>
+
+  <div class="listingItemInfo">
+    <h4 class="ellipsis"><a href="{{ path('sp_show_project', {'slug': standardProject.slug}) }}">{{ standardProject.name }} ({{ standardProject.slug|lower }})</a></h4>
+    <div class="ellipsis">{{ standardProject.headline }}</div>
+    <div class="muted"><i class="icon-calendar"></i> Created on {{ standardProject.createdAt|date("d/m/Y") }}</div>
+    <div class="muted"><i class="icon-time"></i> Last updated {{ standardProject.updatedAt|date("d/m/Y H:i:s") }}</div>
+  </div>
+
+  <div class="listingItemRelatedObjects">
+
+    <div class="type">
+      <div class="muted pull-right">{{ standardProject.countOwners}} 
+        owner{% if standardProject.countOwners > 1 %}s{% endif %} and {{ standardProject.countParticipants }} 
+        participant{% if standardProject.countParticipants > 1 %}s{% endif %}</div>
+    </div>
+
+    <ul>
+      {% if standardProject.countParticipants > 5 %}
+      <li>
+        <div class="miniTextAvatar">...</div>
+      </li>
+      {% endif %}
+      {% for user in standardProject.getRandomParticipantsAndOwners(5) %}
+        {% if not user.isDeleted %}
+        <li>
+          <a href="{{ path('u_show_user_profile', {'username': user.username}) }}">
+            <img src="{{ user.avatar }}" title="{{ user.firstName }} {{ user.lastName|upper }}" width="30" height="30" class="miniAvatar"/>
+          </a>
+        </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </div>
+
+</section>
+{% endfor %}
+<section>
+{% render "metaGeneralBundle:Default:pagination" with { 'route': 'sp_list_projects', 'page' : pagination.page, 'total' : pagination.totalProjects, 'params' : {'sort': sort } } %}
+</section>
+{% else %}
+<section>
+No projects yet !
+</section>
+{% endif %}
+
+{% endblock %}

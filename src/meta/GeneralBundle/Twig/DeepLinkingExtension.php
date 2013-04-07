@@ -62,7 +62,7 @@ class DeepLinkingExtension extends \Twig_Extension
                         break;
                     
                     case 'project':
-                        $repository = $this->em->getRepository('metaStandardProjectProfileBundle:StandardProject');
+                        $repository = $this->em->getRepository('metaProjectBundle:StandardProject');
                         $standardProject = $repository->findOneBySlug($matches[2][$i]);
                         if ($standardProject){
                             $args = array( 'slug' => $standardProject->getSlug());
@@ -72,7 +72,7 @@ class DeepLinkingExtension extends \Twig_Extension
                         break;
                     
                     case 'idea':
-                        $repository = $this->em->getRepository('metaIdeaProfileBundle:Idea');
+                        $repository = $this->em->getRepository('metaIdeaBundle:Idea');
                         $idea = $repository->findOneById($matches[2][$i]);
                         if ($idea){
                             $args = array( 'id' => $idea->getId());
@@ -82,7 +82,7 @@ class DeepLinkingExtension extends \Twig_Extension
                         break;
 
                     case 'wikipage':
-                        $repository = $this->em->getRepository('metaStandardProjectProfileBundle:WikiPage');
+                        $repository = $this->em->getRepository('metaProjectBundle:WikiPage');
                         $wikiPage = $repository->findOneById($matches[2][$i]);
                         if ($wikiPage && $wikiPage->getWiki()){
                             $standardProject = $wikiPage->getWiki()->getProject();
@@ -93,7 +93,7 @@ class DeepLinkingExtension extends \Twig_Extension
                         break;
 
                     case 'list':
-                        $repository = $this->em->getRepository('metaStandardProjectProfileBundle:CommonList');
+                        $repository = $this->em->getRepository('metaProjectBundle:CommonList');
                         $commonList = $repository->findOneById($matches[2][$i]);
                         if ($commonList){
                             $standardProject = $commonList->getProject();
@@ -104,7 +104,7 @@ class DeepLinkingExtension extends \Twig_Extension
                         break;
 
                     case 'resource':
-                        $repository = $this->em->getRepository('metaStandardProjectProfileBundle:Resource');
+                        $repository = $this->em->getRepository('metaProjectBundle:Resource');
                         $resource = $repository->findOneById($matches[2][$i]);
                         if ($resource){
                             $standardProject = $resource->getProject();

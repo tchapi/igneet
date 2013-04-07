@@ -49,13 +49,13 @@ class Community
 
     /**
      * Projects in this community
-     * @ORM\OneToMany(targetEntity="meta\StandardProjectProfileBundle\Entity\StandardProject", mappedBy="community")
+     * @ORM\OneToMany(targetEntity="meta\ProjectBundle\Entity\StandardProject", mappedBy="community")
      **/
     private $projects;
     
     /**
      * Ideas in this community
-     * @ORM\OneToMany(targetEntity="meta\IdeaProfileBundle\Entity\Idea", mappedBy="community")
+     * @ORM\OneToMany(targetEntity="meta\IdeaBundle\Entity\Idea", mappedBy="community")
      **/
     private $ideas;
     
@@ -102,10 +102,10 @@ class Community
     /**
      * Add project
      *
-     * @param \meta\StandardProjectProfileBundle\Entity\StandardProject $project
+     * @param \meta\ProjectBundle\Entity\StandardProject $project
      * @return Community
      */
-    public function addProject(\meta\StandardProjectProfileBundle\Entity\StandardProject $project)
+    public function addProject(\meta\ProjectBundle\Entity\StandardProject $project)
     {
         if (!is_null($project)){
             $project->setCommunity($this);
@@ -118,9 +118,9 @@ class Community
     /**
      * Remove project
      *
-     * @param \meta\StandardProjectProfileBundle\Entity\StandardProject $project
+     * @param \meta\ProjectBundle\Entity\StandardProject $project
      */
-    public function removeProject(\meta\StandardProjectProfileBundle\Entity\StandardProject $project)
+    public function removeProject(\meta\ProjectBundle\Entity\StandardProject $project)
     {
         if (!is_null($project)){
             $project->setCommunity(null);
@@ -141,10 +141,10 @@ class Community
     /**
      * Add idea
      *
-     * @param \meta\IdeaProfileBundle\Entity\Idea $idea
+     * @param \meta\IdeaBundle\Entity\Idea $idea
      * @return Community
      */
-    public function addIdea(\meta\IdeaProfileBundle\Entity\Idea $idea)
+    public function addIdea(\meta\IdeaBundle\Entity\Idea $idea)
     {
         if (!is_null($idea)){
             $idea->setCommunity($this);
@@ -157,9 +157,9 @@ class Community
     /**
      * Remove idea
      *
-     * @param \meta\IdeaProfileBundle\Entity\Idea $idea
+     * @param \meta\IdeaBundle\Entity\Idea $idea
      */
-    public function removeIdea(\meta\IdeaProfileBundle\Entity\Idea $idea)
+    public function removeIdea(\meta\IdeaBundle\Entity\Idea $idea)
     {
         if (!is_null($idea)){
             $idea->setCommunity(null);

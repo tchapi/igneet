@@ -23,7 +23,7 @@ class IdeaLogEntry extends BaseLogEntry
 
     /**
      * Subject : idea
-     * @ORM\ManyToOne(targetEntity="\meta\IdeaProfileBundle\Entity\Idea", inversedBy="logEntries")
+     * @ORM\ManyToOne(targetEntity="\meta\IdeaBundle\Entity\Idea", inversedBy="logEntries")
      * @ORM\JoinColumn(name="idea_id", referencedColumnName="id", onDelete="CASCADE")
      **/
     private $idea;
@@ -41,10 +41,10 @@ class IdeaLogEntry extends BaseLogEntry
     /**
      * Set subject
      *
-     * @param \meta\IdeaProfileBundle\Entity\Idea $idea
+     * @param \meta\IdeaBundle\Entity\Idea $idea
      * @return IdeaLogEntry
      */
-    public function setSubject(\meta\IdeaProfileBundle\Entity\Idea $idea = null)
+    public function setSubject(\meta\IdeaBundle\Entity\Idea $idea = null)
     {
         return $this->setIdea($idea);
     }
@@ -52,7 +52,7 @@ class IdeaLogEntry extends BaseLogEntry
     /**
      * Get subject
      *
-     * @return \meta\IdeaProfileBundle\Entity\Idea 
+     * @return \meta\IdeaBundle\Entity\Idea 
      */
     public function getSubject()
     {
@@ -62,10 +62,10 @@ class IdeaLogEntry extends BaseLogEntry
     /**
      * Set idea
      *
-     * @param \meta\IdeaProfileBundle\Entity\Idea $idea
+     * @param \meta\IdeaBundle\Entity\Idea $idea
      * @return IdeaLogEntry
      */
-    public function setIdea(\meta\IdeaProfileBundle\Entity\Idea $idea = null)
+    public function setIdea(\meta\IdeaBundle\Entity\Idea $idea = null)
     {
         if (!is_null($idea)){
             $idea->addLogEntrie($this);
@@ -80,7 +80,7 @@ class IdeaLogEntry extends BaseLogEntry
     /**
      * Get idea
      *
-     * @return \meta\IdeaProfileBundle\Entity\Idea 
+     * @return \meta\IdeaBundle\Entity\Idea 
      */
     public function getIdea()
     {

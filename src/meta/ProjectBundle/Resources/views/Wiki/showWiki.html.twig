@@ -1,0 +1,93 @@
+{% extends 'metaProjectBundle:Default:show.html.twig' %}
+
+{% block title %}{{ parent() }}{% if wikiPage %} | Wiki : {{ wikiPage.title }}{% endif %}{% endblock %}
+
+{% block navbar %}
+{% render "metaProjectBundle:Default:navbar" with { 'activeMenu' : 'wiki', 'slug' : base.standardProject.slug } %}
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+    {% if base.canEdit %}
+    {% javascripts '@metaGeneralBundle/Resources/public/js-edit/jquery-nestable.js'
+                   '@metaGeneralBundle/Resources/public/js-edit/nestable.behaviour.js'
+            filter='?yui_js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+{% if wikiPages|length > 0 %}
+<div class="column">
+<section class="listInfo">
+  <h4 class="editable" data-title="Change the title of this wiki page" data-name="title" data-url="{{ path('sp_show_project_wiki_edit_page', {'slug': base.standardProject.slug, 'id': wikiPage.id, 'token': csrf_token('editWikiPage') }) }}" data-type="text">{{ wikiPage.title }}</h4>
+  {% if base.canEdit %}<a class="pull-right markdown-trigger">&hellip;<i class="icon-pencil"></i></a>{% endif %}
+  <div>
+    {% if wikiPage.tags|length > 0 %}
+      Tags :
+    {% elseif not base.canEdit %}
+      No tags yet.
+    {% endif %}
+    <ul data-toggle="manual" data-title="Indicate tags separated by a comma" data-emptytext="Add tags" data-url="{{ path('sp_show_project_wiki_edit_page', {'slug': base.standardProject.slug, 'id': wikiPage.id, 'token': csrf_token('editWikiPage')  }) }}" data-type="select2" data-name="tags" class="tags tags-target editable-li" >
+    {% for tag in wikiPage.tags %}<li class="label" rel="{{ tag.name }}">{{ tag.name }}</li>{% endfor %}
+    </ul>
+    {% if base.canEdit %} <a class="editable-trigger" data-target="tags">&hellip;<i class="icon-pencil"></i></a>{% endif %}
+  </div>
+</section>
+<section>
+  <div>
+    {% if base.canEdit %}
+      <div class="wmd-message-top hide alert"><i class="icon-warning-sign"></i> Unsaved changes</div>
+      <div class="wmd-wrapper well well-small hide" >
+        <div class="wmd-panel">
+            <div id="wmd-button-bar"></div>
+            <textarea unsaved='no' data-name="content" data-url="{{ path('sp_show_project_wiki_edit_page', {'slug': base.standardProject.slug, 'id': wikiPage.id, 'token': csrf_token('editWikiPage') }) }}" class="wmd-input" id="wmd-input">{{ wikiPage.content }}</textarea>
+        </div>
+        <div>
+          <button id="wmd-save" class="btn btn-primary">Save</button> <span class="muted wmd-message">Click save to save your changes</span>
+        </div>
+        <div id="wmd-preview" class="preview">{{ wikiPage.content }}</div>
+      </div>
+    {% endif %}
+    
+    <div class="content">{{ wikiPage.content|deeplinks|markdown }}</div>
+
+  </div>
+</section>
+<section>
+{% render "metaProjectBundle:Comment:addWikiPageComment" with { 'slug' : base.standardProject.slug, 'id': wikiPage.id } %}
+</section>
+</div>
+{% macro tree(wikipages, wikiPage, base, homePage) %}
+    {% for page in wikipages %}
+        <li class="{% if page.id == wikiPage.id %}active {% endif %}{% if base.canEdit %}dd-item{% endif %}" id="{{ page.id }}" data-name="parent" data-url="{{ path('sp_show_project_wiki_edit_page', {'slug': base.standardProject.slug, 'id': page.id, 'token': csrf_token('editWikiPage') }) }}">
+          {% if base.canEdit %}<div class="dd-handle"><i class="icon-reorder"></i></div>{% endif %}
+          {% if base.canEdit %}<a title="Make home page" href="{{ path('sp_show_project_wiki_make_home_page', {'slug': base.standardProject.slug, 'id': page.id, 'token': csrf_token('makeHomeWikiPage') }) }}">{% endif %}<i class="icon-file{% if page == homePage %}-alt{% endif %}"></i>{% if base.canEdit %}</a>{% endif %}{% if base.canEdit %}<a title="Delete" data-confirm="Are you sure you want to delete this page of the wiki ?" href="{{ path('sp_show_project_wiki_delete_page', {'slug': base.standardProject.slug, 'id': page.id, 'token': csrf_token('deleteWikiPage') }) }}"><i class="icon-remove-sign"></i></a>{% endif %} 
+          <a href="{{ path('sp_show_project_wiki_show_page', {'slug': base.standardProject.slug, 'id': page.id, 'pageSlug': page.slug }) }}" title="{{ page.title }}" class="page_title">{{ page.title }}</a>
+          {% if page.children|length > 0 %}
+          <ul class="dd-list" data-value="{{ page.id }}">
+              {{ _self.tree(page.children, wikiPage, base, homePage) }}
+          </ul>
+          {% endif %}
+        </li>
+    {% endfor %}
+{% endmacro %}
+{% import _self as macros %}
+<div class="menu dd">
+  Pages :
+  <ul class="lists sortable dd-list" data-value="0" data-url="{{ path('sp_show_project_wiki_rank', {'slug': base.standardProject.slug}) }}">
+    {{ macros.tree(wikiPages, wikiPage, base, homePage) }}
+  </ul>
+  {% if base.canEdit %}
+  <div class="menu_new">
+    <a href="{{ path('sp_show_project_wiki_new_page', {'slug': base.standardProject.slug}) }}"><i class="icon-plus-sign"></i> New page</a>
+  </div>
+  {% endif %}
+</div>
+{% else %}
+<section>
+No wiki page yet.
+</section>
+{% endif %}
+{% endblock %}
