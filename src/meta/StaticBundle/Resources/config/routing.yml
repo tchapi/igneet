@@ -1,3 +1,19 @@
 homepage:
     pattern:  /
-    defaults: { _controller: metaStaticBundle:Default:home }
+    defaults: { _controller: metaStaticBundle:Default:static, template: home }
+
+about:
+    pattern:  /about
+    defaults: { _controller: metaStaticBundle:Default:static, template: about }
+
+team:
+    pattern:  /team
+    defaults: { _controller: metaStaticBundle:Default:static, template: team }
+
+pricing:
+    pattern:  /pricing
+    defaults: { _controller: metaStaticBundle:Default:static, template: pricing }
+
+terms:
+    pattern:  /terms
+    defaults: { _controller: metaStaticBundle:Default:static, template: terms }

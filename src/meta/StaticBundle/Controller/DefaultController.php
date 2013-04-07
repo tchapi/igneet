@@ -6,8 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class DefaultController extends Controller
 {
-    public function homeAction()
+    public function staticAction($template)
     {
-        return $this->render('metaStaticBundle:Default:home.html.twig');
+        return $this->render('metaStaticBundle:Default:' . $template . '.html.twig');
     }
 }
