@@ -13,6 +13,7 @@ class UserRepository extends EntityRepository
 
   /*
    * Count all users in a given community
+   * Includes GUESTS as well
    */
   public function countUsersInCommunity($community)
   {

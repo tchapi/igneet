@@ -7,7 +7,7 @@ user.in:
 community:
   home: "Accueil"
   homeHelp: "Retrouvez vos %projects% projets et %ideas% idées."
-  homeHelpUsers: "%users% utilisateurs contribuent à cette communauté, ainsi que %guests% invités."
+  homeHelpUsers: "%users% utilisateurs et invités contribuent à cette communauté."
   notFound: "Cette communauté n'existe pas."
   choose: "Choisir une communauté"
   chooseHelp: "Veuillez indiquer une communauté pour finaliser votre action."
