@@ -9,7 +9,7 @@
   </div>
   <div class="objectHeader">
     <h2>{% if app.user.currentCommunity is null %}{% trans %}private.space{% endtrans %}{% else %}{{ app.user.currentCommunity.name }}{%endif %}</h2>
-    <h4>{% trans with {'%projects%': totalProjects, '%ideas': totalIdeas} %}community.homeHelp{% endtrans %}</h4>
+    <h4>{% trans with {'%projects%': totalProjects, '%ideas%': totalIdeas} %}community.homeHelp{% endtrans %}</h4>
     {% if app.user.currentCommunity is not null %}
     <p>{% trans with {'%users%': app.user.currentCommunity.users|length, '%guests%': app.user.currentCommunity.guests|length} %}community.homeHelpUsers{% endtrans %}</p>
     {% endif %}

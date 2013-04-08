@@ -24,7 +24,7 @@ image:
 # Comments
 comments:
   none: "No comments yet"
-  one: "One comment";
+  one: "One comment"
   many: "%count% comments"
 comment:
   deleted: "Deleted comment"
