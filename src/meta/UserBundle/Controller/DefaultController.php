@@ -227,15 +227,17 @@ class DefaultController extends Controller
         $from = $authenticatedUser->getLastNotifiedAt();
 
         // Projects
-        $projectsWatched = $authenticatedUser->getProjectsWatched();
-        $projectsOwned = $authenticatedUser->getProjectsOwned();
-        $projectsParticipatedIn = $authenticatedUser->getProjectsParticipatedIn();
+        $allProjects = array();
+        foreach ($authenticatedUser->getProjectsWatched() as $project) { $allProjects[] = $project; }
+        foreach ($authenticatedUser->getProjectsOwned() as $project) { $allProjects[] = $project; }
+        foreach ($authenticatedUser->getProjectsParticipatedIn() as $project) { $allProjects[] = $project; }
 
         // Ideas
-        $ideasWatched = $authenticatedUser->getIdeasWatched();
-        $ideasOwned = $authenticatedUser->getIdeasCreated();
-        $ideasParticipatedIn = $authenticatedUser->getIdeasParticipatedIn();
-
+        $allIdeas = array();
+        foreach ($authenticatedUser->getIdeasWatched() as $idea){ $allIdeas[] = $idea; }
+        foreach ($authenticatedUser->getIdeasCreated() as $idea){ $allIdeas[] = $idea; }
+        foreach ($authenticatedUser->getIdeasParticipatedIn() as $idea){ $allIdeas[] = $idea; }
+            
         // Users
         $usersFollowed = $authenticatedUser->getFollowing();
 
@@ -244,14 +246,15 @@ class DefaultController extends Controller
         $userLogs = $userLogRepository->findLogsForUser($authenticatedUser, $from); // New followers of user
 
         // Fetch logs related to the projects
-/* TODO
-*/
+        $projectLogRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\StandardProjectLogEntry');
+        $projectLogs = $projectLogRepository->findLogsForProjects($allProjects, $from);
+
         // Fetch all logs related to the ideas
-/* TODO
-*/
+        $ideaLogRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\IdeaLogEntry');
+        $ideaLogs = $ideaLogRepository->findLogsForIdeas($allIdeas, $from);
 
         // Fetch all logs related to the users followed (their updates, or if they have created new projects or been added into one)
-/* TODO
+/* TODO HARDER !!!
 */
         $notificationsRaw = array();
         // Get HTML for everything
