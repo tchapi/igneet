@@ -33,3 +33,4 @@ toggle: "Alterner l'affichage"
 # Logs
 log:
   description.unavailable: "Aucune description disponible"
+goto.related.object: "Aller sur la page de cet objet"

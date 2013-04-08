@@ -9,14 +9,14 @@ class DeepLinkingExtension extends \Twig_Extension
 
     private $deep_linking_tags, $em, $template, $router;
 
-    public function __construct($deep_linking_tags, $entity_manager, Router $router)
+    public function __construct($deep_linking_tags, $entity_manager, Router $router, $translator)
     {
 
         $this->deep_linking_tags = $deep_linking_tags;
         $this->em = $entity_manager;
         $this->router = $router;
 
-        $this->template = '<a title="Go to the page relating to this object" href="%s"><i class="icon-%s"></i> %s</a>';
+        $this->template = '<a title="' . $translator->trans('goto.related.object') . '" href="%s"><i class="icon-%s"></i> %s</a>';
 
     }
 

@@ -33,3 +33,4 @@ toggle: "Toggle"
 # Logs
 log:
   description.unavailable: "No description available"
+goto.related.object: "Go to the page for this object"

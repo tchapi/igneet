@@ -16,7 +16,7 @@ class HomeController extends Controller
     {
         $authenticatedUser = $this->getUser();
         $community = $authenticatedUser->GetCurrentCommunity();
-
+        
         $ideaRepository = $this->getDoctrine()->getRepository('metaIdeaBundle:Idea');
         $totalIdeas = $ideaRepository->countIdeasInCommunityForUser($community, $authenticatedUser, false);
         
@@ -24,7 +24,7 @@ class HomeController extends Controller
         $totalProjects = $projectRepository->countProjectsInCommunityForUser($community, $authenticatedUser);
         
         $userRepository = $this->getDoctrine()->getRepository('metaUserBundle:User');
-        $totalUsersAndGuests = $projectRepository->countUsersInCommunity($community);
+        $totalUsersAndGuests = $userRepository->countUsersInCommunity($community);
 
         return $this->render('metaGeneralBundle:Home:home.html.twig', array(
           'totalProjects' => $totalProjects,
