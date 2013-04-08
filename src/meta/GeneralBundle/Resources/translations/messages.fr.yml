@@ -23,9 +23,7 @@ image:
   continue: "Continuer avec cette image"
 # Comments
 comments:
-  none: "Aucun commentaire"
-  one: "Un commentaire"
-  many: "%count% commentaires"
+  count: "{0}Aucun commentaire|{1}Un commentaire|]1,Inf[%count% commentaires"
 comment:
   deleted: "Commentaire supprimé"
   delete: "Supprimer mon commentaire"

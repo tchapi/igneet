@@ -23,9 +23,7 @@ image:
   continue: "Continue with this image"
 # Comments
 comments:
-  none: "No comments yet"
-  one: "One comment"
-  many: "%count% comments"
+  count: "{0}No comments yet|{1}One comment|]1,Inf]%count% comments"
 comment:
   deleted: "Deleted comment"
   delete: "Delete my comment"

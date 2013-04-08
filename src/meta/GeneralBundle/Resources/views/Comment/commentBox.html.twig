@@ -1,16 +1,12 @@
 <div class="commentsWrapper">
   <span class="commentsBoxTitle" style="display: none;">
     {% set count = object.comments|length %}
-    {% transchoice count %}
-      {0}comments.none|{1}comments.one|]1,Inf]comments.many
-    {% endtranschoice %}
+    {% transchoice count with {'%count%': count} %}comments.count{% endtranschoice %}
   </span>
   <a class="commentsBoxToggle"><i class="icon-resize-small"></i> {% trans %}toggle{% endtrans %}</a>
   <div class="commentsContent">
     <div class="commentsInfo">
-      {% transchoice count %}
-        {0}comments.none|{1}comments.one|]1,Inf]comments.many
-      {% endtranschoice %}
+      {% transchoice count with {'%count%': count} %}comments.count{% endtranschoice %}
       <i class='icon-comments pull-right'></i>
     </div>
     <div class="commentsForm">
@@ -39,7 +35,7 @@
                 {% if not comment.user.isDeleted %}
                 <a href="{{ path('u_show_user_profile', {'username': comment.user.username}) }}">{{ comment.user.getFullName }}</a>
                 {% else %}<span>{{ comment.user.getFullName }}</span>{% endif %}
-                 — <span>{{ comment.createdAt|date(date.fullFormat|trans) }}</span></header>
+                 — <span>{{ comment.createdAt|date("date.fullFormat"|trans) }}</span></header>
               <div>
                 {% if comment.isDeleted %}
                 <p class="muted"><em>{% trans %}comment.deleted{% endtrans %}</em></p>

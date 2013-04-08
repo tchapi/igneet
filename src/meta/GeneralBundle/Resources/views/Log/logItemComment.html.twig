@@ -12,7 +12,7 @@
     {% else %}
       <span>{{ user.getFullName }}</span>
     {% endif %}
-     — <span>{{ comment.createdAt|date(date.fullFormat|trans) }}</span>
+     — <span>{{ comment.createdAt|date("date.fullFormat"|trans) }}</span>
   </header>
   <div>
     {% if comment.isDeleted %}
