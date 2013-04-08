@@ -1,6 +1,6 @@
 {% extends 'metaUserBundle::layout.html.twig' %}
 
-{% block title %}{% trans %}image.resizeAndCrop{% endtrans %}{% endblock %}
+{% block title %}{{ "image.resizeAndCrop"|trans }}{% endblock %}
 
 {% block javascripts %}
   {{ parent() }}
@@ -33,7 +33,7 @@
 <form action="{{ path('g_choose_file', { 'targetAsBase64' : targetAsBase64, 'token': token  }) }}" method="post" enctype="multipart/form-data">
   <section>
       <div class="control-group ">
-        <label class="control-label"><label for="file" class="required">{% trans %}image.resizeAndCrop{% endtrans %} : </label></label>
+        <label class="control-label"><label for="file" class="required">{{ "image.resizeAndCrop"|trans }} : </label></label>
         <div class="controls">
           <input type="hidden" name="name" id="name" value="picture" />
           <input type="hidden" name="value" id="value" value="{{ image }}" />
@@ -47,8 +47,8 @@
         </div>
       </div>
       <div class="form-actions">
-        <a class="btn" href="javascript:history.back()">{% trans %}cancel{% endtrans %}</a>
-        <input type="submit" value="{% trans %}image.continue{% endtrans %}" class="btn btn-success" />
+        <a class="btn" href="javascript:history.back()">{{ "cancel"|trans }}</a>
+        <input type="submit" value="{{ "image.continue"|trans }}" class="btn btn-success" />
       </div>
   </section>
 </form>

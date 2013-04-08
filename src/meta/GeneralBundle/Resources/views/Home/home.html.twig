@@ -1,6 +1,6 @@
 {% extends '::base.html.twig' %}
 
-{% block title %}{{ parent() }} > {% if app.user.currentCommunity is null %}{% trans %}private.space{% endtrans %}{% else %}{{ app.user.currentCommunity.name }}{%endif %} | {% trans %}community.home{% endtrans %}{% endblock %}
+{% block title %}{{ parent() }} > {% if app.user.currentCommunity is null %}{{ "private.space"|trans }}{% else %}{{ app.user.currentCommunity.name }}{%endif %} | {{ "community.home"|trans }}{% endblock %}
 
 {% block body %}
 <header class="home">
@@ -11,7 +11,7 @@
     <h2>{% if app.user.currentCommunity is null %}{% trans %}private.space{% endtrans %}{% else %}{{ app.user.currentCommunity.name }}{%endif %}</h2>
     <h4>{% trans with {'%projects%': totalProjects, '%ideas%': totalIdeas} %}community.homeHelp{% endtrans %}</h4>
     {% if app.user.currentCommunity is not null %}
-    <p>{% trans with {'%users%': totalUsersAndGuests} %}community.homeHelpUsers{% endtrans %}</p>
+      <p>{% trans with {'%users%': totalUsersAndGuests} %}community.homeHelpUsers{% endtrans %}</p>
     {% endif %}
   </div>
 </header>

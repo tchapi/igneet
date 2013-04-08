@@ -1,6 +1,6 @@
 {% extends 'metaUserBundle::layout.html.twig' %}
 
-{% block title %}{% trans %}file.choose{% endtrans %}{% endblock %}
+{% block title %}{{ "file.choose"|trans }}{% endblock %}
 
 {% block header %}
   <div class="headerAvatarAndActions">
@@ -16,15 +16,15 @@
 <div class="formContent">
   <form action="{{ path('g_choose_file', { 'targetAsBase64' : targetAsBase64, 'token': token }) }}" method="post" class="form-horizontal" enctype="multipart/form-data">
       <div class="control-group ">
-        <label class="control-label"><label for="file" class="required">{% trans %}file.choose{% endtrans %} : </label></label>
+        <label class="control-label"><label for="file" class="required">{{ "file.choose"|trans }} : </label></label>
         <div class="controls">
           <input type="hidden" name="name" id="name" value="file"/>
           <input type="file" name="file" id="file" />
         </div>
       </div>
       <div class="form-actions">
-        <a class="btn" href="javascript:history.back()">{% trans %}cancel{% endtrans %}</a>
-        <input type="submit" value="{% trans %}file.upload{% endtrans %}" class="btn btn-success" />
+        <a class="btn" href="javascript:history.back()">{{ "cancel"|trans }}</a>
+        <input type="submit" value="{{ "file.upload"|trans }}" class="btn btn-success" />
       </div>
   </form>
 </div>
