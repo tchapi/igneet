@@ -1,5 +1,5 @@
 <span class="icon-{{ icon }} icon-large"></span> — 
-<span class="label fullDate">{{ date|date("d/m/Y") }}</span> <span class="label label-info">{{ date|date("H:i") }}</span>
+<span class="label fullDate">{{ date|date(date.format|trans) }}</span> <span class="label label-info">{{ date|date(time.format|trans) }}</span>
 <span class="avatar">
   {% if not user.isDeleted %}
   <img src="{{ user.avatar }}" width="18" height="18" class="avatar"/>

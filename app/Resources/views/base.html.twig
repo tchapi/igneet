@@ -23,7 +23,7 @@
         <header>
           <div class="navbar navbar-fixed-top navbar-inverse">
             <div class="navbar-inner">
-              <a class="brand" href="#"><i class='icon-fire'></i> igneet</a>
+              <a class="brand" href="{{ path('home') }}"><i class='icon-fire'></i> igneet</a>
               {% render "metaUserBundle:Security:currentUserMenu" %}
             </div>
           </div>
@@ -87,7 +87,7 @@
 {% endblock %}
 
         <footer>
-        copyright <a href="https://about.me/tchap">tchap</a> 2012-2013 | terms of use | contact | <a href="http://mantis.tchap.me" target="_blank">report a bug</a>
+        &copy; copyright <a href="https://about.me/tchap">tchap</a> 2012-{{ "now"|date('Y') }} | {% trans %}terms{% endtrans %} | <a href="http://mantis.tchap.me" target="_blank">{% trans %}report.bug{% endtrans %}</a>
         </footer>
 
     </body>

@@ -1,31 +1,30 @@
 {% extends 'metaUserBundle::layout.html.twig' %}
 
-{% block title %}Choose a file{% endblock %}
+{% block title %}{% trans %}file.choose{% endtrans %}{% endblock %}
 
 {% block header %}
   <div class="headerAvatarAndActions">
     <div class="textAvatar"><i class="icon-search"></i></div>
   </div>
   <div class="objectHeader">
-    <h2>Choose a file</h2>
-    <h4>You need to indicate a specific file to continue with your request.</h4>
+    <h2>{% trans %}file.choose{% endtrans %}</h2>
+    <h4>{% trans %}file.chooseHelp{% endtrans %}</h4>
   </div>
 {% endblock %}
-
 
 {% block content %}
 <div class="formContent">
   <form action="{{ path('g_choose_file', { 'targetAsBase64' : targetAsBase64, 'token': token }) }}" method="post" class="form-horizontal" enctype="multipart/form-data">
       <div class="control-group ">
-        <label class="control-label"><label for="file" class="required">Choose a file : </label></label>
+        <label class="control-label"><label for="file" class="required">{% trans %}file.choose{% endtrans %} : </label></label>
         <div class="controls">
           <input type="hidden" name="name" id="name" value="file"/>
           <input type="file" name="file" id="file" />
         </div>
       </div>
       <div class="form-actions">
-        <a class="btn" href="javascript:history.back()">Cancel</a>
-        <input type="submit" value="Upload this file" class="btn btn-success" />
+        <a class="btn" href="javascript:history.back()">{% trans %}cancel{% endtrans %}</a>
+        <input type="submit" value="{% trans %}file.upload{% endtrans %}" class="btn btn-success" />
       </div>
   </form>
 </div>

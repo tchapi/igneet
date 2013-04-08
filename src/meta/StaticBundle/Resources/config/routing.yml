@@ -1,4 +1,4 @@
-homepage:
+home:
     pattern:  /
     defaults: { _controller: metaStaticBundle:Default:static, template: home }
 

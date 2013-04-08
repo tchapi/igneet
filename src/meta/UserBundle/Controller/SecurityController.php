@@ -169,7 +169,7 @@ class SecurityController extends Controller
                 'You need to be in a non-guest community space to invite someone.'
             );
 
-            return $this->redirect($this->generateUrl('home'));
+            return $this->redirect($this->generateUrl('g_home_community'));
 
         }
 

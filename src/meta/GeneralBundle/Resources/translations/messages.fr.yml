@@ -1,5 +1,37 @@
+# Community
+private.space: "Mon espace privé"
 user.have.no.community: "Vous n'appartenez à aucune communauté pour le moment."
 user.in:
   community: "Bienvenue dans l'espace de travail de la communauté %community%."
   private.space: "Bienvenue dans votre espace de travail personnel."
-community.notFound: "Cette communauté n'existe pas."
+community:
+  home: "Accueil"
+  homeHelp: "Retrouvez vos %projects% projets et %ideas% idées."
+  homeHelpUsers: "%users% utilisateurs contribuent à cette communauté, ainsi que %guests% invités."
+  notFound: "Cette communauté n'existe pas."
+  choose: "Choisir une communauté"
+  chooseHelp: "Veuillez indiquer une communauté pour finaliser votre action."
+# File uploads
+file:
+  choose: "Choisir un fichier"
+  upload: "Uploader ce fichier"
+  chooseHelp: "Veuillez indiquer un fichier pour continuer."
+# Image
+image:
+  resizeAndCrop: "Redimmensionner et Rogner une image"
+  resizeAndCropHelp: ""
+  continue: "Continuer avec cette image"
+# Comments
+comments:
+  none: "Aucun commentaire"
+  one: "Un commentaire";
+  many: "%count% commentaires"
+comment:
+  deleted: "Commentaire supprimé"
+  delete: "Supprimer mon commentaire"
+  vote: "Voter pour ce commentaire"
+  post: "Commenter"
+toggle: "Alterner l'affichage"
+# Logs
+log:
+  description.unavailable: "Aucune description disponible"

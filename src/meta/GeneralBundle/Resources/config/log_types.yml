@@ -1,7 +1,7 @@
 parameters:
   general.log_concurrent_merge_interval: 3600
   general.log_routing:
-    community: home
+    community: g_home_community
     user: u_show_user_profile
     project: sp_show_project
     idea: i_show_idea

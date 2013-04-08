@@ -5,6 +5,6 @@
   <form action="{{ route }}" method="post" {{ form_enctype(form) }}>
     {{ form_widget(form.text) }}
     {{ form_widget(form._token) }}
-    <input type="submit" class="btn btn-success" value="Post"/>
+    <input type="submit" class="btn btn-success" value="{% trans %}comment.post{% endtrans %}"/>
   </form>
 </div>

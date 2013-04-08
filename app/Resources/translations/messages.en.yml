@@ -1,0 +1,10 @@
+date:
+  format: "d/m/Y"
+  fullFormat: "d/m/Y h:i A"
+time:
+  format: "h:i A"
+cancel: "Cancel"
+choose: "Choose"
+# Footer
+report.bug: "Rapporter un bug"
+terms: "Conditions générales"

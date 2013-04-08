@@ -1,6 +1,6 @@
 # Community
 
-home:
+g_home_community:
     pattern: /
     defaults: { _controller: metaGeneralBundle:Home:home }
 

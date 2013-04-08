@@ -200,7 +200,7 @@ class DefaultController extends Controller
             $this->getUser()->setCurrentCommunity(null);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('home'));   
+            return $this->redirect($this->generateUrl('g_home_community'));   
         }
 
         // Or a real community ?
@@ -218,7 +218,7 @@ class DefaultController extends Controller
             $this->getUser()->setCurrentCommunity($community);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('home'));
+            return $this->redirect($this->generateUrl('g_home_community'));
 
         } else {
             
