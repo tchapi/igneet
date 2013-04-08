@@ -1,7 +1,7 @@
 <div class="timeline_filters">
   <select id="timeline_filters" class="select2-trigger" multiple="multiple">
     {% for group in filter_groups %}
-    <option value={{ group }}>{{ filter_groups_names[group] }}</option>
+    <option value="{{ group }}">{{ ("groups." ~ group)|trans({}, "logs") }}</option>
     {% endfor %}
   </select>
   <button class="btn" id="timeline_reset">Reset filters</button>

@@ -118,13 +118,9 @@ class TimelineController extends BaseController
 
         }
 
-        // Filters
-        $filter_groups_names = $this->container->getParameter('general.log_filter_groups');
-        
         return $this->render('metaProjectBundle:Timeline:timelineHistory.html.twig', 
             array('base' => $this->base,
                   'timeframe' => $this->timeframe,
-                  'filter_groups_names' => $filter_groups_names,
                   'filter_groups' => array_unique($filter_groups)));
 
     }

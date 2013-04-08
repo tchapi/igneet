@@ -9,20 +9,6 @@ parameters:
     list: sp_show_project_list
     resource: sp_show_project_resource
     wikipage: sp_show_project_wiki_show_page
-  general.log_filter_groups:
-    projects: Projects
-    ideas: Ideas
-    users: Users
-    comments: Comments
-    wiki: Wiki & Pages
-    lists: Lists
-    resources: Resources
-    general: General Info
-    community: Community
-    social: Social Activity
-    creations: Creations
-    updates: Updates
-    deletions: Deletions
   general.log_types:
 # User acting for his profile or on another user
     user_created: # DONE

@@ -112,7 +112,7 @@ class LogService
             $parameters = $this->getParameters($logEntryOrComment);
 
             // We get the text for the log
-            return $this->translator->trans( $logEntryOrComment->getType(), $parameters, 'logs' );
+            return $this->translator->trans( "logs." . $logEntryOrComment->getType(), $parameters, 'logs' );
 
         }
 
@@ -138,7 +138,7 @@ class LogService
             $parameters = $this->getParameters($logEntryOrComment);
 
             // We get the formatted text for the log
-            $text = $this->translator->trans( $logEntryOrComment->getType(), $parameters, 'logs' );
+            $text = $this->translator->trans( "logs." . $logEntryOrComment->getType(), $parameters, 'logs' );
 
             $date = $logEntryOrComment->getCreatedAt();
             $user = $logEntryOrComment->getUser();
