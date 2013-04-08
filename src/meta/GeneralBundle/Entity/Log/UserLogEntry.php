@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * UserLogEntry
  *
  * @ORM\Table()
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="meta\GeneralBundle\Entity\Log\UserLogEntryRepository")
  */
 class UserLogEntry extends BaseLogEntry
 {

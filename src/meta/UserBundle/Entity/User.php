@@ -154,6 +154,15 @@ class User implements AdvancedUserInterface
     private $last_seen_at;  
 
     /**
+     * @var date $last_notified_at
+     * 
+     * @ORM\Column(name="last_notified_at", type="datetime")
+     * @Assert\NotBlank()
+     * @Assert\DateTime()
+     */
+    private $last_notified_at;  
+
+    /**
      * @var \DateTime $deleted_at
      *
      * @ORM\Column(name="deleted_at", type="datetime", nullable=true)
@@ -337,7 +346,7 @@ class User implements AdvancedUserInterface
         /* init */
         $this->salt = md5(uniqid(null, true));
         $this->roles = array('ROLE_USER');
-        $this->created_at = $this->last_seen_at = $this->updated_at = new \DateTime('now');
+        $this->created_at = $this->last_seen_at = $this->updated_at = $this->last_notified_at = new \DateTime('now');
 
     }
 
@@ -1728,5 +1737,28 @@ class User implements AdvancedUserInterface
     public function getToken()
     {
         return $this->token;
+    }
+
+    /**
+     * Set last_notified_at
+     *
+     * @param \DateTime $lastNotifiedAt
+     * @return User
+     */
+    public function setLastNotifiedAt($lastNotifiedAt)
+    {
+        $this->last_notified_at = $lastNotifiedAt;
+    
+        return $this;
+    }
+
+    /**
+     * Get last_notified_at
+     *
+     * @return \DateTime 
+     */
+    public function getLastNotifiedAt()
+    {
+        return $this->last_notified_at;
     }
 }
