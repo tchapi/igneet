@@ -29,7 +29,7 @@ class CommentController extends BaseController
 
             $comment = new StandardProjectComment();
             $form = $this->createFormBuilder($comment)
-                ->add('text', 'textarea', array('attr' => array('placeholder' => 'Leave a message ...')))
+                ->add('text', 'textarea', array('attr' => array('placeholder' => $this->get('translator')->trans('comment.placeholder') )))
                 ->getForm();
 
             if ($request->isMethod('POST')) {
@@ -57,7 +57,7 @@ class CommentController extends BaseController
 
                    $this->get('session')->setFlash(
                         'error',
-                        'The information you provided does not seem valid.'
+                        $this->get('translator')->trans('information.not.valid', array(), 'errors')
                     );
                 }
 
@@ -98,7 +98,7 @@ class CommentController extends BaseController
                 if ($wikiPage){
                     $comment = new WikiPageComment();
                     $form = $this->createFormBuilder($comment)
-                        ->add('text', 'textarea', array('attr' => array('placeholder' => 'Leave a message ...')))
+                        ->add('text', 'textarea', array('attr' => array('placeholder' => $this->get('translator')->trans('comment.placeholder') )))
                         ->getForm();
 
                     if ($request->isMethod('POST')) {
@@ -126,7 +126,7 @@ class CommentController extends BaseController
 
                            $this->get('session')->setFlash(
                                 'error',
-                                'The information you provided does not seem valid.'
+                                $this->get('translator')->trans('information.not.valid', array(), 'errors')
                             );
                         }
 
@@ -165,7 +165,7 @@ class CommentController extends BaseController
             if ($commonList){
                 $comment = new CommonListComment();
                 $form = $this->createFormBuilder($comment)
-                    ->add('text', 'textarea', array('attr' => array('placeholder' => 'Leave a message ...')))
+                    ->add('text', 'textarea', array('attr' => array('placeholder' => $this->get('translator')->trans('comment.placeholder') )))
                     ->getForm();
 
                 if ($request->isMethod('POST')) {
@@ -193,7 +193,7 @@ class CommentController extends BaseController
 
                        $this->get('session')->setFlash(
                             'error',
-                            'The information you provided does not seem valid.'
+                            $this->get('translator')->trans('information.not.valid', array(), 'errors')
                         );
                     }
                     

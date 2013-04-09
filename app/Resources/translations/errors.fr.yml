@@ -1,3 +1,4 @@
 invalid:
   request: Requête non valide.
   token: Token non valide.
+information.not.valid: "Les informations fournies ne semblent pas valides."

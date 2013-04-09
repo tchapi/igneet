@@ -1,6 +1,7 @@
 # Community
 private.space: "Mon espace privé"
 user.have.no.community: "Vous n'appartenez à aucune communauté pour le moment."
+user.is.guest.community: "Vous devez être membre de la communauté pour avoir accès à ce contenu."
 user.in:
   community: "Bienvenue dans l'espace de travail de la communauté %community%."
   private.space: "Bienvenue dans votre espace de travail personnel."
@@ -8,9 +9,10 @@ community:
   home: "Accueil"
   homeHelp: "Retrouvez vos %projects% projets et %ideas% idées."
   homeHelpUsers: "%users% utilisateurs et invités contribuent à cette communauté."
-  notFound: "Cette communauté n'existe pas."
+  not.found: "Cette communauté n'existe pas."
   choose: "Choisir une communauté"
   chooseHelp: "Veuillez indiquer une communauté pour finaliser votre action."
+  switch: "Vous avez été automatiquement basculé dans la communauté %community%."
 # File uploads
 file:
   choose: "Choisir un fichier"
@@ -29,6 +31,7 @@ comment:
   delete: "Supprimer mon commentaire"
   vote: "Voter pour ce commentaire"
   post: "Commenter"
+  placeholder: "Laissez un commentaire ..."
 toggle: "Alterner l'affichage"
 # Logs
 log:

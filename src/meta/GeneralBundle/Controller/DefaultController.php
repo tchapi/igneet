@@ -222,7 +222,7 @@ class DefaultController extends Controller
 
         } else {
             
-            throw $this->createNotFoundException($this->get('translator')->trans('community.notFound')); // Which is false, but we should not reveal its existence
+            throw $this->createNotFoundException($this->get('translator')->trans('community.not.found')); // Which is false, but we should not reveal its existence
 
         }
 

@@ -148,7 +148,7 @@ class WikiController extends BaseController
 
                $this->get('session')->setFlash(
                     'error',
-                    'The information you provided does not seem valid.'
+                    $this->get('translator')->trans('information.not.valid', array(), 'errors')
                 );
             }
 

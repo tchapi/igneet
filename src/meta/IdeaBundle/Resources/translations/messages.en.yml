@@ -1,0 +1,15 @@
+idea:
+  not.found: "This idea was not found."
+  created: "The idea %idea% has successfully been created."
+  deleted: "The idea %idea% has successfully been deleted."
+  in.community: "This idea is now part of the community %community%."
+  archived: "The idea %idea% has been archived successfully."
+  recycled: "The idea %idea% has been recycled successfully."
+  cannot:
+    delete: "You do not have sufficient privileges to delete this idea."
+    archiveOrRecycle: "You do not have sufficient privileges to archive or recycle this idea."
+    transform.into.project: "You are not allowed to transform this idea into the project since you have not created it or it is already archived."
+  picture:
+    reset: "The picture for this idea has successfully been reset."
+    cannot.reset: "You cannot reset the picture for this idea."
+  transform.into.project: "Your idea has successfully been transformed into a project."
