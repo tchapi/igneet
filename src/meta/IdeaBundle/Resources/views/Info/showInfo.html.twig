@@ -42,7 +42,7 @@
 </section>
 {% if base.idea.community is not null %}
 <section class="colored">
-  <div class="sectionTitle">{% transchoice base.idea.countParticipants %}idea.info.participants{% endtranschoice %}</div>
+  <div class="sectionTitle">{% transchoice base.idea.countParticipants %}idea.info.participants{% endtranschoice %} : </div>
   <ul class="users sectionContent">
   {% for participatingUser in base.idea.participants %}
     {% if not participatingUser.isDeleted %}
@@ -62,7 +62,7 @@
         <a href="{{ path('u_choose_user', {'targetAsBase64': targetParticipantAsBase64, 'token': csrf_token('addParticipant')  }) }}">
           <div class="smallTextAvatar"><i class="icon-plus-sign"></i></div>
           <div class="smallObjectInfos ellipsis-multiline">
-            <span>{{ "idea.info.add.a.participant"|trans }}</span>
+            <span>{{ "idea.info.add.participant"|trans }}</span>
           </div>
         </a>
       </li>
