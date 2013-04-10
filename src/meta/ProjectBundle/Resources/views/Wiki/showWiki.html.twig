@@ -38,14 +38,14 @@
 <section>
   <div>
     {% if base.canEdit %}
-      <div class="wmd-message-top hide alert"><i class="icon-warning-sign"></i> Unsaved changes</div>
+      <div class="wmd-message-top hide alert"><i class="icon-warning-sign"></i> {{ "unsaved.changes"|trans }}</div>
       <div class="wmd-wrapper well well-small hide" >
         <div class="wmd-panel">
             <div id="wmd-button-bar"></div>
             <textarea unsaved='no' data-name="content" data-url="{{ path('sp_show_project_wiki_edit_page', {'slug': base.standardProject.slug, 'id': wikiPage.id, 'token': csrf_token('editWikiPage') }) }}" class="wmd-input" id="wmd-input">{{ wikiPage.content }}</textarea>
         </div>
         <div>
-          <button id="wmd-save" class="btn btn-primary">Save</button> <span class="muted wmd-message">Click save to save your changes</span>
+          <button id="wmd-save" class="btn btn-primary">{{ "save"|trans }}</button> <span class="muted wmd-message">Click save to save your changes</span>
         </div>
         <div id="wmd-preview" class="preview">{{ wikiPage.content }}</div>
       </div>

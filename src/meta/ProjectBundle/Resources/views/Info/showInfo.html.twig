@@ -11,14 +11,14 @@
   <div class="wmd-heading"><i class="icon-bullhorn"></i> About this project : {% if base.canEdit %}<a class="pull-right markdown-trigger">&hellip;<i class="icon-pencil"></i></a>{% endif %}</div>
   <div>
     {% if base.canEdit %}
-      <div class="wmd-message-top hide alert"><i class="icon-warning-sign"></i> Unsaved changes</div>
+      <div class="wmd-message-top hide alert"><i class="icon-warning-sign"></i> {{ "unsaved.changes"|trans }}</div>
       <div class="wmd-wrapper well well-small hide" >
         <div class="wmd-panel">
             <div id="wmd-button-bar"></div>
             <textarea unsaved='no' data-name="about" data-url="{{ path('sp_edit_project', {'slug': base.standardProject.slug, 'token': csrf_token('edit')}) }}" class="wmd-input" id="wmd-input">{{ base.standardProject.about }}</textarea>
         </div>
         <div>
-          <button id="wmd-save" class="btn btn-primary">Save</button> <span class="muted wmd-message">Click save to save your changes</span>
+          <button id="wmd-save" class="btn btn-primary">{{ "save"|trans }}</button> <span class="muted wmd-message">Click save to save your changes</span>
         </div>
         <div id="wmd-preview" class="preview">{{ base.standardProject.about }}</div>
       </div>

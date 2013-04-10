@@ -6,10 +6,14 @@ date:
   past.week: "A week ago"
 time:
   format: "h:i A"
-timeline.title: "Timeline"
 timeline.reset.filters: "Reset filters"
 cancel: "Cancel"
 choose: "Choose"
+save: "Save"
+saveHelp: "Click 'Save' to commit your changes"
+delete: "Delete"
+deleteHelp: "Warning : you cannot undo this"
+unsaved.changes: "Unsaved changes"
 required: "Required"
 # Footer
 report.bug: "Report a bug"

@@ -5,6 +5,8 @@ idea:
   create: "Créer"
   createHelp: "Vous pourrez renseigner plus d'informations sur cette idée une fois celle-ci créée."
   created: "L'idée %idea% a été créée avec succès."
+  delete: "Supprimer l'idée"
+  deleteHelp: "Êtes-vous sûr de vouloir supprimer cette idée ?"
   deleted: "L'idée %idea% a été supprimée avec succès."
   in.community: "Cette idée fait maintenant partie de la communauté %community%."
   archived: "L'idée %idea% a été archivée avec succès."
@@ -23,4 +25,16 @@ idea:
   unwatch: "Vous n'êtes plus abonné à l'idée %idea%."
   not.watching: "Vous n'êtes pas abonné à l'idée %idea%."
   already.watch: "Vous êtes déjà abonné à l'idée %idea%."
+  timeline:
+    title: "Historique"
+  info:
+    title: "Info"
+    about: "À propos de cette idée"
+    creators: "Créateurs"
+    participants: "Participant|Participants"
+    add.participant: "Ajouter un participant"
+  knowledge:
+    title: "Connaissance"
+  concept:
+    title: "Concept"
 

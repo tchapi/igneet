@@ -95,14 +95,14 @@
   <div>
 
     {% if isMe %}
-      <div class="wmd-message-top hide alert"><i class="icon-warning-sign"></i> Unsaved changes</div>
+      <div class="wmd-message-top hide alert"><i class="icon-warning-sign"></i> {{ "unsaved.changes"|trans }}</div>
       <div class="wmd-wrapper well well-small hide" >
         <div class="wmd-panel">
             <div id="wmd-button-bar"></div>
             <textarea unsaved='no' data-name="about" data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" class="wmd-input" id="wmd-input">{{ user.about }}</textarea>
         </div>
         <div>
-          <button id="wmd-save" class="btn btn-primary">Save</button> <span class="muted wmd-message">Click 'Save' to commit your changes</span>
+          <button id="wmd-save" class="btn btn-primary">{{ "save"|trans }}</button> <span class="muted wmd-message">{{ "saveHelp"|trans }}</span>
         </div>
         <div id="wmd-preview" class="preview">{{ user.about }}</div>
       </div>

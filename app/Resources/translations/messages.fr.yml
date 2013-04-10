@@ -6,10 +6,14 @@ date:
   past.week: "Avant ..."
 time:
   format: "H:i"
-timeline.title: "Historique"
 timeline.reset.filters: "Effacer les filtres"
 cancel: "Annuler"
 choose: "Choisir"
+save: "Sauvegarder"
+saveHelp: "Cliquez sur 'Sauvegarder' pour enregistrer vos modifications"
+delete: "Supprimer"
+deleteHelp: "Attention : la suppression est définitive"
+unsaved.changes: "Modifications non sauvegardées"
 required: "Obligatoire"
 # Footer
 report.bug: "Rapporter un bug"
