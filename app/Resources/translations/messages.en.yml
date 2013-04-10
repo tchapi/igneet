@@ -6,8 +6,11 @@ date:
   past.week: "A week ago"
 time:
   format: "h:i A"
+timeline.title: "Timeline"
+timeline.reset.filters: "Reset filters"
 cancel: "Cancel"
 choose: "Choose"
+required: "Required"
 # Footer
 report.bug: "Report a bug"
 terms: "Terms of use"

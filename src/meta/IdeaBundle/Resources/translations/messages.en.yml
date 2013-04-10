@@ -1,5 +1,9 @@
 idea:
+  title: "Ideas"
+  new: "New idea"
   not.found: "This idea was not found."
+  create: "Create"
+  createHelp: "You can add more information once the idea is created."
   created: "The idea %idea% has successfully been created."
   deleted: "The idea %idea% has successfully been deleted."
   in.community: "This idea is now part of the community %community%."

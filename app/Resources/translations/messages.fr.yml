@@ -6,8 +6,11 @@ date:
   past.week: "Avant ..."
 time:
   format: "H:i"
+timeline.title: "Historique"
+timeline.reset.filters: "Effacer les filtres"
 cancel: "Annuler"
 choose: "Choisir"
+required: "Obligatoire"
 # Footer
 report.bug: "Rapporter un bug"
 terms: "Conditions générales"

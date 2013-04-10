@@ -1,6 +1,6 @@
 {% extends 'metaIdeaBundle::layout.html.twig' %}
 
-{% block title %}{{ parent() }} > New idea{% endblock %}
+{% block title %}{{ parent() }} > {{ "idea.new"|trans }}{% endblock %}
 
 {% block javascripts %}
   {{ parent() }}
@@ -15,9 +15,8 @@
     <div class="textAvatar"><i class="icon-beaker"></i></div>
   </div>
   <div class="objectHeader">
-    <h2><strong>Create</strong> a new idea</h2>
-    <h4>And gather a strong community of experts to help you go forward.</h4>
-    <p>You can add more information once the idea is created ...</p>
+    <h2>{{ "idea.new"|trans }}</h2>
+    <h4>{{ "idea.createHelp"|trans }}</h4>
   </div>
 {% endblock %}
 
@@ -28,7 +27,7 @@
 {% block field_widget %}
     {{ block('base_field_widget') }}
     {% if required or attr.help is defined %}
-        <span class="help-block">{% if required %}<span class="muted">* Required.</span>{% endif %} {% if attr.help is defined %}{{ attr.help }}{% endif %}</span>
+        <span class="help-block">{% if required %}<span class="muted">* {{ "required"|trans }}.</span>{% endif %} {% if attr.help is defined %}{{ attr.help|trans }}{% endif %}</span>
     {% endif %}
 {% endblock %}
   
@@ -65,7 +64,7 @@
   <form action="{{ path('i_new_idea') }}" method="post" {{ form_enctype(form) }} class="form-horizontal">
       {{ form_widget(form) }}
       <div class="form-actions">
-        <input type="submit" value="Create" class="btn btn-success" />
+        <input type="submit" value="{{ "idea.create"|trans }}" class="btn btn-success" />
       </div>
   </form>
 </div>
