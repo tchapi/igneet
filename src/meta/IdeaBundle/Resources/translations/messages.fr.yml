@@ -1,6 +1,8 @@
 idea:
   title: "Idées"
   new: "Nouvelle idée"
+  concept: "Concept"
+  knowledge: "Connaissance"
   not.found: "Cette idée n'existe pas."
   create: "Créer"
   createHelp: "Vous pourrez renseigner plus d'informations sur cette idée une fois celle-ci créée."
@@ -17,6 +19,8 @@ idea:
     transform.into.project: "Vous n'avez pas les droits pour transformer cette idée en projet car vous n'en êtes pas le créateur et/ou cette idée est archivée."
     watch: "Vous ne pouvez vous abonner à cette idée."
     unwatch: "Vous ne pouvez pas vous désabonner de cette idée."
+    add.participant: "Vous n'avez pas les droits suffisants pour ajouter un participant à cette idée."
+    remove.participant: "Vous n'avez pas les droits suffisants pour retirer un participant de cette idée."
   picture:
     reset: "L'image de cette idée a été réinitialisée avec succès."
     cannot.reset: "Vous n'avez pas les droits pour réinitialiser l'image de cette idée."
@@ -37,4 +41,7 @@ idea:
     title: "Connaissance"
   concept:
     title: "Concept"
-
+  add.participant: "L'utilisateur %user% est maintenant participant de l'idée '%idea%'."
+  remove.participant: "L'utilisateur '%user%' ne participe plus à l'idée '%idea%'."
+  user.already.participant: "Cet utilisateur n'existe pas ou participe déjà à cette idée."
+  user.not.participant: "Cet utilisateur n'existe pas au rôle spécifié dans cette idée."

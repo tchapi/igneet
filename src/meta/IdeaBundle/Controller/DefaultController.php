@@ -522,12 +522,13 @@ class DefaultController extends Controller
                 }
 
             $project->setOriginalIdea($this->base['idea']);
+            
+            $textService = $this->container->get('textService');
 
             if ($request->request->get('slug') === ""){
-                $textService = $this->container->get('textService');
                 $project->setSlug($textService->slugify($project->getName()));
             } else {
-                $project->setSlug(trim($request->request->get('slug')));
+                $project->setSlug(strtolower(trim($request->request->get('slug'))));
             }
 
             // Community
@@ -540,14 +541,14 @@ class DefaultController extends Controller
 
                 $project->setWiki($wiki);
                 $wikiPageConcept = new WikiPage();
-                    $wikiPageConcept->setTitle("Concept");
+                    $wikiPageConcept->setTitle($this->get('translator')->trans('idea.concept'));
                     $wikiPageConcept->setContent($this->base['idea']->getConceptText());
-                    $wikiPageConcept->setSlug('concept');
+                    $wikiPageConcept->setSlug($textService->slugify($wikiPageConcept->getTitle()));
 
                 $wikiPageKnowledge = new WikiPage();
-                    $wikiPageKnowledge->setTitle("Knowledge");
+                    $wikiPageKnowledge->setTitle($this->get('translator')->trans('idea.knowledge'));
                     $wikiPageKnowledge->setContent($this->base['idea']->getKnowledgeText());
-                    $wikiPageKnowledge->setSlug('knowledge');
+                    $wikiPageKnowledge->setSlug($textService->slugify($wikiPageKnowledge->getTitle()));
 
                 $wiki->addPage($wikiPageConcept);
                 $wiki->addPage($wikiPageKnowledge);
@@ -614,7 +615,7 @@ class DefaultController extends Controller
 
                     $this->get('session')->setFlash(
                         'success',
-                        'Your comment was successfully added.'
+                        $this->get('translator')->trans('comment.added')
                     );
 
                     $logService = $this->container->get('logService');
@@ -670,7 +671,7 @@ class DefaultController extends Controller
 
                 $this->get('session')->setFlash(
                     'success',
-                    'The user '.$newParticipant->getFullName().' now participates in the idea "'.$this->base['idea']->getName().'".'
+                    $this->get('translator')->trans('idea.add.participant', array( '%user%' => $newParticipant->getFullName(), '%idea%' => $this->base['idea']->getName() ))
                 );
 
                 $logService = $this->container->get('logService');
@@ -683,7 +684,7 @@ class DefaultController extends Controller
 
                 $this->get('session')->setFlash(
                     'warning',
-                    'This user does not exist or is already part of this idea.'
+                    $this->get('translator')->trans('idea.user.already.participant')
                 );
             }
 
@@ -691,7 +692,7 @@ class DefaultController extends Controller
 
             $this->get('session')->setFlash(
                 'error',
-                'You are not allowed to add a participant to this idea.'
+                $this->get('translator')->trans('idea.cannot.add.participant')
             );
 
         }
@@ -721,7 +722,7 @@ class DefaultController extends Controller
 
                 $this->get('session')->setFlash(
                     'success',
-                    'The user '.$toRemoveParticipant->getFullName().' does not participate in the idea "'.$this->base['idea']->getName().'" anymore .'
+                    $this->get('translator')->trans('idea.remove.participant', array( '%user%' => $toRemoveParticipant->getFullName(), '%idea%' => $this->base['idea']->getName()))
                 );
 
                 $em = $this->getDoctrine()->getManager();
@@ -731,7 +732,7 @@ class DefaultController extends Controller
 
                 $this->get('session')->setFlash(
                     'error',
-                    'This user does not exist with this role in the idea.'
+                    $this->get('translator')->trans('idea.user.not.participant')
                 );
             }
 
@@ -739,7 +740,7 @@ class DefaultController extends Controller
 
             $this->get('session')->setFlash(
                 'error',
-                'You are not allowed to remove a participant of this idea.'
+                $this->get('translator')->trans('idea.cannot.remove.participant')
             );
 
         }

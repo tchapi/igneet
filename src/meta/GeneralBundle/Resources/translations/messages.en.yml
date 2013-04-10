@@ -29,6 +29,7 @@ image:
 comments:
   count: "{0}No comments yet|{1}One comment|]1,Inf]%count% comments"
 comment:
+  added: "Your comment was successfully added."
   deleted: "Deleted comment"
   delete: "Delete my comment"
   vote: "Vote for this comment"

@@ -1,7 +1,9 @@
 # Community
 private.space: "Mon espace privé"
 user.have.no.community: "Vous n'appartenez à aucune communauté pour le moment."
-user.is.guest.community: "Vous devez être membre de la communauté pour avoir accès à ce contenu."
+guest.community.cannot:
+  access: "Vous devez être membre de la communauté pour avoir accès à ce contenu."
+  do: "Vous ne pouvez faire cette action en tant qu'invité de la communauté."
 user.in:
   community: "Bienvenue dans l'espace de travail de la communauté %community%."
   private.space: "Bienvenue dans votre espace de travail personnel."
@@ -27,6 +29,7 @@ image:
 comments:
   count: "{0}Aucun commentaire|{1}Un commentaire|]1,Inf[%count% commentaires"
 comment:
+  added: "Votre commentaire a été ajouté avec succès."
   deleted: "Commentaire supprimé"
   delete: "Supprimer mon commentaire"
   vote: "Voter pour ce commentaire"
