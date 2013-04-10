@@ -68,7 +68,7 @@ class IdeaComment extends BaseComment
      *
      * @return meta\ProjectBundle\Entity\Comment\StandardProjectComment
      */
-    public function createStandardProjectComment()
+    public function createProjectComment()
     {
         $standardProjectComment = new StandardProjectComment();
 

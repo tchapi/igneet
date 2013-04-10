@@ -515,7 +515,7 @@ class DefaultController extends Controller
 
                 foreach ($this->base['idea']->getComments() as $comment) {
                     if (!$comment->isDeleted()) {
-                        $newComment = $comment->createStandardProjectComment();
+                        $newComment = $comment->createProjectComment();
                         $project->addComment($newComment);
                         $em->persist($newComment);
                     }
