@@ -1,10 +1,13 @@
 date:
   format: "d/m/Y"
   fullFormat: "d/m/Y H:i"
+  timeline: "M j"
+  today: "Aujourd'hui"
+  past.week: "Avant ..."
 time:
   format: "H:i"
 cancel: "Annuler"
 choose: "Choisir"
 # Footer
-report.bug: "Report a bug"
-terms: "Terms of use"
+report.bug: "Rapporter un bug"
+terms: "Conditions générales"

@@ -9,7 +9,13 @@ idea:
     delete: "You do not have sufficient privileges to delete this idea."
     archiveOrRecycle: "You do not have sufficient privileges to archive or recycle this idea."
     transform.into.project: "You are not allowed to transform this idea into the project since you have not created it or it is already archived."
+    watch: "You cannot watch this idea."
+    unwatch: "You cannot unwatch this idea."
   picture:
     reset: "The picture for this idea has successfully been reset."
     cannot.reset: "You cannot reset the picture for this idea."
   transform.into.project: "Your idea has successfully been transformed into a project."
+  watch: "You are now watching the idea %idea%."
+  unwatch: "You are not watching the idea %idea% anymore."
+  not.watching: "You are not watching the idea %idea%."
+  already.watch: "You are already watching the idea %idea%."

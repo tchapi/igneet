@@ -9,7 +9,14 @@ idea:
     delete: "Vous n'avez pas les droits suffisants pour supprimer cette idée."
     archiveOrRecycle: "Vous n'avez pas les droits suffisants pour archiver ou recycler cette idée."
     transform.into.project: "Vous n'avez pas les droits pour transformer cette idée en projet car vous n'en êtes pas le créateur et/ou cette idée est archivée."
+    watch: "Vous ne pouvez vous abonner à cette idée."
+    unwatch: "Vous ne pouvez pas vous désabonner de cette idée."
   picture:
     reset: "L'image de cette idée a été réinitialisée avec succès."
     cannot.reset: "Vous n'avez pas les droits pour réinitialiser l'image de cette idée."
   transform.into.project: "Cette idée a été transformée en projet avec succès."
+  watch: "Vous êtes maintenant abonné à l'idée %idea%."
+  unwatch: "Vous n'êtes plus abonné à l'idée %idea%."
+  not.watching: "Vous n'êtes pas abonné à l'idée %idea%."
+  already.watch: "Vous êtes déjà abonné à l'idée %idea%."
+

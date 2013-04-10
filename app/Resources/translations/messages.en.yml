@@ -1,10 +1,13 @@
 date:
   format: "Y-m-d"
   fullFormat: "Y-m-d h:i A"
+  timeline: "M j"
+  today: "Today"
+  past.week: "A week ago"
 time:
   format: "h:i A"
 cancel: "Cancel"
 choose: "Choose"
 # Footer
-report.bug: "Rapporter un bug"
-terms: "Conditions générales"
+report.bug: "Report a bug"
+terms: "Terms of use"

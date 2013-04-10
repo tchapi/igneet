@@ -781,14 +781,14 @@ class DefaultController extends Controller
 
                 $this->get('session')->setFlash(
                     'success',
-                    'You are now watching '.$idea->getName().'.'
+                    $this->get('translator')->trans('idea.watch', array('%idea%' => $idea->getName()))
                 );
 
             } else {
 
                 $this->get('session')->setFlash(
                     'warning',
-                    'You are already watching '.$idea->getName().'.'
+                    $this->get('translator')->trans('idea.already.watch', array('%idea%' => $idea->getName()))
                 );
 
             }
@@ -797,7 +797,7 @@ class DefaultController extends Controller
 
            $this->get('session')->setFlash(
                 'error',
-                'You cannot watch this idea.'
+                $this->get('translator')->trans('idea.cannot.watch')
             ); 
 
         }
@@ -835,14 +835,14 @@ class DefaultController extends Controller
 
                 $this->get('session')->setFlash(
                     'success',
-                    'You are not watching '.$idea->getName().' anymore.'
+                    $this->get('translator')->trans('idea.unwatch', array('%idea%' => $idea->getName()))
                 );
 
             } else {
 
                 $this->get('session')->setFlash(
                     'warning',
-                    'You are not watching '.$idea->getName().'.'
+                    $this->get('translator')->trans('idea.not.watching', array('%idea%' => $idea->getName()))
                 );
 
             }
@@ -851,7 +851,7 @@ class DefaultController extends Controller
 
            $this->get('session')->setFlash(
                 'error',
-                'You cannot unwatch this idea.'
+                $this->get('translator')->trans('idea.cannot.unwatch')
             ); 
 
         }
@@ -880,14 +880,15 @@ class DefaultController extends Controller
 
         $this->fetchIdeaAndPreComputeRights($id, false, false);
 
-        $this->timeframe = array( 'today' => array( 'name' => 'today', 'data' => array()),
-                            'd-1'   => array( 'name' => date("M j", strtotime("-1 day")), 'data' => array() ),
-                            'd-2'   => array( 'name' => date("M j", strtotime("-2 day")), 'data' => array() ),
-                            'd-3'   => array( 'name' => date("M j", strtotime("-3 day")), 'data' => array() ),
-                            'd-4'   => array( 'name' => date("M j", strtotime("-4 day")), 'data' => array() ),
-                            'd-5'   => array( 'name' => date("M j", strtotime("-5 day")), 'data' => array() ),
-                            'd-6'   => array( 'name' => date("M j", strtotime("-6 day")), 'data' => array() ),
-                            'before'=> array( 'name' => 'a week ago', 'data' => array() )
+        $format = $this->get('translator')->trans('date.timeline');
+        $this->timeframe = array( 'today' => array( 'name' => $this->get('translator')->trans('date.today'), 'data' => array()),
+                            'd-1'   => array( 'name' => date($format, strtotime("-1 day")), 'data' => array() ),
+                            'd-2'   => array( 'name' => date($format, strtotime("-2 day")), 'data' => array() ),
+                            'd-3'   => array( 'name' => date($format, strtotime("-3 day")), 'data' => array() ),
+                            'd-4'   => array( 'name' => date($format, strtotime("-4 day")), 'data' => array() ),
+                            'd-5'   => array( 'name' => date($format, strtotime("-5 day")), 'data' => array() ),
+                            'd-6'   => array( 'name' => date($format, strtotime("-6 day")), 'data' => array() ),
+                            'before'=> array( 'name' => $this->get('translator')->trans('date.past.week'), 'data' => array() )
                             );
 
         $repository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\IdeaLogEntry');
@@ -904,7 +905,7 @@ class DefaultController extends Controller
           if ($log_types[$entry->getType()]['displayable'] === false ) continue;
 
           $text = $logService->getHTML($entry);
-          $createdAt = date_create($entry->getCreatedAt()->format('Y-m-d H:i:s'));
+          $createdAt = date_create($entry->getCreatedAt()->format('Y-m-d H:i:s')); // Not for display
 
           $history[] = array( 'createdAt' => $createdAt , 'text' => $text, 'groups' => $log_types[$entry->getType()]['filter_groups']);
         
@@ -914,7 +915,7 @@ class DefaultController extends Controller
         foreach ($this->base['idea']->getComments() as $comment) {
 
           $text = $logService->getHTML($comment);
-          $createdAt = date_create($comment->getCreatedAt()->format('Y-m-d H:i:s'));
+          $createdAt = date_create($comment->getCreatedAt()->format('Y-m-d H:i:s')); // not for display
 
           $history[] = array( 'createdAt' => $createdAt , 'text' => $text, 'groups' => array('comments') );
 
