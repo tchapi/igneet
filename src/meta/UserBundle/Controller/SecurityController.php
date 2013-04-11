@@ -219,7 +219,7 @@ class SecurityController extends Controller
                     ->setBody(
                         $this->renderView(
                             'metaUserBundle:Mail:reactivateOrRecover.mail.html.twig',
-                            array('user' => $user, 'token' => $user->getToken(), 'flavour' => $flavour )
+                            array('user' => $user, 'passwordToken' => $user->getToken(), 'flavour' => $flavour )
                         ), 'text/html'
                     );
 
@@ -245,7 +245,7 @@ class SecurityController extends Controller
                     ->setBody(
                         $this->renderView(
                             'metaUserBundle:Mail:reactivateOrRecover.mail.html.twig',
-                            array('user' => $user, 'token' => $user->getToken(), 'flavour' => $flavour )
+                            array('user' => $user, 'passwordToken' => $user->getToken(), 'flavour' => $flavour )
                         ), 'text/html'
                     );
 
@@ -291,7 +291,7 @@ class SecurityController extends Controller
                 return $this->redirect($this->generateUrl('change_password', array('passwordToken' => $this->getUser()->getToken())));
             }
 
-        } else {
+        } elseif (!is_null($passwordToken)) {
 
             $repository = $this->getDoctrine()->getRepository('metaUserBundle:User');
             $user = $repository->findOneByToken($passwordToken);
@@ -303,6 +303,10 @@ class SecurityController extends Controller
                 throw $this->createNotFoundException();
             }
 
+        } else {
+
+            throw $this->createNotFoundException();
+        
         }
 
         if ($request->isMethod('POST')) {
