@@ -330,6 +330,9 @@ class DefaultController extends Controller
                 $encoder = $factory->getEncoder($user);
                 $user->setPassword($encoder->encodePassword($user->getPassword(), $user->getSalt()));
 
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($user); // doing it now cause log() flushes the $em
+
                 // Use inviteToken
                 if (!is_null($inviteTokenObject)){
 
@@ -364,8 +367,6 @@ class DefaultController extends Controller
                     }
                 }
 
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($user);
                 $em->flush();
 
                 $logService = $this->container->get('logService');
