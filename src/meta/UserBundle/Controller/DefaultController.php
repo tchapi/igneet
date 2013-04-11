@@ -241,35 +241,39 @@ class DefaultController extends Controller
         // Users
         $usersFollowed = $authenticatedUser->getFollowing();
 
+        // Now get the logs
+        $logService = $this->container->get('logService');
+        $notifications = array();
+
         // Around myself
         $userLogRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\UserLogEntry');
         $userLogs = $userLogRepository->findLogsForUser($authenticatedUser, $from); // New followers of user
+        foreach ($userLogs as $notification) { $notifications[] = array( 'createdAt' => date_create($notification->getCreatedAt()->format('Y-m-d H:i:s')), 'data' => $logService->getHTML($notification) ); }
 
         // Fetch logs related to the projects
         $projectLogRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\StandardProjectLogEntry');
         $projectLogs = $projectLogRepository->findLogsForProjects($allProjects, $from);
+        foreach ($projectLogs as $notification) { $notifications[] = array( 'createdAt' => date_create($notification->getCreatedAt()->format('Y-m-d H:i:s')), 'data' => $logService->getHTML($notification) ); }
 
         // Fetch all logs related to the ideas
         $ideaLogRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\IdeaLogEntry');
         $ideaLogs = $ideaLogRepository->findLogsForIdeas($allIdeas, $from);
+        foreach ($ideaLogs as $notification) { $notifications[] = array( 'createdAt' => date_create($notification->getCreatedAt()->format('Y-m-d H:i:s')), 'data' => $logService->getHTML($notification) ); }
 
         // Fetch all logs related to the users followed (their updates, or if they have created new projects or been added into one)
 /* TODO HARDER !!!
 */
-        $notificationsRaw = array();
-        // Get HTML for everything
 
-        $logService = $this->container->get('logService');
-        $notifications = array();
-
-        foreach ($notificationsRaw as $notification) {
-    
-            $notifications[] = $logService->getHTML($notification);
-
+        // Sort !
+        function build_sorter($key) {
+            return function ($a, $b) use ($key) {
+                return $a[$key]<$b[$key];
+            };
         }
+        usort($notifications, build_sorter('createdAt'));
 
         // Lastly, we update the last_notified_at date
-        $authenticatedUser->setLastNotifiedAt(new \DateTime('now'));
+        // $authenticatedUser->setLastNotifiedAt(new \DateTime('now'));
 
         return $this->render('metaUserBundle:Dashboard:showNotifications.html.twig', 
             array('user' => $authenticatedUser,

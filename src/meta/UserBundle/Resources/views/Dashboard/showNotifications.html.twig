@@ -18,7 +18,7 @@
   <section>
     <ul class="timeline">
       {% for notification in notifications %}
-      <li class="logWrapper full"><div class="log">{{ notification|raw }}</div></li>
+      <li class="logWrapper full"><div class="log">{{ notification['data']|raw }}</div></li>
       {% endfor %}
     </ul>
   </section>
