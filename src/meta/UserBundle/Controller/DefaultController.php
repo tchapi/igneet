@@ -208,7 +208,7 @@ class DefaultController extends Controller
     /*
      * Show the notifications for a user
      */
-    public function showNotificationsAction()
+    public function showNotificationsAction($date)
     {
     
         $authenticatedUser = $this->getUser();
@@ -224,7 +224,8 @@ class DefaultController extends Controller
         } 
 
         // So let's get the stuff
-        $from = $authenticatedUser->getLastNotifiedAt();
+        $lastNotified = $authenticatedUser->getLastNotifiedAt();
+        $from = is_null($date)?$lastNotified:date_create($date);
 
         // Projects
         $allProjects = array();
@@ -273,11 +274,13 @@ class DefaultController extends Controller
         usort($notifications, build_sorter('createdAt'));
 
         // Lastly, we update the last_notified_at date
-        // $authenticatedUser->setLastNotifiedAt(new \DateTime('now'));
+        $authenticatedUser->setLastNotifiedAt(new \DateTime('now'));
 
         return $this->render('metaUserBundle:Dashboard:showNotifications.html.twig', 
             array('user' => $authenticatedUser,
-                  'notifications' => $notifications
+                  'notifications' => $notifications,
+                  'lastNotified' => $lastNotified,
+                  'from' => $from
                 ));
     }
 

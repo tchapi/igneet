@@ -580,6 +580,10 @@ ul.timeline div.log span{
 ul.timeline div.log span.avatar{
   display: inline-block;
 }
+ul.timeline div.log.bold{
+  font-weight: bold;
+  background: lightBlue;
+}
 
 
 /*************/
