@@ -17,4 +17,15 @@ $(document).ready(function(){
   // (Useful for login / invite /etc )
   $('form').find('input').first().focus();
 
+  // Count notifications
+  $.post($("#notificationsCount").attr('data-update-path'), function(data) {
+
+    $("#notificationsCount").html(data);
+
+    if (data == 0) {
+      $("#notificationsCount").fadeOut(3000);
+    }
+
+  });
+
 });

@@ -28,21 +28,36 @@ class UserLogEntryRepository extends EntityRepository
 
   }
 
-  public function findLogsForUser($user, $from) // Effectively, gets all logs related to new followers of $user
+  private function getLogsQuery($user, $from)
   {
     $qb = $this->getEntityManager()->createQueryBuilder();
     
-    return $qb->select('l')
-            ->from('metaGeneralBundle:Log\UserLogEntry', 'l')
+    return $qb->from('metaGeneralBundle:Log\UserLogEntry', 'l')
             ->where('l.other_user = :user')
             ->setParameter('user', $user)
             ->andWhere('l.type = :type')
             ->setParameter('type', 'user_follow_user')
             ->andWhere('l.created_at > :from')
             ->setParameter('from', $from)
-            ->orderBy('l.created_at', 'DESC')
-            ->getQuery()
-            ->getResult();
+            ->orderBy('l.created_at', 'DESC');
+
+  }
+
+  public function findLogsForUser($user, $from) // Effectively, gets all logs related to new followers of $user
+  {
+
+    return $this->getLogsQuery($user, $from)->select('l')
+                                            ->getQuery()
+                                            ->getResult();
+
+  }
+
+  public function countLogsForUser($user, $from) // Effectively, conts all logs related to new followers of $user
+  {
+
+    return $this->getLogsQuery($user, $from)->select('COUNT(l)')
+                                            ->getQuery()
+                                            ->getSingleScalarResult();
 
   }
 

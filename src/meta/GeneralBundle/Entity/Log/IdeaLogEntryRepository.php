@@ -11,22 +11,33 @@ use Doctrine\ORM\EntityRepository;
 class IdeaLogEntryRepository extends EntityRepository
 {
 
-  public function findLogsForIdeas($ideas, $from)
+  private function getLogsQuery($ideas, $from)
   {
     $qb = $this->getEntityManager()->createQueryBuilder();
     
-    return $qb->select('l')
-            ->from('metaGeneralBundle:Log\IdeaLogEntry', 'l')
-            // ->andWhere('l.type = :type')
-            // ->setParameter('type', 'user_follow_user')
+    return $qb->from('metaGeneralBundle:Log\IdeaLogEntry', 'l')
             ->where('l.idea IN (:ideas)')
             ->setParameter('ideas', $ideas)
             ->andWhere('l.created_at > :from')
             ->setParameter('from', $from)
-            ->orderBy('l.created_at', 'DESC')
-            ->getQuery()
-            ->getResult();
+            ->orderBy('l.created_at', 'DESC');
+  }
+
+  public function findLogsForIdeas($ideas, $from)
+  {
+
+    return $this->getLogsQuery($ideas, $from)->select('l')
+                                            ->getQuery()
+                                            ->getResult();
 
   }
 
+  public function countLogsForIdeas($ideas, $from)
+  {
+
+    return $this->getLogsQuery($ideas, $from)->select('COUNT(l)')
+                                            ->getQuery()
+                                            ->getSingleScalarResult();
+
+  }
 }

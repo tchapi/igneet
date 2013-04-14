@@ -11,21 +11,33 @@ use Doctrine\ORM\EntityRepository;
 class StandardProjectLogEntryRepository extends EntityRepository
 {
 
-  public function findLogsForProjects($projects, $from)
+  private function getLogsQuery($projects, $from)
   {
     $qb = $this->getEntityManager()->createQueryBuilder();
     
-    return $qb->select('l')
-            ->from('metaGeneralBundle:Log\StandardProjectLogEntry', 'l')
-            // ->andWhere('l.type = :type')
-            // ->setParameter('type', 'user_follow_user')
+    return $qb->from('metaGeneralBundle:Log\StandardProjectLogEntry', 'l')
             ->where('l.standardProject IN (:projects)')
             ->setParameter('projects', $projects)
             ->andWhere('l.created_at > :from')
             ->setParameter('from', $from)
-            ->orderBy('l.created_at', 'DESC')
-            ->getQuery()
-            ->getResult();
+            ->orderBy('l.created_at', 'DESC');
+  }
+
+  public function findLogsForProjects($projects, $from)
+  {
+
+    return $this->getLogsQuery($projects, $from)->select('l')
+                                            ->getQuery()
+                                            ->getResult();
+
+  }
+
+  public function countLogsForProjects($projects, $from)
+  {
+
+    return $this->getLogsQuery($projects, $from)->select('COUNT(l)')
+                                            ->getQuery()
+                                            ->getSingleScalarResult();
 
   }
 

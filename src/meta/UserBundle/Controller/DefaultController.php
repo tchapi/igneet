@@ -207,16 +207,12 @@ class DefaultController extends Controller
     }
 
     /*
-     * Show the notifications for a user
+     * Helper for count and show Notifications (DRY-style)
      */
-    public function showNotificationsAction($date)
+    private function getAllObjects()
     {
-    
-        $authenticatedUser = $this->getUser();
 
-        // So let's get the stuff
-        $lastNotified = $authenticatedUser->getLastNotifiedAt();
-        $from = is_null($date)?$lastNotified:date_create($date);
+        $authenticatedUser = $this->getUser();
 
         // Projects
         $allProjects = array();
@@ -233,34 +229,92 @@ class DefaultController extends Controller
         // Users
         $usersFollowed = $authenticatedUser->getFollowing()->toArray();
 
+        return array( 'projects' => $allProjects,
+                      'ideas'   => $allIdeas,
+                      'users'   => $usersFollowed);
+    }
+
+    /*
+     * Count the new notifications for a user
+     * No 'backward' style as per the showNotificationsAction (it's just the count of the new stuff)
+     */
+    public function countNotificationsAction()
+    {
+        $authenticatedUser = $this->getUser();
+        $from = $authenticatedUser->getLastNotifiedAt();
+        
+        $objects = $this->getAllObjects();
+
+        // Around myself
+        $userLogRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\UserLogEntry');
+        $selfLogs = $userLogRepository->countLogsForUser($authenticatedUser, $from); // New followers of user
+
+        // Fetch logs related to the projects
+        if (count($objects['projects']) > 0){
+            $projectLogRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\StandardProjectLogEntry');
+            $projectLogs = $projectLogRepository->countLogsForProjects($objects['projects'], $from);
+        }
+        
+        // Fetch all logs related to the ideas
+        if (count($objects['ideas']) > 0){
+            $ideaLogRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\IdeaLogEntry');
+            $ideaLogs = $ideaLogRepository->countLogsForIdeas($objects['ideas'], $from);
+        }
+
+        // Fetch all logs related to the users followed (their updates, or if they have created new projects or been added into one)
+        // In the repository, we make sure we only get logs for the communities the current user can see
+        if (count($objects['users']) > 0){
+            $baseLogRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\BaseLogEntry');
+            $userLogs = $baseLogRepository->countSocialLogsForUsersInCommunities($objects['users'], $authenticatedUser->getCommunities()->toArray(), $from);
+        }
+
+        $total = $selfLogs + $projectLogs + $ideaLogs + $userLogs;
+
+        return new Response($total);
+    }
+
+    /*
+     * Show the notifications for a user
+     */
+    public function showNotificationsAction($date)
+    {
+    
+        $authenticatedUser = $this->getUser();
+
+        // So let's get the stuff
+        $lastNotified = $authenticatedUser->getLastNotifiedAt();
+        $from = is_null($date)?$lastNotified:date_create($date);
+        
+        $objects = $this->getAllObjects();
+
         // Now get the logs
         $logService = $this->container->get('logService');
         $notifications = array();
 
         // Around myself
         $userLogRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\UserLogEntry');
-        $userLogs = $userLogRepository->findLogsForUser($authenticatedUser, $from); // New followers of user
-        foreach ($userLogs as $notification) { $notifications[] = array( 'createdAt' => date_create($notification->getCreatedAt()->format('Y-m-d H:i:s')), 'data' => $logService->getHTML($notification) ); }
+        $selfLogs = $userLogRepository->findLogsForUser($authenticatedUser, $from); // New followers of user
+        foreach ($selfLogs as $notification) { $notifications[] = array( 'createdAt' => date_create($notification->getCreatedAt()->format('Y-m-d H:i:s')), 'data' => $logService->getHTML($notification) ); }
 
         // Fetch logs related to the projects
-        if (count($allProjects) > 0){
+        if (count($objects['projects']) > 0){
             $projectLogRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\StandardProjectLogEntry');
-            $projectLogs = $projectLogRepository->findLogsForProjects($allProjects, $from);
+            $projectLogs = $projectLogRepository->findLogsForProjects($objects['projects'], $from);
             foreach ($projectLogs as $notification) { $notifications[] = array( 'createdAt' => date_create($notification->getCreatedAt()->format('Y-m-d H:i:s')), 'data' => $logService->getHTML($notification) ); }
         }
         
         // Fetch all logs related to the ideas
-        if (count($allIdeas) > 0){
+        if (count($objects['ideas']) > 0){
             $ideaLogRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\IdeaLogEntry');
-            $ideaLogs = $ideaLogRepository->findLogsForIdeas($allIdeas, $from);
+            $ideaLogs = $ideaLogRepository->findLogsForIdeas($objects['ideas'], $from);
             foreach ($ideaLogs as $notification) { $notifications[] = array( 'createdAt' => date_create($notification->getCreatedAt()->format('Y-m-d H:i:s')), 'data' => $logService->getHTML($notification) ); }
         }
 
         // Fetch all logs related to the users followed (their updates, or if they have created new projects or been added into one)
         // In the repository, we make sure we only get logs for the communities the current user can see
-        if (count($usersFollowed) > 0){
+        if (count($objects['users']) > 0){
             $baseLogRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\BaseLogEntry');
-            $userLogs = $baseLogRepository->findSocialLogsForUsersInCommunities($usersFollowed, $authenticatedUser->getCommunities()->toArray(), $from);
+            $userLogs = $baseLogRepository->findSocialLogsForUsersInCommunities($objects['users'], $authenticatedUser->getCommunities()->toArray(), $from);
             foreach ($userLogs as $notification) { $notifications[] = array( 'createdAt' => date_create($notification->getCreatedAt()->format('Y-m-d H:i:s')), 'data' => $logService->getHTML($notification) ); }
         }
 

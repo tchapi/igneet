@@ -68,7 +68,7 @@ class BaseLogEntryRepository extends EntityRepository
     return $result;
   }
 
-  public function findSocialLogsForUsersInCommunities($users, $allowedCommunities, $from)
+  private function getLogsQuery($users, $allowedCommunities, $from)
   {
 
     // He has no community apart from private space => no social logs anyway
@@ -81,8 +81,7 @@ class BaseLogEntryRepository extends EntityRepository
 
     $qb = $this->getEntityManager()->createQueryBuilder();
 
-    return $qb->select('l')
-            ->from('metaGeneralBundle:Log\BaseLogEntry', 'l')
+    return $qb->from('metaGeneralBundle:Log\BaseLogEntry', 'l')
             ->where('l.user IN (:users)')
             ->setParameter('users', $users)
             ->andWhere('l.type IN (:types)')
@@ -91,9 +90,38 @@ class BaseLogEntryRepository extends EntityRepository
             ->setParameter('allowedCommunities', $allowedCommunities)
             ->andWhere('l.created_at > :from')
             ->setParameter('from', $from)
-            ->orderBy('l.created_at', 'DESC')
-            ->getQuery()
-            ->getResult();
+            ->orderBy('l.created_at', 'DESC');
+
+  }
+
+
+  public function findSocialLogsForUsersInCommunities($users, $allowedCommunities, $from)
+  {
+
+    $query = $this->getLogsQuery($users, $allowedCommunities, $from);
+
+    if ($query === null) {
+      return null;
+    } else {
+      return $query->select('l')
+                   ->getQuery()
+                   ->getResult();
+    }
+
+  }
+
+  public function countSocialLogsForUsersInCommunities($users, $allowedCommunities, $from)
+  {
+
+    $query = $this->getLogsQuery($users, $allowedCommunities, $from);
+
+    if ($query === null) {
+      return 0;
+    } else {
+      return $query->select('COUNT(l)')
+                   ->getQuery()
+                   ->getSingleScalarResult();
+    }
 
   }
 
