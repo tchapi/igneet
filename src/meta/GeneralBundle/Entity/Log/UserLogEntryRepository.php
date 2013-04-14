@@ -29,4 +29,26 @@ class UserLogEntryRepository extends EntityRepository
 
   }
 
+  public function findSocialLogsForUsers($users, $from)
+  {
+
+    // Types of logs we want to see from users we follow :
+    $types = array('user_update_profile', 'user_create_project', 'user_create_project_from_idea', 'user_create_idea');
+
+    $qb = $this->getEntityManager()->createQueryBuilder();
+
+    return $qb->select('l')
+            ->from('metaGeneralBundle:Log\BaseLogEntry', 'l')
+            ->where('l.user IN (:users)')
+            ->setParameter('users', $users)
+            ->andWhere('l.type IN (:types)')
+            ->setParameter('types', $types)
+            ->andWhere('l.created_at > :from')
+            ->setParameter('from', $from)
+            ->orderBy('l.created_at', 'DESC')
+            ->getQuery()
+            ->getResult();
+
+  }
+
 }

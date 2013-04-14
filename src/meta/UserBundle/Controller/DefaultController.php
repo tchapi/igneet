@@ -240,7 +240,7 @@ class DefaultController extends Controller
         foreach ($authenticatedUser->getIdeasParticipatedIn() as $idea){ $allIdeas[] = $idea; }
             
         // Users
-        $usersFollowed = $authenticatedUser->getFollowing();
+        $usersFollowed = $authenticatedUser->getFollowing()->toArray();
 
         // Now get the logs
         $logService = $this->container->get('logService');
@@ -262,8 +262,9 @@ class DefaultController extends Controller
         foreach ($ideaLogs as $notification) { $notifications[] = array( 'createdAt' => date_create($notification->getCreatedAt()->format('Y-m-d H:i:s')), 'data' => $logService->getHTML($notification) ); }
 
         // Fetch all logs related to the users followed (their updates, or if they have created new projects or been added into one)
-/* TODO HARDER !!!
-*/
+        $userLogRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\UserLogEntry');
+        $userLogs = $userLogRepository->findSocialLogsForUsers($usersFollowed, $from);
+        foreach ($userLogs as $notification) { $notifications[] = array( 'createdAt' => date_create($notification->getCreatedAt()->format('Y-m-d H:i:s')), 'data' => $logService->getHTML($notification) ); }
 
         // Sort !
         function build_sorter($key) {

@@ -17,7 +17,7 @@
 {% if notifications|length > 0 %}
   <section>
     <ul class="timeline">
-      {% set currentDate = "now"|date('Y-m-d') %}
+      {% set currentDate = "now"|date_modify("+1 day")|date('Y-m-d') %}
       {% set past = false %}
       {% for notification in notifications %}
 
