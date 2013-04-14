@@ -6,5 +6,5 @@ time:
 cancel: "Cancel"
 choose: "Choose"
 # Footer
-report.bug: "Rapporter un bug"
-terms: "Conditions générales"
+report.bug: "Report a bug"
+terms: "Terms of use"
