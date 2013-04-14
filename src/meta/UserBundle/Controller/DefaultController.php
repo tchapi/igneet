@@ -34,7 +34,7 @@ class DefaultController extends Controller
 
         $repository = $this->getDoctrine()->getRepository('metaUserBundle:User');
         if ($username !== $authenticatedUser->getUsername()){
-            $user = $repository->findOneByUsernameInCommunity($username, $authenticatedUser->getCurrentCommunity());
+            $user = $repository->findOneByUsernameInCommunity($username, true, $authenticatedUser->getCurrentCommunity());
         } else {
             $user = $authenticatedUser;
         }
@@ -113,7 +113,7 @@ class DefaultController extends Controller
             return $this->redirect($this->generateUrl('u_list_users', array('sort' => $sort)));
         }
 
-        $users = $repository->findAllUsersInCommunity($community, $page, $maxPerPage, $sort);
+        $users = $repository->findAllUsersInCommunity($community, true, $page, $maxPerPage, $sort);
 
         $pagination = array( 'page' => $page, 'totalUsers' => $totalUsers);
         return $this->render('metaUserBundle:Default:list.html.twig', array('users' => $users, 'pagination' => $pagination, 'sort' => $sort ));
@@ -670,7 +670,7 @@ class DefaultController extends Controller
         if ($username !== $authenticatedUser->getUsername()){
 
             $repository = $this->getDoctrine()->getRepository('metaUserBundle:User');
-            $user = $repository->findOneByUsernameInCommunity($username, $authenticatedUser->getCurrentCommunity());
+            $user = $repository->findOneByUsernameInCommunity($username, true, $authenticatedUser->getCurrentCommunity());
 
             if ($user && !$user->isDeleted()){
 
@@ -732,7 +732,7 @@ class DefaultController extends Controller
         if ($username !== $authenticatedUser->getUsername()){
 
             $repository = $this->getDoctrine()->getRepository('metaUserBundle:User');
-            $user = $repository->findOneByUsernameInCommunity($username, $authenticatedUser->getCurrentCommunity());
+            $user = $repository->findOneByUsernameInCommunity($username, true, $authenticatedUser->getCurrentCommunity());
 
             if ($user && !$user->isDeleted()){
 

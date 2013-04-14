@@ -38,7 +38,7 @@ class UserRepository extends EntityRepository
   /*
    * Fetch all users in a given community
    */
-  public function findAllUsersInCommunity($community, $page, $maxPerPage, $sort)
+  public function findAllUsersInCommunity($community, $findGuests, $page, $maxPerPage, $sort)
   {
     
     if ($community === null){
@@ -49,10 +49,16 @@ class UserRepository extends EntityRepository
     $query = $qb->select('u')
             ->from('metaUserBundle:User', 'u')
             ->leftJoin('u.communities', 'c')
-            ->leftJoin('u.restrictedCommunities', 'rc')
-            ->where('u.deleted_at IS NULL')
-            ->andWhere('c = :community OR rc = :community')
-            ->setParameter('community', $community);
+            ->where('u.deleted_at IS NULL');
+
+    if ($findGuests === true){
+        $query->leftJoin('u.restrictedCommunities', 'rc')
+        ->andWhere('c = :community OR rc = :community')
+        ->setParameter('community', $community);
+    } else {
+        $query->andWhere('c = :community')
+        ->setParameter('community', $community);
+    }
 
     switch ($sort) {
       case 'update':
@@ -93,9 +99,8 @@ class UserRepository extends EntityRepository
     return $qb->select('u')
             ->from('metaUserBundle:User', 'u')
             ->leftJoin('u.communities', 'c')
-            ->leftJoin('u.restrictedCommunities', 'rc')
             ->where('u.deleted_at IS NULL')
-            ->andWhere('c = :community OR rc = :community')
+            ->andWhere('c = :community')
             ->setParameter('community', $community)
             ->andWhere('u <> :user')
             ->setParameter('user', $user)
@@ -157,7 +162,7 @@ class UserRepository extends EntityRepository
   /*
    * Find a user by its username in a given community
    */
-  public function findOneByUsernameInCommunity($username, $community)
+  public function findOneByUsernameInCommunity($username, $findGuest, $community)
   {
 
     if ($community === null){
@@ -169,13 +174,20 @@ class UserRepository extends EntityRepository
     $query = $qb->select('u')
             ->from('metaUserBundle:User', 'u')
             ->leftJoin('u.communities', 'c')
-            ->leftJoin('u.restrictedCommunities', 'rc')
-            ->where('u.deleted_at IS NULL')
-            ->andWhere('c = :community OR rc = :community')
-            ->setParameter('community', $community)
-            ->andWhere('u.username = :username')
-            ->setParameter('username', $username)
-            ->getQuery();
+            ->where('u.deleted_at IS NULL');
+
+    if ($findGuests === true){
+        $query->leftJoin('u.restrictedCommunities', 'rc')
+        ->andWhere('c = :community OR rc = :community')
+        ->setParameter('community', $community);
+    } else {
+        $query->andWhere('c = :community')
+        ->setParameter('community', $community);
+    }
+
+    $query->andWhere('u.username = :username')
+          ->setParameter('username', $username)
+          ->getQuery();
 
     try {
         $result = $query->getSingleResult();
