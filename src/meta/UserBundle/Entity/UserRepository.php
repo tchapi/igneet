@@ -186,11 +186,10 @@ class UserRepository extends EntityRepository
     }
 
     $query->andWhere('u.username = :username')
-          ->setParameter('username', $username)
-          ->getQuery();
+          ->setParameter('username', $username);
 
     try {
-        $result = $query->getSingleResult();
+        $result = $query->getQuery()->getSingleResult();
     } catch (\Doctrine\Orm\NoResultException $e) {
         $result = null;
     }
