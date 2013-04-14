@@ -66,7 +66,7 @@ class Resource extends Taggable
     private $original_filename;
 
     /**
-     * @Assert\File(maxSize="6000000")
+     * @Assert\File(maxSize="30000000")
      */
     protected $file;
 

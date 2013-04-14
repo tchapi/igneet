@@ -73,7 +73,7 @@ class StandardProject extends Taggable
     private $picture;
 
     /**
-     * @Assert\File(maxSize="6000000")
+     * @Assert\File(maxSize="10000000")
      */
     protected $file;
 
