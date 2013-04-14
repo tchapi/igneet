@@ -12,9 +12,9 @@
 
  ☐ projects dont je ne suis pas participant : je vois les trucs ou pas ???
 
- ☐ Translation :
-   - log_types
-   - DeepLinkingExtension
+ ☐ translation : placeholders pour le select2 ? a gerer dans le DOM si possible  
+
+ ☐ traduire les noms des fields de form et les helps - normalement |trans est fait par défaut dans les templates
 
  ☐ Deep linking : verifier a l'affichage que l'utilisateur a le droit de voir l'objet deep linké !
 
