@@ -176,7 +176,7 @@ class UserRepository extends EntityRepository
             ->leftJoin('u.communities', 'c')
             ->where('u.deleted_at IS NULL');
 
-    if ($findGuests === true){
+    if ($findGuest === true){
         $query->leftJoin('u.restrictedCommunities', 'rc')
         ->andWhere('c = :community OR rc = :community')
         ->setParameter('community', $community);
