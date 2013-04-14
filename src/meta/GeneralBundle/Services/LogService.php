@@ -17,13 +17,15 @@ class LogService
     private $log_types, $log_routing, $concurrent_merge_interval;
     private $twig, $template_link, $template_link_null, $template_item;
 
-    public function __construct(EntityManager $entity_manager, $log_types, $log_routing, $log_concurrent_merge_interval, $twig, $translator)
+    public function __construct(EntityManager $entity_manager, $log_types, $log_routing, $log_concurrent_merge_interval, $security_context, $twig, $translator)
     {
         $this->em = $entity_manager;
         
         $this->log_types = $log_types;
         $this->log_routing = $log_routing;
         $this->concurrent_merge_interval = $log_concurrent_merge_interval;
+
+        $this->security_context = $security_context;
 
         $this->twig = $twig;
         $this->translator = $translator;
@@ -83,6 +85,7 @@ class LogService
         } else {
 
             // else persists the new log
+            $entry->setCommunity($this->security_context->getToken()->getUser()->getCurrentCommunity());
             $entry->setUser($user);
             $entry->setType($logActionName);
             $entry->setSubject($subject);

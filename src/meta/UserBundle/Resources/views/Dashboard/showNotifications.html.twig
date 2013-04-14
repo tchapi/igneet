@@ -17,8 +17,7 @@
 {% if notifications|length > 0 %}
   <section>
     <ul class="timeline">
-      {% set currentDate = "now"|date_modify("+1 day")|date('Y-m-d') %}
-      {% set past = false %}
+      {% set currentDate = "now"|date_modify("+1 day") %}
       {% for notification in notifications %}
 
         {% if notification['createdAt']|date('Y-m-d') < currentDate|date('Y-m-d') %}
@@ -26,7 +25,7 @@
           {% set currentDate = notification['createdAt'] %}
         {% endif %}
 
-        <li class="logWrapper full"><div class="log{% if notification['createdAt']|date('Y-m-d') > lastNotified|date('Y-m-d') %} bold{% endif %}">{{ notification['data']|raw }}</div></li>
+        <li class="logWrapper full"><div class="log{% if notification['createdAt']|date('c') > lastNotified|date('c') %} bold{% endif %}">{{ notification['data']|raw }}</div></li>
 
       {% endfor %}
     </ul>

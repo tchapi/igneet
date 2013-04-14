@@ -21,5 +21,6 @@ services:
             log_types: %general.log_types%
             log_routing: %general.log_routing%
             log_concurrent_merge_interval: %general.log_concurrent_merge_interval%
+            security_context: "@security.context"
             twig: "@twig"
             translator: "@translator"

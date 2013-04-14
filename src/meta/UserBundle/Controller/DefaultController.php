@@ -140,25 +140,26 @@ class DefaultController extends Controller
 
         // So let's get the stuff
         $logRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\BaseLogEntry');
+        $userLogRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\UserLogEntry');
         $commentRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Comment\BaseComment');
         $projectRepository = $this->getDoctrine()->getRepository('metaProjectBundle:StandardProject');
         $ideaRepository = $this->getDoctrine()->getRepository('metaIdeaBundle:Idea');
 
         // Last recorded activity
-        $lastActivity = $logRepository->findLastActivityDateForUser($authenticatedUser->getId());
+        $lastActivity = $logRepository->findLastActivityDateForUser($authenticatedUser);
 
         // 7 days activity
-        $last7daysActivity = $logRepository->computeWeekActivityForUser($authenticatedUser->getId());
+        $last7daysActivity = $logRepository->computeWeekActivityForUser($authenticatedUser);
 
         // Recent social activity
-        $lastSocial_raw = $logRepository->findLastSocialActivityForUser($authenticatedUser->getId(), 3);
+        $lastSocial_raw = $userLogRepository->findLastSocialActivityForUser($authenticatedUser, 3);
         $logService = $this->container->get('logService');
         $lastSocial = array();
         foreach ($lastSocial as $entry) {
             $lastSocial[] = $logService->getText($entry);
         }
 
-        $last7daysCommentActivity = $commentRepository->computeWeekCommentActivityForUser($authenticatedUser->getId());
+        $last7daysCommentActivity = $commentRepository->computeWeekCommentActivityForUser($authenticatedUser);
         
         // Top 3 projects
         $top3projects = $projectRepository->findTopProjectsInCommunityForUser($authenticatedUser->getCurrentCommunity(), $authenticatedUser, 3);
@@ -213,16 +214,6 @@ class DefaultController extends Controller
     
         $authenticatedUser = $this->getUser();
 
-        if (is_null($authenticatedUser->getCurrentCommunity())) {
-
-            $this->get('session')->setFlash(
-                'error',
-                'There is no notifications in your private space.'
-            );
-
-            return $this->redirect($this->generateUrl('u_me'));
-        } 
-
         // So let's get the stuff
         $lastNotified = $authenticatedUser->getLastNotifiedAt();
         $from = is_null($date)?$lastNotified:date_create($date);
@@ -252,19 +243,26 @@ class DefaultController extends Controller
         foreach ($userLogs as $notification) { $notifications[] = array( 'createdAt' => date_create($notification->getCreatedAt()->format('Y-m-d H:i:s')), 'data' => $logService->getHTML($notification) ); }
 
         // Fetch logs related to the projects
-        $projectLogRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\StandardProjectLogEntry');
-        $projectLogs = $projectLogRepository->findLogsForProjects($allProjects, $from);
-        foreach ($projectLogs as $notification) { $notifications[] = array( 'createdAt' => date_create($notification->getCreatedAt()->format('Y-m-d H:i:s')), 'data' => $logService->getHTML($notification) ); }
-
+        if (count($allProjects) > 0){
+            $projectLogRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\StandardProjectLogEntry');
+            $projectLogs = $projectLogRepository->findLogsForProjects($allProjects, $from);
+            foreach ($projectLogs as $notification) { $notifications[] = array( 'createdAt' => date_create($notification->getCreatedAt()->format('Y-m-d H:i:s')), 'data' => $logService->getHTML($notification) ); }
+        }
+        
         // Fetch all logs related to the ideas
-        $ideaLogRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\IdeaLogEntry');
-        $ideaLogs = $ideaLogRepository->findLogsForIdeas($allIdeas, $from);
-        foreach ($ideaLogs as $notification) { $notifications[] = array( 'createdAt' => date_create($notification->getCreatedAt()->format('Y-m-d H:i:s')), 'data' => $logService->getHTML($notification) ); }
+        if (count($allIdeas) > 0){
+            $ideaLogRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\IdeaLogEntry');
+            $ideaLogs = $ideaLogRepository->findLogsForIdeas($allIdeas, $from);
+            foreach ($ideaLogs as $notification) { $notifications[] = array( 'createdAt' => date_create($notification->getCreatedAt()->format('Y-m-d H:i:s')), 'data' => $logService->getHTML($notification) ); }
+        }
 
         // Fetch all logs related to the users followed (their updates, or if they have created new projects or been added into one)
-        $userLogRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\UserLogEntry');
-        $userLogs = $userLogRepository->findSocialLogsForUsers($usersFollowed, $from);
-        foreach ($userLogs as $notification) { $notifications[] = array( 'createdAt' => date_create($notification->getCreatedAt()->format('Y-m-d H:i:s')), 'data' => $logService->getHTML($notification) ); }
+        // In the repository, we make sure we only get logs for the communities the current user can see
+        if (count($usersFollowed) > 0){
+            $baseLogRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\BaseLogEntry');
+            $userLogs = $baseLogRepository->findSocialLogsForUsersInCommunities($usersFollowed, $authenticatedUser->getCommunities()->toArray(), $from);
+            foreach ($userLogs as $notification) { $notifications[] = array( 'createdAt' => date_create($notification->getCreatedAt()->format('Y-m-d H:i:s')), 'data' => $logService->getHTML($notification) ); }
+        }
 
         // Sort !
         function build_sorter($key) {
@@ -377,9 +375,6 @@ class DefaultController extends Controller
 
                 $em->flush();
 
-                $logService = $this->container->get('logService');
-                $logService->log($user, 'user_created', $user, array());
-
                 /* Tries to login the user now */
                 // Here, "main" is the name of the firewall in security.yml
                 $token = new UsernamePasswordToken($user, $user->getPassword(), "main", $user->getRoles());
@@ -388,6 +383,9 @@ class DefaultController extends Controller
                 // Fire the login event
                 $event = new InteractiveLoginEvent($request, $token);
                 $this->get("event_dispatcher")->dispatch("security.interactive_login", $event);
+
+                $logService = $this->container->get('logService');
+                $logService->log($user, 'user_created', $user, array());
 
                 $this->get('session')->setFlash(
                     'success',

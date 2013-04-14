@@ -11,6 +11,23 @@ use Doctrine\ORM\EntityRepository;
 class UserLogEntryRepository extends EntityRepository
 {
 
+  public function findLastSocialActivityForUser($user, $max = 3)
+  {
+    $qb = $this->getEntityManager()->createQueryBuilder();
+    
+    return $qb->select('l')
+            ->from('metaGeneralBundle:Log\UserLogEntry', 'l')
+            ->where('l.user = :user')
+            ->setParameter('user', $user)
+            ->andWhere('l.type = :type')
+            ->setParameter('type', 'user_follow_user')
+            ->orderBy('l.created_at', 'DESC')
+            ->setMaxResults($max)
+            ->getQuery()
+            ->getResult();
+
+  }
+
   public function findLogsForUser($user, $from) // Effectively, gets all logs related to new followers of $user
   {
     $qb = $this->getEntityManager()->createQueryBuilder();
@@ -21,28 +38,6 @@ class UserLogEntryRepository extends EntityRepository
             ->setParameter('user', $user)
             ->andWhere('l.type = :type')
             ->setParameter('type', 'user_follow_user')
-            ->andWhere('l.created_at > :from')
-            ->setParameter('from', $from)
-            ->orderBy('l.created_at', 'DESC')
-            ->getQuery()
-            ->getResult();
-
-  }
-
-  public function findSocialLogsForUsers($users, $from)
-  {
-
-    // Types of logs we want to see from users we follow :
-    $types = array('user_update_profile', 'user_create_project', 'user_create_project_from_idea', 'user_create_idea');
-
-    $qb = $this->getEntityManager()->createQueryBuilder();
-
-    return $qb->select('l')
-            ->from('metaGeneralBundle:Log\BaseLogEntry', 'l')
-            ->where('l.user IN (:users)')
-            ->setParameter('users', $users)
-            ->andWhere('l.type IN (:types)')
-            ->setParameter('types', $types)
             ->andWhere('l.created_at > :from')
             ->setParameter('from', $from)
             ->orderBy('l.created_at', 'DESC')
