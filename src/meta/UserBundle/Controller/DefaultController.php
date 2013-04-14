@@ -392,6 +392,16 @@ class DefaultController extends Controller
 
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($user); // doing it now cause log() flushes the $em
+                $em->flush(); // We do a first flush here so that next logs will behave correctly
+
+                /* Tries to login the user now */
+                // Here, "main" is the name of the firewall in security.yml
+                $token = new UsernamePasswordToken($user, $user->getPassword(), "main", $user->getRoles());
+                $this->get("security.context")->setToken($token);
+
+                // Fire the login event
+                $event = new InteractiveLoginEvent($request, $token);
+                $this->get("event_dispatcher")->dispatch("security.interactive_login", $event);
 
                 // Use inviteToken
                 if (!is_null($inviteTokenObject)){
@@ -428,15 +438,6 @@ class DefaultController extends Controller
                 }
 
                 $em->flush();
-
-                /* Tries to login the user now */
-                // Here, "main" is the name of the firewall in security.yml
-                $token = new UsernamePasswordToken($user, $user->getPassword(), "main", $user->getRoles());
-                $this->get("security.context")->setToken($token);
-
-                // Fire the login event
-                $event = new InteractiveLoginEvent($request, $token);
-                $this->get("event_dispatcher")->dispatch("security.interactive_login", $event);
 
                 $logService = $this->container->get('logService');
                 $logService->log($user, 'user_created', $user, array());
