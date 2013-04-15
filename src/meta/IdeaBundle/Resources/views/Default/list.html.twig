@@ -60,7 +60,7 @@
 </section>
 {% endfor %}
 <section>
-{% render "metaGeneralBundle:Default:pagination" with { 'route': archived?'i_list_archived_ideas':'i_list_ideas', 'page' : pagination.page, 'total' : pagination.totalIdeas, 'params' : {'sort': sort } } %}
+{% render(controller("metaGeneralBundle:Default:pagination",{ 'route': archived?'i_list_archived_ideas':'i_list_ideas', 'page' : pagination.page, 'total' : pagination.totalIdeas, 'params' : {'sort': sort } })) %}
 </section>
 {% else %}
 <section>

@@ -57,11 +57,7 @@
         {% if errors|length > 0 %}
         <ul class="error_list">
             {% for error in errors %}
-                <li><i class="icon-warning-sign"></i> {{
-                    error.messagePluralization is null
-                        ? error.messageTemplate|trans(error.messageParameters, 'validators')
-                        : error.messageTemplate|transchoice(error.messagePluralization, error.messageParameters, 'validators')
-                }}</li>
+                <li><i class="icon-warning-sign"></i> {{ error.message }}</li>
             {% endfor %}
         </ul>
         {% endif %}

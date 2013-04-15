@@ -3,7 +3,7 @@
 {% block title %}{{ parent() }} | New Wiki Page{% endblock %}
 
 {% block navbar %}
-{% render "metaProjectBundle:Default:navbar" with { 'activeMenu' : 'wiki', 'slug' : base.standardProject.slug } %}
+{% render(controller("metaProjectBundle:Default:navbar", { 'activeMenu' : 'wiki', 'slug' : base.standardProject.slug })) %}
 {% endblock %}
 
 {% form_theme form _self %}

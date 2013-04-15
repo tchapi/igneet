@@ -72,5 +72,5 @@
 {% endblock %}
 
 {% block navbar %}
-{% render "metaIdeaBundle:Default:navbar" with { 'activeMenu' : 'info', 'id' : base.idea.id, 'slug' : base.idea.slug } %}
+{% render(controller("metaIdeaBundle:Default:navbar",{ 'activeMenu' : 'info', 'id' : base.idea.id, 'slug' : base.idea.slug })) %}
 {% endblock %}
