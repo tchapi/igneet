@@ -339,7 +339,7 @@ class DefaultController extends Controller
     {
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('edit', $request->get('token')))
-            return new Response('Invalid token', 400);
+            return new Response($this->get('translator')->trans('invalid.token', array(), 'errors'), 400);
 
         $authenticatedUser = $this->getUser();
         $error = null;
@@ -436,7 +436,7 @@ class DefaultController extends Controller
 
         } else {
 
-            $error = 'Invalid request';
+            $error = $this->get('translator')->trans('invalid.request', array(), 'errors');
 
         }
         
@@ -592,7 +592,7 @@ class DefaultController extends Controller
 
         } else {
 
-            throw $this->createNotFoundException();
+            throw $this->createNotFoundException($this->get('translator')->trans('invalid.request', array(), 'errors'));
 
         }
 
@@ -608,7 +608,7 @@ class DefaultController extends Controller
 
         // In private space : no users
         if (is_null($authenticatedUser->getCurrentCommunity())) {
-            throw $this->createNotFoundException('There are no users in your private space');
+            throw $this->createNotFoundException($this->get('translator')->trans('user.noneInPrivateSpace'));
         }
 
         $target = json_decode(base64_decode($targetAsBase64), true);
@@ -631,7 +631,7 @@ class DefaultController extends Controller
 
             } else {
 
-                throw $this->createNotFoundException('Invalid request');
+                throw $this->createNotFoundException($this->get('translator')->trans('invalid.request', array(), 'errors'));
 
             }
 
@@ -644,7 +644,7 @@ class DefaultController extends Controller
 
                 $this->get('session')->setFlash(
                         'warning',
-                        'You\'re alone, mate.'
+                        $this->get('translator')->trans('user.nobody')
                     );
 
                 return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $authenticatedUser->getUsername())));

@@ -3,5 +3,6 @@ user:
   welcome: "Welcome! This is your profile page, where you can directly edit your information by clicking on the underlined text."
   not.found: "This user does not exist."
   none.inPrivateSpace: "There are no other users in your private space."
+  nobody: "You're alone for now in this community."
   no.dashboard: "There is no dashboard in your private space or in a community in which you are a guest."
   signup.link.already.used: "This signup link has already been used."
