@@ -585,7 +585,7 @@ class DefaultController extends Controller
             $skillsAsArray = array();
 
             foreach($skills as $skill){
-                $skillsAsArray[] = array('value' => $skill->getSlug(), 'text' => $skill->getName());
+                $skillsAsArray[] = array('value' => $skill->getSlug(), 'text' => $this->get('translator')->trans($skill->getSlug() + '.name', array(), 'skills'));
             }
 
             return new Response(json_encode($skillsAsArray));

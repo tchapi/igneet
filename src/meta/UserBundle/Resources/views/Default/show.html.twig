@@ -63,7 +63,7 @@
 
       <ul data-toggle="manual" data-title="List your skills" data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" data-emptytext="Add skills" data-type="checklist" data-source="{{ path('u_list_all_skills') }}" data-name="skills" class="skills skills-target editable-li">
       {% for skill in user.skills %}
-          <li class="label" style="background-color: #{{ skill.color }}" rel="{{ skill.slug }}">{{ skill.name }}</li>
+          <li class="label" style="background-color: #{{ skill.color }}" rel="{{ skill.slug }}">{{ skill.slug|trans({}, 'skills') }}</li>
       {% endfor %}
       </ul>
 
