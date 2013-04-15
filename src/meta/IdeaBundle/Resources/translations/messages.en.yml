@@ -10,7 +10,7 @@ idea:
   headlineEmptyText: "Click to add a headline"
   view:
     archived: "View archived ideas"
-    all: "&laquo; View ideas"
+    all: "« View ideas"
   new: "New idea"
   concept: "Concept"
   knowledge: "Knowledge"

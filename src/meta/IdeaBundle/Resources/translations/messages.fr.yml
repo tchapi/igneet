@@ -10,7 +10,7 @@ idea:
   headlineEmptyText: "Cliquez pour ajouter un slogan"
   view:
     archived: "Voir les idées archivées"
-    all: "&laquo; Revenir aux idées"
+    all: "« Revenir aux idées"
   new: "Nouvelle idée"
   concept: "Concept"
   knowledge: "Connaissance"
