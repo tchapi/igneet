@@ -33,7 +33,7 @@
 </section>
 {% endfor %}
 <section>
-{% render "metaGeneralBundle:Default:pagination" with { 'route': 'u_list_users', 'page' : pagination.page, 'total' : pagination.totalUsers, 'params' : {'sort': sort } } %}
+{% render(controller("metaGeneralBundle:Default:pagination", { 'route': 'u_list_users', 'page' : pagination.page, 'total' : pagination.totalUsers, 'params' : {'sort': sort } })) %}
 </section>
 {% else %}
 <section>

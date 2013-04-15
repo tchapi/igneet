@@ -12,13 +12,13 @@
 
 {% block content %}
 <section>
-{% render "metaIdeaBundle:Default:addIdeaComment" with { 'id' : base.idea.id } %}
+{% render(controller("metaIdeaBundle:Default:addIdeaComment", { 'id' : base.idea.id })) %}
 </section>
 <section>
-{% render "metaIdeaBundle:Default:history" with { 'id' : base.idea.id, 'page' : 1 } %}
+{% render(controller("metaIdeaBundle:Default:history", { 'id' : base.idea.id, 'page' : 1 })) %}
 </section>
 {% endblock %}
 
 {% block navbar %}
-{% render "metaIdeaBundle:Default:navbar" with { 'activeMenu' : 'timeline', 'id' : base.idea.id, 'slug' : base.idea.slug } %}
+{% render(controller("metaIdeaBundle:Default:navbar", { 'activeMenu' : 'timeline', 'id' : base.idea.id, 'slug' : base.idea.slug })) %}
 {% endblock %}

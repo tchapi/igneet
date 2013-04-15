@@ -3,7 +3,7 @@
 {% block title %}{{ parent() }} | Info{% endblock %}
 
 {% block navbar %}
-{% render "metaProjectBundle:Default:navbar" with { 'activeMenu' : 'info', 'slug' : base.standardProject.slug } %}
+{% render(controller("metaProjectBundle:Default:navbar", { 'activeMenu' : 'info', 'slug' : base.standardProject.slug })) %}
 {% endblock %}
 
 {% block content %}

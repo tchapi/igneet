@@ -98,5 +98,5 @@
 {% endblock %}
 
 {% block navbar %}
-{% render "metaProjectBundle:Default:navbar" with { 'activeMenu' : null, 'slug' : base.standardProject.slug } %}
+{% render(controller("metaProjectBundle:Default:navbar", { 'activeMenu' : null, 'slug' : base.standardProject.slug })) %}
 {% endblock %}

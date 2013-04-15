@@ -59,7 +59,7 @@
 </section>
 {% endfor %}
 <section>
-{% render "metaGeneralBundle:Default:pagination" with { 'route': 'sp_list_projects', 'page' : pagination.page, 'total' : pagination.totalProjects, 'params' : {'sort': sort } } %}
+{% render(controller("metaGeneralBundle:Default:pagination",{ 'route': 'sp_list_projects', 'page' : pagination.page, 'total' : pagination.totalProjects, 'params' : {'sort': sort } })) %}
 </section>
 {% else %}
 <section>

@@ -3,7 +3,7 @@
 {% block title %}{{ parent() }}{% if commonList %} | List : {{ commonList.name }}{% endif %}{% endblock %}
 
 {% block navbar %}
-{% render "metaProjectBundle:Default:navbar" with { 'activeMenu' : 'lists', 'slug' : base.standardProject.slug } %}
+{% render(controller("metaProjectBundle:Default:navbar", { 'activeMenu' : 'lists', 'slug' : base.standardProject.slug })) %}
 {% endblock %}
 
 {% block javascripts %}
@@ -64,7 +64,7 @@
 {% endif %}
 </section>
 <section>
-{% render "metaProjectBundle:Comment:addCommonListComment" with { 'slug' : base.standardProject.slug, 'id': commonList.id } %}
+{% render(controller("metaProjectBundle:Comment:addCommonListComment", { 'slug' : base.standardProject.slug, 'id': commonList.id })) %}
 </section>
 </div>
 <div class="menu dd">

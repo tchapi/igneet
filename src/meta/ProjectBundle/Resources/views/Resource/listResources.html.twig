@@ -3,7 +3,7 @@
 {% block title %}{{ parent() }} | Resources{% endblock %}
 
 {% block navbar %}
-{% render "metaProjectBundle:Default:navbar" with { 'activeMenu' : 'resources', 'slug' : base.standardProject.slug } %}
+{% render(controller("metaProjectBundle:Default:navbar", { 'activeMenu' : 'resources', 'slug' : base.standardProject.slug })) %}
 {% endblock %}
 
 {% form_theme form _self %}

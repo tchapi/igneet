@@ -3,7 +3,7 @@
 {% block title %}{{ parent() }}{% if wikiPage %} | Wiki : {{ wikiPage.title }}{% endif %}{% endblock %}
 
 {% block navbar %}
-{% render "metaProjectBundle:Default:navbar" with { 'activeMenu' : 'wiki', 'slug' : base.standardProject.slug } %}
+{% render(controller("metaProjectBundle:Default:navbar", { 'activeMenu' : 'wiki', 'slug' : base.standardProject.slug })) %}
 {% endblock %}
 
 {% block javascripts %}
@@ -56,7 +56,7 @@
   </div>
 </section>
 <section>
-{% render "metaProjectBundle:Comment:addWikiPageComment" with { 'slug' : base.standardProject.slug, 'id': wikiPage.id } %}
+{% render(controller("metaProjectBundle:Comment:addWikiPageComment", { 'slug' : base.standardProject.slug, 'id': wikiPage.id })) %}
 </section>
 </div>
 {% macro tree(wikipages, wikiPage, base, homePage) %}
