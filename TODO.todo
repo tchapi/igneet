@@ -14,9 +14,10 @@
 
  ☐ translation : placeholders pour le select2 ? a gerer dans le DOM si possible  
 
- ☐ traduire les noms des fields de form et les helps - normalement |trans est fait par défaut dans les templates
-
+ ✔ traduire les noms des fields de form et les helps - normalement |trans est fait par défaut dans les templates @done (13-04-15 22:48)
+ 
  ☐ Deep linking : verifier a l'affichage que l'utilisateur a le droit de voir l'objet deep linké !
+ ☐ liste des skills a la creation d'un user : a traduire
 
 Todo - Entity "Community" :
 

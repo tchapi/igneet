@@ -349,7 +349,7 @@ class DefaultController extends Controller
 
             $this->get('session')->setFlash(
                 'warning',
-                'You are already logged in as '.$authenticatedUser->getUsername().'. If you wish to create another account, please logout first.'
+                $this->get('translator')->trans('user.already.logged.long', array( '%user%' => $authenticatedUser->getUsername()))
             );
 
             return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $authenticatedUser->getUsername())));
@@ -609,7 +609,7 @@ class DefaultController extends Controller
 
             $this->get('session')->setFlash(
                 'error',
-                'You cannot reset the avatar for this user.'
+                $this->get('translator')->trans('user.picture.cannot.reset')
             );
 
         } else {
@@ -621,7 +621,7 @@ class DefaultController extends Controller
 
             $this->get('session')->setFlash(
                 'success',
-                'Your avatar has successfully been reset.'
+                $this->get('translator')->trans('user.picture.reset')
             );
     
         }
@@ -685,7 +685,7 @@ class DefaultController extends Controller
                 // Let's notify the user with the projects he still owns alone
                 $this->get('session')->setFlash(
                     'error',
-                    'You cannot delete your account; you still own projects (' . substr($projects, 0, -1) . '). Make sure your projects have another owner, that your ideas have participants, and try again.'
+                    $this->get('translator')->trans('user.cannot.delete', array( '%projects%' => substr($projects, 0, -1)))
                 );
 
                 return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $username)));
@@ -695,7 +695,7 @@ class DefaultController extends Controller
 
             $this->get('session')->setFlash(
                 'error',
-                'You cannot delete someone else\'s account.'
+                $this->get('translator')->trans('user.cannot.delete.other')
             );
 
             return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $authenticatedUser->getUsername())));
@@ -717,7 +717,7 @@ class DefaultController extends Controller
             $skillsAsArray = array();
 
             foreach($skills as $skill){
-                $skillsAsArray[] = array('value' => $skill->getSlug(), 'text' => $this->get('translator')->trans($skill->getSlug() + '.name', array(), 'skills'));
+                $skillsAsArray[] = array('value' => $skill->getSlug(), 'text' => $this->get('translator')->trans($skill->getSlug() . '.name', array(), 'skills'));
             }
 
             return new Response(json_encode($skillsAsArray));
@@ -818,14 +818,14 @@ class DefaultController extends Controller
 
                     $this->get('session')->setFlash(
                         'success',
-                        'You are now following '.$user->getFullName().'.'
+                        $this->get('translator')->trans('user.following', array( '%user%' => $user->getFullName() ))
                     );
 
                 } else {
 
                     $this->get('session')->setFlash(
                         'warning',
-                        'You are already following '.$user->getFullName().'.'
+                        $this->get('translator')->trans('user.already.following', array( '%user%' => $user->getFullName() ))
                     );
 
                 }
@@ -834,7 +834,7 @@ class DefaultController extends Controller
 
                $this->get('session')->setFlash(
                     'error',
-                    'You cannot follow this user.'
+                    $this->get('translator')->trans('user.cannot.follow')
                 ); 
 
             }
@@ -842,7 +842,7 @@ class DefaultController extends Controller
         } else {
             $this->get('session')->setFlash(
                 'warning',
-                'You cannot follow yourself.'
+                $this->get('translator')->trans('user.cannot.followSelf')
             );
         }
 
@@ -877,14 +877,14 @@ class DefaultController extends Controller
 
                     $this->get('session')->setFlash(
                         'success',
-                        'You are not following '.$user->getFullName().' anymore.'
+                        $this->get('translator')->trans('user.unfollowing', array('%user%' => $user->getFullName()))
                     );
 
                 } else {
 
                     $this->get('session')->setFlash(
                         'warning',
-                        'You are not following '.$user->getFullName().'.'
+                        $this->get('translator')->trans('user.not.following', array('%user%' => $user->getFullName()))
                     );
 
                 }
@@ -893,7 +893,7 @@ class DefaultController extends Controller
 
                $this->get('session')->setFlash(
                     'error',
-                    'You cannot unfollow this user.'
+                    $this->get('translator')->trans('user.cannot.unfollow')
                 ); 
 
             }
@@ -901,7 +901,7 @@ class DefaultController extends Controller
         } else {
             $this->get('session')->setFlash(
                 'warning',
-                'You cannot unfollow yourself.'
+                $this->get('translator')->trans('user.cannot.unfollowSelf')
             );
         }
             

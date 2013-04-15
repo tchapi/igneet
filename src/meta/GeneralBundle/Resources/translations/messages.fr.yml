@@ -1,10 +1,10 @@
 # Community
 private.space: "Mon espace privé"
-user.have.no.community: "Vous n'appartenez à aucune communauté pour le moment."
+member.have.no.community: "Vous n'appartenez à aucune communauté pour le moment."
 guest.community.cannot:
   access: "Vous devez être membre de la communauté pour avoir accès à ce contenu."
   do: "Vous ne pouvez faire cette action en tant qu'invité de la communauté."
-user.in:
+member.in:
   community: "Bienvenue dans l'espace de travail de la communauté %community%."
   private.space: "Bienvenue dans votre espace de travail personnel."
 community:

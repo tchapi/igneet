@@ -56,7 +56,7 @@ idea:
   watching: "Vous êtes maintenant abonné à l'idée %idea%."
   unwatching: "Vous n'êtes plus abonné à l'idée %idea%."
   not.watching: "Vous n'êtes pas abonné à l'idée %idea%."
-  already.watch: "Vous êtes déjà abonné à l'idée %idea%."
+  already.watching: "Vous êtes déjà abonné à l'idée %idea%."
   timeline:
     title: "Historique"
   info:

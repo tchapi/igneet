@@ -1,10 +1,10 @@
 # Community
 private.space: "My private space"
-user.have.no.community: "You do not belong to any community at this time."
+member.have.no.community: "You do not belong to any community at this time."
 guest.community.cannot:
   access: "You do not have access to this page as a guest in the community."
   do: "You cannot do this as a guest in the community."
-user.in:
+member.in:
   community: "You are now browsing the %community% community space."
   private.space: "You are now back in your private space."
 community:

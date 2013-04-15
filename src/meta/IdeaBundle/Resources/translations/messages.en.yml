@@ -56,7 +56,7 @@ idea:
   watching: "You are now watching the idea %idea%."
   unwatching: "You are not watching the idea %idea% anymore."
   not.watching: "You are not watching the idea %idea%."
-  already.watch: "You are already watching the idea %idea%."
+  already.watching: "You are already watching the idea %idea%."
   timeline:
     title: "Timeline"
   info:

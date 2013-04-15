@@ -26,7 +26,7 @@ class SecurityController extends Controller
 
             $this->get('session')->setFlash(
                 'warning',
-                'You are already logged in as '.$authenticatedUser->getUsername().'.'
+                $this->get('translator')->trans('user.already.logged.short', array( '%user%' => $authenticatedUser->getUsername()))
             );
 
             return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $authenticatedUser->getUsername())));
@@ -86,7 +86,7 @@ class SecurityController extends Controller
 
                         $this->get('session')->setFlash(
                             'warning',
-                            'The user ' . $user->getFullName() . ' is already a member of the community ' . $community->getName() . '.'
+                            $this->get('translator')->trans('user.already.in.community', array( '%user%' => $user->getFullName(), '%community%' => $community->getName() ))
                         );
 
                         return $this->redirect($this->generateUrl('invite'));
@@ -101,7 +101,7 @@ class SecurityController extends Controller
                             
                         $this->get('session')->setFlash(
                             'success',
-                            'The user ' . $user->getFullName() . ' now belongs to the community ' . $community->getName() . '. A notification mail was sent on your behalf.'
+                            $this->get('translator')->trans('user.belonging.community', array( '%user%' => $user->getFullName(), '%community%' => $community->getName() ))
                         );
 
                     // The user has no link with the current community
@@ -113,7 +113,7 @@ class SecurityController extends Controller
                             
                         $this->get('session')->setFlash(
                             'success',
-                            'The user ' . $user->getFullName() . ' now belongs to the community ' . $community->getName() . '. A notification mail was sent on your behalf.'
+                            $this->get('translator')->trans('user.belonging.community', array( '%user%' => $user->getFullName(), '%community%' => $community->getName() ))
                         );
                     }
 
@@ -125,14 +125,14 @@ class SecurityController extends Controller
                 
                     $this->get('session')->setFlash(
                         'success',
-                        'An invitation was sent to ' . $mailOrUsername . ' on your behalf.'
+                        $this->get('translator')->trans('user.invitation.sent', array('%mail%' => $mailOrUsername))
                     );
 
                 } else {
 
                     $this->get('session')->setFlash(
                         'error',
-                        'Neither the email you have indicated is valid, nor it is a valid username.'
+                        $this->get('translator')->trans('user.email.invalid')
                     );
 
                     return $this->redirect($this->generateUrl('invite'));
@@ -142,7 +142,7 @@ class SecurityController extends Controller
 
                 // Sends mail to invitee
                 $message = \Swift_Message::newInstance()
-                    ->setSubject('You\'ve been invited to a community on igneet')
+                    ->setSubject($this->get('translator')->trans('user.invitation.mail.subject'))
                     ->setFrom($this->container->getParameter('mailer_from'))
                     ->setReplyTo($authenticatedUser->getEmail())
                     ->setTo($mailOrUsername)
@@ -166,7 +166,7 @@ class SecurityController extends Controller
 
             $this->get('session')->setFlash(
                 'error',
-                'You need to be in a non-guest community space to invite someone.'
+                $this->get('translator')->trans('user.invitation.impossible')
             );
 
             return $this->redirect($this->generateUrl('g_home_community'));
@@ -186,7 +186,7 @@ class SecurityController extends Controller
             
             $this->get('session')->setFlash(
                 'error',
-                'You are already logged.'
+                $this->get('translator')->trans('user.already.logged.short', array( '%user%' => $this->getUser()->getFullName()))
             );
 
             return $this->redirect($this->generateUrl('u_me'));
@@ -208,12 +208,12 @@ class SecurityController extends Controller
 
                 $this->get('session')->setFlash(
                     'success',
-                    'An email was sent to ' . $mail . ' so you can reactivate your account.'
+                    $this->get('translator')->trans('user.reactivation.sent', array( '%mail%' => $mail))
                 );
 
                 // Sends mail to invitee
                 $message = \Swift_Message::newInstance()
-                    ->setSubject('Reactivate your account')
+                    ->setSubject($this->get('translator')->trans('user.reactivation.mail.subject'))
                     ->setFrom($this->container->getParameter('mailer_from'))
                     ->setTo($mail)
                     ->setBody(
@@ -234,12 +234,12 @@ class SecurityController extends Controller
 
                 $this->get('session')->setFlash(
                     'success',
-                    'An email was sent to ' . $mail . ' so you can change your password.'
+                    $this->get('translator')->trans('user.changePassword.sent', array( '%mail%' => $mail))
                 );
 
                 // Sends mail to invitee
                 $message = \Swift_Message::newInstance()
-                    ->setSubject('Recover your password')
+                    ->setSubject($this->get('translator')->trans('user.changePassword.mail.subject'))
                     ->setFrom($this->container->getParameter('mailer_from'))
                     ->setTo($mail)
                     ->setBody(
@@ -257,7 +257,7 @@ class SecurityController extends Controller
 
                 $this->get('session')->setFlash(
                     'error',
-                    'You cannot recover your account.'
+                    $this->get('translator')->trans('user.cannot.recover')
                 );
 
                 return $this->redirect($this->generateUrl('u_me'));
@@ -282,7 +282,7 @@ class SecurityController extends Controller
         if(is_null($passwordToken) && $this->getUser()){
             
             if (!$this->get('form.csrf_provider')->isCsrfTokenValid('changePassword', $request->get('token'))){
-                throw $this->createNotFoundException();
+                throw $this->createNotFoundException($this->get('translator')->trans('invalid.token', array(), 'errors'));
             } else {
                 $em = $this->getDoctrine()->getManager();
                 $this->getUser()->createNewRecoverToken();
@@ -300,12 +300,12 @@ class SecurityController extends Controller
             $flavour = $token_parts[0];
 
             if (!$user || $user == false){
-                throw $this->createNotFoundException();
+                throw $this->createNotFoundException($this->get('translator')->trans('user.not.found'));
             }
 
         } else {
 
-            throw $this->createNotFoundException();
+            throw $this->createNotFoundException($this->get('translator')->trans('invalid.request', array(), 'errors'));
         
         }
 
@@ -318,7 +318,7 @@ class SecurityController extends Controller
 
                 $this->get('session')->setFlash(
                     'error',
-                    'Password entries do not match.'
+                    $this->get('translator')->trans('invalid.password.match', array(), 'errors')
                 );
 
                 return $this->render('metaUserBundle:Security:changePassword.html.twig', array('passwordToken' => $passwordToken, 'flavour' => $flavour));
@@ -339,7 +339,7 @@ class SecurityController extends Controller
 
                         $this->get('session')->setFlash(
                             'info',
-                            'Your account has been reactivated.'
+                            $this->get('translator')->trans('user.reactivated')
                         );
 
                         $user->setDeletedAt(null);
@@ -355,7 +355,7 @@ class SecurityController extends Controller
 
                     $this->get('session')->setFlash(
                         'success',
-                        'Your password has been changed successfully.'
+                        $this->get('translator')->trans('user.changedPassword')
                     );
 
                     return $this->redirect($this->generateUrl('u_me'));
@@ -386,6 +386,17 @@ class SecurityController extends Controller
     /* ********************************************************************* */
 
     /*
+     * Helper for logging
+     */
+    private function logLastSeenAt()
+    {
+        // Logs last activity
+        $em = $this->getDoctrine()->getManager();
+        $this->getUser()->setLastSeenAt(new \DateTime('now'));
+        $em->flush();
+    }
+
+    /*
      * Output the top header menu
      */
     public function currentUserMenuAction()
@@ -394,10 +405,7 @@ class SecurityController extends Controller
 
         if ($authenticatedUser) {
 
-            // Logs last activity
-            $em = $this->getDoctrine()->getManager();
-            $authenticatedUser->setLastSeenAt(new \DateTime('now'));
-            $em->flush();
+            $this->logLastSeenAt();
 
             return $this->render(
                 'metaUserBundle:Security:_authenticated.html.twig',

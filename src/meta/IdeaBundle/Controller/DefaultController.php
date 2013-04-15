@@ -789,7 +789,7 @@ class DefaultController extends Controller
 
                 $this->get('session')->setFlash(
                     'warning',
-                    $this->get('translator')->trans('idea.already.watch', array('%idea%' => $idea->getName()))
+                    $this->get('translator')->trans('idea.already.watching', array('%idea%' => $idea->getName()))
                 );
 
             }
