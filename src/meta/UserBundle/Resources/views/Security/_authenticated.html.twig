@@ -11,17 +11,12 @@
 <div class="pull-right">
   <ul class="nav pull-right">
       <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-          <i class="icon-comments icon-large"></i> <span class="badge badge-important">6</span>
+        <a href="{{ path('u_show_user_notifications') }}" title="See all notifications">
+          <i class="icon-comments icon-large"></i> 
+            <span id="notificationsCount" class="badge badge-info" data-update-path="{{ path('u_count_user_notifications') }}">
+              <i class="icon-spinner icon-spin"></i>
+            </span>
         </a>
-        <ul class="dropdown-menu">
-            <li><a><icon class="icon-remove-circle"></i> Clear all</a></li>
-            <li class="divider"></li>
-            <li><a>Notification 1</a></li>
-            <li><a>Notification 2</a></li>
-            <li><a>Notification 3</a></li>
-            <li><a>Notification 4</a></li>
-        </ul>
       </li>
   </ul>
 </div>

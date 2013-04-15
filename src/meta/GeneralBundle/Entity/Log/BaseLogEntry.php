@@ -37,6 +37,12 @@ class BaseLogEntry
     private $type;
 
     /**
+     * Community this log happened in
+     * @ORM\ManyToOne(targetEntity="meta\GeneralBundle\Entity\Community\Community")
+     **/
+    private $community;
+
+    /**
      * @var \DateTime $created_at
      *
      * @ORM\Column(name="created_at", type="datetime")
@@ -208,5 +214,28 @@ class BaseLogEntry
     public function getCombinedCount()
     {
         return $this->combined_count;
+    }
+
+    /**
+     * Set community
+     *
+     * @param \meta\GeneralBundle\Entity\Community\Community $community
+     * @return BaseLogEntry
+     */
+    public function setCommunity(\meta\GeneralBundle\Entity\Community\Community $community = null)
+    {
+        $this->community = $community;
+    
+        return $this;
+    }
+
+    /**
+     * Get community
+     *
+     * @return \meta\GeneralBundle\Entity\Community\Community 
+     */
+    public function getCommunity()
+    {
+        return $this->community;
     }
 }

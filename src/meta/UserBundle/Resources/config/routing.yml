@@ -44,6 +44,19 @@ u_show_user_dashboard:
     requirements:
         _method:  GET
 
+u_show_user_notifications:
+    pattern:  /notifications/{date}
+    defaults: { _controller: metaUserBundle:Default:showNotifications, date: null }
+    requirements:
+        _method:  GET
+        date:  "[0-9]{4}\-[0-9]{2}\-[0-9]{2}"
+
+u_count_user_notifications:
+    pattern:  /notifications/count
+    defaults: { _controller: metaUserBundle:Default:countNotifications}
+    requirements:
+        _method:  POST
+
 u_edit_user_profile:
     pattern:  /who/{username}
     defaults: { _controller: metaUserBundle:Default:edit }

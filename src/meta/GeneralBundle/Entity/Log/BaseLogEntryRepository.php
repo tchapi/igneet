@@ -32,7 +32,7 @@ class BaseLogEntryRepository extends EntityRepository
   
   }
 
-  public function computeWeekActivityForUser($userId)
+  public function computeWeekActivityForUser($user)
   {
  
     $qb = $this->getEntityManager()->createQueryBuilder();
@@ -40,8 +40,8 @@ class BaseLogEntryRepository extends EntityRepository
     return $qb->select('COUNT(l.id) AS nb_actions')
             ->addSelect('SUBSTRING(l.created_at,1,10) AS date')
             ->from('metaGeneralBundle:Log\BaseLogEntry', 'l')
-            ->where('l.user = :uid')
-            ->setParameter('uid', $userId)
+            ->where('l.user = :user')
+            ->setParameter('user', $user)
             ->andWhere("l.created_at > DATE_SUB(CURRENT_DATE(),7,'DAY')")
             ->groupBy('date')
             ->getQuery()
@@ -49,14 +49,14 @@ class BaseLogEntryRepository extends EntityRepository
 
   }
 
-  public function findLastActivityDateForUser($userId)
+  public function findLastActivityDateForUser($user)
   {
     $qb = $this->getEntityManager()->createQueryBuilder();
     
     $query = $qb->select('MAX(l.created_at) AS date')
             ->from('metaGeneralBundle:Log\BaseLogEntry', 'l')
-            ->where('l.user = :uid')
-            ->setParameter('uid', $userId)
+            ->where('l.user = :user')
+            ->setParameter('user', $user)
             ->getQuery();
 
     try {
@@ -68,20 +68,60 @@ class BaseLogEntryRepository extends EntityRepository
     return $result;
   }
 
-  public function findLastSocialActivityForUser($userId, $max = 3)
+  private function getLogsQuery($users, $allowedCommunities, $from)
   {
+
+    // He has no community apart from private space => no social logs anyway
+    if (count($allowedCommunities) === 0) {
+      return null;
+    }
+
+    // Types of logs we want to see from users we follow :
+    $types = array('user_update_profile', 'user_create_project', 'user_create_project_from_idea', 'user_create_idea');
+
     $qb = $this->getEntityManager()->createQueryBuilder();
-    
-    return $qb->select('l')
-            ->from('metaGeneralBundle:Log\UserLogEntry', 'l')
-            ->where('l.user = :uid')
-            ->setParameter('uid', $userId)
-            ->andWhere('l.type = :type')
-            ->setParameter('type', 'user_follow_user')
-            ->orderBy('l.created_at', 'DESC')
-            ->setMaxResults($max)
-            ->getQuery()
-            ->getResult();
+
+    return $qb->from('metaGeneralBundle:Log\BaseLogEntry', 'l')
+            ->where('l.user IN (:users)')
+            ->setParameter('users', $users)
+            ->andWhere('l.type IN (:types)')
+            ->setParameter('types', $types)
+            ->andWhere('l.community IN (:allowedCommunities)')
+            ->setParameter('allowedCommunities', $allowedCommunities)
+            ->andWhere('l.created_at > :from')
+            ->setParameter('from', $from)
+            ->orderBy('l.created_at', 'DESC');
+
+  }
+
+
+  public function findSocialLogsForUsersInCommunities($users, $allowedCommunities, $from)
+  {
+
+    $query = $this->getLogsQuery($users, $allowedCommunities, $from);
+
+    if ($query === null) {
+      return null;
+    } else {
+      return $query->select('l')
+                   ->getQuery()
+                   ->getResult();
+    }
+
+  }
+
+  public function countSocialLogsForUsersInCommunities($users, $allowedCommunities, $from)
+  {
+
+    $query = $this->getLogsQuery($users, $allowedCommunities, $from);
+
+    if ($query === null) {
+      return 0;
+    } else {
+      return $query->select('COUNT(l)')
+                   ->getQuery()
+                   ->getSingleScalarResult();
+    }
 
   }
 

@@ -32,7 +32,7 @@ security:
                 remember_me: true
             logout:
                 path: /app/logout
-                target: /
+                target: /app/
             remember_me:
                 key: iGnEeT
                 lifetime: 86400
