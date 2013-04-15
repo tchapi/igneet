@@ -29,7 +29,7 @@ class DefaultController extends Controller
 
         // No users in private space
         if (is_null($authenticatedUser->getCurrentCommunity()) && $username !== $authenticatedUser->getUsername()){
-            throw $this->createNotFoundException('This user does not exist');
+            throw $this->createNotFoundException($this->get('translator')->trans('user.not.found'));
         }
 
         $repository = $this->getDoctrine()->getRepository('metaUserBundle:User');
@@ -41,7 +41,7 @@ class DefaultController extends Controller
 
         // If user is deleted or doesn't exist
         if (!$user || $user->isDeleted()) {
-            throw $this->createNotFoundException('This user does not exist');
+            throw $this->createNotFoundException($this->get('translator')->trans('user.not.found'));
         }
 
         $alreadyFollowing = $authenticatedUser->isFollowing($user);
@@ -101,7 +101,7 @@ class DefaultController extends Controller
 
         // In private space : no users
         if (is_null($community)) {
-            throw $this->createNotFoundException('There are no users in your private space');
+            throw $this->createNotFoundException($this->get('translator')->trans('user.noneInPrivateSpace'));
         }
 
         $repository = $this->getDoctrine()->getRepository('metaUserBundle:User');
@@ -132,7 +132,7 @@ class DefaultController extends Controller
 
             $this->get('session')->setFlash(
                 'error',
-                'There is no dashboard in your private space or in a community in which you are a guest.'
+                $this->get('translator')->trans('user.no.dashboard')
             );
 
             return $this->redirect($this->generateUrl('u_me'));
@@ -234,7 +234,7 @@ class DefaultController extends Controller
 
                 $this->get('session')->setFlash(
                     'error',
-                    'This signup link has already been used.'
+                    $this->get('translator')->trans('user.signup.link.already.used')
                 );
 
                 $inviteTokenObject = null;
@@ -312,7 +312,7 @@ class DefaultController extends Controller
 
                 $this->get('session')->setFlash(
                     'success',
-                    'Welcome! This is your profile page, where you can directly edit your information by clicking on the underlined text.'
+                    $this->get('translator')->trans('user.welcome')
                 );
 
                 return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $user->getUsername())));

@@ -68,7 +68,7 @@
           {% if not watcher.isDeleted %}
           <li>
             <a href="{{ path('u_show_user_profile', {'username': watcher.username}) }}">
-              <img src="{{ watcher.avatar }}" title="{{ watcher.firstName }} {{ watcher.lastName }}" width="30" height="30" class="miniAvatar"/>
+              <img src="{{ watcher.avatar }}" title="{{ watcher.getFullName }}" width="30" height="30" class="miniAvatar"/>
             </a>
           </li>
           {% endif %}

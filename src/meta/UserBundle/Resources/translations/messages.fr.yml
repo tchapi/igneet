@@ -1,0 +1,7 @@
+user:
+  title: ""
+  welcome: "Bienvenue! Vous êtes sur votre page de profil, où vous pouvez éditer directement vos informations en cliquant dessus."
+  not.found: "Cet utilisateur n'existe pas."
+  none.inPrivateSpace: "Dans votre espace privé, il n'y a pas d'utilisateurs autres que vous."
+  no.dashboard: "Il n'y a pas de tableau de bord dans votre espace privé ou dans une communauté dans laquelle vous êtes invité."
+  signup.link.already.used: "Ce lien d'invitation a déjà été utilisé."
