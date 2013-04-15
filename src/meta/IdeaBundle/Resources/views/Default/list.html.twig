@@ -1,70 +1,90 @@
 {% extends 'metaIdeaBundle::layout.html.twig' %}
 
-{% block title %}{{ parent() }} > All Ideas{% endblock %}
+{% block title %}{{ parent() }} > {{ "idea.allIdeas"|trans }}{% endblock %}
 
 {% block header %}
   <div class="headerAvatarAndActions">
     <div class="textAvatar"><i class="icon-paper-clip"></i></div>
   </div>
   <div class="objectHeader">
-    <h2>{% if archived %}Archived {% endif %}Ideas</h2>
-    <h4>All the {% if archived %}archived {% endif %}ideas accessible in {% if app.user.currentCommunity is not null %}the community {{ app.user.currentCommunity.name }}{% else %}your private space{% endif %} are listed here.</h4>
-    <p>Sort by : <a href="{{ path(archived?'i_list_archived_ideas':'i_list_ideas', {'sort': 'newest', 'page' : pagination.page}) }}"><i class="icon-star"></i> Newest ideas</a> - <a href="{{ path(archived?'i_list_archived_ideas':'i_list_ideas', {'sort': 'update', 'page' : pagination.page}) }}"><i class="icon-time"></i> Recently updated</a> - <a href="{{ path(archived?'i_list_archived_ideas':'i_list_ideas', {'sort': 'alpha', 'page' : pagination.page}) }}"><i class="icon-font"></i> Alphabetical</a></p>
-    <p>{% if not archived %}<a href="{{ path('i_new_idea') }}" class="btn btn-success">New idea</a> <a href="{{ path('i_list_archived_ideas') }}" class="btn btn-warning">View archived ideas</a>{% else %}<a href="{{ path('i_list_ideas') }}" class="btn btn-primary">&laquo; View ideas</a>{% endif %}</p>
+    <h2>{% if archived %}{{ "idea.titleArchived"|trans }}{% else %}{{ "idea.title"|trans }}{% endif %}</h2>
+    <h4>
+      {% if app.user.currentCommunity is not null %}
+        {{ "idea.listHelp.community"|trans({ '%community%': app.user.currentCommunity.name}) }}
+      {% else %}
+        {{ "idea.listHelp.privateSpace"|trans }}
+      {% endif %}
+    </h4>
+    <p>{{ "filters.sort"|trans }} :
+      <a href="{{ path(archived?'i_list_archived_ideas':'i_list_ideas', {'sort': 'newest', 'page' : pagination.page}) }}"><i class="icon-star"></i> {{ "filters.newest"|trans }}</a> - 
+      <a href="{{ path(archived?'i_list_archived_ideas':'i_list_ideas', {'sort': 'update', 'page' : pagination.page}) }}"><i class="icon-time"></i> {{ "filters.recent"|trans }}</a> - 
+      <a href="{{ path(archived?'i_list_archived_ideas':'i_list_ideas', {'sort': 'alpha', 'page' : pagination.page}) }}"><i class="icon-font"></i> {{ "filters.alpha"|trans }}</a>
+    </p>
+    <p>
+    {% if not archived %}
+      <a href="{{ path('i_new_idea') }}" class="btn btn-success">{{ "idea.new"|trans }}</a>
+      <a href="{{ path('i_list_archived_ideas') }}" class="btn btn-warning">{{ "idea.view.archived"|trans }}</a>
+    {% else %}
+      <a href="{{ path('i_list_ideas') }}" class="btn btn-primary">{{ "idea.view.all"|trans }}</a>
+    {% endif %}
+    </p>
   </div>
 {% endblock %}
 
 {% block content %}
 {% if ideas %}
-{% for idea in ideas %}
-<section class="listing">
+  {% for idea in ideas %}
+  <section class="listing">
 
-  <a href="{{ path('i_show_idea', {'id': idea.id}) }}">
-    <img src="{{ asset(idea.getPicture()) }}" width="100" height="100"/>
-  </a>
+    <a href="{{ path('i_show_idea', {'id': idea.id}) }}">
+      <img src="{{ asset(idea.getPicture()) }}" width="100" height="100"/>
+    </a>
 
-  <div class="listingItemInfo">
-    <h4 class="ellipsis"><a href="{{ path('i_show_idea', {'id': idea.id, 'slug': idea.slug}) }}">{{ idea.name }}</a></h4>
-    <div class="ellipsis">{{ idea.headline }}</div>
-    <div class="muted"><i class="icon-calendar"></i> Created on {{ idea.createdAt|date("d/m/Y") }} by {% if idea.countCreators == 1 %}{{ idea.getACreator().getFullName() }}{% else %}{{ idea.countCreators }} people{% endif %}</div>
-    <div class="muted"><i class="icon-time"></i> Last updated {{ idea.updatedAt|date("d/m/Y H:i:s") }}</div>
-  </div>
-
-  {% if idea.countWatchers > 0 %}
-  <div class="listingItemRelatedObjects">
-    
-    <div class="type">
-      <div class="muted pull-right">{{ idea.countWatchers }} 
-        user{% if idea.countWatchers > 1 %}s{% endif %} watching</div>
+    <div class="listingItemInfo">
+      <h4 class="ellipsis"><a href="{{ path('i_show_idea', {'id': idea.id, 'slug': idea.slug}) }}">{{ idea.name }}</a></h4>
+      <div class="ellipsis">{{ idea.headline }}</div>
+      <div class="muted"><i class="icon-calendar"></i>
+       {{ "idea.info.created.long"|transchoice(idea.countCreators, {'%date%': idea.createdAt|date("date.fullFormat"|trans), '%name%': idea.getACreator().getFullName(), '%count%': idea.countCreators}) }}
+      </div>
+      <div class="muted"><i class="icon-time"></i> {{ "idea.info.last.updated"|trans({'%date%': idea.updatedAt|date("date.fullFormat"|trans)}) }}</div>
     </div>
 
-    <ul>
-      {% if idea.countWatchers > 5 %}
-      <li>
-        <div class="miniTextAvatar">...</div>
-      </li>
-      {% endif %}
-      {% for watcher in idea.getRandomWatchers(5) %}
-        {% if not watcher.isDeleted %}
+    {% if idea.countWatchers > 0 %}
+    <div class="listingItemRelatedObjects">
+      
+      <div class="type">
+        <div class="muted pull-right">
+          {{ "idea.watchers"|transchoice(idea.countWatchers, { '%count': idea.countWatchers}) }}
+        </div>
+      </div>
+
+      <ul>
+        {% if idea.countWatchers > 5 %}
         <li>
-          <a href="{{ path('u_show_user_profile', {'username': watcher.username}) }}">
-            <img src="{{ watcher.avatar }}" title="{{ watcher.firstName }} {{ watcher.lastName|upper }}" width="30" height="30" class="miniAvatar"/>
-          </a>
+          <div class="miniTextAvatar">...</div>
         </li>
         {% endif %}
-      {% endfor %}
-    </ul>
-  </div>
-  {% endif %}
+        {% for watcher in idea.getRandomWatchers(5) %}
+          {% if not watcher.isDeleted %}
+          <li>
+            <a href="{{ path('u_show_user_profile', {'username': watcher.username}) }}">
+              <img src="{{ watcher.avatar }}" title="{{ watcher.firstName }} {{ watcher.lastName }}" width="30" height="30" class="miniAvatar"/>
+            </a>
+          </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
 
-</section>
-{% endfor %}
-<section>
-{% render "metaGeneralBundle:Default:pagination" with { 'route': archived?'i_list_archived_ideas':'i_list_ideas', 'page' : pagination.page, 'total' : pagination.totalIdeas, 'params' : {'sort': sort } } %}
-</section>
+  </section>
+  {% endfor %}
+  <section>
+  {% render "metaGeneralBundle:Default:pagination" with { 'route': archived?'i_list_archived_ideas':'i_list_ideas', 'page' : pagination.page, 'total' : pagination.totalIdeas, 'params' : {'sort': sort } } %}
+  </section>
 {% else %}
-<section>
-No ideas yet !
-</section>
+  <section>
+  {{ "ideas.none"|trans }}
+  </section>
 {% endif %}
 {% endblock %}

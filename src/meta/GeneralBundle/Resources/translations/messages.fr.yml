@@ -25,6 +25,9 @@ image:
   resizeAndCrop: "Redimmensionner et Rogner une image"
   resizeAndCropHelp: ""
   continue: "Continuer avec cette image"
+picture:
+  change: "changer"
+  resetHelp: "Réinitialiser l'image"
 # Comments
 comments:
   count: "{0}Aucun commentaire|{1}Un commentaire|]1,Inf[%count% commentaires"
@@ -40,3 +43,9 @@ toggle: "Alterner l'affichage"
 log:
   description.unavailable: "Aucune description disponible"
 goto.related.object: "Aller sur la page de cet objet"
+# Filters
+filters:
+  sort: "Trier par"
+  newest: "Plus récents"
+  alpha: "Alphabétique"
+  recent: "Récemment mis à jour"

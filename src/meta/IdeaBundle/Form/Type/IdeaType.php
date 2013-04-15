@@ -9,8 +9,8 @@ class IdeaType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name', null, array('label'  => 'Name of this idea', 'attr' => array( 'class' => 'input-xxlarge', 'placeholder' => 'My new idea')));
-        $builder->add('headline', 'text',  array('required' => false, 'label'  => 'Headline', 'attr' => array('class' => 'input-xxlarge', 'help' => 'Give your idea some nice catchline')));
+        $builder->add('name', null, array('label'  => 'idea.createForm.name', 'attr' => array( 'class' => 'input-xxlarge', 'placeholder' => 'idea.createForm.namePlaceholder')));
+        $builder->add('headline', 'text',  array('required' => false, 'label'  => 'idea.createForm.headline', 'attr' => array('class' => 'input-xxlarge', 'help' => 'idea.createForm.headlinePlaceholder')));
 
         // In the case where we are in the private space, 
         // we do not allow the creator to add creators to this idea
@@ -26,11 +26,11 @@ class IdeaType extends AbstractType
                     return $er->createQueryBuilder("u")
                               ->join('u.communities', 'c')
                               ->where("u.deleted_at IS NULL")
-                              ->where("c = :community")
+                              ->andWhere("c = :community")
                               ->setParameter('community', $community)
                               ->orderBy("u.username", "ASC");
                 },
-                'label' => 'Creators',
+                'label' => 'idea.createForm.creators',
                 'attr' => array('class' => 'select2-trigger')
                 ));
         }

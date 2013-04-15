@@ -32,7 +32,7 @@
         <a href="{{ path('u_show_user_profile', {'username': creatorUser.username}) }}">
           <img src="{{ creatorUser.avatar }}" width="70" height="70" class="smallAvatar"/>
           <div class="smallObjectInfos ellipsis-multiline">
-            <span><div>{{ creatorUser.firstName }}</div><div>{{ creatorUser.lastName|upper }}</div></span>
+            <span><div>{{ creatorUser.firstName }}</div><div>{{ creatorUser.lastName }}</div></span>
           </div>
         </a>
       </li>
@@ -50,7 +50,7 @@
         <a href="{{ path('u_show_user_profile', {'username': participatingUser.username}) }}">
           <img src="{{ participatingUser.avatar }}" width="70" height="70" class="smallAvatar"/>
           <div class="smallObjectInfos ellipsis-multiline">
-            <span><div>{{ participatingUser.firstName }}</div><div>{{ participatingUser.lastName|upper }}</div></span>
+            <span><div>{{ participatingUser.firstName }}</div><div>{{ participatingUser.lastName }}</div></span>
           </div>
         </a>
         {% if base.isCreator %}<a class="removeUserIcon" href="{{ path('i_remove_participant_to_idea', { 'id': base.idea.id, 'username' : participatingUser.username, 'token': csrf_token('removeParticipant') }) }}"><i class="icon-remove-sign icon-large"></i></a>{% endif %}

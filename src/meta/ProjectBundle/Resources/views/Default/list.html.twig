@@ -48,7 +48,7 @@
         {% if not user.isDeleted %}
         <li>
           <a href="{{ path('u_show_user_profile', {'username': user.username}) }}">
-            <img src="{{ user.avatar }}" title="{{ user.firstName }} {{ user.lastName|upper }}" width="30" height="30" class="miniAvatar"/>
+            <img src="{{ user.avatar }}" title="{{ user.firstName }} {{ user.lastName }}" width="30" height="30" class="miniAvatar"/>
           </a>
         </li>
         {% endif %}

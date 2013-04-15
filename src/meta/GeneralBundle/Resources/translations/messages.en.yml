@@ -25,6 +25,9 @@ image:
   resizeAndCrop: "Resize and crop an image"
   resizeAndCropHelp: ""
   continue: "Continue with this image"
+picture:
+  change: "change"
+  resetHelp: "Reset to default picture"
 # Comments
 comments:
   count: "{0}No comments yet|{1}One comment|]1,Inf]%count% comments"
@@ -40,3 +43,9 @@ toggle: "Toggle"
 log:
   description.unavailable: "No description available"
 goto.related.object: "Go to the page for this object"
+# Filters
+filters:
+  sort: "Sort by"
+  newest: "Newest"
+  alpha: "Alphabetical"
+  recent: "Recently updated"

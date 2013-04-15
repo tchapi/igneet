@@ -568,7 +568,7 @@ class DefaultController extends Controller
 
             $this->get('session')->setFlash(
                 'success',
-                $this->get('translator')->trans('idea.transform.into.project')
+                $this->get('translator')->trans('idea.projectized')
             );
 
             return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $project->getSlug())));
@@ -577,7 +577,7 @@ class DefaultController extends Controller
 
             $this->get('session')->setFlash(
                 'error',
-                $this->get('translator')->trans('idea.cannot.transform.into.project')
+                $this->get('translator')->trans('idea.cannot.projectize')
             );
 
             return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
@@ -782,7 +782,7 @@ class DefaultController extends Controller
 
                 $this->get('session')->setFlash(
                     'success',
-                    $this->get('translator')->trans('idea.watch', array('%idea%' => $idea->getName()))
+                    $this->get('translator')->trans('idea.watching', array('%idea%' => $idea->getName()))
                 );
 
             } else {
@@ -836,7 +836,7 @@ class DefaultController extends Controller
 
                 $this->get('session')->setFlash(
                     'success',
-                    $this->get('translator')->trans('idea.unwatch', array('%idea%' => $idea->getName()))
+                    $this->get('translator')->trans('idea.unwatching', array('%idea%' => $idea->getName()))
                 );
 
             } else {
