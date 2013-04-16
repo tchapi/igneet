@@ -60,7 +60,7 @@ class DefaultController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'info',
                     'You have automatically been switched to the community ' . $community->getName() . '.'
                 );
@@ -168,7 +168,7 @@ class DefaultController extends Controller
         $authenticatedUser = $this->getUser();
 
         if ($authenticatedUser->isGuestInCurrentCommunity()){
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                 'error',
                 'You cannot create ideas in a community in which you are a guest.'
             );
@@ -203,7 +203,7 @@ class DefaultController extends Controller
                 $logService = $this->container->get('logService');
                 $logService->log($authenticatedUser, 'user_create_idea', $idea, array());
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'success',
                     'The new idea '.$idea->getName().' has successfully been created.'
                 );
@@ -212,7 +212,7 @@ class DefaultController extends Controller
            
             } else {
                
-               $this->get('session')->setFlash(
+               $this->get('session')->getFlashBag()->add(
                     'error',
                     'The information you provided does not seem valid.'
                 );
@@ -260,7 +260,7 @@ class DefaultController extends Controller
                         
                         if ($community && $this->getUser()->belongsTo($community)){
                             $community->addIdea($this->base['idea']);
-                            $this->get('session')->setFlash(
+                            $this->get('session')->getFlashBag()->add(
                                 'success',
                                 'This idea is now part of the community ' . $community->getName() . '.'
                             );
@@ -348,7 +348,7 @@ class DefaultController extends Controller
         if (isset($needsRedirect) && $needsRedirect) {
 
             if (!is_null($error)) {
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'error',
                     $error
                 );
@@ -384,7 +384,7 @@ class DefaultController extends Controller
             $this->base['idea']->delete();
             $em->flush();
 
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                 'success',
                 'The idea '.$this->base['idea']->getName().' has been deleted successfully.'
             );
@@ -393,7 +393,7 @@ class DefaultController extends Controller
 
         } else {
 
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                 'warning',
                 'You do not have sufficient privileges to delete this idea.'
             );
@@ -427,7 +427,7 @@ class DefaultController extends Controller
             $em->flush();
             
             $action = $archive?'archive':'recycle';
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                 'success',
                 'The idea '.$this->base['idea']->getName().' has been ' . $action . 'd successfully.'
             );
@@ -436,7 +436,7 @@ class DefaultController extends Controller
 
         } else {
 
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                 'warning',
                 'You do not have sufficient privileges to archive or recycle this idea.'
             );
@@ -463,14 +463,14 @@ class DefaultController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->flush();
 
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                 'success',
                 'The picture of this idea has successfully been reset.'
             );
 
         } else {
     
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                 'error',
                 'You cannot reset the picture for this idea.'
             );
@@ -566,7 +566,7 @@ class DefaultController extends Controller
             $logService->log($this->getUser(), 'user_transform_idea_in_project', $this->base['idea'], array( 'project' => array('routing' => 'project', 'logName' => $project->getLogName(), 'args' => $project->getLogArgs() )));
             $logService->log($this->getUser(), 'user_create_project_from_idea', $project, array( 'idea' => array('routing' => 'idea', 'logName' => $this->base['idea']->getLogName(), 'args' => $this->base['idea']->getLogArgs() )));
 
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                 'success',
                 'Your idea has successfully been transformed into a project.'
             );
@@ -575,7 +575,7 @@ class DefaultController extends Controller
 
         } else {
 
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                 'error',
                 'You are not allowed to transform this idea into the project since you have not created it or it is already archived.'
             );
@@ -613,7 +613,7 @@ class DefaultController extends Controller
                     $em->persist($comment);
                     $em->flush();
 
-                    $this->get('session')->setFlash(
+                    $this->get('session')->getFlashBag()->add(
                         'success',
                         'Your comment was successfully added.'
                     );
@@ -623,7 +623,7 @@ class DefaultController extends Controller
 
                 } else {
 
-                   $this->get('session')->setFlash(
+                   $this->get('session')->getFlashBag()->add(
                         'error',
                         'The information you provided does not seem valid.'
                     );
@@ -669,7 +669,7 @@ class DefaultController extends Controller
 
                 $newParticipant->addIdeasParticipatedIn($this->base['idea']);
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'success',
                     'The user '.$newParticipant->getFullName().' now participates in the idea "'.$this->base['idea']->getName().'".'
                 );
@@ -682,7 +682,7 @@ class DefaultController extends Controller
                 
             } else {
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'warning',
                     'This user does not exist or is already part of this idea.'
                 );
@@ -690,7 +690,7 @@ class DefaultController extends Controller
 
         } else {
 
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                 'error',
                 'You are not allowed to add a participant to this idea.'
             );
@@ -720,7 +720,7 @@ class DefaultController extends Controller
                 
                 $toRemoveParticipant->removeIdeasParticipatedIn($this->base['idea']);
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'success',
                     'The user '.$toRemoveParticipant->getFullName().' does not participate in the idea "'.$this->base['idea']->getName().'" anymore .'
                 );
@@ -730,7 +730,7 @@ class DefaultController extends Controller
                 
             } else {
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'error',
                     'This user does not exist with this role in the idea.'
                 );
@@ -738,7 +738,7 @@ class DefaultController extends Controller
 
         } else {
 
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                 'error',
                 'You are not allowed to remove a participant of this idea.'
             );
@@ -780,14 +780,14 @@ class DefaultController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'success',
                     'You are now watching '.$idea->getName().'.'
                 );
 
             } else {
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'warning',
                     'You are already watching '.$idea->getName().'.'
                 );
@@ -796,7 +796,7 @@ class DefaultController extends Controller
 
         } else {
 
-           $this->get('session')->setFlash(
+           $this->get('session')->getFlashBag()->add(
                 'error',
                 'You cannot watch this idea.'
             ); 
@@ -834,14 +834,14 @@ class DefaultController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'success',
                     'You are not watching '.$idea->getName().' anymore.'
                 );
 
             } else {
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'warning',
                     'You are not watching '.$idea->getName().'.'
                 );
@@ -850,7 +850,7 @@ class DefaultController extends Controller
 
         } else {
 
-           $this->get('session')->setFlash(
+           $this->get('session')->getFlashBag()->add(
                 'error',
                 'You cannot unwatch this idea.'
             ); 

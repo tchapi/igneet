@@ -24,7 +24,7 @@ class SecurityController extends Controller
 
         if ($authenticatedUser) {
 
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                 'warning',
                 'You are already logged in as '.$authenticatedUser->getUsername().'.'
             );
@@ -84,7 +84,7 @@ class SecurityController extends Controller
                     // If the user is already in the community
                     if ($user->belongsTo($community)){
 
-                        $this->get('session')->setFlash(
+                        $this->get('session')->getFlashBag()->add(
                             'warning',
                             'The user ' . $user->getFullName() . ' is already a member of the community ' . $community->getName() . '.'
                         );
@@ -99,7 +99,7 @@ class SecurityController extends Controller
                         $logService = $this->container->get('logService');
                         $logService->log($this->getUser(), 'user_enters_community', $user, array( 'community' => array( 'routing' => 'community', 'logName' => $community->getLogName(), 'args' => null) ) );
                             
-                        $this->get('session')->setFlash(
+                        $this->get('session')->getFlashBag()->add(
                             'success',
                             'The user ' . $user->getFullName() . ' now belongs to the community ' . $community->getName() . '. A notification mail was sent on your behalf.'
                         );
@@ -111,7 +111,7 @@ class SecurityController extends Controller
                         $logService = $this->container->get('logService');
                         $logService->log($this->getUser(), 'user_enters_community', $user, array( 'community' => array( 'routing' => 'community', 'logName' => $community->getLogName(), 'args' => null) ) );
                             
-                        $this->get('session')->setFlash(
+                        $this->get('session')->getFlashBag()->add(
                             'success',
                             'The user ' . $user->getFullName() . ' now belongs to the community ' . $community->getName() . '. A notification mail was sent on your behalf.'
                         );
@@ -123,14 +123,14 @@ class SecurityController extends Controller
                     $token = new UserInviteToken($authenticatedUser, $mailOrUsername, $community, 'user', null, null);
                     $em->persist($token);
                 
-                    $this->get('session')->setFlash(
+                    $this->get('session')->getFlashBag()->add(
                         'success',
                         'An invitation was sent to ' . $mailOrUsername . ' on your behalf.'
                     );
 
                 } else {
 
-                    $this->get('session')->setFlash(
+                    $this->get('session')->getFlashBag()->add(
                         'error',
                         'Neither the email you have indicated is valid, nor it is a valid username.'
                     );
@@ -164,7 +164,7 @@ class SecurityController extends Controller
 
         } else {
 
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                 'error',
                 'You need to be in a non-guest community space to invite someone.'
             );
@@ -184,7 +184,7 @@ class SecurityController extends Controller
         // You should not be logged
         if ($this->getUser()){
             
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                 'error',
                 'You are already logged.'
             );
@@ -206,7 +206,7 @@ class SecurityController extends Controller
                 $user->createNewReactivateToken();
                 $em->flush();
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'success',
                     'An email was sent to ' . $mail . ' so you can reactivate your account.'
                 );
@@ -232,7 +232,7 @@ class SecurityController extends Controller
                 $user->createNewRecoverToken();
                 $em->flush();
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'success',
                     'An email was sent to ' . $mail . ' so you can change your password.'
                 );
@@ -255,7 +255,7 @@ class SecurityController extends Controller
 
             } else {
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'error',
                     'You cannot recover your account.'
                 );
@@ -316,7 +316,7 @@ class SecurityController extends Controller
 
             if ($newPassword !== $newPassword_2){
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'error',
                     'Password entries do not match.'
                 );
@@ -337,7 +337,7 @@ class SecurityController extends Controller
 
                     if ($flavour === 'reactivate'){
 
-                        $this->get('session')->setFlash(
+                        $this->get('session')->getFlashBag()->add(
                             'info',
                             'Your account has been reactivated.'
                         );
@@ -353,7 +353,7 @@ class SecurityController extends Controller
                     $em = $this->getDoctrine()->getManager();
                     $em->flush();
 
-                    $this->get('session')->setFlash(
+                    $this->get('session')->getFlashBag()->add(
                         'success',
                         'Your password has been changed successfully.'
                     );
@@ -362,7 +362,7 @@ class SecurityController extends Controller
 
                 } else {
 
-                    $this->get('session')->setFlash(
+                    $this->get('session')->getFlashBag()->add(
                         'error',
                         $errors[0]->getMessage()
                     );

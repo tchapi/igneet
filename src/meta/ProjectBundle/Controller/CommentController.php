@@ -48,14 +48,14 @@ class CommentController extends BaseController
                     $logService = $this->container->get('logService');
                     $logService->log($this->getUser(), 'user_comment_project', $this->base['standardProject'], array());
 
-                    $this->get('session')->setFlash(
+                    $this->get('session')->getFlashBag()->add(
                         'success',
                         'Your comment was successfully added.'
                     );
 
                 } else {
 
-                   $this->get('session')->setFlash(
+                   $this->get('session')->getFlashBag()->add(
                         'error',
                         'The information you provided does not seem valid.'
                     );
@@ -117,14 +117,14 @@ class CommentController extends BaseController
                             $logService = $this->container->get('logService');
                             $logService->log($this->getUser(), 'user_comment_wikipage', $this->base['standardProject'], array( 'wikipage' => array( 'routing' => 'wikipage', 'logName' => $wikiPage->getLogName(), 'args' => $wikiPage->getLogArgs()) ));
 
-                            $this->get('session')->setFlash(
+                            $this->get('session')->getFlashBag()->add(
                                 'success',
                                 'Your comment was successfully added.'
                             );
 
                         } else {
 
-                           $this->get('session')->setFlash(
+                           $this->get('session')->getFlashBag()->add(
                                 'error',
                                 'The information you provided does not seem valid.'
                             );
@@ -184,14 +184,14 @@ class CommentController extends BaseController
                         $logService = $this->container->get('logService');
                         $logService->log($this->getUser(), 'user_comment_list', $this->base['standardProject'], array( 'list' => array( 'routing' => 'list', 'logName' => $commonList->getLogName(), 'args' => $commonList->getLogArgs()) ));
 
-                        $this->get('session')->setFlash(
+                        $this->get('session')->getFlashBag()->add(
                             'success',
                             'Your comment was successfully added.'
                         );
 
                     } else {
 
-                       $this->get('session')->setFlash(
+                       $this->get('session')->getFlashBag()->add(
                             'error',
                             'The information you provided does not seem valid.'
                         );

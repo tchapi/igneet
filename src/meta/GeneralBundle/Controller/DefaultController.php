@@ -162,7 +162,7 @@ class DefaultController extends Controller
 
             if (count($communities) == 0 ){
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                         'warning',
                         $this->get('translator')->trans('user.have.no.community')
                     );
@@ -181,7 +181,7 @@ class DefaultController extends Controller
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('switchCommunity', $request->get('token'))) {
             
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                 'error',
                 $this->get('translator')->trans('invalid.token', array(), 'errors')
             );
@@ -191,7 +191,7 @@ class DefaultController extends Controller
 
         if ($id === null){ // Private space
 
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                 'success',
                 $this->get('translator')->trans('user.in.private.space')
             );
@@ -209,7 +209,7 @@ class DefaultController extends Controller
 
         if ($community && ( $this->getUser()->belongsTo($community) || $this->getUser()->isGuestOf($community) ) ){
             
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                 'success',
                 $this->get('translator')->trans('user.in.community', array( '%community%' => $community->getName()))
             );

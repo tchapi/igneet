@@ -49,7 +49,7 @@ class DefaultController extends BaseController
         $authenticatedUser = $this->getUser();
 
         if ($authenticatedUser->isGuestInCurrentCommunity()){
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                 'error',
                 'You cannot create projects in this community.'
             );
@@ -80,7 +80,7 @@ class DefaultController extends BaseController
                 $logService = $this->container->get('logService');
                 $logService->log($authenticatedUser, 'user_create_project', $project, array() );
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'success',
                     'Your new project '.$project->getName().' has successfully been created.'
                 );
@@ -89,7 +89,7 @@ class DefaultController extends BaseController
            
             } else {
                
-               $this->get('session')->setFlash(
+               $this->get('session')->getFlashBag()->add(
                     'error',
                     'The information you provided does not seem valid.'
                 );
@@ -142,7 +142,7 @@ class DefaultController extends BaseController
                         
                         if ($community && $this->getUser()->belongsTo($community)){
                             $community->addProject($this->base['standardProject']);
-                            $this->get('session')->setFlash(
+                            $this->get('session')->getFlashBag()->add(
                                 'success',
                                 'This project is now part of the community ' . $community->getName() . '.'
                             );
@@ -218,7 +218,7 @@ class DefaultController extends BaseController
         if (isset($needsRedirect) && $needsRedirect) {
 
             if (!is_null($error)) {
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                         'error', $error
                     );
             }
@@ -252,7 +252,7 @@ class DefaultController extends BaseController
             $this->base['standardProject']->delete();
             $em->flush();
 
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                     'success',
                     'The project '.$this->base['standardProject']->getName().' has been deleted successfully.'
                 );
@@ -261,7 +261,7 @@ class DefaultController extends BaseController
 
         } else {
 
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                     'warning',
                     'You do not have sufficient privileges to delete this project.'
                 );
@@ -289,14 +289,14 @@ class DefaultController extends BaseController
             $em = $this->getDoctrine()->getManager();
             $em->flush();
 
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                         'success',
                         'The picture of the project has successfully been reset.'
                     );
 
         } else {
     
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                     'error',
                     'You cannot reset the picture for this project.'
                 );
@@ -324,14 +324,14 @@ class DefaultController extends BaseController
             $em = $this->getDoctrine()->getManager();
             $em->flush();
 
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                 'success',
                 'This project is now public.'
             );
 
         } else {
     
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                 'error',
                 'You cannot make this project public.'
             );
@@ -362,7 +362,7 @@ class DefaultController extends BaseController
 
                 if ($slugExists !== null){
 
-                    $this->get('session')->setFlash(
+                    $this->get('session')->getFlashBag()->add(
                         'error',
                         'This slug cannot be chosen at this time. Try to choose a different slug.'
                     );
@@ -406,14 +406,14 @@ class DefaultController extends BaseController
                 $logService = $this->container->get('logService');
                 $logService->log($authenticatedUser, 'user_watch_project', $this->base['standardProject'], array());
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'success',
                     'You are now watching '.$this->base['standardProject']->getName().'.'
                 );
 
             } else {
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'warning',
                     'You are already watching '.$this->base['standardProject']->getName().'.'
                 );
@@ -422,7 +422,7 @@ class DefaultController extends BaseController
 
         } else {
 
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                 'warning',
                 'You cannot watch this project.'
             );
@@ -453,14 +453,14 @@ class DefaultController extends BaseController
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'success',
                     'You are not watching '.$this->base['standardProject']->getName().' anymore.'
                 );
 
             } else {
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'warning',
                     'You are not watching '.$this->base['standardProject']->getName().'.'
                 );
@@ -469,7 +469,7 @@ class DefaultController extends BaseController
 
         } else {
 
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                 'warning',
                 'You cannot watch this project.'
             );

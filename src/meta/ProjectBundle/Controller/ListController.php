@@ -140,7 +140,7 @@ class ListController extends BaseController
                 $logService = $this->container->get('logService');
                 $logService->log($this->getUser(), 'user_create_list', $this->base['standardProject'], array( 'list' => array( 'routing' => 'list', 'logName' => $commonList->getLogName(), 'args' => $commonList->getLogArgs()) ));
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'success',
                     'Your list "'.$commonList->getName().'" was successfully created.'
                 );
@@ -149,7 +149,7 @@ class ListController extends BaseController
            
             } else {
                
-               $this->get('session')->setFlash(
+               $this->get('session')->getFlashBag()->add(
                     'error',
                     'The information you provided does not seem valid.'
                 );
@@ -282,14 +282,14 @@ class ListController extends BaseController
                 $em->remove($commonList);
                 $em->flush();
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'success',
                     'Your list "'.$commonList->getName().'" was successfully deleted.'
                 );
 
             } else {
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'warning',
                     'This item does not exist.'
                 );
@@ -329,7 +329,7 @@ class ListController extends BaseController
         $logService->log($this->getUser(), 'user_create_list_item', $this->base['standardProject'], array( 'list' => array( 'routing' => 'list', 'logName' => $commonList->getLogName(), 'args' => $commonList->getLogArgs() ),
                                                                                                            'list_item' => array( 'routing' => null, 'logName' => $commonListItem->getLogName() )) );
 
-        $this->get('session')->setFlash(
+        $this->get('session')->getFlashBag()->add(
             'success',
             'Your new list item was successfully created.'
         );
@@ -448,7 +448,7 @@ class ListController extends BaseController
 
             } else {
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'warning',
                     'This item does not exist.'
                 );
@@ -497,7 +497,7 @@ class ListController extends BaseController
 
             } else {
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'warning',
                     'This item does not exist.'
                 );

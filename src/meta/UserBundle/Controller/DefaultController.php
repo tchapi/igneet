@@ -130,7 +130,7 @@ class DefaultController extends Controller
 
         if (is_null($authenticatedUser->getCurrentCommunity()) || $authenticatedUser->isGuestInCurrentCommunity() ) {
 
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                 'error',
                 'There is no dashboard in your private space or in a community in which you are a guest.'
             );
@@ -347,7 +347,7 @@ class DefaultController extends Controller
 
         if ($authenticatedUser) {
 
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                 'warning',
                 'You are already logged in as '.$authenticatedUser->getUsername().'. If you wish to create another account, please logout first.'
             );
@@ -363,7 +363,7 @@ class DefaultController extends Controller
 
             if ( $inviteTokenObject && $inviteTokenObject->isUsed() ){
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'error',
                     'This signup link has already been used.'
                 );
@@ -442,7 +442,7 @@ class DefaultController extends Controller
                 $logService = $this->container->get('logService');
                 $logService->log($user, 'user_created', $user, array());
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'success',
                     'Welcome! This is your profile page, where you can directly edit your information by clicking on the underlined text.'
                 );
@@ -451,7 +451,7 @@ class DefaultController extends Controller
            
             } else {
                
-               $this->get('session')->setFlash(
+               $this->get('session')->getFlashBag()->add(
                     'error',
                     'The information you provided does not seem valid.'
                 );
@@ -576,7 +576,7 @@ class DefaultController extends Controller
         if (isset($needsRedirect) && $needsRedirect) {
 
             if (!is_null($error)) {
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'error', $error
                 );
             }
@@ -607,7 +607,7 @@ class DefaultController extends Controller
 
         if ($authenticatedUser->getUsername() !== $username) {
 
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                 'error',
                 'You cannot reset the avatar for this user.'
             );
@@ -619,7 +619,7 @@ class DefaultController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->flush();
 
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                 'success',
                 'Your avatar has successfully been reset.'
             );
@@ -683,7 +683,7 @@ class DefaultController extends Controller
                 }
 
                 // Let's notify the user with the projects he still owns alone
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'error',
                     'You cannot delete your account; you still own projects (' . substr($projects, 0, -1) . '). Make sure your projects have another owner, that your ideas have participants, and try again.'
                 );
@@ -693,7 +693,7 @@ class DefaultController extends Controller
 
         } else {
 
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                 'error',
                 'You cannot delete someone else\'s account.'
             );
@@ -774,7 +774,7 @@ class DefaultController extends Controller
 
             if (count($users) === 0 ){
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                         'warning',
                         'You\'re alone, mate.'
                     );
@@ -816,14 +816,14 @@ class DefaultController extends Controller
                     $em = $this->getDoctrine()->getManager();
                     $em->flush();
 
-                    $this->get('session')->setFlash(
+                    $this->get('session')->getFlashBag()->add(
                         'success',
                         'You are now following '.$user->getFullName().'.'
                     );
 
                 } else {
 
-                    $this->get('session')->setFlash(
+                    $this->get('session')->getFlashBag()->add(
                         'warning',
                         'You are already following '.$user->getFullName().'.'
                     );
@@ -832,7 +832,7 @@ class DefaultController extends Controller
 
             } else {
 
-               $this->get('session')->setFlash(
+               $this->get('session')->getFlashBag()->add(
                     'error',
                     'You cannot follow this user.'
                 ); 
@@ -840,7 +840,7 @@ class DefaultController extends Controller
             }
 
         } else {
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                 'warning',
                 'You cannot follow yourself.'
             );
@@ -875,14 +875,14 @@ class DefaultController extends Controller
                     $em = $this->getDoctrine()->getManager();
                     $em->flush();
 
-                    $this->get('session')->setFlash(
+                    $this->get('session')->getFlashBag()->add(
                         'success',
                         'You are not following '.$user->getFullName().' anymore.'
                     );
 
                 } else {
 
-                    $this->get('session')->setFlash(
+                    $this->get('session')->getFlashBag()->add(
                         'warning',
                         'You are not following '.$user->getFullName().'.'
                     );
@@ -891,7 +891,7 @@ class DefaultController extends Controller
 
             } else {
 
-               $this->get('session')->setFlash(
+               $this->get('session')->getFlashBag()->add(
                     'error',
                     'You cannot unfollow this user.'
                 ); 
@@ -899,7 +899,7 @@ class DefaultController extends Controller
             }
 
         } else {
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                 'warning',
                 'You cannot unfollow yourself.'
             );
