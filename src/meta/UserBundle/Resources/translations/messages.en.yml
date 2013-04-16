@@ -1,5 +1,7 @@
 user:
   title: "Users"
+  allUsers: "All Users"
+  menu: "My profile"
   welcome: "Welcome! This is your profile page, where you can directly edit your information by clicking on the underlined text."
   not.found: "This user does not exist."
   already.taken: "This username is already taken."
@@ -22,6 +24,17 @@ user:
   picture:
     reset: "Your avatar has successfully been reset."
     cannot.reset: "You cannot reset the avatar for this user."
+  login:
+    title: "Welcome !"
+    help: "Please log in to access the full content of the site."
+    signup: "signup"
+    reactivate: "here"
+    recover: "here"
+    text1: "If you do not have an account, you can %link% here."
+    text2: "If you have lost your password, you can follow the full recovery procedure %recover% to get a new one. If you have deleted your account and want to recover it, click %reactivate%."
+    login: "Login"
+    password: "Password"
+    signin: "Sign in"
   createForm:
     username: "Username"
     usernameHelp: "Only alphanumeric values are allowed. Your profile page will be available at /who/{username}."
@@ -37,8 +50,10 @@ user:
     title: "Notifications"
     none: "You have no new notifiations !"
     see.more: "See more notifications starting from %date% ..."
+    help: "See all notifications"
   dashboard:
     title: "Dashboard"
+    menu: "My dashboard"
     na: "N/A"
     recent.activity: "My recent activity"
     last.activity: "Last activity at %date%"
@@ -72,17 +87,39 @@ user:
   already.in.community: "The user %user% is already a member of the community %community%."
   belonging.community: "The user %user% now belongs to the community %community. A notification mail was sent on your behalf."
   invitation:
+    title: "Invite a user"
+    community: "The user will be invited in the community %community%."
+    help: "You need to indicate a valid e-mail address or username to invite a new user."
+    text: "If this user does not have an igneet account, he will be able to create one right from the link that he will receive. If he is already registered with this email address, he will join the %community% community directly and will be notified."
+    field: "Indicate a valid e-mail or username"
+    button: "Invite this user"
     sent: "An invitation was sent to %mail% on your behalf."
     impossible: "You need to be in a non-guest community space to invite someone."
     mail:
       subject: "You've been invited to a community on igneet !"
   email.invalid: "Neither the email you have indicated is valid, nor it is a valid username."
   reactivation:
+    title:
+      reactivate: "Reactivate your account"
+      recover: "Recover your lost password"
+    help: 
+      reactivate: "Your account has been deleted"
+      recover: "You have lost your password"
+    text: 
+      reactivate: "If you wish to regain access to it, please provide the email address used for signup. A mail will be sent with a link to reactivate it."
+      recover: "If you wish to regain access to your account by changing your password, please provide the email address used for signup. A mail will be sent with a link to change it."
+    button: "Reactivate my account"
+    email: "Email"
     sent: "An email was sent to %mail% so you can reactivate your account."
     mail:
       subject: "Reactivate your account"
   reactivated: "Your account has been reactivated."
   passwordChange:
+    title: "Change your password"
+    help: "Please provide your new password"
+    new: "New password"
+    confirm: "Please confirm"
+    button: "Change my password"
     sent: "An email was sent to %mail% so you can renew your password."
     mail:
       subject: "Renew your password"

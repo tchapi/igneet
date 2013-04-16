@@ -9,6 +9,7 @@ member.in:
   private.space: "Bienvenue dans votre espace de travail personnel."
 community:
   home: "Accueil"
+  invite: "Inviter quelqu'un"
   homeHelp: "Retrouvez vos %projects% projets et %ideas% idées."
   homeHelpUsers: "%users% utilisateurs et invités contribuent à cette communauté."
   not.found: "Cette communauté n'existe pas."

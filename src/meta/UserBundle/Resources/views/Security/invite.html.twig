@@ -1,32 +1,32 @@
 {% extends 'metaUserBundle::layout.html.twig' %}
 
-{% block title %}{{ parent() }} > Invite a user{% endblock %}
+{% block title %}{{ parent() }} > {{ "user.invitation.title"|trans }}{% endblock %}
 
 {% block header %}
   <div class="headerAvatarAndActions">
     <div class="textAvatar"><i class="icon-envelope"></i></div>
   </div>
   <div class="objectHeader">
-    <h2>Invite a user</h2>
-    <h4>The user will be invited in the community {{ community.name }}.</h4>
-    <p>You need to indicate a valid e-mail address or username to invite a new user.</p>
+    <h2>{{ "user.invitation.title"|trans }}</h2>
+    <h4>{{ "user.invitation.community"|trans({ '%community%': community.name}) }}.</h4>
+    <p>{{ "user.invitation.help"|trans }}</p>
   </div>
 {% endblock %}
 
 
 {% block content %}
 <section>
-If this user does not have an igneet account, he will be able to create one right from the link that he will receive. If he is already registered with this email address, he will join the {{ community.name }} community directly and will be notified.
+{{ "user.invitation.text"|trans({ '%community%': community.name}) }}
 </section>
 <form action="{{ path('invite') }}" method="post" class="form-horizontal">
   <section>
-    <div class="sectionTitle"><label for="mailOrUsername" class="required">Indicate a valid e-mail or username : </label></div>
+    <div class="sectionTitle"><label for="mailOrUsername" class="required">{{ "user.invitation.field"|trans }} : </label></div>
     <div class="sectionContent"><input type="text" id="mailOrUsername" name="mailOrUsername" required="required"></div>
   </section>
   <section>
     <div class="sectionTitle"></div>
-    <div class="sectionContent"><a class="btn" href="javascript:history.back()">Cancel</a>
-      <input type="submit" value="Invite this user" class="btn btn-success" /></div>
+    <div class="sectionContent"><a class="btn" href="javascript:history.back()">{{ "cancel"|trans }}</a>
+      <input type="submit" value="{{ "user.invitation.button"|trans }}" class="btn btn-success" /></div>
   </section>
 </form>
 {% endblock %}
