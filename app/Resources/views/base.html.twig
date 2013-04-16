@@ -28,32 +28,36 @@
             </div>
           </div>
         </header>
+        
         <div id="flashes">
-        {% if app.session.hasFlash('success') %}
+
+        {% for flashMessage in app.session.flashbag.get('success') %}
           <div class="alert alert-success">
-              {{ app.session.flash('success') }}
+              {{ flashMessage }}
               <button type="button" class="close" data-dismiss="alert">×</button>
           </div>
-        {% endif %}
-        {% if app.session.hasFlash('warning') %}
+        {% endfor %}
+        {% for flashMessage in app.session.flashbag.get('warning') %}
           <div class="alert alert-warning">
-              {{ app.session.flash('warning') }}
+              {{ flashMessage }}
               <button type="button" class="close" data-dismiss="alert">×</button>
           </div>
-        {% endif %}
-        {% if app.session.hasFlash('error') %}
+        {% endfor %}
+        {% for flashMessage in app.session.flashbag.get('error') %}
           <div class="alert alert-error">
-              {{ app.session.flash('error') }}
+              {{ flashMessage }}
               <button type="button" class="close" data-dismiss="alert">×</button>
           </div>
-        {% endif %}
-        {% if app.session.hasFlash('info') %}
+        {% endfor %}
+        {% for flashMessage in app.session.flashbag.get('info') %}
           <div class="alert alert-info">
-              {{ app.session.flash('info') }}
+              {{ flashMessage }}
               <button type="button" class="close" data-dismiss="alert">×</button>
           </div>
-        {% endif %}
+        {% endfor %}
+
         </div>
+
         <div id="workspace">
           <div class="cardContainer">
             <div class="card">
