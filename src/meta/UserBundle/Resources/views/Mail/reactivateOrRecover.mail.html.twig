@@ -1,12 +1,12 @@
-<h3>Hello,</h3>
+<h3>{{ "mail.hello"|trans }}</h3>
 
 {% if flavour == 'reactivate' %}
-  <p>In order to reactivate your account, click on the link below. A password change will be required :</p> 
+  <p>{{ "user.reactivation.mail.body"|trans }} :</p> 
 {% else %}
-  <p>Please click on the following link to change your password :</p> 
+  <p>{{ "user.passwordChange.mail.body"|trans }} :</p> 
 {% endif %}
 
   <p><a href="{{ url('change_password', { 'passwordToken': passwordToken } ) }}">{{ url('change_password', { 'passwordToken': passwordToken } ) }}</a></p>
 
-<p><em>This is an automated message from igneet, please do not reply to this message.</em></p>
-<p><strong>The igneet team</strong></p>
+<p><em>{{ "mail.automated"|trans }}</em></p>
+<p><strong>{{ "team"|trans }}</strong></p>

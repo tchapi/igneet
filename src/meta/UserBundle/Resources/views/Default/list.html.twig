@@ -1,15 +1,19 @@
 {% extends 'metaUserBundle::layout.html.twig' %}
 
-{% block title %}{{ parent() }} > Everybody{% endblock %}
+{% block title %}{{ parent() }} > {{ "user.allUsers"|trans }}{% endblock %}
 
 {% block header %}
   <div class="headerAvatarAndActions">
     <div class="textAvatar"><i class="icon-group"></i></div>
   </div>
   <div class="objectHeader">
-    <h2>Users</h2>
-    <h4>All the users in the community {{ app.user.currentCommunity.name }} are listed in this page.</h4>
-    <p>Sort by : <a href="{{ path('u_list_users', {'sort': 'newest', 'page' : pagination.page}) }}"><i class="icon-star"></i> Newest users</a> - <a href="{{ path('u_list_users', {'sort': 'update', 'page' : pagination.page}) }}"><i class="icon-time"></i> Recently updated</a> - <a href="{{ path('u_list_users', {'sort': 'active', 'page' : pagination.page}) }}"><i class="icon-dashboard"></i> Last active</a> - <a href="{{ path('u_list_users', {'sort': 'alpha', 'page' : pagination.page}) }}"><i class="icon-font"></i> Alphabetical</a></p>
+    <h2>{{ "user.allUsers"|trans }}</h2>
+    <h4>{{ "user.listHelp"|trans({ '%community%': app.user.currentCommunity.name}) }}</h4>
+    <p>{{ "filters.sort"|trans }} : 
+      <a href="{{ path('u_list_users', {'sort': 'newest', 'page' : pagination.page}) }}"><i class="icon-star"></i> {{ "filters.newest"|trans }}</a> - 
+      <a href="{{ path('u_list_users', {'sort': 'update', 'page' : pagination.page}) }}"><i class="icon-time"></i> {{ "filters.recent"|trans }}</a> - 
+      <a href="{{ path('u_list_users', {'sort': 'active', 'page' : pagination.page}) }}"><i class="icon-dashboard"></i> {{ "filters.active"|trans }}</a> - 
+      <a href="{{ path('u_list_users', {'sort': 'alpha',  'page' : pagination.page}) }}"><i class="icon-font"></i> {{ "filters.alpha"|trans }}</a></p>
   </div>
 {% endblock %}
 
@@ -23,11 +27,17 @@
   </a>
 
   <div class="listingItemInfo">
-    <h4 class="ellipsis"><a href="{{ path('u_show_user_profile', {'username': user.username}) }}">{{ user.getFullName() }}</a>{% if user.isGuestOf(app.user.currentCommunity) %} (Guest){% endif %}</h4>
+    <h4 class="ellipsis"><a href="{{ path('u_show_user_profile', {'username': user.username}) }}">{{ user.getFullName() }}</a>
+      {% if user.isGuestOf(app.user.currentCommunity) %} ({{ "guest"|trans }}){% endif %}
+    </h4>
     <div class="ellipsis">{{ user.headline }}</div>
-    <div class="muted"><i class="icon-calendar"></i> Member since {{ user.createdAt|date("d/m/Y") }}</div>
-    <div class="muted"><i class="icon-time"></i> Last updated {{ user.updatedAt|date("d/m/Y") }}, last seen {{ user.lastSeenAt|date("d/m/Y") }} {% if user.initiatedLogEntries|length > 0 %}and last contribution on {{ user.initiatedLogEntries[user.initiatedLogEntries|length - 1].createdAt|date("d/m/Y H:i:s") }}{% endif %}</div>
-    
+    <div class="muted"><i class="icon-calendar"></i> {{ "user.list.member.since"|trans({ '%date%': user.createdAt|date("date.format"|trans) }) }}</div>
+    <div class="muted"><i class="icon-time"></i>
+      {% if user.initiatedLogEntries|length > 0 %}
+      {{ "user.list.last.updated.full"|trans({ '%update%': user.updatedAt|date("date.format"|trans), '%seen%': user.lastSeenAt|date("date.format"|trans), '%contrib%' : (user.initiatedLogEntries|last).createdAt|date("date.fullFormat"|trans) }) }}
+      {% else %}
+      {{ "user.list.last.updated"|trans({ '%update%': user.updatedAt|date("date.format"|trans), '%seen%': user.lastSeenAt|date("date.format"|trans) }) }}
+      {% endif %}</div>
   </div>
 
 </section>
@@ -37,7 +47,7 @@
 </section>
 {% else %}
 <section>
-No users !
+{{ "user.none"|trans }}
 </section>
 {% endif %}
 

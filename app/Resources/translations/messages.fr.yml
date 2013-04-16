@@ -24,3 +24,10 @@ logout: "Déconnexion"
 # Footer
 report.bug: "Rapporter un bug"
 terms: "Conditions générales"
+# Team
+team: "L'équipe d'igneet"
+# Mails
+mail:
+  hello: "Bonjour,"
+  automated.user: "Ceci est un message automatique d'igneet, mais vous pouvez répondre directement à %users% en répondant à ce message."
+  automated: "Ceci est un message automatique d'igneet, merci de ne pas y répondre."

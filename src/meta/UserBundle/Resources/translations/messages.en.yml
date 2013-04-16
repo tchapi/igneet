@@ -6,6 +6,8 @@ user:
   not.found: "This user does not exist."
   already.taken: "This username is already taken."
   email.registered: "This email is already registered."
+  listHelp: "All the users in the community %community% are listed in this page."
+  none: "No users !"
   none.inPrivateSpace: "There are no other users in your private space."
   nobody: "You're alone for now in this community."
   no.dashboard: "There is no dashboard in your private space or in a community in which you are a guest."
@@ -24,6 +26,34 @@ user:
   picture:
     reset: "Your avatar has successfully been reset."
     cannot.reset: "You cannot reset the avatar for this user."
+  list:
+    member.since: "Member since %date%"
+    last.updated: "Last updated on %update% and last seen on %seen%"
+    last.updated.full: "Last updated on %update%, last seen on %seen% and last contribution on %contrib%"
+  delete: "Delete my account"
+  deleteHelp: "Are you sure you want to delete yourself ? Ideas for which you are the only creator will be deleted as well."
+  skills:
+    title: "Skills"
+    none: "No skills added yet."
+    help: "List your skills"
+    emptyText: "Add skills"
+  email: 
+    title: "Your email"
+    info: "only visible to me"
+    emptyText: "Click to edit your email"
+    help: "Your email"
+  headline:
+    emptyText: "Click to add a headline"
+    help: "A one-liner to describe yourself"
+  name:
+    last.help: "Change your last name"
+    first.help: "Change your first name"
+  city:
+    help: "Where do you live?"
+    emptyText: "Add your city"
+  password: "Password"
+  about: "About %user%"
+  activity: "Activity"
   login:
     title: "Welcome !"
     help: "Please log in to access the full content of the site."
@@ -41,6 +71,14 @@ user:
     field: "Choose a user from the community"
     alternate: "Or indicate a valid e-mail or username"
     button: "Choose this user"
+  ideas:
+    participated: "Ideas I participate in"
+    watched: "Ideas I watch"
+    initiated: "Ideas I initiated"
+  projects:
+    participated: "Projects I'm in"
+    owned: "Projects I own"
+    watched: "Projects I watch"
   createForm:
     title: "Sign up"
     help: "Sign up now to join the adventure and create great communities of projects involving makers and doers from around you."
@@ -90,6 +128,10 @@ user:
     no.social: "Nothing happened recently ..."
     no.projects: "No new project in the community ..."
     no.ideas: "No new idea in the community ..."
+  followers: "My followers"
+  followings: "%user% is following"
+  follow: "Follow"
+  unfollow: "Unfollow"
   following: "You are now following %user%."
   already.following: "You are already following %user%."
   not.following: "You are not following %user%."
@@ -107,6 +149,15 @@ user:
     impossible: "You need to be in a non-guest community space to invite someone."
     mail:
       subject: "You've been invited to a community on igneet !"
+      body:
+        new:
+          click: "Click on the following link to sign up and create your profile"
+          community: "%user% has invited you to join her/him in the community %community% on igneet !"
+          project: "%user% has invited you to join her/him in the project %project% on igneet !"
+        member:
+          click: "Click on the following link to login and go to your profile"
+          community: "%user% has made you a member of the community %community% on igneet !"
+          project: "%user% has made you a member of the project %project% on igneet !"
   email.invalid: "Neither the email you have indicated is valid, nor it is a valid username."
   reactivation:
     title:
@@ -123,6 +174,7 @@ user:
     sent: "An email was sent to %mail% so you can reactivate your account."
     mail:
       subject: "Reactivate your account"
+      body: "In order to reactivate your account, click on the link below. A password change will be required"
   reactivated: "Your account has been reactivated."
   passwordChange:
     title: "Change your password"
@@ -133,4 +185,5 @@ user:
     sent: "An email was sent to %mail% so you can renew your password."
     mail:
       subject: "Renew your password"
+      body: "Please click on the following link to change your password"
   changedPassword: "Your password was changed successfully."

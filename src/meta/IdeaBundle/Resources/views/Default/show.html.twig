@@ -28,7 +28,7 @@
 
 {% block header %}
   <div class="headerAvatarAndActions">
-    {% if base.canEdit %}<div class="changeAvatar"><a href="{{ path('i_edit_idea_reset_picture', {'id': base.idea.id, 'token': csrf_token('resetPicture')  }) }}" alt="{{ "picture.resetHelp"|trans }}"><i class="icon-trash"></i></a> | <a href="{{ path('g_choose_file', {'targetAsBase64': base.targetPictureAsBase64, 'token': csrf_token('edit') }) }}"><i class="icon-pencil"></i> {{ "picture.change"|trans }}</a></div>{% endif %}
+    {% if base.canEdit %}<div class="changeAvatar"><a href="{{ path('i_edit_idea_reset_picture', {'id': base.idea.id, 'token': csrf_token('resetPicture')  }) }}" title="{{ "picture.resetHelp"|trans }}"><i class="icon-trash"></i></a> | <a href="{{ path('g_choose_file', {'targetAsBase64': base.targetPictureAsBase64, 'token': csrf_token('edit') }) }}"><i class="icon-pencil"></i> {{ "picture.change"|trans }}</a></div>{% endif %}
     <img src="{{ asset(base.idea.getPicture()) }}" width="150" height="150" class="avatar"/>
 {% if base.isAlreadyWatching %}
     <a href="{{ path('i_unwatch_idea', {'id': base.idea.id, 'token': csrf_token('unwatch') }) }}" class="btn btn-info watchAction">{{ "idea.unwatch"|trans }}</a>

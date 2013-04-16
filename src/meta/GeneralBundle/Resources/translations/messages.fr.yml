@@ -1,6 +1,7 @@
 # Community
 private.space: "Mon espace privé"
 member.have.no.community: "Vous n'appartenez à aucune communauté pour le moment."
+guest: "Invité"
 guest.community.cannot:
   access: "Vous devez être membre de la communauté pour avoir accès à ce contenu."
   do: "Vous ne pouvez faire cette action en tant qu'invité de la communauté."
@@ -50,3 +51,4 @@ filters:
   newest: "Plus récents"
   alpha: "Alphabétique"
   recent: "Récemment mis à jour"
+  active: "Récemment actifs"

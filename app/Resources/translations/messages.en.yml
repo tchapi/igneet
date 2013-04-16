@@ -24,3 +24,10 @@ logout: "Logout"
 # Footer
 report.bug: "Report a bug"
 terms: "Terms of use"
+# Team
+team: "The igneet team"
+# Mails
+mail:
+  hello: "Hello,"
+  automated.user: "This is an automated message from igneet, but you can answer directly to %user% by replying to this message."
+  automated: "This is an automated message from igneet, please do not reply to this message."
