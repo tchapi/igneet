@@ -35,9 +35,18 @@ user:
     login: "Login"
     password: "Password"
     signin: "Sign in"
+  choose:
+    title: "Choose a user"
+    help: "You need to indicate a specific user to continue with your request."
+    field: "Choose a user from the community"
+    alternate: "Or indicate a valid e-mail or username"
+    button: "Choose this user"
   createForm:
+    title: "Sign up"
+    help: "Sign up now to join the adventure and create great communities of projects involving makers and doers from around you."
+    text: "It's free and easy, just fill in the few information below and you'll be ready to go, share and participate in projects. Of course you'll be able to change this information anytime later on."
     username: "Username"
-    usernameHelp: "Only alphanumeric values are allowed. Your profile page will be available at /who/{username}."
+    usernameHelp: "Only alphanumeric values are allowed. ex : johndoe44"
     firstname: "First name"
     lastname: "Last name"
     password: "Password"
@@ -46,6 +55,7 @@ user:
     headline: "Headline"
     headlineHelp: "How would you sum up who you are ?"
     skills: "Your skills"
+    create: "Create"
   notifications:
     title: "Notifications"
     none: "You have no new notifiations !"
