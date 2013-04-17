@@ -324,6 +324,7 @@ class DefaultController extends Controller
                 return $a[$key]<$b[$key];
             };
         }
+        $notifications = array_unique($notifications, SORT_REGULAR);
         usort($notifications, build_sorter('createdAt'));
 
         // Lastly, we update the last_notified_at date
