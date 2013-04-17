@@ -50,6 +50,7 @@ idea:
   picture:
     reset: "L'image de cette idée a été réinitialisée avec succès."
     cannot.reset: "Vous n'avez pas les droits pour réinitialiser l'image de cette idée."
+  participants: "{0}Aucun participant|{1}Un participant|]1,Inf]%count% participants"
   watchers: "{0}Aucun utilisateur abonné|{1}Un utilisateur abonné|]1,Inf]%count% utilisateurs abonnés"
   watch: "S'abonner"
   unwatch: "Se désabonner"

@@ -1,9 +1,9 @@
 <div class="navbar project">
   <div class="navbar-inner">
     <ul class="nav">
-      {% for menuItem in menu %}
-      <li{% if activeMenu == menuItem.name %} class="active"{% endif %}><a href="{{ path(menuItem.route, {'id': id, 'slug': slug}) }}">
-        <i class="{{ menuItem.icon }}"></i> {{ ("idea." ~ menuItem.name ~ ".title")|trans }}</a></li>
+      {% for key, menuItem in menu %}
+      <li{% if activeMenu == key %} class="active"{% endif %}><a href="{{ path(menuItem.route, {'id': id, 'slug': slug}) }}">
+        <i class="{{ menuItem.icon }}"></i> {{ ("idea." ~ key ~ ".title")|trans }}</a></li>
       {% endfor %}
     </ul>
   </div>

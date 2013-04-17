@@ -50,6 +50,7 @@ idea:
   picture:
     reset: "The picture for this idea has successfully been reset."
     cannot.reset: "You cannot reset the picture for this idea."
+  participants: "{0}No participants|{1}One participant|]1,Inf]%count% participants"
   watchers: "{0}No users watching|{1}One user watching|]1,Inf]%count% users watching"
   watch: "Watch idea"
   unwatch: "Unwatch idea"
