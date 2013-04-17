@@ -8,11 +8,18 @@
   </div>
   <div class="objectHeader">
     <h2>{{ "project.allProjects"|trans }}</h2>
-    <h4>All the projects accessible in {% if app.user.currentCommunity is not null %}the community {{ app.user.currentCommunity.name }}{% else %}your private space{% endif %} are listed here.</h4>
-    <p>{{ "filters.sort"|trans }} : 
+    <h4>
+      {% if app.user.currentCommunity is not null %}
+        {{ "project.listHelp.community"|trans({ '%community%': app.user.currentCommunity.name}) }}
+      {% else %}
+        {{ "project.listHelp.privateSpace"|trans }}
+      {% endif %}
+    </h4>
+    <p>{{ "filters.sort"|trans }} :
       <a href="{{ path('sp_list_projects', {'sort': 'newest', 'page' : pagination.page}) }}"><i class="icon-star"></i> {{ "filters.newest"|trans }}</a> - 
       <a href="{{ path('sp_list_projects', {'sort': 'update', 'page' : pagination.page}) }}"><i class="icon-time"></i> {{ "filters.recent"|trans }}</a> - 
-      <a href="{{ path('sp_list_projects', {'sort': 'alpha', 'page' : pagination.page}) }}"><i class="icon-font"></i> {{ "filters.alpha"|trans }}</a></p>
+      <a href="{{ path('sp_list_projects', {'sort': 'alpha', 'page' : pagination.page}) }}"><i class="icon-font"></i> {{ "filters.alpha"|trans }}</a>
+    </p>
     {% if not app.user.isGuestInCurrentCommunity() %}<p><a href="{{ path('sp_new_project') }}" class="btn btn-success">{{ "project.new"|trans }}</a></p>{% endif %}
   </div>
 {% endblock %}
@@ -52,7 +59,7 @@
         {% if not user.isDeleted %}
         <li>
           <a href="{{ path('u_show_user_profile', {'username': user.username}) }}">
-            <img src="{{ user.avatar }}" title="{{ user.firstName }} {{ user.lastName }}" width="30" height="30" class="miniAvatar"/>
+            <img src="{{ user.avatar }}" title="{{ user.getFullName() }}" width="30" height="30" class="miniAvatar"/>
           </a>
         </li>
         {% endif %}

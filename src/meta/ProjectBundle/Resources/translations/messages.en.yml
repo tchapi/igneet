@@ -8,6 +8,9 @@ project:
   choose.slug: "Choose a slug"
   choose.slugHelp: "You need to indicate a new slug for this project."
   slug.already.taken: "This slug is already taken - please try another one."
+  listHelp:
+    community: "You will find here the list of projects in the community %community%."
+    privateSpace: "You will find here all the projects in your own private space."
   createForm:
     name: "Name of this project"
     namePlaceholder: "My new project"
@@ -21,6 +24,14 @@ project:
     skills: "Skills needed for this project (if any)"
   owners: "{0}No owners|{1}One owner|]1,Inf]%count% owners"
   participants: "{0}No participants|{1}One participant|]1,Inf]%count% participants"
+  watchers: "{0}No users watching|{1}One user watching|]1,Inf]%count% users watching"
+  skills:
+    vacant: "Vacant skills"
+    endowed: "All skills are endowed !"
+    needed: "Needed skills"
+    neededHelp: "What skills are needed for this project ?"
+    needed.emptyText: "Add needed skills"
+    needed.none: "No specific skills needed."
   timeline:
     title: "Timeline"
   info:

@@ -28,7 +28,7 @@
 
 {% block header %}
   <div class="headerAvatarAndActions">
-    {% if base.canEdit %}<div class="changeAvatar"><a href="{{ path('sp_edit_project_reset_picture', {'slug': base.standardProject.slug, 'token': csrf_token('resetPicture') }) }}" alt="Reset to default picture"><i class="icon-trash"></i></a> | <a href="{{ path('g_choose_file', {'targetAsBase64': base.targetPictureAsBase64, 'token': csrf_token('edit') }) }}"><i class="icon-pencil"></i> change</a></div>{% endif %}
+    {% if base.canEdit %}<div class="changeAvatar"><a href="{{ path('sp_edit_project_reset_picture', {'slug': base.standardProject.slug, 'token': csrf_token('resetPicture') }) }}" title="{{ "picture.resetHelp"|trans }}"><i class="icon-trash"></i></a> | <a href="{{ path('g_choose_file', {'targetAsBase64': base.targetPictureAsBase64, 'token': csrf_token('edit') }) }}"><i class="icon-pencil"></i> {{ "picture.change"|trans }}</a></div>{% endif %}
     <img src="{{ asset(base.standardProject.getPicture()) }}" width="150" height="150" class="avatar"/>
 {% if base.isAlreadyWatching %}
     <a href="{{ path('sp_unwatch_project', {'slug': base.standardProject.slug, 'token': csrf_token('unwatch') }) }}" class="btn btn-info watchAction">Unwatch project</a>
@@ -64,12 +64,12 @@
       <i class="icon-beaker"></i> 
 
       {% if base.standardProject.neededSkills|length > 0 %}
-      Needed skills :
+      {{ "project.skills.needed"|trans }} :
       {% elseif not base.canEdit %}
-      No specific skills needed.
+      {{ "project.skills.needed.none"|trans }}
       {% endif %}
-      <ul data-toggle="manual" data-title="What skills are needed for this project?" data-emptytext="Add needed skills" data-url="{{ path('sp_edit_project', {'slug': base.standardProject.slug, 'token': csrf_token('edit') }) }}" data-type="checklist" data-source="{{ path('u_list_all_skills') }}" data-name="skills" class="skills skills-target editable-li">
-    {% for skill in base.standardProject.neededSkills %}<li class="label" style="background-color: #{{ skill.color }}" rel="{{ skill.slug }}">{{ (skill.slug ~ ".name")|trans({}, 'skills') }}</li>{% endfor %}
+      <ul data-toggle="manual" data-title="{{ "project.skills.neededHelp"|trans }}" data-emptytext="{{ "project.skills.needed.emptyText"|trans }}" data-url="{{ path('sp_edit_project', {'slug': base.standardProject.slug, 'token': csrf_token('edit') }) }}" data-type="checklist" data-source="{{ path('u_list_all_skills') }}" data-name="skills" class="skills skills-target editable-li">
+        {% for skill in base.standardProject.neededSkills %}<li class="label" style="background-color: #{{ skill.color }}" rel="{{ skill.slug }}">{{ (skill.slug ~ ".name")|trans({}, 'skills') }}</li>{% endfor %}
       </ul>
       {% if base.canEdit %} <a class="editable-trigger" data-target="skills">&hellip;<i class="icon-pencil"></i></a>{% endif %}
 
@@ -78,12 +78,12 @@
     {% if base.standardProject.neededSkills|length > 0 %}
     <div>
       {% if base.vacantSkills|length > 0 %}
-      <i class="icon-exclamation-sign"></i> Vacant skills :
+      <i class="icon-exclamation-sign"></i> {{ "project.skills.endowed"|trans }} :
       <ul class="skills">
-    {% for skill in base.vacantSkills %}<li class="label" style="background-color: #{{ skill.color }}" rel="{{ skill.slug }}">{{ skill.slug|trans({}, 'skills') }}</li>{% endfor %}
+        {% for skill in base.vacantSkills %}<li class="label" style="background-color: #{{ skill.color }}" rel="{{ skill.slug }}">{{ (skill.slug ~ ".name")|trans({}, 'skills') }}</li>{% endfor %}
       </ul>
       {% else %}
-      <i class="icon-ok-sign"></i> All skills are endowed !
+      <i class="icon-ok-sign"></i> {{ "project.skills.endowed"|trans }}
       {% endif %}
     </div>
     {% endif %}
@@ -91,9 +91,9 @@
   </div>
 
   <div class="projectAbout">
-    <div>{{ base.standardProject.countOwners }} owner{% if base.standardProject.countOwners > 1 %}s{% endif %}</div>
-    <div>{{ base.standardProject.countParticipants }} participating</div>
-    <div>{{ base.standardProject.countWatchers }} watching</div>
+    <div>{{ "project.owners"|transchoice(base.standardProject.countOwners, { '%count': base.standardProject.countOwners}) }}</div>
+    <div>{{ "project.participants"|transchoice(base.standardProject.countParticipants, { '%count': base.standardProject.countParticipants}) }}</div>
+    <div>{{ "project.watchers"|transchoice(base.standardProject.countWatchers, { '%count': base.standardProject.countWatchers}) }}</div>
   </div>
 {% endblock %}
 
