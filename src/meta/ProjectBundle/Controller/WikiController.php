@@ -137,7 +137,7 @@ class WikiController extends BaseController
                 $logService = $this->container->get('logService');
                 $logService->log($this->getUser(), 'user_create_wikipage', $this->base['standardProject'], array( 'wikipage' => array( 'routing' => 'wikipage', 'logName' => $wikiPage->getLogName(), 'args' => $wikiPage->getLogArgs()) ));
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'success',
                     'Your page "'.$wikiPage->getTitle().'" was successfully created.'
                 );
@@ -146,7 +146,7 @@ class WikiController extends BaseController
            
             } else {
 
-               $this->get('session')->setFlash(
+               $this->get('session')->getFlashBag()->add(
                     'error',
                     $this->get('translator')->trans('information.not.valid', array(), 'errors')
                 );
@@ -188,14 +188,14 @@ class WikiController extends BaseController
 
         if ($wiki->getHomePage() == $wikiPage){
 
-          $this->get('session')->setFlash(
+          $this->get('session')->getFlashBag()->add(
               'error',
               'This page is already the home of this wiki.'
           );
 
         } else {
 
-          $this->get('session')->setFlash(
+          $this->get('session')->getFlashBag()->add(
               'success',
               'Your page "'.$wikiPage->getTitle().'" was successfully promoted to home page for this wiki.'
           );
@@ -407,14 +407,14 @@ class WikiController extends BaseController
 
                   $em->flush();
 
-                  $this->get('session')->setFlash(
+                  $this->get('session')->getFlashBag()->add(
                       'success',
                       'Your page "'.$wikiPage->getTitle().'" was successfully deleted. Its children, if any, have been put back at the root of the wiki.'
                   );
 
                 } else {
 
-                    $this->get('session')->setFlash(
+                    $this->get('session')->getFlashBag()->add(
                         'warning',
                         'This item does not exist.'
                     );
@@ -423,7 +423,7 @@ class WikiController extends BaseController
 
             } else {
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'warning',
                     'This item does not exist.'
                 );

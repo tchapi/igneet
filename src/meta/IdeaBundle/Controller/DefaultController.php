@@ -60,7 +60,7 @@ class DefaultController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'info',
                     $this->get('translator')->trans('community.switch', array( '%community%' => $community->getName()))
                 );
@@ -169,7 +169,7 @@ class DefaultController extends Controller
         $community = $authenticatedUser->getCurrentCommunity();
 
         if ($authenticatedUser->isGuestInCurrentCommunity()){
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                 'error',
                 $this->get('translator')->trans('guest.community.cannot.do')
             );
@@ -204,7 +204,7 @@ class DefaultController extends Controller
                 $logService = $this->container->get('logService');
                 $logService->log($authenticatedUser, 'user_create_idea', $idea, array());
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'success',
                     $this->get('translator')->trans('idea.created', array( '%idea%' => $idea->getName()))
                 );
@@ -213,7 +213,7 @@ class DefaultController extends Controller
            
             } else {
                
-               $this->get('session')->setFlash(
+               $this->get('session')->getFlashBag()->add(
                     'error',
                     $this->get('translator')->trans('information.not.valid', array(), 'errors')
                 );
@@ -261,7 +261,7 @@ class DefaultController extends Controller
                         
                         if ($community && $this->getUser()->belongsTo($community)){
                             $community->addIdea($this->base['idea']);
-                            $this->get('session')->setFlash(
+                            $this->get('session')->getFlashBag()->add(
                                 'success',
                                 $this->get('translator')->trans('idea.in.community', array( '%community%' => $community->getName())) 
                             );
@@ -349,7 +349,7 @@ class DefaultController extends Controller
         if (isset($needsRedirect) && $needsRedirect) {
 
             if (!is_null($error)) {
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'error',
                     $error
                 );
@@ -385,7 +385,7 @@ class DefaultController extends Controller
             $this->base['idea']->delete();
             $em->flush();
 
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                 'success',
                 $this->get('translator')->trans('idea.deleted', array( '%idea%' => $this->base['idea']->getName()) )
             );
@@ -394,7 +394,7 @@ class DefaultController extends Controller
 
         } else {
 
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                 'warning',
                 $this->get('translator')->trans('idea.cannot.delete')
             );
@@ -427,7 +427,7 @@ class DefaultController extends Controller
 
             $em->flush();
             
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                 'success',
                 $this->get('translator')->trans($archive?'idea.archived':'idea.recycled', array( '%idea%' => $this->base['idea']->getName())) 
             );
@@ -436,7 +436,7 @@ class DefaultController extends Controller
 
         } else {
 
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                 'warning',
                 $this->get('translator')->trans('idea.cannot.archiveOrRecycle')
             );
@@ -463,14 +463,14 @@ class DefaultController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->flush();
 
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                 'success',
                 $this->get('translator')->trans('idea.picture.reset')
             );
 
         } else {
     
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                 'error',
                 $this->get('translator')->trans('idea.picture.cannot.reset')
             );
@@ -566,7 +566,7 @@ class DefaultController extends Controller
             $logService->log($this->getUser(), 'user_transform_idea_in_project', $this->base['idea'], array( 'project' => array('routing' => 'project', 'logName' => $project->getLogName(), 'args' => $project->getLogArgs() )));
             $logService->log($this->getUser(), 'user_create_project_from_idea', $project, array( 'idea' => array('routing' => 'idea', 'logName' => $this->base['idea']->getLogName(), 'args' => $this->base['idea']->getLogArgs() )));
 
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                 'success',
                 $this->get('translator')->trans('idea.projectized')
             );
@@ -575,7 +575,7 @@ class DefaultController extends Controller
 
         } else {
 
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                 'error',
                 $this->get('translator')->trans('idea.cannot.projectize')
             );
@@ -613,7 +613,7 @@ class DefaultController extends Controller
                     $em->persist($comment);
                     $em->flush();
 
-                    $this->get('session')->setFlash(
+                    $this->get('session')->getFlashBag()->add(
                         'success',
                         $this->get('translator')->trans('comment.added')
                     );
@@ -623,7 +623,7 @@ class DefaultController extends Controller
 
                 } else {
 
-                   $this->get('session')->setFlash(
+                   $this->get('session')->getFlashBag()->add(
                         'error',
                         $this->get('translator')->trans('information.not.valid', array(), 'errors')
                     );
@@ -669,7 +669,7 @@ class DefaultController extends Controller
 
                 $newParticipant->addIdeasParticipatedIn($this->base['idea']);
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'success',
                     $this->get('translator')->trans('idea.add.participant', array( '%user%' => $newParticipant->getFullName(), '%idea%' => $this->base['idea']->getName() ))
                 );
@@ -682,7 +682,7 @@ class DefaultController extends Controller
                 
             } else {
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'warning',
                     $this->get('translator')->trans('idea.user.already.participant')
                 );
@@ -690,7 +690,7 @@ class DefaultController extends Controller
 
         } else {
 
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                 'error',
                 $this->get('translator')->trans('idea.cannot.add.participant')
             );
@@ -720,7 +720,7 @@ class DefaultController extends Controller
                 
                 $toRemoveParticipant->removeIdeasParticipatedIn($this->base['idea']);
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'success',
                     $this->get('translator')->trans('idea.remove.participant', array( '%user%' => $toRemoveParticipant->getFullName(), '%idea%' => $this->base['idea']->getName()))
                 );
@@ -730,7 +730,7 @@ class DefaultController extends Controller
                 
             } else {
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'error',
                     $this->get('translator')->trans('idea.user.not.participant')
                 );
@@ -738,7 +738,7 @@ class DefaultController extends Controller
 
         } else {
 
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                 'error',
                 $this->get('translator')->trans('idea.cannot.remove.participant')
             );
@@ -780,14 +780,14 @@ class DefaultController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'success',
                     $this->get('translator')->trans('idea.watching', array('%idea%' => $idea->getName()))
                 );
 
             } else {
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'warning',
                     $this->get('translator')->trans('idea.already.watching', array('%idea%' => $idea->getName()))
                 );
@@ -796,7 +796,7 @@ class DefaultController extends Controller
 
         } else {
 
-           $this->get('session')->setFlash(
+           $this->get('session')->getFlashBag()->add(
                 'error',
                 $this->get('translator')->trans('idea.cannot.watch')
             ); 
@@ -834,14 +834,14 @@ class DefaultController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'success',
                     $this->get('translator')->trans('idea.unwatching', array('%idea%' => $idea->getName()))
                 );
 
             } else {
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'warning',
                     $this->get('translator')->trans('idea.not.watching', array('%idea%' => $idea->getName()))
                 );
@@ -850,7 +850,7 @@ class DefaultController extends Controller
 
         } else {
 
-           $this->get('session')->setFlash(
+           $this->get('session')->getFlashBag()->add(
                 'error',
                 $this->get('translator')->trans('idea.cannot.unwatch')
             ); 

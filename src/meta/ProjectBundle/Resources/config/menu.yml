@@ -3,7 +3,7 @@ parameters:
     timeline:
       icon: icon-comments-alt
       route: sp_show_project_timeline
-      private: true
+      private: false
     info:
       icon: icon-info-sign
       route: sp_show_project
@@ -11,12 +11,12 @@ parameters:
     lists:
       icon: icon-tasks
       route: sp_show_project_list_home
-      private: true
+      private: false
     resources:
       icon: icon-file
       route: sp_show_project_list_resources
-      private: true
+      private: false
     wiki:
       icon: icon-font
       route: sp_show_project_wiki
-      private: true
+      private: false

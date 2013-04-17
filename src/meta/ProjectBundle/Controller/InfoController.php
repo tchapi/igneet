@@ -133,7 +133,7 @@ class InfoController extends BaseController
                   $logService = $this->container->get('logService');
                   $logService->log($newParticipantOrOwner, 'user_is_made_owner_project', $this->base['standardProject'], array( 'other_user' => array( 'routing' => 'user', 'logName' => $this->getUser()->getLogName(), 'args' => $this->getUser()->getLogArgs()) ));
 
-                  $this->get('session')->setFlash(
+                  $this->get('session')->getFlashBag()->add(
                       'success',
                       'The user '.$newParticipantOrOwner->getFullName().' is now owner of the project "'.$this->base['standardProject']->getName().'".'
                   );
@@ -145,7 +145,7 @@ class InfoController extends BaseController
                   $logService = $this->container->get('logService');
                   $logService->log($newParticipantOrOwner, 'user_is_made_participant_project', $this->base['standardProject'], array( 'other_user' => array( 'routing' => 'user', 'logName' => $this->getUser()->getLogName(), 'args' => $this->getUser()->getLogArgs()) ));
 
-                  $this->get('session')->setFlash(
+                  $this->get('session')->getFlashBag()->add(
                       'success',
                       'The user '.$newParticipantOrOwner->getFullName().' now participates in the project "'.$this->base['standardProject']->getName().'".'
                   );
@@ -157,14 +157,14 @@ class InfoController extends BaseController
                 
             } elseif ( $newParticipantOrOwner === 'invited') {
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'success',
                     'An invitation was sent to ' . $mailOrUsername . ' on your behalf. He will be added to the project when she/he signs up.'
                 );
 
             } else {
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'warning',
                     'This user does not exist or is already part of this project.'
                 );
@@ -172,7 +172,7 @@ class InfoController extends BaseController
 
         } else {
 
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                 'error',
                 'You are not allowed to add a participant or owner in this project.'
             );
@@ -206,7 +206,7 @@ class InfoController extends BaseController
 
                       $toRemoveParticipantOrOwner->removeProjectsOwned($this->base['standardProject']);
 
-                      $this->get('session')->setFlash(
+                      $this->get('session')->getFlashBag()->add(
                           'success',
                           'The user '.$toRemoveParticipantOrOwner->getFullName().' is no longer owner of the project "'.$this->base['standardProject']->getName().'".'
                       );
@@ -215,7 +215,7 @@ class InfoController extends BaseController
 
                       $toRemoveParticipantOrOwner->removeProjectsParticipatedIn($this->base['standardProject']);
 
-                      $this->get('session')->setFlash(
+                      $this->get('session')->getFlashBag()->add(
                           'success',
                           'The user '.$toRemoveParticipantOrOwner->getFullName().' does not participate in the project "'.$this->base['standardProject']->getName().'" anymore .'
                       );
@@ -227,7 +227,7 @@ class InfoController extends BaseController
 
                 } else {
 
-                    $this->get('session')->setFlash(
+                    $this->get('session')->getFlashBag()->add(
                         'error',
                         'You cannot remove yourself from a project.'
                     );
@@ -236,7 +236,7 @@ class InfoController extends BaseController
                 
             } else {
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'error',
                     'This user does not exist with this role in the project.'
                 );
@@ -244,7 +244,7 @@ class InfoController extends BaseController
 
         } else {
 
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                 'error',
                 'You are not allowed to remove a participant or owner in this project.'
             );

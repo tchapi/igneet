@@ -53,7 +53,7 @@ class BaseController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'info',
                     'You have automatically been switched to the community ' . $community->getName() . '.'
                 );

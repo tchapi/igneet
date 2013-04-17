@@ -24,7 +24,7 @@ class SecurityController extends Controller
 
         if ($authenticatedUser) {
 
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                 'warning',
                 $this->get('translator')->trans('user.already.logged.short', array( '%user%' => $authenticatedUser->getUsername()))
             );
@@ -84,7 +84,7 @@ class SecurityController extends Controller
                     // If the user is already in the community
                     if ($user->belongsTo($community)){
 
-                        $this->get('session')->setFlash(
+                        $this->get('session')->getFlashBag()->add(
                             'warning',
                             $this->get('translator')->trans('user.already.in.community', array( '%user%' => $user->getFullName(), '%community%' => $community->getName() ))
                         );
@@ -99,7 +99,7 @@ class SecurityController extends Controller
                         $logService = $this->container->get('logService');
                         $logService->log($this->getUser(), 'user_enters_community', $user, array( 'community' => array( 'routing' => 'community', 'logName' => $community->getLogName(), 'args' => null) ) );
                             
-                        $this->get('session')->setFlash(
+                        $this->get('session')->getFlashBag()->add(
                             'success',
                             $this->get('translator')->trans('user.belonging.community', array( '%user%' => $user->getFullName(), '%community%' => $community->getName() ))
                         );
@@ -111,7 +111,7 @@ class SecurityController extends Controller
                         $logService = $this->container->get('logService');
                         $logService->log($this->getUser(), 'user_enters_community', $user, array( 'community' => array( 'routing' => 'community', 'logName' => $community->getLogName(), 'args' => null) ) );
                             
-                        $this->get('session')->setFlash(
+                        $this->get('session')->getFlashBag()->add(
                             'success',
                             $this->get('translator')->trans('user.belonging.community', array( '%user%' => $user->getFullName(), '%community%' => $community->getName() ))
                         );
@@ -123,14 +123,14 @@ class SecurityController extends Controller
                     $token = new UserInviteToken($authenticatedUser, $mailOrUsername, $community, 'user', null, null);
                     $em->persist($token);
                 
-                    $this->get('session')->setFlash(
+                    $this->get('session')->getFlashBag()->add(
                         'success',
                         $this->get('translator')->trans('user.invitation.sent', array('%mail%' => $mailOrUsername))
                     );
 
                 } else {
 
-                    $this->get('session')->setFlash(
+                    $this->get('session')->getFlashBag()->add(
                         'error',
                         $this->get('translator')->trans('user.email.invalid')
                     );
@@ -164,7 +164,7 @@ class SecurityController extends Controller
 
         } else {
 
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                 'error',
                 $this->get('translator')->trans('user.invitation.impossible')
             );
@@ -184,7 +184,7 @@ class SecurityController extends Controller
         // You should not be logged
         if ($this->getUser()){
             
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                 'error',
                 $this->get('translator')->trans('user.already.logged.short', array( '%user%' => $this->getUser()->getFullName()))
             );
@@ -206,7 +206,7 @@ class SecurityController extends Controller
                 $user->createNewReactivateToken();
                 $em->flush();
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'success',
                     $this->get('translator')->trans('user.reactivation.sent', array( '%mail%' => $mail))
                 );
@@ -232,7 +232,7 @@ class SecurityController extends Controller
                 $user->createNewRecoverToken();
                 $em->flush();
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'success',
                     $this->get('translator')->trans('user.changePassword.sent', array( '%mail%' => $mail))
                 );
@@ -255,7 +255,7 @@ class SecurityController extends Controller
 
             } else {
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'error',
                     $this->get('translator')->trans('user.cannot.recover')
                 );
@@ -316,7 +316,7 @@ class SecurityController extends Controller
 
             if ($newPassword !== $newPassword_2){
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'error',
                     $this->get('translator')->trans('invalid.password.match', array(), 'errors')
                 );
@@ -337,7 +337,7 @@ class SecurityController extends Controller
 
                     if ($flavour === 'reactivate'){
 
-                        $this->get('session')->setFlash(
+                        $this->get('session')->getFlashBag()->add(
                             'info',
                             $this->get('translator')->trans('user.reactivated')
                         );
@@ -353,7 +353,7 @@ class SecurityController extends Controller
                     $em = $this->getDoctrine()->getManager();
                     $em->flush();
 
-                    $this->get('session')->setFlash(
+                    $this->get('session')->getFlashBag()->add(
                         'success',
                         $this->get('translator')->trans('user.changedPassword')
                     );
@@ -362,7 +362,7 @@ class SecurityController extends Controller
 
                 } else {
 
-                    $this->get('session')->setFlash(
+                    $this->get('session')->getFlashBag()->add(
                         'error',
                         $errors[0]->getMessage()
                     );

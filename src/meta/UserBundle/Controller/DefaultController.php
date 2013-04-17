@@ -130,7 +130,7 @@ class DefaultController extends Controller
 
         if (is_null($authenticatedUser->getCurrentCommunity()) || $authenticatedUser->isGuestInCurrentCommunity() ) {
 
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                 'error',
                 $this->get('translator')->trans('user.no.dashboard')
             );
@@ -324,6 +324,7 @@ class DefaultController extends Controller
                 return $a[$key]<$b[$key];
             };
         }
+        $notifications = array_unique($notifications, SORT_REGULAR);
         usort($notifications, build_sorter('createdAt'));
 
         // Lastly, we update the last_notified_at date
@@ -347,7 +348,7 @@ class DefaultController extends Controller
 
         if ($authenticatedUser) {
 
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                 'warning',
                 $this->get('translator')->trans('user.already.logged.long', array( '%user%' => $authenticatedUser->getUsername()))
             );
@@ -363,7 +364,7 @@ class DefaultController extends Controller
 
             if ( $inviteTokenObject && $inviteTokenObject->isUsed() ){
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'error',
                     $this->get('translator')->trans('user.signup.link.already.used')
                 );
@@ -442,7 +443,7 @@ class DefaultController extends Controller
                 $logService = $this->container->get('logService');
                 $logService->log($user, 'user_created', $user, array());
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'success',
                     $this->get('translator')->trans('user.welcome')
                 );
@@ -451,7 +452,7 @@ class DefaultController extends Controller
            
             } else {
                
-               $this->get('session')->setFlash(
+               $this->get('session')->getFlashBag()->add(
                     'error',
                     $this->get('translator')->trans('information.not.valid', array(), 'errors')
                 );
@@ -576,7 +577,7 @@ class DefaultController extends Controller
         if (isset($needsRedirect) && $needsRedirect) {
 
             if (!is_null($error)) {
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'error', $error
                 );
             }
@@ -607,7 +608,7 @@ class DefaultController extends Controller
 
         if ($authenticatedUser->getUsername() !== $username) {
 
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                 'error',
                 $this->get('translator')->trans('user.picture.cannot.reset')
             );
@@ -619,7 +620,7 @@ class DefaultController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->flush();
 
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                 'success',
                 $this->get('translator')->trans('user.picture.reset')
             );
@@ -683,7 +684,7 @@ class DefaultController extends Controller
                 }
 
                 // Let's notify the user with the projects he still owns alone
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'error',
                     $this->get('translator')->trans('user.cannot.delete', array( '%projects%' => substr($projects, 0, -1)))
                 );
@@ -693,7 +694,7 @@ class DefaultController extends Controller
 
         } else {
 
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                 'error',
                 $this->get('translator')->trans('user.cannot.delete.other')
             );
@@ -774,7 +775,7 @@ class DefaultController extends Controller
 
             if (count($users) === 0 ){
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                         'warning',
                         $this->get('translator')->trans('user.nobody')
                     );
@@ -816,14 +817,14 @@ class DefaultController extends Controller
                     $em = $this->getDoctrine()->getManager();
                     $em->flush();
 
-                    $this->get('session')->setFlash(
+                    $this->get('session')->getFlashBag()->add(
                         'success',
                         $this->get('translator')->trans('user.following', array( '%user%' => $user->getFullName() ))
                     );
 
                 } else {
 
-                    $this->get('session')->setFlash(
+                    $this->get('session')->getFlashBag()->add(
                         'warning',
                         $this->get('translator')->trans('user.already.following', array( '%user%' => $user->getFullName() ))
                     );
@@ -832,7 +833,7 @@ class DefaultController extends Controller
 
             } else {
 
-               $this->get('session')->setFlash(
+               $this->get('session')->getFlashBag()->add(
                     'error',
                     $this->get('translator')->trans('user.cannot.follow')
                 ); 
@@ -840,7 +841,7 @@ class DefaultController extends Controller
             }
 
         } else {
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                 'warning',
                 $this->get('translator')->trans('user.cannot.followSelf')
             );
@@ -875,14 +876,14 @@ class DefaultController extends Controller
                     $em = $this->getDoctrine()->getManager();
                     $em->flush();
 
-                    $this->get('session')->setFlash(
+                    $this->get('session')->getFlashBag()->add(
                         'success',
                         $this->get('translator')->trans('user.unfollowing', array('%user%' => $user->getFullName()))
                     );
 
                 } else {
 
-                    $this->get('session')->setFlash(
+                    $this->get('session')->getFlashBag()->add(
                         'warning',
                         $this->get('translator')->trans('user.not.following', array('%user%' => $user->getFullName()))
                     );
@@ -891,7 +892,7 @@ class DefaultController extends Controller
 
             } else {
 
-               $this->get('session')->setFlash(
+               $this->get('session')->getFlashBag()->add(
                     'error',
                     $this->get('translator')->trans('user.cannot.unfollow')
                 ); 
@@ -899,7 +900,7 @@ class DefaultController extends Controller
             }
 
         } else {
-            $this->get('session')->setFlash(
+            $this->get('session')->getFlashBag()->add(
                 'warning',
                 $this->get('translator')->trans('user.cannot.unfollowSelf')
             );

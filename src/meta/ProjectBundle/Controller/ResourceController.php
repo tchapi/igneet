@@ -97,7 +97,7 @@ class ResourceController extends BaseController
                 $logService = $this->container->get('logService');
                 $logService->log($this->getUser(), 'user_add_resource', $this->base['standardProject'], array( 'resource' => array( 'routing' => 'resource', 'logName' => $resource->getLogName(), 'args' => $resource->getLogArgs()) ));
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'success',
                     'Your resource '.$resource->getTitle().' has successfully been added to the project '.$this->base['standardProject']->getName().'.'
                 );
@@ -106,7 +106,7 @@ class ResourceController extends BaseController
            
             } else {
                
-               $this->get('session')->setFlash(
+               $this->get('session')->getFlashBag()->add(
                     'error',
                     $this->get('translator')->trans('information.not.valid', array(), 'errors')
                 );
@@ -253,7 +253,7 @@ class ResourceController extends BaseController
         if (isset($needsRedirect) && $needsRedirect) {
 
             if (!is_null($error)) {
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'error', $error
                 );
             }
@@ -295,14 +295,14 @@ class ResourceController extends BaseController
                 $em->remove($resource);
                 $em->flush();
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'success',
                     'This resource has been successfully deleted.'
                 );
 
             } else {
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'warning',
                     'This resource does not exist.'
                 );
@@ -339,7 +339,7 @@ class ResourceController extends BaseController
 
             } else {
 
-                $this->get('session')->setFlash(
+                $this->get('session')->getFlashBag()->add(
                     'warning',
                     'This resource does not exist.'
                 );
