@@ -1,6 +1,6 @@
 {% extends 'metaProjectBundle:Default:show.html.twig' %}
 
-{% block title %}{{ parent() }} | New Wiki Page{% endblock %}
+{% block title %}{{ parent() }} | {{ "project.wiki.new"|trans }}{% endblock %}
 
 {% block navbar %}
 {% render(controller("metaProjectBundle:Default:navbar", { 'activeMenu' : 'wiki', 'slug' : base.standardProject.slug })) %}
@@ -21,13 +21,13 @@
 {% block content %}
 <form action="{{ path('sp_show_project_wiki_new_page', {'slug': base.standardProject.slug}) }}" method="post" {{ form_enctype(form) }}>
   <section>
-    <h4>Create a new page in your wiki :</h4>
+    <h4>{{ "project.wiki.newHelp"|trans }} :</h4>
   </section>
   {{ form_widget(form) }}
   <section>
     <div class="sectionTitle"></div>
     <div class="sectionContent">
-      <input type="submit" value="Create" class="btn btn-success" />
+      <input type="submit" value="{{ "create"|trans }}" class="btn btn-success" />
     </div>
   </section>
 </form>

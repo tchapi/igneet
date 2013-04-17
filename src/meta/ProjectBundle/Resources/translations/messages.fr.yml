@@ -1,0 +1,13 @@
+projects:
+  title: "Projets"
+  allProjects: "Tous les projets"
+  timeline:
+    title: "Historique"
+  info:
+    title: "Info"
+  lists:
+    title: "Listes"
+  resources:
+    title: "Ressources"
+  wiki:
+    title: "Wiki"

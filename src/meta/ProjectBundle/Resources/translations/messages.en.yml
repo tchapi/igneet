@@ -1,0 +1,17 @@
+projects:
+  title: "Projects"
+  allProjects: "All projects"
+  choose.slug: "Choose a slug"
+  choose.slugHelp: "You need to indicate a new slug for this project."
+  timeline:
+    title: "Timeline"
+  info:
+    title: "Info"
+  lists:
+    title: "Lists"
+  resources:
+    title: "Resources"
+  wiki:
+    title: "Wiki"
+    new: "New wiki page"
+    newHelp: "Create a new page in your wiki"

@@ -9,6 +9,7 @@ time:
 timeline.reset.filters: "Reset filters"
 cancel: "Cancel"
 choose: "Choose"
+create: "Create"
 save: "Save"
 saveHelp: "Click 'Save' to commit your changes"
 delete: "Delete"
