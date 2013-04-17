@@ -9,18 +9,18 @@ class StandardProjectType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name', null, array('label'  => 'Name of this project', 'attr' => array( 'class' => 'input-xxlarge', 'placeholder' => 'My new project')));
-        $builder->add('slug', null, array('label'  => 'URL Slug', 'attr' => array( 'class' => 'input-xxlarge', 'help' => 'Accepted characters : alphanumeric and hyphens', 'placeholder' => 'my-new-project')));
-        $builder->add('headline', 'text',  array('required' => false, 'label'  => 'Headline', 'attr' => array('class' => 'input-xxlarge', 'help' => 'Give your project some nice catchline')));
+        $builder->add('name', null, array('label'  => 'project.createForm.name', 'attr' => array( 'class' => 'input-xxlarge', 'placeholder' => 'project.createForm.namePlaceholder')));
+        $builder->add('slug', null, array('label'  => 'project.createForm.slug', 'attr' => array( 'class' => 'input-xxlarge', 'help' => 'project.createForm.slugHelp', 'placeholder' => 'project.createForm.slugPlaceholder')));
+        $builder->add('headline', 'text',  array('required' => false, 'label'  => 'project.createForm.headline', 'attr' => array('class' => 'input-xxlarge', 'help' => 'project.createForm.headlineHelp')));
 
-        $builder->add('private', 'checkbox',  array('required' => false, 'label'  => 'Private project', 'attr' => array('help' => 'Decide wether your project should be seen by non-participants. Private space projects are always private')));
+        $builder->add('private', 'checkbox',  array('required' => false, 'label'  => 'project.createForm.private', 'attr' => array('help' => 'project.createForm.privateHelp')));
 
         $builder->add('neededSkills', 'entity', array(
             'multiple' => true, 
             'required' => false, 
-            'property' => 'name',
+            'property' => 'slug',
             'class' => 'meta\UserBundle\Entity\Skill',
-            'label' => 'Skills needed for this project (if any)',
+            'label' => 'project.createForm.skills',
             'attr' => array('class' => 'select2-trigger')
             ));
     }

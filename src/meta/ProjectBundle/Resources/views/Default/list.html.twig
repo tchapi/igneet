@@ -1,16 +1,19 @@
 {% extends 'metaProjectBundle::layout.html.twig' %}
 
-{% block title %}{{ parent() }} > All Projects{% endblock %}
+{% block title %}{{ parent() }} > {{ "project.allProjects"|trans }}{% endblock %}
 
 {% block header %}
   <div class="headerAvatarAndActions">
     <div class="textAvatar"><i class="icon-list-alt"></i></div>
   </div>
   <div class="objectHeader">
-    <h2>Projects</h2>
+    <h2>{{ "project.allProjects"|trans }}</h2>
     <h4>All the projects accessible in {% if app.user.currentCommunity is not null %}the community {{ app.user.currentCommunity.name }}{% else %}your private space{% endif %} are listed here.</h4>
-    <p>Sort by : <a href="{{ path('sp_list_projects', {'sort': 'newest', 'page' : pagination.page}) }}"><i class="icon-star"></i> Newest projects</a> - <a href="{{ path('sp_list_projects', {'sort': 'update', 'page' : pagination.page}) }}"><i class="icon-time"></i> Recently updated</a> - <a href="{{ path('sp_list_projects', {'sort': 'alpha', 'page' : pagination.page}) }}"><i class="icon-font"></i> Alphabetical</a></p>
-    {% if not app.user.isGuestInCurrentCommunity() %}<p><a href="{{ path('sp_new_project') }}" class="btn btn-success">New project</a></p>{% endif %}
+    <p>{{ "filters.sort"|trans }} : 
+      <a href="{{ path('sp_list_projects', {'sort': 'newest', 'page' : pagination.page}) }}"><i class="icon-star"></i> {{ "filters.newest"|trans }}</a> - 
+      <a href="{{ path('sp_list_projects', {'sort': 'update', 'page' : pagination.page}) }}"><i class="icon-time"></i> {{ "filters.recent"|trans }}</a> - 
+      <a href="{{ path('sp_list_projects', {'sort': 'alpha', 'page' : pagination.page}) }}"><i class="icon-font"></i> {{ "filters.alpha"|trans }}</a></p>
+    {% if not app.user.isGuestInCurrentCommunity() %}<p><a href="{{ path('sp_new_project') }}" class="btn btn-success">{{ "project.new"|trans }}</a></p>{% endif %}
   </div>
 {% endblock %}
 
@@ -26,16 +29,17 @@
   <div class="listingItemInfo">
     <h4 class="ellipsis"><a href="{{ path('sp_show_project', {'slug': standardProject.slug}) }}">{{ standardProject.name }} ({{ standardProject.slug|lower }})</a></h4>
     <div class="ellipsis">{{ standardProject.headline }}</div>
-    <div class="muted"><i class="icon-calendar"></i> Created on {{ standardProject.createdAt|date("d/m/Y") }}</div>
-    <div class="muted"><i class="icon-time"></i> Last updated {{ standardProject.updatedAt|date("d/m/Y H:i:s") }}</div>
+    <div class="muted"><i class="icon-calendar"></i> {{ "project.info.created"|trans({'%date%': standardProject.createdAt|date("date.fullFormat"|trans)}) }}</div>
+    <div class="muted"><i class="icon-time"></i> {{ "project.info.updated"|trans({'%date%': standardProject.updatedAt|date("date.fullFormat"|trans)}) }}</div>
   </div>
 
   <div class="listingItemRelatedObjects">
 
     <div class="type">
-      <div class="muted pull-right">{{ standardProject.countOwners}} 
-        owner{% if standardProject.countOwners > 1 %}s{% endif %} and {{ standardProject.countParticipants }} 
-        participant{% if standardProject.countParticipants > 1 %}s{% endif %}</div>
+      <div class="muted pull-right">
+        {{ "project.owners"|transchoice(standardProject.countOwners, { '%count': standardProject.countOwners}) }}
+        {{ "project.paticipants"|transchoice(standardProject.countParticipants, { '%count': standardProject.countParticipants}) }}
+      </div>
     </div>
 
     <ul>
@@ -63,7 +67,7 @@
 </section>
 {% else %}
 <section>
-No projects yet !
+{{ "project.none"|trans }}
 </section>
 {% endif %}
 

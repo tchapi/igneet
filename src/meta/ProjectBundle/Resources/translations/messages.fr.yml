@@ -1,13 +1,42 @@
 projects:
   title: "Projets"
+  new: "Nouveau projet"
+  newHelp: "Rassemblez une communauté d'expert autour de votre projet."
+  newText: "Vous pouvez ajouter plus d'informations une fois le projet créé, comme des ressources, des listes et des pages de wiki."
   allProjects: "Tous les projets"
+  none: "Pas encore de projets !"
+  choose.slug: "Choisissez un slug"
+  choose.slugHelp: "You need to indicate a new slug for this project."
+  slug.already.taken: "This slug is already taken - please try another one."
+  createForm:
+    name: "Nom du projet"
+    namePlaceholder: "Mon nouveau projet"
+    slug: "Slug"
+    slugHelp: "Caractères acceptés : alphanumérique et tirets"
+    slugPlaceholder: "mon-nouveau-projet"
+    headline: "Slogan"
+    headlineHelp: "Give your project some nice catchline"
+    private: "Projet privé"
+    privateHelp: "Decide wether your project should be seen by non-participants. Private space projects are always private"
+    skills: "Skills needed for this project (if any)"
+  owners: "{0}Aucun propriétaire|{1}Un propriétaire|]1,Inf]%count% propriétaires"
+  participants: "{0}Aucun participant|{1}Un participant|]1,Inf]%count% participants"
   timeline:
     title: "Historique"
   info:
     title: "Info"
+    created: "Créé le %date%"
+    updated: "Mis à jour le %date%"
   lists:
     title: "Listes"
   resources:
     title: "Ressources"
+    createForm:
+      title: "Titre de la ressource"
+      titlePlaceholder: "Ma ressource ..."
+      url: "Url de la ressource externe"
+      file: "ou choisir un fichier"
   wiki:
     title: "Wiki"
+    new: "Nouvelle page du wiki"
+    newHelp: "Créer une nouvelle page dans le wiki"
