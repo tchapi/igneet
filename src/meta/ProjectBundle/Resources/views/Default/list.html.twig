@@ -44,8 +44,7 @@
 
     <div class="type">
       <div class="muted pull-right">
-        {{ "project.owners"|transchoice(standardProject.countOwners, { '%count': standardProject.countOwners}) }}
-        {{ "project.participants"|transchoice(standardProject.countParticipants, { '%count': standardProject.countParticipants}) }}
+        {{ "project.owners"|transchoice(standardProject.countOwners, { '%count': standardProject.countOwners}) }}, {{ "project.participants"|transchoice(standardProject.countParticipants, { '%count': standardProject.countParticipants}) }}
       </div>
     </div>
 

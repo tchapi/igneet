@@ -3,6 +3,8 @@ project:
   new: "New project"
   newHelp: "And gather a strong community of experts to help you go forward."
   newText: "You can add more information once the project is created, such as lists, wikis and resources ..."
+  delete: "Delete this project"
+  deleteHelp: "Are you sure you want to delete this project ?"
   allProjects: "All projects"
   none: "No projects yet !"
   choose.slug: "Choose a slug"
@@ -47,8 +49,11 @@ project:
     title: "Timeline"
   info:
     title: "Info"
+    about: "About this project"
     created: "Created on %date%"
     updated: "Last update on %date%"
+    add.participant: "Add a participant"
+    add.owner: "Add an owner"
   lists:
     title: "Lists"
   resources:
