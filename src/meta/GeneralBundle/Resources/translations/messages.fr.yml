@@ -52,3 +52,13 @@ filters:
   alpha: "Alphabétique"
   recent: "Récemment mis à jour"
   active: "Récemment actifs"
+# Restricted access
+restricted:
+  title: "Accès restreint"
+  text: "Cette page est en accès restreint."
+# Tags
+tags:
+  title: "Tags"
+  help: "Indiquez des tags, séparés par des virgules"
+  emptyText: "Ajouter des tags"
+  none: "Aucun tag."

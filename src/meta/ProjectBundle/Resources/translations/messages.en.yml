@@ -58,6 +58,15 @@ project:
     title: "Lists"
   resources:
     title: "Resources"
+    titleHelp: "Change the title of this resource"
+    change: "Change this resource"
+    delete: "Delete this resource"
+    deleteHelp: "Are you sure you want to delete this resource ?"
+    download: "Download this resource"
+    open: "Open in a new window"
+    openHelp: "View in a new window"
+    original: "Original filename"
+    latest: "latest version uploaded on %date%"
     createForm:
       title: "Title of this resource"
       titlePlaceholder: "My new resource ..."
@@ -65,5 +74,11 @@ project:
       file: "or Choose a file to upload"
   wiki:
     title: "Wiki"
+    titleHelp: "Change the title of this wiki page"
     new: "New wiki page"
     newHelp: "Create a new page in your wiki"
+    pages: "Pages"
+    new.page: "New page"
+    deleteHelp: "Are you sure you want to delete this page of the wiki ?"
+    no.page: "No wiki page yet."
+    make.home: "Make home page"

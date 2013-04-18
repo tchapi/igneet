@@ -8,6 +8,7 @@ time:
   format: "h:i A"
 timeline.reset.filters: "Reset filters"
 cancel: "Cancel"
+change: "Change"
 choose: "Choose"
 create: "Create"
 save: "Save"

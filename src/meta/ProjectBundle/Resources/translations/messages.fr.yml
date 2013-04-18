@@ -58,6 +58,15 @@ project:
     title: "Listes"
   resources:
     title: "Ressources"
+    titleHelp: "Changer le titre de cette ressource"
+    change: "Changer cette ressource"
+    delete: "Supprimer cette ressource"
+    deleteHelp: "Êtes-vous sûr de vouloir supprimer cette ressource ?"
+    download: "Télécharger cette ressource"
+    open: "Ouvrir dans une nouvelle fenêtre"
+    openHelp: "Voir dans une nouvelle fenêtre"
+    original: "Fichier originel"
+    latest: "dernière version mise en ligne le %date%"
     createForm:
       title: "Titre de la ressource"
       titlePlaceholder: "Ma ressource ..."
@@ -65,5 +74,11 @@ project:
       file: "ou choisir un fichier"
   wiki:
     title: "Wiki"
+    titleHelp: "Changer le titre de cette page"
     new: "Nouvelle page du wiki"
     newHelp: "Créer une nouvelle page dans le wiki"
+    pages: "Pages"
+    new.page: "Nouvelle page"
+    deleteHelp: "Êtes-vous sûr de vouloir supprimer cette page du wiki ?"
+    no.page: "Aucune page de wiki."
+    make.home: "En faire la page d'accueil du wiki"

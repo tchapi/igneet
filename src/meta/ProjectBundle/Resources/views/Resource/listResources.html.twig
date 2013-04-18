@@ -1,6 +1,6 @@
 {% extends 'metaProjectBundle:Default:show.html.twig' %}
 
-{% block title %}{{ parent() }} | Resources{% endblock %}
+{% block title %}{{ parent() }} | {{ "project.resources.title"|trans }}{% endblock %}
 
 {% block navbar %}
 {% render(controller("metaProjectBundle:Default:navbar", { 'activeMenu' : 'resources', 'slug' : base.standardProject.slug })) %}

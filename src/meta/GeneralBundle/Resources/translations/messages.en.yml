@@ -52,3 +52,13 @@ filters:
   alpha: "Alphabetical"
   recent: "Recently updated"
   active: "Last active"
+# Restricted access
+restricted:
+  title: "Restricted Area"
+  text: "This area is restricted."
+# Tags
+tags:
+  title: "Tags"
+  help: "Indicate tags separated by a comma"
+  emptyText: "Add tags"
+  none: "No tags yet."

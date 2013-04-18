@@ -118,7 +118,7 @@ class TimelineController extends BaseController
 
         }
 
-        return $this->render('metaProjectBundle:Timeline:timelineHistory.html.twig', 
+        return $this->render('metaGeneralBundle:Timeline:timelineHistory.html.twig', 
             array('base' => $this->base,
                   'timeframe' => $this->timeframe,
                   'filter_groups' => array_unique($filter_groups)));
