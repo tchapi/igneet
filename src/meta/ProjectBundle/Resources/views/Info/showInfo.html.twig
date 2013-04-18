@@ -30,7 +30,7 @@
 </section>
 
 <section class="colored first">
-  <div class="sectionTitle">Owners : </div>
+  <div class="sectionTitle">{{ "project.info.owners"|trans }} : </div>
   <ul class="users sectionContent">
   {% for owningUser in base.standardProject.owners %}
     {% if not owningUser.isDeleted %}
@@ -59,7 +59,7 @@
 </section>
 {% if (base.standardProject.countParticipants > 0 or base.isOwning) and base.standardProject.community is not null %}
 <section class="colored">
-  <div class="sectionTitle">Participants : </div>
+  <div class="sectionTitle">{{ "project.info.participants"|trans }} : </div>
   <ul class="users sectionContent">
   {% for participatingUser in base.standardProject.participants %}
     {% if not participatingUser.isDeleted %}

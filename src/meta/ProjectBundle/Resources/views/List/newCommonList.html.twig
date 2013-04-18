@@ -1,6 +1,6 @@
 {% extends 'metaProjectBundle:Default:show.html.twig' %}
 
-{% block title %}{{ parent() }} | New list{% endblock %}
+{% block title %}{{ parent() }} | {{ "project.lists.new"|trans }}{% endblock %}
 
 {% block navbar %}
 {% render(controller("metaProjectBundle:Default:navbar", { 'activeMenu' : 'lists', 'slug' : base.standardProject.slug })) %}
@@ -21,13 +21,13 @@
 {% block content %}
 <form action="{{ path('sp_show_project_list_new', {'slug': base.standardProject.slug}) }}" method="post" {{ form_enctype(form) }}>
   <section>
-    <h4>Create a new list :</h4>
+    <h4>{{ "projects.lists.newHelp"|trans }} :</h4>
   </section>
   {{ form_widget(form) }}
   <section>
     <div class="sectionTitle"></div>
     <div class="sectionContent">
-      <input type="submit" value="Create" class="btn btn-success" />
+      <input type="submit" value="{{ "create"|trans }}" class="btn btn-success" />
     </div>
   </section>
 </form>

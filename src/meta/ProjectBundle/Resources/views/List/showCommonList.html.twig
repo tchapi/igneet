@@ -1,6 +1,6 @@
 {% extends 'metaProjectBundle:Default:show.html.twig' %}
 
-{% block title %}{{ parent() }}{% if commonList %} | List : {{ commonList.name }}{% endif %}{% endblock %}
+{% block title %}{{ parent() }}{% if commonList %} | {{ "project.lists.title"|trans }} : {{ commonList.name }}{% endif %}{% endblock %}
 
 {% block navbar %}
 {% render(controller("metaProjectBundle:Default:navbar", { 'activeMenu' : 'lists', 'slug' : base.standardProject.slug })) %}
@@ -21,16 +21,16 @@
 {% if commonLists|length > 0 %}
 <div class="column">
 <section class="listInfo">
-  <h4 class="editable" data-title="Change the name of this list" data-name="name" data-url="{{ path('sp_show_project_list_edit', {'slug': base.standardProject.slug, 'id': commonList.id, 'token': csrf_token('editCommonList') }) }}" data-type="text">{{ commonList.name }} </h4>
-  <p><span class="editable description-target" data-title="You can provide an optional description for this list" data-name="description" data-url="{{ path('sp_show_project_list_edit', {'slug': base.standardProject.slug, 'id': commonList.id, 'token': csrf_token('editCommonList') }) }}" data-toggle="manual" data-type="textarea" data-emptytext="Provide an optional description">{{ commonList.description }}</span>
+  <h4 class="editable" data-title="{{ "project.lists.nameHelp"|trans }}" data-name="name" data-url="{{ path('sp_show_project_list_edit', {'slug': base.standardProject.slug, 'id': commonList.id, 'token': csrf_token('editCommonList') }) }}" data-type="text">{{ commonList.name }} </h4>
+  <p><span class="editable description-target" data-title="{{ "project.lists.descriptionHelp"|trans }}" data-name="description" data-url="{{ path('sp_show_project_list_edit', {'slug': base.standardProject.slug, 'id': commonList.id, 'token': csrf_token('editCommonList') }) }}" data-toggle="manual" data-type="textarea" data-emptytext="{{ "project.lists.description.emptyText"|trans }}">{{ commonList.description }}</span>
   {% if base.canEdit %} <a class="editable-trigger" data-target="description">&hellip;<i class="icon-pencil"></i></a>{% endif %}</p>
   <div>
     {% if commonList.tags|length > 0 %}
-      Tags :
+      {{ "tags.title"|trans }} :
     {% elseif not base.canEdit %}
-      No tags yet.
+      {{ "tags.none"|trans }}
     {% endif %}
-    <ul data-toggle="manual" data-title="Indicate tags separated by a comma" data-emptytext="Add tags" data-url="{{ path('sp_show_project_list_edit', {'slug': base.standardProject.slug, 'id': commonList.id, 'token': csrf_token('editCommonList') }) }}" data-type="select2" data-name="tags" class="tags tags-target editable-li" >
+    <ul data-toggle="manual" data-title="{{ "tags.help"|trans }}" data-emptytext="{{ "tags.emptyText"|trans }}" data-url="{{ path('sp_show_project_list_edit', {'slug': base.standardProject.slug, 'id': commonList.id, 'token': csrf_token('editCommonList') }) }}" data-type="select2" data-name="tags" class="tags tags-target editable-li" >
     {% for tag in commonList.tags %}<li class="label" rel="{{ tag.name }}" style="background-color: #{{ tag.color }}">{{ tag.name }}</li>{% endfor %}
     </ul>
     {% if base.canEdit %} <a class="editable-trigger" data-target="tags">&hellip;<i class="icon-pencil"></i></a>{% endif %}
@@ -45,22 +45,22 @@
       {% if base.canEdit %}
       <div class="actions">
         {% if item.done %}
-        <span class="muted date">done on {{ item.doneAt|date('d-m-Y') }}</span>
-        <a href="{{ path('sp_show_project_listitem_undo', {'slug': base.standardProject.slug, 'listId': commonList.id, 'id': item.id, 'token': csrf_token('toggleCommonListItem') }) }}" title="Recycle this item"><i class="icon-repeat"></i></a>
+        <span class="muted date">{{ "project.lists.items.done"|trans({ '%date%': item.doneAt|date("date.format"|trans)}) }}</span>
+        <a href="{{ path('sp_show_project_listitem_undo', {'slug': base.standardProject.slug, 'listId': commonList.id, 'id': item.id, 'token': csrf_token('toggleCommonListItem') }) }}" title="{{ "project.lists.items.recycleHelp"|trans }}"><i class="icon-repeat"></i></a>
         {% else %}
-        <span class="muted date">created on {{ item.createdAt|date('d-m-Y') }}</span>
-        <a href="{{ path('sp_show_project_listitem_do', {'slug': base.standardProject.slug, 'listId': commonList.id, 'id': item.id, 'token': csrf_token('toggleCommonListItem') }) }}" title="Finish this item"><i class="icon-ok text-success"></i></a>
+        <span class="muted date">{{ "project.lists.items.created"|trans({ '%date%': item.createdAt|date("date.format"|trans)}) }}</span>
+        <a href="{{ path('sp_show_project_listitem_do', {'slug': base.standardProject.slug, 'listId': commonList.id, 'id': item.id, 'token': csrf_token('toggleCommonListItem') }) }}" title="{{ "project.lists.items.finishHelp"|trans }}"><i class="icon-ok text-success"></i></a>
         {% endif %}
-        <a class="editable-trigger" data-target="listitem-{{ item.id }}" title="Edit this item"><i class="icon-pencil"></i></a> | 
-        <a href="{{ path('sp_show_project_listitem_delete', {'slug': base.standardProject.slug, 'listId': commonList.id, 'id': item.id, 'token': csrf_token('deleteCommonListItem') }) }}" title="Delete this item"><i class="icon-remove text-error"></i></a>
+        <a class="editable-trigger" data-target="listitem-{{ item.id }}" title="{{ "project.lists.items.editHelp"|trans }}"><i class="icon-pencil"></i></a> | 
+        <a href="{{ path('sp_show_project_listitem_delete', {'slug': base.standardProject.slug, 'listId': commonList.id, 'id': item.id, 'token': csrf_token('deleteCommonListItem') }) }}" title="{{ "project.lists.items.deleteHelp"|trans }}"><i class="icon-remove text-error"></i></a>
       </div>
       {% endif %}
     </li>
   {% endfor %}
-    <li><a href="{{ path('sp_show_project_listitem_new', {'slug': base.standardProject.slug, 'listId': commonList.id}) }}"><i class="icon-plus"></i>New item</a></li>
+    <li><a href="{{ path('sp_show_project_listitem_new', {'slug': base.standardProject.slug, 'listId': commonList.id}) }}"><i class="icon-plus"></i>{{ "project.lists.items.new"|trans }}</a></li>
   </ul>
 {% else %}
-  <p class="muted">No list item yet ! {% if base.canEdit %}<a href="{{ path('sp_show_project_listitem_new', {'slug': base.standardProject.slug, 'listId': commonList.id}) }}">Create one ...</a></p>{% endif %}
+  <p class="muted">{{ "project.lists.items.none"|trans }} {% if base.canEdit %}<a href="{{ path('sp_show_project_listitem_new', {'slug': base.standardProject.slug, 'listId': commonList.id}) }}">{{ "project.lists.items.new"|trans }}</a></p>{% endif %}
 {% endif %}
 </section>
 <section>
@@ -68,24 +68,24 @@
 </section>
 </div>
 <div class="menu dd">
-  Lists :
+  {{ "project.lists.title"|trans }} :
   <ul class="lists sortable dd-list" data-url="{{ path('sp_show_project_list_rank', {'slug': base.standardProject.slug}) }}">
   {% for list in commonLists %}
       <li class="{% if list.id == commonList.id %}active {% endif %}{% if base.canEdit %}dd-item dd-nochildren{% endif %}" id="{{ list.id }}">
         {% if base.canEdit %}<div class="dd-handle"><i class="icon-reorder"></i></div>{% endif %}
-        {% if base.canEdit %}<a data-confirm="Are you sure you want to delete this list ?" href="{{ path('sp_show_project_list_delete', {'slug': base.standardProject.slug, 'id': list.id, 'token': csrf_token('deleteCommonList')}) }}"><i class="icon-remove-sign"></i></a>{% endif %} <a href="{{ path('sp_show_project_list', {'slug': base.standardProject.slug, 'id': list.id, 'commonListSlug': list.slug }) }}" title="{{ list.name }}" class="page_title">{{ list.name }}</a>
+        {% if base.canEdit %}<a data-confirm="{{ "project.lists.deleteHelp"|trans }}" href="{{ path('sp_show_project_list_delete', {'slug': base.standardProject.slug, 'id': list.id, 'token': csrf_token('deleteCommonList')}) }}"><i class="icon-remove-sign"></i></a>{% endif %} <a href="{{ path('sp_show_project_list', {'slug': base.standardProject.slug, 'id': list.id, 'commonListSlug': list.slug }) }}" title="{{ list.name }}" class="page_title">{{ list.name }}</a>
       </li>
   {% endfor %}
   </ul>
   {% if base.canEdit %}
   <div class="menu_new">
-    <a href="{{ path('sp_show_project_list_new', {'slug': base.standardProject.slug}) }}"><i class="icon-plus-sign"></i> New list</a>
+    <a href="{{ path('sp_show_project_list_new', {'slug': base.standardProject.slug}) }}"><i class="icon-plus-sign"></i> {{ "project.lists.new"|trans }}</a>
   </div>
   {% endif %}
 </div>
 {% else %}
 <section>
-No list yet.
+{{ "project.lists.none"|trans }}
 </section>
 {% endif %}
 {% endblock %}
