@@ -78,7 +78,7 @@ class InfoController extends BaseController
 
           // Sends mail to invitee
           $message = \Swift_Message::newInstance()
-              ->setSubject('You\'ve been invited to a project on igneet')
+              ->setSubject($this->get('transator')->trans('project.invitation.mail.subject'))
               ->setFrom($this->container->getParameter('mailer_from'))
               ->setReplyTo($authenticatedUser->getEmail())
               ->setTo($mailOrUsername)
@@ -135,7 +135,7 @@ class InfoController extends BaseController
 
                   $this->get('session')->getFlashBag()->add(
                       'success',
-                      'The user '.$newParticipantOrOwner->getFullName().' is now owner of the project "'.$this->base['standardProject']->getName().'".'
+                      $this->get('translator')->trans('project.add.owner', array('%user%' =>$newParticipantOrOwner->getFullName(), '%project%' =>$this->base['standardProject']->getName()))
                   );
 
                 } else {
@@ -147,7 +147,7 @@ class InfoController extends BaseController
 
                   $this->get('session')->getFlashBag()->add(
                       'success',
-                      'The user '.$newParticipantOrOwner->getFullName().' now participates in the project "'.$this->base['standardProject']->getName().'".'
+                      $this->get('translator')->trans('project.add.participant', array('%user%' =>$newParticipantOrOwner->getFullName(), '%project%' =>$this->base['standardProject']->getName()))
                   );
                   
                 }
@@ -159,14 +159,14 @@ class InfoController extends BaseController
 
                 $this->get('session')->getFlashBag()->add(
                     'success',
-                    'An invitation was sent to ' . $mailOrUsername . ' on your behalf. He will be added to the project when she/he signs up.'
+                    $this->get('translator')->trans('project.invitation.mail.sent', array( '%mail%' => $mailOrUsername))
                 );
 
             } else {
 
                 $this->get('session')->getFlashBag()->add(
                     'warning',
-                    'This user does not exist or is already part of this project.'
+                    $this->get('translator')->trans('project.user.already.participant')
                 );
             }
 
@@ -174,7 +174,7 @@ class InfoController extends BaseController
 
             $this->get('session')->getFlashBag()->add(
                 'error',
-                'You are not allowed to add a participant or owner in this project.'
+                $this->get('translator')->trans('project.cannot.add.participant')
             );
 
         }
@@ -208,7 +208,7 @@ class InfoController extends BaseController
 
                       $this->get('session')->getFlashBag()->add(
                           'success',
-                          'The user '.$toRemoveParticipantOrOwner->getFullName().' is no longer owner of the project "'.$this->base['standardProject']->getName().'".'
+                          $this->get('translator')->trans('project.remove.owner', array('%user%' =>$toRemoveParticipantOrOwner->getFullName(), '%project%' =>$this->base['standardProject']->getName()))
                       );
 
                     } else {
@@ -217,7 +217,7 @@ class InfoController extends BaseController
 
                       $this->get('session')->getFlashBag()->add(
                           'success',
-                          'The user '.$toRemoveParticipantOrOwner->getFullName().' does not participate in the project "'.$this->base['standardProject']->getName().'" anymore .'
+                          $this->get('translator')->trans('project.remove.participant', array('%user%' =>$toRemoveParticipantOrOwner->getFullName(), '%project%' =>$this->base['standardProject']->getName()))
                       );
                       
                     }
@@ -229,7 +229,7 @@ class InfoController extends BaseController
 
                     $this->get('session')->getFlashBag()->add(
                         'error',
-                        'You cannot remove yourself from a project.'
+                        $this->get('translator')->trans('project.cannot.remove.self')
                     );
 
                 }
@@ -238,7 +238,7 @@ class InfoController extends BaseController
 
                 $this->get('session')->getFlashBag()->add(
                     'error',
-                    'This user does not exist with this role in the project.'
+                    $this->get('translator')->trans('project.user.not.participant')
                 );
             }
 
@@ -246,7 +246,7 @@ class InfoController extends BaseController
 
             $this->get('session')->getFlashBag()->add(
                 'error',
-                'You are not allowed to remove a participant or owner in this project.'
+                $this->get('translator')->trans('project.cannot.remove.participant')
             );
 
         }

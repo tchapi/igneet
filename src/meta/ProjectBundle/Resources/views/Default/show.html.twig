@@ -46,7 +46,7 @@
       <span class="editable" data-title="{{ "project.headlineHelp"|trans }}" data-name="headline" data-emptytext="{{ "project.headline.emptyText"|trans }}" data-url="{{ path('sp_edit_project', {'slug': base.standardProject.slug, 'token': csrf_token('edit') }) }}" data-type="textarea" title="{{ base.standardProject.headline }}">{{ base.standardProject.headline }}</span>
     </h4>
     <div>
-      <i class="icon-calendar"></i> {{ "project.created"|trans({'%date%': base.standardProject.createdAt|date("date.fullFormat"|trans)}) }}
+      <i class="icon-calendar"></i> {{ "project.info.created"|trans({'%date%': base.standardProject.createdAt|date("date.fullFormat"|trans)}) }}
       {% if base.standardProject.originalIdea %}
         <span class="muted">({{ "project.originalIdea"|trans({'%idea%': base.standardProject.originalIdea.name}) }})</span>
       {% endif %}
