@@ -137,7 +137,7 @@ class ResourceController extends BaseController
         $resource = $repository->findOneById($id);
 
         if (!$resource){
-            throw $this->createNotFoundException('This resource does not exist');
+            throw $this->createNotFoundException($this->get('translator')->trans('project.resources.not.found'));
         }
 
         $newResource = new Resource();
@@ -239,13 +239,13 @@ class ResourceController extends BaseController
 
             } else {
 
-              $error = 'Invalid request';
+              $error = $this->get('translator')->trans('invalid.request', array(), 'errors');
 
             }
             
         } else {
 
-            $error = 'Invalid request';
+            $error = $this->get('translator')->trans('invalid.request', array(), 'errors');
 
         }
 
@@ -304,7 +304,7 @@ class ResourceController extends BaseController
 
                 $this->get('session')->getFlashBag()->add(
                     'warning',
-                    'This resource does not exist.'
+                    $this->get('translator')->trans('project.resources.not.found')
                 );
 
             }
@@ -341,7 +341,7 @@ class ResourceController extends BaseController
 
                 $this->get('session')->getFlashBag()->add(
                     'warning',
-                    'This resource does not exist.'
+                    $this->get('translator')->trans('project.resources.not.found')
                 );
 
             }

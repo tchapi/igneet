@@ -85,7 +85,7 @@ class WikiController extends BaseController
 
         // Check if wikiPage belongs to project
         if ( !$wikiPage ){
-          throw $this->createNotFoundException('This page does not exist');
+          throw $this->createNotFoundException($this->get('translator')->trans('project.wiki.not.found'));
         }
 
         return $this->render('metaProjectBundle:Wiki:showWiki.html.twig', 
@@ -183,7 +183,7 @@ class WikiController extends BaseController
 
         // Check if wikiPage belongs to project
         if ( !$wikiPage ){
-          throw $this->createNotFoundException('This page does not exist');
+          throw $this->createNotFoundException($this->get('translator')->trans('project.wiki.not.found'));
         }
 
         if ($wiki->getHomePage() == $wikiPage){
@@ -242,13 +242,13 @@ class WikiController extends BaseController
               
             } else {
 
-                return new Response('Invalid request', 400);
+                return new Response($this->get('translator')->trans('invalid.request', array(), 'errors'), 400);
 
             }
 
         } else {
 
-            return new Response('Invalid request', 400);
+            return new Response($this->get('translator')->trans('invalid.request', array(), 'errors'), 400);
 
         }
 
@@ -261,7 +261,7 @@ class WikiController extends BaseController
     {
   
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('editWikiPage', $request->get('token')))
-            return new Response('Invalid token', 400);
+            return new Response($this->get('translator')->trans('invalid.token', array(), 'errors'), 400);
 
         $this->fetchProjectAndPreComputeRights($slug, false, true);
         $error = null;
@@ -343,19 +343,19 @@ class WikiController extends BaseController
                 
               } else {
 
-                $error = 'Invalid request';
+                $error = $this->get('translator')->trans('invalid.request', array(), 'errors');
 
               }
 
             } else {
 
-              $error = 'Invalid request';
+              $error = $this->get('translator')->trans('invalid.request', array(), 'errors');
 
             }
 
         } else {
 
-            $error = 'Invalid request';
+            $error = $this->get('translator')->trans('invalid.request', array(), 'errors');
 
         }
 
@@ -416,7 +416,7 @@ class WikiController extends BaseController
 
                     $this->get('session')->getFlashBag()->add(
                         'warning',
-                        'This item does not exist.'
+                        $this->get('translator')->trans('project.wiki.not.found')
                     );
 
                 }
@@ -425,7 +425,7 @@ class WikiController extends BaseController
 
                 $this->get('session')->getFlashBag()->add(
                     'warning',
-                    'This item does not exist.'
+                    $this->get('translator')->trans('project.wiki.not.found')
                 );
 
             }

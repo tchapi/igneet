@@ -51,7 +51,7 @@ class DefaultController extends BaseController
         if ($authenticatedUser->isGuestInCurrentCommunity()){
             $this->get('session')->getFlashBag()->add(
                 'error',
-                'You cannot create projects in this community.'
+                $this->get('translator')->trans('guest.community.cannot.do')
             );
             return $this->redirect($this->generateUrl('sp_list_projects'));
         }
@@ -108,7 +108,7 @@ class DefaultController extends BaseController
     public function editAction(Request $request, $slug){
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('edit', $request->get('token')))
-            return new Response('Invalid token', 400);
+            return new Response($this->get('translator')->trans('invalid.token', array(), 'errors'), 400);
 
         $this->fetchProjectAndPreComputeRights($slug, false, true);
         $error = null;
@@ -210,7 +210,7 @@ class DefaultController extends BaseController
 
         } else {
 
-            $error = 'Invalid request';
+            $error = $this->get('translator')->trans('invalid.request', array(), 'errors');
 
         }
 
@@ -291,14 +291,14 @@ class DefaultController extends BaseController
 
             $this->get('session')->getFlashBag()->add(
                         'success',
-                        'The picture of the project has successfully been reset.'
+                        $this->get('translator')->trans('idea.picture.reset')
                     );
 
         } else {
     
             $this->get('session')->getFlashBag()->add(
                     'error',
-                    'You cannot reset the picture for this project.'
+                    $this->get('translator')->trans('project.picture.cannot.reset')
                 );
         }
 

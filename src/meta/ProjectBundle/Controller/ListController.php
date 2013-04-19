@@ -98,7 +98,7 @@ class ListController extends BaseController
 
         } else {
 
-            return new Response('Invalid request', 400);
+            return new Response($this->get('translator')->trans('invalid.request', array(), 'errors'), 400);
             
         }
 
@@ -168,7 +168,7 @@ class ListController extends BaseController
     {
   
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('editCommonList', $request->get('token')))
-            return new Response('Invalid token', 400);
+            return new Response($this->get('translator')->trans('invalid.token', array(), 'errors'), 400);
 
         $this->fetchProjectAndPreComputeRights($slug, false, true);
         $error = null;
@@ -236,13 +236,13 @@ class ListController extends BaseController
 
             } else {
 
-              $error = 'Invalid request';
+              $error = $this->get('translator')->trans('invalid.request', array(), 'errors');
 
             }
             
         } else {
 
-            $error = 'Invalid request';
+            $error = $this->get('translator')->trans('invalid.request', array(), 'errors');
 
         }
 
@@ -345,7 +345,7 @@ class ListController extends BaseController
     {
   
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('editCommonListItem', $request->get('token')))
-            return new Response('Invalid token', 400);
+            return new Response($this->get('translator')->trans('invalid.token', array(), 'errors'), 400);
 
         $this->fetchProjectAndPreComputeRights($slug, false, true);
         $error = null;
@@ -395,13 +395,13 @@ class ListController extends BaseController
 
             } else {
 
-              $error = 'Invalid request';
+              $error = $this->get('translator')->trans('invalid.request', array(), 'errors');
 
             }
             
         } else {
 
-            $error = 'Invalid request';
+            $error = $this->get('translator')->trans('invalid.request', array(), 'errors');
 
         }
 

@@ -50,7 +50,7 @@ class CommentController extends BaseController
 
                     $this->get('session')->getFlashBag()->add(
                         'success',
-                        'Your comment was successfully added.'
+                        $this->get('translator')->trans('comment.added')
                     );
 
                 } else {
@@ -74,7 +74,7 @@ class CommentController extends BaseController
 
         }
 
-        throw $this->createNotFoundException('This project does not exist');
+        throw $this->createNotFoundException($this->get('translator')->trans('project.not.found'));
 
     }
 
@@ -119,7 +119,7 @@ class CommentController extends BaseController
 
                             $this->get('session')->getFlashBag()->add(
                                 'success',
-                                'Your comment was successfully added.'
+                                $this->get('translator')->trans('comment.added')
                             );
 
                         } else {
@@ -145,7 +145,7 @@ class CommentController extends BaseController
             }
         }
 
-        throw $this->createNotFoundException('This page does not exist');
+        throw $this->createNotFoundException($this->get('translator')->trans('project.wiki.not.found'));
 
     }
 
@@ -186,7 +186,7 @@ class CommentController extends BaseController
 
                         $this->get('session')->getFlashBag()->add(
                             'success',
-                            'Your comment was successfully added.'
+                            $this->get('translator')->trans('comment.added')
                         );
 
                     } else {
@@ -211,7 +211,7 @@ class CommentController extends BaseController
         
         }
 
-        throw $this->createNotFoundException('This list does not exist');
+        throw $this->createNotFoundException($this->get('translator')->trans('project.lists.not.found'));
 
     }
 }

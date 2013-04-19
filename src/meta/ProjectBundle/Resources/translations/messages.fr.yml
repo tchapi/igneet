@@ -7,9 +7,13 @@ project:
   deleteHelp: "Êtes-vous sûr de vouloir supprimer ce projet ?"
   allProjects: "Tous les projets"
   none: "Pas encore de projets !"
+  not.found: "Ce projet n'existe pas."
   choose.slug: "Choisissez un slug"
   choose.slugHelp: "Veuillez indiquer un nom court pour ce projet."
   slug.already.taken: "Ce nom court est déjà pris, veuiller en indiquer un autre."
+  picture:
+    reset: "L'image de ce projet a été réinitialisée avec succès."
+    cannot.reset: "Vous n'avez pas les droits pour réinitialiser l'image de ce projet."
   listHelp:
     community: "Vous trouverez ici tous les projets de la communauté %community%."
     privateSpace: "Vous trouverez ici tous les projets de votre espace privé."
@@ -58,6 +62,7 @@ project:
     participants: "Participants"
   lists:
     title: "Listes"
+    not.found: "Cette liste n'existe pas."
     nameHelp: "Changer le nom de cette liste"
     descriptionHelp: "Vous pouvez renseigner une description optionnelle pour cette liste"
     description.emptyText: "Renseignez une description (optionnelle)"
@@ -76,6 +81,7 @@ project:
       created: "créé le %date%"
   resources:
     title: "Ressources"
+    not.found: "Cette ressource n'existe pas existe."
     titleHelp: "Changer le titre de cette ressource"
     change: "Changer cette ressource"
     delete: "Supprimer cette ressource"
@@ -95,6 +101,7 @@ project:
       file: "ou choisir un fichier"
   wiki:
     title: "Wiki"
+    not.found: "Cette page n'existe pas."
     titleHelp: "Changer le titre de cette page"
     new: "Nouvelle page du wiki"
     newHelp: "Créer une nouvelle page dans le wiki"
