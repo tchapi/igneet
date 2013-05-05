@@ -139,7 +139,7 @@ class WikiController extends BaseController
 
                 $this->get('session')->getFlashBag()->add(
                     'success',
-                    'Your page "'.$wikiPage->getTitle().'" was successfully created.'
+                    $this->get('translator')->trans('project.wiki.created', array( '%page%' => $wikiPage->getTitle() ))
                 );
 
                 return $this->redirect($this->generateUrl('sp_show_project_wiki_show_page', array('slug' => $slug, 'id' => $wikiPage->getId(), 'pageSlug' => $wikiPage->getSlug())));
@@ -190,14 +190,14 @@ class WikiController extends BaseController
 
           $this->get('session')->getFlashBag()->add(
               'error',
-              'This page is already the home of this wiki.'
+              $this->get('translator')->trans('project.wiki.home.already', array( '%page%' => $wikiPage->getTitle() ))
           );
 
         } else {
 
           $this->get('session')->getFlashBag()->add(
               'success',
-              'Your page "'.$wikiPage->getTitle().'" was successfully promoted to home page for this wiki.'
+              $this->get('translator')->trans('project.wiki.homed', array( '%page%' => $wikiPage->getTitle() ))
           );
 
           $em = $this->getDoctrine()->getManager();
@@ -409,7 +409,7 @@ class WikiController extends BaseController
 
                   $this->get('session')->getFlashBag()->add(
                       'success',
-                      'Your page "'.$wikiPage->getTitle().'" was successfully deleted. Its children, if any, have been put back at the root of the wiki.'
+                      $this->get('translator')->trans('project.wiki.deleted', array( '%page%' => $wikiPage->getTitle() ))
                   );
 
                 } else {
