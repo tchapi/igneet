@@ -28,46 +28,51 @@
 
 {% block header %}
   <div class="headerAvatarAndActions">
-    {% if base.canEdit %}<div class="changeAvatar"><a href="{{ path('i_edit_idea_reset_picture', {'id': base.idea.id, 'token': csrf_token('resetPicture')  }) }}" alt="Reset to default picture"><i class="icon-trash"></i></a> | <a href="{{ path('g_choose_file', {'targetAsBase64': base.targetPictureAsBase64, 'token': csrf_token('edit') }) }}"><i class="icon-pencil"></i> change</a></div>{% endif %}
+    {% if base.canEdit %}<div class="changeAvatar"><a href="{{ path('i_edit_idea_reset_picture', {'id': base.idea.id, 'token': csrf_token('resetPicture')  }) }}" title="{{ "picture.resetHelp"|trans }}"><i class="icon-trash"></i></a> | <a href="{{ path('g_choose_file', {'targetAsBase64': base.targetPictureAsBase64, 'token': csrf_token('edit') }) }}"><i class="icon-pencil"></i> {{ "picture.change"|trans }}</a></div>{% endif %}
     <img src="{{ asset(base.idea.getPicture()) }}" width="150" height="150" class="avatar"/>
 {% if base.isAlreadyWatching %}
-    <a href="{{ path('i_unwatch_idea', {'id': base.idea.id, 'token': csrf_token('unwatch') }) }}" class="btn btn-info watchAction">Unwatch idea</a>
+    <a href="{{ path('i_unwatch_idea', {'id': base.idea.id, 'token': csrf_token('unwatch') }) }}" class="btn btn-info watchAction">{{ "idea.unwatch"|trans }}</a>
 {% else %}
-    <a href="{{ path('i_watch_idea', {'id': base.idea.id, 'token': csrf_token('watch') }) }}" class="btn btn-success watchAction">Watch idea</a>
+    <a href="{{ path('i_watch_idea', {'id': base.idea.id, 'token': csrf_token('watch') }) }}" class="btn btn-success watchAction">{{ "idea.watch"|trans }}</a>
 {% endif %}
   </div>
 
   <div class="ideaInfo">
 
     <h2 class="ellipsis">
-      {% if base.idea.archived %}<span class="muted">[Archive]</span> {% endif %}<span class="editable" data-title="Change the title of this idea" data-name="name" data-url="{{ path('i_edit_idea', {'id': base.idea.id, 'token': csrf_token('edit') }) }}">{{ base.idea.name }}</span>
+      {% if base.idea.archived %}<i class="icon-folder-close"></i> {% endif %}<span class="editable" data-title="{{ "idea.titleHelp"|trans }}" data-name="name" data-url="{{ path('i_edit_idea', {'id': base.idea.id, 'token': csrf_token('edit') }) }}">{{ base.idea.name }}</span>
     </h2>
     <h4 class="ellipsis">
-      <span class="editable" data-title="Change the headline of this idea" data-name="headline" data-emptytext="Click to add a headline" data-url="{{ path('i_edit_idea', {'id': base.idea.id, 'token': csrf_token('edit') }) }}" data-type="textarea" title="{{ base.idea.headline }}">{{ base.idea.headline }}</span>
+      <span class="editable" data-title="{{ "idea.headlineHelp"|trans }}" data-name="headline" data-emptytext="{{ "idea.headlineEmptyText"|trans }}" data-url="{{ path('i_edit_idea', {'id': base.idea.id, 'token': csrf_token('edit') }) }}" data-type="textarea" title="{{ base.idea.headline }}">{{ base.idea.headline }}</span>
     </h4>
     <div>
-      <i class="icon-calendar"></i> Created on {{ base.idea.createdAt|date("d/m/Y") }}
+      <i class="icon-calendar"></i> {{ "idea.info.created.short"|trans({'%date%': base.idea.createdAt|date("date.fullFormat"|trans)}) }}
     </div>
     {% if base.idea.archivedAt %}
     <div>
-      <i class="icon-save"></i> Archived on {{ base.idea.archivedAt|date("d/m/Y") }}
+      <i class="icon-save"></i> {{ "idea.info.archived.short"|trans({'%date%': base.idea.archivedAt|date("date.fullFormat"|trans)}) }}
     </div>
     {% endif %}
     {% if base.isCreator %}
     <div>
-      {% if not base.idea.archived %}<i class="icon-external-link"></i> Turn this idea <a data-confirm="Are you sure you want to turn this idea into a project ?" href="{{ path('sp_choose_slug', {'targetAsBase64': base.targetProjectizeAsBase64, 'token': csrf_token('projectize')  }) }}">into a project</a> or <a data-confirm="Are you sure you want to archive this idea ?" href="{{ path('i_archive_idea', {'id': base.idea.id, 'token': csrf_token('archiveOrRecycle') }) }}">archive</a> it.{% else %}<i class="icon-refresh"></i> <a data-confirm="Are you sure you want to recycle this idea ?" href="{{ path('i_recycle_idea', {'id': base.idea.id, 'token': csrf_token('archiveOrRecycle') }) }}">Recycle</a> this idea{% endif %}
+      {% if not base.idea.archived %}
+        <i class="icon-external-link"></i> <a data-confirm="{{ "idea.projectizeHelp"|trans }}" href="{{ path('sp_choose_slug', {'targetAsBase64': base.targetProjectizeAsBase64, 'token': csrf_token('projectize')  }) }}">{{ "idea.projectize"|trans }}</a> -
+        <a data-confirm="{{ "idea.archiveHelp"|trans }}" href="{{ path('i_archive_idea', {'id': base.idea.id, 'token': csrf_token('archiveOrRecycle') }) }}">{{ "idea.archive"|trans }}</a>
+      {% else %}
+        <i class="icon-refresh"></i> <a data-confirm="{{ "idea.recycleHelp"|trans }}" href="{{ path('i_recycle_idea', {'id': base.idea.id, 'token': csrf_token('archiveOrRecycle') }) }}">{{ "idea.recycle"|trans }}</a>
+      {% endif %}
     </div>
     {% endif %}
 
     {% if base.idea.community is null %}
     <div>
-      <i class="icon-group"></i> <a href="{{ path('g_choose_community', {'targetAsBase64': base.targetProposeToCommunityAsBase64 , 'token': csrf_token('edit') }) }}">Propose this idea</a> to a community
+      <i class="icon-group"></i> <a href="{{ path('g_choose_community', {'targetAsBase64': base.targetProposeToCommunityAsBase64 , 'token': csrf_token('edit') }) }}">{{ "idea.propose"|trans }}</a>
     </div>
     {% endif %}
   </div>
 
   <div class="ideaAbout">
-    <div>{{ base.idea.countWatchers }} watching</div>
+    <div>{{ "idea.watchers"|transchoice(base.idea.countWatchers, { '%count': base.idea.countWatchers}) }}</div>
   </div>
 {% endblock %}
 

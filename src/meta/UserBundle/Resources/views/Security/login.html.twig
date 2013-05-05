@@ -1,17 +1,16 @@
 {% extends 'metaUserBundle::layout.html.twig' %}
 
-{% block title %}{{ parent() }} > Login{% endblock %}
+{% block title %}{{ parent() }} > {{ "login"|trans }}{% endblock %}
 
 {% block header %}
   <div class="headerAvatarAndActions">
     <div class="textAvatar"><i class="icon-lock"></i></div>
   </div>
   <div class="objectHeader">
-    <h2>Welcome !</h2>
-    <h4>Please log in to access the full content of the site.</h4>
-    <p>If you do not have an account, you can <a href="{{ path('u_signup')}}" />signup</a> here.</p>
-    <p>If you have lost your password, you can follow the full recovery procedure <a href="{{ path('recover')}}">here</a> to get a new one.<br/>
-      If you have deleted your account and want to recover it, click <a href="{{ path('reactivate')}}"/>here</a>.</p>
+    <h2>{{ "user.login.title"|trans }}</h2>
+    <h4>{{ "user.login.help"|trans }}</h4>
+    <p>{{ "user.login.text1"|trans({'%link%': '<a href="' ~ path('u_signup') ~ '" />' ~ "user.login.signup"|trans ~ '</a>' })|raw }}</p>
+    <p>{{ "user.login.text2"|trans({'%recover%': '<a href="' ~ path('recover') ~ '" />' ~ "user.login.recover"|trans ~ '</a>', '%reactivate%': '<a href="' ~ path('reactivate') ~ '" />' ~ "user.login.reactivate"|trans ~ '</a>' })|raw }}</p>
   </div>
 {% endblock %}
 
@@ -21,13 +20,13 @@
 {% endif %}
 <form action="{{ path('login_check') }}" method="POST">
   <section>
-    <div class="sectionTitle"><label for="username">Login :</label></div>
+    <div class="sectionTitle"><label for="username">{{ "user.login.login"|trans }} :</label></div>
     <div class="sectionContent">
       <input id="username" type="text" name="_username" value="{{ last_username }}" />
     </div>
   </section>
   <section>
-    <div class="sectionTitle"><label for="password">Password :</label></div>
+    <div class="sectionTitle"><label for="password">{{ "user.login.password"|trans }} :</label></div>
     <div class="sectionContent">
       <input id="password" type="password" name="_password" />
     </div>
@@ -35,7 +34,7 @@
   <section>
     <div class="sectionTitle"></div>
     <div class="sectionContent">
-      <input type="submit" name="Sign in" class="btn btn-info"/>
+      <input type="submit" name="{{ "user.login.signin"|trans }}" class="btn btn-info"/>
     </div>
   </section>
 </form>

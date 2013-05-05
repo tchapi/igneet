@@ -1,15 +1,13 @@
 {% extends 'metaUserBundle::layout.html.twig' %}
 
-{% block title %}{{ parent() }} > {{ user.getFullName() }} | Notifications{% endblock %}
+{% block title %}{{ parent() }} > {{ user.getFullName() }} | {{ "user.notifications.title"|trans }}{% endblock %}
 
 {% block header %}
   <div class="headerAvatarAndActions">
     <img src="{{ asset(user.getAvatar()) }}" width="150" height="150" class="avatar"/>
   </div>
   <div class="userInfo">
-    <h2 class="ellipsis">
-      <span>My notifications</span>
-    </h2>
+    <h2 class="ellipsis">{{ "user.notifications.title"|trans }}</h2>
   </div>
 {% endblock %}
 
@@ -21,7 +19,7 @@
       {% for notification in notifications %}
 
         {% if notification['createdAt']|date('Y-m-d') < currentDate|date('Y-m-d') %}
-          <li class="dateWrapper date"><div class="date-wrapper"><div class="date">{{ notification['createdAt']|date('M j') }}</div></div></li>
+          <li class="dateWrapper date"><div class="date-wrapper"><div class="date">{{ notification['createdAt']|date("date.timeline"|trans) }}</div></div></li>
           {% set currentDate = notification['createdAt'] %}
         {% endif %}
 
@@ -33,10 +31,10 @@
 {% else %}
   <section class="centered">
     <i class="muted icon-ok icon-4x"></i>
-    <br />You have no new notifications !
+    <br />{{ "user.notifications.none"|trans }}
   </section>
 {% endif %}
 <section class="centered">
-<a href="{{ path('u_show_user_notifications', { 'date' : from|date_modify("-7 days")|date("Y-m-d") }) }}">See more notifications starting from {{ from|date_modify("-7 days")|date("Y-m-d") }} ...</a>
+<a href="{{ path('u_show_user_notifications', { 'date' : from|date_modify("-7 days")|date("Y-m-d") }) }}">{{ "user.notifications.see.more"|trans({ '%date%': from|date_modify("-7 days")|date("date.format"|trans)} ) }}</a>
 </section>
 {% endblock %}

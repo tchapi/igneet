@@ -14,8 +14,8 @@ use Doctrine\Common\Collections\ArrayCollection,
  * @ORM\Table(name="User")
  * @ORM\Entity(repositoryClass="meta\UserBundle\Entity\UserRepository")
  * @ORM\HasLifecycleCallbacks()
- * @UniqueEntity(fields="username", message="This username is already taken")
- * @UniqueEntity(fields="email", message="This email is already registered")
+ * @UniqueEntity(fields="username", message="user.already.taken")
+ * @UniqueEntity(fields="email", message="user.email.registered")
  */
 class User implements AdvancedUserInterface
 {

@@ -1,6 +1,6 @@
 {% extends 'metaProjectBundle:Default:show.html.twig' %}
 
-{% block title %}{{ parent() }} | Resources{% endblock %}
+{% block title %}{{ parent() }} | {{ "project.resources.title"|trans }}{% endblock %}
 
 {% block navbar %}
 {% render(controller("metaProjectBundle:Default:navbar", { 'activeMenu' : 'resources', 'slug' : base.standardProject.slug })) %}
@@ -21,7 +21,7 @@
 {% block content %}
 {% if base.standardProject.resources|length > 0 %}
 <section class="colored">
-  <div class="sectionTitle">Available resources :</div>
+  <div class="sectionTitle">{{ "project.resources.available"|trans }} :</div>
   <div class="sectionContent">
   <ul class="resources">
   {% for resource in base.standardProject.resources %}
@@ -32,13 +32,13 @@
           <span>{{ resource.title }}</span>{% if resource.originalFilename %} <em>({{ resource.originalFilename }})</em>{% endif %}
         </a>
         - 
-        {% if types[resource.type].displayable or not providers[resource.provider].downloadable %}<a title="View in a new window" href="{{ resource.url }}" target="_blank"><i class="icon-external-link"></i></a>{% endif %}
-        {% if providers[resource.provider].downloadable %}<a title="Download resource" href="{{ path('sp_show_project_resource_download', {'slug': base.standardProject.slug, 'id': resource.id})}}"><i class="icon-download"></i></a>{% endif %}
+        {% if types[resource.type].displayable or not providers[resource.provider].downloadable %}<a title="{{ "project.resources.open"|trans }}" href="{{ resource.url }}" target="_blank"><i class="icon-external-link"></i></a>{% endif %}
+        {% if providers[resource.provider].downloadable %}<a title="{{ "project.resources.download"|trans }}" href="{{ path('sp_show_project_resource_download', {'slug': base.standardProject.slug, 'id': resource.id})}}"><i class="icon-download"></i></a>{% endif %}
         <span>
           {% if resource.tags|length > 0 %}
-            Tags :
+            {{ "tags.title"|trans }} :
           {% else %}
-            No tags yet.
+            {{ "tags.none"|trans }}
           {% endif %}
           <ul class="tags" >
           {% for tag in resource.tags %}<li class="label" rel="{{ tag.name }}">{{ tag.name }}</li>{% endfor %}
@@ -53,19 +53,19 @@
 {% if base.canEdit %}
 <form action="{{ path('sp_show_project_list_resources', {'slug': base.standardProject.slug}) }}" method="post" {{ form_enctype(form) }}>
   <section>
-    <h4>Add a new resource :</h4>
+    <h4>{{ "project.resources.add"|trans }} :</h4>
   </section>
   {{ form_widget(form) }}
   <section>
     <div class="sectionTitle"></div>
     <div class="sectionContent">
-      <input type="submit" value="Add" class="btn btn-info" />
+      <input type="submit" value="{{ "add"|trans }}" class="btn btn-info" />
     </div>
   </section>
 </form>
 {% else %}
 <section>
-No resource yet.
+{{ "project.resources.none"|trans }}
 </section>
 {% endif %}
 {% endblock %}

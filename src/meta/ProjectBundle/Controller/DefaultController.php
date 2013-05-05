@@ -51,13 +51,13 @@ class DefaultController extends BaseController
         if ($authenticatedUser->isGuestInCurrentCommunity()){
             $this->get('session')->getFlashBag()->add(
                 'error',
-                'You cannot create projects in this community.'
+                $this->get('translator')->trans('guest.community.cannot.do')
             );
             return $this->redirect($this->generateUrl('sp_list_projects'));
         }
 
         $project = new StandardProject();
-        $form = $this->createForm(new StandardProjectType(), $project);
+        $form = $this->createForm(new StandardProjectType(), $project, array( 'translator' => $this->get('translator')));
 
         if ($request->isMethod('POST')) {
 
@@ -82,7 +82,7 @@ class DefaultController extends BaseController
 
                 $this->get('session')->getFlashBag()->add(
                     'success',
-                    'Your new project '.$project->getName().' has successfully been created.'
+                    $this->get('translator')->trans('project.created', array( '%project%' => $project->getName()))
                 );
 
                 return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $project->getSlug())));
@@ -91,7 +91,7 @@ class DefaultController extends BaseController
                
                $this->get('session')->getFlashBag()->add(
                     'error',
-                    'The information you provided does not seem valid.'
+                    $this->get('translator')->trans('information.not.valid', array(), 'errors')
                 );
 
             }
@@ -108,7 +108,7 @@ class DefaultController extends BaseController
     public function editAction(Request $request, $slug){
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('edit', $request->get('token')))
-            return new Response('Invalid token', 400);
+            return new Response($this->get('translator')->trans('invalid.token', array(), 'errors'), 400);
 
         $this->fetchProjectAndPreComputeRights($slug, false, true);
         $error = null;
@@ -144,7 +144,7 @@ class DefaultController extends BaseController
                             $community->addProject($this->base['standardProject']);
                             $this->get('session')->getFlashBag()->add(
                                 'success',
-                                'This project is now part of the community ' . $community->getName() . '.'
+                                $this->get('translator')->trans('project.in.community', array( '%community%' => $community->getName()))
                             );
                             $logService = $this->container->get('logService');
                             $logService->log($this->getUser(), 'project_enters_community', $this->base['standardProject'], array( 'community' => array( 'routing' => 'community', 'logName' => $community->getLogName(), 'args' => null) ) );
@@ -210,7 +210,7 @@ class DefaultController extends BaseController
 
         } else {
 
-            $error = 'Invalid request';
+            $error = $this->get('translator')->trans('invalid.request', array(), 'errors');
 
         }
 
@@ -254,7 +254,7 @@ class DefaultController extends BaseController
 
             $this->get('session')->getFlashBag()->add(
                     'success',
-                    'The project '.$this->base['standardProject']->getName().' has been deleted successfully.'
+                    $this->get('translator')->trans('project.deleted', array( '%project%' => $this->base['standardProject']->getName()))
                 );
             
             return $this->redirect($this->generateUrl('sp_list_projects'));
@@ -263,7 +263,7 @@ class DefaultController extends BaseController
 
             $this->get('session')->getFlashBag()->add(
                     'warning',
-                    'You do not have sufficient privileges to delete this project.'
+                    $this->get('translator')->trans('project.cannot.delete')
                 );
 
             return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $slug)));
@@ -291,14 +291,14 @@ class DefaultController extends BaseController
 
             $this->get('session')->getFlashBag()->add(
                         'success',
-                        'The picture of the project has successfully been reset.'
+                        $this->get('translator')->trans('idea.picture.reset')
                     );
 
         } else {
     
             $this->get('session')->getFlashBag()->add(
                     'error',
-                    'You cannot reset the picture for this project.'
+                    $this->get('translator')->trans('project.picture.cannot.reset')
                 );
         }
 
@@ -326,14 +326,14 @@ class DefaultController extends BaseController
 
             $this->get('session')->getFlashBag()->add(
                 'success',
-                'This project is now public.'
+                $this->get('translator')->trans('project.public')
             );
 
         } else {
     
             $this->get('session')->getFlashBag()->add(
                 'error',
-                'You cannot make this project public.'
+                $this->get('translator')->trans('project.cannot.public')
             );
         }
 
@@ -364,7 +364,7 @@ class DefaultController extends BaseController
 
                     $this->get('session')->getFlashBag()->add(
                         'error',
-                        'This slug cannot be chosen at this time. Try to choose a different slug.'
+                        $this->get('translator')->trans('project.cannot.choose.slug')
                     );
 
                 } else {
@@ -408,14 +408,14 @@ class DefaultController extends BaseController
 
                 $this->get('session')->getFlashBag()->add(
                     'success',
-                    'You are now watching '.$this->base['standardProject']->getName().'.'
+                    $this->get('translator')->trans('project.watching', array('%project%' => $this->base['standardProject']->getName() ))
                 );
 
             } else {
 
                 $this->get('session')->getFlashBag()->add(
                     'warning',
-                    'You are already watching '.$this->base['standardProject']->getName().'.'
+                    $this->get('translator')->trans('project.already.watching', array('%project%' => $this->base['standardProject']->getName() ))
                 );
 
             }
@@ -424,7 +424,7 @@ class DefaultController extends BaseController
 
             $this->get('session')->getFlashBag()->add(
                 'warning',
-                'You cannot watch this project.'
+                $this->get('translator')->trans('project.cannot.watch')
             );
         }
 
@@ -455,14 +455,14 @@ class DefaultController extends BaseController
 
                 $this->get('session')->getFlashBag()->add(
                     'success',
-                    'You are not watching '.$this->base['standardProject']->getName().' anymore.'
+                    $this->get('translator')->trans('project.unwatching', array('%project%' => $this->base['standardProject']->getName() ))
                 );
 
             } else {
 
                 $this->get('session')->getFlashBag()->add(
                     'warning',
-                    'You are not watching '.$this->base['standardProject']->getName().'.'
+                    $this->get('translator')->trans('project.not.watching', array('%project%' => $this->base['standardProject']->getName() ))
                 );
 
             }
@@ -471,7 +471,7 @@ class DefaultController extends BaseController
 
             $this->get('session')->getFlashBag()->add(
                 'warning',
-                'You cannot watch this project.'
+                $this->get('translator')->trans('project.cannot.unwatch')
             );
         }
 

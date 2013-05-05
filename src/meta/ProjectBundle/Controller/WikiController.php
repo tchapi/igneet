@@ -85,7 +85,7 @@ class WikiController extends BaseController
 
         // Check if wikiPage belongs to project
         if ( !$wikiPage ){
-          throw $this->createNotFoundException('This page does not exist');
+          throw $this->createNotFoundException($this->get('translator')->trans('project.wiki.not.found'));
         }
 
         return $this->render('metaProjectBundle:Wiki:showWiki.html.twig', 
@@ -139,7 +139,7 @@ class WikiController extends BaseController
 
                 $this->get('session')->getFlashBag()->add(
                     'success',
-                    'Your page "'.$wikiPage->getTitle().'" was successfully created.'
+                    $this->get('translator')->trans('project.wiki.created', array( '%page%' => $wikiPage->getTitle() ))
                 );
 
                 return $this->redirect($this->generateUrl('sp_show_project_wiki_show_page', array('slug' => $slug, 'id' => $wikiPage->getId(), 'pageSlug' => $wikiPage->getSlug())));
@@ -148,7 +148,7 @@ class WikiController extends BaseController
 
                $this->get('session')->getFlashBag()->add(
                     'error',
-                    'The information you provided does not seem valid.'
+                    $this->get('translator')->trans('information.not.valid', array(), 'errors')
                 );
             }
 
@@ -183,21 +183,21 @@ class WikiController extends BaseController
 
         // Check if wikiPage belongs to project
         if ( !$wikiPage ){
-          throw $this->createNotFoundException('This page does not exist');
+          throw $this->createNotFoundException($this->get('translator')->trans('project.wiki.not.found'));
         }
 
         if ($wiki->getHomePage() == $wikiPage){
 
           $this->get('session')->getFlashBag()->add(
               'error',
-              'This page is already the home of this wiki.'
+              $this->get('translator')->trans('project.wiki.home.already', array( '%page%' => $wikiPage->getTitle() ))
           );
 
         } else {
 
           $this->get('session')->getFlashBag()->add(
               'success',
-              'Your page "'.$wikiPage->getTitle().'" was successfully promoted to home page for this wiki.'
+              $this->get('translator')->trans('project.wiki.homed', array( '%page%' => $wikiPage->getTitle() ))
           );
 
           $em = $this->getDoctrine()->getManager();
@@ -242,13 +242,13 @@ class WikiController extends BaseController
               
             } else {
 
-                return new Response('Invalid request', 400);
+                return new Response($this->get('translator')->trans('invalid.request', array(), 'errors'), 400);
 
             }
 
         } else {
 
-            return new Response('Invalid request', 400);
+            return new Response($this->get('translator')->trans('invalid.request', array(), 'errors'), 400);
 
         }
 
@@ -261,7 +261,7 @@ class WikiController extends BaseController
     {
   
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('editWikiPage', $request->get('token')))
-            return new Response('Invalid token', 400);
+            return new Response($this->get('translator')->trans('invalid.token', array(), 'errors'), 400);
 
         $this->fetchProjectAndPreComputeRights($slug, false, true);
         $error = null;
@@ -343,19 +343,19 @@ class WikiController extends BaseController
                 
               } else {
 
-                $error = 'Invalid request';
+                $error = $this->get('translator')->trans('invalid.request', array(), 'errors');
 
               }
 
             } else {
 
-              $error = 'Invalid request';
+              $error = $this->get('translator')->trans('invalid.request', array(), 'errors');
 
             }
 
         } else {
 
-            $error = 'Invalid request';
+            $error = $this->get('translator')->trans('invalid.request', array(), 'errors');
 
         }
 
@@ -409,14 +409,14 @@ class WikiController extends BaseController
 
                   $this->get('session')->getFlashBag()->add(
                       'success',
-                      'Your page "'.$wikiPage->getTitle().'" was successfully deleted. Its children, if any, have been put back at the root of the wiki.'
+                      $this->get('translator')->trans('project.wiki.deleted', array( '%page%' => $wikiPage->getTitle() ))
                   );
 
                 } else {
 
                     $this->get('session')->getFlashBag()->add(
                         'warning',
-                        'This item does not exist.'
+                        $this->get('translator')->trans('project.wiki.not.found')
                     );
 
                 }
@@ -425,7 +425,7 @@ class WikiController extends BaseController
 
                 $this->get('session')->getFlashBag()->add(
                     'warning',
-                    'This item does not exist.'
+                    $this->get('translator')->trans('project.wiki.not.found')
                 );
 
             }

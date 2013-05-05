@@ -1,6 +1,6 @@
 {% extends 'metaUserBundle::layout.html.twig' %}
 
-{% block title %}{{ parent() }} > New user{% endblock %}
+{% block title %}{{ parent() }} > {{ "user.createForm.title"|trans }}{% endblock %}
 
 {% block javascripts %}
   {{ parent() }}
@@ -15,9 +15,9 @@
     <div class="textAvatar"><i class="icon-magic"></i></div>
   </div>
   <div class="objectHeader">
-    <h2><strong>Sign up now</strong> to join the adventure !</h2>
-    <h4>And discover a great community of projects and makers at your fingertips.</h4>
-    <p>It's free and easy, just fill in the few information below and you'll be ready to go, share and participate in projects. Of course you'll be able to change this information anytime later on.</p>
+    <h2>{{ "user.createForm.title"|trans }}</h2>
+    <h4>{{ "user.createForm.help"|trans }}</h4>
+    <p>{{ "user.createForm.text"|trans }}</p>
   </div>
 {% endblock %}
 
@@ -28,17 +28,16 @@
 {% block field_widget %}
     {{ block('base_field_widget') }}
     {% if required or attr.help is defined %}
-        <span class="help-block">{% if required %}<span class="muted">* Required.</span>{% endif %} {% if attr.help is defined %}{{ attr.help }}{% endif %}</span>
+        <span class="help-block">{% if required %}<span class="muted">* {{ "required"|trans }}.</span>{% endif %} {% if attr.help is defined %}{{ attr.help|trans }}{% endif %}</span>
     {% endif %}
 {% endblock %}
 
 {% block email_widget %}
     {{ block('base_field_widget') }}
     {% if required or attr.help is defined %}
-        <span class="help-block">{% if required %}<span class="muted">* Required.</span>{% endif %} {% if attr.help is defined %}{{ attr.help }}{% endif %}</span>
+        <span class="help-block">{% if required %}<span class="muted">* {{ "required"|trans }}.</span>{% endif %} {% if attr.help is defined %}{{ attr.help|trans }}{% endif %}</span>
     {% endif %}
 {% endblock %}
-
 
 {% block form_row %}
 <div class="control-group {% if errors %}error{% endif %}">
@@ -69,7 +68,7 @@
   <form action="{{ path('u_signup', { 'inviteToken': inviteToken }) }}" method="post" {{ form_enctype(form) }} class="form-horizontal">
       {{ form_widget(form) }}
       <div class="form-actions">
-        <input type="submit" value="Create" class="btn btn-success" />
+        <input type="submit" value="{{ "user.createForm.create"|trans }}" class="btn btn-success" />
       </div>
   </form>
 </div>

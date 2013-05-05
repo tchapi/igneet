@@ -3,7 +3,7 @@
     <ul class="nav">
       {% for key, menuItem in menu %}
       <li{% if activeMenu == key %} class="active"{% endif %}><a href="{{ path(menuItem.route, {'slug': slug}) }}">
-        <i class="{{ menuItem.icon }}"></i> {{ menuItem.title }}</a></li>
+        <i class="{{ menuItem.icon }}"></i> {{ ("project." ~ key ~ ".title")|trans }}</a></li>
       {% endfor %}
     </ul>
   </div>

@@ -1,17 +1,17 @@
 <ul class="nav">
-  <li class="active"><a href="{{ path('g_home_community') }}">Home ({% if user.currentCommunity is null %}Private{% else %}{{ user.currentCommunity.name }}{% if user.isGuestInCurrentCommunity() %} <i class="icon-lock"></i>{% endif %}{% endif %})</a></li>
-  <li><a href="{{ path('sp_list_projects') }}">All Projects</a></li>
+  <li class="active"><a href="{{ path('g_home_community') }}">{{ "home"|trans }} ({% if user.currentCommunity is null %}{{ "private.space"|trans }}{% else %}{{ user.currentCommunity.name }}{% if user.isGuestInCurrentCommunity() %} <i class="icon-lock"></i>{% endif %}{% endif %})</a></li>
+  <li><a href="{{ path('sp_list_projects') }}">{{ "project.allProjects"|trans }}</a></li>
   {% if not user.isGuestInCurrentCommunity() %}
-  <li><a href="{{ path('i_list_ideas') }}">All Ideas</a></li>
+  <li><a href="{{ path('i_list_ideas') }}">{{ "idea.allIdeas"|trans }}</a></li>
   {% endif %}
   {% if user.currentCommunity is not null %}
-  <li><a href="{{ path('u_list_users') }}">All Users</a></li>
+  <li><a href="{{ path('u_list_users') }}">{{ "user.allUsers"|trans }}</a></li>
   {% endif %}
 </ul>
 <div class="pull-right">
   <ul class="nav pull-right">
       <li class="dropdown">
-        <a href="{{ path('u_show_user_notifications') }}" title="See all notifications">
+        <a href="{{ path('u_show_user_notifications') }}" title="{{ "user.notifications.help"|trans }}">
           <i class="icon-comments icon-large"></i> 
             <span id="notificationsCount" class="badge badge-info" data-update-path="{{ path('u_count_user_notifications') }}">
               <i class="icon-spinner icon-spin"></i>
@@ -27,24 +27,30 @@
           <img src="{{ asset(user.getAvatar()) }}" width="20px" height="20px" class="smallHeaderAvatar"/> {{ user.getFullName() }} <b class="caret"></b>
         </a>
         <ul class="dropdown-menu">
-            <li><a href="{{ path('u_me') }}"><i class="icon-user"></i> My profile</a></li>
+            <li><a href="{{ path('u_me') }}"><i class="icon-user"></i> {{ "user.menu"|trans }}</a></li>
             {% if user.currentCommunity is not null and not user.isGuestInCurrentCommunity() %}
-            <li><a href="{{ path('u_show_user_dashboard') }}"><i class="icon-dashboard"></i> My dashboard</a>
+            <li><a href="{{ path('u_show_user_dashboard') }}"><i class="icon-dashboard"></i> {{ "user.dashboard.menu"|trans }}</a>
             {% endif %}
+            
             </li><li class="divider"></li>
-            <li><a href="{{ path('g_switch_private_space', {'token': csrf_token('switchCommunity') }) }}"><i class="icon-{% if user.currentCommunity is null %}ok{% endif %}"></i> My Private Space</a></li>
+            
+            <li><a href="{{ path('g_switch_private_space', {'token': csrf_token('switchCommunity') }) }}"><i class="icon-{% if user.currentCommunity is null %}ok{% endif %}"></i> {{ "private.space"|trans }}</a></li>
+
             {% for community in user.communities %}
               <li><a href="{{ path('g_switch_community', { 'id': community.id, 'token': csrf_token('switchCommunity') } ) }}"><i class="icon-{% if user.currentCommunity == community %}ok{% endif %}"></i> {{ community.name }}</a></li>
             {% endfor %}
+
             {% for community in user.restrictedCommunities %}
               <li><a href="{{ path('g_switch_community', { 'id': community.id, 'token': csrf_token('switchCommunity') } ) }}"><i class="icon-{% if user.currentCommunity == community %}ok{% endif %}"></i> {{ community.name }} <i class="icon-lock"></i></a></li>
             {% endfor %}
+
             {% if user.currentCommunity is not null and not user.isGuestInCurrentCommunity() %}
             <li class="divider"></li>
-            <li><a href="{{ path('invite') }}"><i class="icon-envelope"></i> Invite Someone</a></li>
+            <li><a href="{{ path('invite') }}"><i class="icon-envelope"></i> {{ "community.invite"|trans }}</a></li>
             {% endif %}
+
             <li class="divider"></li>
-            <li><a href="{{ path('logout') }}"><i class="icon-off"></i> Logout</a></li>
+            <li><a href="{{ path('logout') }}"><i class="icon-off"></i> {{ "logout"|trans }}</a></li>
         </ul>
       </li>
   </ul>

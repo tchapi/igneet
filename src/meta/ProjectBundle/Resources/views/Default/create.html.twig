@@ -1,6 +1,6 @@
 {% extends 'metaProjectBundle::layout.html.twig' %}
 
-{% block title %}{{ parent() }} > New project{% endblock %}
+{% block title %}{{ parent() }} > {{ "project.new"|trans }}{% endblock %}
 
 {% block javascripts %}
   {{ parent() }}
@@ -15,9 +15,9 @@
     <div class="textAvatar"><i class="icon-beaker"></i></div>
   </div>
   <div class="objectHeader">
-    <h2><strong>Create</strong> a new project</h2>
-    <h4>And gather a strong community of experts to help you go forward.</h4>
-    <p>You can add more information once the project is created, such as lists, wikis and resources ...</p>
+    <h2>{{ "project.new"|trans }}</h2>
+    <h4>{{ "project.newHelp"|trans }}</h4>
+    <p>{{ "project.newText"|trans }}</p>
   </div>
 {% endblock %}
 
@@ -28,7 +28,7 @@
 {% block field_widget %}
     {{ block('base_field_widget') }}
     {% if required or attr.help is defined %}
-        <span class="help-block">{% if required %}<span class="muted">* Required.</span>{% endif %} {% if attr.help is defined %}{{ attr.help }}{% endif %}</span>
+        <span class="help-block">{% if required %}<span class="muted">* {{ "required"|trans }}</span>{% endif %} {% if attr.help is defined %}{{ attr.help|trans }}{% endif %}</span>
     {% endif %}
 {% endblock %}
   
@@ -61,7 +61,7 @@
   <form action="{{ path('sp_new_project') }}" method="post" {{ form_enctype(form) }} class="form-horizontal">
       {{ form_widget(form) }}
       <div class="form-actions">
-        <input type="submit" value="Create" class="btn btn-success" />
+        <input type="submit" value="{{ "create"|trans }}" class="btn btn-success" />
       </div>
   </form>
 </div>

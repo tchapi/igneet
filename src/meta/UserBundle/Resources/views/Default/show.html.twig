@@ -25,45 +25,45 @@
 {% block header %}
 
   <div class="headerAvatarAndActions">
-    {% if isMe %}<div class="changeAvatar"><a href="{{ path('u_edit_user_profile_reset_avatar', {'username': user.username, 'token': csrf_token('resetAvatar') }) }}" alt="Reset to default avatar"><i class="icon-trash"></i></a> | <a href="{{ path('g_choose_file', {'targetAsBase64': targetAvatarAsBase64, 'token': csrf_token('edit') }) }}"><i class="icon-pencil"></i> change</a></div>{% endif %}
+    {% if isMe %}<div class="changeAvatar"><a href="{{ path('u_edit_user_profile_reset_avatar', {'username': user.username, 'token': csrf_token('resetAvatar') }) }}" title="{{ "picture.resetHelp"|trans }}"><i class="icon-trash"></i></a> | <a href="{{ path('g_choose_file', {'targetAsBase64': targetAvatarAsBase64, 'token': csrf_token('edit') }) }}"><i class="icon-pencil"></i> {{ "picture.change"|trans }}</a></div>{% endif %}
     <img src="{{ asset(user.getAvatar()) }}" width="150" height="150" class="avatar"/>
 {% if alreadyFollowing %}
-    <a href="{{ path('u_unfollow_user', {'username': user.username, 'token': csrf_token('unfollowUser') }) }}" class="btn btn-info followAction">Unfollow {{ user.firstName }}</a>
+    <a href="{{ path('u_unfollow_user', {'username': user.username, 'token': csrf_token('unfollowUser') }) }}" class="btn btn-info followAction">{{ "user.unfollow"|trans }} {{ user.firstName }}</a>
 {% elseif not isMe %}
-    <a href="{{ path('u_follow_user', {'username': user.username, 'token': csrf_token('followUser') }) }}" class="btn btn-success followAction">Follow {{ user.firstName }}</a>
+    <a href="{{ path('u_follow_user', {'username': user.username, 'token': csrf_token('followUser') }) }}" class="btn btn-success followAction">{{ "user.follow"|trans }} {{ user.firstName }}</a>
 {% endif %}
   </div>
 
   <div class="userInfo">
 
     <h2 class="ellipsis">
-      <span data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" data-name="first_name" data-title="Change your first name" class="editable">{{ user.firstName }}</span> <span data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" data-name="last_name" data-title="Change your last name" class="editable">{{ user.lastName }}</span>
+      <span data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" data-name="first_name" data-title="{{ "user.name.first.help"|trans }}" class="editable">{{ user.firstName }}</span> <span data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" data-name="last_name" data-title="{{ "user.name.last.help"|trans }}" class="editable">{{ user.lastName }}</span>
     </h2>
 
     <h4 class="ellipsis">
-      <span data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" data-name="headline" data-emptytext="Click to add a headline" data-type="text" data-title="A one-liner to describe yourself" class="editable" title="{{ user.headline }}">{{ user.headline }}</span>
+      <span data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" data-name="headline" data-emptytext="{{ "user.headline.emptyText"|trans }}" data-type="text" data-title="{{ "user.headline.help"|trans }}" class="editable" title="{{ user.headline }}">{{ user.headline }}</span>
     </h4>
 
     <div>
-      <i class="icon-map-marker"></i> <span data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" data-name="city" data-title="Where do you live ?" class="editable">{{ user.city }}</span>
+      <i class="icon-map-marker"></i> <span data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" data-name="city" data-title="{{ "user.city.help"|trans }}" data-emptytext="{{ "user.city.emptyText"|trans }}" class="editable">{{ user.city }}</span>
     </div>
 
     <div>
-      <i class="icon-calendar"></i> Member since {{ user.createdAt|date("d/m/Y") }}
+      <i class="icon-calendar"></i> {{ "user.list.member.since"|trans({ '%date%': user.createdAt|date("date.format"|trans)}) }}
     </div>
 
     <div>
       <i class="icon-trophy"></i> 
 
       {% if user.skills|length > 0 %}
-      Skills : 
+      {{ "user.skills.title"|trans }} : 
       {% elseif not isMe %}
-      No skills added yet
+      {{ "user.skills.none"|trans }}
       {% endif %}
 
-      <ul data-toggle="manual" data-title="List your skills" data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" data-emptytext="Add skills" data-type="checklist" data-source="{{ path('u_list_all_skills') }}" data-name="skills" class="skills skills-target editable-li">
+      <ul data-toggle="manual" data-title="{{ "user.skills.help"|trans }}" data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" data-emptytext="{{ "user.skills.emptyText"|trans }}" data-type="checklist" data-source="{{ path('u_list_all_skills') }}" data-name="skills" class="skills skills-target editable-li">
       {% for skill in user.skills %}
-          <li class="label" style="background-color: #{{ skill.color }}" rel="{{ skill.slug }}">{{ skill.name }}</li>
+          <li class="label" style="background-color: #{{ skill.color }}" rel="{{ skill.slug }}">{{ (skill.slug ~ ".name")|trans({}, 'skills') }}</li>
       {% endfor %}
       </ul>
 
@@ -78,31 +78,31 @@
 {% block content %}
 {% if isMe %}
 <section>
-  <div class="sectionTitle">Your email : </div>
+  <div class="sectionTitle">{{ "user.email.title"|trans }} : </div>
   <div class="users sectionContent">
-    <span class="editable" data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" data-name="email" data-emptytext="Click to edit your email" data-type="text" data-title="Your email">{{ user.email }}</span> <em>(only visible to me)</em>
+    <span class="editable" data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" data-name="email" data-emptytext="{{ "user.email.emptyText"|trans }}" data-type="text" data-title="{{ "user.email.help"|trans }}">{{ user.email }}</span> <em>({{ "user.email.info"|trans }})</em>
   </div>
 </section>
 <section>
-  <div class="sectionTitle">Password : </div>
+  <div class="sectionTitle">{{ "user.password"|trans }} : </div>
   <div class="users sectionContent">
-    <a href="{{ path('change_password', {'token': csrf_token('changePassword')} ) }}">Change my password</a>
+    <a href="{{ path('change_password', {'token': csrf_token('changePassword')} ) }}">{{ "user.passwordChange.title"|trans }}</a>
   </div>
 </section>
 {% endif %}
 <section>
-  <div class="wmd-heading"><i class="icon-bullhorn"></i> About {{ user.firstName }}{% if isMe %}<a class="pull-right markdown-trigger">&hellip;<i class="icon-pencil"></i></a>{% endif %}</div>
+  <div class="wmd-heading"><i class="icon-bullhorn"></i> {{ "user.about"|trans({ '%user%': user.getFullName}) }}{% if isMe %}<a class="pull-right markdown-trigger">&hellip;<i class="icon-pencil"></i></a>{% endif %}</div>
   <div>
 
     {% if isMe %}
-      <div class="wmd-message-top hide alert"><i class="icon-warning-sign"></i> Unsaved changes</div>
+      <div class="wmd-message-top hide alert"><i class="icon-warning-sign"></i> {{ "unsaved.changes"|trans }}</div>
       <div class="wmd-wrapper well well-small hide" >
         <div class="wmd-panel">
             <div id="wmd-button-bar"></div>
             <textarea unsaved='no' data-name="about" data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" class="wmd-input" id="wmd-input">{{ user.about }}</textarea>
         </div>
         <div>
-          <button id="wmd-save" class="btn btn-primary">Save</button> <span class="muted wmd-message">Click 'Save' to commit your changes</span>
+          <button id="wmd-save" class="btn btn-primary">{{ "save"|trans }}</button> <span class="muted wmd-message">{{ "saveHelp"|trans }}</span>
         </div>
         <div id="wmd-preview" class="preview">{{ user.about }}</div>
       </div>
@@ -115,7 +115,7 @@
 
 {% if following|length > 0 %}
 <section class="colored first">
-<div class="sectionTitle">{{ user.firstName }} is following : </div>
+<div class="sectionTitle">{{ "user.followers"|trans({'%user%': user.firstName }) }} : </div>
 <ul class="users sectionContent">
 {% for followingUser in following %}
   <li>
@@ -133,7 +133,7 @@
 
 {% if isMe and followers|length > 0 %}
 <section class="colored">
-<div class="sectionTitle">My followers : </div>
+<div class="sectionTitle">{{ "user.followers"|trans }} : </div>
 <ul class="users sectionContent">
 {% for followerUser in followers %}
   <li>
@@ -151,7 +151,7 @@
 
 {% if isMe and projectsWatched|length > 0 %}
 <section class="colored">
-<div class="sectionTitle">Projects I watch :</div>
+<div class="sectionTitle">{{ "user.projects.watched"|trans }} :</div>
 <ul class="projects sectionContent">
 {% for watchedProject in projectsWatched %}
   <li>
@@ -169,7 +169,7 @@
 
 {% if projectsOwned|length > 0 %}
 <section class="colored">
-<div class="sectionTitle">Projects I own :</div>
+<div class="sectionTitle">{{ "user.projects.owned"|trans }} :</div>
 <ul class="projects sectionContent">
 {% for ownedProject in projectsOwned %}
   <li>
@@ -187,7 +187,7 @@
 
 {% if projectsParticipatedIn|length > 0 %}
 <section class="colored">
-<div class="sectionTitle">Projects I'm in :</div>
+<div class="sectionTitle">{{ "user.projects.participated"|trans }} :</div>
 <ul class="projects sectionContent">
 {% for participatedInProject in projectsParticipatedIn %}
   <li>
@@ -205,7 +205,7 @@
 
 {% if isMe and ideasWatched|length > 0 %}
 <section class="colored">
-<div class="sectionTitle">Ideas I watch :</div>
+<div class="sectionTitle">{{ "user.ideas.watched"|trans }} :</div>
 <ul class="projects sectionContent">
 {% for idea in ideasWatched %}
   <li>
@@ -223,7 +223,7 @@
 
 {% if ideasCreated|length > 0 %}
 <section class="colored">
-<div class="sectionTitle">Ideas I initiated :</div>
+<div class="sectionTitle">{{ "user.ideas.initiated"|trans }} :</div>
 <ul class="projects sectionContent">
 {% for idea in ideasCreated %}
   <li>
@@ -241,7 +241,7 @@
 
 {% if ideasParticipatedIn|length > 0 %}
 <section class="colored">
-<div class="sectionTitle">Ideas I participate in :</div>
+<div class="sectionTitle">{{ "user.ideas.participated"|trans }} :</div>
 <ul class="projects sectionContent">
 {% for idea in ideasParticipatedIn %}
   <li>
@@ -258,15 +258,15 @@
 {% endif %}
 
 <section class="colored">
-  <div class="sectionTitle">Activity :</div>
+  <div class="sectionTitle">{{ "user.activity"|trans }} :</div>
   <div class="projects sectionContent">
-    {{ user.comments|length }} comments, including {{ user.countPublicComments }} public ones.
+    {{ "user.dashboard.comments"|transchoice(user.comments|length, { '%count%': user.comments|length, '%public%': user.countPublicComments }) }}
   </div>
 </section>
 {% if isMe %}
 <section class="colored warning">
-  <div class="sectionTitle">Delete my account : </div>
-  <div class="sectionContent"><a class="btn btn-danger" data-confirm="Are you sure you want to delete yourself ? Ideas for which you are the only creator will be deleted as well." href="{{ path('u_delete_user_profile', { 'username': user.username, 'token': csrf_token('delete') }) }}">Delete</a> <span class="muted">( <i class="icon-warning-sign"></i> Warning : you cannot undo this )</span></div>
+  <div class="sectionTitle">{{ "user.delete"|trans }} : </div>
+  <div class="sectionContent"><a class="btn btn-danger" data-confirm="{{ "user.deleteHelp"|trans }}" href="{{ path('u_delete_user_profile', { 'username': user.username, 'token': csrf_token('delete') }) }}">{{ "delete"|trans }}</a> <span class="muted">( <i class="icon-warning-sign"></i> {{ "deleteHelp"|trans }} )</span></div>
 </section>
 {% endif %}
 {% endblock %}

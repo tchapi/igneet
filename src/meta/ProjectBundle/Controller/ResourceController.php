@@ -99,7 +99,7 @@ class ResourceController extends BaseController
 
                 $this->get('session')->getFlashBag()->add(
                     'success',
-                    'Your resource '.$resource->getTitle().' has successfully been added to the project '.$this->base['standardProject']->getName().'.'
+                    $this->get('translator')->trans('project.resources.created', array( '%resource%' => $resource->getTitle(), '%project%' => $this->base['standardProject']->getName()))
                 );
 
                 return $this->redirect($this->generateUrl('sp_show_project_list_resources', array('slug' => $this->base['standardProject']->getSlug())));
@@ -108,7 +108,7 @@ class ResourceController extends BaseController
                
                $this->get('session')->getFlashBag()->add(
                     'error',
-                    'The information you provided does not seem valid.'
+                    $this->get('translator')->trans('information.not.valid', array(), 'errors')
                 );
 
             }
@@ -137,7 +137,7 @@ class ResourceController extends BaseController
         $resource = $repository->findOneById($id);
 
         if (!$resource){
-            throw $this->createNotFoundException('This resource does not exist');
+            throw $this->createNotFoundException($this->get('translator')->trans('project.resources.not.found'));
         }
 
         $newResource = new Resource();
@@ -239,13 +239,13 @@ class ResourceController extends BaseController
 
             } else {
 
-              $error = 'Invalid request';
+              $error = $this->get('translator')->trans('invalid.request', array(), 'errors');
 
             }
             
         } else {
 
-            $error = 'Invalid request';
+            $error = $this->get('translator')->trans('invalid.request', array(), 'errors');
 
         }
 
@@ -297,14 +297,14 @@ class ResourceController extends BaseController
 
                 $this->get('session')->getFlashBag()->add(
                     'success',
-                    'This resource has been successfully deleted.'
+                    $this->get('translator')->trans('project.resources.deleted', array( '%project%' => $this->base['standardProject']->getName()))
                 );
 
             } else {
 
                 $this->get('session')->getFlashBag()->add(
                     'warning',
-                    'This resource does not exist.'
+                    $this->get('translator')->trans('project.resources.not.found')
                 );
 
             }
@@ -341,7 +341,7 @@ class ResourceController extends BaseController
 
                 $this->get('session')->getFlashBag()->add(
                     'warning',
-                    'This resource does not exist.'
+                    $this->get('translator')->trans('project.resources.not.found')
                 );
 
             }

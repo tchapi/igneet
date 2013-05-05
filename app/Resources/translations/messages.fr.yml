@@ -1,10 +1,37 @@
 date:
   format: "d/m/Y"
   fullFormat: "d/m/Y H:i"
+  timeline: "M j"
+  today: "Aujourd'hui"
+  past.week: "Avant ..."
 time:
   format: "H:i"
+timeline.reset.filters: "Effacer les filtres"
+timeline.placeholder: "Filtres optionnels"
 cancel: "Annuler"
+change: "Changer"
 choose: "Choisir"
+create: "Créer"
+add: "Ajouter"
+save: "Sauvegarder"
+saveHelp: "Cliquez sur 'Sauvegarder' pour enregistrer vos modifications"
+delete: "Supprimer"
+deleteHelp: "Attention : la suppression est définitive"
+continue: "Continuer"
+unsaved.changes: "Modifications non sauvegardées"
+required: "Obligatoire"
+# Header
+home: "Accueil"
+login: "Se connecter"
+signup: "Créer un compte"
+logout: "Déconnexion"
 # Footer
 report.bug: "Rapporter un bug"
 terms: "Conditions générales"
+# Team
+team: "L'équipe d'igneet"
+# Mails
+mail:
+  hello: "Bonjour,"
+  automated.user: "Ceci est un message automatique d'igneet, mais vous pouvez répondre directement à %users% en répondant à ce message."
+  automated: "Ceci est un message automatique d'igneet, merci de ne pas y répondre."

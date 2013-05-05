@@ -1,6 +1,6 @@
 {% extends 'metaProjectBundle:Default:show.html.twig' %}
 
-{% block title %}{{ parent() }} | Resource : {{ resource.title }} {% endblock %}
+{% block title %}{{ parent() }} | {{ "project.resources.title"|trans }} : {{ resource.title }} {% endblock %}
 
 {% block navbar %}
 {% render(controller("metaProjectBundle:Default:navbar", { 'activeMenu' : 'resources', 'slug' : base.standardProject.slug })) %}
@@ -22,29 +22,29 @@
 <section>
   <h3>
     <img src="{{ asset('/bundles/metageneral/img/icons/' ~ types[resource.type].icon ~ '.png') }}" width="32px" height="32px"/>
-    <span class="editable" data-title="Change the title of this resource" data-name="title" data-url="{{ path('sp_show_project_resource_edit', {'slug': base.standardProject.slug, 'id': resource.id, 'token': csrf_token('edit') }) }}" data-type="text">{{ resource.title }}</span>
+    <span class="editable" data-title="{{ "project.resources.titleHelp"|trans }}" data-name="title" data-url="{{ path('sp_show_project_resource_edit', {'slug': base.standardProject.slug, 'id': resource.id, 'token': csrf_token('edit') }) }}" data-type="text">{{ resource.title }}</span>
   </h3>
 
   <div class="resourceDetail">
     <img src="{{ asset('/bundles/metageneral/img/icons/' ~ providers[resource.provider].icon ~ '.png') }}" width="16px" height="16px"/>
-    <span>{{ providers[resource.provider].name }}</span> - <span>{{ types[resource.type].name }}</span>
+    <span>{{ ('providers' ~ resource.provider)|trans({}, 'resources') }}</span> - <span>{{ ('resources' ~ resource.type)|trans({}, 'resources') }}</span>
     
     {% if resource.originalfilename %}
-    <div>Original filename : <strong>{{ resource.originalFilename }}</strong> (<em>latest version uploaded on {{ resource.latestVersionUploadedAt|date('d/m/Y H:i:s') }}</em>)</div>
+    <div>{{ "project.resources.original"|trans }} : <strong>{{ resource.originalFilename }}</strong> (<em>{{ "project.resources.lastest"|trans({ '%date%': resource.latestVersionUploadedAt|date("date.fullFormat"|trans)}) }}</em>)</div>
     {% endif %}
 
     <div>
-    {% if types[resource.type].displayable or not providers[resource.provider].downloadable %}<a title="View in a new window" href="{{ resource.url }}" target="_blank"><i class="icon-external-link"></i> Open in a new window</a>{% endif %}
-    {% if providers[resource.provider].downloadable %}<a title="Download resource" href="{{ path('sp_show_project_resource_download', {'slug': base.standardProject.slug, 'id': resource.id})}}"><i class="icon-download"></i> Download this resource</a>{% endif %}
+    {% if types[resource.type].displayable or not providers[resource.provider].downloadable %}<a title="{{ "project.resources.openHelp"|trans }}" href="{{ resource.url }}" target="_blank"><i class="icon-external-link"></i> {{ "project.resources.open"|trans }}</a>{% endif %}
+    {% if providers[resource.provider].downloadable %}<a href="{{ path('sp_show_project_resource_download', {'slug': base.standardProject.slug, 'id': resource.id})}}"><i class="icon-download"></i> {{ "project.resources.download"|trans }}</a>{% endif %}
     </div>
 
     <div>
       {% if resource.tags|length > 0 or base.canEdit %}
-        Tags :
+        {{ "tags.title"|trans }} :
       {% elseif not base.canEdit %}
-        No tags yet.
+        {{ "tags.none"|trans }}
       {% endif %}
-      <ul data-toggle="manual" data-title="Indicate tags separated by a comma" data-emptytext="Add tags" data-url="{{ path('sp_show_project_resource_edit', {'slug': base.standardProject.slug, 'id' : resource.id, 'token': csrf_token('edit') }) }}" data-type="select2" data-name="tags" class="tags tags{{ resource.id }}-target editable-li" >
+      <ul data-toggle="manual" data-title="{{ "tags.help"|trans }}" data-emptytext="{{ "tags.emptyText"|trans }}" data-url="{{ path('sp_show_project_resource_edit', {'slug': base.standardProject.slug, 'id' : resource.id, 'token': csrf_token('edit') }) }}" data-type="select2" data-name="tags" class="tags tags{{ resource.id }}-target editable-li" >
       {% for tag in resource.tags %}<li class="label" rel="{{ tag.name }}">{{ tag.name }}</li>{% endfor %}
       </ul>
       {% if base.canEdit %} <a class="editable-trigger" data-target="tags{{ resource.id }}">&hellip;<i class="icon-pencil"></i></a>{% endif %}
@@ -52,27 +52,23 @@
   </div>
 </section>
 {% if base.canEdit %}
-<!-- 
 
-    Add new version of the resource
-
--->
 <form action="{{ path('sp_show_project_resource_edit', {'slug': base.standardProject.slug, 'id': resource.id, 'token': csrf_token('edit')}) }}" method="post" {{ form_enctype(form) }}>
   <section>
-    <h4>Change this resource :</h4>
+    <h4>{{ "project.resources.change"|trans }} :</h4>
   </section>
   {{ form_widget(form) }}
   <input type="hidden" name="name" value="urlOrFile" />
   <section>
     <div class="sectionTitle"></div>
     <div class="sectionContent">
-      <input type="submit" value="Change" class="btn btn-info" />
+      <input type="submit" value="{{ "change"|trans }}" class="btn btn-info" />
     </div>
   </section>
 </form>
 <section class="colored warning">
-  <div class="sectionTitle">Delete this resource : </div>
-  <div class="sectionContent"><a class="btn btn-danger" data-confirm="Are you sure you want to delete this resource ?" href="{{ path('sp_show_project_resource_delete', {'slug': base.standardProject.slug, 'id': resource.id, 'token': csrf_token('delete')}) }}">Delete</a> <span class="muted">( <i class="icon-warning-sign"></i> Warning : you cannot undo this )</span></div>
+  <div class="sectionTitle">{{ "project.resources.delete"|trans }} : </div>
+  <div class="sectionContent"><a class="btn btn-danger" data-confirm="{{ "project.resources.deleteHelp"|trans }}" href="{{ path('sp_show_project_resource_delete', {'slug': base.standardProject.slug, 'id': resource.id, 'token': csrf_token('delete')}) }}">{{ "delete"|trans }}</a> <span class="muted">( <i class="icon-warning-sign"></i> {{ "deleteHelp"|trans }} )</span></div>
 </section>
 {% endif %}
 {% endblock %}

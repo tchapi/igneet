@@ -20,7 +20,7 @@ class BaseController extends Controller
 
         // Unexistant or deleted project
         if (!$project || $project->isDeleted()){
-          throw $this->createNotFoundException('This project does not exist');
+          throw $this->createNotFoundException($this->get('translator')->trans('project.not.found'));
         }
 
         $authenticatedUser = $this->getUser();
@@ -32,17 +32,17 @@ class BaseController extends Controller
         
         // Project in private space, but not owner nor participant
         if (is_null($community) && !$isOwning && !$isParticipatingIn){
-          throw $this->createNotFoundException('This project does not exist');
+          throw $this->createNotFoundException($this->get('translator')->trans('project.not.found'));
         }
 
         // Private project of which I'm not owner nor participant
         if ($project->isPrivate() && !$isOwning && !$isParticipatingIn){
-          throw $this->createNotFoundException('This project does not exist');
+          throw $this->createNotFoundException($this->get('translator')->trans('project.not.found'));
         }
 
         // User is guest in community
         if ($authenticatedUser->isGuestInCurrentCommunity() && !$isOwning && !$isParticipatingIn){
-            throw $this->createNotFoundException('This project does not exist');
+            throw $this->createNotFoundException($this->get('translator')->trans('project.not.found'));
         }
 
         // Project not in community, we might switch 
@@ -55,10 +55,10 @@ class BaseController extends Controller
 
                 $this->get('session')->getFlashBag()->add(
                     'info',
-                    'You have automatically been switched to the community ' . $community->getName() . '.'
+                    $this->get('translator')->trans('community.switch', array( '%community%' => $community->getName()))
                 );
             } else {
-                throw $this->createNotFoundException('This project does not exist');
+                throw $this->createNotFoundException($this->get('translator')->trans('project.not.found'));
             }
         }
 

@@ -10,12 +10,17 @@
     
  ☐  Faire une passe sur les titles/alt des liens d'éditions (les icon-pencils)
 
- ☐ projects dont je ne suis pas participant : je vois les trucs ou pas ???
+ ✔ projects dont je ne suis pas participant : je vois les trucs ou pas ??? @done (13-05-05 19:51)
 
  ☐ Deep linking : verifier a l'affichage que l'utilisateur a le droit de voir l'objet deep linké !
 
- ☐ Flashbags a remplacer PARTOUT
- ☐  enlever les logs dont je suis l'initiateur
+ ✔ Flashbags a remplacer PARTOUT @done (13-05-05 21:54)
+ ☐ enlever les logs dont je suis l'initiateur
+
+ ✔ liste des skills a la creation d'un user : a traduire @done (13-05-05 20:14)
+ ✔ translation : placeholders pour le select2 ? a gerer dans le DOM si possible @done (13-05-05 21:27)
+ ✔ traduire les noms des fields de form et les helps - normalement |trans est fait par défaut dans les templates @done (13-04-15 22:48)
+
 
 Todo - Entity "Community" :
 
@@ -30,7 +35,6 @@ Home de community (penser au private space !!)
  
 Managers qui peuvent éditer la communauté et inviter
 "Request a manager to invite XXXX" => le manager a un tableau de validation
-
 
 Un user n'a pas le droit de créer une communauté pour l'instant
 IDEES gestion des users dans le private space : ne pas avoir d'user !

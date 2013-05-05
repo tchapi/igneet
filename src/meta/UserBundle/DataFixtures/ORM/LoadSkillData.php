@@ -13,49 +13,39 @@ class LoadSkillData implements FixtureInterface
      */
     public function load(ObjectManager $manager)
     {
-        $skill = new Skill();
-        $skill->setSlug('development');
-        $skill->setName('Development');
-        $skill->setDescription('Web / Application development');
-        $skill->setColor('00CCBB');
 
-        $manager->persist($skill);
-        $manager->flush();
+        // Do not forget to add a translation if a skill is added here
+        $skills = array(
+            'marketResearch' => array('color' => ""),
+            'productMarketing' => array('color' => ""),
+            'communication' => array('color' => ""),
+            'creativeThinking' => array('color' => ""),
+            'finance' => array('color' => ""),
+            'commercial' => array('color' => ""),
+            'negotation' => array('color' => ""),
+            'management' => array('color' => ""),
+            'problemSolving' => array('color' => ""),
+            'businessKnowledge' => array('color' => ""),
+            'entrepreneurialKnowledge' => array('color' => ""),
+            'productDevelopment' => array('color' => ""),
+            'productionManagement' => array('color' => ""),
+            'supplyChain' => array('color' => ""),
+            'code' => array('color' => ""),
+            'electronics' => array('color' => ""),
+            'maths' => array('color' => ""),
+            'physics' => array('color' => ""),
+            'chemical' => array('color' => "")
+        );
 
-        $skill = new Skill();
-        $skill->setSlug('commercial');
-        $skill->setName('Commercial');
-        $skill->setDescription('Selling Stuff');
-        $skill->setColor('00CCBB');
+        foreach($skills as $slug => $skill){
 
-        $manager->persist($skill);
-        $manager->flush();
+            $persistedSkill = new Skill();
+            $persistedSkill->setSlug($slug);
+            $persistedSkill->setColor($skill['color']);
 
-        $skill = new Skill();
-        $skill->setSlug('business-dev');
-        $skill->setName('Business Dev');
-        $skill->setDescription('Developing the business');
-        $skill->setColor('00CCBB');
+            $manager->persist($persistedSkill);
+            $manager->flush();
+        }
 
-        $manager->persist($skill);
-        $manager->flush();
-
-        $skill = new Skill();
-        $skill->setSlug('management');
-        $skill->setName('Management');
-        $skill->setDescription('Managing people');
-        $skill->setColor('00CCBB');
-
-        $manager->persist($skill);
-        $manager->flush();
-
-        $skill = new Skill();
-        $skill->setSlug('tech-consulting');
-        $skill->setName('Tech Consulting');
-        $skill->setDescription('Consulting & Technical expertise');
-        $skill->setColor('00CCBB');
-
-        $manager->persist($skill);
-        $manager->flush();
     }
 }

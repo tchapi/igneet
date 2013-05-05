@@ -164,7 +164,7 @@ class DefaultController extends Controller
 
                 $this->get('session')->getFlashBag()->add(
                         'warning',
-                        $this->get('translator')->trans('user.have.no.community')
+                        $this->get('translator')->trans('member.have.no.community')
                     );
 
                 return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $this->getUser()->getUsername())));
@@ -193,7 +193,7 @@ class DefaultController extends Controller
 
             $this->get('session')->getFlashBag()->add(
                 'success',
-                $this->get('translator')->trans('user.in.private.space')
+                $this->get('translator')->trans('member.in.private.space')
             );
 
             $em = $this->getDoctrine()->getManager();
@@ -211,7 +211,7 @@ class DefaultController extends Controller
             
             $this->get('session')->getFlashBag()->add(
                 'success',
-                $this->get('translator')->trans('user.in.community', array( '%community%' => $community->getName()))
+                $this->get('translator')->trans('member.in.community', array( '%community%' => $community->getName()))
             );
 
             $em = $this->getDoctrine()->getManager();
@@ -222,7 +222,7 @@ class DefaultController extends Controller
 
         } else {
             
-            throw $this->createNotFoundException($this->get('translator')->trans('community.notFound')); // Which is false, but we should not reveal its existence
+            throw $this->createNotFoundException($this->get('translator')->trans('community.not.found')); // Which is false, but we should not reveal its existence
 
         }
 

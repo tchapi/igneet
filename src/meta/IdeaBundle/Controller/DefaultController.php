@@ -32,7 +32,7 @@ class DefaultController extends Controller
 
         // Unexistant or deleted
         if (!$idea || $idea->isDeleted()){
-          throw $this->createNotFoundException('This idea does not exist');
+          throw $this->createNotFoundException($this->get('translator')->trans('idea.not.found'));
         }
 
         $authenticatedUser = $this->getUser();
@@ -44,12 +44,12 @@ class DefaultController extends Controller
 
         // Idea in private space, but not creator nor participant
         if (is_null($community) && !$isCreator && !$isParticipatingIn){
-          throw $this->createNotFoundException('This idea does not exist');
+          throw $this->createNotFoundException($this->get('translator')->trans('idea.not.found'));
         }
 
         // User is guest in community
         if ($authenticatedUser->isGuestInCurrentCommunity()){
-            throw $this->createNotFoundException('This idea does not exist');
+            throw $this->createNotFoundException($this->get('translator')->trans('idea.not.found'));
         }
 
         // Idea not in community, we might switch 
@@ -62,10 +62,10 @@ class DefaultController extends Controller
 
                 $this->get('session')->getFlashBag()->add(
                     'info',
-                    'You have automatically been switched to the community ' . $community->getName() . '.'
+                    $this->get('translator')->trans('community.switch', array( '%community%' => $community->getName()))
                 );
             } else {
-                throw $this->createNotFoundException('This idea does not exist');
+                throw $this->createNotFoundException($this->get('translator')->trans('idea.not.found'));
             }
         }
         
@@ -101,7 +101,7 @@ class DefaultController extends Controller
 
         // User is guest in community
         if ($authenticatedUser->isGuestInCurrentCommunity()){
-            throw new AccessDeniedHttpException('You do not have access to this page as a guest in the community.', null);
+            throw new AccessDeniedHttpException($this->get('translator')->trans('guest.community.cannot.access'), null);
         }
 
         $repository = $this->getDoctrine()->getRepository('metaIdeaBundle:Idea');
@@ -166,17 +166,18 @@ class DefaultController extends Controller
     {
         
         $authenticatedUser = $this->getUser();
+        $community = $authenticatedUser->getCurrentCommunity();
 
         if ($authenticatedUser->isGuestInCurrentCommunity()){
             $this->get('session')->getFlashBag()->add(
                 'error',
-                'You cannot create ideas in a community in which you are a guest.'
+                $this->get('translator')->trans('guest.community.cannot.do')
             );
             return $this->redirect($this->generateUrl('i_list_ideas'));
         }
 
         $idea = new Idea();
-        $form = $this->createForm(new IdeaType(), $idea, array('allowCreators' => !is_null($authenticatedUser->getCurrentCommunity()), 'community' => $authenticatedUser->getCurrentCommunity() ));
+        $form = $this->createForm(new IdeaType(), $idea, array('allowCreators' => !is_null($community), 'community' => $community, 'translator' => $this->get('translator') ));
 
         if ($request->isMethod('POST')) {
 
@@ -186,14 +187,14 @@ class DefaultController extends Controller
             $idea->setSlug($textService->slugify($idea->getName()));
 
             // Prevents users in the private space from creating ideas with other creators
-            if ($form->isValid() && ( !is_null($authenticatedUser->getCurrentCommunity()) || count($idea->getCreators()) === 0 ) ) {
+            if ($form->isValid() && ( !is_null($community) || count($idea->getCreators()) === 0 ) ) {
 
                 if ( !$idea->getCreators()->contains($authenticatedUser) ){
                     $idea->addCreator($authenticatedUser);
                 }
 
-                if ( !is_null($authenticatedUser->getCurrentCommunity()) ){
-                    $authenticatedUser->getCurrentCommunity()->addIdea($idea);
+                if ( !is_null($community) ){
+                    $community->addIdea($idea);
                 }
 
                 $em = $this->getDoctrine()->getManager();
@@ -205,7 +206,7 @@ class DefaultController extends Controller
 
                 $this->get('session')->getFlashBag()->add(
                     'success',
-                    'The new idea '.$idea->getName().' has successfully been created.'
+                    $this->get('translator')->trans('idea.created', array( '%idea%' => $idea->getName()))
                 );
 
                 return $this->redirect($this->generateUrl('i_show_idea', array('id' => $idea->getId())));
@@ -214,7 +215,7 @@ class DefaultController extends Controller
                
                $this->get('session')->getFlashBag()->add(
                     'error',
-                    'The information you provided does not seem valid.'
+                    $this->get('translator')->trans('information.not.valid', array(), 'errors')
                 );
 
             }
@@ -232,7 +233,7 @@ class DefaultController extends Controller
     {
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('edit', $request->get('token')))
-            return new Response('Invalid token', 400);
+            return new Response($this->get('translator')->trans('invalid.token', array(), 'errors'), 400);
 
         $this->fetchIdeaAndPreComputeRights($id, false, true);
         $error = null;
@@ -262,7 +263,7 @@ class DefaultController extends Controller
                             $community->addIdea($this->base['idea']);
                             $this->get('session')->getFlashBag()->add(
                                 'success',
-                                'This idea is now part of the community ' . $community->getName() . '.'
+                                $this->get('translator')->trans('idea.in.community', array( '%community%' => $community->getName())) 
                             );
                             $logService = $this->container->get('logService');
                             $logService->log($this->getUser(), 'idea_enters_community', $this->base['idea'], array( 'community' => array( 'routing' => 'community', 'logName' => $community->getLogName(), 'args' => null) ) );
@@ -340,7 +341,7 @@ class DefaultController extends Controller
 
         } else {
 
-            $error = 'Invalid request';
+            $error = $this->get('translator')->trans('invalid.request', array(), 'errors');
 
         }
 
@@ -386,7 +387,7 @@ class DefaultController extends Controller
 
             $this->get('session')->getFlashBag()->add(
                 'success',
-                'The idea '.$this->base['idea']->getName().' has been deleted successfully.'
+                $this->get('translator')->trans('idea.deleted', array( '%idea%' => $this->base['idea']->getName()) )
             );
             
             return $this->redirect($this->generateUrl('i_list_ideas'));
@@ -395,7 +396,7 @@ class DefaultController extends Controller
 
             $this->get('session')->getFlashBag()->add(
                 'warning',
-                'You do not have sufficient privileges to delete this idea.'
+                $this->get('translator')->trans('idea.cannot.delete')
             );
 
             return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
@@ -426,10 +427,9 @@ class DefaultController extends Controller
 
             $em->flush();
             
-            $action = $archive?'archive':'recycle';
             $this->get('session')->getFlashBag()->add(
                 'success',
-                'The idea '.$this->base['idea']->getName().' has been ' . $action . 'd successfully.'
+                $this->get('translator')->trans($archive?'idea.archived':'idea.recycled', array( '%idea%' => $this->base['idea']->getName())) 
             );
         
             return $this->redirect($this->generateUrl('i_list_ideas'));
@@ -438,7 +438,7 @@ class DefaultController extends Controller
 
             $this->get('session')->getFlashBag()->add(
                 'warning',
-                'You do not have sufficient privileges to archive or recycle this idea.'
+                $this->get('translator')->trans('idea.cannot.archiveOrRecycle')
             );
 
             return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
@@ -465,14 +465,14 @@ class DefaultController extends Controller
 
             $this->get('session')->getFlashBag()->add(
                 'success',
-                'The picture of this idea has successfully been reset.'
+                $this->get('translator')->trans('idea.picture.reset')
             );
 
         } else {
     
             $this->get('session')->getFlashBag()->add(
                 'error',
-                'You cannot reset the picture for this idea.'
+                $this->get('translator')->trans('idea.picture.cannot.reset')
             );
         }
 
@@ -498,7 +498,6 @@ class DefaultController extends Controller
             $project = new StandardProject();
                 $project->setName($this->base['idea']->getName());
                 $project->setHeadline($this->base['idea']->getHeadline());
-                $project->setAbout("Originated from idea #" . $this->base['idea']->getId() . " : " . $this->base['idea']->getName() );
                 $project->setPicture($this->base['idea']->getRawPicture());
                 $project->setCreatedAt($this->base['idea']->getCreatedAt());
 
@@ -516,19 +515,20 @@ class DefaultController extends Controller
 
                 foreach ($this->base['idea']->getComments() as $comment) {
                     if (!$comment->isDeleted()) {
-                        $newComment = $comment->createStandardProjectComment();
+                        $newComment = $comment->createProjectComment();
                         $project->addComment($newComment);
                         $em->persist($newComment);
                     }
                 }
 
             $project->setOriginalIdea($this->base['idea']);
+            
+            $textService = $this->container->get('textService');
 
             if ($request->request->get('slug') === ""){
-                $textService = $this->container->get('textService');
                 $project->setSlug($textService->slugify($project->getName()));
             } else {
-                $project->setSlug(trim($request->request->get('slug')));
+                $project->setSlug(strtolower(trim($request->request->get('slug'))));
             }
 
             // Community
@@ -541,14 +541,14 @@ class DefaultController extends Controller
 
                 $project->setWiki($wiki);
                 $wikiPageConcept = new WikiPage();
-                    $wikiPageConcept->setTitle("Concept");
+                    $wikiPageConcept->setTitle($this->get('translator')->trans('idea.concept'));
                     $wikiPageConcept->setContent($this->base['idea']->getConceptText());
-                    $wikiPageConcept->setSlug('concept');
+                    $wikiPageConcept->setSlug($textService->slugify($wikiPageConcept->getTitle()));
 
                 $wikiPageKnowledge = new WikiPage();
-                    $wikiPageKnowledge->setTitle("Knowledge");
+                    $wikiPageKnowledge->setTitle($this->get('translator')->trans('idea.knowledge'));
                     $wikiPageKnowledge->setContent($this->base['idea']->getKnowledgeText());
-                    $wikiPageKnowledge->setSlug('knowledge');
+                    $wikiPageKnowledge->setSlug($textService->slugify($wikiPageKnowledge->getTitle()));
 
                 $wiki->addPage($wikiPageConcept);
                 $wiki->addPage($wikiPageKnowledge);
@@ -568,7 +568,7 @@ class DefaultController extends Controller
 
             $this->get('session')->getFlashBag()->add(
                 'success',
-                'Your idea has successfully been transformed into a project.'
+                $this->get('translator')->trans('idea.projectized')
             );
 
             return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $project->getSlug())));
@@ -577,7 +577,7 @@ class DefaultController extends Controller
 
             $this->get('session')->getFlashBag()->add(
                 'error',
-                'You are not allowed to transform this idea into the project since you have not created it or it is already archived.'
+                $this->get('translator')->trans('idea.cannot.projectize')
             );
 
             return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
@@ -597,7 +597,7 @@ class DefaultController extends Controller
 
             $comment = new IdeaComment();
             $form = $this->createFormBuilder($comment)
-                ->add('text', 'textarea', array('attr' => array('placeholder' => 'Leave a message ...')))
+                ->add('text', 'textarea', array('attr' => array('placeholder' => $this->get('translator')->trans('comment.placeholder') )))
                 ->getForm();
 
             if ($request->isMethod('POST')) {
@@ -615,7 +615,7 @@ class DefaultController extends Controller
 
                     $this->get('session')->getFlashBag()->add(
                         'success',
-                        'Your comment was successfully added.'
+                        $this->get('translator')->trans('comment.added')
                     );
 
                     $logService = $this->container->get('logService');
@@ -625,7 +625,7 @@ class DefaultController extends Controller
 
                    $this->get('session')->getFlashBag()->add(
                         'error',
-                        'The information you provided does not seem valid.'
+                        $this->get('translator')->trans('information.not.valid', array(), 'errors')
                     );
                 }
 
@@ -642,7 +642,7 @@ class DefaultController extends Controller
 
         }
 
-        throw $this->createNotFoundException('This idea does not exist');
+        throw $this->createNotFoundException($this->get('translator')->trans('idea.not.found'));
 
     }
 
@@ -671,7 +671,7 @@ class DefaultController extends Controller
 
                 $this->get('session')->getFlashBag()->add(
                     'success',
-                    'The user '.$newParticipant->getFullName().' now participates in the idea "'.$this->base['idea']->getName().'".'
+                    $this->get('translator')->trans('idea.add.participant', array( '%user%' => $newParticipant->getFullName(), '%idea%' => $this->base['idea']->getName() ))
                 );
 
                 $logService = $this->container->get('logService');
@@ -684,7 +684,7 @@ class DefaultController extends Controller
 
                 $this->get('session')->getFlashBag()->add(
                     'warning',
-                    'This user does not exist or is already part of this idea.'
+                    $this->get('translator')->trans('idea.user.already.participant')
                 );
             }
 
@@ -692,7 +692,7 @@ class DefaultController extends Controller
 
             $this->get('session')->getFlashBag()->add(
                 'error',
-                'You are not allowed to add a participant to this idea.'
+                $this->get('translator')->trans('idea.cannot.add.participant')
             );
 
         }
@@ -722,7 +722,7 @@ class DefaultController extends Controller
 
                 $this->get('session')->getFlashBag()->add(
                     'success',
-                    'The user '.$toRemoveParticipant->getFullName().' does not participate in the idea "'.$this->base['idea']->getName().'" anymore .'
+                    $this->get('translator')->trans('idea.remove.participant', array( '%user%' => $toRemoveParticipant->getFullName(), '%idea%' => $this->base['idea']->getName()))
                 );
 
                 $em = $this->getDoctrine()->getManager();
@@ -732,7 +732,7 @@ class DefaultController extends Controller
 
                 $this->get('session')->getFlashBag()->add(
                     'error',
-                    'This user does not exist with this role in the idea.'
+                    $this->get('translator')->trans('idea.user.not.participant')
                 );
             }
 
@@ -740,7 +740,7 @@ class DefaultController extends Controller
 
             $this->get('session')->getFlashBag()->add(
                 'error',
-                'You are not allowed to remove a participant of this idea.'
+                $this->get('translator')->trans('idea.cannot.remove.participant')
             );
 
         }
@@ -761,7 +761,7 @@ class DefaultController extends Controller
 
         // User is guest in community
         if ($authenticatedUser->isGuestInCurrentCommunity()){
-            throw $this->createNotFoundException('This idea does not exist');
+            throw $this->createNotFoundException($this->get('translator')->trans('idea.not.found'));
         }
 
         // The actually authenticated user now watches the idea with $id
@@ -782,14 +782,14 @@ class DefaultController extends Controller
 
                 $this->get('session')->getFlashBag()->add(
                     'success',
-                    'You are now watching '.$idea->getName().'.'
+                    $this->get('translator')->trans('idea.watching', array('%idea%' => $idea->getName()))
                 );
 
             } else {
 
                 $this->get('session')->getFlashBag()->add(
                     'warning',
-                    'You are already watching '.$idea->getName().'.'
+                    $this->get('translator')->trans('idea.already.watching', array('%idea%' => $idea->getName()))
                 );
 
             }
@@ -798,7 +798,7 @@ class DefaultController extends Controller
 
            $this->get('session')->getFlashBag()->add(
                 'error',
-                'You cannot watch this idea.'
+                $this->get('translator')->trans('idea.cannot.watch')
             ); 
 
         }
@@ -818,7 +818,7 @@ class DefaultController extends Controller
 
         // User is guest in community
         if ($authenticatedUser->isGuestInCurrentCommunity()){
-            throw $this->createNotFoundException('This idea does not exist');
+            throw $this->createNotFoundException($this->get('translator')->trans('idea.not.found'));
         }
 
         // The actually authenticated user now unwatches idea with $id
@@ -836,14 +836,14 @@ class DefaultController extends Controller
 
                 $this->get('session')->getFlashBag()->add(
                     'success',
-                    'You are not watching '.$idea->getName().' anymore.'
+                    $this->get('translator')->trans('idea.unwatching', array('%idea%' => $idea->getName()))
                 );
 
             } else {
 
                 $this->get('session')->getFlashBag()->add(
                     'warning',
-                    'You are not watching '.$idea->getName().'.'
+                    $this->get('translator')->trans('idea.not.watching', array('%idea%' => $idea->getName()))
                 );
 
             }
@@ -852,7 +852,7 @@ class DefaultController extends Controller
 
            $this->get('session')->getFlashBag()->add(
                 'error',
-                'You cannot unwatch this idea.'
+                $this->get('translator')->trans('idea.cannot.unwatch')
             ); 
 
         }
@@ -881,14 +881,15 @@ class DefaultController extends Controller
 
         $this->fetchIdeaAndPreComputeRights($id, false, false);
 
-        $this->timeframe = array( 'today' => array( 'name' => 'today', 'data' => array()),
-                            'd-1'   => array( 'name' => date("M j", strtotime("-1 day")), 'data' => array() ),
-                            'd-2'   => array( 'name' => date("M j", strtotime("-2 day")), 'data' => array() ),
-                            'd-3'   => array( 'name' => date("M j", strtotime("-3 day")), 'data' => array() ),
-                            'd-4'   => array( 'name' => date("M j", strtotime("-4 day")), 'data' => array() ),
-                            'd-5'   => array( 'name' => date("M j", strtotime("-5 day")), 'data' => array() ),
-                            'd-6'   => array( 'name' => date("M j", strtotime("-6 day")), 'data' => array() ),
-                            'before'=> array( 'name' => 'a week ago', 'data' => array() )
+        $format = $this->get('translator')->trans('date.timeline');
+        $this->timeframe = array( 'today' => array( 'name' => $this->get('translator')->trans('date.today'), 'data' => array()),
+                            'd-1'   => array( 'name' => date($format, strtotime("-1 day")), 'data' => array() ),
+                            'd-2'   => array( 'name' => date($format, strtotime("-2 day")), 'data' => array() ),
+                            'd-3'   => array( 'name' => date($format, strtotime("-3 day")), 'data' => array() ),
+                            'd-4'   => array( 'name' => date($format, strtotime("-4 day")), 'data' => array() ),
+                            'd-5'   => array( 'name' => date($format, strtotime("-5 day")), 'data' => array() ),
+                            'd-6'   => array( 'name' => date($format, strtotime("-6 day")), 'data' => array() ),
+                            'before'=> array( 'name' => $this->get('translator')->trans('date.past.week'), 'data' => array() )
                             );
 
         $repository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\IdeaLogEntry');
@@ -905,7 +906,7 @@ class DefaultController extends Controller
           if ($log_types[$entry->getType()]['displayable'] === false ) continue;
 
           $text = $logService->getHTML($entry);
-          $createdAt = date_create($entry->getCreatedAt()->format('Y-m-d H:i:s'));
+          $createdAt = date_create($entry->getCreatedAt()->format('Y-m-d H:i:s')); // Not for display
 
           $history[] = array( 'createdAt' => $createdAt , 'text' => $text, 'groups' => $log_types[$entry->getType()]['filter_groups']);
         
@@ -915,7 +916,7 @@ class DefaultController extends Controller
         foreach ($this->base['idea']->getComments() as $comment) {
 
           $text = $logService->getHTML($comment);
-          $createdAt = date_create($comment->getCreatedAt()->format('Y-m-d H:i:s'));
+          $createdAt = date_create($comment->getCreatedAt()->format('Y-m-d H:i:s')); // not for display
 
           $history[] = array( 'createdAt' => $createdAt , 'text' => $text, 'groups' => array('comments') );
 
@@ -959,7 +960,7 @@ class DefaultController extends Controller
 
         }
 
-        return $this->render('metaIdeaBundle:Timeline:timelineHistory.html.twig', 
+        return $this->render('metaGeneralBundle:Timeline:timelineHistory.html.twig', 
             array('base' => $this->base,
                   'timeframe' => $this->timeframe,
                   'filter_groups' => array_unique($filter_groups)));

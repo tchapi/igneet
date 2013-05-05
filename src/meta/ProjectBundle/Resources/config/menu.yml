@@ -1,27 +1,22 @@
 parameters:
   standardproject.menu:
     timeline:
-      title: Timeline
       icon: icon-comments-alt
       route: sp_show_project_timeline
-      private: true
+      private: false
     info:
-      title: Info
       icon: icon-info-sign
       route: sp_show_project
       private: false
     lists:
-      title: Lists
       icon: icon-tasks
       route: sp_show_project_list_home
-      private: true
+      private: false
     resources:
-      title: Resources
       icon: icon-file
       route: sp_show_project_list_resources
-      private: true
+      private: false
     wiki:
-      title: Wiki
       icon: icon-font
       route: sp_show_project_wiki
-      private: true
+      private: false

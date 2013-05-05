@@ -29,7 +29,7 @@ class DefaultController extends Controller
 
         // No users in private space
         if (is_null($authenticatedUser->getCurrentCommunity()) && $username !== $authenticatedUser->getUsername()){
-            throw $this->createNotFoundException('This user does not exist');
+            throw $this->createNotFoundException($this->get('translator')->trans('user.not.found'));
         }
 
         $repository = $this->getDoctrine()->getRepository('metaUserBundle:User');
@@ -41,7 +41,7 @@ class DefaultController extends Controller
 
         // If user is deleted or doesn't exist
         if (!$user || $user->isDeleted()) {
-            throw $this->createNotFoundException('This user does not exist');
+            throw $this->createNotFoundException($this->get('translator')->trans('user.not.found'));
         }
 
         $alreadyFollowing = $authenticatedUser->isFollowing($user);
@@ -101,7 +101,7 @@ class DefaultController extends Controller
 
         // In private space : no users
         if (is_null($community)) {
-            throw $this->createNotFoundException('There are no users in your private space');
+            throw $this->createNotFoundException($this->get('translator')->trans('user.noneInPrivateSpace'));
         }
 
         $repository = $this->getDoctrine()->getRepository('metaUserBundle:User');
@@ -132,7 +132,7 @@ class DefaultController extends Controller
 
             $this->get('session')->getFlashBag()->add(
                 'error',
-                'There is no dashboard in your private space or in a community in which you are a guest.'
+                $this->get('translator')->trans('user.no.dashboard')
             );
 
             return $this->redirect($this->generateUrl('u_me'));
@@ -350,7 +350,7 @@ class DefaultController extends Controller
 
             $this->get('session')->getFlashBag()->add(
                 'warning',
-                'You are already logged in as '.$authenticatedUser->getUsername().'. If you wish to create another account, please logout first.'
+                $this->get('translator')->trans('user.already.logged.long', array( '%user%' => $authenticatedUser->getUsername()))
             );
 
             return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $authenticatedUser->getUsername())));
@@ -366,7 +366,7 @@ class DefaultController extends Controller
 
                 $this->get('session')->getFlashBag()->add(
                     'error',
-                    'This signup link has already been used.'
+                    $this->get('translator')->trans('user.signup.link.already.used')
                 );
 
                 $inviteTokenObject = null;
@@ -379,7 +379,7 @@ class DefaultController extends Controller
         }
 
         $user = new User();
-        $form = $this->createForm(new UserType(), $user);
+        $form = $this->createForm(new UserType(), $user, array( 'translator' => $this->get('translator')));
 
         if ($request->isMethod('POST')) {
 
@@ -445,7 +445,7 @@ class DefaultController extends Controller
 
                 $this->get('session')->getFlashBag()->add(
                     'success',
-                    'Welcome! This is your profile page, where you can directly edit your information by clicking on the underlined text.'
+                    $this->get('translator')->trans('user.welcome')
                 );
 
                 return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $user->getUsername())));
@@ -454,7 +454,7 @@ class DefaultController extends Controller
                
                $this->get('session')->getFlashBag()->add(
                     'error',
-                    'The information you provided does not seem valid.'
+                    $this->get('translator')->trans('information.not.valid', array(), 'errors')
                 );
 
             }
@@ -472,7 +472,7 @@ class DefaultController extends Controller
     {
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('edit', $request->get('token')))
-            return new Response('Invalid token', 400);
+            return new Response($this->get('translator')->trans('invalid.token', array(), 'errors'), 400);
 
         $authenticatedUser = $this->getUser();
         $error = null;
@@ -569,7 +569,7 @@ class DefaultController extends Controller
 
         } else {
 
-            $error = 'Invalid request';
+            $error = $this->get('translator')->trans('invalid.request', array(), 'errors');
 
         }
         
@@ -610,7 +610,7 @@ class DefaultController extends Controller
 
             $this->get('session')->getFlashBag()->add(
                 'error',
-                'You cannot reset the avatar for this user.'
+                $this->get('translator')->trans('user.picture.cannot.reset')
             );
 
         } else {
@@ -622,7 +622,7 @@ class DefaultController extends Controller
 
             $this->get('session')->getFlashBag()->add(
                 'success',
-                'Your avatar has successfully been reset.'
+                $this->get('translator')->trans('user.picture.reset')
             );
     
         }
@@ -686,7 +686,7 @@ class DefaultController extends Controller
                 // Let's notify the user with the projects he still owns alone
                 $this->get('session')->getFlashBag()->add(
                     'error',
-                    'You cannot delete your account; you still own projects (' . substr($projects, 0, -1) . '). Make sure your projects have another owner, that your ideas have participants, and try again.'
+                    $this->get('translator')->trans('user.cannot.delete', array( '%projects%' => substr($projects, 0, -1)))
                 );
 
                 return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $username)));
@@ -696,7 +696,7 @@ class DefaultController extends Controller
 
             $this->get('session')->getFlashBag()->add(
                 'error',
-                'You cannot delete someone else\'s account.'
+                $this->get('translator')->trans('user.cannot.delete.other')
             );
 
             return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $authenticatedUser->getUsername())));
@@ -718,14 +718,14 @@ class DefaultController extends Controller
             $skillsAsArray = array();
 
             foreach($skills as $skill){
-                $skillsAsArray[] = array('value' => $skill->getSlug(), 'text' => $skill->getName());
+                $skillsAsArray[] = array('value' => $skill->getSlug(), 'text' => $this->get('translator')->trans($skill->getSlug() . '.name', array(), 'skills'));
             }
 
             return new Response(json_encode($skillsAsArray));
 
         } else {
 
-            throw $this->createNotFoundException();
+            throw $this->createNotFoundException($this->get('translator')->trans('invalid.request', array(), 'errors'));
 
         }
 
@@ -741,7 +741,7 @@ class DefaultController extends Controller
 
         // In private space : no users
         if (is_null($authenticatedUser->getCurrentCommunity())) {
-            throw $this->createNotFoundException('There are no users in your private space');
+            throw $this->createNotFoundException($this->get('translator')->trans('user.noneInPrivateSpace'));
         }
 
         $target = json_decode(base64_decode($targetAsBase64), true);
@@ -764,7 +764,7 @@ class DefaultController extends Controller
 
             } else {
 
-                throw $this->createNotFoundException('Invalid request');
+                throw $this->createNotFoundException($this->get('translator')->trans('invalid.request', array(), 'errors'));
 
             }
 
@@ -777,7 +777,7 @@ class DefaultController extends Controller
 
                 $this->get('session')->getFlashBag()->add(
                         'warning',
-                        'You\'re alone, mate.'
+                        $this->get('translator')->trans('user.nobody')
                     );
 
                 return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $authenticatedUser->getUsername())));
@@ -819,14 +819,14 @@ class DefaultController extends Controller
 
                     $this->get('session')->getFlashBag()->add(
                         'success',
-                        'You are now following '.$user->getFullName().'.'
+                        $this->get('translator')->trans('user.following', array( '%user%' => $user->getFullName() ))
                     );
 
                 } else {
 
                     $this->get('session')->getFlashBag()->add(
                         'warning',
-                        'You are already following '.$user->getFullName().'.'
+                        $this->get('translator')->trans('user.already.following', array( '%user%' => $user->getFullName() ))
                     );
 
                 }
@@ -835,7 +835,7 @@ class DefaultController extends Controller
 
                $this->get('session')->getFlashBag()->add(
                     'error',
-                    'You cannot follow this user.'
+                    $this->get('translator')->trans('user.cannot.follow')
                 ); 
 
             }
@@ -843,7 +843,7 @@ class DefaultController extends Controller
         } else {
             $this->get('session')->getFlashBag()->add(
                 'warning',
-                'You cannot follow yourself.'
+                $this->get('translator')->trans('user.cannot.followSelf')
             );
         }
 
@@ -878,14 +878,14 @@ class DefaultController extends Controller
 
                     $this->get('session')->getFlashBag()->add(
                         'success',
-                        'You are not following '.$user->getFullName().' anymore.'
+                        $this->get('translator')->trans('user.unfollowing', array('%user%' => $user->getFullName()))
                     );
 
                 } else {
 
                     $this->get('session')->getFlashBag()->add(
                         'warning',
-                        'You are not following '.$user->getFullName().'.'
+                        $this->get('translator')->trans('user.not.following', array('%user%' => $user->getFullName()))
                     );
 
                 }
@@ -894,7 +894,7 @@ class DefaultController extends Controller
 
                $this->get('session')->getFlashBag()->add(
                     'error',
-                    'You cannot unfollow this user.'
+                    $this->get('translator')->trans('user.cannot.unfollow')
                 ); 
 
             }
@@ -902,7 +902,7 @@ class DefaultController extends Controller
         } else {
             $this->get('session')->getFlashBag()->add(
                 'warning',
-                'You cannot unfollow yourself.'
+                $this->get('translator')->trans('user.cannot.unfollowSelf')
             );
         }
             

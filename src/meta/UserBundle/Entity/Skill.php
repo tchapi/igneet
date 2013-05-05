@@ -32,20 +32,6 @@ class Skill
     private $slug;
 
     /**
-     * @var string $name
-     *
-     * @ORM\Column(name="name", type="string", length=255)
-     */
-    private $name;
-
-    /**
-     * @var string $description
-     *
-     * @ORM\Column(name="description", type="string", length=255)
-     */
-    private $description;
-
-    /**
      * @var string $color
      *
      * @ORM\Column(name="color", type="string", length=7, nullable=true)
@@ -107,47 +93,12 @@ class Skill
     }
 
     /**
-     * Set name
-     *
-     * @param string $name
-     * @return Skill
+     * Returns the internationalized string (for AJAX Calls)
      */
-    public function setName($name)
+    public function getI18nSlug()
     {
-        $this->name = $name;
-        return $this;
-    }
+        return $this->slug.'.name';
 
-    /**
-     * Get name
-     *
-     * @return string 
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Set description
-     *
-     * @param string $description
-     * @return Skill
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
-        return $this;
-    }
-
-    /**
-     * Get description
-     *
-     * @return string 
-     */
-    public function getDescription()
-    {
-        return $this->description;
     }
 
     /**

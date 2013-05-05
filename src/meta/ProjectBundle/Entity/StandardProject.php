@@ -15,7 +15,7 @@ use meta\GeneralBundle\Entity\Behaviour\Taggable;
  * @ORM\Table(name="StandardProject")
  * @ORM\Entity(repositoryClass="meta\ProjectBundle\Entity\StandardProjectRepository")
  * @ORM\HasLifecycleCallbacks
- * @UniqueEntity("slug")
+ * @UniqueEntity(fields="slug", message="project.slug.already.taken")
  */
 class StandardProject extends Taggable
 {
