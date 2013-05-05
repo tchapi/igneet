@@ -40,14 +40,15 @@ class TimelineController extends BaseController
         if ($this->base == false) 
           return $this->forward('metaProjectBundle:Base:showRestricted', array('slug' => $slug));
 
-        $this->timeframe = array( 'today' => array( 'name' => 'today', 'data' => array()),
-                            'd-1'   => array( 'name' => date("M j", strtotime("-1 day")), 'data' => array() ),
-                            'd-2'   => array( 'name' => date("M j", strtotime("-2 day")), 'data' => array() ),
-                            'd-3'   => array( 'name' => date("M j", strtotime("-3 day")), 'data' => array() ),
-                            'd-4'   => array( 'name' => date("M j", strtotime("-4 day")), 'data' => array() ),
-                            'd-5'   => array( 'name' => date("M j", strtotime("-5 day")), 'data' => array() ),
-                            'd-6'   => array( 'name' => date("M j", strtotime("-6 day")), 'data' => array() ),
-                            'before'=> array( 'name' => 'a week ago', 'data' => array() )
+        $format = $this->get('translator')->trans('date.timeline');
+        $this->timeframe = array( 'today' => array( 'name' => $this->get('translator')->trans('date.today'), 'data' => array()),
+                            'd-1'   => array( 'name' => date($format, strtotime("-1 day")), 'data' => array() ),
+                            'd-2'   => array( 'name' => date($format, strtotime("-2 day")), 'data' => array() ),
+                            'd-3'   => array( 'name' => date($format, strtotime("-3 day")), 'data' => array() ),
+                            'd-4'   => array( 'name' => date($format, strtotime("-4 day")), 'data' => array() ),
+                            'd-5'   => array( 'name' => date($format, strtotime("-5 day")), 'data' => array() ),
+                            'd-6'   => array( 'name' => date($format, strtotime("-6 day")), 'data' => array() ),
+                            'before'=> array( 'name' => $this->get('translator')->trans('date.past.week'), 'data' => array() )
                             );
 
         $repository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\StandardProjectLogEntry');
@@ -64,7 +65,7 @@ class TimelineController extends BaseController
           if ($log_types[$entry->getType()]['displayable'] === false ) continue; // We do not display them
 
           $text = $logService->getHTML($entry);
-          $createdAt = date_create($entry->getCreatedAt()->format('Y-m-d H:i:s'));
+          $createdAt = date_create($entry->getCreatedAt()->format('Y-m-d H:i:s')); // not for display
 
           $history[] = array( 'createdAt' => $createdAt , 'text' => $text, 'groups' => $log_types[$entry->getType()]['filter_groups']);
         
@@ -74,7 +75,7 @@ class TimelineController extends BaseController
         foreach ($this->base['standardProject']->getComments() as $comment) {
 
           $text = $logService->getHTML($comment);
-          $createdAt = date_create($comment->getCreatedAt()->format('Y-m-d H:i:s'));
+          $createdAt = date_create($comment->getCreatedAt()->format('Y-m-d H:i:s')); // not for display
 
           $history[] = array( 'createdAt' => $createdAt , 'text' => $text, 'groups' => array('comments') );
 
