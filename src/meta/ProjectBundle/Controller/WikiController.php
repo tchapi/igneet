@@ -115,7 +115,7 @@ class WikiController extends BaseController
 
         $wikiPage = new WikiPage();
         $form = $this->createFormBuilder($wikiPage)
-            ->add('title', 'text')
+            ->add('title', 'text', array( 'label' => "project.wiki.titleField"))
             ->getForm();
 
         if ($request->isMethod('POST')) {

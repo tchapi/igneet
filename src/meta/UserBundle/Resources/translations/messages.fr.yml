@@ -97,7 +97,7 @@ user:
     skillsPlaceholder: "Indiquez vos compétences"
   notifications:
     title: "Notifications"
-    none: "Vous n'avez pas de nouvelles notifiations !"
+    none: "Vous n'avez pas de nouvelles notifications !"
     see.more: "Voir toutes les notifications à compter du %date% ..."
     help: "Voir toutes les notifications"
   dashboard:

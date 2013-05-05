@@ -85,6 +85,8 @@ project:
     description.emptyText: "Renseignez une description (optionnelle)"
     none: "Aucune liste."
     new: "Nouvelle liste"
+    name: "Nom"
+    description: "Description"
     newHelp: "Créer une nouvelle liste"
     deleteHelp: "Êtes-vous sûr de vouloir supprimer cette liste ?"
     created: "La liste %list% a été créée avec succès."
@@ -125,6 +127,7 @@ project:
       file: "ou choisir un fichier"
   wiki:
     title: "Wiki"
+    titleField: "Titre"
     not.found: "Cette page n'existe pas."
     titleHelp: "Changer le titre de cette page"
     new: "Nouvelle page du wiki"

@@ -117,8 +117,8 @@ class ListController extends BaseController
 
         $commonList = new CommonList();
         $form = $this->createFormBuilder($commonList)
-            ->add('name', 'text')
-            ->add('description', 'text', array('required' => false))
+            ->add('name', 'text', array('label' => "project.lists.name"))
+            ->add('description', 'text', array('required' => false, 'label' => "project.lists.description"))
             ->getForm();
 
         if ($request->isMethod('POST')) {

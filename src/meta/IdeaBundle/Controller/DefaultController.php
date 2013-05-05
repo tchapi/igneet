@@ -26,7 +26,6 @@ class DefaultController extends Controller
      */
     public function fetchIdeaAndPreComputeRights($id, $mustBeCreator = false, $mustParticipate = false)
     {
-
         $repository = $this->getDoctrine()->getRepository('metaIdeaBundle:Idea');
         $idea = $repository->findOneById($id); // We do not enforce community here to be able to switch the user later on
 
