@@ -21,7 +21,7 @@
 {% block content %}
 <form action="{{ path('sp_show_project_list_new', {'slug': base.standardProject.slug}) }}" method="post" {{ form_enctype(form) }}>
   <section>
-    <h4>{{ "projects.lists.newHelp"|trans }} :</h4>
+    <h4>{{ "project.lists.newHelp"|trans }} :</h4>
   </section>
   {{ form_widget(form) }}
   <section>

@@ -62,7 +62,7 @@ class ListController extends BaseController
 
         // Check if commonList belongs to project
         if ( !$commonList ){
-          throw $this->createNotFoundException('This list does not exist');
+          throw $this->createNotFoundException($this->get('translator')->trans('project.lists.not.found'));
         }
 
         return $this->render('metaProjectBundle:List:showCommonList.html.twig', 
@@ -142,7 +142,7 @@ class ListController extends BaseController
 
                 $this->get('session')->getFlashBag()->add(
                     'success',
-                    'Your list "'.$commonList->getName().'" was successfully created.'
+                    $this->get('translator')->trans('project.lists.created', array('%list%' => $commonList->getName()))
                 );
 
                 return $this->redirect($this->generateUrl('sp_show_project_list', array('slug' => $slug, 'id' => $commonList->getId(), 'commonListSlug' => $commonList->getSlug())));
@@ -284,14 +284,14 @@ class ListController extends BaseController
 
                 $this->get('session')->getFlashBag()->add(
                     'success',
-                    'Your list "'.$commonList->getName().'" was successfully deleted.'
+                    $this->get('translator')->trans('project.lists.deleted', array( '%list%' => $commonList->getName()))
                 );
 
             } else {
 
                 $this->get('session')->getFlashBag()->add(
                     'warning',
-                    'This item does not exist.'
+                    $this->get('translator')->trans('project.lists.not.found')
                 );
 
             }
@@ -331,7 +331,7 @@ class ListController extends BaseController
 
         $this->get('session')->getFlashBag()->add(
             'success',
-            'Your new list item was successfully created.'
+            $this->get('translator')->trans('project.lists.items.created')
         );
 
         return $this->redirect($this->generateUrl('sp_show_project_list', array('slug' => $slug, 'id' => $commonList->getId(), 'commonListSlug' => $commonList->getSlug())));
@@ -368,10 +368,6 @@ class ListController extends BaseController
                         $commonListItem->setText($request->request->get('value'));
                         $deepLinkingService = $this->container->get('meta.twig.deep_linking_extension');
                         $response = $deepLinkingService->convertDeepLinks($request->request->get('value'));
-                        $objectHasBeenModified = true;
-                        break;
-                    case 'done':
-                        $commonListItem->setDone($request->request->get('value'));
                         $objectHasBeenModified = true;
                         break;
                 }
@@ -445,12 +441,16 @@ class ListController extends BaseController
                 $logService->log($this->getUser(), 'user_delete_list_item', $this->base['standardProject'], array( 'list' => array( 'routing' => 'list', 'logName' => $commonList->getLogName(), 'args' => $commonList->getLogArgs()),
                                                                                                               'list_item' => array( 'routing' => null,   'logName' => $commonListItem->getLogName() )) );
 
+                $this->get('session')->getFlashBag()->add(
+                    'success',
+                    $this->get('translator')->trans('project.lists.items.deleted')
+                );
 
             } else {
 
                 $this->get('session')->getFlashBag()->add(
                     'warning',
-                    'This item does not exist.'
+                    $this->get('translator')->trans('project.lists.items.not.found')
                 );
 
             }
@@ -499,7 +499,7 @@ class ListController extends BaseController
 
                 $this->get('session')->getFlashBag()->add(
                     'warning',
-                    'This item does not exist.'
+                    $this->get('translator')->trans('project.lists.items.not.found')
                 );
 
             }

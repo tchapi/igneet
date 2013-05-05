@@ -45,10 +45,10 @@
       {% if base.canEdit %}
       <div class="actions">
         {% if item.done %}
-        <span class="muted date">{{ "project.lists.items.done"|trans({ '%date%': item.doneAt|date("date.format"|trans)}) }}</span>
+        <span class="muted date">{{ "project.lists.items.doneAt"|trans({ '%date%': item.doneAt|date("date.format"|trans)}) }}</span>
         <a href="{{ path('sp_show_project_listitem_undo', {'slug': base.standardProject.slug, 'listId': commonList.id, 'id': item.id, 'token': csrf_token('toggleCommonListItem') }) }}" title="{{ "project.lists.items.recycleHelp"|trans }}"><i class="icon-repeat"></i></a>
         {% else %}
-        <span class="muted date">{{ "project.lists.items.created"|trans({ '%date%': item.createdAt|date("date.format"|trans)}) }}</span>
+        <span class="muted date">{{ "project.lists.items.createdAt"|trans({ '%date%': item.createdAt|date("date.format"|trans)}) }}</span>
         <a href="{{ path('sp_show_project_listitem_do', {'slug': base.standardProject.slug, 'listId': commonList.id, 'id': item.id, 'token': csrf_token('toggleCommonListItem') }) }}" title="{{ "project.lists.items.finishHelp"|trans }}"><i class="icon-ok text-success"></i></a>
         {% endif %}
         <a class="editable-trigger" data-target="listitem-{{ item.id }}" title="{{ "project.lists.items.editHelp"|trans }}"><i class="icon-pencil"></i></a> | 
