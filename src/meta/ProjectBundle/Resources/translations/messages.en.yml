@@ -115,6 +115,8 @@ project:
     none: "No resource yet."
     add: "Add a new resource"
     available: "Available resources"
+    created: "Your resource %resource% has successfully been added to the project %project%."
+    deleted: "Your resource has successfully been deleted from the project %project%."
     createForm:
       title: "Title of this resource"
       titlePlaceholder: "My new resource ..."

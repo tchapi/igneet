@@ -99,7 +99,7 @@ class ResourceController extends BaseController
 
                 $this->get('session')->getFlashBag()->add(
                     'success',
-                    'Your resource '.$resource->getTitle().' has successfully been added to the project '.$this->base['standardProject']->getName().'.'
+                    $this->get('translator')->trans('project.resources.created', array( '%resource%' => $resource->getTitle(), '%project%' => $this->base['standardProject']->getName()))
                 );
 
                 return $this->redirect($this->generateUrl('sp_show_project_list_resources', array('slug' => $this->base['standardProject']->getSlug())));
@@ -297,7 +297,7 @@ class ResourceController extends BaseController
 
                 $this->get('session')->getFlashBag()->add(
                     'success',
-                    'This resource has been successfully deleted.'
+                    $this->get('translator')->trans('project.resources.deleted', array( '%project%' => $this->base['standardProject']->getName()))
                 );
 
             } else {
