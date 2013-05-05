@@ -24,6 +24,7 @@ idea:
     headline: "Headline"
     headlinePlaceholder: "Give your idea some nice catchline"
     creators: "Creators"
+    creatorsPlaceholder: "Indicate the creators"
   created: "The idea %idea% has successfully been created."
   archive: "Archive this idea"
   archiveHelp: "Are you sure you want to archive this idea ?"

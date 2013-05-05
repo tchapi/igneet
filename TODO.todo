@@ -10,15 +10,13 @@
     
  ☐  Faire une passe sur les titles/alt des liens d'éditions (les icon-pencils)
 
- ☐ projects dont je ne suis pas participant : je vois les trucs ou pas ???
+ ✔ projects dont je ne suis pas participant : je vois les trucs ou pas ??? @done (13-05-05 19:51)
 
- ☐ translation : placeholders pour le select2 ? a gerer dans le DOM si possible  
-
- ✔ traduire les noms des fields de form et les helps - normalement |trans est fait par défaut dans les templates @done (13-04-15 22:48)
- 
  ☐ Deep linking : verifier a l'affichage que l'utilisateur a le droit de voir l'objet deep linké !
 
- ☐ liste des skills a la creation d'un user : a traduire
+ ✔ liste des skills a la creation d'un user : a traduire @done (13-05-05 20:14)
+ ✔ translation : placeholders pour le select2 ? a gerer dans le DOM si possible @done (13-05-05 21:27)
+ ✔ traduire les noms des fields de form et les helps - normalement |trans est fait par défaut dans les templates @done (13-04-15 22:48)
 
 Todo - Entity "Community" :
 

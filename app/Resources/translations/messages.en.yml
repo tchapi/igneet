@@ -7,6 +7,7 @@ date:
 time:
   format: "h:i A"
 timeline.reset.filters: "Reset filters"
+timeline.placeholder: "Optional timeline filters"
 cancel: "Cancel"
 change: "Change"
 choose: "Choose"

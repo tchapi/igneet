@@ -177,7 +177,7 @@ class DefaultController extends Controller
         }
 
         $idea = new Idea();
-        $form = $this->createForm(new IdeaType(), $idea, array('allowCreators' => !is_null($community), 'community' => $community ));
+        $form = $this->createForm(new IdeaType(), $idea, array('allowCreators' => !is_null($community), 'community' => $community, 'translator' => $this->get('translator') ));
 
         if ($request->isMethod('POST')) {
 

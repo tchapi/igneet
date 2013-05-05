@@ -4,6 +4,7 @@ namespace meta\IdeaBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class IdeaType extends AbstractType
 {
@@ -31,17 +32,18 @@ class IdeaType extends AbstractType
                               ->orderBy("u.username", "ASC");
                 },
                 'label' => 'idea.createForm.creators',
-                'attr' => array('class' => 'select2-trigger')
+                'attr' => array('class' => 'select2-trigger', 'data-placeholder' => $options['translator']->trans('idea.createForm.creatorsPlaceholder'))
                 ));
         }
     }
 
-    public function getDefaultOptions(array $options)
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        return array(
+        $resolver->setDefaults(array(
             'allowCreators' => false,
-            'community' => null
-        );
+            'community' => null,
+            'translator' => null
+        ));
     }
     
     public function getName()

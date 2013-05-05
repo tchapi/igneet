@@ -379,7 +379,7 @@ class DefaultController extends Controller
         }
 
         $user = new User();
-        $form = $this->createForm(new UserType(), $user);
+        $form = $this->createForm(new UserType(), $user, array( 'translator' => $this->get('translator')));
 
         if ($request->isMethod('POST')) {
 

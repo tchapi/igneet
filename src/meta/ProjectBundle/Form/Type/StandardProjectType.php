@@ -4,6 +4,7 @@ namespace meta\ProjectBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class StandardProjectType extends AbstractType
 {
@@ -16,15 +17,23 @@ class StandardProjectType extends AbstractType
         $builder->add('private', 'checkbox',  array('required' => false, 'label'  => 'project.createForm.private', 'attr' => array('help' => 'project.createForm.privateHelp')));
 
         $builder->add('neededSkills', 'entity', array(
+            'label' => $options['translator']->trans('project.createForm.skills'),
             'multiple' => true, 
             'required' => false, 
-            'property' => 'slug',
+            'property' => 'I18nSlug',
             'class' => 'meta\UserBundle\Entity\Skill',
-            'label' => 'project.createForm.skills',
-            'attr' => array('class' => 'select2-trigger')
+            'attr' => array('class' => 'select2-trigger', 'data-placeholder' => $options['translator']->trans('project.createForm.skillsPlaceholder')),
+            'translation_domain' => 'skills'
             ));
     }
     
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'translator' => null
+        ));
+    }
+
     public function getName()
     {
         return 'standardProject';

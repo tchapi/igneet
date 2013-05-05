@@ -92,8 +92,9 @@ user:
     email: "E-mail"
     headline: "Headline"
     headlineHelp: "How would you sum up who you are ?"
-    skills: "Your skills"
     create: "Create"
+    skills: "Your skills"
+    skillsPlaceholder: "Select your skills"
   notifications:
     title: "Notifications"
     none: "You have no new notifiations !"

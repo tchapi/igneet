@@ -57,7 +57,7 @@ class DefaultController extends BaseController
         }
 
         $project = new StandardProject();
-        $form = $this->createForm(new StandardProjectType(), $project);
+        $form = $this->createForm(new StandardProjectType(), $project, array( 'translator' => $this->get('translator')));
 
         if ($request->isMethod('POST')) {
 

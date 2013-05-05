@@ -93,6 +93,15 @@ class Skill
     }
 
     /**
+     * Returns the internationalized string (for AJAX Calls)
+     */
+    public function getI18nSlug()
+    {
+        return $this->slug.'.name';
+
+    }
+
+    /**
      * Set color
      *
      * @param string $color

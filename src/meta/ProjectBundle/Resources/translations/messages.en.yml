@@ -29,6 +29,7 @@ project:
     private: "Private project"
     privateHelp: "Decide wether your project should be seen by non-participants. Private space projects are always private"
     skills: "Skills needed for this project (if any)"
+    skillsPlaceholder: "Indicate needed skills"
   watch: "Watch project"
   unwatch: "Unwatch project"
   watching: "You are now watching the project %project%."

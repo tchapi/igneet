@@ -24,6 +24,7 @@ idea:
     headline: "Slogan"
     headlinePlaceholder: "Donnez un slogan accrocheur à votre idée"
     creators: "Créateurs"
+    creatorsPlaceholder: "Indiquez les créateurs"
   created: "L'idée %idea% a été créée avec succès."
   archive: "Archiver cette idée"
   archiveHelp: "Êtes-vous sûr de vouloir archiver cette idée ?"

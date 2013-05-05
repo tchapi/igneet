@@ -92,8 +92,9 @@ user:
     email: "E-mail"
     headline: "Slogan"
     headlineHelp: "Comment vous décriveriez-vous en une ligne ?"
-    skills: "Vos compétences"
     create: "Créer"
+    skills: "Vos compétences"
+    skillsPlaceholder: "Indiquez vos compétences"
   notifications:
     title: "Notifications"
     none: "Vous n'avez pas de nouvelles notifiations !"

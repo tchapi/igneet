@@ -4,6 +4,7 @@ namespace meta\UserBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class UserType extends AbstractType
 {
@@ -19,17 +20,26 @@ class UserType extends AbstractType
         $builder->add('headline', 'text',  array('label' => 'user.createForm.headline', 'required' => false, 'attr' => array('class' => 'input-xxlarge', 'help' => 'user.createForm.headlineHelp' )));
         
         $builder->add('skills', 'entity', array(
-            'label'  => 'user.createForm.skills', 
+            'label'  => $options['translator']->trans('user.createForm.skills'), 
             'multiple' => true, 
             'required' => false, 
-            'property' => 'slug',
+            'property' => 'I18nSlug',
             'class' => 'meta\UserBundle\Entity\Skill',
-            'attr' => array('class' => 'select2-trigger')
+            'attr' => array('class' => 'select2-trigger', 'data-placeholder' => $options['translator']->trans('user.createForm.skillsPlaceholder')),
+            'translation_domain' => 'skills'
             ));
     }
     
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'translator' => null
+        ));
+    }
+
     public function getName()
     {
         return 'user';
     }
+
 }

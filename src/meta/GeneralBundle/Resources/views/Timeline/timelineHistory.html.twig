@@ -1,5 +1,5 @@
 <div class="timeline_filters">
-  <select id="timeline_filters" class="select2-trigger" multiple="multiple">
+  <select id="timeline_filters" class="select2-trigger" multiple="multiple" data-placeholder="{{ "timeline.placeholder"|trans }}">
     {% for group in filter_groups %}
     <option value="{{ group }}">{{ ("groups." ~ group)|trans({}, "logs") }}</option>
     {% endfor %}
