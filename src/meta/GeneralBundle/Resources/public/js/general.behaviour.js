@@ -22,10 +22,6 @@ $(document).ready(function(){
 
     $("#notificationsCount").html(data);
 
-    if (data == 0) {
-      $("#notificationsCount").fadeOut(3000);
-    }
-
   });
 
 });
