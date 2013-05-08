@@ -26,7 +26,7 @@ login: "Se connecter"
 signup: "Créer un compte"
 logout: "Déconnexion"
 # Footer
-report.bug: "Rapporter un bug"
+report.bug: "Signaler un bug"
 terms: "Conditions générales"
 # Team
 team: "L'équipe d'igneet"
