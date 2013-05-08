@@ -1,0 +1,57 @@
+marketResearch:
+  name: "Analyse de Marché"
+  description: "Do you recognize opportunities when they present themselves? Can you spot a trend? And are you able to create a plan to take advantage of the opportunities you identify? Do you have the basics in market sizing, segmentation, and market research ?"
+productMarketing:
+  name: "Marketing Produit et Services"
+  description: "Are you familiar with the current marketing pratices : defining your target, sizing your investments, manage promotion channels and balance a marketing mix ? Is 4P something familiar to you ?"
+communication:
+  name: "Communication"
+  description: "Do you have specific skills in communication (oral / written / graphic) and are you able to transform a message in such a way that it will be amazingly impacting ?"
+creativeThinking:
+  name: "Innovation"
+  description: "Are you able to see situations from a variety of perspectives and come up with original ideas? Do you master creativity tools to do so ?"
+finance:
+  name: "Finance"
+  description: "Are you fluent with a P&L and a balance sheet ? Is actualizing cash flow something familiar to you ? Are you clearly undestanding Turnover, margin, result and cash ? Accountancy is something you can understand ?"
+commercial:
+  name: "Commerce & Ventes"
+  description: "Are you the person who will be able to sell any product to anybody ? Do you master the basic selling techniques ? Have you ever optimized a sales force ?"
+negotation:
+  name: "Négociation"
+  description: "Are you skilled at negociating in tough environments ? Have you ever been practicing negotiation with a customer on a contract ? Are you able to both increase the cake and the part of it that you will take ?"
+management:
+  name: "Management"
+  description: "Are you able to manage both projects and people : planning, goal setting, hiring (slow) & firing (fast), positive & negative feedbacks..."
+problemSolving:
+  name: "Résolution de Problèmes"
+  description: "How good are you at coming up with sound solutions to the problems you're facing? Tools such as Cause & Effect Analysis, the 5 WhysTechnique, and CATWOE are just some of the problem-solving tools that you'll need to be familiar with."
+businessKnowledge:
+  name: "Connaissance Business"
+  description: "Do you have a good general knowledge of the main functional areas of a business (sales, marketing, finance, and operations), and are you able to operate or manage others in these areas with a reasonable degree of competence ?"
+entrepreneurialKnowledge:
+  name: "Connaissance Entrepreneuriale"
+  description: "Do you understand how entrepreneurs raise capital? And do you understand the sheer amount of experimentation and hard work that may be needed to find a business model that works for you ?"
+productDevelopment:
+  name: "Développement de Produit"
+  description: "You have already managed product development projects and are aware of the Development cycles traps and know how to organize the work to make thing happen on time and on budget"
+productionManagement:
+  name: "Management de la Production"
+  description: "You master industialisation and are aware of the constraints in upscaling a project. Production line design, management and optimization are parts of what you ever did"
+supplyChain:
+  name: "Management de la Supply Chain"
+  description: "From the sales forcasts to the warehouse management and end customer delivery you are able to undestand, model and optimize a supply chain"
+code:
+  name: "Code"
+  description: ""
+electronics:
+  name: "Électronique"
+  description: ""
+maths:
+  name: "Maths"
+  description: ""
+physics:
+  name: "Physique"
+  description: ""
+chemical:
+  name: "Chimie"
+  description: ""

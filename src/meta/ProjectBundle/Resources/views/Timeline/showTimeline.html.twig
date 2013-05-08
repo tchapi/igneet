@@ -1,0 +1,24 @@
+{% extends 'metaProjectBundle:Default:show.html.twig' %}
+
+{% block title %}{{ parent() }} | {{ "project.timeline.title"|trans }}{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+    {% javascripts '@metaGeneralBundle/Resources/public/js/select2.behaviour.js' 
+            filter='?yui_js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block navbar %}
+{% render(controller("metaProjectBundle:Default:navbar", { 'activeMenu' : 'timeline', 'slug' : base.standardProject.slug })) %}
+{% endblock %}
+
+{% block content %}
+<section>
+{% render(controller("metaProjectBundle:Comment:addStandardProjectComment", { 'slug' : base.standardProject.slug })) %}
+</section>
+<section>
+{% render(controller("metaProjectBundle:Timeline:history", { 'slug' : base.standardProject.slug, 'page' : 1 })) %}
+</section>
+{% endblock %}

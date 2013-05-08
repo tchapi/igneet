@@ -63,7 +63,7 @@ class DefaultController extends Controller
     {
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('validateComment', $request->get('token')))
-            return new Response('Invalid token', 400);
+            return new Response($this->get('translator')->trans('invalid.token', array(), 'errors'), 400);
 
         $authenticatedUser = $this->getUser();
 
@@ -80,7 +80,7 @@ class DefaultController extends Controller
 
         } else {
 
-            return new Response('Invalid request', 400);
+            return new Response($this->get('translator')->trans('invalid.request', array(), 'errors'), 400);
 
         }
 
@@ -93,7 +93,7 @@ class DefaultController extends Controller
     {
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('deleteComment', $request->get('token')))
-            return new Response('Invalid token', 400);
+            return new Response($this->get('translator')->trans('invalid.token', array(), 'errors'), 400);
 
         $authenticatedUser = $this->getUser();
 
@@ -110,7 +110,7 @@ class DefaultController extends Controller
             
         } else {
 
-            return new Response('Invalid request', 400);
+            return new Response($this->get('translator')->trans('invalid.request', array(), 'errors'), 400);
 
         }
 
@@ -128,6 +128,103 @@ class DefaultController extends Controller
         $next_page         = $page < $last_page ? $page + 1 : $last_page;
 
         return $this->render('metaGeneralBundle:Default:pagination.html.twig', array('route' => $route, 'params' => $params, 'current_page' => $page, 'total' => $total, 'objects_per_page' => $objects_per_page, 'last_page' => $last_page, 'previous_page' => $previous_page, 'next_page' => $next_page));
+
+    }
+
+    public function chooseCommunityAction(Request $request, $targetAsBase64)
+    {
+
+        $target = json_decode(base64_decode($targetAsBase64), true);
+
+        if ($request->isMethod('POST')) {
+
+            $communityId = $request->request->get('value');
+
+            $repository = $this->getDoctrine()->getRepository('metaGeneralBundle:Community\Community');
+            $community = $repository->findOneById($communityId);
+
+            if ($community && $this->getUser()->belongsTo($community) && isset($target['slug']) && isset($target['params']) ){
+
+                $target['params']['community'] = $communityId;
+                $target['params']['token'] = $request->get('token'); // For CSRF
+                return $this->forward($target['slug'], $target['params']);
+
+            } else {
+
+                throw $this->createNotFoundException();
+
+            }
+
+        } else {
+
+            $repository = $this->getDoctrine()->getRepository('metaGeneralBundle:Community\Community');
+            $communities = $repository->findAllCommunitiesForUser($this->getUser());
+
+            if (count($communities) == 0 ){
+
+                $this->get('session')->getFlashBag()->add(
+                        'warning',
+                        $this->get('translator')->trans('member.have.no.community')
+                    );
+
+                return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $this->getUser()->getUsername())));
+            }
+
+            return $this->render('metaGeneralBundle:Community:chooseCommunity.html.twig', array('communities' => $communities, 'targetAsBase64' => $targetAsBase64, 'token' => $request->get('token')));
+
+        }
+
+    }
+
+    public function switchCommunityAction(Request $request, $id)
+    {
+
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('switchCommunity', $request->get('token'))) {
+            
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $this->get('translator')->trans('invalid.token', array(), 'errors')
+            );
+
+            return $this->redirect($this->generateUrl('u_me'));
+        }
+
+        if ($id === null){ // Private space
+
+            $this->get('session')->getFlashBag()->add(
+                'success',
+                $this->get('translator')->trans('member.in.private.space')
+            );
+
+            $em = $this->getDoctrine()->getManager();
+            $this->getUser()->setCurrentCommunity(null);
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('g_home_community'));   
+        }
+
+        // Or a real community ?
+        $repository = $this->getDoctrine()->getRepository('metaGeneralBundle:Community\Community');
+        $community = $repository->findOneById($id);
+
+        if ($community && ( $this->getUser()->belongsTo($community) || $this->getUser()->isGuestOf($community) ) ){
+            
+            $this->get('session')->getFlashBag()->add(
+                'success',
+                $this->get('translator')->trans('member.in.community', array( '%community%' => $community->getName()))
+            );
+
+            $em = $this->getDoctrine()->getManager();
+            $this->getUser()->setCurrentCommunity($community);
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('g_home_community'));
+
+        } else {
+            
+            throw $this->createNotFoundException($this->get('translator')->trans('community.not.found')); // Which is false, but we should not reveal its existence
+
+        }
 
     }
 }

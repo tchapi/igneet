@@ -1,6 +1,6 @@
-{% extends 'metaUserProfileBundle::layout.html.twig' %}
+{% extends 'metaUserBundle::layout.html.twig' %}
 
-{% block title %}Resize and crop an image{% endblock %}
+{% block title %}{{ "image.resizeAndCrop"|trans }}{% endblock %}
 
 {% block javascripts %}
   {{ parent() }}
@@ -24,8 +24,8 @@
     <div class="textAvatar"><i class="icon-picture"></i></div>
   </div>
   <div class="objectHeader">
-    <h2>Resize and crop an image</h2>
-    <h4>You need to square this off, buddy !</h4>
+    <h2>{% trans %}image.resizeAndCrop{% endtrans %}</h2>
+    <h4>{% trans %}image.resizeAndCropHelp{% endtrans %}</h4>
   </div>
 {% endblock %}
 
@@ -33,7 +33,7 @@
 <form action="{{ path('g_choose_file', { 'targetAsBase64' : targetAsBase64, 'token': token  }) }}" method="post" enctype="multipart/form-data">
   <section>
       <div class="control-group ">
-        <label class="control-label"><label for="file" class="required">Crop and resize the image to your needs : </label></label>
+        <label class="control-label"><label for="file" class="required">{{ "image.resizeAndCrop"|trans }} : </label></label>
         <div class="controls">
           <input type="hidden" name="name" id="name" value="picture" />
           <input type="hidden" name="value" id="value" value="{{ image }}" />
@@ -47,8 +47,8 @@
         </div>
       </div>
       <div class="form-actions">
-        <a class="btn" href="javascript:history.back()">Cancel</a>
-        <input type="submit" value="Continue with this image" class="btn btn-success" />
+        <a class="btn" href="javascript:history.back()">{{ "cancel"|trans }}</a>
+        <input type="submit" value="{{ "image.continue"|trans }}" class="btn btn-success" />
       </div>
   </section>
 </form>

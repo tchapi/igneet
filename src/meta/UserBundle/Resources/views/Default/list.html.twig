@@ -1,0 +1,54 @@
+{% extends 'metaUserBundle::layout.html.twig' %}
+
+{% block title %}{{ parent() }} > {{ "user.allUsers"|trans }}{% endblock %}
+
+{% block header %}
+  <div class="headerAvatarAndActions">
+    <div class="textAvatar"><i class="icon-group"></i></div>
+  </div>
+  <div class="objectHeader">
+    <h2>{{ "user.allUsers"|trans }}</h2>
+    <h4>{{ "user.listHelp"|trans({ '%community%': app.user.currentCommunity.name}) }}</h4>
+    <p>{{ "filters.sort"|trans }} : 
+      <a href="{{ path('u_list_users', {'sort': 'newest', 'page' : pagination.page}) }}"><i class="icon-star"></i> {{ "filters.newest"|trans }}</a> - 
+      <a href="{{ path('u_list_users', {'sort': 'update', 'page' : pagination.page}) }}"><i class="icon-time"></i> {{ "filters.recent"|trans }}</a> - 
+      <a href="{{ path('u_list_users', {'sort': 'active', 'page' : pagination.page}) }}"><i class="icon-dashboard"></i> {{ "filters.active"|trans }}</a> - 
+      <a href="{{ path('u_list_users', {'sort': 'alpha',  'page' : pagination.page}) }}"><i class="icon-font"></i> {{ "filters.alpha"|trans }}</a></p>
+  </div>
+{% endblock %}
+
+{% block content %}
+{% if users %}
+{% for user in users %}
+<section class="listing">
+  
+  <a href="{{ path('u_show_user_profile', {'username': user.username}) }}">
+    <img src="{{ asset(user.getAvatar()) }}" width="100" height="100"/>
+  </a>
+
+  <div class="listingItemInfo">
+    <h4 class="ellipsis"><a href="{{ path('u_show_user_profile', {'username': user.username}) }}">{{ user.getFullName() }}</a>
+      {% if user.isGuestOf(app.user.currentCommunity) %} ({{ "guest"|trans }}){% endif %}
+    </h4>
+    <div class="ellipsis">{{ user.headline }}</div>
+    <div class="muted"><i class="icon-calendar"></i> {{ "user.list.member.since"|trans({ '%date%': user.createdAt|date("date.format"|trans) }) }}</div>
+    <div class="muted"><i class="icon-time"></i>
+      {% if user.initiatedLogEntries|length > 0 %}
+      {{ "user.list.last.updated.full"|trans({ '%update%': user.updatedAt|date("date.format"|trans), '%seen%': user.lastSeenAt|date("date.format"|trans), '%contrib%' : (user.initiatedLogEntries|last).createdAt|date("date.fullFormat"|trans) }) }}
+      {% else %}
+      {{ "user.list.last.updated"|trans({ '%update%': user.updatedAt|date("date.format"|trans), '%seen%': user.lastSeenAt|date("date.format"|trans) }) }}
+      {% endif %}</div>
+  </div>
+
+</section>
+{% endfor %}
+<section>
+{% render(controller("metaGeneralBundle:Default:pagination", { 'route': 'u_list_users', 'page' : pagination.page, 'total' : pagination.totalUsers, 'params' : {'sort': sort } })) %}
+</section>
+{% else %}
+<section>
+{{ "user.none"|trans }}
+</section>
+{% endif %}
+
+{% endblock %}

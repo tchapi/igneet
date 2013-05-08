@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * UserLogEntry
  *
  * @ORM\Table()
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="meta\GeneralBundle\Entity\Log\UserLogEntryRepository")
  */
 class UserLogEntry extends BaseLogEntry
 {
@@ -23,7 +23,7 @@ class UserLogEntry extends BaseLogEntry
 
     /**
      * Subject : User
-     * @ORM\ManyToOne(targetEntity="\meta\UserProfileBundle\Entity\User", inversedBy="logEntries")
+     * @ORM\ManyToOne(targetEntity="\meta\UserBundle\Entity\User", inversedBy="logEntries")
      * @ORM\JoinColumn(name="other_user_id", referencedColumnName="id", onDelete="CASCADE")
      **/
     private $other_user;
@@ -41,10 +41,10 @@ class UserLogEntry extends BaseLogEntry
     /**
      * Set subject
      *
-     * @param \meta\UserProfileBundle\Entity\User $other_user
+     * @param \meta\UserBundle\Entity\User $other_user
      * @return UserLogEntry
      */
-    public function setSubject(\meta\UserProfileBundle\Entity\User $otherUser = null)
+    public function setSubject(\meta\UserBundle\Entity\User $otherUser = null)
     {
         return $this->setOtherUser($otherUser);
     }
@@ -52,7 +52,7 @@ class UserLogEntry extends BaseLogEntry
     /**
      * Get subject
      *
-     * @return \meta\UserProfileBundle\Entity\User 
+     * @return \meta\UserBundle\Entity\User 
      */
     public function getSubject()
     {
@@ -62,10 +62,10 @@ class UserLogEntry extends BaseLogEntry
     /**
      * Set other_user
      *
-     * @param \meta\UserProfileBundle\Entity\User $otherUser
+     * @param \meta\UserBundle\Entity\User $otherUser
      * @return UserLogEntry
      */
-    public function setOtherUser(\meta\UserProfileBundle\Entity\User $otherUser = null)
+    public function setOtherUser(\meta\UserBundle\Entity\User $otherUser = null)
     {
         if (!is_null($otherUser)){
             $otherUser->addLogEntrie($this);
@@ -80,7 +80,7 @@ class UserLogEntry extends BaseLogEntry
     /**
      * Get other_user
      *
-     * @return \meta\UserProfileBundle\Entity\User 
+     * @return \meta\UserBundle\Entity\User 
      */
     public function getOtherUser()
     {

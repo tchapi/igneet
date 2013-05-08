@@ -1,0 +1,64 @@
+# Community
+private.space: "Mon espace privé"
+member.have.no.community: "Vous n'appartenez à aucune communauté pour le moment."
+guest: "Invité"
+guest.community.cannot:
+  access: "Vous devez être membre de la communauté pour avoir accès à ce contenu."
+  do: "Vous ne pouvez faire cette action en tant qu'invité de la communauté."
+member.in:
+  community: "Bienvenue dans l'espace de travail de la communauté %community%."
+  private.space: "Bienvenue dans votre espace de travail personnel."
+community:
+  home: "Accueil"
+  invite: "Inviter quelqu'un"
+  homeHelp: "Retrouvez vos %projects% projets et %ideas% idées."
+  homeHelpUsers: "%users% utilisateurs et invités contribuent à cette communauté."
+  not.found: "Cette communauté n'existe pas."
+  choose: "Choisir une communauté"
+  chooseHelp: "Veuillez indiquer une communauté pour finaliser votre action."
+  switch: "Vous avez été automatiquement basculé dans la communauté %community%."
+# File uploads
+file:
+  choose: "Choisir un fichier"
+  upload: "Uploader ce fichier"
+  chooseHelp: "Veuillez indiquer un fichier pour continuer."
+# Image
+image:
+  resizeAndCrop: "Redimmensionner et Rogner une image"
+  resizeAndCropHelp: ""
+  continue: "Continuer avec cette image"
+picture:
+  change: "changer"
+  resetHelp: "Réinitialiser l'image"
+# Comments
+comments:
+  count: "{0}Aucun commentaire|{1}Un commentaire|]1,Inf[%count% commentaires"
+comment:
+  added: "Votre commentaire a été ajouté avec succès."
+  deleted: "Commentaire supprimé"
+  delete: "Supprimer mon commentaire"
+  vote: "Voter pour ce commentaire"
+  post: "Commenter"
+  placeholder: "Laissez un commentaire ..."
+toggle: "Alterner l'affichage"
+# Logs
+log:
+  description.unavailable: "Aucune description disponible"
+goto.related.object: "Aller sur la page de cet objet"
+# Filters
+filters:
+  sort: "Trier par"
+  newest: "Plus récents"
+  alpha: "Alphabétique"
+  recent: "Récemment mis à jour"
+  active: "Récemment actifs"
+# Restricted access
+restricted:
+  title: "Accès restreint"
+  text: "Cette page est en accès restreint."
+# Tags
+tags:
+  title: "Tags"
+  help: "Indiquez des tags, séparés par des virgules"
+  emptyText: "Ajouter des tags"
+  none: "Aucun tag."

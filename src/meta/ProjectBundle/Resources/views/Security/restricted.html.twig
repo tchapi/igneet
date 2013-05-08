@@ -1,0 +1,10 @@
+{% extends 'metaProjectBundle:Default:show.html.twig' %}
+
+{% block title %}{{ parent() }} | {{ "restricted.title"|trans }}{% endblock %}
+
+{% block content %}
+<section class="centered">
+<i class="muted icon-minus-sign icon-4x"></i>
+<br />{{ "restricted.text"|trans }}
+</section>
+{% endblock %}

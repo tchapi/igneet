@@ -4,7 +4,7 @@ namespace meta\GeneralBundle\Services;
 
 use Doctrine\ORM\EntityManager;
 
-use meta\UserProfileBundle\Entity\User,
+use meta\UserBundle\Entity\User,
     meta\GeneralBundle\Entity\Log\UserLogEntry,
     meta\GeneralBundle\Entity\Log\IdeaLogEntry,
     meta\GeneralBundle\Entity\Log\StandardProjectLogEntry,
@@ -17,7 +17,7 @@ class LogService
     private $log_types, $log_routing, $concurrent_merge_interval;
     private $twig, $template_link, $template_link_null, $template_item;
 
-    public function __construct(EntityManager $entity_manager, $log_types, $log_routing, $log_concurrent_merge_interval, $twig)
+    public function __construct(EntityManager $entity_manager, $log_types, $log_routing, $log_concurrent_merge_interval, $security_context, $twig, $translator)
     {
         $this->em = $entity_manager;
         
@@ -25,11 +25,14 @@ class LogService
         $this->log_routing = $log_routing;
         $this->concurrent_merge_interval = $log_concurrent_merge_interval;
 
-        $this->twig = $twig;
+        $this->security_context = $security_context;
 
-        $this->template_link      = 'metaGeneralBundle:Log:logLink.html.twig';
-        $this->template_link_null = 'metaGeneralBundle:Log:logLink.null.html.twig';
-        $this->template_item      = 'metaGeneralBundle:Log:logItem.html.twig';
+        $this->twig = $twig;
+        $this->translator = $translator;
+
+        $this->template_link         = 'metaGeneralBundle:Log:logLink.html.twig';
+        $this->template_link_null    = 'metaGeneralBundle:Log:logLink.null.html.twig';
+        $this->template_item         = 'metaGeneralBundle:Log:logItem.html.twig';
         $this->template_item_comment = 'metaGeneralBundle:Log:logItemComment.html.twig';
     }
 
@@ -82,6 +85,7 @@ class LogService
         } else {
 
             // else persists the new log
+            $entry->setCommunity($this->security_context->getToken()->getUser()->getCurrentCommunity());
             $entry->setUser($user);
             $entry->setType($logActionName);
             $entry->setSubject($subject);
@@ -108,10 +112,10 @@ class LogService
             
         } else {
 
-            $format     = $this->log_types[$logEntryOrComment->getType()]['text'];
             $parameters = $this->getParameters($logEntryOrComment);
 
-            return $this->sprintfn( $format, $parameters );
+            // We get the text for the log
+            return $this->translator->trans( "logs." . $logEntryOrComment->getType(), $parameters, 'logs' );
 
         }
 
@@ -134,11 +138,10 @@ class LogService
             
         } else {
 
-            $format     = $this->log_types[$logEntryOrComment->getType()]['text'];
             $parameters = $this->getParameters($logEntryOrComment);
 
             // We get the formatted text for the log
-            $text = $this->sprintfn( $format, $parameters );
+            $text = $this->translator->trans( "logs." . $logEntryOrComment->getType(), $parameters, 'logs' );
 
             $date = $logEntryOrComment->getCreatedAt();
             $user = $logEntryOrComment->getUser();
@@ -158,14 +161,14 @@ class LogService
 
         $parameters = array();
 
-        $parameters["user"] = $this->twig->render($this->template_link, 
+        $parameters["%user%"] = $this->twig->render($this->template_link, 
                                                 array( 'object' => $logEntry->getUser()->getLogName(),
                                                        'routing' => (!$logEntry->getUser()->isDeleted())?array( 'path' => $this->log_routing['user'], 
                                                                            'args' => $logEntry->getUser()->getLogArgs()
                                                                     ):null
                                                        )
                                                 );
-        $parameters["$type"] = $this->twig->render($this->template_link, 
+        $parameters["%$type%"] = $this->twig->render($this->template_link, 
                                                 array( 'object' => $logEntry->getSubject()->getLogName(),
                                                        'routing' => array( 'path' => $this->log_routing["$type"], 
                                                                            'args' => $logEntry->getSubject()->getLogArgs()
@@ -186,7 +189,7 @@ class LogService
 
             }
 
-            $parameters["$key"] = $this->twig->render($this->template_link, 
+            $parameters["%$key%"] = $this->twig->render($this->template_link, 
                                                 array( 'object' => $object['logName'],
                                                        'routing' => $routing
                                                        )
@@ -196,45 +199,6 @@ class LogService
 
         return $parameters;
 
-    }
-
-    /**
-     * version of sprintf for cases where named arguments are desired (php syntax)
-     *
-     * with sprintf: sprintf('second: %2$s ; first: %1$s', '1st', '2nd');
-     *
-     * with sprintfn: sprintfn('second: %second$s ; first: %first$s', array(
-     *  'first' => '1st',
-     *  'second'=> '2nd'
-     * ));
-     *
-     * @param string $format sprintf format string, with any number of named arguments
-     * @param array $args array of [ 'arg_name' => 'arg value', ... ] replacements to be made
-     * @return string|false result of sprintf call, or bool false on error
-     */
-    private function sprintfn($format, array $args = array())
-    {
-        // map of argument names to their corresponding sprintf numeric argument value
-        $arg_nums = array_slice(array_flip(array_keys(array(0 => 0) + $args)), 1);
-
-        // find the next named argument. each search starts at the end of the previous replacement.
-        for ($pos = 0; preg_match('/(?<=%)([a-zA-Z_]\w*)(?=\$)/', $format, $match, PREG_OFFSET_CAPTURE, $pos);) {
-            $arg_pos = $match[0][1];
-            $arg_len = strlen($match[0][0]);
-            $arg_key = $match[1][0];
-
-            // programmer did not supply a value for the named argument found in the format string
-            if (! array_key_exists($arg_key, $arg_nums)) {
-                user_error("sprintfn(): Missing argument '${arg_key}'", E_USER_WARNING);
-                return false;
-            }
-
-            // replace the named argument with the corresponding numeric one
-            $format = substr_replace($format, $replace = $arg_nums[$arg_key], $arg_pos, $arg_len);
-            $pos = $arg_pos + strlen($replace); // skip to end of replacement for next iteration
-        }
-
-        return vsprintf($format, array_values($args));
     }
 
 }

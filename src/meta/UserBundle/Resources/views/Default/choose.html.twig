@@ -1,0 +1,42 @@
+{% extends 'metaUserBundle::layout.html.twig' %}
+
+{% block title %}{{ parent() }} > {{ "user.choose.title"|trans }}{% endblock %}
+
+{% block header %}
+  <div class="headerAvatarAndActions">
+    <div class="textAvatar"><i class="icon-search"></i></div>
+  </div>
+  <div class="objectHeader">
+    <h2>{{ "user.choose.title"|trans }}</h2>
+    <h4>{{ "user.choose.help"|trans }}</h4>
+  </div>
+{% endblock %}
+
+
+{% block content %}
+<form action="{{ path('u_choose_user', { 'targetAsBase64' : targetAsBase64, 'token': token }) }}" method="post" class="form-horizontal">
+    <section>
+      <div class="sectionTitle"><label for="username" class="required">{{ "user.choose.field"|trans }} : </label></div>
+      <div class="sectionContent">
+        <select id="username" name="username">
+          {% for user in users %}
+          <option value="{{ user.username }}">{{ user.getFullName() }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </section>
+    
+    {% if external %}
+    <section>
+      <div class="sectionTitle"><label for="mailOrUsername" class="required">{{ "user.choose.alternate"|trans }} : </label></div>
+      <div class="sectionContent"><input type="text" id="mailOrUsername" name="mailOrUsername"></div>
+    </section>
+    {% endif %}
+
+    <section>
+      <div class="sectionTitle"></div>
+      <div class="sectionContent"><a class="btn" href="javascript:history.back()">{{ "cancel"|trans }}</a>
+        <input type="submit" value="{{ "user.choose.button"|trans }}" class="btn btn-success" /></div>
+    </section>
+</form>
+{% endblock %}

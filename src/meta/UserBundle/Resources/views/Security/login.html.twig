@@ -1,0 +1,41 @@
+{% extends 'metaUserBundle::layout.html.twig' %}
+
+{% block title %}{{ parent() }} > {{ "login"|trans }}{% endblock %}
+
+{% block header %}
+  <div class="headerAvatarAndActions">
+    <div class="textAvatar"><i class="icon-lock"></i></div>
+  </div>
+  <div class="objectHeader">
+    <h2>{{ "user.login.title"|trans }}</h2>
+    <h4>{{ "user.login.help"|trans }}</h4>
+    <p>{{ "user.login.text1"|trans({'%link%': '<a href="' ~ path('u_signup') ~ '" />' ~ "user.login.signup"|trans ~ '</a>' })|raw }}</p>
+    <p>{{ "user.login.text2"|trans({'%recover%': '<a href="' ~ path('recover') ~ '" />' ~ "user.login.recover"|trans ~ '</a>', '%reactivate%': '<a href="' ~ path('reactivate') ~ '" />' ~ "user.login.reactivate"|trans ~ '</a>' })|raw }}</p>
+  </div>
+{% endblock %}
+
+{% block content %}
+{% if error %}
+<div class="alert alert-error">{{ error.message }}</div>
+{% endif %}
+<form action="{{ path('login_check') }}" method="POST">
+  <section>
+    <div class="sectionTitle"><label for="username">{{ "user.login.login"|trans }} :</label></div>
+    <div class="sectionContent">
+      <input id="username" type="text" name="_username" value="{{ last_username }}" />
+    </div>
+  </section>
+  <section>
+    <div class="sectionTitle"><label for="password">{{ "user.login.password"|trans }} :</label></div>
+    <div class="sectionContent">
+      <input id="password" type="password" name="_password" />
+    </div>
+  </section>
+  <section>
+    <div class="sectionTitle"></div>
+    <div class="sectionContent">
+      <input type="submit" name="{{ "user.login.signin"|trans }}" class="btn btn-info"/>
+    </div>
+  </section>
+</form>
+{% endblock %}

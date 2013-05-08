@@ -1,0 +1,37 @@
+date:
+  format: "Y-m-d"
+  fullFormat: "Y-m-d h:i A"
+  timeline: "M j"
+  today: "Today"
+  past.week: "A week ago"
+time:
+  format: "h:i A"
+timeline.reset.filters: "Reset filters"
+timeline.placeholder: "Optional timeline filters"
+cancel: "Cancel"
+change: "Change"
+choose: "Choose"
+create: "Create"
+add: "Add"
+save: "Save"
+saveHelp: "Click 'Save' to commit your changes"
+delete: "Delete"
+deleteHelp: "Warning : you cannot undo this"
+continue: "Continue"
+unsaved.changes: "Unsaved changes"
+required: "Required"
+# Header
+home: "Home"
+login: "Login"
+signup: "Sign up"
+logout: "Logout"
+# Footer
+report.bug: "Report a bug"
+terms: "Terms of use"
+# Team
+team: "The igneet team"
+# Mails
+mail:
+  hello: "Hello,"
+  automated.user: "This is an automated message from igneet, but you can answer directly to %user% by replying to this message."
+  automated: "This is an automated message from igneet, please do not reply to this message."

@@ -1,0 +1,32 @@
+{% extends 'metaUserBundle::layout.html.twig' %}
+
+{% block title %}{{ parent() }} > {{ "user.invitation.title"|trans }}{% endblock %}
+
+{% block header %}
+  <div class="headerAvatarAndActions">
+    <div class="textAvatar"><i class="icon-envelope"></i></div>
+  </div>
+  <div class="objectHeader">
+    <h2>{{ "user.invitation.title"|trans }}</h2>
+    <h4>{{ "user.invitation.community"|trans({ '%community%': community.name}) }}.</h4>
+    <p>{{ "user.invitation.help"|trans }}</p>
+  </div>
+{% endblock %}
+
+
+{% block content %}
+<section>
+{{ "user.invitation.text"|trans({ '%community%': community.name}) }}
+</section>
+<form action="{{ path('invite') }}" method="post" class="form-horizontal">
+  <section>
+    <div class="sectionTitle"><label for="mailOrUsername" class="required">{{ "user.invitation.field"|trans }} : </label></div>
+    <div class="sectionContent"><input type="text" id="mailOrUsername" name="mailOrUsername" required="required"></div>
+  </section>
+  <section>
+    <div class="sectionTitle"></div>
+    <div class="sectionContent"><a class="btn" href="javascript:history.back()">{{ "cancel"|trans }}</a>
+      <input type="submit" value="{{ "user.invitation.button"|trans }}" class="btn btn-success" /></div>
+  </section>
+</form>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}{{ parent() }} > {{ "user.title"|trans }}{% endblock %}
+
+{% block body %}
+<header class="user">
+{% block header %}{% endblock %}
+</header>
+<div class="content user">
+{% block content %}{% endblock %}
+</div>
+<footer>
+{% block footer %}{% endblock %}
+</footer>
+{% endblock %}

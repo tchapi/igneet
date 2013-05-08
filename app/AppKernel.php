@@ -25,9 +25,10 @@ class AppKernel extends Kernel
             new Knp\Bundle\MarkdownBundle\KnpMarkdownBundle(), /* Provides Markdown conversion */
 
             new meta\GeneralBundle\metaGeneralBundle(),
-            new meta\UserProfileBundle\metaUserProfileBundle(),
-            new meta\StandardProjectProfileBundle\metaStandardProjectProfileBundle(),
-            new meta\IdeaProfileBundle\metaIdeaProfileBundle(),
+            new meta\UserBundle\metaUserBundle(),
+            new meta\ProjectBundle\metaProjectBundle(),
+            new meta\IdeaBundle\metaIdeaBundle(),
+            new meta\StaticBundle\metaStaticBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

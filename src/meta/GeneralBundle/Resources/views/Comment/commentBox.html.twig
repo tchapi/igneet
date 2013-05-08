@@ -1,9 +1,12 @@
 <div class="commentsWrapper">
-  <span class="commentsBoxTitle" style="display: none;"><span>{{ object.comments|length }}</span> comment{% if object.comments|length > 1 %}s{% endif %}</span>
-  <a class="commentsBoxToggle"><i class="icon-resize-small"></i> toggle</a>
+  <span class="commentsBoxTitle" style="display: none;">
+    {% set count = object.comments|length %}
+    {% transchoice count with {'%count%': count} %}comments.count{% endtranschoice %}
+  </span>
+  <a class="commentsBoxToggle"><i class="icon-resize-small"></i> {% trans %}toggle{% endtrans %}</a>
   <div class="commentsContent">
     <div class="commentsInfo">
-      <span>{{ object.comments|length }}</span> comment{% if object.comments|length > 1 %}s{% endif %}
+      {% transchoice count with {'%count%': count} %}comments.count{% endtranschoice %}
       <i class='icon-comments pull-right'></i>
     </div>
     <div class="commentsForm">
@@ -13,7 +16,7 @@
       <form action="{{ route }}" method="post" {{ form_enctype(form) }}>
         {{ form_widget(form.text) }}
         {{ form_widget(form._token) }}
-        <input type="submit" class="btn btn-success" value="Post"/>
+        <input type="submit" class="btn btn-success" value="{{ "comment.post"|trans }}"/>
       </form>
     </div>
     <ul class="comments">
@@ -32,10 +35,10 @@
                 {% if not comment.user.isDeleted %}
                 <a href="{{ path('u_show_user_profile', {'username': comment.user.username}) }}">{{ comment.user.getFullName }}</a>
                 {% else %}<span>{{ comment.user.getFullName }}</span>{% endif %}
-                 — <span>{{ comment.createdAt|date("d/m/Y H:i") }}</span></header>
+                 — <span>{{ comment.createdAt|date("date.fullFormat"|trans) }}</span></header>
               <div>
                 {% if comment.isDeleted %}
-                <p class="muted"><em>Deleted comment</em></p>
+                <p class="muted"><em>{{ "comment.deleted"|trans }}</em></p>
                 {% else %}
                 {{ comment.text|deeplinks|markdown }}
                 {% endif %}
@@ -44,11 +47,11 @@
             {% if not comment.isDeleted %}
             <div class="actions">
               <div class="validations tooltip-trigger{% if app.user in comment.validators %} validated{% endif %}" data-toggle="tooltip" title="{% for user in comment.validators %}{{ user.getFullName() }}<br />{% endfor %}" data-placement="bottom">
-                <strong><a title="Vote for this comment" class="validate-trigger" data-url="{{ path('g_validate_comment', {'id': comment.id, 'token': csrf_token('validateComment')} ) }}"><i class="icon-thumbs-up"></i></a> <span>{{ comment.validators|length }}</span></strong>
+                <strong><a title="{{ "comment.vote"|trans }}" class="validate-trigger" data-url="{{ path('g_validate_comment', {'id': comment.id, 'token': csrf_token('validateComment')} ) }}"><i class="icon-thumbs-up"></i></a> <span>{{ comment.validators|length }}</span></strong>
               </div>
               {% if comment.user == app.user %}
               <div class="delete">
-                <a class="delete-trigger" data-url="{{ path('g_delete_comment', {'id': comment.id, 'token': csrf_token('deleteComment')} ) }}" title="Delete my comment"><i class="icon-trash"></i></a>
+                <a class="delete-trigger" data-url="{{ path('g_delete_comment', {'id': comment.id, 'token': csrf_token('deleteComment')} ) }}" title="{{ "comment.delete"|trans }}"><i class="icon-trash"></i></a>
               </div>
               {% endif %}
             </div>

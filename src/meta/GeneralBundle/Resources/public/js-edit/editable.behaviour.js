@@ -41,6 +41,17 @@ $(document).ready(function(){
         }
     });
 
+    /* Overriding display function for editable-server-response items (such as list items)
+     */
+    $('.editable-server-response').editable('option', 'display', 
+      function(value, response){
+          if (response.length > 0){
+            console.log(response);
+            $(this).html(response);
+          }
+        }
+    );
+
     /* For manual toggles */
     $('.editable-trigger').click(function(e) {
       e.stopPropagation();

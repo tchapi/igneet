@@ -1,0 +1,45 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}{{ parent() }} > {% if app.user.currentCommunity is null %}{{ "private.space"|trans }}{% else %}{{ app.user.currentCommunity.name }}{%endif %} | {{ "community.home"|trans }}{% endblock %}
+
+{% block body %}
+<header class="home">
+  <div class="headerAvatarAndActions">
+    <div class="textAvatar"><i class="icon-home"></i></div>
+  </div>
+  <div class="objectHeader">
+    <h2>{% if app.user.currentCommunity is null %}{% trans %}private.space{% endtrans %}{% else %}{{ app.user.currentCommunity.name }}{%endif %}</h2>
+    <h4>{% trans with {'%projects%': totalProjects, '%ideas%': totalIdeas} %}community.homeHelp{% endtrans %}</h4>
+    {% if app.user.currentCommunity is not null %}
+      <p>{% trans with {'%users%': totalUsersAndGuests} %}community.homeHelpUsers{% endtrans %}</p>
+    {% endif %}
+  </div>
+</header>
+<div class="content home clearfix">
+<!-- TODO : Strip off -->
+<!-- vvvvvvvvvvvvvvvv -->
+      <section>
+          <h1>Ideas</h1>
+          <p>Ideas are public entities in the community. You can view and comment them.<br />Participants and creators can edit their concept and knowledge associated.</p>
+          <p>
+            <a href="{{ path('i_list_ideas')}}" class="btn btn-primary btn-large">
+              Show ideas
+            </a>
+          </p>
+      </section>
+      <section>
+          <h1>Projects</h1>
+          <p>Projects have more limited visibility. You can view their public details and comment them.<br />Participants and creators can edit lists, wiki and resources associated.</p>
+          <p>
+            <a href="{{ path('sp_list_projects')}}" class="btn btn-primary btn-large">
+              Show projects
+            </a>
+          </p>
+      </section>
+<!-- ^^^^^^^^^^^^^^^^ -->
+<!-- TODO : Strip off -->
+</div>
+<footer>
+{% block footer %}{% endblock %}
+</footer>
+{% endblock %}

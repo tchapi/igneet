@@ -1,0 +1,80 @@
+{% extends 'metaProjectBundle::layout.html.twig' %}
+
+{% block title %}{{ parent() }} > {{ "project.allProjects"|trans }}{% endblock %}
+
+{% block header %}
+  <div class="headerAvatarAndActions">
+    <div class="textAvatar"><i class="icon-list-alt"></i></div>
+  </div>
+  <div class="objectHeader">
+    <h2>{{ "project.allProjects"|trans }}</h2>
+    <h4>
+      {% if app.user.currentCommunity is not null %}
+        {{ "project.listHelp.community"|trans({ '%community%': app.user.currentCommunity.name}) }}
+      {% else %}
+        {{ "project.listHelp.privateSpace"|trans }}
+      {% endif %}
+    </h4>
+    <p>{{ "filters.sort"|trans }} :
+      <a href="{{ path('sp_list_projects', {'sort': 'newest', 'page' : pagination.page}) }}"><i class="icon-star"></i> {{ "filters.newest"|trans }}</a> - 
+      <a href="{{ path('sp_list_projects', {'sort': 'update', 'page' : pagination.page}) }}"><i class="icon-time"></i> {{ "filters.recent"|trans }}</a> - 
+      <a href="{{ path('sp_list_projects', {'sort': 'alpha', 'page' : pagination.page}) }}"><i class="icon-font"></i> {{ "filters.alpha"|trans }}</a>
+    </p>
+    {% if not app.user.isGuestInCurrentCommunity() %}<p><a href="{{ path('sp_new_project') }}" class="btn btn-success">{{ "project.new"|trans }}</a></p>{% endif %}
+  </div>
+{% endblock %}
+
+{% block content %}
+{% if standardProjects %}
+{% for standardProject in standardProjects %}
+<section class="listing">
+  
+  <a href="{{ path('sp_show_project', {'slug': standardProject.slug}) }}">
+    <img src="{{ asset(standardProject.getPicture()) }}" width="100" height="100"/>
+  </a>
+
+  <div class="listingItemInfo">
+    <h4 class="ellipsis"><a href="{{ path('sp_show_project', {'slug': standardProject.slug}) }}">{{ standardProject.name }} ({{ standardProject.slug|lower }})</a></h4>
+    <div class="ellipsis">{{ standardProject.headline }}</div>
+    <div class="muted"><i class="icon-calendar"></i> {{ "project.info.created"|trans({'%date%': standardProject.createdAt|date("date.fullFormat"|trans)}) }}</div>
+    <div class="muted"><i class="icon-time"></i> {{ "project.info.updated"|trans({'%date%': standardProject.updatedAt|date("date.fullFormat"|trans)}) }}</div>
+  </div>
+
+  <div class="listingItemRelatedObjects">
+
+    <div class="type">
+      <div class="muted pull-right">
+        {{ "project.owners"|transchoice(standardProject.countOwners, { '%count': standardProject.countOwners}) }}, {{ "project.participants"|transchoice(standardProject.countParticipants, { '%count': standardProject.countParticipants}) }}
+      </div>
+    </div>
+
+    <ul>
+      {% if standardProject.countParticipants > 5 %}
+      <li>
+        <div class="miniTextAvatar">...</div>
+      </li>
+      {% endif %}
+      {% for user in standardProject.getRandomParticipantsAndOwners(5) %}
+        {% if not user.isDeleted %}
+        <li>
+          <a href="{{ path('u_show_user_profile', {'username': user.username}) }}">
+            <img src="{{ user.avatar }}" title="{{ user.getFullName() }}" width="30" height="30" class="miniAvatar"/>
+          </a>
+        </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </div>
+
+</section>
+{% endfor %}
+<section>
+{% render(controller("metaGeneralBundle:Default:pagination",{ 'route': 'sp_list_projects', 'page' : pagination.page, 'total' : pagination.totalProjects, 'params' : {'sort': sort } })) %}
+</section>
+{% else %}
+<section>
+{{ "project.none"|trans }}
+</section>
+{% endif %}
+
+{% endblock %}

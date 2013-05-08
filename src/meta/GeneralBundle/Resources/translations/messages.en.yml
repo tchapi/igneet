@@ -1,0 +1,64 @@
+# Community
+private.space: "My private space"
+member.have.no.community: "You do not belong to any community at this time."
+guest: "Guest"
+guest.community.cannot:
+  access: "You do not have access to this page as a guest in the community."
+  do: "You cannot do this as a guest in the community."
+member.in:
+  community: "You are now browsing the %community% community space."
+  private.space: "You are now back in your private space."
+community:
+  home: "Home"
+  invite: "Invite someone"
+  homeHelp: "Home of %projects% projects and %ideas% ideas."
+  homeHelpUsers: "%users% users and guests contribute to this community."
+  not.found: "This community does not exist."
+  choose: "Choose a community"
+  chooseHelp: "You need to indicate a specific community to continue with your request."
+  switch: "You have automatically been switched to the community %community%."
+# File uploads
+file:
+  choose: "Choose a file"
+  upload: "Upload this file"
+  chooseHelp: "You need to indicate a specific file to continue with your request."
+# Image
+image:
+  resizeAndCrop: "Resize and crop an image"
+  resizeAndCropHelp: ""
+  continue: "Continue with this image"
+picture:
+  change: "change"
+  resetHelp: "Reset to default picture"
+# Comments
+comments:
+  count: "{0}No comments yet|{1}One comment|]1,Inf]%count% comments"
+comment:
+  added: "Your comment was successfully added."
+  deleted: "Deleted comment"
+  delete: "Delete my comment"
+  vote: "Vote for this comment"
+  post: "Post"
+  placeholder: "Leave a comment ..."
+toggle: "Toggle"
+# Logs
+log:
+  description.unavailable: "No description available"
+goto.related.object: "Go to the page for this object"
+# Filters
+filters:
+  sort: "Sort by"
+  newest: "Newest"
+  alpha: "Alphabetical"
+  recent: "Recently updated"
+  active: "Last active"
+# Restricted access
+restricted:
+  title: "Restricted Area"
+  text: "This area is restricted."
+# Tags
+tags:
+  title: "Tags"
+  help: "Indicate tags separated by a comma"
+  emptyText: "Add tags"
+  none: "No tags yet."

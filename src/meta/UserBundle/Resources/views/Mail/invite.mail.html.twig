@@ -1,0 +1,28 @@
+<h3>{{ "mail.hello"|trans }}</h3>
+
+{% if not invitee %}
+  <p>
+    {% if project is null %}
+    {{ "user.invitation.mail.body.new.community"|trans({ '%user%': user.getFullName(), '%community%': user.getCurrentCommunity().name }) }}
+    {% else %}
+    {{ "user.invitation.mail.body.new.project"|trans({ '%user%': user.getFullName(), '%project%': project.name }) }}
+    {% endif %}
+  </p> 
+
+  <p>{{ "user.invitation.mail.body.new.click"|trans }} :</p>
+  <p><a href="{{ url('u_signup', { 'inviteToken': inviteToken } ) }}">{{ url('u_signup', { 'inviteToken': inviteToken } ) }}</a></p>
+{% else %}
+  <p>
+    {% if project is null %}
+    {{ "user.invitation.mail.body.member.community"|trans({ '%user%': user.getFullName(), '%community%': user.getCurrentCommunity().name }) }}
+    {% else %}
+    {{ "user.invitation.mail.body.member.project"|trans({ '%user%': user.getFullName(), '%project%': project.name }) }}
+    {% endif %}
+  </p> 
+
+  <p>{{ "user.invitation.mail.body.member.click"|trans }} :</p>
+  <p><a href="{{ url('u_me' ) }}">{{ url('u_me' ) }}</a></p>
+{% endif %}
+
+<p><em>{{ "mail.automated.user"|trans({ '%user%': user.getFullName() }) }}</em></p>
+<p><strong>{{ "team"|trans }}</strong></p>

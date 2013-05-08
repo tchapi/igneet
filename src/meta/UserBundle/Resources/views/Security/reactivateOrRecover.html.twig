@@ -1,0 +1,37 @@
+{% extends 'metaUserBundle::layout.html.twig' %}
+
+{% block title %}{{ parent() }} > {% if flavour == 'reactivate' %}{{ "user.reactivation.title.reactivate"|trans }}{% else %}{{ "user.reactivation.title.recover"|trans }}{% endif %}{% endblock %}
+
+{% block header %}
+  <div class="headerAvatarAndActions">
+    <div class="textAvatar"><i class="icon-refresh"></i></div>
+  </div>
+  <div class="objectHeader">
+  {% if flavour == 'reactivate' %}
+    <h2>{{ "user.reactivation.title.reactivate"|trans }}</h2>
+    <h4>{{ "user.reactivation.help.reactivate"|trans }}</h4>
+    <p>{{ "user.reactivation.text.reactivate"|trans }}</p>
+  {% else %}
+    <h2>{{ "user.reactivation.title.recover"|trans }}</h.recover>
+    <h4>{{ "user.reactivation.help.recover"|trans }}</h4>
+    <p>{{ "user.reactivation.text.recover"|trans }}</p>
+  {% endif %}
+  </div>
+{% endblock %}
+
+{% block content %}
+<form action="{{ path(flavour) }}" method="POST">
+  <section>
+    <div class="sectionTitle"><label for="mail">{{ "user.reactivation.email"|trans }} :</label></div>
+    <div class="sectionContent">
+      <input type="text" id="mail" name="mail" value=""/>
+    </div>
+  </section>
+  <section>
+    <div class="sectionTitle"></div>
+    <div class="sectionContent">
+      <input type="submit" value="{{ "continue"|trans }}" class="btn btn-info"/>
+    </div>
+  </section>
+</form>
+{% endblock %}

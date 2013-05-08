@@ -1,0 +1,80 @@
+parameters:
+  standardproject.resource_types:
+    pdf: 
+      icon: file_extension_pdf
+      displayable: true
+    doc: 
+      icon: file_extension_doc
+      displayable: false
+    docx: 
+      icon: file_extension_doc
+      displayable: false
+    ppt: 
+      icon: file_extension_ppt
+      displayable: false
+    pptx: 
+      icon: file_extension_ppt
+      displayable: false
+    xls: 
+      icon: file_extension_xls
+      displayable: false
+    xlsx: 
+      icon: file_extension_xls
+      displayable: false
+    jpeg: 
+      icon: file_extension_jpeg
+      displayable: true
+    jpg: 
+      icon: file_extension_jpg
+      displayable: true
+    png: 
+      icon: file_extension_png
+      displayable: true
+    gif: 
+      icon: file_extension_gif
+      displayable: true
+    mp3:
+      icon: file_extension_mp2
+      displayable: true
+    mpga:
+      icon: file_extension_mpg
+      displayable: true
+    mp4:
+      icon: file_extension_mp4
+      displayable: true
+    zip:
+      icon: file_extension_zip
+      displayable: false
+    psd:
+      icon: file_extension_psd
+      displayable: false
+    other: 
+      icon: document_comments
+      displayable: false
+  standardproject.resource_providers:
+    gdocs:
+      pattern: /docs\.google\.com/
+      icon: provider_gdocs
+      downloadable: false
+    dropbox:
+      pattern: /dropbox\.com/
+      icon: provider_dropbox
+      downloadable: false
+    droplr:
+      pattern: /d\.pr\/i/
+      icon: provider_droplr
+      downloadable: false
+    youtube:
+      pattern: /youtube\.com/
+      icon: provider_youtube
+      downloadable: false
+    skydrive:
+      pattern: /sdrv\.com/
+      icon: provider_skydrive
+      downloadable: false
+    other:
+      icon: provider_other
+      downloadable: false
+    local:
+      icon: provider_local
+      downloadable: true

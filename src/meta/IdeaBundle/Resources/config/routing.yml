@@ -1,0 +1,116 @@
+# IDEAS
+
+i_list_ideas:
+    pattern:  /ideas/{page}/{sort}
+    defaults: { _controller: metaIdeaBundle:Default:list, page: 1, archived: false, sort: update }
+    requirements:
+        page: \d+
+        sort: update|newest|alpha
+
+i_list_archived_ideas:
+    pattern:  /ideas/archived/{page}/{sort}
+    defaults: { _controller: metaIdeaBundle:Default:list, page: 1, archived: true, sort: update }
+    requirements:
+        page: \d+
+        sort: update|newest|alpha
+
+i_new_idea:
+    pattern:  /ideas/new
+    defaults: { _controller: metaIdeaBundle:Default:create}
+
+i_show_idea:
+    pattern:  /idea/show/{id}/{slug}
+    defaults: { _controller: metaIdeaBundle:Default:show, slug: _}
+    requirements:
+        id: \d+
+
+i_show_idea_concept:
+    pattern:  /idea/concept/{id}/{slug}
+    defaults: { _controller: metaIdeaBundle:Default:showConceptOrKnowledge, slug: _, type: 'concept'}
+    requirements:
+        id: \d+
+
+i_show_idea_knowledge:
+    pattern:  /idea/knowledge/{id}/{slug}
+    defaults: { _controller: metaIdeaBundle:Default:showConceptOrKnowledge, slug: _, type: 'knowledge'}
+    requirements:
+        id: \d+
+
+i_show_idea_timeline:
+    pattern:  /idea/timeline/{id}/{slug}/{page}
+    defaults: { _controller: metaIdeaBundle:Default:showTimeline, slug: _, page: 1}
+    requirements:
+        id: \d+
+        page: \d+
+
+i_edit_idea:
+    pattern:  /idea/edit/{id}
+    defaults: { _controller: metaIdeaBundle:Default:edit }
+    requirements:
+        id: \d+
+        _method:  POST
+
+i_edit_idea_reset_picture:
+    pattern:  /idea/resetpicture/{id}
+    defaults: { _controller: metaIdeaBundle:Default:resetPicture }
+    requirements:
+        id: \d+
+
+i_delete_idea:
+    pattern:  /idea/delete/{id}
+    defaults: { _controller: metaIdeaBundle:Default:delete }
+    requirements:
+        id: \d+
+
+i_archive_idea:
+    pattern:  /idea/archive/{id}
+    defaults: { _controller: metaIdeaBundle:Default:archiveOrRecycle, archive: true }
+    requirements:
+        id: \d+
+
+i_recycle_idea:
+    pattern:  /idea/recycle/{id}
+    defaults: { _controller: metaIdeaBundle:Default:archiveOrRecycle, archive:false }
+    requirements:
+        id: \d+
+
+# COMMENTS
+i_show_idea_comment:
+    pattern:  /idea/timeline/comment/{id}
+    defaults: { _controller: metaIdeaBundle:Default:addIdeaComment }
+    requirements:
+      id: \d+
+
+# Watching ideas
+i_watch_idea:
+    pattern:  /watch/idea/{id}
+    defaults: { _controller: metaIdeaBundle:Default:watch }
+    requirements:
+        id: \d+
+
+i_unwatch_idea:
+    pattern:  /unwatch/idea/{id}
+    defaults: { _controller: metaIdeaBundle:Default:unwatch }
+    requirements:
+        id: \d+
+
+# Add participant to an idea
+i_add_participant_to_idea:
+    pattern:  /idea/edit/{id}/add_participant/{username}
+    defaults: { _controller: metaIdeaBundle:Default:addParticipant }
+    requirements:
+        id: \d+
+
+i_remove_participant_to_idea:
+    pattern:  /idea/edit/{id}/remove_participant/{username}
+    defaults: { _controller: metaIdeaBundle:Default:removeParticipant }
+    requirements:
+        id: \d+
+
+# Turn idea to project
+
+i_turn_idea_into_project:
+    pattern:  /idea/projectize/{id}
+    defaults: { _controller: metaIdeaBundle:Default:projectize }
+    requirements:
+        id: \d+

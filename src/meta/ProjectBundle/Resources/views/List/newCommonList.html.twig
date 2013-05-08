@@ -1,0 +1,34 @@
+{% extends 'metaProjectBundle:Default:show.html.twig' %}
+
+{% block title %}{{ parent() }} | {{ "project.lists.new"|trans }}{% endblock %}
+
+{% block navbar %}
+{% render(controller("metaProjectBundle:Default:navbar", { 'activeMenu' : 'lists', 'slug' : base.standardProject.slug })) %}
+{% endblock %}
+
+{% form_theme form _self %}
+
+{% block form_row %}
+<section>
+<div class="sectionTitle">{{ form_label(form) }}</div>
+<div class="sectionContent">
+    {{ form_errors(form) }}
+    {{ form_widget(form) }}
+</div>
+</section>
+{% endblock form_row %}
+
+{% block content %}
+<form action="{{ path('sp_show_project_list_new', {'slug': base.standardProject.slug}) }}" method="post" {{ form_enctype(form) }}>
+  <section>
+    <h4>{{ "project.lists.newHelp"|trans }} :</h4>
+  </section>
+  {{ form_widget(form) }}
+  <section>
+    <div class="sectionTitle"></div>
+    <div class="sectionContent">
+      <input type="submit" value="{{ "create"|trans }}" class="btn btn-success" />
+    </div>
+  </section>
+</form>
+{% endblock %}

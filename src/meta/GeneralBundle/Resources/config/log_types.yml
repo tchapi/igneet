@@ -1,6 +1,7 @@
 parameters:
   general.log_concurrent_merge_interval: 3600
   general.log_routing:
+    community: g_home_community
     user: u_show_user_profile
     project: sp_show_project
     idea: i_show_idea
@@ -13,203 +14,221 @@ parameters:
     user_created: # DONE
       combinable: false
       displayable: true
+      filter_groups: [creations, users]
       type: other_user
       icon: check
-      text: %%user$s has just joined us — hooray!
     user_update_profile: # DONE
       combinable: true
       displayable: true
+      filter_groups: [updates, users]
       type: other_user
       icon: edit
-      text: %%user$s has updated its profile.
     user_follow_user: # DONE
       combinable: false
       displayable: true
+      filter_groups: [general, users, social]
       type: other_user
       icon: pushpin
-      text: %%user$s has started following %%other_user$s.
+    user_enters_community: # DONE
+      combinable: false
+      displayable: true
+      filter_groups: [general, users, social, community]
+      type: other_user
+      icon: globe
 # User acting on a project
+    project_enters_community: # DONE
+      combinable: false
+      displayable: true
+      filter_groups: [creations, community, projects]
+      type: project
+      icon: globe
     user_create_project: # DONE
       combinable: false
       displayable: true
+      filter_groups: [creations, projects]
       type: project
       icon: beaker
-      text: %%user$s created a new project %%project$s.
     user_comment_project: # DONE
       combinable: false
       displayable: false
+      filter_groups: [comments, projects]
       type: project
       icon: beaker
-      text: %%user$s commented on the project %%project$s.
     user_create_project_from_idea: # DONE
       combinable: false
       displayable: true
+      filter_groups: [creations, projects, ideas]
       type: project
       icon: beaker
-      text: %%user$s created a new project %%project$s from the idea %%idea$s.
     user_is_made_owner_project: # DONE
       combinable: false
       displayable: true
+      filter_groups: [updates, users, projects, social]
       type: project
       icon: key
-      text: %%user$s was promoted owner of the project %%project$s by %%other_user$s.
     user_is_made_participant_project: # DONE
       combinable: false
       displayable: true
+      filter_groups: [updates, users, projects, social]
       type: project
       icon: group
-      text: %%user$s was made a participant in the project %%project$s by %%other_user$s.
     user_watch_project: # DONE
       combinable: false
       displayable: true
+      filter_groups: [users, projects, social]
       type: project
       icon: eye-open
-      text: %%user$s has started watching the project %%project$s.
     user_update_project_info: # DONE
       combinable: true
       displayable: true
+      filter_groups: [updates, general, projects]
       type: project
       icon: edit
-      text: %%user$s has updated some information for the project %%project$s.
     user_create_wikipage: # DONE
       combinable: false
       displayable: true
+      filter_groups: [creations, projects, wiki]
       type: project
       icon: file-alt
-      text: %%user$s has created a new page %%wikipage$s in project %%project$s's wiki.
     user_update_wikipage: # DONE
       combinable: true
       displayable: true
+      filter_groups: [updates, projects, wiki]
       type: project
       icon: edit
-      text: %%user$s has updated the page %%wikipage$s in project %%project$s's wiki.
     user_comment_wikipage: # DONE
       combinable: true
       displayable: true
+      filter_groups: [comments, projects, wiki]
       type: project
       icon: comments-alt
-      text: %%user$s has commented the page %%wikipage$s in project %%project$s's wiki.
     user_delete_wikipage: # DONE
       combinable: false
       displayable: true
+      filter_groups: [deletions, projects, wiki]
       type: project
       icon: trash
-      text: %%user$s has deleted the page %%wikipage$s in project %%project$s's wiki.
     user_create_list: # DONE
       combinable: false
       displayable: true
+      filter_groups: [creations, projects, lists]
       type: project
       icon: list
-      text: %%user$s has created a new list %%list$s in the project %%project$s.
     user_update_list: # DONE
       combinable: true
       displayable: true
+      filter_groups: [updates, projects, lists]
       type: project
       icon: edit
-      text: %%user$s has updated the list %%list$s in the project %%project$s.
     user_comment_list: # DONE
       combinable: true
       displayable: true
+      filter_groups: [comments, projects, lists]
       type: project
       icon: comments-alt
-      text: %%user$s has commented the list %%list$s in the project %%project$s.
     user_delete_list: # DONE
       combinable: false
       displayable: true
+      filter_groups: [deletions, projects, lists]
       type: project
       icon: trash
-      text: %%user$s has deleted the list %%list$s in the project %%project$s.
     user_create_list_item: # DONE
       combinable: false
       displayable: true
+      filter_groups: [creations, projects, lists]
       type: project
       icon: indent-right
-      text: %%user$s has created a new list item %%list_item$s in the list %%list$s in the project %%project$s.
     user_update_list_item: # DONE
       combinable: true
       displayable: true
+      filter_groups: [updates, projects, lists]
       type: project
       icon: edit
-      text: %%user$s has updated the list item %%list_item$s of the list %%list$s in the project %%project$s.
     user_delete_list_item: # DONE
       combinable: false
       displayable: true
+      filter_groups: [deletions, projects, lists]
       type: project
       icon: indent-left
-      text: %%user$s has deleted the list item %%list_item$s of the list %%list$s in the project %%project$s.
     user_do_list_item: # DONE
       combinable: false
       displayable: true
+      filter_groups: [updates, projects, lists]
       type: project
       icon: check
-      text: %%user$s has finished the list item %%list_item$s of the list %%list$s in the project %%project$s.
     user_undo_list_item: # DONE
       combinable: false
       displayable: true
+      filter_groups: [updates, projects, lists]
       type: project
       icon: check-empty
-      text: %%user$s has reopened the list item %%list_item$s of the list %%list$s in the project %%project$s.
     user_add_resource: 
       combinable: false
       displayable: true
+      filter_groups: [creations, projects, resources]
       type: project
       icon: file
-      text: %%user$s has added the resource %%resource$s to the project %%project$s.
     user_update_resource: 
       combinable: true
       displayable: true
+      filter_groups: [updates, projects, resources]
       type: project
       icon: paste
-      text: %%user$s has updated the resource %%resource$s of the project %%project$s.
     user_delete_resource: 
       combinable: false
       displayable: true
+      filter_groups: [deletions, projects, resources]
       type: project
       icon: trash
-      text: %%user$s has deleted the resource %%resource$s of the project %%project$s.
 # User acting on an idea
+    idea_enters_community: # DONE
+      combinable: false
+      displayable: true
+      filter_groups: [creations, community, ideas]
+      type: idea
+      icon: globe
     user_transform_idea_in_project: # DONE
       combinable: true
       displayable: true
+      filter_groups: [creations, projects, ideas]
       type: idea
       icon: upload-alt
-      text: %%user$s has created a new project %%project$s from the idea %%idea$s.
     user_create_idea: # DONE
       combinable: false
       displayable: true
+      filter_groups: [creations, ideas]
       type: idea
       icon: lightbulb
-      text: %%user$s created a new idea %%idea$s.
     user_comment_idea: # DONE
       combinable: false
       displayable: false
+      filter_groups: [comments, ideas]
       type: idea
       icon: lightbulb
-      text: %%user$s commented on the idea %%idea$s.
     user_is_made_creator_idea: # DONE
       combinable: false
       displayable: true
+      filter_groups: [updates, ideas, users]
       type: idea
       icon: share
-      text: %%other_user$s transfered owner of the idea %%idea$s to %%user$s.
     user_update_idea_info: # DONE
       combinable: true
       displayable: true
+      filter_groups: [updates, general, ideas]
       type: idea
       icon: edit
-      text: %%user$s has updated some information for the idea %%idea$s.
     user_is_made_participant_idea: # DONE
       combinable: false
       displayable: true
+      filter_groups: [updates, users, ideas, social]
       type: idea
       icon: group
-      text: %%user$s was made a participant in the idea %%idea$s by %%other_user$s.
     user_watch_idea: # DONE
       combinable: false
       displayable: true
+      filter_groups: [users, ideas, social]
       type: idea
       icon: eye-open
-      text: %%user$s has started watching the idea %%idea$s.
 
 
 

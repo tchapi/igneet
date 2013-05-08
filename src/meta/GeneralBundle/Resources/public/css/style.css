@@ -21,6 +21,13 @@ h1, h2, h3, h4, h5, h6 {
   margin: 2px 0;
 }
 
+/* nav bar */
+#notificationsCount{
+  position: absolute;
+  top: 4px;
+  right: 4px;
+}
+
 div#workspace{
   transition: opacity 150ms 350ms ease-in;
   margin-top: 20px;
@@ -122,7 +129,7 @@ div.content div.menu{
   background-color: #eee;
   padding: 28px 20px 10px 20px;
 }
-div.content section.restricted{
+div.content section.centered{
   text-align: center;
   padding: 50px;
 }
@@ -374,6 +381,9 @@ div.listingItemInfo{
   width: 570px;
   display: inline-block;
 }
+.user div.listingItemInfo{
+  width: 790px;
+}
 div.listingItemRelatedObjects{
   position: absolute;
   right: 20px;
@@ -507,6 +517,9 @@ a.removeUserIcon{
 /*************/
 /* TIMELINE  */
 /*************/
+div.timeline_filters{
+  margin: 0 0 20px 0;
+}
 ul.timeline{
   margin: 0;
 }
@@ -556,6 +569,12 @@ ul.timeline li.logWrapper:last-child:after{
   border-left: 1px dotted #AAA;
   height: 20px;
 }
+ul.timeline li.logWrapper .fullDate{
+  display: none;
+}
+ul.timeline li.logWrapper.full .fullDate{
+  display: inline-block;
+}
 ul.timeline div.log{
   border-top: 1px solid #DDD;
   background: #EEE;
@@ -567,6 +586,10 @@ ul.timeline div.log span{
 }
 ul.timeline div.log span.avatar{
   display: inline-block;
+}
+ul.timeline div.log.bold{
+  font-weight: bold;
+  background: lightBlue;
 }
 
 

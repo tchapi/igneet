@@ -37,6 +37,12 @@ class BaseLogEntry
     private $type;
 
     /**
+     * Community this log happened in
+     * @ORM\ManyToOne(targetEntity="meta\GeneralBundle\Entity\Community\Community")
+     **/
+    private $community;
+
+    /**
      * @var \DateTime $created_at
      *
      * @ORM\Column(name="created_at", type="datetime")
@@ -54,7 +60,7 @@ class BaseLogEntry
 
     /**
      * User that did this (OWNING SIDE)
-     * @ORM\ManyToOne(targetEntity="meta\UserProfileBundle\Entity\User", inversedBy="initiatedLogEntries")
+     * @ORM\ManyToOne(targetEntity="meta\UserBundle\Entity\User", inversedBy="initiatedLogEntries")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      **/
     private $user;
@@ -130,10 +136,10 @@ class BaseLogEntry
     /**
      * Set user
      *
-     * @param \meta\UserProfileBundle\Entity\User $user
+     * @param \meta\UserBundle\Entity\User $user
      * @return LogEntry
      */
-    public function setUser(\meta\UserProfileBundle\Entity\User $user = null)
+    public function setUser(\meta\UserBundle\Entity\User $user = null)
     {
         if(!is_null($user)){
             $user->addInitiatedLogEntrie($this);
@@ -147,7 +153,7 @@ class BaseLogEntry
     /**
      * Get user
      *
-     * @return \meta\UserProfileBundle\Entity\User 
+     * @return \meta\UserBundle\Entity\User 
      */
     public function getUser()
     {
@@ -208,5 +214,28 @@ class BaseLogEntry
     public function getCombinedCount()
     {
         return $this->combined_count;
+    }
+
+    /**
+     * Set community
+     *
+     * @param \meta\GeneralBundle\Entity\Community\Community $community
+     * @return BaseLogEntry
+     */
+    public function setCommunity(\meta\GeneralBundle\Entity\Community\Community $community = null)
+    {
+        $this->community = $community;
+    
+        return $this;
+    }
+
+    /**
+     * Get community
+     *
+     * @return \meta\GeneralBundle\Entity\Community\Community 
+     */
+    public function getCommunity()
+    {
+        return $this->community;
     }
 }

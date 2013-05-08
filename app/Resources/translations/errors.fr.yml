@@ -1,0 +1,5 @@
+invalid:
+  request: "Requête non valide."
+  token: "Token non valide."
+  password.match: "Les deux mots de passe ne sont pas identiques."
+information.not.valid: "Les informations fournies ne semblent pas valides."

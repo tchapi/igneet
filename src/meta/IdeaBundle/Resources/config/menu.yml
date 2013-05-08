@@ -1,0 +1,18 @@
+parameters:
+  idea.menu:
+    timeline:
+      icon: icon-comments-alt
+      route: i_show_idea_timeline
+      private: false
+    info:
+      icon: icon-info-sign
+      route: i_show_idea
+      private: false
+    concept:
+      icon: icon-cogs
+      route: i_show_idea_concept
+      private: false
+    knowledge:
+      icon: icon-book
+      route: i_show_idea_knowledge
+      private: false

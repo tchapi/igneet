@@ -1,16 +1,16 @@
 imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
-    - { resource: @metaStandardProjectProfileBundle/Resources/config/menu.yml }
-    - { resource: @metaStandardProjectProfileBundle/Resources/config/resources.yml }
-    - { resource: @metaIdeaProfileBundle/Resources/config/menu.yml }
+    - { resource: @metaProjectBundle/Resources/config/menu.yml }
+    - { resource: @metaProjectBundle/Resources/config/resources.yml }
+    - { resource: @metaIdeaBundle/Resources/config/menu.yml }
     - { resource: @metaGeneralBundle/Resources/config/log_types.yml }
     - { resource: @metaGeneralBundle/Resources/config/deep_linking_tags.yml }
     - { resource: @metaGeneralBundle/Resources/config/services.yml }
 
 framework:
     #esi:             ~
-    #translator:      { fallback: "%locale%" }
+    translator:      { fallback: "en" }
     secret:          "%secret%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -20,7 +20,7 @@ framework:
     validation:      { enable_annotations: true }
     templating:      { engines: ['twig'] } #assets_version: SomeVersionScheme
     default_locale:  "%locale%"
-    trust_proxy_headers: false # Whether or not the Request object should trust proxy headers (X_FORWARDED_FOR/HTTP_CLIENT_IP)
+    trusted_proxies: [] # Whether or not the Request object should trust proxy headers (X_FORWARDED_FOR/HTTP_CLIENT_IP)
     session:
         save_path: "%kernel.root_dir%/var/sessions"
     trusted_proxies: ~
