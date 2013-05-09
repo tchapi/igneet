@@ -1,5 +1,6 @@
 # Community
 private.space: "My private space"
+private.space.back: "You have automatically been switched to your private space."
 member.have.no.community: "You do not belong to any community at this time."
 guest: "Guest"
 guest.community.cannot:
