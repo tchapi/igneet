@@ -252,13 +252,13 @@ class DefaultController extends Controller
         // Fetch logs related to the projects
         if (count($objects['projects']) > 0){
             $projectLogRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\StandardProjectLogEntry');
-            $projectLogs = $projectLogRepository->countLogsForProjects($objects['projects'], $from);
+            $projectLogs = $projectLogRepository->countLogsForProjects($objects['projects'], $from, $authenticatedUser);
         }
         
         // Fetch all logs related to the ideas
         if (count($objects['ideas']) > 0){
             $ideaLogRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\IdeaLogEntry');
-            $ideaLogs = $ideaLogRepository->countLogsForIdeas($objects['ideas'], $from);
+            $ideaLogs = $ideaLogRepository->countLogsForIdeas($objects['ideas'], $from, $authenticatedUser);
         }
 
         // Fetch all logs related to the users followed (their updates, or if they have created new projects or been added into one)
@@ -299,14 +299,14 @@ class DefaultController extends Controller
         // Fetch logs related to the projects
         if (count($objects['projects']) > 0){
             $projectLogRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\StandardProjectLogEntry');
-            $projectLogs = $projectLogRepository->findLogsForProjects($objects['projects'], $from);
+            $projectLogs = $projectLogRepository->findLogsForProjects($objects['projects'], $from, $authenticatedUser);
             foreach ($projectLogs as $notification) { $notifications[] = array( 'createdAt' => date_create($notification->getCreatedAt()->format('Y-m-d H:i:s')), 'data' => $logService->getHTML($notification) ); }
         }
         
         // Fetch all logs related to the ideas
         if (count($objects['ideas']) > 0){
             $ideaLogRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\IdeaLogEntry');
-            $ideaLogs = $ideaLogRepository->findLogsForIdeas($objects['ideas'], $from);
+            $ideaLogs = $ideaLogRepository->findLogsForIdeas($objects['ideas'], $from, $authenticatedUser);
             foreach ($ideaLogs as $notification) { $notifications[] = array( 'createdAt' => date_create($notification->getCreatedAt()->format('Y-m-d H:i:s')), 'data' => $logService->getHTML($notification) ); }
         }
 
