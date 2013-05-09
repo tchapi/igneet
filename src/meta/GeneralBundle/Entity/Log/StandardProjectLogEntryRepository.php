@@ -11,31 +11,37 @@ use Doctrine\ORM\EntityRepository;
 class StandardProjectLogEntryRepository extends EntityRepository
 {
 
-  private function getLogsQuery($projects, $from)
+  private function getLogsQuery($projects, $from, $exceptedUser)
   {
     $qb = $this->getEntityManager()->createQueryBuilder();
     
-    return $qb->from('metaGeneralBundle:Log\StandardProjectLogEntry', 'l')
+    $query = $qb->from('metaGeneralBundle:Log\StandardProjectLogEntry', 'l')
             ->where('l.standardProject IN (:projects)')
             ->setParameter('projects', $projects)
             ->andWhere('l.created_at > :from')
-            ->setParameter('from', $from)
-            ->orderBy('l.created_at', 'DESC');
+            ->setParameter('from', $from);
+
+    if ($exceptedUser){
+      $query->andWhere('l.user != :user')
+            ->setParameter('user', $exceptedUser);
+    }
+    
+    return $query->orderBy('l.created_at', 'DESC');
   }
 
-  public function findLogsForProjects($projects, $from)
+  public function findLogsForProjects($projects, $from, $exceptedUser = null)
   {
 
-    return $this->getLogsQuery($projects, $from)->select('l')
+    return $this->getLogsQuery($projects, $from, $exceptedUser)->select('l')
                                             ->getQuery()
                                             ->getResult();
 
   }
 
-  public function countLogsForProjects($projects, $from)
+  public function countLogsForProjects($projects, $from, $exceptedUser = null)
   {
 
-    return $this->getLogsQuery($projects, $from)->select('COUNT(l)')
+    return $this->getLogsQuery($projects, $from, $exceptedUser)->select('COUNT(l)')
                                             ->getQuery()
                                             ->getSingleScalarResult();
 
