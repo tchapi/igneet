@@ -48,17 +48,32 @@ class BaseController extends Controller
         // Project not in community, we might switch 
         if ($community !== $authenticatedUser->getCurrentCommunity()){
 
-            if ($authenticatedUser->belongsTo($community) || ($authenticatedUser->isGuestOf($community) && ($isOwning || $isParticipatingIn)) ){
-                $authenticatedUser->setCurrentCommunity($community);
-                $em = $this->getDoctrine()->getManager();
-                $em->flush();
+            if (is_null($community) && ($isOwning || $isParticipatingIn) ){
 
-                $this->get('session')->getFlashBag()->add(
-                    'info',
-                    $this->get('translator')->trans('community.switch', array( '%community%' => $community->getName()))
-                );
+              $authenticatedUser->setCurrentCommunity(null);
+              $em = $this->getDoctrine()->getManager();
+              $em->flush();
+
+              $this->get('session')->getFlashBag()->add(
+                  'info',
+                  $this->get('translator')->trans('private.space.back')
+              );
+
             } else {
-                throw $this->createNotFoundException($this->get('translator')->trans('project.not.found'));
+
+              if ($authenticatedUser->belongsTo($community) || ($authenticatedUser->isGuestOf($community) && ($isOwning || $isParticipatingIn)) ){
+                  $authenticatedUser->setCurrentCommunity($community);
+                  $em = $this->getDoctrine()->getManager();
+                  $em->flush();
+
+                  $this->get('session')->getFlashBag()->add(
+                      'info',
+                      $this->get('translator')->trans('community.switch', array( '%community%' => $community->getName()))
+                  );
+              } else {
+                  throw $this->createNotFoundException($this->get('translator')->trans('project.not.found'));
+              }
+
             }
         }
 

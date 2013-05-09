@@ -253,12 +253,16 @@ class DefaultController extends Controller
         if (count($objects['projects']) > 0){
             $projectLogRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\StandardProjectLogEntry');
             $projectLogs = $projectLogRepository->countLogsForProjects($objects['projects'], $from, $authenticatedUser);
+        } else {
+            $projectLogs = 0;
         }
         
         // Fetch all logs related to the ideas
         if (count($objects['ideas']) > 0){
             $ideaLogRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\IdeaLogEntry');
             $ideaLogs = $ideaLogRepository->countLogsForIdeas($objects['ideas'], $from, $authenticatedUser);
+        } else {
+            $ideaLogs = 0;
         }
 
         // Fetch all logs related to the users followed (their updates, or if they have created new projects or been added into one)
@@ -266,6 +270,8 @@ class DefaultController extends Controller
         if (count($objects['users']) > 0){
             $baseLogRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\BaseLogEntry');
             $userLogs = $baseLogRepository->countSocialLogsForUsersInCommunities($objects['users'], $authenticatedUser->getCommunities()->toArray(), $from);
+        } else {
+            $userLogs = 0;
         }
 
         $total = $selfLogs + $projectLogs + $ideaLogs + $userLogs;
