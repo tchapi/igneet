@@ -84,3 +84,14 @@ All rights reserved.
 ### Farm Fresh Icons by Fatcow Web Hosting - http://www.fatcow.com/free-icons
 
 Licensed under the CC Attribution 3.0 (http://creativecommons.org/licenses/by/3.0/)
+
+
+- - -
+
+For the static site only :
+
+ * Skeleton V1.2 - Copyright 2011, Dave Gamache
+ * Sticky Plugin - Author: Anthony Garand
+ * jQuery Mobile Menu - version 1.0(31-OCT-2011)
+ * jQuery Inview - author Remy Sharp
+ * jQuery Easing v1.3 - http://gsgd.co.uk/sandbox/jquery/easing/
