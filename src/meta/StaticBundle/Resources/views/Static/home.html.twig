@@ -43,7 +43,7 @@
     </div>
   </div> <!-- end intro -->
 
-  <div id="undefined-sticky-wrapper" class="sticky-wrapper" style="height: 40px;">
+  <div id="sticky-wrapper" class="sticky-wrapper" style="height: 40px;">
     <nav>
 
       <ul>
@@ -454,21 +454,22 @@ dizgi ve baskı endüstrisinde kullanılan mıgır metinlerdir. Lorem Ipsum, ad�
 {% endblock %}
 
   <script type="text/javascript">
+
     var scrollTo = function(target){
-          var myArray = target.split('#');
-          var targetPosition = jQuery('#' + myArray[1]).offset().top;
-          jQuery('html,body').animate({ scrollTop: targetPosition}, 'slow');
-        };
+      var myArray = target.split('#');
+      var targetPosition = jQuery('#' + myArray[1]).offset().top;
+      jQuery('html,body').animate({ scrollTop: targetPosition}, 'slow');
+    };
 
     jQuery(document).ready(function() {
 
-        jQuery("nav").sticky({topSpacing:0});
+      jQuery("nav").sticky({topSpacing:0});
 
-        jQuery('nav ul').mobileMenu({
-             defaultText: 'Aller à ...',
-             className: 'mobile-menu',
-             subMenuDash: '&ndash;'
-        });
+      jQuery('nav ul').mobileMenu({
+        defaultText: 'Aller à ...',
+        className: 'mobile-menu',
+        subMenuDash: '&ndash;'
+      });
 
     });
     
