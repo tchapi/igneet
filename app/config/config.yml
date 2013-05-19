@@ -43,6 +43,8 @@ twig:
     strict_variables: "%kernel.debug%"
     globals:
         ga_tracker_id: "%ga_tracker_id%"
+        mailer_from: "%mailer_from%"
+        mailer_contact: "%mailer_contact%"
 
 # Assetic Configuration
 assetic:

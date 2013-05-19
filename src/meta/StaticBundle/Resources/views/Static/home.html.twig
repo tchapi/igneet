@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html style="margin-top: 0 !important" lang="fr-FR" class="csstransforms csstransforms3d csstransitions">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <title>igneet | Entrepreneurs, donnez à vos idées et projets l’outil dont ils ont besoin</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]--> 
+  
+{% block stylesheets %}
+
+  {% stylesheets  'bundles/metastatic/css/base.css' 
+                  'bundles/metastatic/css/layout.css' 
+                  'bundles/metastatic/css/skeleton.css' 
+                  'bundles/metastatic/css/style.css' 
+                  'bundles/metastatic/css/fonts.css' 
+                  'bundles/metageneral/css/font-awesome.css' 
+    filter='?yui_css,cssrewrite' output='css/min/static.css' %}
+          <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}" />
+  {% endstylesheets %}
+
+{% endblock %}
+
+</head>
+<body class="home">
+
+  <div id="intro">
+  
+    <div class="bg1"></div>
+    
+    <div class="title">
+      <div class="intro-line"></div>
+      <h1 class="small"><i class="icon-fire"></i> Voici igneet</h1>
+      <div class="intro-line"></div>
+      <p>Entrepreneurs, donnez à vos idées et projets l’outil dont ils ont besoin</p>
+   
+      <div class="clear"></div><br>
+      
+    </div>
+  </div> <!-- end intro -->
+
+  <div id="undefined-sticky-wrapper" class="sticky-wrapper" style="height: 40px;">
+    <nav>
+
+      <ul>
+        <li><a href="#intro"><i class="icon-home"></i></a></li>
+        <li><a href="#why">Pourquoi ?</a></li>
+        <li><a href="#what">C'est quoi ?</a></li>
+        <li><a href="#features">Fonctionnalités</a></li>
+        <li><a href="#signup">S'inscrire</a></li>
+        <li><a href="#team">L'équipe</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="http://blog.igneet.com/" class="blog">Blog</a></li>
+      </ul>
+
+    </nav>
+  </div> <!-- end menu -->
+    
+  <div class="bg white-bg" id="why">
+    <div class="container">
+
+      <div class="clear"></div><br>
+
+
+      <div class="two columns">
+        <img src="{{ asset('bundles/metastatic/img/baseline_picture.jpg')}}" width="100px" />
+      </div>
+
+      <div class="thirteen columns">
+        <h5>Igneet est un <strong>outil</strong> de gestion d’<strong>idées</strong> et de <strong>projets</strong> pour des <strong>communautés</strong>, fortement lié aux mondes de <strong>l’entrepreneuriat</strong> et du <strong>management de l'innovation</strong>.</h5><br/>
+      </div>
+
+      <div class="eight columns ">
+        <h2><span class="lines">Pourquoi ?</span></h2>
+        <p>Faute de terrain de développement et de collaboration adéquat, beaucoup d’idées sont abandonnées sans avoir eu la chance de faire leurs preuves...</p>
+        <p>Pourtant, beaucoup de ces idées pourraient être à la base de d'innovations de rupture et/ou de ruptures technologiques, et <strong>réinventer des usages ou créer des nouveaux marchés</strong> !</p>
+        <p>Aujourd’hui, pour que ces idées puissent émerger facilement, que ce soit au sein d'entreprises établies, dans des structures associatives ou dans tout autre environnement communautaire, il faut un outil adapté et pensé pour les entrepreneurs et les porteurs de projet. Nous avons imaginé <strong>Igneet</strong> dans cette optique, afin d’apporter à ces acteurs des outils efficaces dès les premières phases de réflexion jusqu’à la concrétisation d’un projet.</p>
+      </div>
+    
+      <div class="eight columns ">
+        <h2><span class="lines">Comment ?</span></h2>
+        <p><strong>Igneet</strong> est proposée sous forme d’application web Saas (<em>Software-as-a-service</em>) — il ne remplace pas les outils que vous utilisez déjà, mais les complète et les fédère intelligement : Google Drive, Evernote, Droplr, Dropbox, (GitHub), etc ... tout en rajoutant des fonctionnalités essentielles, vous permettant ainsi de ne pas avoir à dupliquer vos informations.</p>
+        <p>Le service est construit autour de la notion de communautés (<em>votre entreprise, votre service, votre association, votre cercle d'amis, etc</em>). Au sein de ce cette communauté de confiance vous pourrez partager, construire, challenger vos idées, ainsi que gérer vos projets en collaboration avec les autres membres. <strong>Igneet</strong> est aussi un ensemble de ressources issues du management de l’innovation pour vous aider à élaborer collectivement vos idées/projets de manière efficace.</p>
+      </div>
+
+
+    </div> <!-- end container -->
+  </div> <!-- end why -->
+
+ <div class="bg dark-bg blue" id="what">
+    <div class="container">
+
+      <div class="sixteen columns ">
+        <h2><span class="lines">Que propose igneet ?</span></h2>
+        <p>En tirant parti de travaux récents dans le management de l'innovation, le pilotage des startups,  et les théories de la conception, nous proposons un outil qui vous permet :</p>
+        <ul class="circle">
+          <li>de ne pas perdre la moindre de vos idées</li>
+          <li>d’élaborer, renseigner, construire des idées et des projets en prenant appui sur des méthodes d’innovation</li>
+          <li>de partager, d’élaborer collectivement et d’échanger efficacement sur ces idées / projets avec d'autres membres</li>
+        </ul>
+        <p>Au delà des échanges d'idées, igneet propose un ensemble de ressources qui vous permet de concrétiser ces idées en projets, trouver des collaborateurs et transformer l'envie d'entreprendre en une réalité — même en y consacrant un temps limité.</p>
+
+      </div>
+
+      <div class="clear"></div>
+
+      <div class="action">
+        <p><i class="icon-group icon-2x"></i></p>
+        <p>Initialement, Igneet a été imaginé et réalisé pour supporter l'activité de <strong>ThirdPlace</strong> — <em>association permettant à de jeunes entrepreneurs de travailler ensemble, à temps partiel, à l’émergence de nouveaux produits ou services.</em></p>
+      </div>
+
+    </div> <!-- end container -->
+  </div> <!-- end what -->
+
+<!-- =================================================== -->
+<!-- ==================== SEPARATOR ==================== -->
+  <div id="separator_1" class="separator">
+      <div class="bg"></div>
+      <p class="separator">Igneet a été conçu pour et par des entrepreneurs.</p>
+  </div>
+<!-- ================= END : SEPARATOR ================= -->
+<!-- =================================================== -->
+
+  <div class="bg dark-bg dark-blue" id="features">
+    <div class="container">
+      <div class="sixteen columns">
+          <h2><span class="lines"> Fonctionnalités </span></h2>
+      </div> <!-- end sixteen columns -->
+
+      <div class="sixteen columns ">
+        <p>Vous retrouvez sur igneet des fonctionnalités pratiques pour gérer vos idées et projets :</p>
+      </div>
+
+      <div class="one-third column serv-list">
+        <h4>Listes & Espace wiki</h4>
+        <i class="icon-list-alt icon-4x"></i>
+        <p>Chaque projet peut accueillir un wiki complet ainsi qu'une quantité illimitée de listes (Todo, tâches, etc) pour faciliter l'organisation de votre projet</p>
+      </div>
+      <div class="one-third column serv-list">
+        <h4>Gestion des droits</h4>
+        <i class="icon-lock icon-4x"></i>
+        <p>La notion de participant, créateur ou propriétaire d'une idée ou d’un projet permet gestion fine des droits, et des invités dans les communautés</p>
+      </div>
+      <div class="one-third column serv-list">
+        <h4>Timeline et historique</h4>
+        <i class="icon-comments-alt icon-4x"></i>
+        <p>Toutes les actions importantes sur vos projets, vos communautés ou idées sont gardées en mémoire dans un historique facile d'accès pour chaque élément</p>
+      </div>
+      <div class="one-third column serv-list">
+        <h4>Tableau de bord</h4>
+        <i class="icon-dashboard icon-4x"></i>
+        <p>Dans votre profil, un tableau de bord personnel complet reprend l'état d'avancement de vos projets et idées, en vous donnant quelques insights sur ce qui se passe dans vos communautés</p>
+      </div>
+      <div class="one-third column serv-list">
+        <h4>Connecté</h4>
+        <i class="icon-link icon-4x"></i>
+        <p>Tous les éléments avec lesquels vous travaillez sur igneet peuvent être connectés intelligement avec des liens intelligents, des commentaires contextualisés, échanges sociaux, ...</p>
+      </div>
+      <div class="one-third column serv-list">
+        <h4>Ressources</h4>
+        <i class="icon-file-alt icon-4x"></i>
+        <p>Sur igneet, il est très simple d'ajouter des ressources : liens, documents externes, fichiers. Les types de documents sont automatiquement détectés pour faciliter votre organisation</p>
+      </div>
+
+      <div class="clear"></div><br>
+
+      <div class="action">
+        <p>En plus d’un ou plusieurs espaces communautaires collectifs, vous disposez également d’un espace privé vous permettant de gérer vos idées ou projets personnels facilement en tirant partie des fonctionnalités offertes par l’outil.</p>
+      </div>
+      
+    </div> <!-- end container -->
+  </div> <!-- end features -->
+
+  <div class="bg white-bg" id="signup">
+    <div class="container">
+
+      <div class="sixteen columns">
+          <h2><span class="lines"> S'inscrire </span></h2>
+      </div> <!-- end sixteen columns -->
+
+      <div class="sixteen columns ">
+
+        <p>Rejoignez la communauté des entreprises, associations, utilisateurs d'Igneet et faites de vos idées et projets une réalité :</p>
+
+        <ul class="disc">
+          <li>ThirdPlace (par exemple ZenWeShare, Panorame, Exadress, ...)</li>
+          <li>eGreen</li>
+          <li>Centrale Paris Entrepreneurs</li>
+          <li>RATP (Département innovation)</li>
+          <li>XMP Entrepreneurs, ...</li>
+        </ul>
+
+        <p>Les inscriptions sont pour l'instant réservées sur invitation. Pour faire partie des quelques premiers comptes utilisateurs disponibles et entreprendre dans vos premières communautés, cliquez sur le lien ci dessous afin de vous inscrire sur la plate-forme :
+
+        <div style="text-align: center"><a href="http://app.igneet.com/signup"><div class="button1"><i class="icon-ok"></i> Demandez une invitation</div></a></div>
+
+        <div class="clear"></div><br>
+
+        <p>Une fois inscrit, vous pourrez profiter instantanément de votre espace privé.</p>
+
+        <p>Pour tirer pleinement partir d'Igneet et des fonctions de collaboration, il vous faudra créer une communauté et y inviter les personnes avec qui vous souhaitez travailler.</p>
+
+      </div>
+
+      <div style="text-align: center"><h3 style="text-align: center; margin-top: 25px"><span class="lines">Nos offres</span></h3></div><br>
+
+      <div class="four columns pricing">
+        <p class="p-name green">Gratuit</p>
+        <p class="p-price">0 €<span class="p-small"> / mois</span></p>
+        <ul>
+          <li>0 communauté</li>
+          <li>1 espace privé</li>
+          <li>1 Go d'espace</li>
+        </ul>
+        <div class="signup"><div class="button2"><a href="http://app.igneet.com/signup">S'inscrire</a></div></div>
+
+      </div>
+      <div class="four columns pricing">
+        <p class="p-name yellow">Standard</p>
+        <p class="p-price">15 €<span class="p-small"> / mois</span></p>
+        <ul>
+          <li>1 communauté</li>
+          <li>1 espace privé</li>
+          <li>10 Go d'espace</li>
+        </ul>
+        <div class="signup"><div class="button2"><a href="#">Acheter</a></div></div>
+      </div>
+      <div class="four columns pricing">
+        <p class="p-name orange">Association</p>
+        <p class="p-price">25 €<span class="p-small"> / mois</span></p>
+        <ul>
+          <li>2 communautés</li>
+          <li>1 espace privé</li>
+          <li>50 Go d'espace</li>
+        </ul>
+        <div class="signup"><div class="button2"><a href="#">Acheter</a></div></div>
+      </div>
+      <div class="four columns pricing">
+        <p class="p-name red">Entreprise</p>
+        <p class="p-price">100 €<span class="p-small"> / mois</span></p>
+        <ul>
+          <li>Communautés illimitées</li>
+          <li>1 espace privé</li>
+          <li>100 Go d'espace</li>
+        </ul>
+        <div class="signup"><div class="button2"><a href="#">Acheter</a></div></div>
+      </div>
+                      
+    </div> <!-- end container -->
+  </div> <!-- end signup -->
+
+<!-- =================================================== -->
+<!-- ==================== SEPARATOR ==================== -->
+  <div id="separator_2" class="separator">
+      <div class="bg"></div>
+      <p class="separator">En se focalisant sur ce que nous connaissons et maîtrisons : l'entrepreneuriat innovant,<br />
+      <small>nous avons introduit dans igneet des outils adaptés qui vous permettront d'aller au delà de la simple gestion de projet,<br />tant en amont (dans la phase idées), qu'en mode projet par la suite.</small></p>
+  </div>
+<!-- ================= END : SEPARATOR ================= -->
+<!-- =================================================== -->
+
+  <div class="bg white-bg" id="team">
+      <div class="container">
+          
+        <div class="sixteen columns">
+          <h2><span class="lines"> L'équipe </span></h2>
+        </div> <!-- end sixteen columns -->
+
+
+        <div class="sixteen columns">
+        <p>Igneet est né de notre frustration avec les outils existants pour animer nos reflexions au sein de ThirdPlace, association à but non lucratif visant à favoriser l'entrepreneuriat innovant.</p>
+        <p>Igneet est donc concrètement une des premières sociétés à naître du mouvement <a href="http://www.thirdplace.fr" target="_blank">ThirdPlace</a>.</p>
+        </div>
+
+        <div class="eight columns team">
+          <img alt="Cyril Chapellier" class="scale-with-grid round-corners" src="{{ asset('bundles/metastatic/img/about-cyril.png')}}" width="200" height="200">
+          <p class="t-name">Cyril Chapellier</p>
+          <p class="t-type">Fondateur & Développeur Lead</p>
+          <p>Développeur & geek, passionné de technologies et d'entrepreneuriat.<br/>Activiste hacker et maker, Directeur technique de CKAB.<br />Ingénieur civil des Mines de Paris et titulaire d'un cursus de design à Créapole.</p>
+          <ul>
+            <li><a target="_blank" href="http://twitter.com/tuneefy" class="social"><i class="icon-twitter-sign icon-2x"></i></a></li>
+            <li><a target="_blank" href="http://www.linkedin.com/in/cyrilchapellier" class="social"><i class="icon-linkedin-sign icon-2x"></i></a></li>
+            <li><a target="_blank" href="http://github.com/tchapi" class="social"><i class="icon-github-sign icon-2x"></i></a></li>
+            <li><a target="_blank" href="http://about.me/tchap" class="social"><i class="icon-external-link-sign icon-2x"></i></a></li>
+          </ul>
+        </div>
+
+        <div class="eight columns team">
+          <img alt="Benjamin Duban" class="scale-with-grid round-corners" src="{{ asset('bundles/metastatic/img/about-benjamin.png')}}" width="200" height="200">
+          <p class="t-name">Benjamin Duban</p>
+          <p class="t-type">Fondateur & Consultant / Expert en innovation</p>
+          <p>Spécialiste des théories de la conception et du management de l'innovation (<em>intervenant aux Mines de Paris & écoles de Condé</em>).<br/>Jury de diplôme du Master de Design Global des écoles de Condé.<br/>Ingénieur des Mines de formation, 7 ans passés dans l'innovation et le management dans des structures de tailles très variables.</p>
+          <ul>
+            <li><a target="_blank" href="http://twitter.com/####" class="social"><i class="icon-twitter-sign icon-2x"></i></a></li>
+            <li><a target="_blank" href="https://linkedin.com/####" class="social"><i class="icon-linkedin-sign icon-2x"></i></a></li>
+          </ul>
+        </div>
+
+        <div class="clear"></div><br>
+
+        <div style="text-align: center"><h3 style="text-align: center; margin-top: 25px"><span class="lines">Quelques témoignages</span></h3></div>
+
+        <div class="clear"></div><br />
+
+        <div class="sixteen columns">
+          <p>Ils utilisent Igneet.</p>
+        </div>
+
+        <div class="sixteen columns ">
+          <p><i class="icon-quote-left icon-4x pull-left icon-muted"></i>
+dizgi ve baskı endüstrisinde kullanılan mıgır metinlerdir. Lorem Ipsum, adı bilinmeyen bir matbaacının bir hurufat numune kitabı oluşturmak üzere bir yazı galerisini alarak karıştırdığı 1500'lerden beri endüstri standardı sahte metinler olarak kullanılmıştır.. — <strong>Eric & Guillaume, <em>Exadress</em></strong>
+          </p>
+        </div>
+        <div class="clear"></div><br />
+        <div class="sixteen columns ">
+          <p><i class="icon-quote-left icon-4x pull-left icon-muted"></i>
+          Постоји много верзија и варијација модела, су направљени да понављају предходно дефинисане — <strong>Benoît, <em>ZenWeShare</em></strong>
+          </p>
+        </div><br>
+        <div class="clear"></div><br />
+        <div class="sixteen columns ">
+          <p><i class="icon-quote-left icon-4x pull-left icon-muted"></i>
+          Chúng ta vẫn biết rằng, làm việc với một đoạn văn bản dễ đọc và rõ nghĩa dễ gây rối trí và cản trở việc tập trung vào yếu tố trình "Nội dung, nội dung, nội dung" là nó khiến văn bản giống thật hơn, bình thường hơn. — <strong>Frédéric, <em>RATP Innovation</em></strong>
+          </p>
+        </div><br>
+      
+      </div> <!-- end container -->
+  </div> <!-- end team -->
+
+ <div id="join" class="dark-bg dark-green">
+    <div class="container">
+    
+      <div style="text-align: center"><h3 style="text-align: center; margin-top: 25px"><span class="lines">Vous voulez nous aider, nous rejoindre ?</span></h3></div>
+
+      <div class="clear"></div><br>
+
+      <div class="sixteen columns">
+        <p><i class="icon-thumbs-up"></i> <strong>Nous sommes bien sûr ouverts à toute forme de collaboration et / ou partenariats.</strong></p>
+
+        <p>Si vous pensez pouvoir nous aider à améliorer l’outil, à le développer ou à lui apporter de la visibilité, n’hésitez pas à nous contacter — différents organismes et individuels nous soutiennent déjà de manière active :</p>
+        <ul class="disc">
+          <li>(rien)</li>
+        </ul>
+
+        <p><i class="icon-signin"></i> <strong>Vous souhaitez rejoindre l'équipe et faire avancer le projet ?</strong></p>
+
+        <p>N'hésitez pas à nous faire part de vos envies et de votre motivation à {{ mailer_contact }} (<em>ou en utilisant le formulaire de contact ci-dessous</em>).<br />
+        Nous recherchons principalement des gens motivés par l’entrepreneuriat, autonomes, et ayant évidemment une bonne connaissance des outils web de gestion de projet.</p></p><br />
+      </div>
+
+    </div> <!-- end container -->
+  </div> <!-- end join -->
+
+    
+  <div id="contact" class="dark-bg">
+      <div class="container">
+      
+          <div class="sixteen columns">
+              <h2 class="white"><span class="lines">Nous contacter</span></h2>
+          </div> <!-- end sixteen columns -->
+
+          <div class="sixteen columns ">L'équipe d'igneet est basée principalement à Paris.</div><br>
+
+          <div class="clear"></div>
+          
+          <div class="eight columns">
+              <div class="contact-form">
+                  
+                  <div class="done">
+                      <b>Merci!</b> Nous lisons avec attention tous les messages que vous nous envoyez et nous reviendrons vers vous très rapidement.
+                  </div>
+
+                  <div class="error">
+                      <b>Zut!</b> Une erreur est survenue dans l'envoi de votre email. Veuillez réessayez plus tard ou nous envoyer un mail directement à l'adresse de contact indiquée à droite.
+                  </div>
+              
+              
+                  <form method="POST" action="{{ path('contact') }}">
+                      <p>Nom</p>
+                      <input type="text" name="name" class="text">
+                      
+                      <p>Email</p>
+                      <input type="text" name="email" class="text" id="email">
+
+                      <p>Message</p>
+                      <textarea name="message" class="text"></textarea>
+
+                      <input type="submit" id="submit" value="Envoyer" class="submit-button">
+                  </form>
+                      
+              </div> <!-- end contact-form -->
+          </div> <!-- end eight columns -->
+          
+          <div class="eight columns">
+              
+              <div class="contact-info">
+                  
+                  <h5>Plus d'informations</h5>
+              
+                  <p class="white"><i class="icon-envelope"></i> <a href="mailto:{{ mailer_contact }}">{{ mailer_contact }}</a></p>
+                  <p class="white"><i class="icon-home"></i> Paris, France</p>
+
+                </div> <!-- end contact-info -->
+              
+          </div> <!-- end eight columns -->
+          
+          <div class="clear"></div>
+
+          <div class="sixteen columns">
+              <div class="copyright">
+                  <p>© 2013 <a href="http://igneet.com/">igneet</a> | coded with <i class="icon-heart-empty"></i> by <a href="http://github.com/tchapi">tchapi</a></p>
+              </div>
+          </div>
+          
+      </div> <!-- end container -->
+  </div> <!-- end contact -->
+          
+<!-- JS
+    ================================================== -->
+  
+{% block javascripts %}
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  
+  {% javascripts '@metaStaticBundle/Resources/public/js/jquery.sticky.js'
+                 '@metaStaticBundle/Resources/public/js/jquery.smooth-scroll.js'
+                 '@metaStaticBundle/Resources/public/js/contact-form.js'
+                 '@metaStaticBundle/Resources/public/js/jquery.easing.1.3.js'
+                 '@metaStaticBundle/Resources/public/js/jquery.inview.js'
+                 '@metaStaticBundle/Resources/public/js/jquery.mobilemenu.js' filter='?yui_js' output='js/min/static.js' %}
+          <script src="{{ asset_url }}"></script>
+  {% endjavascripts %}
+
+  {% if ga_tracker_id != 0 %}
+          <script type="text/javascript">
+
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', '{{ ga_tracker_id }}']);
+            _gaq.push(['_trackPageview']);
+
+            (function() {
+              var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+              ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+              var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+            })();
+
+          </script>
+  {% endif %}
+
+{% endblock %}
+
+  <script type="text/javascript">
+    var scrollTo = function(target){
+          var myArray = target.split('#');
+          var targetPosition = jQuery('#' + myArray[1]).offset().top;
+          jQuery('html,body').animate({ scrollTop: targetPosition}, 'slow');
+        };
+
+    jQuery(document).ready(function() {
+
+        jQuery("nav").sticky({topSpacing:0});
+
+        jQuery('nav ul').mobileMenu({
+             defaultText: 'Aller à ...',
+             className: 'mobile-menu',
+             subMenuDash: '&ndash;'
+        });
+
+    });
+    
+  </script>
+
+</body></html>
