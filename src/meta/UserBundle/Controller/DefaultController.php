@@ -27,7 +27,7 @@ class DefaultController extends Controller
 
         $authenticatedUser = $this->getUser();
 
-        // No users in private space
+        // No users in private space (and no notifications in private space, so we're safe)
         if (is_null($authenticatedUser->getCurrentCommunity()) && $username !== $authenticatedUser->getUsername()){
             throw $this->createNotFoundException($this->get('translator')->trans('user.not.found'));
         }
@@ -39,9 +39,26 @@ class DefaultController extends Controller
             $user = $authenticatedUser;
         }
 
-        // If user is deleted or doesn't exist
+        // If user is deleted or doesn't exist in this community
         if (!$user || $user->isDeleted()) {
-            throw $this->createNotFoundException($this->get('translator')->trans('user.not.found'));
+
+            // It might still exist in another community in which the requesting user is as well ?
+            $user = $repository->findOneByUsername($username);
+            if (!$user || $user->isDeleted()) {
+                throw $this->createNotFoundException($this->get('translator')->trans('user.not.found'));
+            } else if ( $commonCommunity = $user->findCommonCommunity($authenticatedUser) ) {
+                // Yes ! Switch this authenticated user to the good community
+                $authenticatedUser->setCurrentCommunity($commonCommunity);
+                $em = $this->getDoctrine()->getManager();
+                $em->flush();
+
+                $this->get('session')->getFlashBag()->add(
+                  'info',
+                  $this->get('translator')->trans('community.switch', array( '%community%' => $commonCommunity->getName()))
+                );
+            } else {
+                throw $this->createNotFoundException($this->get('translator')->trans('user.not.found'));
+            }
         }
 
         $alreadyFollowing = $authenticatedUser->isFollowing($user);
