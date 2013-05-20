@@ -27,11 +27,6 @@ class DefaultController extends Controller
 
         $authenticatedUser = $this->getUser();
 
-        // No users in private space (and no notifications in private space, so we're safe)
-        if (is_null($authenticatedUser->getCurrentCommunity()) && $username !== $authenticatedUser->getUsername()){
-            throw $this->createNotFoundException($this->get('translator')->trans('user.not.found'));
-        }
-
         $repository = $this->getDoctrine()->getRepository('metaUserBundle:User');
         if ($username !== $authenticatedUser->getUsername()){
             $user = $repository->findOneByUsernameInCommunity($username, true, $authenticatedUser->getCurrentCommunity());
