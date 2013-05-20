@@ -78,7 +78,7 @@ class InfoController extends BaseController
 
           // Sends mail to invitee
           $message = \Swift_Message::newInstance()
-              ->setSubject($this->get('transator')->trans('project.invitation.mail.subject'))
+              ->setSubject($this->get('translator')->trans('project.invitation.mail.subject'))
               ->setFrom($this->container->getParameter('mailer_from'))
               ->setReplyTo($authenticatedUser->getEmail())
               ->setTo($mailOrUsername)
