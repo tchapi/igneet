@@ -45,6 +45,7 @@ twig:
         ga_tracker_id: "%ga_tracker_id%"
         mailer_from: "%mailer_from%"
         mailer_contact: "%mailer_contact%"
+        enable_static_site: "%enable_static_site%"
 
 # Assetic Configuration
 assetic:

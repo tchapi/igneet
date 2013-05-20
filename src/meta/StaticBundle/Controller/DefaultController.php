@@ -10,12 +10,20 @@ class DefaultController extends Controller
 {
     public function homeAction()
     {
-        return $this->render('metaStaticBundle:Static:home.html.twig');
+        if ($this->container->getParameter('enable_static_site') == true ){
+          return $this->render('metaStaticBundle:Static:home.html.twig');
+        } else {
+          throw $this->createNotFoundException();
+        }
     }
 
     public function contactAction(Request $request)
     {
         
+        if ($this->container->getParameter('enable_static_site') != true ){
+          throw $this->createNotFoundException();
+        }
+
         if(filter_var($request->request->get('email'), FILTER_VALIDATE_EMAIL)){ 
 
           // Sends mail to contact
@@ -42,6 +50,10 @@ class DefaultController extends Controller
 
     public function termsAction()
     {
-        return $this->render('metaStaticBundle:Static:terms.html.twig');
+        if ($this->container->getParameter('enable_static_site') == true ){
+          return $this->render('metaStaticBundle:Static:terms.html.twig');
+        } else {
+          throw $this->createNotFoundException();
+        }
     }
 }
