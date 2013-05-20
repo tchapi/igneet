@@ -36,6 +36,10 @@ sp_make_public:
     pattern:  /project/publicize/{slug}
     defaults: { _controller: metaProjectBundle:Default:makePublic}
 
+sp_make_private:
+    pattern:  /project/privatize/{slug}
+    defaults: { _controller: metaProjectBundle:Default:makePrivate}
+
 # COMMENTS
 sp_show_project_comment:
     pattern:  /project/show/{slug}/comment

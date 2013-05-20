@@ -343,6 +343,38 @@ class DefaultController extends BaseController
 
     
     /*
+     * Make a project private (it is already in a community, obviously, since it's public)
+     */
+    public function makePrivateAction(Request $request, $slug)
+    {
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('makePrivate', $request->get('token')))
+            return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $slug)));
+
+        $this->fetchProjectAndPreComputeRights($slug, true, false);
+
+        if ($this->base != false) {
+
+            $this->base['standardProject']->setPrivate(true);
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+
+            $this->get('session')->getFlashBag()->add(
+                'success',
+                $this->get('translator')->trans('project.private')
+            );
+
+        } else {
+    
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $this->get('translator')->trans('project.cannot.private')
+            );
+        }
+
+        return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $slug)));
+
+    }  
+    /*
      *  Allow to choose a slug and validate it is not already existing. 
      *  Generally forward to editAction
      */

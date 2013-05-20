@@ -48,11 +48,19 @@ project:
   headlineHelp: "Change the headline of this project"
   headline.emptyText: "Click to add a headline"
   created: "Your new project %project% has successfully been created."
-  private: "This project is private"
+  is:
+    private: "This project is private"
+    public: "This project is public"
   privateHelp: "Are you sure you want to make this project public ?"
-  make.public: "make it public"
-  cannot.public: "You cannot make this project public."
+  publicHelp: "Are you sure you want to make this project private ?"
+  make:
+    public: "make it public"
+    private: "make it private"
+  cannot:
+    public: "You cannot make this project public."
+    private: "You cannot make this project private."
   public: "This project is now public."
+  private: "This project is now private."
   propose: "Propose this project to a community"
   in.community: "This project is now part of the community %community%."
   originalIdea: "originally from the idea '%idea%'"
