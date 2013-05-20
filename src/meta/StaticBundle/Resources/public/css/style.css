@@ -1,0 +1,54 @@
+/*
+Theme Name: SCRN
+Theme URI: http://themeforest.net/user/FinalDestiny
+Version: 1.4
+Description: Portfolio template with parallax effects.
+Author: Cristi Macovei
+Author URI: http://themeforest.net/user/FinalDestiny
+Created Date: 28/08/2012
+License: Themeforest
+License: GNU General Public License version 3.0
+License URI: http://www.gnu.org/licenses/gpl-3.0.html
+All files, unless otherwise stated, are released under the GNU General Public License
+Tags: dark, light, white, black, gray, one-column, flexible-width, custom-background, custom-colors, custom-header, custom-menu, editor-style, full-width-template, theme-options, translation-ready
+*/
+@media only screen and (min-width: 1100px) {
+	.separator .bg, #intro .bg1 {
+		background-attachment: fixed !important;
+	}
+}
+
+.highlight{
+  background: hsl(351, 100%, 86%) !important;
+}
+
+.round-corners{
+  border-radius: 100px;
+}
+
+.dark-bg.blue{
+  background: hsl(194, 75%, 42%);
+}
+.dark-bg.dark-blue{
+  background: hsl(212, 76%, 43%);
+}
+.dark-bg.dark-green{
+  background: hsl(128, 76%, 23%);
+}
+
+.green{
+  background: hsl(133, 75%, 42%);
+}
+.yellow{
+  background: hsl(59, 75%, 42%);
+}
+.orange{
+  background: hsl(31, 75%, 42%);
+}
+.red{
+  background: hsl(0, 75%, 42%);
+}
+.blog{
+  color: hsl(212, 76%, 43%);
+  font-weight: bold;
+}

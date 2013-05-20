@@ -9,7 +9,6 @@ user:
   listHelp: "Tous les utilisateurs de la communauté %community% sont listés ici."
   none: "Pas d'utilisateurs !"
   none.inPrivateSpace: "Dans votre espace privé, il n'y a pas d'utilisateurs autres que vous."
-  nobody: "Il n'y pour l'instant aucun autre utilisateur dans cette communauté."
   no.dashboard: "Il n'y a pas de tableau de bord dans votre espace privé ou dans une communauté dans laquelle vous êtes invité."
   signup.link.already.used: "Ce lien d'invitation a déjà été utilisé."
   already.logged: 
@@ -131,8 +130,8 @@ user:
     no.ideas: "Aucune nouvelle idée dans la communauté cette semaine ..."
   followers: "Mes abonnés"
   followings: "%user% est abonné à"
-  follow: "S'abonner"
-  unfollow: "Se désabonner"
+  follow: "S'abonner à"
+  unfollow: "Se désabonner de"
   following: "Vous êtes maintenant abonné à l'utilisateur %user%."
   already.following: "Vous êtes déjà abonné à l'utilisateur %user%."
   not.following: "Vous n'êtes pas abonné à l'utilisateur %user%."

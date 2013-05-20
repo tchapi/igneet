@@ -263,7 +263,6 @@ div.smallObjectInfos span{
 /* X-editable tweaks */
 /*********/
 
-.icon-code,
 .icon-header,
 .icon-hr-line
 {
@@ -272,7 +271,6 @@ div.smallObjectInfos span{
   width: 14px;
   display: block !important;
 }
-.icon-code              { background-position: -48px  3px; }
 .icon-header            { background-position: -120px 3px; }
 .icon-hr-line           { background-position: -144px 3px; }
 

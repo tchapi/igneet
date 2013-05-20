@@ -27,7 +27,7 @@
 
   <div class="resourceDetail">
     <img src="{{ asset('/bundles/metageneral/img/icons/' ~ providers[resource.provider].icon ~ '.png') }}" width="16px" height="16px"/>
-    <span>{{ ('providers' ~ resource.provider)|trans({}, 'resources') }}</span> - <span>{{ ('resources' ~ resource.type)|trans({}, 'resources') }}</span>
+    <span>{{ ('providers.' ~ resource.provider)|trans({}, 'resources') }}</span> - <span>{{ ('resources.' ~ resource.type)|trans({}, 'resources') }}</span>
     
     {% if resource.originalfilename %}
     <div>{{ "project.resources.original"|trans }} : <strong>{{ resource.originalFilename }}</strong> (<em>{{ "project.resources.lastest"|trans({ '%date%': resource.latestVersionUploadedAt|date("date.fullFormat"|trans)}) }}</em>)</div>
