@@ -16,9 +16,9 @@
 {% block content %}
 <form action="{{ path('u_choose_user', { 'targetAsBase64' : targetAsBase64, 'token': token }) }}" method="post" class="form-horizontal">
     <section>
-      <div class="sectionTitle"><label for="username" class="required">{{ "user.choose.field"|trans }} : </label></div>
+      <div class="sectionTitle"><label for="username" class="required {% if users|length == 0 %}muted{% endif %}">{{ "user.choose.field"|trans }} : </label></div>
       <div class="sectionContent">
-        <select id="username" name="username">
+        <select id="username" name="username" {% if users|length == 0 %}disabled="disabled"{% endif %}>
           {% for user in users %}
           <option value="{{ user.username }}">{{ user.getFullName() }}</option>
           {% endfor %}

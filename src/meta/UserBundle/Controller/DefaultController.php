@@ -779,16 +779,6 @@ class DefaultController extends Controller
             $repository = $this->getDoctrine()->getRepository('metaUserBundle:User');
             $users = $repository->findAllUsersInCommunityExceptMe($authenticatedUser, $authenticatedUser->getCurrentCommunity());
 
-            if (count($users) === 0 ){
-
-                $this->get('session')->getFlashBag()->add(
-                        'warning',
-                        $this->get('translator')->trans('user.nobody')
-                    );
-
-                return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $authenticatedUser->getUsername())));
-            }
-
             return $this->render('metaUserBundle:Default:choose.html.twig', array('users' => $users, 'external' => $target['external'], 'targetAsBase64' => $targetAsBase64, 'token' => $request->get('token')));
 
         }
