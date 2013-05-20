@@ -468,6 +468,10 @@ ul.projects li a{
 ul.skills{
   display: inline-block;
   margin: 0;
+  max-width: 640px;
+}
+.project ul.skills{
+  max-width: 395px;
 }
 ul.skills li{
   display: inline-block;
