@@ -54,12 +54,17 @@
 
     {% if base.standardProject.private and base.standardProject.community is not null %}
     <div>
-      <i class="icon-minus-sign"></i> {{ "project.private"|trans }}
+      <i class="icon-minus-sign"></i> {{ "project.is.private"|trans }}
       {% if base.isOwning %}(<a data-confirm="{{ "project.privateHelp"|trans }}" href="{{ path('sp_make_public', {'slug': base.standardProject.slug, 'token': csrf_token('makePublic') }) }}">{{ "project.make.public"|trans }}</a>){% endif %}
     </div>
     {% elseif base.standardProject.community is null %}
     <div>
       <i class="icon-group"></i> <a href="{{ path('g_choose_community', {'targetAsBase64': base.targetProposeToCommunityAsBase64 , 'token': csrf_token('edit') }) }}">{{ "project.propose"|trans }}</a>
+    </div>
+    {% else %}
+    <div>
+      <i class="icon-globe"></i> {{ "project.is.public"|trans }}
+      {% if base.isOwning %}(<a data-confirm="{{ "project.publicHelp"|trans }}" href="{{ path('sp_make_private', {'slug': base.standardProject.slug, 'token': csrf_token('makePrivate') }) }}">{{ "project.make.private"|trans }}</a>){% endif %}
     </div>
     {% endif %}
 

@@ -48,11 +48,19 @@ project:
   headlineHelp: "Changer le slogan de ce projet"
   headline.emptyText: "Cliquez pour ajouter un slogan"
   created: "Votre nouveau projet %project% a été créé avec succès."
-  private: "Ce projet est privé"
+  is:
+    private: "Ce projet est privé"
+    public: "Ce projet est public"
   privateHelp: "Êtes-vous sûr de vouloir rendre ce projet public ?"
-  make.public: "rendre ce projet public"
-  cannot.public: "Vous ne pouves pas rendre ce projet public."
+  publicHelp: "Êtes-vous sûr de vouloir rendre ce projet privé ?"
+  make:
+    public: "rendre ce projet public"
+    private: "rendre ce projet privé"
+  cannot:
+    public: "Vous ne pouves pas rendre ce projet public."
+    private: "Vous ne pouvez pas rendre ce projet privé"
   public: "Ce projet est maintenant public."
+  private: "Ce projet est maintenant privé."
   propose: "Proposer ce projet à la communauté"
   in.community: "Ce projet fait maintenant partie de la communauté %community%."
   originalIdea: "de l'idée originale '%idea%'"
