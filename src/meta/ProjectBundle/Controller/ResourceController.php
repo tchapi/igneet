@@ -41,7 +41,18 @@ class ResourceController extends BaseController
         } else {
 
             $guessedProvider = 'local';
-            $guessedType = $file->guessExtension();
+
+            // Why all this ? 
+            // To account for PPTX files that are of ZIP Mime/type (F*** YOU MICROSOFT)
+            $guessedType = $file->getExtension();
+
+            if ($guessedType == ''){
+                $guessedType = $file->guessExtension();
+                if (is_null($guessedType)){
+                    $guessedType = 'other';
+                }
+            }
+            // ---------
 
         }
 
