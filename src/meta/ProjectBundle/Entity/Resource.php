@@ -192,8 +192,24 @@ class Resource extends Taggable
             // Generate a unique name
             $filename = sha1(uniqid(mt_rand(), true));
             $this->original_filename = $this->file->getClientOriginalName();
-            $this->url = $filename.'.'.$this->file->guessExtension();
 
+            
+            // Why all this ? 
+            // To account for PPTX files that are of ZIP Mime/type (F*** YOU MICROSOFT)
+            $extension = $this->file->getExtension();
+
+            if ($extension == ''){
+                $extension = $this->file->guessExtension();
+                if (is_null($extension)){
+                    $this->url = $filename;
+                } else {
+                    $this->url = $filename.'.'.$extension;
+                }
+            } else {
+                $this->url = $filename.'.'.$extension;
+            }
+            // ---------
+            
             // Updates the date of the latest version of the file
             $this->latest_version_uploaded_at = new \DateTime('now');
         }

@@ -30,7 +30,7 @@
     <span>{{ ('providers.' ~ resource.provider)|trans({}, 'resources') }}</span> - <span>{{ ('resources.' ~ resource.type)|trans({}, 'resources') }}</span>
     
     {% if resource.originalfilename %}
-    <div>{{ "project.resources.original"|trans }} : <strong>{{ resource.originalFilename }}</strong> (<em>{{ "project.resources.lastest"|trans({ '%date%': resource.latestVersionUploadedAt|date("date.fullFormat"|trans)}) }}</em>)</div>
+    <div>{{ "project.resources.original"|trans }} : <strong>{{ resource.originalFilename }}</strong> (<em>{{ "project.resources.latest"|trans({ '%date%': resource.latestVersionUploadedAt|date("date.fullFormat"|trans)}) }}</em>)</div>
     {% endif %}
 
     <div>
