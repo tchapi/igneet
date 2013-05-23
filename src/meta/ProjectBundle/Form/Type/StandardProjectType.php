@@ -14,7 +14,7 @@ class StandardProjectType extends AbstractType
         $builder->add('slug', null, array('label'  => 'project.createForm.slug', 'attr' => array( 'class' => 'input-xxlarge', 'help' => 'project.createForm.slugHelp', 'placeholder' => 'project.createForm.slugPlaceholder')));
         $builder->add('headline', 'text',  array('required' => false, 'label'  => 'project.createForm.headline', 'attr' => array('class' => 'input-xxlarge', 'help' => 'project.createForm.headlineHelp')));
 
-        $builder->add('private', 'checkbox',  array('required' => false, 'label'  => 'project.createForm.private', 'attr' => array('help' => 'project.createForm.privateHelp')));
+        $builder->add('private', 'checkbox',  array('required' => false, 'data' => $options['isPrivate'], 'disabled' => $options['isPrivate'], 'label'  => 'project.createForm.private', 'attr' => array('help' => 'project.createForm.privateHelp')));
 
         $builder->add('neededSkills', 'entity', array(
             'label' => $options['translator']->trans('project.createForm.skills'),
@@ -30,7 +30,8 @@ class StandardProjectType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'translator' => null
+            'translator' => null,
+            'isPrivate' => false
         ));
     }
 

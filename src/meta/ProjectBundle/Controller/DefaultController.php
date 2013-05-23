@@ -57,7 +57,7 @@ class DefaultController extends BaseController
         }
 
         $project = new StandardProject();
-        $form = $this->createForm(new StandardProjectType(), $project, array( 'translator' => $this->get('translator')));
+        $form = $this->createForm(new StandardProjectType(), $project, array( 'translator' => $this->get('translator'), 'isPrivate' => is_null($authenticatedUser->getCurrentCommunity())));
 
         if ($request->isMethod('POST')) {
 
