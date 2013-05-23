@@ -13,7 +13,7 @@ class DefaultController extends Controller
         if ($this->container->getParameter('enable_static_site') == true ){
           return $this->render('metaStaticBundle:Static:home.html.twig');
         } else {
-          throw $this->createNotFoundException();
+          return $this->redirect($this->generateUrl('g_home_community'));
         }
     }
 
