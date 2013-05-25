@@ -1,7 +1,7 @@
 date:
   format: "d/m/Y"
   fullFormat: "d/m/Y H:i"
-  timeline: "M j"
+  timeline: "j/m"
   today: "Aujourd'hui"
   past.week: "Avant ..."
 time:

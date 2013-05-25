@@ -115,7 +115,7 @@
 
 {% if following|length > 0 %}
 <section class="colored first">
-<div class="sectionTitle">{{ "user.followers"|trans({'%user%': user.firstName }) }} : </div>
+<div class="sectionTitle">{{ "user.followings"|trans({'%user%': user.firstName }) }} : </div>
 <ul class="users sectionContent">
 {% for followingUser in following %}
   <li>
