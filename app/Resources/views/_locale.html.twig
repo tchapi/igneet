@@ -1,0 +1,15 @@
+{% macro echoLocaleCode() %}
+{% spaceless %}
+
+  {# Set default language #}
+  {% set lang = 'en' %}
+
+  {% for key, item in available_languages %}
+    {% if item.code == app.session.get('_locale') %}{% set lang = key %}{% endif %}
+  {% endfor %}
+
+  {# Outputs #}
+  {{ lang }}
+
+{% endspaceless %}
+{% endmacro %}
