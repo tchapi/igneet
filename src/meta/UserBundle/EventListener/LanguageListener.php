@@ -33,8 +33,9 @@ class LanguageListener
             $request->setLocale($locale);
         } else {
             $request->setLocale($request->getPreferredLanguage());
+            $request->getSession()->set('_locale', $request->getPreferredLanguage());
         }
-        
+
     }
 
     /**
