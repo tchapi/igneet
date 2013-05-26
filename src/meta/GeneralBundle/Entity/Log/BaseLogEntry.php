@@ -142,9 +142,9 @@ class BaseLogEntry
     public function setUser(\meta\UserBundle\Entity\User $user = null)
     {
         if(!is_null($user)){
-            $user->addInitiatedLogEntrie($this);
+            $user->addInitiatedLogEntry($this);
         } elseif (!is_null($this->user)){
-            $this->user->removeInitiatedLogEntrie($this);
+            $this->user->removeInitiatedLogEntry($this);
         }
         $this->user = $user;
         return $this;
