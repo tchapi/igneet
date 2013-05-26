@@ -31,7 +31,7 @@ $(document).ready(function(){
         validationBox.toggleClass('validated');
       })
       .error(function(errors) {
-        setFlash('error', 'There was a problem validating this comment.');
+        setFlash('error', Translator.get('comment.cannot.validate'));
       });
 
   });
@@ -44,12 +44,12 @@ $(document).ready(function(){
 
     $.post($(this).attr('data-url'))
       .success(function(data, config) {
-        commentBox.html('<p class="muted"><em>Deleted comment</em></p>');
+        commentBox.html('<p class="muted"><em>' + Translator.get('comment.deleted') + '</em></p>');
         actionBox.fadeOut();
-        setFlash('success', 'Your comment was deleted.');
+        setFlash('success', Translator.get('comment.been.deleted'));
       })
       .error(function(errors) {
-        setFlash('error', 'There was a problem with the deletion of this comment.');
+        setFlash('error', Translator.get('comment.cannot.delete'));
       });
 
   });
