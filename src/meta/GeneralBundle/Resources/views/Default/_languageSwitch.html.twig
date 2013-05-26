@@ -2,7 +2,7 @@
   <ul class="nav pull-right">
       <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-          {% if app.user %}
+          {% if app.user and app.user.getPreferredLanguage() != "" %}
           <img src="{{ asset('bundles/metageneral/img/langs/' ~ app.user.getPreferredLanguage() ~ '.png') }}" width="24px" height="24px" title="{{ available_languages[app.user.getPreferredLanguage()].name }}"/>
           {% else %}
             {% for key, item in available_languages %}
