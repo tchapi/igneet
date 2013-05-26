@@ -1,10 +1,6 @@
 <!DOCTYPE html>
 <html>
     <head>
-        {% set lang = { 0:'en', 1:'English' } %}
-        {% for key, item in available_languages %}
-          {% if item.code == app.session.get('_locale') %}{% set lang = { 0: key, 1: item.name } %}{% endif %}
-        {% endfor %}
         <meta charset="UTF-8" />
         <title>{% block title %}igneet{% endblock %}</title>
 
@@ -78,7 +74,8 @@
                '@metaGeneralBundle/Resources/public/js/general.behaviour.js' filter='?yui_js' %}
         <script src="{{ asset_url }}"></script>
 {% endjavascripts %}
-        <script src="{{ url('bazinga_exposetranslation_js', { '_locale' : lang[0] }) }}"></script>
+        {% import '_locale.html.twig' as locale %}
+        <script src="{{ url('bazinga_exposetranslation_js', { '_locale' : locale.echoLocaleCode() }) }}"></script>
 {% if ga_tracker_id != 0 %}
         <script type="text/javascript">
 
