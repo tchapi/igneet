@@ -252,6 +252,8 @@ class DefaultController extends Controller
                     'success',
                     $this->get('translator')->trans('language.preferred', array(), 'messages', $available_languages[$locale]['code'])
                 );
+            } else {
+                $this->getRequest()->setLocale($available_languages[$locale]['code']);
             }
             
         } else {

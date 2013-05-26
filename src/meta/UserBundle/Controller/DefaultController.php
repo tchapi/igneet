@@ -113,7 +113,7 @@ class DefaultController extends Controller
 
         // In private space : no users
         if (is_null($community)) {
-            throw $this->createNotFoundException($this->get('translator')->trans('user.noneInPrivateSpace'));
+            throw $this->createNotFoundException($this->get('translator')->trans('user.none.inPrivateSpace'));
         }
 
         $repository = $this->getDoctrine()->getRepository('metaUserBundle:User');
@@ -759,7 +759,7 @@ class DefaultController extends Controller
 
         // In private space : no users
         if (is_null($authenticatedUser->getCurrentCommunity())) {
-            throw $this->createNotFoundException($this->get('translator')->trans('user.noneInPrivateSpace'));
+            throw $this->createNotFoundException($this->get('translator')->trans('user.none.inPrivateSpace'));
         }
 
         $target = json_decode(base64_decode($targetAsBase64), true);

@@ -17,7 +17,7 @@ class LanguageListener
 
     /**
      * kernel.request event. If a guest user doesn't have an opened session, locale is equal to
-     * "undefined" as configured by default in parameters.ini. If so, set as a locale the user's
+     * "en" as configured by default in parameters.ini. If so, set as a locale the user's
      * preferred language.
      *
      * @param \Symfony\Component\HttpKernel\Event\GetResponseEvent $event
@@ -33,8 +33,9 @@ class LanguageListener
             $request->setLocale($locale);
         } else {
             $request->setLocale($request->getPreferredLanguage());
+            $request->getSession()->set('_locale', $request->getPreferredLanguage());
         }
-        
+
     }
 
     /**
