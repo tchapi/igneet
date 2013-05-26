@@ -1,6 +1,7 @@
 <ul class="nav">
   <li class="active"><a href="{{ path('g_home_community') }}">{{ "home"|trans }}</a></li>
 </ul>
+{{ include('metaGeneralBundle:Default:_languageSwitch.html.twig') }}
 <div class="pull-right">
   <ul class="nav pull-right">
       <li ><a href="{{ path('login') }}" >{{ "login"|trans }} <b class="icon-lock"></b></a></li>

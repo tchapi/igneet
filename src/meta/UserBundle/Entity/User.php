@@ -315,6 +315,12 @@ class User implements AdvancedUserInterface
      **/
     private $current_community;
 
+    /**
+     * Preferred Language for the user interface
+     * @ORM\Column(name="lang", type="string", length=2, nullable=true)
+     **/
+    private $preferred_language;
+
     public function __construct() {
         
         /* Links to Skills */
@@ -347,6 +353,8 @@ class User implements AdvancedUserInterface
         $this->salt = md5(uniqid(null, true));
         $this->roles = array('ROLE_USER');
         $this->created_at = $this->last_seen_at = $this->updated_at = $this->last_notified_at = new \DateTime('now');
+
+        $this->preferred_language = "en";
 
     }
 
@@ -1590,6 +1598,28 @@ class User implements AdvancedUserInterface
         return $this;
     }
 
+    /**
+     * Set preferred_language
+     *
+     * @param string $preferredLanguage
+     * @return User
+     */
+    public function setPreferredLanguage($preferredLanguage)
+    {
+        $this->preferred_language = $preferredLanguage;
+
+        return $this;
+    }
+
+    /**
+     * Get preferred_language
+     *
+     * @return string 
+     */
+    public function getPreferredLanguage()
+    {
+        return $this->preferred_language;
+    }
 
     /**
      * Add community

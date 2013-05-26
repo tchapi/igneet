@@ -4,7 +4,8 @@ namespace meta\GeneralBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller,
     Symfony\Component\HttpFoundation\Request,
-    Symfony\Component\HttpFoundation\Response;
+    Symfony\Component\HttpFoundation\Response,
+    Symfony\Component\HttpFoundation\RedirectResponse;
 
 class DefaultController extends Controller
 {
@@ -224,6 +225,50 @@ class DefaultController extends Controller
             
             throw $this->createNotFoundException($this->get('translator')->trans('community.not.found')); // Which is false, but we should not reveal its existence
 
+        }
+
+    }
+
+    public function switchLanguageAction($locale)
+    {
+     
+        $locale = strtolower(substr($locale, 0, 2));
+
+        // Get available languages
+        $available_languages  = $this->container->getParameter('available.languages');
+
+        if (array_key_exists($locale, $available_languages)){
+
+            // Updates session
+            $this->get('session')->set('_locale', $available_languages[$locale]['code']);
+
+            // If user is logged, set preferred language
+            if ($this->getUser()){
+                $em = $this->getDoctrine()->getManager();
+                $this->getUser()->setPreferredLanguage($locale);
+                $em->flush();
+
+                $this->get('session')->getFlashBag()->add(
+                    'success',
+                    $this->get('translator')->trans('language.preferred', array(), 'messages', $available_languages[$locale]['code'])
+                );
+            }
+            
+        } else {
+
+            $this->get('session')->getFlashBag()->add(
+                'warning',
+                $this->get('translator')->trans('language.not.supported')
+            );
+
+        }
+
+        $referer = $this->getRequest()->headers->get('referer');
+
+        if (is_null($referer)){
+            return $this->redirect($this->generateUrl('g_home_community'));
+        } else {
+            return new RedirectResponse($referer);
         }
 
     }

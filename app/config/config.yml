@@ -10,7 +10,8 @@ imports:
 
 framework:
     #esi:             ~
-    translator:      { fallback: "en" }
+    translator:      { fallback: "%locale%" }
+    default_locale:  "%locale%"
     secret:          "%secret%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -19,7 +20,6 @@ framework:
     csrf_protection: true
     validation:      { enable_annotations: true }
     templating:      { engines: ['twig'] } #assets_version: SomeVersionScheme
-    default_locale:  "%locale%"
     trusted_proxies: [] # Whether or not the Request object should trust proxy headers (X_FORWARDED_FOR/HTTP_CLIENT_IP)
     session:
         save_path: "%kernel.root_dir%/var/sessions"
@@ -46,6 +46,7 @@ twig:
         mailer_from: "%mailer_from%"
         mailer_contact: "%mailer_contact%"
         enable_static_site: "%enable_static_site%"
+        available_languages: "%available.languages%"
 
 # Assetic Configuration
 assetic:
@@ -88,3 +89,10 @@ swiftmailer:
 # Application specific
 parameters:
     listings.number_of_items_per_page: 8
+    available.languages:
+        fr:
+            code: fr_FR
+            name: "Français"
+        en:
+            code: en_US
+            name: "English"

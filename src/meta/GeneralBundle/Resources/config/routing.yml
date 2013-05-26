@@ -14,6 +14,12 @@ g_switch_private_space:
     pattern: /switch/privatespace
     defaults: { _controller: metaGeneralBundle:Default:switchCommunity, id: null }
 
+# Language
+
+g_switch_language:
+  pattern: /language/{locale}
+  defaults: { _controller: metaGeneralBundle:Default:switchLanguage}
+
 # General
 
 g_choose_file:
