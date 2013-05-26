@@ -3,3 +3,4 @@ invalid:
   token: "Token non valide."
   password.match: "Les deux mots de passe ne sont pas identiques."
 information.not.valid: "Les informations fournies ne semblent pas valides."
+"Bad credentials": "Nom d'utilisateur ou mot de passe incorrect"

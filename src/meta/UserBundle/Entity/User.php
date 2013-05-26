@@ -317,7 +317,7 @@ class User implements AdvancedUserInterface
 
     /**
      * Preferred Language for the user interface
-     * @ORM\Column(name="lang", type="string", length=2, nullable=true)
+     * @ORM\Column(name="culture", type="string", length=5, nullable=true)
      **/
     private $preferred_language;
 
@@ -354,7 +354,7 @@ class User implements AdvancedUserInterface
         $this->roles = array('ROLE_USER');
         $this->created_at = $this->last_seen_at = $this->updated_at = $this->last_notified_at = new \DateTime('now');
 
-        $this->preferred_language = "en";
+        $this->preferred_language = "en_US";
 
     }
 
