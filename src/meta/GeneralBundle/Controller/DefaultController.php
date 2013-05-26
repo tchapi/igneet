@@ -245,7 +245,7 @@ class DefaultController extends Controller
             // If user is logged, set preferred language
             if ($this->getUser()){
                 $em = $this->getDoctrine()->getManager();
-                $this->getUser()->setPreferredLanguage($locale);
+                $this->getUser()->setPreferredLanguage($available_languages[$locale]['code']);
                 $em->flush();
 
                 $this->get('session')->getFlashBag()->add(
