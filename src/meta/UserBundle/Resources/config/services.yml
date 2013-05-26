@@ -1,7 +1,15 @@
 parameters:
-#    meta_user.example.class: meta\UserBundle\Example
+    meta_user.language.class: meta\UserBundle\EventListener\LanguageListener
 
 services:
-#    meta_user.example:
-#        class: %meta_user.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+    meta_user.language.interactive_login_listener:
+        class: %meta_user.language.class%
+        calls:
+            - [ setSession, [@session] ]
+        tags:
+            - { name: kernel.event_listener, event: security.interactive_login, method: setLocaleForAuthenticatedUser }
+
+    meta_user.language.kernel_request_listener:
+        class: %meta_user.language.class%
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: setLocaleForUnauthenticatedUser }

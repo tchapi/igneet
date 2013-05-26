@@ -14,13 +14,15 @@
 
  ☐ Deep linking : verifier a l'affichage que l'utilisateur a le droit de voir l'objet deep linké !
 
- ☐ Switch de langue
+ ✔ Switch de langue @done (13-05-25 23:57)
 
  ☐ help sur les form field de type checkbox a mettre
  
  ✔ création d'un projet dans private space : disable la case private (et la cocher) @done (13-05-23 23:37)
 
  ☐ "Please confirm" des notifs de confirmation  : a traduire !!
+ 
+ ☐  Supprimer les removeLogEntrie (trucs finissant par ie dans User) - vérifier qu'ils sont pas appelés
  
  ✔ Flashbags a remplacer PARTOUT @done (13-05-05 21:54)
  ✔ Enlever les logs dont je suis l'initiateur @done (13-05-09 21:24)

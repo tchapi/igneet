@@ -3,7 +3,7 @@ date:
   fullFormat: "d/m/Y H:i"
   timeline: "j/m"
   today: "Aujourd'hui"
-  past.week: "Avant ..."
+  past.week: "Il y a plus d'une semaine"
 time:
   format: "H:i"
 timeline.reset.filters: "Effacer les filtres"

@@ -627,7 +627,7 @@ class Idea extends Taggable
      * @param \meta\GeneralBundle\Entity\Log\IdeaLogEntry $logEntry
      * @return Idea
      */
-    public function addLogEntrie(\meta\GeneralBundle\Entity\Log\IdeaLogEntry $logEntry)
+    public function addLogEntry(\meta\GeneralBundle\Entity\Log\IdeaLogEntry $logEntry)
     {
         $this->logEntries[] = $logEntry;
         return $this;
@@ -639,7 +639,7 @@ class Idea extends Taggable
      * BINDING LOGIC IS DONE IN 'IDEALOGENTRY' CLASS 
      * @param \meta\GeneralBundle\Entity\Log\IdeaLogEntry $logEntry
      */
-    public function removeLogEntrie(\meta\GeneralBundle\Entity\Log\IdeaLogEntry $logEntry)
+    public function removeLogEntry(\meta\GeneralBundle\Entity\Log\IdeaLogEntry $logEntry)
     {
         $this->logEntries->removeElement($logEntry);
     }

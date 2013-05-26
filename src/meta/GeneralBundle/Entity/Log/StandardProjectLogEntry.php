@@ -68,9 +68,9 @@ class StandardProjectLogEntry extends BaseLogEntry
     public function setStandardProject(\meta\ProjectBundle\Entity\StandardProject $standardProject = null)
     {
         if (!is_null($standardProject)){
-            $standardProject->addLogEntrie($this);
+            $standardProject->addLogEntry($this);
         } elseif (!is_null($this->standardProject)){
-            $this->standardProject->removeLogEntrie($this);
+            $this->standardProject->removeLogEntry($this);
         }
 
         $this->standardProject = $standardProject;

@@ -16,7 +16,7 @@
 
 {% block content %}
 {% if error %}
-<div class="alert alert-error">{{ error.message }}</div>
+<div class="alert alert-error">{{ error.message|trans({},'errors') }}</div>
 {% endif %}
 <form action="{{ path('login_check') }}" method="POST">
   <section>

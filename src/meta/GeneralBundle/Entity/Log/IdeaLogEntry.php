@@ -68,9 +68,9 @@ class IdeaLogEntry extends BaseLogEntry
     public function setIdea(\meta\IdeaBundle\Entity\Idea $idea = null)
     {
         if (!is_null($idea)){
-            $idea->addLogEntrie($this);
+            $idea->addLogEntry($this);
         } elseif (!is_null($this->idea)){
-            $this->idea->removeLogEntrie($this);
+            $this->idea->removeLogEntry($this);
         }
         
         $this->idea = $idea;
