@@ -855,7 +855,7 @@ class StandardProject extends Taggable
      * @param \meta\GeneralBundle\Entity\Log\StandardProjectLogEntry $logEntry
      * @return StandardProject
      */
-    public function addLogEntrie(\meta\GeneralBundle\Entity\Log\StandardProjectLogEntry $logEntry)
+    public function addLogEntry(\meta\GeneralBundle\Entity\Log\StandardProjectLogEntry $logEntry)
     {
         $this->logEntries[] = $logEntry;
         return $this;
@@ -867,7 +867,7 @@ class StandardProject extends Taggable
      * BINDING LOGIC IS DONE IN 'STANDARDPROJECTLOGENTRY' CLASS 
      * @param \meta\GeneralBundle\Entity\Log\StandardProjectLogEntry $logEntry
      */
-    public function removeLogEntrie(\meta\GeneralBundle\Entity\Log\StandardProjectLogEntry $logEntry)
+    public function removeLogEntry(\meta\GeneralBundle\Entity\Log\StandardProjectLogEntry $logEntry)
     {
         $this->logEntries->removeElement($logEntry);
     }
@@ -1023,4 +1023,5 @@ class StandardProject extends Taggable
     {
         return $this->private;
     }
+
 }

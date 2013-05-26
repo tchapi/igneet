@@ -68,9 +68,9 @@ class UserLogEntry extends BaseLogEntry
     public function setOtherUser(\meta\UserBundle\Entity\User $otherUser = null)
     {
         if (!is_null($otherUser)){
-            $otherUser->addLogEntrie($this);
+            $otherUser->addLogEntry($this);
         } elseif (!is_null($this->other_user)){
-            $this->other_user->removeLogEntrie($this);
+            $this->other_user->removeLogEntry($this);
         }
 
         $this->other_user = $otherUser;

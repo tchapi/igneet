@@ -182,27 +182,27 @@ class WikiPage extends Taggable
     }
 
     /**
-     * Add children
+     * Add child
      *
      * BINDING LOGIC IS DONE IN 'WIKIPAGE' CLASS > setParent
-     * @param \meta\ProjectBundle\Entity\WikiPage $children
+     * @param \meta\ProjectBundle\Entity\WikiPage $child
      * @return WikiPage
      */
-    public function addChildren(\meta\ProjectBundle\Entity\WikiPage $children)
+    public function addChild(\meta\ProjectBundle\Entity\WikiPage $child)
     {
-        $this->children[] = $children;
+        $this->children[] = $child;
         return $this;
     }
 
     /**
-     * Remove children
+     * Remove child
      *
      * BINDING LOGIC IS DONE IN 'WIKIPAGE' CLASS > setParent
-     * @param \meta\ProjectBundle\Entity\WikiPage $children
+     * @param \meta\ProjectBundle\Entity\WikiPage $child
      */
-    public function removeChildren(\meta\ProjectBundle\Entity\WikiPage $children)
+    public function removeChild(\meta\ProjectBundle\Entity\WikiPage $child)
     {
-        $this->children->removeElement($children);
+        $this->children->removeElement($child);
     }
 
     /**
@@ -394,4 +394,5 @@ class WikiPage extends Taggable
     {
         return $this->rank;
     }
+
 }

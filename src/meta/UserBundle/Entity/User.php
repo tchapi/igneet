@@ -1354,13 +1354,13 @@ class User implements AdvancedUserInterface
     }
 
     /**
-     * Add logEntries
+     * Add logEntry
      *
      * BINDING LOGIC IS DONE IN 'USERLOGENTRY' CLASS 
      * @param \meta\GeneralBundle\Entity\Log\BaseLogEntry $logEntry
      * @return User
      */
-    public function addLogEntrie(\meta\GeneralBundle\Entity\Log\BaseLogEntry $logEntry)
+    public function addLogEntry(\meta\GeneralBundle\Entity\Log\BaseLogEntry $logEntry)
     {
         $this->logEntries[] = $logEntry;
         return $this;
@@ -1372,7 +1372,7 @@ class User implements AdvancedUserInterface
      * BINDING LOGIC IS DONE IN 'USERLOGENTRY' CLASS 
      * @param \meta\GeneralBundle\Entity\Log\BaseLogEntry $logEntry
      */
-    public function removeLogEntrie(\meta\GeneralBundle\Entity\Log\BaseLogEntry $logEntry)
+    public function removeLogEntry(\meta\GeneralBundle\Entity\Log\BaseLogEntry $logEntry)
     {
         $this->logEntries->removeElement($logEntry);
     }
@@ -1394,7 +1394,7 @@ class User implements AdvancedUserInterface
      * @param \meta\GeneralBundle\Entity\Log\BaseLogEntry $initiatedLogEntry
      * @return User
      */
-    public function addInitiatedLogEntrie(\meta\GeneralBundle\Entity\Log\BaseLogEntry $initiatedLogEntry)
+    public function addInitiatedLogEntry(\meta\GeneralBundle\Entity\Log\BaseLogEntry $initiatedLogEntry)
     {
         $this->initiatedLogEntries[] = $initiatedLogEntry;
         return $this;
@@ -1406,7 +1406,7 @@ class User implements AdvancedUserInterface
      * BINDING LOGIC IS DONE IN 'BASELOGENTRY' CLASS
      * @param \meta\GeneralBundle\Entity\Log\BaseLogEntry $initiatedLogEntry
      */
-    public function removeInitiatedLogEntrie(\meta\GeneralBundle\Entity\Log\BaseLogEntry $initiatedLogEntry)
+    public function removeInitiatedLogEntry(\meta\GeneralBundle\Entity\Log\BaseLogEntry $initiatedLogEntry)
     {
         $this->initiatedLogEntries->removeElement($initiatedLogEntry);
     }
@@ -1627,7 +1627,7 @@ class User implements AdvancedUserInterface
      * @param \meta\GeneralBundle\Entity\Community\Community $community
      * @return User
      */
-    public function addCommunitie(\meta\GeneralBundle\Entity\Community\Community $community)
+    public function addCommunity(\meta\GeneralBundle\Entity\Community\Community $community)
     {
         $this->communities[] = $community;
     
@@ -1639,7 +1639,7 @@ class User implements AdvancedUserInterface
      * BINDING LOGIC IS DONE IN 'COMMUNITY' CLASS 
      * @param \meta\GeneralBundle\Entity\Community\Community $community
      */
-    public function removeCommunitie(\meta\GeneralBundle\Entity\Community\Community $community)
+    public function removeCommunity(\meta\GeneralBundle\Entity\Community\Community $community)
     {
         $this->communities->removeElement($community);
     }
@@ -1661,7 +1661,7 @@ class User implements AdvancedUserInterface
      * @param \meta\GeneralBundle\Entity\Community\Community $community
      * @return User
      */
-    public function addRestrictedCommunitie(\meta\GeneralBundle\Entity\Community\Community $community)
+    public function addRestrictedCommunity(\meta\GeneralBundle\Entity\Community\Community $community)
     {
         $this->restrictedCommunities[] = $community;
     
@@ -1673,7 +1673,7 @@ class User implements AdvancedUserInterface
      * BINDING LOGIC IS DONE IN 'COMMUNITY' CLASS 
      * @param \meta\GeneralBundle\Entity\Community\Community $community
      */
-    public function removeRestrictedCommunitie(\meta\GeneralBundle\Entity\Community\Community $community)
+    public function removeRestrictedCommunity(\meta\GeneralBundle\Entity\Community\Community $community)
     {
         $this->restrictedCommunities->removeElement($community);
     }
@@ -1806,4 +1806,5 @@ class User implements AdvancedUserInterface
     {
         return $this->last_notified_at;
     }
+
 }

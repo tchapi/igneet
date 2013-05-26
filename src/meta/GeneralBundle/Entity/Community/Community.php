@@ -186,7 +186,7 @@ class Community
     public function addUser(\meta\UserBundle\Entity\User $user)
     {
         if (!is_null($user)){
-            $user->addCommunitie($this);
+            $user->addCommunity($this);
             $this->users[] = $user;
         }
     
@@ -201,7 +201,7 @@ class Community
     public function removeUser(\meta\UserBundle\Entity\User $user)
     {
         if (!is_null($user)){
-            $user->removeCommunitie($this);
+            $user->removeCommunity($this);
             $this->users->removeElement($user);
         }
     }
@@ -225,7 +225,7 @@ class Community
     public function addGuest(\meta\UserBundle\Entity\User $guest)
     {
         if (!is_null($guest)){
-            $guest->addRestrictedCommunitie($this);
+            $guest->addRestrictedCommunity($this);
             $this->guests[] = $guest;
         }
 
@@ -240,7 +240,7 @@ class Community
     public function removeGuest(\meta\UserBundle\Entity\User $guest)
     {
         if (!is_null($guest)){
-            $guest->removeRestrictedCommunitie($this);
+            $guest->removeRestrictedCommunity($this);
             $this->guests->removeElement($guest);
         }
     }
