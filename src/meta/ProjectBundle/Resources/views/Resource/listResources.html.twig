@@ -49,6 +49,10 @@
   </ul>
   </div>
 </section>
+{% elseif not base.canEdit %}
+<section>
+{{ "project.resources.none"|trans }}
+</section>
 {% endif %}
 {% if base.canEdit %}
 <form action="{{ path('sp_show_project_list_resources', {'slug': base.standardProject.slug}) }}" method="post" {{ form_enctype(form) }}>
@@ -63,9 +67,5 @@
     </div>
   </section>
 </form>
-{% else %}
-<section>
-{{ "project.resources.none"|trans }}
-</section>
 {% endif %}
 {% endblock %}
