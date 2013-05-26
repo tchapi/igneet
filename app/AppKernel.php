@@ -23,6 +23,7 @@ class AppKernel extends Kernel
 
             /* Third Party */
             new Knp\Bundle\MarkdownBundle\KnpMarkdownBundle(), /* Provides Markdown conversion */
+            new Bazinga\ExposeTranslationBundle\BazingaExposeTranslationBundle(), /* Provides translation for JS files */
 
             new meta\GeneralBundle\metaGeneralBundle(),
             new meta\UserBundle\metaUserBundle(),

@@ -41,6 +41,10 @@ comment:
   vote: "Vote for this comment"
   post: "Post"
   placeholder: "Leave a comment ..."
+  been.deleted: "Your comment was deleted."
+  cannot:
+    delete: "There was a problem with the deletion of this comment."
+    validate: "There was a problem validating this comment."
 toggle: "Toggle"
 # Logs
 log:
@@ -67,3 +71,11 @@ tags:
 language:
   preferred: "English has been saved as your preferred language."
   not.supported: "This language is not yet supported."
+# Confirmation box
+alert:
+  please.confirm: "Please confirm"
+  error.saving.changes: "Error saving changes"
+  click.save.changes: "Click to save your changes"
+  saving.server: "Saving to server ..."
+  unsaved.changes: "Unsaved changes"
+  changes.saved.at: "Changes saved at %date%"
