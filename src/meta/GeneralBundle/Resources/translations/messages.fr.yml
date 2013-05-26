@@ -41,6 +41,10 @@ comment:
   vote: "Voter pour ce commentaire"
   post: "Commenter"
   placeholder: "Laissez un commentaire ..."
+  been.deleted: "Votre commentaire a été supprimé."
+  cannot:
+    delete: "Il y a eu un problème à la suppression du commentaire."
+    validate: "Il y a eu un problème à la validation du commentaire."
 toggle: "Alterner l'affichage"
 # Logs
 log:
@@ -67,3 +71,11 @@ tags:
 language:
   preferred: "Vous consultez maintenant igneet en français. Votre préférence de langue a été sauvegardée."
   not.supported: "Ce langage n'est pas encore supporté."
+# Confirmation box
+alert:
+  please.confirm: "Veuillez confirmer"
+  error.saving.changes: "Erreur à la sauvegarde des modifications"
+  click.save.changes: "Cliquez pour enregistrer vos modifications"
+  saving.server: "Enregistrement ..."
+  unsaved.changes: "Modifications non sauvegardées"
+  changes.saved.at: "Modifications sauvegardées à %date%"

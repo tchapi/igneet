@@ -22,7 +22,7 @@
 
  ☐ "Please confirm" des notifs de confirmation  : a traduire !!
  
- ☐  Supprimer les removeLogEntrie (trucs finissant par ie dans User) - vérifier qu'ils sont pas appelés
+ ✔ Supprimer les removeLogEntrie (trucs finissant par ie dans User) - vérifier qu'ils sont pas appelés @done (13-05-26 12:56)
  
  ✔ Flashbags a remplacer PARTOUT @done (13-05-05 21:54)
  ✔ Enlever les logs dont je suis l'initiateur @done (13-05-09 21:24)

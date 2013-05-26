@@ -1,16 +1,12 @@
+{% set lang = { 0:'en', 1:'English' } %}
+{% for key, item in available_languages %}
+  {% if item.code == app.session.get('_locale') %}{% set lang = { 0: key, 1: item.name } %}{% endif %}
+{% endfor %}
 <div class="pull-right">
   <ul class="nav pull-right">
       <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-          {% if app.user and app.user.getPreferredLanguage() != "" %}
-          <img src="{{ asset('bundles/metageneral/img/langs/' ~ app.user.getPreferredLanguage() ~ '.png') }}" width="24px" height="24px" title="{{ available_languages[app.user.getPreferredLanguage()].name }}" data-origin="preference"/>
-          {% else %}
-            {% for key, item in available_languages %}
-              {% if item.code == app.session.get('_locale') %}
-                <img src="{{ asset('bundles/metageneral/img/langs/' ~ key ~ '.png') }}" width="24px" height="24px" title="{{ item.name }}" data-origin="session"/>
-              {% endif %}
-            {% endfor %}
-          {% endif %}
+          <img src="{{ asset('bundles/metageneral/img/langs/' ~ lang[0] ~ '.png') }}" width="24px" height="24px" title="{{ lang[1] }}"/>
         </a>
         <ul class="dropdown-menu">
             {% for code, language in available_languages %}

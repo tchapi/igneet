@@ -80,7 +80,7 @@ $(document).ready(function(){
 
     // Save function with states
     $('.wmd-input[unsaved="no"]').keyup(function(){
-      $(this).parent().parent().find(".wmd-message").html('<span class="alert">Unsaved changes</span>');
+      $(this).parent().parent().find(".wmd-message").html('<span class="alert">' + Translator.get('alert.unsaved.changes') + '</span>');
       $(this).attr('unsaved', 'yes');
     });
 
@@ -91,20 +91,20 @@ $(document).ready(function(){
       var inputBox = containerBox.find('.wmd-input');
       var contentBox = containerBox.parent().parent().find('.content');
 
-      messagesBox.html('<span class="alert alert-info">Saving to server ...</span>');
+      messagesBox.html('<span class="alert alert-info">' + Translator.get('alert.saving.server') + '</span>');
 
       $.post(inputBox.attr('data-url'), {
         name: inputBox.attr('data-name'),
         value: inputBox.val()
       })
       .success(function(data, config) {
-         messagesBox.html('<span class="alert alert-success">Changes saved at ' + (new Date()).toTimeString() + '.</span>');
-         window.setTimeout(function(){ if (inputBox.attr('unsaved') == 'no') { messagesBox.html('Click to save your changes'); } }, 3000);
+         messagesBox.html('<span class="alert alert-success">' + Translator.get('alert.changes.saved.at', { 'date' : (new Date()).toTimeString() }) + '</span>');
+         window.setTimeout(function(){ if (inputBox.attr('unsaved') == 'no') { messagesBox.html(Translator.get('alert.click.save.changes')); } }, 3000);
          inputBox.attr('unsaved', 'no');
          contentBox.html(data);             
       })
       .error(function(errors) {
-         messagesBox.html('<span class="alert alert-error">Error saving changes.</span>');
+         messagesBox.html('<span class="alert alert-error">' + Translator.get('alert.error.saving.changes') + '</span>');
       });
 
     });
@@ -136,7 +136,7 @@ $(document).ready(function(){
       
       var href = $(this).attr('href');
       if (!$('#dataConfirmModal').length) {
-        $('body').append('<div id="dataConfirmModal" class="modal" role="dialog" aria-labelledby="dataConfirmLabel" aria-hidden="true"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="dataConfirmLabel">Please Confirm</h3></div><div class="modal-body"></div><div class="modal-footer"><button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button><a class="btn btn-primary" id="dataConfirmOK">OK</a></div></div>');
+        $('body').append('<div id="dataConfirmModal" class="modal" role="dialog" aria-labelledby="dataConfirmLabel" aria-hidden="true"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="dataConfirmLabel">' + Translator.get('alert.please.confirm') + '</h3></div><div class="modal-body"></div><div class="modal-footer"><button class="btn" data-dismiss="modal" aria-hidden="true">' + Translator.get('cancel') + '</button><a class="btn btn-primary" id="dataConfirmOK">' + Translator.get('ok') + '</a></div></div>');
       } 
       $('#dataConfirmModal').find('.modal-body').text($(this).attr('data-confirm'));
       $('#dataConfirmOK').attr('href', href);

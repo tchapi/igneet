@@ -9,6 +9,7 @@ time:
 timeline.reset.filters: "Reset filters"
 timeline.placeholder: "Optional timeline filters"
 cancel: "Cancel"
+ok: "Ok"
 change: "Change"
 choose: "Choose"
 create: "Create"

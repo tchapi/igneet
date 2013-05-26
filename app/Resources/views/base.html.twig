@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html>
     <head>
+        {% set lang = { 0:'en', 1:'English' } %}
+        {% for key, item in available_languages %}
+          {% if item.code == app.session.get('_locale') %}{% set lang = { 0: key, 1: item.name } %}{% endif %}
+        {% endfor %}
         <meta charset="UTF-8" />
         <title>{% block title %}igneet{% endblock %}</title>
 
@@ -69,10 +73,12 @@
 {% block javascripts %}
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 {% javascripts '@metaGeneralBundle/Resources/public/js/bootstrap.js'
+               '@BazingaExposeTranslationBundle/Resources/public/js/translator.min.js'
                '@metaGeneralBundle/Resources/public/js/select2.js'
                '@metaGeneralBundle/Resources/public/js/general.behaviour.js' filter='?yui_js' %}
         <script src="{{ asset_url }}"></script>
 {% endjavascripts %}
+        <script src="{{ url('bazinga_exposetranslation_js', { '_locale' : lang[0] }) }}"></script>
 {% if ga_tracker_id != 0 %}
         <script type="text/javascript">
 
