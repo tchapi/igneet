@@ -31,6 +31,13 @@
         <span class="help-block">{% if required %}<span class="muted">* {{ "required"|trans }}</span>{% endif %} {% if attr.help is defined %}{{ attr.help|trans }}{% endif %}</span>
     {% endif %}
 {% endblock %}
+
+{% block checkbox_widget %}
+    <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
+    {% if required or attr.help is defined %}
+        <span class="help-block">{% if required %}<span class="muted">* {{ "required"|trans }}</span>{% endif %} {% if attr.help is defined %}{{ attr.help|trans }}{% endif %}</span>
+    {% endif %}
+{% endblock checkbox_widget %}
   
 {% block form_errors %}
     {% spaceless %}
