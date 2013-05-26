@@ -43,6 +43,7 @@ security:
     access_control:
         # Application
         - { path: /app/login.*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: /app/language/.*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: /app/reactivate, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: /app/recover, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: /app/change/password, roles: IS_AUTHENTICATED_ANONYMOUSLY }
