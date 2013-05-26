@@ -27,15 +27,15 @@
 
     // The text that appears on the upper part of the dialog box when
     // entering links.
-    var linkDialogText = "<p>http://example.com/ \"optional title\"</p>";
-    var imageDialogText = "<p>http://example.com/images/diagram.jpg \"optional title\"</p>";
+    var linkDialogText = "<p>http://example.com/ \"" + Translator.get('markdown.optional.title') + "\"</p>";
+    var imageDialogText = "<p>http://example.com/images/diagram.jpg \"" + Translator.get('markdown.optional.title') + "\"</p>";
 
     // The default text that appears in the dialog input box when entering
     // links.
     var imageDefaultText = "http://";
     var linkDefaultText = "http://";
 
-    var defaultHelpHoverTitle = "Markdown Editing Help";
+    var defaultHelpHoverTitle = Translator.get('markdown.editing.help');
 
     // -------------------------------------------------------------------
     //  END OF YOUR CHANGES
@@ -1085,14 +1085,14 @@
             okButton.className = "btn btn-primary";
             okButton.type = "button";
             okButton.onclick = function () { return close(false); };
-            okButton.innerHTML = "OK";
+            okButton.innerHTML = Translator.get('ok');
 
             // The cancel button
             var cancelButton = doc.createElement("button");
             cancelButton.className = "btn btn-primary";
             cancelButton.type = "button";
             cancelButton.onclick = function () { return close(true); };
-            cancelButton.innerHTML = "Cancel";
+            cancelButton.innerHTML = Translator.get('cancel');
 
             footer.appendChild(okButton);
             footer.appendChild(cancelButton);
@@ -1359,36 +1359,36 @@
             }
 
             group1 = makeGroup(1);
-            buttons.bold = makeButton("wmd-bold-button", "Bold - Ctrl+B", "icon-bold", bindCommand("doBold"), group1);
-            buttons.italic = makeButton("wmd-italic-button", "Italic - Ctrl+I", "icon-italic", bindCommand("doItalic"), group1);
+            buttons.bold = makeButton("wmd-bold-button", Translator.get('markdown.bold') + " - Ctrl+B", "icon-bold", bindCommand("doBold"), group1);
+            buttons.italic = makeButton("wmd-italic-button", Translator.get('markdown.italic') + " - Ctrl+I", "icon-italic", bindCommand("doItalic"), group1);
             
             group2 = makeGroup(2);
-            buttons.link = makeButton("wmd-link-button", "Link - Ctrl+L", "icon-globe", bindCommand(function (chunk, postProcessing) {
+            buttons.link = makeButton("wmd-link-button", Translator.get('markdown.link') + " - Ctrl+L", "icon-globe", bindCommand(function (chunk, postProcessing) {
                 return this.doLinkOrImage(chunk, postProcessing, false);
             }), group2);
-            buttons.quote = makeButton("wmd-quote-button", "Blockquote - Ctrl+Q", "icon-quote-left", bindCommand("doBlockquote"), group2);
-            buttons.code = makeButton("wmd-code-button", "Code Sample - Ctrl+K", "icon-code", bindCommand("doCode"), group2);
-            buttons.image = makeButton("wmd-image-button", "Image - Ctrl+G", "icon-picture", bindCommand(function (chunk, postProcessing) {
+            buttons.quote = makeButton("wmd-quote-button", Translator.get('markdown.blockquote') + " - Ctrl+Q", "icon-quote-left", bindCommand("doBlockquote"), group2);
+            buttons.code = makeButton("wmd-code-button", Translator.get('markdown.code.sample') + " - Ctrl+K", "icon-code", bindCommand("doCode"), group2);
+            buttons.image = makeButton("wmd-image-button", Translator.get('markdown.image') + " - Ctrl+G", "icon-picture", bindCommand(function (chunk, postProcessing) {
                 return this.doLinkOrImage(chunk, postProcessing, true);
             }), group2);
 
             group3 = makeGroup(3);
-            buttons.olist = makeButton("wmd-olist-button", "Numbered List - Ctrl+O", "icon-list-ol", bindCommand(function (chunk, postProcessing) {
+            buttons.olist = makeButton("wmd-olist-button", Translator.get('markdown.list.numbered') + " - Ctrl+O", "icon-list-ol", bindCommand(function (chunk, postProcessing) {
                 this.doList(chunk, postProcessing, true);
             }), group3);
-            buttons.ulist = makeButton("wmd-ulist-button", "Bulleted List - Ctrl+U", "icon-list", bindCommand(function (chunk, postProcessing) {
+            buttons.ulist = makeButton("wmd-ulist-button", Translator.get('markdown.list.bulletted') + " - Ctrl+U", "icon-list", bindCommand(function (chunk, postProcessing) {
                 this.doList(chunk, postProcessing, false);
             }), group3);
-            buttons.heading = makeButton("wmd-heading-button", "Heading - Ctrl+H", "icon-header", bindCommand("doHeading"), group3);
-            buttons.hr = makeButton("wmd-hr-button", "Horizontal Rule - Ctrl+R", "icon-hr-line", bindCommand("doHorizontalRule"), group3);
+            buttons.heading = makeButton("wmd-heading-button", Translator.get('markdown.heading') + " - Ctrl+H", "icon-header", bindCommand("doHeading"), group3);
+            buttons.hr = makeButton("wmd-hr-button", Translator.get('markdown.rule') + " - Ctrl+R", "icon-hr-line", bindCommand("doHorizontalRule"), group3);
             
             group4 = makeGroup(4);
-            buttons.undo = makeButton("wmd-undo-button", "Undo - Ctrl+Z", "icon-undo", null, group4);
+            buttons.undo = makeButton("wmd-undo-button", Translator.get('markdown.undo') + " - Ctrl+Z", "icon-undo", null, group4);
             buttons.undo.execute = function (manager) { if (manager) manager.undo(); };
 
             var redoTitle = /win/.test(nav.platform.toLowerCase()) ?
-                "Redo - Ctrl+Y" :
-                "Redo - Ctrl+Shift+Z"; // mac and other non-Windows platforms
+                Translator.get('markdown.redo') + " - Ctrl+Y" :
+                Translator.get('markdown.redo') + " - Ctrl+Shift+Z"; // mac and other non-Windows platforms
 
             buttons.redo = makeButton("wmd-redo-button", redoTitle, "icon-share-alt", null, group4);
             buttons.redo.execute = function (manager) { if (manager) manager.redo(); };
@@ -1662,10 +1662,10 @@
 
                     if (!chunk.selection) {
                         if (isImage) {
-                            chunk.selection = "enter image description here";
+                            chunk.selection = Translator.get('markdown.image.placeholder');
                         }
                         else {
-                            chunk.selection = "enter link description here";
+                            chunk.selection = Translator.get('markdown.link.placeholder');
                         }
                     }
                 }
@@ -1675,10 +1675,10 @@
 
             if (isImage) {
                 if (!this.hooks.insertImageDialog(linkEnteredCallback))
-                    ui.prompt('Insert Image', imageDialogText, imageDefaultText, linkEnteredCallback);
+                    ui.prompt(Translator.get('markdown.image.insert'), imageDialogText, imageDefaultText, linkEnteredCallback);
             }
             else {
-                ui.prompt('Insert Link', linkDialogText, linkDefaultText, linkEnteredCallback);
+                ui.prompt(Translator.get('markdown.link.insert'), linkDialogText, linkDefaultText, linkEnteredCallback);
             }
             return true;
         }
@@ -1902,7 +1902,7 @@
 
             if (!chunk.selection) {
                 chunk.startTag = "    ";
-                chunk.selection = "enter code here";
+                chunk.selection = Translator.get('markdown.code.enter');
             }
             else {
                 if (/^[ ]{0,3}\S/m.test(chunk.selection)) {
@@ -1925,7 +1925,7 @@
             if (!chunk.startTag && !chunk.endTag) {
                 chunk.startTag = chunk.endTag = "`";
                 if (!chunk.selection) {
-                    chunk.selection = "enter code here";
+                    chunk.selection = Translator.get('markdown.code.enter');
                 }
             }
             else if (chunk.endTag && !chunk.startTag) {
@@ -2019,7 +2019,7 @@
             });
 
         if (!chunk.selection) {
-            chunk.selection = "List item";
+            chunk.selection = Translator.get('markdown.list.item');
         }
 
         var prefix = getItemPrefix();
@@ -2051,7 +2051,7 @@
         // make a level 2 hash header around some default text.
         if (!chunk.selection) {
             chunk.startTag = "## ";
-            chunk.selection = "Heading";
+            chunk.selection = Translator.get('markdown.heading');
             chunk.endTag = " ##";
             return;
         }
