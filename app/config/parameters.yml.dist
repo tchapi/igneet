@@ -1,0 +1,18 @@
+parameters:
+    database_driver: pdo_mysql
+    database_host: localhost
+    database_port: null
+    database_name: igneet
+    database_user: user
+    database_password: password
+    mailer_transport: smtp
+    mailer_host: smtp
+    mailer_user: user
+    mailer_password: password
+    locale: en
+    secret: 0
+    database_path: null
+    enable_static_site: false
+    mailer_from: null
+    mailer_contact: null
+    ga_tracker_id: 0
