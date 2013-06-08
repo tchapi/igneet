@@ -12,7 +12,9 @@
 
  ☐ OpenID ?
 
- ☐ Refaire le système de GUID (sic)
+ ☐ Refaire le système de GUID (sic) 
+  - drop le slug de projet et tout ce qui va avec
+  - logs avec seulement le name et "identifier" dans "objects"
  ☐ + Deep linking : verifier a l'affichage que l'utilisateur a le droit de voir l'objet deep linké !
    Sinon mettre en gras mais ne pas linker avec une icone oail barré (?)
 
