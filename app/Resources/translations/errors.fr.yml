@@ -3,4 +3,11 @@ invalid:
   token: "Token non valide."
   password.match: "Les deux mots de passe ne sont pas identiques."
 information.not.valid: "Les informations fournies ne semblent pas valides."
+unknown:
+  user: "Utilisateur inconnu"
+  project: "Projet inconnu"
+  idea: "Idée inconnue"
+  wikipage: "Page non trouvée"
+  list: "Liste inconnue"
+  resource: "Ressource inconnue"
 "Bad credentials": "Nom d'utilisateur ou mot de passe incorrect"

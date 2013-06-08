@@ -10,29 +10,18 @@
     
  ☐  Faire une passe sur les titles/alt des liens d'éditions (les icon-pencils)
 
- ✔ projects dont je ne suis pas participant : je vois les trucs ou pas ??? @done (13-05-05 19:51)
-
- ☐  refaire le système de GUID (sic)
  ☐ OpenID ?
- ☐ Deep linking : verifier a l'affichage que l'utilisateur a le droit de voir l'objet deep linké !
+
+ ☐ Refaire le système de GUID (sic)
+ ☐ + Deep linking : verifier a l'affichage que l'utilisateur a le droit de voir l'objet deep linké !
    Sinon mettre en gras mais ne pas linker avec une icone oail barré (?)
 
- ✔ Switch de langue @done (13-05-25 23:57)
- ✔ help sur les form field de type checkbox a mettre @done (13-05-26 18:31)
- ✔ création d'un projet dans private space : disable la case private (et la cocher) @done (13-05-23 23:37)
- ✔ "Please confirm" des notifs de confirmation  : a traduire !! @done (13-05-26 17:56)
- ✔ Supprimer les removeLogEntrie (trucs finissant par ie dans User) - vérifier qu'ils sont pas appelés @done (13-05-26 12:56)
- 
- ✔ Flashbags a remplacer PARTOUT @done (13-05-05 21:54)
- ✔ Enlever les logs dont je suis l'initiateur @done (13-05-09 21:24)
-
- ✔ liste des skills a la creation d'un user : a traduire @done (13-05-05 20:14)
- ✔ translation : placeholders pour le select2 ? a gerer dans le DOM si possible @done (13-05-05 21:27)
- ✔ traduire les noms des fields de form et les helps - normalement |trans est fait par défaut dans les templates @done (13-04-15 22:48)
- ✔ translate popins de validation de suppression @done (13-05-26 22:34)
+ ☐ faire une page des projets 'archivés'
+   \__ + un bouton 'archiver' par projet
+   \__ + demander si archiver un projet apres projectize
+   \__ abandonner un projet ? 
 
  ☐  pouvoir quitter un projet quand on est pas seul owner ou quand on est participant
- ☐ archivage d'un projet ?
 
  ☐ taille des inputs : http://d.pr/i/dHGr lors de la traduction
  ☐ [Eric] Tri des resources dans la vue / resources
@@ -142,7 +131,17 @@ Todo - General / Users :
        \--> graphe
      ✔ - LAST 3 contributors on this project (liste en dessous du projet) @done (13-02-23 22:52)
    ✔ (idem ideas) @done (13-02-23 22:52)
- 
+ ✔ Switch de langue @done (13-05-25 23:57)
+ ✔ help sur les form field de type checkbox a mettre @done (13-05-26 18:31)
+ ✔ "Please confirm" des notifs de confirmation  : a traduire !! @done (13-05-26 17:56)
+ ✔ Supprimer les removeLogEntrie (trucs finissant par ie dans User) - vérifier qu'ils sont pas appelés @done (13-05-26 12:56)
+ ✔ Flashbags a remplacer PARTOUT @done (13-05-05 21:54)
+ ✔ Enlever les logs dont je suis l'initiateur @done (13-05-09 21:24)
+ ✔ liste des skills a la creation d'un user : a traduire @done (13-05-05 20:14)
+ ✔ translation : placeholders pour le select2 ? a gerer dans le DOM si possible @done (13-05-05 21:27)
+ ✔ traduire les noms des fields de form et les helps - normalement |trans est fait par défaut dans les templates @done (13-04-15 22:48)
+ ✔ translate popins de validation de suppression @done (13-05-26 22:34)
+
  ✘ Rajouter un badge 'YOU' quand l'utilisateur courant est affiché @cancelled (13-02-13 14:08)
  ✘ watch / unwatch quand tu es owner ou participant ou createur --> a degager @cancelled (13-01-26 11:25)
    \__ si, ça a un intérêt
@@ -168,16 +167,14 @@ Todo - entité "Wiki":
  ✔ Wiki - parenting @done (13-02-12 22:33)
  ✔ Highlight la page en cours dans la liste de gauche @done (13-01-22 00:00)
 
-Todo - entité "StandardProject":
+Todo - entité "Project":
 
  ✔ Listing : mettre X participants and Y owners ... @done (13-01-24 00:02)
  ✔ Créer un nouveau projet @done (13-01-16 20:51)
  ✔ infos d'un projet : quand pas de skills ne pas afficher le vase ? ou All skills welcome OK @done (13-01-16 21:13)
  ✔ log des modifs sur les projets @done (13-01-17 23:08)
- ✔ faire une page des projets 'archivés' @done (13-02-24 16:27)
-   \__ + un bouton 'archiver' par projet
-   \__ + demander si archiver un projet apres projectize
-   \__ abandonner un projet ? 
+ ✔ projects dont je ne suis pas participant : je vois les trucs ou pas ??? @done (13-05-05 19:51)
+ ✔ création d'un projet dans private space : disable la case private (et la cocher) @done (13-05-23 23:37)
 
  ✘ Background image pour les projets ? BOF BOF @cancelled (13-01-21 23:49)
 
