@@ -24,11 +24,15 @@ framework:
     session:
         save_path: "%kernel.root_dir%/var/sessions"
     trusted_proxies: ~
+    serializer:
+        enabled: true
 
 # Services
 services:
     serializer.method:
         class: Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer
+        tags:
+         - { name: serializer.normalizer }
     serializer.encoder.json:
         class: Symfony\Component\Serializer\Encoder\JsonEncoder
     serializer:
