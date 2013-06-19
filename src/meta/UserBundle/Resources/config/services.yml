@@ -2,6 +2,13 @@ parameters:
     meta_user.language.class: meta\UserBundle\EventListener\LanguageListener
 
 services:
+
+    meta.user.openid_user_manager:
+        class: meta\UserBundle\Security\User\OpenIdUserManager
+        # we used an EntityManager, so don't forget it in dependency injection
+        # you may want to adapt it, only the IdentityManager is mandatory
+        arguments: [@fp_openid.identity_manager, @doctrine.orm.entity_manager]
+
     meta_user.language.interactive_login_listener:
         class: %meta_user.language.class%
         calls:

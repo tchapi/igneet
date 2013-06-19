@@ -10,6 +10,8 @@ security:
         ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
 
     providers:
+        openid_user_manager:
+            id: meta.user.openid_user_manager # the name of the service
         user_db:
             entity: { class: meta\UserBundle\Entity\User, property: username }
 
@@ -40,6 +42,21 @@ security:
                 domain: ~
             security: true
             anonymous: ~
+
+            fp_openid:
+                provider: openid_user_manager # cf below
+                login_path: /app/login_openid
+                check_path: /app/login_check_openid
+                create_user_if_not_exists: true # so createUserFromIdentity method will be called
+
+                # Please note that all OpenID providers may not be able to provide all fields.
+                # check the desired provider documentation
+                # https://developers.google.com/accounts/docs/OpenID#Parameters
+                required_attributes:
+                    - contact/email
+                    - namePerson/first
+                    - namePerson/last
+
     access_control:
         # Application
         - { path: /app/login.*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
