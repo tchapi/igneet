@@ -36,7 +36,7 @@
     <div class="sectionContent">
       <input type="submit" name="{{ "user.login.signin"|trans }}" class="btn btn-info"/>
     </div>
-    <a href="/app_dev.php/app/login_check_openid?openid_identifier={{ "https://www.google.com/accounts/o8/id"|url_encode }}" class="btn">Sign in with Google</a>
+    <a href="{{ path('fp_openid_security_check', { 'openid_identifier': "https://www.google.com/accounts/o8/id" }) }}" class="btn">Sign in with Google</a>
   </section>
 </form>
 {% endblock %}

@@ -10,10 +10,12 @@
     
  ☐  Faire une passe sur les titles/alt des liens d'éditions (les icon-pencils)
 
- ☐ OpenID ?
+ ☐ OpenID
+   ☐ - RESTE LES INVITE TOKEN A GERER ! Quand l'user passe par openId
+   ☐ - translations
 
  ☐  Sur les notifs, quand on clique et qu'elles sont a 0 affichées mettre directement une page présentant les anciennes
- 
+
  ☐ Refaire le système de GUID (sic) 
   - drop le slug de projet et tout ce qui va avec
   - logs avec seulement le name et "identifier" dans "objects"

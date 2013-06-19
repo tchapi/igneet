@@ -23,22 +23,6 @@
 
 {% form_theme form _self %}
 
-{% use 'form_div_layout.html.twig' with field_widget as base_field_widget %}
-
-{% block field_widget %}
-    {{ block('base_field_widget') }}
-    {% if required or attr.help is defined %}
-        <span class="help-block">{% if required %}<span class="muted">* {{ "required"|trans }}.</span>{% endif %} {% if attr.help is defined %}{{ attr.help|trans }}{% endif %}</span>
-    {% endif %}
-{% endblock %}
-
-{% block email_widget %}
-    {{ block('base_field_widget') }}
-    {% if required or attr.help is defined %}
-        <span class="help-block">{% if required %}<span class="muted">* {{ "required"|trans }}.</span>{% endif %} {% if attr.help is defined %}{{ attr.help|trans }}{% endif %}</span>
-    {% endif %}
-{% endblock %}
-
 {% block form_row %}
 <div class="control-group {% if errors %}error{% endif %}">
   <label class="control-label" for="inputEmail">{{ form_label(form) }}</label>
@@ -51,19 +35,14 @@
 </div>
 {% endblock form_row %}
 
-{% block form_errors %}
-    {% spaceless %}
-        {% if errors|length > 0 %}
-        <ul class="error_list">
-            {% for error in errors %}
-                <li><i class="icon-warning-sign"></i> {{ error.message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-    {% endspaceless %}
-{% endblock form_errors %}
-
 {% block content %}
+{% if openid %}
+<section>
+  <div class="sectionContent">
+    To finish your setup, you must choose a username :
+  </div>
+</section>
+{% endif %}
 <div class="formContent">
   <form action="{{ path('u_signup', { 'inviteToken': inviteToken }) }}" method="post" {{ form_enctype(form) }} class="form-horizontal">
       {{ form_widget(form) }}

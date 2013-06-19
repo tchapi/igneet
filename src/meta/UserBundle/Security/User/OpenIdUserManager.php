@@ -32,7 +32,7 @@ class OpenIdUserManager extends UserManager
 
         // We absolutely need an email address 
         if (false === isset($attributes['contact/email'])) {
-            throw new \Exception('We need your e-mail address!');
+            throw new \Exception('There has been an error retrieving your email address. Make sure you authorize your email to be disclosed to igneet.');
         }
 
         // 
@@ -40,23 +40,22 @@ class OpenIdUserManager extends UserManager
             'email' => $attributes['contact/email']
         ));
 
-        if (null === $user || $user->isDeleted() == false ) {
+        if (null !== $user && $user->isDeleted() == false ) {
 
-            // No user with this email address, let's create one
-            throw new BadCredentialsException('No corresponding user!');
+            // We create an OpenIdIdentity for this User
+            $openIdIdentity = new OpenIdIdentity();
+            $openIdIdentity->setIdentity($identity);
+            $openIdIdentity->setAttributes($attributes);
+            $openIdIdentity->setUser($user);
+
+            $this->entityManager->persist($openIdIdentity);
+            $this->entityManager->flush();
+
+        } else if ($user !== null && $user->isDeleted()) {
+
+            // We need to recover
+            throw new BadCredentialsException('A deleted user with the same email address already exist. Please recover your account.');
         }
-
-        // We create an OpenIdIdentity for this User
-
-        $openIdIdentity = new OpenIdIdentity();
-        $openIdIdentity->setIdentity($identity);
-        $openIdIdentity->setAttributes($attributes);
-        $openIdIdentity->setUser($user);
-
-        $this->entityManager->persist($openIdIdentity);
-        $this->entityManager->flush();
-
-        // end of example
 
         return $user; // you must return an UserInterface instance (or throw an exception)
     }

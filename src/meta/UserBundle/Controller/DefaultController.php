@@ -3,12 +3,17 @@
 namespace meta\UserBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller,
+    Symfony\Component\Security\Core\SecurityContext,
     Symfony\Component\HttpFoundation\Request,
     Symfony\Component\HttpFoundation\File\File,
     Symfony\Component\HttpFoundation\Response,
     Symfony\Component\EventDispatcher\EventDispatcher,
     Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken,
     Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
+
+use Fp\OpenIdBundle\RelyingParty\Exception\OpenIdAuthenticationCanceledException;
+use Fp\OpenIdBundle\RelyingParty\RecoveredFailureRelyingParty;
+use Fp\OpenIdBundle\Security\Core\Authentication\Token\OpenIdToken;
 
 /*
  * Importing Class definitions
@@ -357,6 +362,101 @@ class DefaultController extends Controller
     }
 
     /*
+     * Shows the user the different signin methods available
+     */
+    public function chooseSignupProviderAction($inviteToken)
+    {
+    
+        return $this->render('metaUserBundle:Default:chooseProvider.html.twig', array('inviteToken' => $inviteToken));
+
+    }
+
+    /*
+     * Shows the user last step when signing up with open ID
+     */
+    public function finishSignupAction(Request $request, $inviteToken)
+    {
+
+        $failure = $request->getSession()->get(SecurityContext::AUTHENTICATION_ERROR);
+
+        if (false == $failure) {
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $this->get('translator')->trans('The controller expect AuthenticationException to be present in session')
+            );
+            return $this->redirect($this->generateUrl('login'));
+        }
+
+        if ($failure instanceof OpenIdAuthenticationCanceledException) {
+            
+            // User cancelled
+            $this->get('session')->getFlashBag()->add(
+                'warning',
+                $this->get('translator')->trans('You cancelled, mofo')
+            );
+            return $this->redirect($this->generateUrl('login'));
+        }
+
+        $token = $failure->getToken();
+
+        if (false == $token instanceof OpenIdToken) {
+
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $this->get('translator')->trans('The failure does not contain OpenIdToken, Is the failure come from openid?')
+            );
+            return $this->redirect($this->generateUrl('login'));
+
+        }
+
+        // Merges
+        $attributes = array_merge(array(
+            'contact/email' => '',
+            'namePerson/first' => '',
+            'namePerson/last' => '',
+            ), $token->getAttributes())
+        ;
+
+        // Creates the user
+        $user = new User();
+        $user->setEmail($attributes['contact/email']);
+        $user->setFirstname($attributes['namePerson/first']);
+        $user->setLastname($attributes['namePerson/last']);
+
+        // Create a dummy password
+        $factory = $this->get('security.encoder_factory');
+        $encoder = $factory->getEncoder($user);
+        $user->setPassword($encoder->encodePassword($user->getSalt(), $user->getSalt()));
+
+        $form = $this->createForm(new UserType(), $user, array( 'translator' => $this->get('translator'), 'openid' => true));
+
+        if ('POST' == $request->getMethod()) {
+
+            $form->bind($request);
+
+            if ($form->isValid()) {
+
+                $this->getUserManager()->updateUser($user);
+
+                $identity = $this->getIdentityManager()->create();
+                $identity->setIdentity($token->getIdentity());
+                $identity->setAttributes($attributes);
+                $identity->setUser($user);
+                $this->getIdentityManager()->update($identity);
+
+                return $this->redirect($this->generateUrl('fp_openid_security_check', array(
+                    RecoveredFailureRelyingParty::RECOVERED_QUERY_PARAMETER => 1
+                )));
+            }
+
+        }
+
+        return $this->render('metaUserBundle:Default:create.html.twig', array( 'form' => $form->createView(), 'inviteToken' => $inviteToken, 'openid' => true ));
+
+    }
+
+
+    /*
      * Create a form for a new user to signin AND process the result when POSTed
      */
     public function createAction(Request $request, $inviteToken)
@@ -397,7 +497,7 @@ class DefaultController extends Controller
         }
 
         $user = new User();
-        $form = $this->createForm(new UserType(), $user, array( 'translator' => $this->get('translator')));
+        $form = $this->createForm(new UserType(), $user, array( 'translator' => $this->get('translator'), 'openid' => false));
 
         if ($request->isMethod('POST')) {
 
@@ -479,7 +579,7 @@ class DefaultController extends Controller
 
         }
 
-        return $this->render('metaUserBundle:Default:create.html.twig', array('form' => $form->createView(), 'inviteToken' => $inviteToken));
+        return $this->render('metaUserBundle:Default:create.html.twig', array('form' => $form->createView(), 'inviteToken' => $inviteToken, 'openid' => false));
 
     }
 
