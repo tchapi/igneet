@@ -24,14 +24,20 @@
 
 {% block content %}
 <section>
+  <div class="sectionContent">{{ "user.createForm.chooseProvider"|trans }}</div>
+</section>
+<section>
+  <div class="sectionTitle"></div>
   <div class="sectionContent">
-    Choose one of the following OpenId providers to create an account :
+    <a href="{{ path('fp_openid_security_check', { 'inviteToken': inviteToken, 'openid_identifier': "https://www.google.com/accounts/o8/id" }) }}" class="btn btn-primary"><i class="icon-google-plus"></i> Google</a> - <a href="{{ path('fp_openid_security_check', { 'inviteToken': inviteToken, 'openid_identifier': "https://openid.stackexchange.com/" }) }}" class="btn btn-primary"><i class="icon-stackexchange"></i> StackExchange</a>
+
+    
+
   </div>
 </section>
 <section>
-  <div class="sectionTitle">Provider : </div>
   <div class="sectionContent">
-    <a href="{{ path('fp_openid_security_check', { 'inviteToken': inviteToken, 'openid_identifier': "https://www.google.com/accounts/o8/id" }) }}">Google</a> - <a href="{{ path('fp_openid_security_check', { 'inviteToken': inviteToken, 'openid_identifier': "https://www.google.com/accounts/o8/id" }) }}">StackExchange</a>
+    Or create a new account on igneet by clicking <a href="{{ path('u_signup', { 'inviteToken': inviteToken}) }}">here</a>.
   </div>
 </section>
 {% endblock %}

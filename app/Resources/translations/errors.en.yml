@@ -11,3 +11,4 @@ unknown:
   list: "Unknow list"
   resource: "Unknow resource"
 "Bad credentials": "Incorrect login or password."
+"User account is disabled.": "Your account is disabled, please recover it before signing in."

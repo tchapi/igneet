@@ -28,7 +28,7 @@ security:
                 login_path: /app/login
                 check_path: /app/login_check_openid
                 failure_path: /app/signup_finish
-                create_user_if_not_exists: true # so createUserFromIdentity method will be called
+                create_user_if_not_exists: false # so createUserFromIdentity method will be called
 
                 # Please note that all OpenID providers may not be able to provide all fields.
                 # check the desired provider documentation

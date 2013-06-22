@@ -23,6 +23,15 @@
 
 {% form_theme form _self %}
 
+{% use 'form_div_layout.html.twig' with form_widget_simple as base_form_widget_simple %}
+
+{% block form_widget_simple %}
+    {{ block('base_form_widget_simple') }}
+    {% if required or attr.help is defined %}
+        <span class="help-block">{% if required %}<span class="muted">* {{ "required"|trans }}.</span>{% endif %} {% if attr.help is defined %}{{ attr.help|trans }}{% endif %}</span>
+    {% endif %}
+{% endblock %}
+
 {% block form_row %}
 <div class="control-group {% if errors %}error{% endif %}">
   <label class="control-label" for="inputEmail">{{ form_label(form) }}</label>
@@ -35,16 +44,26 @@
 </div>
 {% endblock form_row %}
 
+{% block form_errors %}
+    {% spaceless %}
+        {% if errors|length > 0 %}
+        <ul class="error_list">
+            {% for error in errors %}
+                <li><i class="icon-warning-sign"></i> {{ error.message|trans }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    {% endspaceless %}
+{% endblock form_errors %}
+
 {% block content %}
 {% if openid %}
 <section>
-  <div class="sectionContent">
-    To finish your setup, you must choose a username :
-  </div>
+  <div class="sectionContent">{{ "user.createForm.usernameChoose"|trans }}</div>
 </section>
 {% endif %}
 <div class="formContent">
-  <form action="{{ path('u_signup', { 'inviteToken': inviteToken }) }}" method="post" {{ form_enctype(form) }} class="form-horizontal">
+  <form action="{% if openid %}{{ path('u_signup_finish', { 'inviteToken': inviteToken }) }}{% else %}{{ path('u_signup', { 'inviteToken': inviteToken }) }}{% endif %}" method="post" {{ form_enctype(form) }} class="form-horizontal">
       {{ form_widget(form) }}
       <div class="form-actions">
         <input type="submit" value="{{ "user.createForm.create"|trans }}" class="btn btn-success" />

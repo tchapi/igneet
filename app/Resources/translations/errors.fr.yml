@@ -11,3 +11,4 @@ unknown:
   list: "Liste inconnue"
   resource: "Ressource inconnue"
 "Bad credentials": "Nom d'utilisateur ou mot de passe incorrect"
+"User account is disabled.": "Votre compte a été désactivé, veuillez le réactiver avant de vous réidentifier."
