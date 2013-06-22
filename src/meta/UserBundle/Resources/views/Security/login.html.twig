@@ -9,7 +9,7 @@
   <div class="objectHeader">
     <h2>{{ "user.login.title"|trans }}</h2>
     <h4>{{ "user.login.help"|trans }}</h4>
-    <p>{{ "user.login.text1"|trans({'%link%': '<a href="' ~ path('u_signup') ~ '" />' ~ "user.login.signup"|trans ~ '</a>' })|raw }}</p>
+    <p>{{ "user.login.text1"|trans({'%link%': '<a href="' ~ path('u_signup_choice') ~ '" />' ~ "user.login.signup"|trans ~ '</a>' })|raw }}</p>
     <p>{{ "user.login.text2"|trans({'%recover%': '<a href="' ~ path('recover') ~ '" />' ~ "user.login.recover"|trans ~ '</a>', '%reactivate%': '<a href="' ~ path('reactivate') ~ '" />' ~ "user.login.reactivate"|trans ~ '</a>' })|raw }}</p>
   </div>
 {% endblock %}
