@@ -78,6 +78,7 @@ user:
     participated: "Projets dans lesquels j'ai pris part"
     owned: "Mes projets"
     watched: "Projets suivis"
+  cancelled.signup: "Vous avez annulé le processus d'enregistrement d'un nouveau compte."
   createForm:
     chooseProvider: "Choisissez un de ces site tiers proposant une authentification via OpenId pour vous créer un compte sur igneet :"
     title: "Créer un compte"

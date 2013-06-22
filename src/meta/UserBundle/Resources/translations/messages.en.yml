@@ -78,6 +78,7 @@ user:
     participated: "Projects I'm in"
     owned: "Projects I own"
     watched: "Projects I watch"
+  cancelled.signup: "You cancelled your signing up."
   createForm:
     chooseProvider: "Choose one of the following OpenId providers to create an account :"
     title: "Sign up"

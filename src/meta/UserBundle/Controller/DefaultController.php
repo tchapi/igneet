@@ -420,7 +420,7 @@ class DefaultController extends Controller
             if (false == $failure) {
                 $this->get('session')->getFlashBag()->add(
                     'error',
-                    $this->get('translator')->trans('The controller expect AuthenticationException to be present in session')
+                    $this->get('translator')->trans('openid.error', array(), 'errors')
                 );
                 return $this->redirect($this->generateUrl('login'));
             }
@@ -430,7 +430,7 @@ class DefaultController extends Controller
                 // User cancelled
                 $this->get('session')->getFlashBag()->add(
                     'warning',
-                    $this->get('translator')->trans('You cancelled, mofo')
+                    $this->get('translator')->trans('user.cancelled.signup')
                 );
                 return $this->redirect($this->generateUrl('login'));
             }
@@ -441,7 +441,7 @@ class DefaultController extends Controller
 
                 $this->get('session')->getFlashBag()->add(
                     'error',
-                    $this->get('translator')->trans('The failure does not contain OpenIdToken, Is the failure come from openid?')
+                    $this->get('translator')->trans('openid.error', array(), 'errors')
                 );
                 return $this->redirect($this->generateUrl('login'));
 
