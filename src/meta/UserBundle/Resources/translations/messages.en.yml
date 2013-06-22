@@ -81,6 +81,8 @@ user:
   cancelled.signup: "You cancelled your signing up."
   createForm:
     chooseProvider: "Choose one of the following OpenId providers to create an account :"
+    orSignup: "Or create a new account on igneet by clicking %link%"
+    here: "here"
     title: "Sign up"
     help: "Sign up now to join the adventure and create great communities of projects involving makers and doers from around you."
     text: "It's free and easy, just fill in the few information below and you'll be ready to go, share and participate in projects. Of course you'll be able to change this information anytime later on."
