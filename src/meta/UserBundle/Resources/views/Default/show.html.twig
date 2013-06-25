@@ -155,7 +155,7 @@
 <ul class="projects sectionContent">
 {% for watchedProject in projectsWatched %}
   <li>
-    <a href="{{ path('sp_show_project', {'slug': watchedProject.slug}) }}">
+    <a href="{{ path('p_show_project', {'slug': watchedProject.slug}) }}">
       <img src="{{ watchedProject.picture }}" width="70" height="70" class="smallAvatar"/>
       <div class="smallObjectInfos ellipsis-multiline">
         <span>{{ watchedProject.name }}</span>
@@ -173,7 +173,7 @@
 <ul class="projects sectionContent">
 {% for ownedProject in projectsOwned %}
   <li>
-    <a href="{{ path('sp_show_project', {'slug': ownedProject.slug}) }}">
+    <a href="{{ path('p_show_project', {'slug': ownedProject.slug}) }}">
       <img src="{{ ownedProject.picture }}" width="70" height="70" class="smallAvatar"/>
       <div class="smallObjectInfos ellipsis-multiline">
         <span>{{ ownedProject.name }}</span>
@@ -191,7 +191,7 @@
 <ul class="projects sectionContent">
 {% for participatedInProject in projectsParticipatedIn %}
   <li>
-    <a href="{{ path('sp_show_project', {'slug': participatedInProject.slug}) }}">
+    <a href="{{ path('p_show_project', {'slug': participatedInProject.slug}) }}">
       <img src="{{ participatedInProject.picture }}" width="70" height="70" class="smallAvatar"/>
       <div class="smallObjectInfos ellipsis-multiline">
         <span>{{ participatedInProject.name }}</span>

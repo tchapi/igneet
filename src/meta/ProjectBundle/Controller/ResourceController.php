@@ -113,7 +113,7 @@ class ResourceController extends BaseController
                     $this->get('translator')->trans('project.resources.created', array( '%resource%' => $resource->getTitle(), '%project%' => $this->base['standardProject']->getName()))
                 );
 
-                return $this->redirect($this->generateUrl('sp_show_project_list_resources', array('slug' => $this->base['standardProject']->getSlug())));
+                return $this->redirect($this->generateUrl('p_show_project_list_resources', array('slug' => $this->base['standardProject']->getSlug())));
            
             } else {
                
@@ -166,7 +166,7 @@ class ResourceController extends BaseController
     {
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('edit', $request->get('token')))
-            return $this->redirect($this->generateUrl('sp_show_project_list_resources', array('slug' => $slug)));
+            return $this->redirect($this->generateUrl('p_show_project_list_resources', array('slug' => $slug)));
           
         $this->fetchProjectAndPreComputeRights($slug, false, true);
         $error = null;
@@ -269,7 +269,7 @@ class ResourceController extends BaseController
                 );
             }
 
-            return $this->redirect($this->generateUrl('sp_show_project_list_resources', array('slug' => $slug)));
+            return $this->redirect($this->generateUrl('p_show_project_list_resources', array('slug' => $slug)));
 
         } else {
         
@@ -287,7 +287,7 @@ class ResourceController extends BaseController
     public function deleteResourceAction(Request $request, $slug, $id)
     {
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('delete', $request->get('token')))
-            return $this->redirect($this->generateUrl('sp_show_project_list_resources', array('slug' => $slug)));
+            return $this->redirect($this->generateUrl('p_show_project_list_resources', array('slug' => $slug)));
           
         $this->fetchProjectAndPreComputeRights($slug, false, true);
 
@@ -322,7 +322,7 @@ class ResourceController extends BaseController
             
         }
 
-        return $this->redirect($this->generateUrl('sp_show_project_list_resources', array('slug' => $slug)));
+        return $this->redirect($this->generateUrl('p_show_project_list_resources', array('slug' => $slug)));
 
     }
 
@@ -359,7 +359,7 @@ class ResourceController extends BaseController
             
         }
 
-        return $this->redirect($this->generateUrl('sp_show_project_list_resources', array('slug' => $slug)));
+        return $this->redirect($this->generateUrl('p_show_project_list_resources', array('slug' => $slug)));
 
     }
 

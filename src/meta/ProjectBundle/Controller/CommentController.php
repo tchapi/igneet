@@ -61,11 +61,11 @@ class CommentController extends BaseController
                     );
                 }
 
-                return $this->redirect($this->generateUrl('sp_show_project_timeline', array('slug' => $slug)));
+                return $this->redirect($this->generateUrl('p_show_project_timeline', array('slug' => $slug)));
 
             } else {
 
-                $route = $this->get('router')->generate('sp_show_project_comment', array('slug' => $slug));
+                $route = $this->get('router')->generate('p_show_project_comment', array('slug' => $slug));
 
                 return $this->render('metaGeneralBundle:Comment:timelineCommentBox.html.twig', 
                     array('object' => $this->base['standardProject'], 'route' => $route, 'form' => $form->createView()));
@@ -130,11 +130,11 @@ class CommentController extends BaseController
                             );
                         }
 
-                        return $this->redirect($this->generateUrl('sp_show_project_wiki_show_page', array('slug' => $slug, 'id' => $wikiPage->getId(), 'pageSlug' => $wikiPage->getSlug())));
+                        return $this->redirect($this->generateUrl('p_show_project_wiki_show_page', array('slug' => $slug, 'id' => $wikiPage->getId(), 'pageSlug' => $wikiPage->getSlug())));
 
                     } else {
 
-                        $route = $this->get('router')->generate('sp_show_project_wikipage_comment', array('slug' => $slug, 'id' => $id));
+                        $route = $this->get('router')->generate('p_show_project_wikipage_comment', array('slug' => $slug, 'id' => $id));
 
                         return $this->render('metaGeneralBundle:Comment:commentBox.html.twig', 
                             array('object' => $wikiPage, 'route' => $route, 'form' => $form->createView()));
@@ -197,11 +197,11 @@ class CommentController extends BaseController
                         );
                     }
                     
-                    return $this->redirect($this->generateUrl('sp_show_project_list', array('slug' => $slug, 'id' => $id, 'pageSlug' => $commonList->getSlug())));
+                    return $this->redirect($this->generateUrl('p_show_project_list', array('slug' => $slug, 'id' => $id, 'pageSlug' => $commonList->getSlug())));
 
                 } else {
 
-                    $route = $this->get('router')->generate('sp_show_project_list_comment', array('slug' => $slug, 'id' => $id));
+                    $route = $this->get('router')->generate('p_show_project_list_comment', array('slug' => $slug, 'id' => $id));
 
                     return $this->render('metaGeneralBundle:Comment:commentBox.html.twig', 
                         array('object' => $commonList, 'route' => $route, 'form' => $form->createView()));

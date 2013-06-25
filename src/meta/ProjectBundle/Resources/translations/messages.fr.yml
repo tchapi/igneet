@@ -9,9 +9,6 @@ project:
   allProjects: "Tous les projets"
   none: "Pas encore de projets !"
   not.found: "Ce projet n'existe pas."
-  choose.slug: "Choisissez un slug"
-  choose.slugHelp: "Veuillez indiquer un nom court pour ce projet."
-  slug.already.taken: "Ce nom court est déjà pris, veuiller en indiquer un autre."
   picture:
     reset: "L'image de ce projet a été réinitialisée avec succès."
     cannot.reset: "Vous n'avez pas les droits pour réinitialiser l'image de ce projet."
@@ -37,7 +34,6 @@ project:
   not.watching: "Vous n'êtes pas abonné au projet %project%."
   already.watching: "Vous êtes déjà abonné au projet %project%."
   cannot:
-    choose.slug: "Ce nom court ne peut être utilisé. Veuillez en choisir un autre."
     delete: "Vous n'avez pas les droits suffisants pour supprimer ce projet."
     watch: "Vous ne pouvez pas vous abonner à ce projet."
     unwatch: "Vous ne pouvez pas vous désabonner de ce projet."

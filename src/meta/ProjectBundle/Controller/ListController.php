@@ -145,7 +145,7 @@ class ListController extends BaseController
                     $this->get('translator')->trans('project.lists.created', array('%list%' => $commonList->getName()))
                 );
 
-                return $this->redirect($this->generateUrl('sp_show_project_list', array('slug' => $slug, 'id' => $commonList->getId(), 'commonListSlug' => $commonList->getSlug())));
+                return $this->redirect($this->generateUrl('p_show_project_list', array('slug' => $slug, 'id' => $commonList->getId(), 'commonListSlug' => $commonList->getSlug())));
            
             } else {
                
@@ -261,7 +261,7 @@ class ListController extends BaseController
     {
   
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('deleteCommonList', $request->get('token')))
-            return $this->redirect($this->generateUrl('sp_show_project_list_home', array('slug' => $slug)));
+            return $this->redirect($this->generateUrl('p_show_project_list_home', array('slug' => $slug)));
 
         $this->fetchProjectAndPreComputeRights($slug, false, true);
 
@@ -298,7 +298,7 @@ class ListController extends BaseController
             
         }
 
-        return $this->redirect($this->generateUrl('sp_show_project_list_home', array('slug' => $slug)));
+        return $this->redirect($this->generateUrl('p_show_project_list_home', array('slug' => $slug)));
 
     }
 
@@ -334,7 +334,7 @@ class ListController extends BaseController
             $this->get('translator')->trans('project.lists.items.created')
         );
 
-        return $this->redirect($this->generateUrl('sp_show_project_list', array('slug' => $slug, 'id' => $commonList->getId(), 'commonListSlug' => $commonList->getSlug())));
+        return $this->redirect($this->generateUrl('p_show_project_list', array('slug' => $slug, 'id' => $commonList->getId(), 'commonListSlug' => $commonList->getSlug())));
 
     }
 
@@ -416,7 +416,7 @@ class ListController extends BaseController
     {
   
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('deleteCommonListItem', $request->get('token')))
-            return $this->redirect($this->generateUrl('sp_show_project_list', array('slug' => $slug, 'id' => $listId)));
+            return $this->redirect($this->generateUrl('p_show_project_list', array('slug' => $slug, 'id' => $listId)));
 
         $this->fetchProjectAndPreComputeRights($slug, false, true);
 
@@ -457,7 +457,7 @@ class ListController extends BaseController
             
         }
 
-        return $this->redirect($this->generateUrl('sp_show_project_list', array('slug' => $slug, 'id' => $commonList->getId(), 'commonListSlug' => $commonList->getSlug())));
+        return $this->redirect($this->generateUrl('p_show_project_list', array('slug' => $slug, 'id' => $commonList->getId(), 'commonListSlug' => $commonList->getSlug())));
 
     }
 
@@ -468,7 +468,7 @@ class ListController extends BaseController
     {
   
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('toggleCommonListItem', $request->get('token')))
-            return $this->redirect($this->generateUrl('sp_show_project_list_home', array('slug' => $slug)));
+            return $this->redirect($this->generateUrl('p_show_project_list_home', array('slug' => $slug)));
 
         $this->fetchProjectAndPreComputeRights($slug, false, true);
 
@@ -493,7 +493,7 @@ class ListController extends BaseController
                 $logService->log($this->getUser(), 'user_'.$action.'_list_item', $this->base['standardProject'], array( 'list' => array( 'routing' => 'list', 'logName' => $commonList->getLogName(), 'args' => $commonList->getLogArgs()),
                                                                                                                    'list_item' => array( 'routing' => null,   'logName' => $commonListItem->getLogName() )) );
 
-                return $this->redirect($this->generateUrl('sp_show_project_list', array('slug' => $slug, 'id' => $commonList->getId(), 'commonListSlug' => $commonList->getSlug())));
+                return $this->redirect($this->generateUrl('p_show_project_list', array('slug' => $slug, 'id' => $commonList->getId(), 'commonListSlug' => $commonList->getSlug())));
 
             } else {
 
@@ -506,7 +506,7 @@ class ListController extends BaseController
             
         }
         
-        return $this->redirect($this->generateUrl('sp_show_project_list_home', array('slug' => $slug)));
+        return $this->redirect($this->generateUrl('p_show_project_list_home', array('slug' => $slug)));
     
     }
 

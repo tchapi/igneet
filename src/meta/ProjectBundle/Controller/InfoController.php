@@ -107,7 +107,7 @@ class InfoController extends BaseController
     {
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('addParticipantOrOwner', $request->get('token')))
-            return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $slug)));
+            return $this->redirect($this->generateUrl('p_show_project', array('slug' => $slug)));
 
         $this->fetchProjectAndPreComputeRights($slug, true, false);
 
@@ -179,7 +179,7 @@ class InfoController extends BaseController
 
         }
 
-        return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $slug)));
+        return $this->redirect($this->generateUrl('p_show_project', array('slug' => $slug)));
     }
 
     /*
@@ -189,7 +189,7 @@ class InfoController extends BaseController
     {
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('removeParticipantOrOwner', $request->get('token')))
-            return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $slug)));
+            return $this->redirect($this->generateUrl('p_show_project', array('slug' => $slug)));
 
         $this->fetchProjectAndPreComputeRights($slug, true, false);
 
@@ -251,7 +251,7 @@ class InfoController extends BaseController
 
         }
 
-        return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $slug)));
+        return $this->redirect($this->generateUrl('p_show_project', array('slug' => $slug)));
     }
 
 }

@@ -15,7 +15,6 @@ use meta\GeneralBundle\Entity\Behaviour\Taggable;
  * @ORM\Table(name="StandardProject")
  * @ORM\Entity(repositoryClass="meta\ProjectBundle\Entity\StandardProjectRepository")
  * @ORM\HasLifecycleCallbacks
- * @UniqueEntity(fields="slug", message="project.slug.already.taken")
  */
 class StandardProject extends Taggable
 {
@@ -35,16 +34,6 @@ class StandardProject extends Taggable
      * @Assert\NotBlank()
      */
     private $name;
-
-    /**
-     * @var string $slug
-     *
-     * @ORM\Column(name="slug", type="string", length=255, unique=true)
-     * @Assert\NotBlank()
-     * @Assert\Length(min = "3")
-     * @Assert\Regex(pattern="/^[a-zA-Z0-9\-]+$/")
-     */
-    private $slug;
 
     /**
      * @var string $headline
@@ -677,29 +666,6 @@ class StandardProject extends Taggable
         }
 
         return $count;
-    }
-
-    /**
-     * Set slug
-     *
-     * @param string $slug
-     * @return StandardProject
-     */
-    public function setSlug($slug)
-    {
-        $this->slug = $slug;
-    
-        return $this;
-    }
-
-    /**
-     * Get slug
-     *
-     * @return string 
-     */
-    public function getSlug()
-    {
-        return $this->slug;
     }
 
     /**

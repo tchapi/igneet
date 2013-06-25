@@ -9,9 +9,6 @@ project:
   allProjects: "All projects"
   none: "No projects yet !"
   not.found: "This project was not found."
-  choose.slug: "Choose a slug"
-  choose.slugHelp: "You need to indicate a new slug for this project."
-  slug.already.taken: "This slug is already taken - please try another one."
   picture:
     reset: "The picture for this project has successfully been reset."
     cannot.reset: "You cannot reset the picture for this project."
@@ -38,7 +35,6 @@ project:
   already.watching: "You are already watching the project %project%."
   cannot:
     delete: "You do not have sufficient privileges to delete this project."
-    choose.slug: "This slug cannot be chosen at this time. Try to choose a different slug."
     watch: "You cannot watch this project."
     unwatch: "You cannot unwatch this project."
     add.participant: "You are not allowed to add a participant or an owner to this project."

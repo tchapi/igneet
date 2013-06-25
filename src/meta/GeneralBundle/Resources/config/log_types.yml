@@ -3,12 +3,12 @@ parameters:
   general.log_routing:
     community: g_home_community
     user: u_show_user_profile
-    project: sp_show_project
+    project: p_show_project
     idea: i_show_idea
     other_user: u_show_user_profile
-    list: sp_show_project_list
-    resource: sp_show_project_resource
-    wikipage: sp_show_project_wiki_show_page
+    list: p_show_project_list
+    resource: p_show_project_resource
+    wikipage: p_show_project_wiki_show_page
   general.log_types:
 # User acting for his profile or on another user
     user_created: # DONE

@@ -19,7 +19,7 @@
 {% endblock form_row %}
 
 {% block content %}
-<form action="{{ path('sp_show_project_wiki_new_page', {'slug': base.standardProject.slug}) }}" method="post" {{ form_enctype(form) }}>
+<form action="{{ path('p_show_project_wiki_new_page', {'slug': base.standardProject.slug}) }}" method="post" {{ form_enctype(form) }}>
   <section>
     <h4>{{ "project.wiki.newHelp"|trans }} :</h4>
   </section>

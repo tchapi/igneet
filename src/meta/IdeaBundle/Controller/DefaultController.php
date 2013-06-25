@@ -83,7 +83,6 @@ class DefaultController extends Controller
         }
         
         $targetPictureAsBase64 = array('slug' => 'metaIdeaBundle:Default:edit', 'params' => array('id' => $id ), 'crop' => true);
-        $targetProjectizeAsBase64 = array('slug' => 'metaIdeaBundle:Default:projectize', 'params' => array('id' => $id ));
         $targetProposeToCommunityAsBase64 = array('slug' => 'metaIdeaBundle:Default:edit', 'params' => array('id' => $id ));
 
         if ( ($mustBeCreator && !$isCreator) || ($mustParticipate && !$isParticipatingIn && !$isCreator) ) {
@@ -94,7 +93,6 @@ class DefaultController extends Controller
                               'isParticipatingIn' => $isParticipatingIn,
                               'isCreator' => $isCreator,
                               'targetPictureAsBase64' => base64_encode(json_encode($targetPictureAsBase64)),
-                              'targetProjectizeAsBase64' => base64_encode(json_encode($targetProjectizeAsBase64)),
                               'targetProposeToCommunityAsBase64' => base64_encode(json_encode($targetProposeToCommunityAsBase64)),
                               'canEdit' =>  $isCreator || $isParticipatingIn
                             );
@@ -136,7 +134,7 @@ class DefaultController extends Controller
     /*
      * Show an idea
      */
-    public function showAction($id, $slug)
+    public function showAction($id)
     {
 
         $this->fetchIdeaAndPreComputeRights($id, false, false);
@@ -151,7 +149,7 @@ class DefaultController extends Controller
     /*
      * Show an idea's timeline
      */
-    public function showTimelineAction($id, $slug, $page)
+    public function showTimelineAction($id, $page)
     {
         $this->fetchIdeaAndPreComputeRights($id, false, false);
 
@@ -163,7 +161,7 @@ class DefaultController extends Controller
     /*
      * Show an idea's concept or knowledge
      */
-    public function showConceptOrKnowledgeAction($id, $slug, $type)
+    public function showConceptOrKnowledgeAction($id, $type)
     {
 
         $this->fetchIdeaAndPreComputeRights($id, false, false);
@@ -195,9 +193,6 @@ class DefaultController extends Controller
         if ($request->isMethod('POST')) {
 
             $form->bind($request);
-
-            $textService = $this->container->get('textService');
-            $idea->setSlug($textService->slugify($idea->getName()));
 
             // Prevents users in the private space from creating ideas with other creators
             if ($form->isValid() && ( !is_null($community) || count($idea->getCreators()) === 0 ) ) {
@@ -259,8 +254,6 @@ class DefaultController extends Controller
             switch ($request->request->get('name')) {
                 case 'name':
                     $this->base['idea']->setName($request->request->get('value'));
-                      $textService = $this->container->get('textService');
-                      $this->base['idea']->setSlug($textService->slugify($this->base['idea']->getName()));
                     $objectHasBeenModified = true;
                     break;
                 case 'headline':
@@ -536,18 +529,12 @@ class DefaultController extends Controller
 
             $project->setOriginalIdea($this->base['idea']);
             
-            $textService = $this->container->get('textService');
-
-            if ($request->request->get('slug') === ""){
-                $project->setSlug($textService->slugify($project->getName()));
-            } else {
-                $project->setSlug(strtolower(trim($request->request->get('slug'))));
-            }
-
             // Community
             $project->setCommunity($this->base['idea']->getCommunity());
 
             $em->persist($project);
+
+            $textService = $this->container->get('textService');
 
             // Wiki 
             $wiki = new Wiki();
@@ -584,7 +571,7 @@ class DefaultController extends Controller
                 $this->get('translator')->trans('idea.projectized')
             );
 
-            return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $project->getSlug())));
+            return $this->redirect($this->generateUrl('p_show_project', array('id' => $project->getId())));
 
         } else {
 
@@ -880,11 +867,11 @@ class DefaultController extends Controller
     /*
      * Output the navbar for the idea
      */
-    public function navbarAction($activeMenu, $id, $slug)
+    public function navbarAction($activeMenu, $id)
     {
         $menu = $this->container->getParameter('idea.menu');
 
-        return $this->render('metaIdeaBundle:Default:navbar.html.twig', array('menu' => $menu, 'activeMenu' => $activeMenu, 'id' => $id, 'slug' => $slug));
+        return $this->render('metaIdeaBundle:Default:navbar.html.twig', array('menu' => $menu, 'activeMenu' => $activeMenu, 'id' => $id));
     }
 
     /*

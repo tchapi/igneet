@@ -142,7 +142,7 @@ class WikiController extends BaseController
                     $this->get('translator')->trans('project.wiki.created', array( '%page%' => $wikiPage->getTitle() ))
                 );
 
-                return $this->redirect($this->generateUrl('sp_show_project_wiki_show_page', array('slug' => $slug, 'id' => $wikiPage->getId(), 'pageSlug' => $wikiPage->getSlug())));
+                return $this->redirect($this->generateUrl('p_show_project_wiki_show_page', array('slug' => $slug, 'id' => $wikiPage->getId(), 'pageSlug' => $wikiPage->getSlug())));
            
             } else {
 
@@ -165,7 +165,7 @@ class WikiController extends BaseController
     public function makeHomeWikiPageAction(Request $request, $slug, $id)
     {
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('makeHomeWikiPage', $request->get('token')))
-            return $this->redirect($this->generateUrl('sp_show_project_wiki', array('slug' => $slug)));
+            return $this->redirect($this->generateUrl('p_show_project_wiki', array('slug' => $slug)));
 
         $this->fetchProjectAndPreComputeRights($slug, false, true);
 
@@ -207,7 +207,7 @@ class WikiController extends BaseController
 
         }
 
-        return $this->redirect($this->generateUrl('sp_show_project_wiki', array('slug' => $slug)));
+        return $this->redirect($this->generateUrl('p_show_project_wiki', array('slug' => $slug)));
            
     }
 
@@ -374,7 +374,7 @@ class WikiController extends BaseController
     {
   
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('deleteWikiPage', $request->get('token')))
-            return $this->redirect($this->generateUrl('sp_show_project_wiki', array('slug' => $slug)));
+            return $this->redirect($this->generateUrl('p_show_project_wiki', array('slug' => $slug)));
 
         $this->fetchProjectAndPreComputeRights($slug, false, true);
 
@@ -432,7 +432,7 @@ class WikiController extends BaseController
             
         }
 
-        return $this->redirect($this->generateUrl('sp_show_project_wiki', array('slug' => $slug)));
+        return $this->redirect($this->generateUrl('p_show_project_wiki', array('slug' => $slug)));
 
     }
 }
