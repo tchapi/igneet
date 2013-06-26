@@ -296,7 +296,7 @@ class WikiController extends BaseController
                     case 'content':
                         $wikiPage->setContent($request->request->get('value'));
                         $objectHasBeenModified = true;
-                        $deepLinkingService = $this->container->get('meta.twig.deep_linking_extension');
+                        $deepLinkingService = $this->container->get('deep_linking_extension');
                         $response = $deepLinkingService->convertDeepLinks(
                           $this->container->get('markdown.parser')->transformMarkdown($request->request->get('value'))
                           );

@@ -11,7 +11,7 @@
       <div class="wmd-wrapper well well-small hide" >
         <div class="wmd-panel">
             <div id="wmd-button-bar"></div>
-            <textarea unsaved='no'data-name="concept_text" data-url="{{ path('i_edit_idea', {'id': base.idea.id, 'token': csrf_token('edit') }) }}" class="wmd-input" id="wmd-input">{{ base.idea.conceptText }}</textarea>
+            <textarea unsaved='no'data-name="concept_text" data-url="{{ path('i_edit_idea', {'uid': base.idea.id|to_uid, 'token': csrf_token('edit') }) }}" class="wmd-input" id="wmd-input">{{ base.idea.conceptText }}</textarea>
         </div>
         <div>
           <button id="wmd-save" class="btn btn-primary">{{ "save"|trans }}</button> <span class="muted wmd-message">{{ "saveHelp"|trans }}</span>
@@ -26,5 +26,5 @@
 {% endblock %}
 
 {% block navbar %}
-{% render(controller("metaIdeaBundle:Default:navbar",{ 'activeMenu' : 'concept', 'id' : base.idea.id })) %}
+{% render(controller("metaIdeaBundle:Default:navbar",{ 'activeMenu' : 'concept', 'uid' : base.idea.id|to_uid })) %}
 {% endblock %}

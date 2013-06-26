@@ -16,11 +16,15 @@
 
  ☐  Sur les notifs, quand on clique et qu'elles sont a 0 affichées mettre directement une page présentant les anciennes
 
+ ☐ notifs mails
+
+ ☐ Administration des communautés
+
  ☐ Refaire le système de GUID (sic) 
   - drop le slug de projet et tout ce qui va avec EN COURS
    Translater les id en UUID
    Attention : drop du slug casse la page profil
-   
+
   - logs avec seulement le name et "identifier" dans "objects"
  ☐ + Deep linking : verifier a l'affichage que l'utilisateur a le droit de voir l'objet deep linké !
    Sinon mettre en gras mais ne pas linker avec une icone oail barré (?)

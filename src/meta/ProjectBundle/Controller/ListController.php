@@ -366,7 +366,7 @@ class ListController extends BaseController
                 switch ($request->request->get('name')) {
                     case 'text':
                         $commonListItem->setText($request->request->get('value'));
-                        $deepLinkingService = $this->container->get('meta.twig.deep_linking_extension');
+                        $deepLinkingService = $this->container->get('deep_linking_extension');
                         $response = $deepLinkingService->convertDeepLinks($request->request->get('value'));
                         $objectHasBeenModified = true;
                         break;

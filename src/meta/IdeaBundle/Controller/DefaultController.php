@@ -24,10 +24,11 @@ class DefaultController extends Controller
     /*
      * Common helper to fetch idea and rights
      */
-    public function fetchIdeaAndPreComputeRights($id, $mustBeCreator = false, $mustParticipate = false)
+    public function fetchIdeaAndPreComputeRights($uid, $mustBeCreator = false, $mustParticipate = false)
     {
+
         $repository = $this->getDoctrine()->getRepository('metaIdeaBundle:Idea');
-        $idea = $repository->findOneById($id); // We do not enforce community here to be able to switch the user later on
+        $idea = $repository->findOneById($this->container->get('uid')->fromUId($uid)); // We do not enforce community here to be able to switch the user later on
 
         // Unexistant or deleted
         if (!$idea || $idea->isDeleted()){
@@ -82,8 +83,8 @@ class DefaultController extends Controller
             }
         }
         
-        $targetPictureAsBase64 = array('slug' => 'metaIdeaBundle:Default:edit', 'params' => array('id' => $id ), 'crop' => true);
-        $targetProposeToCommunityAsBase64 = array('slug' => 'metaIdeaBundle:Default:edit', 'params' => array('id' => $id ));
+        $targetPictureAsBase64 = array('slug' => 'metaIdeaBundle:Default:edit', 'params' => array('uid' => $uid ), 'crop' => true);
+        $targetProposeToCommunityAsBase64 = array('slug' => 'metaIdeaBundle:Default:edit', 'params' => array('uid' => $uid ));
 
         if ( ($mustBeCreator && !$isCreator) || ($mustParticipate && !$isParticipatingIn && !$isCreator) ) {
           $this->base = false;
@@ -134,12 +135,12 @@ class DefaultController extends Controller
     /*
      * Show an idea
      */
-    public function showAction($id)
+    public function showAction($uid)
     {
 
-        $this->fetchIdeaAndPreComputeRights($id, false, false);
+        $this->fetchIdeaAndPreComputeRights($uid, false, false);
         
-        $targetParticipantAsBase64 = array ('slug' => 'metaIdeaBundle:Default:addParticipant', 'external' => false, 'params' => array('id' => $id, 'owner' => false));
+        $targetParticipantAsBase64 = array ('slug' => 'metaIdeaBundle:Default:addParticipant', 'external' => false, 'params' => array('uid' => $uid, 'owner' => false));
 
         return $this->render('metaIdeaBundle:Info:showInfo.html.twig', 
             array('base' => $this->base,
@@ -149,9 +150,9 @@ class DefaultController extends Controller
     /*
      * Show an idea's timeline
      */
-    public function showTimelineAction($id, $page)
+    public function showTimelineAction($uid, $page)
     {
-        $this->fetchIdeaAndPreComputeRights($id, false, false);
+        $this->fetchIdeaAndPreComputeRights($uid, false, false);
 
         return $this->render('metaIdeaBundle:Timeline:showTimeline.html.twig', 
             array('base' => $this->base));
@@ -161,10 +162,10 @@ class DefaultController extends Controller
     /*
      * Show an idea's concept or knowledge
      */
-    public function showConceptOrKnowledgeAction($id, $type)
+    public function showConceptOrKnowledgeAction($uid, $type)
     {
 
-        $this->fetchIdeaAndPreComputeRights($id, false, false);
+        $this->fetchIdeaAndPreComputeRights($uid, false, false);
         
         return $this->render('metaIdeaBundle:Info:show' . ucfirst($type) . '.html.twig', 
             array('base' => $this->base));
@@ -217,7 +218,7 @@ class DefaultController extends Controller
                     $this->get('translator')->trans('idea.created', array( '%idea%' => $idea->getName()))
                 );
 
-                return $this->redirect($this->generateUrl('i_show_idea', array('id' => $idea->getId())));
+                return $this->redirect($this->generateUrl('i_show_idea', array('uid' => $this->container->get('uid')->toUId($idea->getId()))));
            
             } else {
                
@@ -237,13 +238,13 @@ class DefaultController extends Controller
     /*
      * Edit an idea (via X-Editable)
      */
-    public function editAction(Request $request, $id)
+    public function editAction(Request $request, $uid)
     {
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('edit', $request->get('token')))
             return new Response($this->get('translator')->trans('invalid.token', array(), 'errors'), 400);
 
-        $this->fetchIdeaAndPreComputeRights($id, false, true);
+        $this->fetchIdeaAndPreComputeRights($uid, false, true);
         $error = null;
         $response = null;
 
@@ -280,7 +281,7 @@ class DefaultController extends Controller
                     break;
                 case 'about':
                     $this->base['idea']->setAbout($request->request->get('value'));
-                    $deepLinkingService = $this->container->get('meta.twig.deep_linking_extension');
+                    $deepLinkingService = $this->container->get('deep_linking_extension');
                     $response = $deepLinkingService->convertDeepLinks(
                       $this->container->get('markdown.parser')->transformMarkdown($request->request->get('value'))
                     );
@@ -313,7 +314,7 @@ class DefaultController extends Controller
                     break;
                 case 'concept_text':
                     $this->base['idea']->setConceptText($request->request->get('value'));
-                    $deepLinkingService = $this->container->get('meta.twig.deep_linking_extension');
+                    $deepLinkingService = $this->container->get('deep_linking_extension');
                     $response = $deepLinkingService->convertDeepLinks(
                       $this->container->get('markdown.parser')->transformMarkdown($request->request->get('value'))
                     );
@@ -321,7 +322,7 @@ class DefaultController extends Controller
                     break;
                 case 'knowledge_text':
                     $this->base['idea']->setKnowledgeText($request->request->get('value'));
-                    $deepLinkingService = $this->container->get('meta.twig.deep_linking_extension');
+                    $deepLinkingService = $this->container->get('deep_linking_extension');
                     $response = $deepLinkingService->convertDeepLinks(
                       $this->container->get('markdown.parser')->transformMarkdown($request->request->get('value'))
                     );
@@ -361,7 +362,7 @@ class DefaultController extends Controller
                 );
             }
 
-            return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
+            return $this->redirect($this->generateUrl('i_show_idea', array('uid' => $uid)));
 
         } else {
         
@@ -377,13 +378,13 @@ class DefaultController extends Controller
     /*
      * Delete an idea
      */
-    public function deleteAction(Request $request, $id)
+    public function deleteAction(Request $request, $uid)
     {
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('delete', $request->get('token')))
-            return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
+            return $this->redirect($this->generateUrl('i_show_idea', array('uid' => $uid)));
 
-        $this->fetchIdeaAndPreComputeRights($id, true, false);
+        $this->fetchIdeaAndPreComputeRights($uid, true, false);
 
         if ($this->base != false) {
         
@@ -405,7 +406,7 @@ class DefaultController extends Controller
                 $this->get('translator')->trans('idea.cannot.delete')
             );
 
-            return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
+            return $this->redirect($this->generateUrl('i_show_idea', array('uid' => $uid)));
         }
 
     }
@@ -413,13 +414,13 @@ class DefaultController extends Controller
     /*
      * Archive or recycle (unarchive) an idea
      */
-    public function archiveOrRecycleAction(Request $request, $id, $archive)
+    public function archiveOrRecycleAction(Request $request, $uid, $archive)
     {
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('archiveOrRecycle', $request->get('token')))
-            return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
+            return $this->redirect($this->generateUrl('i_show_idea', array('uid' => $uid)));
 
-        $this->fetchIdeaAndPreComputeRights($id, true, false);
+        $this->fetchIdeaAndPreComputeRights($uid, true, false);
 
         if ($this->base != false) {
 
@@ -447,7 +448,7 @@ class DefaultController extends Controller
                 $this->get('translator')->trans('idea.cannot.archiveOrRecycle')
             );
 
-            return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
+            return $this->redirect($this->generateUrl('i_show_idea', array('uid' => $uid)));
         }
 
     }
@@ -455,13 +456,13 @@ class DefaultController extends Controller
     /*
      * Reset picture of idea
      */
-    public function resetPictureAction(Request $request, $id)
+    public function resetPictureAction(Request $request, $uid)
     {
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('resetPicture', $request->get('token')))
-            return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
+            return $this->redirect($this->generateUrl('i_show_idea', array('uid' => $uid)));
 
-        $this->fetchIdeaAndPreComputeRights($id, false, true);
+        $this->fetchIdeaAndPreComputeRights($uid, false, true);
 
         if ($this->base != false) {
 
@@ -482,20 +483,20 @@ class DefaultController extends Controller
             );
         }
 
-        return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
+        return $this->redirect($this->generateUrl('i_show_idea', array('uid' => $uid)));
 
     }
 
     /*
      * Transform an idea into a project
      */
-    public function projectizeAction(Request $request, $id)
+    public function projectizeAction(Request $request, $uid)
     {
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('projectize', $request->get('token')))
-            return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
+            return $this->redirect($this->generateUrl('i_show_idea', array('uid' => $uid)));
 
-        $this->fetchIdeaAndPreComputeRights($id, true, false);
+        $this->fetchIdeaAndPreComputeRights($uid, true, false);
 
         if ($this->base != false && $this->base['idea']->isArchived() === false){
 
@@ -571,7 +572,7 @@ class DefaultController extends Controller
                 $this->get('translator')->trans('idea.projectized')
             );
 
-            return $this->redirect($this->generateUrl('p_show_project', array('id' => $project->getId())));
+            return $this->redirect($this->generateUrl('p_show_project', array('uid' => $this->container->get('uid')->toUId($project->getId()))));
 
         } else {
 
@@ -580,7 +581,7 @@ class DefaultController extends Controller
                 $this->get('translator')->trans('idea.cannot.projectize')
             );
 
-            return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
+            return $this->redirect($this->generateUrl('i_show_idea', array('uid' => $uid)));
         }
 
 
@@ -589,9 +590,9 @@ class DefaultController extends Controller
     /*
      * Output the comment form for an idea or add a comment to an idea when POST
      */
-    public function addIdeaCommentAction(Request $request, $id){
+    public function addIdeaCommentAction(Request $request, $uid){
 
-        $this->fetchIdeaAndPreComputeRights($id, false, false);
+        $this->fetchIdeaAndPreComputeRights($uid, false, false);
 
         if ($this->base != false) {
 
@@ -629,11 +630,11 @@ class DefaultController extends Controller
                     );
                 }
 
-                return $this->redirect($this->generateUrl('i_show_idea_timeline', array('id' => $id)));
+                return $this->redirect($this->generateUrl('i_show_idea_timeline', array('uid' => $uid)));
 
             } else {
 
-                $route = $this->get('router')->generate('i_show_idea_comment', array('id' => $id));
+                $route = $this->get('router')->generate('i_show_idea_comment', array('uid' => $uid));
 
                 return $this->render('metaGeneralBundle:Comment:timelineCommentBox.html.twig', 
                     array('object' => $this->base['idea'], 'route' => $route, 'form' => $form->createView()));
@@ -649,13 +650,13 @@ class DefaultController extends Controller
     /*
      * Add a participant
      */
-    public function addParticipantAction(Request $request, $id, $mailOrUsername)
+    public function addParticipantAction(Request $request, $uid, $mailOrUsername)
     {
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('addParticipant', $request->get('token')))
-            return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
+            return $this->redirect($this->generateUrl('i_show_idea', array('uid' => $uid)));
 
-        $this->fetchIdeaAndPreComputeRights($id, false, true);
+        $this->fetchIdeaAndPreComputeRights($uid, false, true);
 
         if ($this->base != false && !is_null($this->base['idea']->getCommunity()) ) {
 
@@ -697,19 +698,19 @@ class DefaultController extends Controller
 
         }
 
-        return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
+        return $this->redirect($this->generateUrl('i_show_idea', array('uid' => $uid)));
     }
 
     /*
      * Remove a participant
      */ 
-    public function removeParticipantAction(Request $request, $id, $username)
+    public function removeParticipantAction(Request $request, $uid, $username)
     {
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('removeParticipant', $request->get('token')))
-            return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
+            return $this->redirect($this->generateUrl('i_show_idea', array('uid' => $uid)));
 
-        $this->fetchIdeaAndPreComputeRights($id, true, false);
+        $this->fetchIdeaAndPreComputeRights($uid, true, false);
 
         if ($this->base != false && !is_null($this->base['idea']->getCommunity())) {
 
@@ -745,17 +746,17 @@ class DefaultController extends Controller
 
         }
 
-        return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
+        return $this->redirect($this->generateUrl('i_show_idea', array('uid' => $uid)));
     }
 
     /*
      * Authenticated user now watches the idea
      */
-    public function watchAction(Request $request, $id)
+    public function watchAction(Request $request, $uid)
     {
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('watch', $request->get('token')))
-            return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
+            return $this->redirect($this->generateUrl('i_show_idea', array('uid' => $uid)));
 
         $authenticatedUser = $this->getUser();
 
@@ -766,7 +767,7 @@ class DefaultController extends Controller
 
         // The actually authenticated user now watches the idea with $id
         $repository = $this->getDoctrine()->getRepository('metaIdeaBundle:Idea');
-        $idea = $repository->findOneByIdInCommunityForUser($id, $authenticatedUser->getCurrentCommunity(), $authenticatedUser, false);
+        $idea = $repository->findOneByIdInCommunityForUser($this->container->get('uid')->fromUId($uid), $authenticatedUser->getCurrentCommunity(), $authenticatedUser, false);
 
         if ($idea){
 
@@ -803,16 +804,16 @@ class DefaultController extends Controller
 
         }
 
-        return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
+        return $this->redirect($this->generateUrl('i_show_idea', array('uid' => $uid)));
     }
 
     /*
      * Authenticated user now unwatches the idea
      */
-    public function unwatchAction(Request $request, $id)
+    public function unwatchAction(Request $request, $uid)
     {
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('unwatch', $request->get('token')))
-            return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
+            return $this->redirect($this->generateUrl('i_show_idea', array('uid' => $uid)));
 
         $authenticatedUser = $this->getUser();
 
@@ -823,7 +824,7 @@ class DefaultController extends Controller
 
         // The actually authenticated user now unwatches idea with $id
         $repository = $this->getDoctrine()->getRepository('metaIdeaBundle:Idea');
-        $idea = $repository->findOneByIdInCommunityForUser($id, $authenticatedUser->getCurrentCommunity(), $authenticatedUser, false);
+        $idea = $repository->findOneByIdInCommunityForUser($this->container->get('uid')->fromUId($uid), $authenticatedUser->getCurrentCommunity(), $authenticatedUser, false);
 
         if ($idea){
 
@@ -857,7 +858,7 @@ class DefaultController extends Controller
 
         }
 
-        return $this->redirect($this->generateUrl('i_show_idea', array('id' => $id)));
+        return $this->redirect($this->generateUrl('i_show_idea', array('uid' => $uid)));
     }
 
     /* ********************************************************************* */
@@ -867,19 +868,19 @@ class DefaultController extends Controller
     /*
      * Output the navbar for the idea
      */
-    public function navbarAction($activeMenu, $id)
+    public function navbarAction($activeMenu, $uid)
     {
         $menu = $this->container->getParameter('idea.menu');
 
-        return $this->render('metaIdeaBundle:Default:navbar.html.twig', array('menu' => $menu, 'activeMenu' => $activeMenu, 'id' => $id));
+        return $this->render('metaIdeaBundle:Default:navbar.html.twig', array('menu' => $menu, 'activeMenu' => $activeMenu, 'uid' => $uid));
     }
 
     /*
      * Output the timeline history
      */
-    public function historyAction($id, $page){
+    public function historyAction($uid, $page){
 
-        $this->fetchIdeaAndPreComputeRights($id, false, false);
+        $this->fetchIdeaAndPreComputeRights($uid, false, false);
 
         $format = $this->get('translator')->trans('date.timeline');
         $this->timeframe = array( 'today' => array( 'name' => $this->get('translator')->trans('date.today'), 'data' => array()),

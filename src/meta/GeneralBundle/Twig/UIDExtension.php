@@ -12,8 +12,8 @@ class UIDExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            'to_uid' => new \Twig_Filter_Method($this, 'toUID'),
-            'from_uid' => new \Twig_Filter_Method($this, 'fromUID'),
+            'to_uid' => new \Twig_Filter_Method($this, 'toUId'),
+            'from_uid' => new \Twig_Filter_Method($this, 'fromUId'),
         );
     }
 

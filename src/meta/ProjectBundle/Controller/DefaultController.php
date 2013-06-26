@@ -129,7 +129,7 @@ class DefaultController extends BaseController
                     break;
                 case 'about':
                     $this->base['standardProject']->setAbout($request->request->get('value'));
-                    $deepLinkingService = $this->container->get('meta.twig.deep_linking_extension');
+                    $deepLinkingService = $this->container->get('deep_linking_extension');
                     $response = $deepLinkingService->convertDeepLinks(
                       $this->container->get('markdown.parser')->transformMarkdown($request->request->get('value'))
                     );

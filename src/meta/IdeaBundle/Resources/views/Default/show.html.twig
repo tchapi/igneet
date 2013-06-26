@@ -28,22 +28,22 @@
 
 {% block header %}
   <div class="headerAvatarAndActions">
-    {% if base.canEdit %}<div class="changeAvatar"><a href="{{ path('i_edit_idea_reset_picture', {'id': base.idea.id, 'token': csrf_token('resetPicture')  }) }}" title="{{ "picture.resetHelp"|trans }}"><i class="icon-trash"></i></a> | <a href="{{ path('g_choose_file', {'targetAsBase64': base.targetPictureAsBase64, 'token': csrf_token('edit') }) }}"><i class="icon-pencil"></i> {{ "picture.change"|trans }}</a></div>{% endif %}
+    {% if base.canEdit %}<div class="changeAvatar"><a href="{{ path('i_edit_idea_reset_picture', {'uid': base.idea.id|to_uid, 'token': csrf_token('resetPicture')  }) }}" title="{{ "picture.resetHelp"|trans }}"><i class="icon-trash"></i></a> | <a href="{{ path('g_choose_file', {'targetAsBase64': base.targetPictureAsBase64, 'token': csrf_token('edit') }) }}"><i class="icon-pencil"></i> {{ "picture.change"|trans }}</a></div>{% endif %}
     <img src="{{ asset(base.idea.getPicture()) }}" width="150" height="150" class="avatar"/>
 {% if base.isAlreadyWatching %}
-    <a href="{{ path('i_unwatch_idea', {'id': base.idea.id, 'token': csrf_token('unwatch') }) }}" class="btn btn-info watchAction">{{ "idea.unwatch"|trans }}</a>
+    <a href="{{ path('i_unwatch_idea', {'uid': base.idea.id|to_uid, 'token': csrf_token('unwatch') }) }}" class="btn btn-info watchAction">{{ "idea.unwatch"|trans }}</a>
 {% else %}
-    <a href="{{ path('i_watch_idea', {'id': base.idea.id, 'token': csrf_token('watch') }) }}" class="btn btn-success watchAction">{{ "idea.watch"|trans }}</a>
+    <a href="{{ path('i_watch_idea', {'uid': base.idea.id|to_uid, 'token': csrf_token('watch') }) }}" class="btn btn-success watchAction">{{ "idea.watch"|trans }}</a>
 {% endif %}
   </div>
 
   <div class="ideaInfo">
 
     <h2 class="ellipsis">
-      {% if base.idea.archived %}<i class="icon-folder-close"></i> {% endif %}<span class="editable" data-title="{{ "idea.titleHelp"|trans }}" data-name="name" data-url="{{ path('i_edit_idea', {'id': base.idea.id, 'token': csrf_token('edit') }) }}">{{ base.idea.name }}</span>
+      {% if base.idea.archived %}<i class="icon-folder-close"></i> {% endif %}<span class="editable" data-title="{{ "idea.titleHelp"|trans }}" data-name="name" data-url="{{ path('i_edit_idea', {'uid': base.idea.id|to_uid, 'token': csrf_token('edit') }) }}">{{ base.idea.name }}</span>
     </h2>
     <h4 class="ellipsis">
-      <span class="editable" data-title="{{ "idea.headlineHelp"|trans }}" data-name="headline" data-emptytext="{{ "idea.headlineEmptyText"|trans }}" data-url="{{ path('i_edit_idea', {'id': base.idea.id, 'token': csrf_token('edit') }) }}" data-type="textarea" title="{{ base.idea.headline }}">{{ base.idea.headline }}</span>
+      <span class="editable" data-title="{{ "idea.headlineHelp"|trans }}" data-name="headline" data-emptytext="{{ "idea.headlineEmptyText"|trans }}" data-url="{{ path('i_edit_idea', {'uid': base.idea.id|to_uid, 'token': csrf_token('edit') }) }}" data-type="textarea" title="{{ base.idea.headline }}">{{ base.idea.headline }}</span>
     </h4>
     <div>
       <i class="icon-calendar"></i> {{ "idea.info.created.short"|trans({'%date%': base.idea.createdAt|date("date.fullFormat"|trans)}) }}
@@ -56,10 +56,10 @@
     {% if base.isCreator %}
     <div>
       {% if not base.idea.archived %}
-        <i class="icon-external-link"></i> <a data-confirm="{{ "idea.projectizeHelp"|trans }}" href="{{ path('i_turn_idea_into_project', {'id': base.idea.id, 'token': csrf_token('projectize')  }) }}">{{ "idea.projectize"|trans }}</a> -
-        <a data-confirm="{{ "idea.archiveHelp"|trans }}" href="{{ path('i_archive_idea', {'id': base.idea.id, 'token': csrf_token('archiveOrRecycle') }) }}">{{ "idea.archive"|trans }}</a>
+        <i class="icon-external-link"></i> <a data-confirm="{{ "idea.projectizeHelp"|trans }}" href="{{ path('i_turn_idea_into_project', {'uid': base.idea.id|to_uid, 'token': csrf_token('projectize')  }) }}">{{ "idea.projectize"|trans }}</a> -
+        <a data-confirm="{{ "idea.archiveHelp"|trans }}" href="{{ path('i_archive_idea', {'uid': base.idea.id|to_uid, 'token': csrf_token('archiveOrRecycle') }) }}">{{ "idea.archive"|trans }}</a>
       {% else %}
-        <i class="icon-refresh"></i> <a data-confirm="{{ "idea.recycleHelp"|trans }}" href="{{ path('i_recycle_idea', {'id': base.idea.id, 'token': csrf_token('archiveOrRecycle') }) }}">{{ "idea.recycle"|trans }}</a>
+        <i class="icon-refresh"></i> <a data-confirm="{{ "idea.recycleHelp"|trans }}" href="{{ path('i_recycle_idea', {'uid': base.idea.id|to_uid, 'token': csrf_token('archiveOrRecycle') }) }}">{{ "idea.recycle"|trans }}</a>
       {% endif %}
     </div>
     {% endif %}
@@ -77,5 +77,5 @@
 {% endblock %}
 
 {% block navbar %}
-{% render(controller("metaIdeaBundle:Default:navbar",{ 'activeMenu' : 'info', 'id' : base.idea.id })) %}
+{% render(controller("metaIdeaBundle:Default:navbar",{ 'activeMenu' : 'info', 'uid' : base.idea.id|to_uid })) %}
 {% endblock %}

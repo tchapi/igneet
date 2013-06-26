@@ -70,7 +70,7 @@ idea:
       long: "{1}Created on %date% by %name%|]1,Inf]Created on %date% by %count% people"
     about: "About this idea"
     creators: "Creators"
-    participants: "Participant|Participants"
+    participants: "{0}No participant yet.|{1}Participant:|]1,Inf]Participants:"
     add.participant: "Add a participant"
   knowledge:
     title: "Knowledge"

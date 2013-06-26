@@ -3,11 +3,12 @@ parameters:
     logService.class: meta\GeneralBundle\Services\LogService
 
 services:
-    meta.twig.uid:
+    # TWIG
+    uid:
         class: meta\GeneralBundle\Twig\UIDExtension
         tags:
             - { name: twig.extension }
-    meta.twig.deep_linking_extension:
+    deep_linking_extension:
         class: meta\GeneralBundle\Twig\DeepLinkingExtension
         tags:
             - { name: twig.extension }
@@ -16,6 +17,7 @@ services:
             entity_manager: "@doctrine.orm.entity_manager"
             router: "@router"
             translator: "@translator"
+    # NOT TWIG
     textService:
         class: "%textService.class%"
     logService:
