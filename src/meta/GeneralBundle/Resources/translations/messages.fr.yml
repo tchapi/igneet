@@ -45,7 +45,7 @@ comment:
   cannot:
     delete: "Il y a eu un problème à la suppression du commentaire."
     validate: "Il y a eu un problème à la validation du commentaire."
-toggle: "Alterner l'affichage"
+toggle: "Afficher/Masquer"
 # Logs
 log:
   description.unavailable: "Aucune description disponible"
