@@ -20,10 +20,10 @@ class CommentController extends BaseController
     /*
      * Output the comment form for an project or add a comment to an project when POST
      */
-    public function addStandardProjectCommentAction(Request $request, $slug){
+    public function addStandardProjectCommentAction(Request $request, $uid){
 
         $menu = $this->container->getParameter('standardproject.menu');
-        $this->fetchProjectAndPreComputeRights($slug, false, $menu['timeline']['private']);
+        $this->fetchProjectAndPreComputeRights($uid, false, $menu['timeline']['private']);
 
         if ($this->base != false) {
 
@@ -61,11 +61,11 @@ class CommentController extends BaseController
                     );
                 }
 
-                return $this->redirect($this->generateUrl('p_show_project_timeline', array('slug' => $slug)));
+                return $this->redirect($this->generateUrl('p_show_project_timeline', array('uid' => $uid)));
 
             } else {
 
-                $route = $this->get('router')->generate('p_show_project_comment', array('slug' => $slug));
+                $route = $this->get('router')->generate('p_show_project_comment', array('uid' => $uid));
 
                 return $this->render('metaGeneralBundle:Comment:timelineCommentBox.html.twig', 
                     array('object' => $this->base['standardProject'], 'route' => $route, 'form' => $form->createView()));
@@ -81,10 +81,10 @@ class CommentController extends BaseController
     /*
      * Output the comment form for a wiki page or add a comment to a wiki page when POST
      */
-    public function addWikiPageCommentAction(Request $request, $slug, $id){
+    public function addWikiPageCommentAction(Request $request, $uid, $page_uid){
 
         $menu = $this->container->getParameter('standardproject.menu');
-        $this->fetchProjectAndPreComputeRights($slug, false, $menu['wiki']['private']);
+        $this->fetchProjectAndPreComputeRights($uid, false, $menu['wiki']['private']);
 
         if ($this->base != false) {
 
@@ -93,7 +93,7 @@ class CommentController extends BaseController
             if ($wiki){
 
                 $repository = $this->getDoctrine()->getRepository('metaProjectBundle:WikiPage');
-                $wikiPage = $repository->findOneByIdInWiki($id, $wiki->getId());
+                $wikiPage = $repository->findOneByIdInWiki($this->container->get('uid')->fromUId($page_uid), $wiki->getId());
 
                 if ($wikiPage){
                     $comment = new WikiPageComment();
@@ -130,11 +130,11 @@ class CommentController extends BaseController
                             );
                         }
 
-                        return $this->redirect($this->generateUrl('p_show_project_wiki_show_page', array('slug' => $slug, 'id' => $wikiPage->getId(), 'pageSlug' => $wikiPage->getSlug())));
+                        return $this->redirect($this->generateUrl('p_show_project_wiki_show_page', array('uid' => $uid, 'page_uid' => $page_uid )));
 
                     } else {
 
-                        $route = $this->get('router')->generate('p_show_project_wikipage_comment', array('slug' => $slug, 'id' => $id));
+                        $route = $this->get('router')->generate('p_show_project_wikipage_comment', array('uid' => $uid, 'page_uid' => $page_uid ));
 
                         return $this->render('metaGeneralBundle:Comment:commentBox.html.twig', 
                             array('object' => $wikiPage, 'route' => $route, 'form' => $form->createView()));
@@ -152,15 +152,15 @@ class CommentController extends BaseController
     /*
      * Output the comment form for a list or add a comment to a list when POST
      */
-    public function addCommonListCommentAction(Request $request, $slug, $id){
+    public function addCommonListCommentAction(Request $request, $uid, $list_uid){
 
         $menu = $this->container->getParameter('standardproject.menu');
-        $this->fetchProjectAndPreComputeRights($slug, false, $menu['lists']['private']);
+        $this->fetchProjectAndPreComputeRights($uid, false, $menu['lists']['private']);
 
         if ($this->base != false) {
 
             $repository = $this->getDoctrine()->getRepository('metaProjectBundle:CommonList');
-            $commonList = $repository->findOneByIdInProject($id, $this->base['standardProject']->getId());
+            $commonList = $repository->findOneByIdInProject($this->container->get('uid')->fromUId($list_uid), $this->base['standardProject']->getId());
 
             if ($commonList){
                 $comment = new CommonListComment();
@@ -197,11 +197,11 @@ class CommentController extends BaseController
                         );
                     }
                     
-                    return $this->redirect($this->generateUrl('p_show_project_list', array('slug' => $slug, 'id' => $id, 'pageSlug' => $commonList->getSlug())));
+                    return $this->redirect($this->generateUrl('p_show_project_list', array('uid' => $uid, 'list_uid' => $list_uid )));
 
                 } else {
 
-                    $route = $this->get('router')->generate('p_show_project_list_comment', array('slug' => $slug, 'id' => $id));
+                    $route = $this->get('router')->generate('p_show_project_list_comment', array('uid' => $uid, 'list_uid' => $list_uid ));
 
                     return $this->render('metaGeneralBundle:Comment:commentBox.html.twig', 
                         array('object' => $commonList, 'route' => $route, 'form' => $form->createView()));

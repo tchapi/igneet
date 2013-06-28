@@ -14,16 +14,16 @@ class InfoController extends BaseController
     /*
      * Show the info tab
      */
-    public function showInfoAction($slug)
+    public function showInfoAction($uid)
     {
         $menu = $this->container->getParameter('standardproject.menu');
-        $this->fetchProjectAndPreComputeRights($slug, false, $menu['info']['private']);
+        $this->fetchProjectAndPreComputeRights($uid, false, $menu['info']['private']);
 
         if ($this->base == false) 
-          return $this->forward('metaProjectBundle:Default:showRestricted', array('slug' => $slug));
+          return $this->forward('metaProjectBundle:Default:showRestricted', array('uid' => $uid));
 
-        $targetOwnerAsBase64 = array('slug' => 'metaProjectBundle:Info:addParticipantOrOwner', 'external' => true, 'params' => array('slug' => $slug,'owner' => true));
-        $targetParticipantAsBase64 = array('slug' => 'metaProjectBundle:Info:addParticipantOrOwner', 'external' => true, 'params' => array('slug' => $slug,'owner' => false));
+        $targetOwnerAsBase64 = array('slug' => 'metaProjectBundle:Info:addParticipantOrOwner', 'external' => true, 'params' => array('uid' => $uid,'owner' => true));
+        $targetParticipantAsBase64 = array('slug' => 'metaProjectBundle:Info:addParticipantOrOwner', 'external' => true, 'params' => array('uid' => $uid,'owner' => false));
 
         return $this->render('metaProjectBundle:Info:showInfo.html.twig', 
             array('base' => $this->base, 
@@ -103,13 +103,13 @@ class InfoController extends BaseController
     /*
      * Add a participant to a project
      */
-    public function addParticipantOrOwnerAction(Request $request, $slug, $mailOrUsername, $owner)
+    public function addParticipantOrOwnerAction(Request $request, $uid, $mailOrUsername, $owner)
     {
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('addParticipantOrOwner', $request->get('token')))
-            return $this->redirect($this->generateUrl('p_show_project', array('slug' => $slug)));
+            return $this->redirect($this->generateUrl('p_show_project', array('uid' => $uid)));
 
-        $this->fetchProjectAndPreComputeRights($slug, true, false);
+        $this->fetchProjectAndPreComputeRights($uid, true, false);
 
         if ($this->base != false && !is_null($this->base['standardProject']->getCommunity())) {
 
@@ -179,19 +179,19 @@ class InfoController extends BaseController
 
         }
 
-        return $this->redirect($this->generateUrl('p_show_project', array('slug' => $slug)));
+        return $this->redirect($this->generateUrl('p_show_project', array('uid' => $uid)));
     }
 
     /*
      * Remove a participant from a project
      */
-    public function removeParticipantOrOwnerAction(Request $request, $slug, $username, $owner)
+    public function removeParticipantOrOwnerAction(Request $request, $uid, $username, $owner)
     {
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('removeParticipantOrOwner', $request->get('token')))
-            return $this->redirect($this->generateUrl('p_show_project', array('slug' => $slug)));
+            return $this->redirect($this->generateUrl('p_show_project', array('uid' => $uid)));
 
-        $this->fetchProjectAndPreComputeRights($slug, true, false);
+        $this->fetchProjectAndPreComputeRights($uid, true, false);
 
         if ($this->base != false && !is_null($this->base['standardProject']->getCommunity())) {
 
@@ -251,7 +251,7 @@ class InfoController extends BaseController
 
         }
 
-        return $this->redirect($this->generateUrl('p_show_project', array('slug' => $slug)));
+        return $this->redirect($this->generateUrl('p_show_project', array('uid' => $uid)));
     }
 
 }

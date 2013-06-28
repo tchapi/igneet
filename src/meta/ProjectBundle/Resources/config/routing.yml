@@ -25,288 +25,289 @@ p_new_project:
 # ---------------
 
 p_show_project:
-    pattern:  /project/0{id}
+    pattern:  /project/0{uid}
     defaults: { _controller: metaProjectBundle:Info:showInfo }
     requirements:
-      id: "[0-9a-zA-Z]*"
+      uid: "[0-9a-zA-Z]*"
 
 # /PROJECT/EDIT
 # ---------------
 
 p_edit_project:
-    pattern:  /project/0{id}/edit
+    pattern:  /project/0{uid}/edit
     defaults: { _controller: metaProjectBundle:Default:edit }
     requirements:
-        id: "[0-9a-zA-Z]*"
+        uid: "[0-9a-zA-Z]*"
         _method:  POST
 
 p_edit_project_reset_picture:
-    pattern:  /project/0{id}/reset/picture
+    pattern:  /project/0{uid}/reset/picture
     defaults: { _controller: metaProjectBundle:Default:resetPicture }
     requirements:
-        id: "[0-9a-zA-Z]*"
+        uid: "[0-9a-zA-Z]*"
 
 p_delete_project:
-    pattern:  /project/0{id}/delete
+    pattern:  /project/0{uid}/delete
     defaults: { _controller: metaProjectBundle:Default:delete }
     requirements:
-        id: "[0-9a-zA-Z]*"
+        uid: "[0-9a-zA-Z]*"
 
 p_make_public:
-    pattern:  /project/0{id}/make/public
+    pattern:  /project/0{uid}/make/public
     defaults: { _controller: metaProjectBundle:Default:makePublic }
     requirements:
-        id: "[0-9a-zA-Z]*"
+        uid: "[0-9a-zA-Z]*"
 
 p_make_private:
-    pattern:  /project/0{id}/make/private
+    pattern:  /project/0{uid}/make/private
     defaults: { _controller: metaProjectBundle:Default:makePrivate }
     requirements:
-        id: "[0-9a-zA-Z]*"
+        uid: "[0-9a-zA-Z]*"
 
 # /PROJECT/COMMENT
 # ---------------
 
 p_show_project_comment:
-    pattern:  /project/0{id}/comment
+    pattern:  /project/0{uid}/comment
     defaults: { _controller: metaProjectBundle:Comment:addStandardProjectComment }
     requirements:
-      id: "[0-9a-zA-Z]*"
+      uid: "[0-9a-zA-Z]*"
 
 # /PROJECT/TEAM
 # ---------------
 
 p_add_owner_to_project:
-    pattern:  /project/0{id}/team/add/{username}/owner
+    pattern:  /project/0{uid}/team/add/{username}/owner
     defaults: { _controller: metaProjectBundle:Info:addParticipantOrOwner, owner: true }
     requirements:
-      id: "[0-9a-zA-Z]*"
+      uid: "[0-9a-zA-Z]*"
 
 p_add_participant_to_project:
-    pattern:  /project/0{id}/team/add/{username}/participant
+    pattern:  /project/0{uid}/team/add/{username}/participant
     defaults: { _controller: metaProjectBundle:Info:addParticipantOrOwner, owner: false }
     requirements:
-      id: "[0-9a-zA-Z]*"
+      uid: "[0-9a-zA-Z]*"
 
 p_remove_owner_to_project:
-    pattern:  /project/0{id}/team/remove/{username}/owner
+    pattern:  /project/0{uid}/team/remove/{username}/owner
     defaults: { _controller: metaProjectBundle:Info:removeParticipantOrOwner, owner: true }
     requirements:
-      id: "[0-9a-zA-Z]*"
+      uid: "[0-9a-zA-Z]*"
 
 p_remove_participant_to_project:
-    pattern:  /project/0{id}/team/remove/{username}/participant
+    pattern:  /project/0{uid}/team/remove/{username}/participant
     defaults: { _controller: metaProjectBundle:Info:removeParticipantOrOwner, owner: false }
     requirements:
-      id: "[0-9a-zA-Z]*"
+      uid: "[0-9a-zA-Z]*"
 
 # /PROJECT/WATCH
 # ---------------
 
 p_watch_project:
-    pattern:  /project/0{id}/watch
+    pattern:  /project/0{uid}/watch
     defaults: { _controller: metaProjectBundle:Default:watch }
     requirements:
-        id: "[0-9a-zA-Z]*"
+        uid: "[0-9a-zA-Z]*"
 
 p_unwatch_project:
-    pattern:  /project/0{id}/unwatch
+    pattern:  /project/0{uid}/unwatch
     defaults: { _controller: metaProjectBundle:Default:unwatch }
     requirements:
-        id: "[0-9a-zA-Z]*"
+        uid: "[0-9a-zA-Z]*"
 
-# /IDEA/{SUB-ITEM}
+# /PROJECT/{SUB-ITEM}
 # ---------------
 
 ## TIMELINE
 p_show_project_timeline:
-    pattern:  /project/0{id}/timeline/{page}
+    pattern:  /project/0{uid}/timeline/{page}
     defaults: { _controller: metaProjectBundle:Timeline:showTimeline, page: 1 }
     requirements:
-        id: "[0-9a-zA-Z]*"
+        uid: "[0-9a-zA-Z]*"
         page: \d+
 
 ## RESOURCES
 p_show_project_list_resources:
-    pattern:  /project/0{id}/resources/{page}
+    pattern:  /project/0{uid}/resources/{page}
     defaults: { _controller: metaProjectBundle:Resource:listResources, page: 1 }
     requirements:
-      id: "[0-9a-zA-Z]*"
+      uid: "[0-9a-zA-Z]*"
       page: \d+
 
 p_show_project_resource:
-    pattern:  /project/0{id}/resource/0{resource_id}
+    pattern:  /project/0{uid}/resource/0{resource_uid}
     defaults: { _controller: metaProjectBundle:Resource:showResource }
     requirements:
-      id: "[0-9a-zA-Z]*"
-      resource_id: "[0-9a-zA-Z]*"
+      uid: "[0-9a-zA-Z]*"
+      resource_uid: "[0-9a-zA-Z]*"
 
 p_show_project_resource_edit:
-    pattern:  /project/0{id}/resource/0{resource_id}/edit
+    pattern:  /project/0{uid}/resource/0{resource_uid}/edit
     defaults: { _controller: metaProjectBundle:Resource:editResource }
     requirements:
-      id: "[0-9a-zA-Z]*"
-      resource_id: "[0-9a-zA-Z]*"
+      uid: "[0-9a-zA-Z]*"
+      resource_uid: "[0-9a-zA-Z]*"
       _method:  POST
 
 p_show_project_resource_download:
-    pattern:  /project/0{id}/resource/0{resource_id}/download
+    pattern:  /project/0{uid}/resource/0{resource_uid}/download
     defaults: { _controller: metaProjectBundle:Resource:downloadResource }
     requirements:
-      id: "[0-9a-zA-Z]*"
-      resource_id: "[0-9a-zA-Z]*"
+      uid: "[0-9a-zA-Z]*"
+      resource_uid: "[0-9a-zA-Z]*"
 
 p_show_project_resource_delete:
-    pattern:  /project/0{id}/resource/0{resource_id}/delete
+    pattern:  /project/0{uid}/resource/0{resource_uid}/delete
     defaults: { _controller: metaProjectBundle:Resource:deleteResource }
     requirements:
-      id: "[0-9a-zA-Z]*"
-      resource_id: "[0-9a-zA-Z]*"
+      uid: "[0-9a-zA-Z]*"
+      resource_uid: "[0-9a-zA-Z]*"
 
 ## LISTS
 p_show_project_list_home:
-    pattern:  /project/0{id}/lists/{page}
+    pattern:  /project/0{uid}/lists/{page}
     defaults: { _controller: metaProjectBundle:List:showCommonListHome, page: 1 }
     requirements:
-      id: "[0-9a-zA-Z]*"
+      uid: "[0-9a-zA-Z]*"
       page: \d+
 
 p_show_project_list_new:
-    pattern:  /project/0{id}/lists/new
+    pattern:  /project/0{uid}/lists/new
     defaults: { _controller: metaProjectBundle:List:newCommonList }
     requirements:
-      id: "[0-9a-zA-Z]*"
+      uid: "[0-9a-zA-Z]*"
 
 p_show_project_list_rank:
-    pattern:  /project/0{id}/lists/rank
+    pattern:  /project/0{uid}/lists/rank
     defaults: { _controller: metaProjectBundle:List:rankCommonLists }
     requirements:
-      id: "[0-9a-zA-Z]*"
+      uid: "[0-9a-zA-Z]*"
       _method:  POST
 
 p_show_project_list:
-    pattern:  /project/0{id}/list/0{list_id}
+    pattern:  /project/0{uid}/list/0{list_uid}
     defaults: { _controller: metaProjectBundle:List:showCommonList }
     requirements:
-      id: "[0-9a-zA-Z]*"
-      list_id: "[0-9a-zA-Z]*"
+      uid: "[0-9a-zA-Z]*"
+      list_uid: "[0-9a-zA-Z]*"
 
 p_show_project_list_edit:
-    pattern:  /project/0{id}/list/0{list_id}/edit
+    pattern:  /project/0{uid}/list/0{list_uid}/edit
     defaults: { _controller: metaProjectBundle:List:editCommonList }
     requirements:
-      id: "[0-9a-zA-Z]*"
-      list_id: "[0-9a-zA-Z]*"
+      uid: "[0-9a-zA-Z]*"
+      list_uid: "[0-9a-zA-Z]*"
       _method:  POST
 
 p_show_project_list_delete:
-    pattern:  /project/0{id}/list/0{list_id}/delete
+    pattern:  /project/0{uid}/list/0{list_uid}/delete
     defaults: { _controller: metaProjectBundle:List:deleteCommonList }
     requirements:
-      id: "[0-9a-zA-Z]*"
-      list_id: "[0-9a-zA-Z]*"
+      uid: "[0-9a-zA-Z]*"
+      list_uid: "[0-9a-zA-Z]*"
 
 
 p_show_project_list_comment:
-    pattern:  /project/0{id}/list/0{list_id}/comment
+    pattern:  /project/0{uid}/list/0{list_uid}/comment
     defaults: { _controller: metaProjectBundle:Comment:addCommonListComment }
     requirements:
-      id: "[0-9a-zA-Z]*"
-      list_id: "[0-9a-zA-Z]*"
+      uid: "[0-9a-zA-Z]*"
+      list_uid: "[0-9a-zA-Z]*"
 
 ## LIST ITEMS
 p_show_project_listitem_new:
-    pattern:  /project/0{id}/list/0{list_id}/items/new/{name}
+    pattern:  /project/0{uid}/list/0{list_uid}/items/new/{name}
     defaults: { _controller: metaProjectBundle:List:newCommonListItem, name: "New Item" }
     requirements:
-      listId: \d+
+      uid: "[0-9a-zA-Z]*"
+      list_uid: "[0-9a-zA-Z]*"
 
 p_show_project_listitem_edit:
-    pattern:  /project/0{id}/list/0{list_id}/item/0{item_id}/edit
+    pattern:  /project/0{uid}/list/0{list_uid}/item/0{item_uid}/edit
     defaults: { _controller: metaProjectBundle:List:editCommonListItem }
     requirements:
-      id: "[0-9a-zA-Z]*"
-      list_id: "[0-9a-zA-Z]*"
-      item_id: "[0-9a-zA-Z]*"
+      uid: "[0-9a-zA-Z]*"
+      list_uid: "[0-9a-zA-Z]*"
+      item_uid: "[0-9a-zA-Z]*"
       _method:  POST
 
 p_show_project_listitem_do:
-    pattern:  /project/0{id}/list/0{list_id}/item/0{item_id}/do
+    pattern:  /project/0{uid}/list/0{list_uid}/item/0{item_uid}/do
     defaults: { _controller: metaProjectBundle:List:toggleCommonListItem, do: true }
     requirements:
-      id: "[0-9a-zA-Z]*"
-      list_id: "[0-9a-zA-Z]*"
-      item_id: "[0-9a-zA-Z]*"
+      uid: "[0-9a-zA-Z]*"
+      list_uid: "[0-9a-zA-Z]*"
+      item_uid: "[0-9a-zA-Z]*"
 
 p_show_project_listitem_undo:
-    pattern:  /project/0{id}/list/0{list_id}/item/0{item_id}/undo
+    pattern:  /project/0{uid}/list/0{list_uid}/item/0{item_uid}/undo
     defaults: { _controller: metaProjectBundle:List:toggleCommonListItem, do: false }
     requirements:
-      id: "[0-9a-zA-Z]*"
-      list_id: "[0-9a-zA-Z]*"
-      item_id: "[0-9a-zA-Z]*"
+      uid: "[0-9a-zA-Z]*"
+      list_uid: "[0-9a-zA-Z]*"
+      item_uid: "[0-9a-zA-Z]*"
 
 p_show_project_listitem_delete:
-    pattern:  /project/0{id}/list/0{list_id}/item/0{item_id}/delete
+    pattern:  /project/0{uid}/list/0{list_uid}/item/0{item_uid}/delete
     defaults: { _controller: metaProjectBundle:List:deleteCommonListItem }
     requirements:
-      id: "[0-9a-zA-Z]*"
-      list_id: "[0-9a-zA-Z]*"
-      item_id: "[0-9a-zA-Z]*"
+      uid: "[0-9a-zA-Z]*"
+      list_uid: "[0-9a-zA-Z]*"
+      item_uid: "[0-9a-zA-Z]*"
 
 ## WIKI 
 p_show_project_wiki:
-    pattern:  /project/0{id}/wiki
+    pattern:  /project/0{uid}/wiki
     defaults: { _controller: metaProjectBundle:Wiki:showWikiHome }
     requirements:
-      id: "[0-9a-zA-Z]*"
+      uid: "[0-9a-zA-Z]*"
 
 p_show_project_wiki_new_page:
-    pattern:  /project/0{id}/wiki/pages/new
+    pattern:  /project/0{uid}/wiki/pages/new
     defaults: { _controller: metaProjectBundle:Wiki:newWikiPage }
     requirements:
-      id: "[0-9a-zA-Z]*"
+      uid: "[0-9a-zA-Z]*"
 
 p_show_project_wiki_rank:
-    pattern:  /project/0{id}/wiki/pages/rank
+    pattern:  /project/0{uid}/wiki/pages/rank
     defaults: { _controller: metaProjectBundle:Wiki:rankWikiPages }
     requirements:
-      id: "[0-9a-zA-Z]*"
+      uid: "[0-9a-zA-Z]*"
       _method: POST
 
 p_show_project_wiki_show_page:
-    pattern:  /project/0{id}/wiki/page/0{page_id}
+    pattern:  /project/0{uid}/wiki/page/0{page_uid}
     defaults: { _controller: metaProjectBundle:Wiki:showWikiPage }
     requirements:
-      id: "[0-9a-zA-Z]*"
-      page_id: "[0-9a-zA-Z]*"
+      uid: "[0-9a-zA-Z]*"
+      page_uid: "[0-9a-zA-Z]*"
 
 p_show_project_wiki_edit_page:
-    pattern:  /project/0{id}/wiki/page/0{page_id}/edit
+    pattern:  /project/0{uid}/wiki/page/0{page_uid}/edit
     defaults: { _controller: metaProjectBundle:Wiki:editWikiPage }
     requirements:
-      id: "[0-9a-zA-Z]*"
-      page_id: "[0-9a-zA-Z]*"
+      uid: "[0-9a-zA-Z]*"
+      page_uid: "[0-9a-zA-Z]*"
       _method: POST
 
 p_show_project_wiki_delete_page:
-    pattern:  /project/0{id}/wiki/page/0{page_id}/delete
+    pattern:  /project/0{uid}/wiki/page/0{page_uid}/delete
     defaults: { _controller: metaProjectBundle:Wiki:deleteWikiPage }
     requirements:
-      id: "[0-9a-zA-Z]*"
-      page_id: "[0-9a-zA-Z]*"
+      uid: "[0-9a-zA-Z]*"
+      page_uid: "[0-9a-zA-Z]*"
 
 p_show_project_wiki_make_home_page:
-    pattern:  /project/0{id}/wiki/page/0{page_id}/make/home
+    pattern:  /project/0{uid}/wiki/page/0{page_uid}/make/home
     defaults: { _controller: metaProjectBundle:Wiki:makeHomeWikiPage }
     requirements:
-      id: "[0-9a-zA-Z]*"
-      page_id: "[0-9a-zA-Z]*"
+      uid: "[0-9a-zA-Z]*"
+      page_uid: "[0-9a-zA-Z]*"
 
 
 p_show_project_wikipage_comment:
-    pattern:  /project/0{id}/wiki/page/0{page_id}/comment
+    pattern:  /project/0{uid}/wiki/page/0{page_uid}/comment
     defaults: { _controller: metaProjectBundle:Comment:addWikiPageComment }
     requirements:
-      id: "[0-9a-zA-Z]*"
-      page_id: "[0-9a-zA-Z]*"
+      uid: "[0-9a-zA-Z]*"
+      page_uid: "[0-9a-zA-Z]*"

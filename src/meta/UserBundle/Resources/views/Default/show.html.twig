@@ -155,7 +155,7 @@
 <ul class="projects sectionContent">
 {% for watchedProject in projectsWatched %}
   <li>
-    <a href="{{ path('p_show_project', {'slug': watchedProject.slug}) }}">
+    <a href="{{ path('p_show_project', {'uid': watchedProject.id|to_uid }) }}">
       <img src="{{ watchedProject.picture }}" width="70" height="70" class="smallAvatar"/>
       <div class="smallObjectInfos ellipsis-multiline">
         <span>{{ watchedProject.name }}</span>
@@ -173,7 +173,7 @@
 <ul class="projects sectionContent">
 {% for ownedProject in projectsOwned %}
   <li>
-    <a href="{{ path('p_show_project', {'slug': ownedProject.slug}) }}">
+    <a href="{{ path('p_show_project', {'uid': ownedProject.id|to_uid }) }}">
       <img src="{{ ownedProject.picture }}" width="70" height="70" class="smallAvatar"/>
       <div class="smallObjectInfos ellipsis-multiline">
         <span>{{ ownedProject.name }}</span>
@@ -191,7 +191,7 @@
 <ul class="projects sectionContent">
 {% for participatedInProject in projectsParticipatedIn %}
   <li>
-    <a href="{{ path('p_show_project', {'slug': participatedInProject.slug}) }}">
+    <a href="{{ path('p_show_project', {'uid': participatedInProject.id|to_uid }) }}">
       <img src="{{ participatedInProject.picture }}" width="70" height="70" class="smallAvatar"/>
       <div class="smallObjectInfos ellipsis-multiline">
         <span>{{ participatedInProject.name }}</span>
@@ -209,7 +209,7 @@
 <ul class="projects sectionContent">
 {% for idea in ideasWatched %}
   <li>
-    <a href="{{ path('i_show_idea', {'id': idea.id}) }}">
+    <a href="{{ path('i_show_idea', {'uid': idea.id|to_uid }) }}">
       <img src="{{ idea.picture }}" width="70" height="70" class="smallAvatar"/>
       <div class="smallObjectInfos ellipsis-multiline">
         <span>{{ idea.name }}</span>
@@ -227,7 +227,7 @@
 <ul class="projects sectionContent">
 {% for idea in ideasCreated %}
   <li>
-    <a href="{{ path('i_show_idea', {'id': idea.id}) }}">
+    <a href="{{ path('i_show_idea', {'uid': idea.id|to_uid }) }}">
       <img src="{{ idea.picture }}" width="70" height="70" class="smallAvatar"/>
       <div class="smallObjectInfos ellipsis-multiline">
         <span>{{ idea.name }}</span>
@@ -245,7 +245,7 @@
 <ul class="projects sectionContent">
 {% for idea in ideasParticipatedIn %}
   <li>
-    <a href="{{ path('i_show_idea', {'id': idea.id}) }}">
+    <a href="{{ path('i_show_idea', {'uid': idea.id|to_uid }) }}">
       <img src="{{ idea.picture }}" width="70" height="70" class="smallAvatar"/>
       <div class="smallObjectInfos ellipsis-multiline">
         <span>{{ idea.name }}</span>
