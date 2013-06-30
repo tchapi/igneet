@@ -226,7 +226,7 @@ class WikiController extends BaseController
 
                 foreach($ranks as $key => $page_uid)
                 {
-                    if ($page_id == "") continue;
+                    if ($page_uid == "") continue;
                     $wikiPage = $repository->findOneByIdInWiki($this->container->get('uid')->fromUId($page_uid), $wiki->getId());
                     if ($wikiPage) $wikiPage->setRank(intval($key));
                 }
@@ -284,7 +284,7 @@ class WikiController extends BaseController
                         $objectHasBeenModified = true;
                         break;
                     case 'parent':
-                        $parent = $repository->findOneByIdInWiki(intval($request->request->get('value')), $wiki->getId());
+                        $parent = $repository->findOneByIdInWiki( $this->container->get('uid')->fromUId($request->request->get('value')), $wiki->getId());
                         $wikiPage->setParent($parent);
                         $objectHasBeenModified = true;
                         break;

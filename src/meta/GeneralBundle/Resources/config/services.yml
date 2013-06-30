@@ -17,6 +17,8 @@ services:
             entity_manager: "@doctrine.orm.entity_manager"
             router: "@router"
             translator: "@translator"
+            uid: "@uid"
+            log_routing: %general.log_routing%
     # NOT TWIG
     textService:
         class: "%textService.class%"

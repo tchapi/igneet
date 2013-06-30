@@ -85,7 +85,7 @@ class ListController extends BaseController
 
             foreach($ranks as $key => $list_uid)
             {
-                if ($list_id == "") continue;
+                if ($list_uid == "") continue;
                 $commonList = $repository->findOneByIdInProject($this->container->get('uid')->fromUId($list_uid), $this->base['standardProject']->getId());
                 if ($commonList) $commonList->setRank(intval($key));
             }
