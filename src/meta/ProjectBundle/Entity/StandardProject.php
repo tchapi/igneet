@@ -192,7 +192,7 @@ class StandardProject extends Taggable
         return $this->name;
     }
     public function getLogArgs(){
-        return array( 'slug' => $this->slug );
+        return array( 'id' => $this->id );
     }
 
     /**

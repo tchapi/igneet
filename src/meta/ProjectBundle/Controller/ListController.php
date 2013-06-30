@@ -125,9 +125,6 @@ class ListController extends BaseController
 
             $form->bind($request);
 
-            $textService = $this->container->get('textService');
-            $commonList->setSlug($textService->slugify($commonList->getName()));
-
             if ($form->isValid()) {
 
                 $this->base['standardProject']->addCommonList($commonList);
@@ -186,8 +183,6 @@ class ListController extends BaseController
                 switch ($request->request->get('name')) {
                     case 'name':
                         $commonList->setName($request->request->get('value'));
-                          $textService = $this->container->get('textService');
-                          $commonList->setSlug($textService->slugify($commonList->getName()));
                         $objectHasBeenModified = true;
                         break;
                     case 'description':
@@ -334,7 +329,7 @@ class ListController extends BaseController
             $this->get('translator')->trans('project.lists.items.created')
         );
 
-        return $this->redirect($this->generateUrl('p_show_project_list', array('uid' => $uid, 'list_uid' => $this->container->get('uid')->toUId($commonList->getId()) ));
+        return $this->redirect($this->generateUrl('p_show_project_list', array('uid' => $uid, 'list_uid' => $this->container->get('uid')->toUId($commonList->getId()) )));
 
     }
 

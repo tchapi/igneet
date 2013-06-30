@@ -19,13 +19,13 @@ class WikiController extends BaseController
     /*
      * Display the home of the wiki for a project
      */
-    public function showWikiHomeAction($slug)
+    public function showWikiHomeAction($uid)
     {
         $menu = $this->container->getParameter('standardproject.menu');
-        $this->fetchProjectAndPreComputeRights($slug, false, $menu['wiki']['private']);
+        $this->fetchProjectAndPreComputeRights($uid, false, $menu['wiki']['private']);
 
         if ($this->base == false) 
-          return $this->forward('metaProjectBundle:Base:showRestricted', array('slug' => $slug));
+          return $this->forward('metaProjectBundle:Base:showRestricted', array('uid' => $uid));
 
         $wiki = $this->base['standardProject']->getWiki();
 
@@ -46,7 +46,7 @@ class WikiController extends BaseController
         $homePage = $wiki->getHomePage();
 
         if ( count($pages) == 0 && $this->base['canEdit']){
-          return $this->forward('metaProjectBundle:Wiki:newWikiPage', array('slug' => $slug));
+          return $this->forward('metaProjectBundle:Wiki:newWikiPage', array('uid' => $uid));
         }
 
         $repository = $this->getDoctrine()->getRepository('metaProjectBundle:WikiPage');
@@ -64,22 +64,22 @@ class WikiController extends BaseController
     /*
      * Display a page of the wiki for a project
      */
-    public function showWikiPageAction($slug, $id, $pageSlug)
+    public function showWikiPageAction($uid, $page_uid)
     {
         $menu = $this->container->getParameter('standardproject.menu');
-        $this->fetchProjectAndPreComputeRights($slug, false, $menu['wiki']['private']);
+        $this->fetchProjectAndPreComputeRights($uid, false, $menu['wiki']['private']);
 
         if ($this->base == false) 
-          return $this->forward('metaProjectBundle:Base:showRestricted', array('slug' => $slug));
+          return $this->forward('metaProjectBundle:Base:showRestricted', array('uid' => $uid));
 
         $wiki = $this->base['standardProject']->getWiki();
 
         if (!$wiki){
-          return $this->forward('metaProjectBundle:Wiki:showWikiHome', array('slug' => $slug));
+          return $this->forward('metaProjectBundle:Wiki:showWikiHome', array('uid' => $uid));
         }
 
         $repository = $this->getDoctrine()->getRepository('metaProjectBundle:WikiPage');
-        $wikiPage = $repository->findOneByIdInWiki($id, $wiki->getId());
+        $wikiPage = $repository->findOneByIdInWiki($this->container->get('uid')->fromUId($page_uid), $wiki->getId());
 
         $wikiPages = $repository->findAllRootInWiki($wiki->getId());
 
@@ -99,18 +99,18 @@ class WikiController extends BaseController
     /*
      * Output the form to create a new page and process the POST
      */
-    public function newWikiPageAction(Request $request, $slug)
+    public function newWikiPageAction(Request $request, $uid)
     {
 
-        $this->fetchProjectAndPreComputeRights($slug, false, true);
+        $this->fetchProjectAndPreComputeRights($uid, false, true);
 
         if ($this->base == false) 
-          return $this->forward('metaProjectBundle:Base:showRestricted', array('slug' => $slug));
+          return $this->forward('metaProjectBundle:Base:showRestricted', array('uid' => $uid));
 
         $wiki = $this->base['standardProject']->getWiki();
 
         if (!$wiki){
-          return $this->forward('metaProjectBundle:Wiki:showWikiHome', array('slug' => $slug));
+          return $this->forward('metaProjectBundle:Wiki:showWikiHome', array('uid' => $uid));
         }
 
         $wikiPage = new WikiPage();
@@ -121,9 +121,6 @@ class WikiController extends BaseController
         if ($request->isMethod('POST')) {
 
             $form->bind($request);
-
-            $textService = $this->container->get('textService');
-            $wikiPage->setSlug($textService->slugify($wikiPage->getTitle()));
 
             if ($form->isValid()) {
 
@@ -142,7 +139,7 @@ class WikiController extends BaseController
                     $this->get('translator')->trans('project.wiki.created', array( '%page%' => $wikiPage->getTitle() ))
                 );
 
-                return $this->redirect($this->generateUrl('p_show_project_wiki_show_page', array('slug' => $slug, 'id' => $wikiPage->getId(), 'pageSlug' => $wikiPage->getSlug())));
+                return $this->redirect($this->generateUrl('p_show_project_wiki_show_page', array('uid' => $uid, 'page_uid' => $this->container->get('uid')->toUId($wikiPage->getId()) ) ));
            
             } else {
 
@@ -162,24 +159,24 @@ class WikiController extends BaseController
     /*
      * Make a wiki page the home page of the wiki
      */
-    public function makeHomeWikiPageAction(Request $request, $slug, $id)
+    public function makeHomeWikiPageAction(Request $request, $uid, $page_uid)
     {
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('makeHomeWikiPage', $request->get('token')))
-            return $this->redirect($this->generateUrl('p_show_project_wiki', array('slug' => $slug)));
+            return $this->redirect($this->generateUrl('p_show_project_wiki', array('uid' => $uid)));
 
-        $this->fetchProjectAndPreComputeRights($slug, false, true);
+        $this->fetchProjectAndPreComputeRights($uid, false, true);
 
         if ($this->base == false) 
-          return $this->forward('metaProjectBundle:Base:showRestricted', array('slug' => $slug));
+          return $this->forward('metaProjectBundle:Base:showRestricted', array('uid' => $uid));
 
         $wiki = $this->base['standardProject']->getWiki();
 
         if (!$wiki){
-          return $this->forward('metaProjectBundle:Wiki:showWikiHome', array('slug' => $slug));
+          return $this->forward('metaProjectBundle:Wiki:showWikiHome', array('uid' => $uid));
         }
 
         $repository = $this->getDoctrine()->getRepository('metaProjectBundle:WikiPage');
-        $wikiPage = $repository->findOneByIdInWiki($id, $wiki->getId());
+        $wikiPage = $repository->findOneByIdInWiki($this->container->get('uid')->fromUId($page_uid), $wiki->getId());
 
         // Check if wikiPage belongs to project
         if ( !$wikiPage ){
@@ -207,16 +204,16 @@ class WikiController extends BaseController
 
         }
 
-        return $this->redirect($this->generateUrl('p_show_project_wiki', array('slug' => $slug)));
+        return $this->redirect($this->generateUrl('p_show_project_wiki', array('uid' => $uid)));
            
     }
 
     /*
      * Rank wiki pages
      */
-    public function rankWikiPagesAction(Request $request, $slug)
+    public function rankWikiPagesAction(Request $request, $uid)
     {
-        $this->fetchProjectAndPreComputeRights($slug, false, true);
+        $this->fetchProjectAndPreComputeRights($uid, false, true);
 
         if ($this->base != false) {
 
@@ -227,10 +224,10 @@ class WikiController extends BaseController
                 $ranks = explode(',', $request->request->get('ranks'));
                 $repository = $this->getDoctrine()->getRepository('metaProjectBundle:WikiPage');
 
-                foreach($ranks as $key => $page_id)
+                foreach($ranks as $key => $page_uid)
                 {
                     if ($page_id == "") continue;
-                    $wikiPage = $repository->findOneByIdInWiki(intval($page_id), $wiki->getId());
+                    $wikiPage = $repository->findOneByIdInWiki($this->container->get('uid')->fromUId($page_uid), $wiki->getId());
                     if ($wikiPage) $wikiPage->setRank(intval($key));
                 }
 
@@ -257,13 +254,13 @@ class WikiController extends BaseController
     /*
      * Edit a wiki page (via X-Editable)
      */
-    public function editWikiPageAction(Request $request, $slug, $id)
+    public function editWikiPageAction(Request $request, $uid, $page_uid)
     {
   
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('editWikiPage', $request->get('token')))
             return new Response($this->get('translator')->trans('invalid.token', array(), 'errors'), 400);
 
-        $this->fetchProjectAndPreComputeRights($slug, false, true);
+        $this->fetchProjectAndPreComputeRights($uid, false, true);
         $error = null;
         $response = null;
 
@@ -274,7 +271,7 @@ class WikiController extends BaseController
             if ($wiki){
 
               $repository = $this->getDoctrine()->getRepository('metaProjectBundle:WikiPage');
-              $wikiPage = $repository->findOneByIdInWiki($id, $wiki->getId());
+              $wikiPage = $repository->findOneByIdInWiki($this->container->get('uid')->fromUId($page_uid), $wiki->getId());
               
               if ($wikiPage){
 
@@ -284,8 +281,6 @@ class WikiController extends BaseController
                 switch ($request->request->get('name')) {
                     case 'title':
                         $wikiPage->setTitle($request->request->get('value'));
-                          $textService = $this->container->get('textService');
-                          $wikiPage->setSlug($textService->slugify($wikiPage->getTitle()));
                         $objectHasBeenModified = true;
                         break;
                     case 'parent':
@@ -370,13 +365,13 @@ class WikiController extends BaseController
     /*
      * Delete a wiki page
      */
-    public function deleteWikiPageAction(Request $request, $slug, $id)
+    public function deleteWikiPageAction(Request $request, $uid, $page_uid)
     {
   
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('deleteWikiPage', $request->get('token')))
-            return $this->redirect($this->generateUrl('p_show_project_wiki', array('slug' => $slug)));
+            return $this->redirect($this->generateUrl('p_show_project_wiki', array('uid' => $uid)));
 
-        $this->fetchProjectAndPreComputeRights($slug, false, true);
+        $this->fetchProjectAndPreComputeRights($uid, false, true);
 
         if ($this->base != false) {
 
@@ -385,7 +380,7 @@ class WikiController extends BaseController
             if ($wiki){
 
                 $repository = $this->getDoctrine()->getRepository('metaProjectBundle:WikiPage');
-                $wikiPage = $repository->findOneByIdInWiki($id, $wiki->getId());
+                $wikiPage = $repository->findOneByIdInWiki($this->container->get('uid')->fromUId($page_uid), $wiki->getId());
 
                 if ($wikiPage){
                   
@@ -432,7 +427,7 @@ class WikiController extends BaseController
             
         }
 
-        return $this->redirect($this->generateUrl('p_show_project_wiki', array('slug' => $slug)));
+        return $this->redirect($this->generateUrl('p_show_project_wiki', array('uid' => $uid)));
 
     }
 }

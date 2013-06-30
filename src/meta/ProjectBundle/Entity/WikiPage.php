@@ -34,13 +34,6 @@ class WikiPage extends Taggable
     private $title;
 
     /**
-     * @var string $slug
-     *
-     * @ORM\Column(name="slug", type="string", length=255, nullable=true)
-     */
-    private $slug;
-
-    /**
      * @var text $content
      *
      * @ORM\Column(name="content", type="text", nullable=true)
@@ -116,7 +109,7 @@ class WikiPage extends Taggable
         return $this->title;
     }
     public function getLogArgs(){
-        return array( 'id' => $this->id, 'pageSlug' => $this->slug );
+        return array( 'id' => $this->id );
     }
 
     /**
@@ -257,28 +250,6 @@ class WikiPage extends Taggable
     public function getContent()
     {
         return $this->content;
-    }
-
-    /**
-     * Set slug
-     *
-     * @param string $slug
-     * @return WikiPage
-     */
-    public function setSlug($slug)
-    {
-        $this->slug = $slug;
-        return $this;
-    }
-
-    /**
-     * Get slug
-     *
-     * @return string 
-     */
-    public function getSlug()
-    {
-        return $this->slug;
     }
 
     /**

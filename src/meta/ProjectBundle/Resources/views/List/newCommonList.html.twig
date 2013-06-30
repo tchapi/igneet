@@ -3,7 +3,7 @@
 {% block title %}{{ parent() }} | {{ "project.lists.new"|trans }}{% endblock %}
 
 {% block navbar %}
-{% render(controller("metaProjectBundle:Default:navbar", { 'activeMenu' : 'lists', 'slug' : base.standardProject.slug })) %}
+{% render(controller("metaProjectBundle:Default:navbar", { 'activeMenu' : 'lists', 'uid' : base.standardProject.id|to_uid })) %}
 {% endblock %}
 
 {% form_theme form _self %}
@@ -19,7 +19,7 @@
 {% endblock form_row %}
 
 {% block content %}
-<form action="{{ path('p_show_project_list_new', {'slug': base.standardProject.slug}) }}" method="post" {{ form_enctype(form) }}>
+<form action="{{ path('p_show_project_list_new', {'uid': base.standardProject.id|to_uid}) }}" method="post" {{ form_enctype(form) }}>
   <section>
     <h4>{{ "project.lists.newHelp"|trans }} :</h4>
   </section>

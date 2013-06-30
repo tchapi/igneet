@@ -3,7 +3,7 @@
 {% block title %}{{ parent() }} | {{ "project.info.title"|trans }}{% endblock %}
 
 {% block navbar %}
-{% render(controller("metaProjectBundle:Default:navbar", { 'activeMenu' : 'info', 'slug' : base.standardProject.slug })) %}
+{% render(controller("metaProjectBundle:Default:navbar", { 'activeMenu' : 'info', 'uid' : base.standardProject.id|to_uid })) %}
 {% endblock %}
 
 {% block content %}
@@ -15,7 +15,7 @@
       <div class="wmd-wrapper well well-small hide" >
         <div class="wmd-panel">
             <div id="wmd-button-bar"></div>
-            <textarea unsaved='no' data-name="about" data-url="{{ path('p_edit_project', {'slug': base.standardProject.slug, 'token': csrf_token('edit')}) }}" class="wmd-input" id="wmd-input">{{ base.standardProject.about }}</textarea>
+            <textarea unsaved='no' data-name="about" data-url="{{ path('p_edit_project', {'uid': base.standardProject.id|to_uid, 'token': csrf_token('edit')}) }}" class="wmd-input" id="wmd-input">{{ base.standardProject.about }}</textarea>
         </div>
         <div>
           <button id="wmd-save" class="btn btn-primary">{{ "save"|trans }}</button> <span class="muted wmd-message">{{ "saveHelp"|trans }}</span>
@@ -41,7 +41,7 @@
             <span><div>{{ owningUser.firstName }}</div><div>{{ owningUser.lastName }}</div></span>
           </div>
         </a>
-        {% if base.isOwning and owningUser != app.user %}<a class="removeUserIcon" href="{{ path('p_remove_owner_to_project', { 'slug': base.standardProject.slug, 'username' : owningUser.username, 'token': csrf_token('removeParticipantOrOwner') }) }}"><i class="icon-remove-sign icon-large"></i></a>{% endif %}
+        {% if base.isOwning and owningUser != app.user %}<a class="removeUserIcon" href="{{ path('p_remove_owner_to_project', { 'uid': base.standardProject.id|to_uid, 'username' : owningUser.username, 'token': csrf_token('removeParticipantOrOwner') }) }}"><i class="icon-remove-sign icon-large"></i></a>{% endif %}
       </li>
     {% endif %}
   {% endfor %}
@@ -70,7 +70,7 @@
             <span><div>{{ participatingUser.firstName }}</div><div>{{ participatingUser.lastName }}</div></span>
           </div>
         </a>
-        {% if base.isOwning %}<a class="removeUserIcon" href="{{ path('p_remove_participant_to_project', { 'slug': base.standardProject.slug, 'username' : participatingUser.username, 'token': csrf_token('removeParticipantOrOwner') }) }}"><i class="icon-remove-sign icon-large"></i></a>{% endif %}
+        {% if base.isOwning %}<a class="removeUserIcon" href="{{ path('p_remove_participant_to_project', { 'uid': base.standardProject.id|to_uid, 'username' : participatingUser.username, 'token': csrf_token('removeParticipantOrOwner') }) }}"><i class="icon-remove-sign icon-large"></i></a>{% endif %}
       </li>
     {% endif %}
   {% endfor %}
@@ -90,7 +90,7 @@
 {% if base.isOwning %}
 <section class="colored warning">
   <div class="sectionTitle">{{ "project.delete"|trans }} : </div>
-  <div class="sectionContent"><a class="btn btn-danger" data-confirm="{{ "project.deleteHelp"|trans }}" href="{{ path('p_delete_project', { 'slug': base.standardProject.slug, 'token': csrf_token('delete') }) }}">{{ "delete"|trans }}</a> <span class="muted">( <i class="icon-warning-sign"></i> {{ "deleteHelp"|trans }} )</span></div>
+  <div class="sectionContent"><a class="btn btn-danger" data-confirm="{{ "project.deleteHelp"|trans }}" href="{{ path('p_delete_project', { 'uid': base.standardProject.id|to_uid, 'token': csrf_token('delete') }) }}">{{ "delete"|trans }}</a> <span class="muted">( <i class="icon-warning-sign"></i> {{ "deleteHelp"|trans }} )</span></div>
 </section>
 {% endif %}
 {% endblock %}
