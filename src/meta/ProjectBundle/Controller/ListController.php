@@ -135,7 +135,7 @@ class ListController extends BaseController
                 $em->flush();
 
                 $logService = $this->container->get('logService');
-                $logService->log($this->getUser(), 'user_create_list', $this->base['standardProject'], array( 'list' => array( 'routing' => 'list', 'logName' => $commonList->getLogName(), 'args' => $commonList->getLogArgs()) ));
+                $logService->log($this->getUser(), 'user_create_list', $this->base['standardProject'], array( 'list' => array( 'logName' => $commonList->getLogName(), 'identifier' => $commonList->getId()) ));
 
                 $this->get('session')->getFlashBag()->add(
                     'success',
@@ -222,7 +222,7 @@ class ListController extends BaseController
                     $em->flush();
 
                     $logService = $this->container->get('logService');
-                    $logService->log($this->getUser(), 'user_update_list', $this->base['standardProject'], array( 'list' => array( 'routing' => 'list', 'logName' => $commonList->getLogName(), 'args' => $commonList->getLogArgs() ) ));
+                    $logService->log($this->getUser(), 'user_update_list', $this->base['standardProject'], array( 'list' => array( 'logName' => $commonList->getLogName(), 'identifier' => $commonList->getId() ) ));
                 
                 } elseif (count($errors) > 0) {
 
@@ -271,7 +271,7 @@ class ListController extends BaseController
                 $this->base['standardProject']->setUpdatedAt(new \DateTime('now'));
 
                 $logService = $this->container->get('logService');
-                $logService->log($this->getUser(), 'user_delete_list', $this->base['standardProject'], array( 'list' => array( 'routing' => null, 'logName' => $commonList->getLogName() )) );
+                $logService->log($this->getUser(), 'user_delete_list', $this->base['standardProject'], array( 'list' => array( 'logName' => $commonList->getLogName() )) );
 
                 $em = $this->getDoctrine()->getManager();
                 $em->remove($commonList);
@@ -321,8 +321,8 @@ class ListController extends BaseController
         $em->flush();
 
         $logService = $this->container->get('logService');
-        $logService->log($this->getUser(), 'user_create_list_item', $this->base['standardProject'], array( 'list' => array( 'routing' => 'list', 'logName' => $commonList->getLogName(), 'args' => $commonList->getLogArgs() ),
-                                                                                                           'list_item' => array( 'routing' => null, 'logName' => $commonListItem->getLogName() )) );
+        $logService->log($this->getUser(), 'user_create_list_item', $this->base['standardProject'], array( 'list' => array( 'logName' => $commonList->getLogName(), 'identifier' => $commonList->getId() ),
+                                                                                                           'list_item' => array( 'logName' => $commonListItem->getLogName() )) );
 
         $this->get('session')->getFlashBag()->add(
             'success',
@@ -377,8 +377,8 @@ class ListController extends BaseController
                     $em->flush();
 
                     $logService = $this->container->get('logService');
-                    $logService->log($this->getUser(), 'user_update_list_item', $this->base['standardProject'], array( 'list' => array( 'routing' => 'list', 'logName' => $commonList->getLogName(), 'args' => $commonList->getLogArgs()),
-                                                                                                                       'list_item' => array( 'routing' => null, 'logName' => $commonListItem->getLogName() )) );
+                    $logService->log($this->getUser(), 'user_update_list_item', $this->base['standardProject'], array( 'list' => array( 'logName' => $commonList->getLogName(), 'identifier' => $commonList->getId()),
+                                                                                                                       'list_item' => array( 'logName' => $commonListItem->getLogName() )) );
                 } elseif (count($errors) > 0) {
 
                     $error = $errors[0]->getMessage(); 
@@ -433,8 +433,8 @@ class ListController extends BaseController
                 $em->flush();
 
                 $logService = $this->container->get('logService');
-                $logService->log($this->getUser(), 'user_delete_list_item', $this->base['standardProject'], array( 'list' => array( 'routing' => 'list', 'logName' => $commonList->getLogName(), 'args' => $commonList->getLogArgs()),
-                                                                                                              'list_item' => array( 'routing' => null,   'logName' => $commonListItem->getLogName() )) );
+                $logService->log($this->getUser(), 'user_delete_list_item', $this->base['standardProject'], array( 'list' => array( 'logName' => $commonList->getLogName(), 'identifier' => $commonList->getId()),
+                                                                                                              'list_item' => array( 'logName' => $commonListItem->getLogName() )) );
 
                 $this->get('session')->getFlashBag()->add(
                     'success',
@@ -485,8 +485,8 @@ class ListController extends BaseController
 
                 $logService = $this->container->get('logService');
                 $action = $do?'do':'undo';
-                $logService->log($this->getUser(), 'user_'.$action.'_list_item', $this->base['standardProject'], array( 'list' => array( 'routing' => 'list', 'logName' => $commonList->getLogName(), 'args' => $commonList->getLogArgs()),
-                                                                                                                   'list_item' => array( 'routing' => null,   'logName' => $commonListItem->getLogName() )) );
+                $logService->log($this->getUser(), 'user_'.$action.'_list_item', $this->base['standardProject'], array( 'list' => array( 'logName' => $commonList->getLogName(), 'identifier' => $commonList->getId()),
+                                                                                                                   'list_item' => array( 'logName' => $commonListItem->getLogName() )) );
 
                 return $this->redirect($this->generateUrl('p_show_project_list', array('uid' => $uid, 'list_uid' => $this->container->get('uid')->toUId($commonList->getId()) )));
 

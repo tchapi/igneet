@@ -30,3 +30,4 @@ services:
             security_context: "@security.context"
             twig: "@twig"
             translator: "@translator"
+            uid: "@uid"

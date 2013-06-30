@@ -131,7 +131,7 @@ class InfoController extends BaseController
                   }
 
                   $logService = $this->container->get('logService');
-                  $logService->log($newParticipantOrOwner, 'user_is_made_owner_project', $this->base['standardProject'], array( 'other_user' => array( 'routing' => 'user', 'logName' => $this->getUser()->getLogName(), 'args' => $this->getUser()->getLogArgs()) ));
+                  $logService->log($newParticipantOrOwner, 'user_is_made_owner_project', $this->base['standardProject'], array( 'other_user' => array( 'logName' => $this->getUser()->getLogName(), 'identifier' => $this->getUser()->getUsername()) ));
 
                   $this->get('session')->getFlashBag()->add(
                       'success',
@@ -143,7 +143,7 @@ class InfoController extends BaseController
                   $newParticipantOrOwner->addProjectsParticipatedIn($this->base['standardProject']);
 
                   $logService = $this->container->get('logService');
-                  $logService->log($newParticipantOrOwner, 'user_is_made_participant_project', $this->base['standardProject'], array( 'other_user' => array( 'routing' => 'user', 'logName' => $this->getUser()->getLogName(), 'args' => $this->getUser()->getLogArgs()) ));
+                  $logService->log($newParticipantOrOwner, 'user_is_made_participant_project', $this->base['standardProject'], array( 'other_user' => array( 'logName' => $this->getUser()->getLogName(), 'identifier' => $this->getUser()->getUsername()) ));
 
                   $this->get('session')->getFlashBag()->add(
                       'success',

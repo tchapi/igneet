@@ -132,7 +132,7 @@ class WikiController extends BaseController
                 $em->flush();
 
                 $logService = $this->container->get('logService');
-                $logService->log($this->getUser(), 'user_create_wikipage', $this->base['standardProject'], array( 'wikipage' => array( 'routing' => 'wikipage', 'logName' => $wikiPage->getLogName(), 'args' => $wikiPage->getLogArgs()) ));
+                $logService->log($this->getUser(), 'user_create_wikipage', $this->base['standardProject'], array( 'wikipage' => array( 'logName' => $wikiPage->getLogName(), 'identifier' => $wikiPage->getId()) ));
 
                 $this->get('session')->getFlashBag()->add(
                     'success',
@@ -329,7 +329,7 @@ class WikiController extends BaseController
                     $em->flush();
 
                     $logService = $this->container->get('logService');
-                    $logService->log($this->getUser(), 'user_update_wikipage', $this->base['standardProject'], array( 'wikipage' => array( 'routing' => 'wikipage', 'logName' => $wikiPage->getLogName(), 'args' => $wikiPage->getLogArgs() ) ));
+                    $logService->log($this->getUser(), 'user_update_wikipage', $this->base['standardProject'], array( 'wikipage' => array( 'logName' => $wikiPage->getLogName(), 'identifier' => $wikiPage->getId() ) ));
                 
                 } elseif (count($errors) > 0) {
 
@@ -394,7 +394,7 @@ class WikiController extends BaseController
                   }
 
                   $logService = $this->container->get('logService');
-                  $logService->log($this->getUser(), 'user_delete_wikipage', $this->base['standardProject'], array( 'wikipage' => array( 'routing' => null, 'logName' => $wikiPage->getLogName() )) );
+                  $logService->log($this->getUser(), 'user_delete_wikipage', $this->base['standardProject'], array( 'wikipage' => array( 'logName' => $wikiPage->getLogName() )) );
 
                   $em = $this->getDoctrine()->getManager();
                   $em->remove($wikiPage);

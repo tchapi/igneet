@@ -106,7 +106,7 @@ class ResourceController extends BaseController
                 $em->flush();
 
                 $logService = $this->container->get('logService');
-                $logService->log($this->getUser(), 'user_add_resource', $this->base['standardProject'], array( 'resource' => array( 'routing' => 'resource', 'logName' => $resource->getLogName(), 'args' => $resource->getLogArgs()) ));
+                $logService->log($this->getUser(), 'user_add_resource', $this->base['standardProject'], array( 'resource' => array( 'logName' => $resource->getLogName(), 'identifier' => $resource->getId()) ));
 
                 $this->get('session')->getFlashBag()->add(
                     'success',
@@ -241,7 +241,7 @@ class ResourceController extends BaseController
                     $em->flush();
 
                     $logService = $this->container->get('logService');
-                    $logService->log($this->getUser(), 'user_update_resource', $this->base['standardProject'], array( 'resource' => array( 'routing' => 'resource', 'logName' => $resource->getLogName(), 'args' => $resource->getLogArgs()) ) );
+                    $logService->log($this->getUser(), 'user_update_resource', $this->base['standardProject'], array( 'resource' => array( 'logName' => $resource->getLogName(), 'identifier' => $resource->getId()) ) );
                 
                 } elseif (count($errors) > 0) {
 
@@ -299,7 +299,7 @@ class ResourceController extends BaseController
             if ($resource){
 
                 $logService = $this->container->get('logService');
-                $logService->log($this->getUser(), 'user_delete_resource', $this->base['standardProject'], array( 'resource' => array( 'routing' => 'resource', 'logName' => $resource->getLogName(), 'args' => $resource->getLogArgs())) );
+                $logService->log($this->getUser(), 'user_delete_resource', $this->base['standardProject'], array( 'resource' => array( 'logName' => $resource->getLogName(), 'identifier' => $resource->getId())) );
 
                 $this->base['standardProject']->setUpdatedAt(new \DateTime('now'));
                 $em = $this->getDoctrine()->getManager();

@@ -97,7 +97,7 @@ class SecurityController extends Controller
                         $community->removeGuest($user);
                         $community->addUser($user);
                         $logService = $this->container->get('logService');
-                        $logService->log($this->getUser(), 'user_enters_community', $user, array( 'community' => array( 'routing' => 'community', 'logName' => $community->getLogName(), 'args' => null) ) );
+                        $logService->log($this->getUser(), 'user_enters_community', $user, array( 'community' => array( 'logName' => $community->getLogName(), 'identifier' => $community->getId()) ) );
                             
                         $this->get('session')->getFlashBag()->add(
                             'success',
@@ -109,7 +109,7 @@ class SecurityController extends Controller
 
                         $community->addUser($user);
                         $logService = $this->container->get('logService');
-                        $logService->log($this->getUser(), 'user_enters_community', $user, array( 'community' => array( 'routing' => 'community', 'logName' => $community->getLogName(), 'args' => null) ) );
+                        $logService->log($this->getUser(), 'user_enters_community', $user, array( 'community' => array( 'logName' => $community->getLogName(), 'identifier' => $community->getId()) ) );
                             
                         $this->get('session')->getFlashBag()->add(
                             'success',

@@ -115,7 +115,7 @@ class CommentController extends BaseController
                             $em->flush();
 
                             $logService = $this->container->get('logService');
-                            $logService->log($this->getUser(), 'user_comment_wikipage', $this->base['standardProject'], array( 'wikipage' => array( 'routing' => 'wikipage', 'logName' => $wikiPage->getLogName(), 'args' => $wikiPage->getLogArgs()) ));
+                            $logService->log($this->getUser(), 'user_comment_wikipage', $this->base['standardProject'], array( 'wikipage' => array( 'logName' => $wikiPage->getLogName(), 'identifier' => $wikiPage->getId()) ));
 
                             $this->get('session')->getFlashBag()->add(
                                 'success',
@@ -182,7 +182,7 @@ class CommentController extends BaseController
                         $em->flush();
 
                         $logService = $this->container->get('logService');
-                        $logService->log($this->getUser(), 'user_comment_list', $this->base['standardProject'], array( 'list' => array( 'routing' => 'list', 'logName' => $commonList->getLogName(), 'args' => $commonList->getLogArgs()) ));
+                        $logService->log($this->getUser(), 'user_comment_list', $this->base['standardProject'], array( 'list' => array( 'logName' => $commonList->getLogName(), 'identifier' => $commonList->getId()) ));
 
                         $this->get('session')->getFlashBag()->add(
                             'success',

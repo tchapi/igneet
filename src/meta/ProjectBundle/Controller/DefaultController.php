@@ -147,7 +147,7 @@ class DefaultController extends BaseController
                                 $this->get('translator')->trans('project.in.community', array( '%community%' => $community->getName()))
                             );
                             $logService = $this->container->get('logService');
-                            $logService->log($this->getUser(), 'project_enters_community', $this->base['standardProject'], array( 'community' => array( 'routing' => 'community', 'logName' => $community->getLogName(), 'args' => null) ) );
+                            $logService->log($this->getUser(), 'project_enters_community', $this->base['standardProject'], array( 'community' => array( 'logName' => $community->getLogName(), 'identifier' => $community->getId()) ) );
                             $objectHasBeenModified = true;
                             $needsRedirect = true;
                         }

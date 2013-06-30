@@ -273,7 +273,7 @@ class DefaultController extends Controller
                                 $this->get('translator')->trans('idea.in.community', array( '%community%' => $community->getName())) 
                             );
                             $logService = $this->container->get('logService');
-                            $logService->log($this->getUser(), 'idea_enters_community', $this->base['idea'], array( 'community' => array( 'routing' => 'community', 'logName' => $community->getLogName(), 'args' => null) ) );
+                            $logService->log($this->getUser(), 'idea_enters_community', $this->base['idea'], array( 'community' => array( 'logName' => $community->getLogName(), 'identifier' => $community->getId() ) ) );
                             $objectHasBeenModified = true;
                             $needsRedirect = true;
                         }
@@ -564,8 +564,8 @@ class DefaultController extends Controller
             $this->base['idea']->archive();
 
             $logService = $this->container->get('logService');
-            $logService->log($this->getUser(), 'user_transform_idea_in_project', $this->base['idea'], array( 'project' => array('routing' => 'project', 'logName' => $project->getLogName(), 'args' => $project->getLogArgs() )));
-            $logService->log($this->getUser(), 'user_create_project_from_idea', $project, array( 'idea' => array('routing' => 'idea', 'logName' => $this->base['idea']->getLogName(), 'args' => $this->base['idea']->getLogArgs() )));
+            $logService->log($this->getUser(), 'user_transform_idea_in_project', $this->base['idea'], array( 'project' => array( 'logName' => $project->getLogName(), 'identifier' => $project->getId() )));
+            $logService->log($this->getUser(), 'user_create_project_from_idea', $project, array( 'idea' => array('logName' => $this->base['idea']->getLogName(), 'identifier' => $this->base['idea']->getId() )));
 
             $this->get('session')->getFlashBag()->add(
                 'success',
@@ -676,7 +676,7 @@ class DefaultController extends Controller
                 );
 
                 $logService = $this->container->get('logService');
-                $logService->log($newParticipant, 'user_is_made_participant_idea', $this->base['idea'], array( 'other_user' => array( 'routing' => 'user', 'logName' => $this->getUser()->getLogName(), 'args' => $this->getUser()->getLogArgs()) ));
+                $logService->log($newParticipant, 'user_is_made_participant_idea', $this->base['idea'], array( 'other_user' => array('logName' => $this->getUser()->getLogName(), 'identifier' => $this->getUser()->getUsername()) ));
 
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
