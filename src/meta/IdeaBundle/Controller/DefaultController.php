@@ -542,14 +542,12 @@ class DefaultController extends Controller
 
                 $project->setWiki($wiki);
                 $wikiPageConcept = new WikiPage();
-                    $wikiPageConcept->setTitle($this->get('translator')->trans('idea.concept'));
+                    $wikiPageConcept->setTitle($this->get('translator')->trans('idea.concept.title'));
                     $wikiPageConcept->setContent($this->base['idea']->getConceptText());
-                    $wikiPageConcept->setSlug($textService->slugify($wikiPageConcept->getTitle()));
 
                 $wikiPageKnowledge = new WikiPage();
-                    $wikiPageKnowledge->setTitle($this->get('translator')->trans('idea.knowledge'));
+                    $wikiPageKnowledge->setTitle($this->get('translator')->trans('idea.knowledge.title'));
                     $wikiPageKnowledge->setContent($this->base['idea']->getKnowledgeText());
-                    $wikiPageKnowledge->setSlug($textService->slugify($wikiPageKnowledge->getTitle()));
 
                 $wiki->addPage($wikiPageConcept);
                 $wiki->addPage($wikiPageKnowledge);

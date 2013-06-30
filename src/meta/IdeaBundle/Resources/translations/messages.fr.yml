@@ -12,8 +12,6 @@ idea:
     archived: "Voir les idées archivées"
     all: "« Revenir aux idées"
   new: "Nouvelle idée"
-  concept: "Concept"
-  knowledge: "Connaissance"
   not.found: "Cette idée n'existe pas."
   none: "Aucune idée pour l'instant."
   create: "Créer"

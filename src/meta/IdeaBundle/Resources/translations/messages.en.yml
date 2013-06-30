@@ -12,8 +12,6 @@ idea:
     archived: "View archived ideas"
     all: "« View ideas"
   new: "New idea"
-  concept: "Concept"
-  knowledge: "Knowledge"
   not.found: "This idea was not found."
   none: "No ideas yet."
   create: "Create"
