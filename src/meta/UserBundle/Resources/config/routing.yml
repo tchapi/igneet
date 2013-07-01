@@ -26,7 +26,15 @@ change_password:
 
 u_signup:
     pattern:  /signup/{inviteToken}
-    defaults: { _controller: metaUserBundle:Default:create, inviteToken: null }
+    defaults: { _controller: metaUserBundle:Default:create, inviteToken: null, openid: false }
+
+u_signup_choice:
+    pattern:  /signup_choice/{inviteToken}
+    defaults: { _controller: metaUserBundle:Default:chooseSignupProvider, inviteToken: null }
+
+u_signup_finish:
+    pattern:  /signup_finish/{inviteToken}
+    defaults: { _controller: metaUserBundle:Default:create, inviteToken: null, openid: true }
 
 u_me:
     pattern:  /me

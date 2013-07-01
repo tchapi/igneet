@@ -10,6 +10,8 @@ security:
         ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
 
     providers:
+        openid_user_manager:
+            id: meta.user.openid_user_manager # the name of the service
         user_db:
             entity: { class: meta\UserBundle\Entity\User, property: username }
 
@@ -17,19 +19,30 @@ security:
         assets_and_dev:
             pattern:    ^/(_profiler|_wdt|css|js)
             security: false
-        # login_firewall:
-        #     pattern:    ^/login$
-        #     anonymous:  ~
-        # signup_firewall:
-        #     pattern:    ^/signup$
-        #     anonymous:  ~
         main:
             pattern:    ^/
             provider: user_db
+
+            fp_openid:
+                provider: openid_user_manager # cf below
+                login_path: /app/login
+                check_path: /app/login_check_openid
+                failure_path: /app/signup_finish
+                create_user_if_not_exists: false # so createUserFromIdentity method will be called
+
+                # Please note that all OpenID providers may not be able to provide all fields.
+                # check the desired provider documentation
+                # https://developers.google.com/accounts/docs/OpenID#Parameters
+                required_attributes:
+                    - contact/email
+                    - namePerson/first
+                    - namePerson/last
+
             form_login:
                 login_path: /app/login
                 check_path: /app/login_check
                 remember_me: true
+
             logout:
                 path: /app/logout
                 target: /app/
@@ -40,6 +53,7 @@ security:
                 domain: ~
             security: true
             anonymous: ~
+
     access_control:
         # Application
         - { path: /app/login.*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
@@ -47,7 +61,7 @@ security:
         - { path: /app/reactivate, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: /app/recover, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: /app/change/password, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: /app/signup, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: /app/signup.*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: /app/.*, roles: ROLE_USER }
         # Static site
         - { path: /about, roles: IS_AUTHENTICATED_ANONYMOUSLY }

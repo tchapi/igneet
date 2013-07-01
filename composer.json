@@ -21,7 +21,8 @@
         "sensio/generator-bundle": "2.3.*",
         "incenteev/composer-parameter-handler": "~2.0",
         "knplabs/knp-markdown-bundle": "1.2.*@dev",
-        "willdurand/expose-translation-bundle": "dev-master"
+        "willdurand/expose-translation-bundle": "dev-master",
+        "fp/openid-bundle": "dev-master"
     },
     "scripts": {
         "post-install-cmd": [
@@ -39,7 +40,7 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile"
         ]
     },
-    "minimum-stability": "alpha",
+    "minimum-stability": "dev",
     "extra": {
         "symfony-app-dir": "app",
         "symfony-web-dir": "web",
