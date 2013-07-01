@@ -25,7 +25,8 @@ Todo - Priorités :
  ✔ logs avec seulement le name et "identifier" dans "objects" @done (13-06-30 21:25)
 
  ☐ + Deep linking : verifier a l'affichage que l'utilisateur a le droit de voir l'objet deep linké !
-   Sinon mettre en gras mais ne pas linker avec une icone oail barré (?)
+   Sinon mettre en gras mais ne pas linker avec une icone oeil barré (?)
+   ☐ Mettre un quick link pour obtenir le deep link de l'élément sur lequel on se trouve
 
  ☐ faire une page des projets 'archivés'
    \__ + un bouton 'archiver' par projet

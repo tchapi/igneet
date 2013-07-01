@@ -57,6 +57,7 @@ project:
     private: "Vous ne pouvez pas rendre ce projet privé"
   public: "Ce projet est maintenant public."
   private: "Ce projet est maintenant privé."
+  privateShort: "privé"
   propose: "Proposer ce projet à la communauté"
   in.community: "Ce projet fait maintenant partie de la communauté %community%."
   originalIdea: "de l'idée originale '%idea%'"

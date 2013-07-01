@@ -34,7 +34,7 @@
   </a>
 
   <div class="listingItemInfo">
-    <h4 class="ellipsis"><a href="{{ path('p_show_project', {'uid': standardProject.id|to_uid }) }}">{{ standardProject.name }}</a></h4>
+    <h4 class="ellipsis"><a href="{{ path('p_show_project', {'uid': standardProject.id|to_uid }) }}">{{ standardProject.name }}</a>{% if standardProject.isPrivate %} ({{ "project.privateShort"|trans }}){% endif %}</h4>
     <div class="ellipsis">{{ standardProject.headline }}</div>
     <div class="muted"><i class="icon-calendar"></i> {{ "project.info.created"|trans({'%date%': standardProject.createdAt|date("date.fullFormat"|trans)}) }}</div>
     <div class="muted"><i class="icon-time"></i> {{ "project.info.updated"|trans({'%date%': standardProject.updatedAt|date("date.fullFormat"|trans)}) }}</div>
