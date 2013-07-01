@@ -13,8 +13,7 @@ Todo - Priorités :
  ☐  Faire une passe sur les titles/alt des liens d'éditions (les icon-pencils)
 
  ☐ OpenID
-   ☐ - RESTE LES INVITE TOKEN A GERER ! Quand l'user passe par openId NORMALEMENT Géré
-   ☐ - translations : Géré
+   ☐ Vérifier les inviteToken
 
  ☐ Sur les notifs, quand on clique et qu'elles sont a 0 affichées mettre directement une page présentant les anciennes
  ☐ notifs mails
@@ -27,6 +26,7 @@ Todo - Priorités :
  ☐ + Deep linking : verifier a l'affichage que l'utilisateur a le droit de voir l'objet deep linké !
    Sinon mettre en gras mais ne pas linker avec une icone oeil barré (?)
    ☐ Mettre un quick link pour obtenir le deep link de l'élément sur lequel on se trouve
+   ☐ FindOneByID quand on va chercher le projet : warning, ca ne marche plus !
 
  ☐ faire une page des projets 'archivés'
    \__ + un bouton 'archiver' par projet

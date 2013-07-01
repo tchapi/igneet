@@ -75,7 +75,7 @@ class DeepLinkingExtension extends \Twig_Extension
                     case 'project':
                         $repository = $this->em->getRepository('metaProjectBundle:StandardProject');
                         $matched = true;
-                        $project = $repository->findOneBySlug($matches[2][$i]);
+                        $project = $repository->findOneById($matches[2][$i]);
                         if ($project && !$project->isDeleted()){
                             $args = array( $this->log_routing['project']['key'] => $this->uid->toUId($project->getId()));
                             $title = $project->getName();  

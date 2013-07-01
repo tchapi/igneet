@@ -18,9 +18,6 @@ project:
   createForm:
     name: "Name of this project"
     namePlaceholder: "My new project"
-    slug: "Slug"
-    slugHelp: "Accepted characters : alphanumeric and hyphens"
-    slugPlaceholder: "my-new-project"
     headline: "Headline"
     headlineHelp: "Give your project some nice catchline"
     private: "Private project"

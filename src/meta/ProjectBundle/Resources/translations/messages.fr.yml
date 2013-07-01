@@ -18,9 +18,6 @@ project:
   createForm:
     name: "Nom du projet"
     namePlaceholder: "Mon nouveau projet"
-    slug: "Nom court"
-    slugHelp: "Caractères acceptés : alphanumérique et tirets"
-    slugPlaceholder: "mon-nouveau-projet"
     headline: "Slogan"
     headlineHelp: "Expliquez votre projet en une phrase"
     private: "Projet privé"
