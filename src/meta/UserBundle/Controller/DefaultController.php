@@ -14,6 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller,
 use Fp\OpenIdBundle\RelyingParty\Exception\OpenIdAuthenticationCanceledException;
 use Fp\OpenIdBundle\RelyingParty\RecoveredFailureRelyingParty;
 use Fp\OpenIdBundle\Security\Core\Authentication\Token\OpenIdToken;
+use meta\UserBundle\Entity\OpenIdIdentity;
 
 /*
  * Importing Class definitions
@@ -492,37 +493,36 @@ class DefaultController extends Controller
 
             if ($form->isValid()) {
 
-                // For open id, we can skip some stuff
                 if ($openid === true){
 
-                    $this->getUserManager()->updateUser($user);
+                    // We have to create an OpenId and persist it
+                    $openIdIdentity = new OpenIdIdentity();
+                    $openIdIdentity->setIdentity($token->getIdentity());
+                    $openIdIdentity->setAttributes($attributes);
+                    $openIdIdentity->setUser($user);
 
-                    $identity = $this->getIdentityManager()->create();
-                    $identity->setIdentity($token->getIdentity());
-                    $identity->setAttributes($attributes);
-                    $identity->setUser($user);
-                    $this->getIdentityManager()->update($identity);
+                    $em->persist($openIdIdentity);
 
                 } else {
 
-                    // Not open id :
+                    // Not open id, we just set the password :
                     $factory = $this->get('security.encoder_factory');
                     $encoder = $factory->getEncoder($user);
                     $user->setPassword($encoder->encodePassword($user->getPassword(), $user->getSalt()));
                     
-                    $em->persist($user); // doing it now cause log() flushes the $em
-                    $em->flush(); // We do a first flush here so that next logs will behave correctly
-
-                    /* Tries to login the user now */
-                    // Here, "main" is the name of the firewall in security.yml
-                    $token = new UsernamePasswordToken($user, $user->getPassword(), "main", $user->getRoles());
-                    $this->get("security.context")->setToken($token);
-
-                    // Fire the login event
-                    $event = new InteractiveLoginEvent($request, $token);
-                    $this->get("event_dispatcher")->dispatch("security.interactive_login", $event);
-
                 }
+
+                $em->persist($user); // doing it now cause log() flushes the $em
+                $em->flush(); // We do a first flush here so that next logs will behave correctly
+
+                /* Tries to login the user now */
+                // Here, "main" is the name of the firewall in security.yml
+                $token = new UsernamePasswordToken($user, $user->getPassword(), "main", $user->getRoles());
+                $this->get("security.context")->setToken($token);
+
+                // Fire the login event
+                $event = new InteractiveLoginEvent($request, $token);
+                $this->get("event_dispatcher")->dispatch("security.interactive_login", $event);
 
                 // Use inviteToken
                 if (!is_null($inviteTokenObject)){
