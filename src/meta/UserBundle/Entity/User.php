@@ -87,8 +87,7 @@ class User implements AdvancedUserInterface
     /**
      * @var string $city
      *
-     * @ORM\Column(name="city", type="string", length=255)
-     * @Assert\NotBlank()
+     * @ORM\Column(name="city", type="string", length=255, nullable=true)
      * @Assert\Length(max = 255)
      */
     private $city;

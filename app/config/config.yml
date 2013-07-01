@@ -82,6 +82,11 @@ doctrine:
         auto_generate_proxy_classes: "%kernel.debug%"
         auto_mapping: true
 
+# Open ID
+fp_open_id:
+    db_driver: orm
+    identity_class: meta\UserBundle\Entity\OpenIdIdentity
+
 # Swiftmailer Configuration
 swiftmailer:
     transport: "%mailer_transport%"

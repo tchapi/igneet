@@ -10,9 +10,15 @@
     
  ☐  Faire une passe sur les titles/alt des liens d'éditions (les icon-pencils)
 
- ☐ OpenID ?
+ ☐ OpenID
+   ☐ - RESTE LES INVITE TOKEN A GERER ! Quand l'user passe par openId
+   ☐ - translations
 
- ☐ Refaire le système de GUID (sic)
+ ☐  Sur les notifs, quand on clique et qu'elles sont a 0 affichées mettre directement une page présentant les anciennes
+
+ ☐ Refaire le système de GUID (sic) 
+  - drop le slug de projet et tout ce qui va avec
+  - logs avec seulement le name et "identifier" dans "objects"
  ☐ + Deep linking : verifier a l'affichage que l'utilisateur a le droit de voir l'objet deep linké !
    Sinon mettre en gras mais ne pas linker avec une icone oail barré (?)
 

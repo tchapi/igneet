@@ -88,6 +88,30 @@ Licensed under the CC Attribution 3.0 (http://creativecommons.org/licenses/by/3.
 
 - - -
 
+### OpenId Symfony 2 Bundle - https://github.com/formapro/FpOpenIdBundle
+
+This bundle is under the MIT license. 
+
+by https://github.com/formapro
+
+- - -
+
+### ExposeTranslation Bundle - https://github.com/willdurand/BazingaExposeTranslationBundle
+
+This bundle is under the MIT license. 
+
+by William Durand (https://github.com/willdurand)
+
+- - -
+
+### Markdown Bundle - https://github.com/KnpLabs/KnpMarkdownBundle
+
+Provide markdown conversion (based on Michel Fortin work).
+
+by http://knplabs.com/
+
+- - -
+
 For the static site only :
 
  * Skeleton V1.2 - Copyright 2011, Dave Gamache
