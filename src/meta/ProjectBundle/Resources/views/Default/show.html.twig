@@ -28,22 +28,22 @@
 
 {% block header %}
   <div class="headerAvatarAndActions">
-    {% if base.canEdit %}<div class="changeAvatar"><a href="{{ path('sp_edit_project_reset_picture', {'slug': base.standardProject.slug, 'token': csrf_token('resetPicture') }) }}" title="{{ "picture.resetHelp"|trans }}"><i class="icon-trash"></i></a> | <a href="{{ path('g_choose_file', {'targetAsBase64': base.targetPictureAsBase64, 'token': csrf_token('edit') }) }}"><i class="icon-pencil"></i> {{ "picture.change"|trans }}</a></div>{% endif %}
+    {% if base.canEdit %}<div class="changeAvatar"><a href="{{ path('p_edit_project_reset_picture', {'uid': base.standardProject.id|to_uid, 'token': csrf_token('resetPicture') }) }}" title="{{ "picture.resetHelp"|trans }}"><i class="icon-trash"></i></a> | <a href="{{ path('g_choose_file', {'targetAsBase64': base.targetPictureAsBase64, 'token': csrf_token('edit') }) }}"><i class="icon-pencil"></i> {{ "picture.change"|trans }}</a></div>{% endif %}
     <img src="{{ asset(base.standardProject.getPicture()) }}" width="150" height="150" class="avatar"/>
 {% if base.isAlreadyWatching %}
-    <a href="{{ path('sp_unwatch_project', {'slug': base.standardProject.slug, 'token': csrf_token('unwatch') }) }}" class="btn btn-info watchAction">{{ "project.unwatch"|trans }}</a>
+    <a href="{{ path('p_unwatch_project', {'uid': base.standardProject.id|to_uid, 'token': csrf_token('unwatch') }) }}" class="btn btn-info watchAction">{{ "project.unwatch"|trans }}</a>
 {% else %}
-    <a href="{{ path('sp_watch_project', {'slug': base.standardProject.slug, 'token': csrf_token('watch') }) }}" class="btn btn-success watchAction">{{ "project.watch"|trans }}</a>
+    <a href="{{ path('p_watch_project', {'uid': base.standardProject.id|to_uid, 'token': csrf_token('watch') }) }}" class="btn btn-success watchAction">{{ "project.watch"|trans }}</a>
 {% endif %}
   </div>
 
   <div class="projectInfo">
 
     <h2 class="ellipsis">
-      <span class="editable" data-title="{{ "project.nameHelp"|trans }}" data-name="name" data-url="{{ path('sp_edit_project', {'slug': base.standardProject.slug, 'token': csrf_token('edit') }) }}">{{ base.standardProject.name }}</span>
+      <span class="editable" data-title="{{ "project.nameHelp"|trans }}" data-name="name" data-url="{{ path('p_edit_project', {'uid': base.standardProject.id|to_uid, 'token': csrf_token('edit') }) }}">{{ base.standardProject.name }}</span>
     </h2>
     <h4 class="ellipsis">
-      <span class="editable" data-title="{{ "project.headlineHelp"|trans }}" data-name="headline" data-emptytext="{{ "project.headline.emptyText"|trans }}" data-url="{{ path('sp_edit_project', {'slug': base.standardProject.slug, 'token': csrf_token('edit') }) }}" data-type="textarea" title="{{ base.standardProject.headline }}">{{ base.standardProject.headline }}</span>
+      <span class="editable" data-title="{{ "project.headlineHelp"|trans }}" data-name="headline" data-emptytext="{{ "project.headline.emptyText"|trans }}" data-url="{{ path('p_edit_project', {'uid': base.standardProject.id|to_uid, 'token': csrf_token('edit') }) }}" data-type="textarea" title="{{ base.standardProject.headline }}">{{ base.standardProject.headline }}</span>
     </h4>
     <div>
       <i class="icon-calendar"></i> {{ "project.info.created"|trans({'%date%': base.standardProject.createdAt|date("date.fullFormat"|trans)}) }}
@@ -55,7 +55,7 @@
     {% if base.standardProject.private and base.standardProject.community is not null %}
     <div>
       <i class="icon-minus-sign"></i> {{ "project.is.private"|trans }}
-      {% if base.isOwning %}(<a data-confirm="{{ "project.privateHelp"|trans }}" href="{{ path('sp_make_public', {'slug': base.standardProject.slug, 'token': csrf_token('makePublic') }) }}">{{ "project.make.public"|trans }}</a>){% endif %}
+      {% if base.isOwning %}(<a data-confirm="{{ "project.privateHelp"|trans }}" href="{{ path('p_make_public', {'uid': base.standardProject.id|to_uid, 'token': csrf_token('makePublic') }) }}">{{ "project.make.public"|trans }}</a>){% endif %}
     </div>
     {% elseif base.standardProject.community is null %}
     <div>
@@ -64,7 +64,7 @@
     {% else %}
     <div>
       <i class="icon-globe"></i> {{ "project.is.public"|trans }}
-      {% if base.isOwning %}(<a data-confirm="{{ "project.publicHelp"|trans }}" href="{{ path('sp_make_private', {'slug': base.standardProject.slug, 'token': csrf_token('makePrivate') }) }}">{{ "project.make.private"|trans }}</a>){% endif %}
+      {% if base.isOwning %}(<a data-confirm="{{ "project.publicHelp"|trans }}" href="{{ path('p_make_private', {'uid': base.standardProject.id|to_uid, 'token': csrf_token('makePrivate') }) }}">{{ "project.make.private"|trans }}</a>){% endif %}
     </div>
     {% endif %}
 
@@ -76,7 +76,7 @@
       {% elseif not base.canEdit %}
       {{ "project.skills.needed.none"|trans }}
       {% endif %}
-      <ul data-toggle="manual" data-title="{{ "project.skills.neededHelp"|trans }}" data-emptytext="{{ "project.skills.needed.emptyText"|trans }}" data-url="{{ path('sp_edit_project', {'slug': base.standardProject.slug, 'token': csrf_token('edit') }) }}" data-type="checklist" data-source="{{ path('u_list_all_skills') }}" data-name="skills" class="skills skills-target editable-li">
+      <ul data-toggle="manual" data-title="{{ "project.skills.neededHelp"|trans }}" data-emptytext="{{ "project.skills.needed.emptyText"|trans }}" data-url="{{ path('p_edit_project', {'uid': base.standardProject.id|to_uid, 'token': csrf_token('edit') }) }}" data-type="checklist" data-source="{{ path('u_list_all_skills') }}" data-name="skills" class="skills skills-target editable-li">
         {% for skill in base.standardProject.neededSkills %}<li class="label" style="background-color: #{{ skill.color }}" rel="{{ skill.slug }}">{{ (skill.slug ~ ".name")|trans({}, 'skills') }}</li>{% endfor %}
       </ul>
       {% if base.canEdit %} <a class="editable-trigger" data-target="skills">&hellip;<i class="icon-pencil"></i></a>{% endif %}
@@ -106,5 +106,5 @@
 {% endblock %}
 
 {% block navbar %}
-{% render(controller("metaProjectBundle:Default:navbar", { 'activeMenu' : null, 'slug' : base.standardProject.slug })) %}
+{% render(controller("metaProjectBundle:Default:navbar", { 'activeMenu' : null, 'uid' : base.standardProject.id|to_uid })) %}
 {% endblock %}

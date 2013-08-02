@@ -34,13 +34,6 @@ class CommonList extends Taggable
     private $name;
 
     /**
-     * @var string $slug
-     *
-     * @ORM\Column(name="slug", type="string", length=255, nullable=true)
-     */
-    private $slug;
-
-    /**
      * @var string $description
      *
      * @ORM\Column(name="description", type="string", length=255, nullable=true)
@@ -107,7 +100,7 @@ class CommonList extends Taggable
         return $this->name;
     }
     public function getLogArgs(){
-        return array( 'id' => $this->id, 'commonListSlug' => $this->slug );
+        return array( 'id' => $this->id );
     }
 
     /**
@@ -162,29 +155,6 @@ class CommonList extends Taggable
     public function getDescription()
     {
         return $this->description;
-    }
-
-
-    /**
-     * Set slug
-     *
-     * @param string $slug
-     * @return CommonList
-     */
-    public function setSlug($slug)
-    {
-        $this->slug = $slug;
-        return $this;
-    }
-
-    /**
-     * Get slug
-     *
-     * @return string 
-     */
-    public function getSlug()
-    {
-        return $this->slug;
     }
 
     /**

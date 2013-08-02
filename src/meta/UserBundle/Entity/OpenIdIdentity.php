@@ -43,4 +43,37 @@ class OpenIdIdentity extends BaseUserIdentity
     {
         parent::__construct();
     }
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \Symfony\Component\Security\Core\User\UserInterface $user
+     * @return OpenIdIdentity
+     */
+    public function setUser(UserInterface $user = null)
+    {
+        $this->user = $user;
+    
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \meta\UserBundle\Entity\User 
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
 }

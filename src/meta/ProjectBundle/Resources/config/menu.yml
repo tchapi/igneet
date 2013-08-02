@@ -2,21 +2,21 @@ parameters:
   standardproject.menu:
     timeline:
       icon: icon-comments-alt
-      route: sp_show_project_timeline
+      route: p_show_project_timeline
       private: false
     info:
       icon: icon-info-sign
-      route: sp_show_project
+      route: p_show_project
       private: false
     lists:
       icon: icon-tasks
-      route: sp_show_project_list_home
+      route: p_show_project_list_home
       private: false
     resources:
       icon: icon-file
-      route: sp_show_project_list_resources
+      route: p_show_project_list_resources
       private: false
     wiki:
       icon: icon-font
-      route: sp_show_project_wiki
+      route: p_show_project_wiki
       private: false

@@ -17,7 +17,7 @@ class LogService
     private $log_types, $log_routing, $concurrent_merge_interval;
     private $twig, $template_link, $template_link_null, $template_item;
 
-    public function __construct(EntityManager $entity_manager, $log_types, $log_routing, $log_concurrent_merge_interval, $security_context, $twig, $translator)
+    public function __construct(EntityManager $entity_manager, $log_types, $log_routing, $log_concurrent_merge_interval, $security_context, $twig, $translator, $uid)
     {
         $this->em = $entity_manager;
         
@@ -29,6 +29,8 @@ class LogService
 
         $this->twig = $twig;
         $this->translator = $translator;
+
+        $this->uid = $uid;
 
         $this->template_link         = 'metaGeneralBundle:Log:logLink.html.twig';
         $this->template_link_null    = 'metaGeneralBundle:Log:logLink.null.html.twig';
@@ -158,42 +160,59 @@ class LogService
     {
 
         $type = $this->log_types[$logEntry->getType()]['type'];
-
         $parameters = array();
 
-        $parameters["%user%"] = $this->twig->render($this->template_link, 
-                                                array( 'object' => $logEntry->getUser()->getLogName(),
-                                                       'routing' => (!$logEntry->getUser()->isDeleted())?array( 'path' => $this->log_routing['user'], 
-                                                                           'args' => $logEntry->getUser()->getLogArgs()
-                                                                    ):null
-                                                       )
-                                                );
-        $parameters["%$type%"] = $this->twig->render($this->template_link, 
-                                                array( 'object' => $logEntry->getSubject()->getLogName(),
-                                                       'routing' => array( 'path' => $this->log_routing["$type"], 
-                                                                           'args' => $logEntry->getSubject()->getLogArgs()
-                                                                           )
-                                                       )
-                                                );
+        // Fetches parameters to display the link to the user that created the log
+        $user_logName = $logEntry->getUser()->getLogName();
 
+        // Constructs the uid from the id (in this case, we don't need to obfuscate)
+        $user_uid = $logEntry->getUser()->getUsername();
+
+        // Deleted users should not be linked to
+        if ($logEntry->getUser()->isDeleted()) {
+            $user_routing = null;
+        } else {
+            $user_routing = array( 'path' => $this->log_routing['user']['path'], 'args' => array( $this->log_routing['user']['key'] => $user_uid ) );
+        } 
+       
+        $parameters["%user%"] = $this->twig->render($this->template_link, array( 'logName' => $user_logName, 'routing' => $user_routing ) );
+
+
+        // Fetches parameters to display the subject link
+        $subject_logName = $logEntry->getSubject()->getLogName();
+
+        // Constructs the uid from the id
+        $subject_uid = $logEntry->getSubject()->getId();
+        if ($this->log_routing["$type"]['is_uid']){
+            $subject_uid = $this->uid->toUId($subject_uid);
+        }
+
+        // Creates the routing
+        $subject_routing = array( 'path' => $this->log_routing["$type"]['path'], 'args' => array( $this->log_routing["$type"]['key'] => $subject_uid ) );
+
+        $parameters["%$type%"] = $this->twig->render($this->template_link, array( 'logName' => $subject_logName, 'routing' => $subject_routing ) );
+
+
+        // Now fetches objects
         foreach ($logEntry->getObjects() as $key => $object) {
 
-            if ( is_null($object['routing']) ) {
-
+            // Can we link to the object ? (backward compatibility is ensured here)
+            if ( !isset($object['identifier']) || is_null($object['identifier']) ) {
                 $routing = null;
-
             } else {
 
-                $routing = array( 'path' => $this->log_routing[$object['routing']], 
-                                  'args' => array_merge($logEntry->getSubject()->getLogArgs(), $object['args']) ); // we need to merge with the subject for the routing
+                // Constructs the uid from the id
+                $object_uid = $object['identifier'];
+                if ($this->log_routing["$key"]['is_uid']){
+                    $object_uid = $this->uid->toUId($object_uid);
+                }
 
+                // we need to merge with the subject for the routing (/project/{uid}/list/{list_uid} for example)
+                $routing = array( 'path' => $this->log_routing["$key"]['path'], 'args' => array_merge($subject_routing['args'], array( $this->log_routing["$key"]['key'] => $object_uid )) ); 
+            
             }
 
-            $parameters["%$key%"] = $this->twig->render($this->template_link, 
-                                                array( 'object' => $object['logName'],
-                                                       'routing' => $routing
-                                                       )
-                                                );
+            $parameters["%$key%"] = $this->twig->render($this->template_link, array( 'logName' => $object['logName'], 'routing' => $routing ) );
             
         }
 

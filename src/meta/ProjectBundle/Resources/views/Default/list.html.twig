@@ -16,11 +16,11 @@
       {% endif %}
     </h4>
     <p>{{ "filters.sort"|trans }} :
-      <a href="{{ path('sp_list_projects', {'sort': 'newest', 'page' : pagination.page}) }}"><i class="icon-star"></i> {{ "filters.newest"|trans }}</a> - 
-      <a href="{{ path('sp_list_projects', {'sort': 'update', 'page' : pagination.page}) }}"><i class="icon-time"></i> {{ "filters.recent"|trans }}</a> - 
-      <a href="{{ path('sp_list_projects', {'sort': 'alpha', 'page' : pagination.page}) }}"><i class="icon-font"></i> {{ "filters.alpha"|trans }}</a>
+      <a href="{{ path('p_list_projects', {'sort': 'newest', 'page' : pagination.page}) }}"><i class="icon-star"></i> {{ "filters.newest"|trans }}</a> - 
+      <a href="{{ path('p_list_projects', {'sort': 'update', 'page' : pagination.page}) }}"><i class="icon-time"></i> {{ "filters.recent"|trans }}</a> - 
+      <a href="{{ path('p_list_projects', {'sort': 'alpha', 'page' : pagination.page}) }}"><i class="icon-font"></i> {{ "filters.alpha"|trans }}</a>
     </p>
-    {% if not app.user.isGuestInCurrentCommunity() %}<p><a href="{{ path('sp_new_project') }}" class="btn btn-success">{{ "project.new"|trans }}</a></p>{% endif %}
+    {% if not app.user.isGuestInCurrentCommunity() %}<p><a href="{{ path('p_new_project') }}" class="btn btn-success">{{ "project.new"|trans }}</a></p>{% endif %}
   </div>
 {% endblock %}
 
@@ -29,12 +29,12 @@
 {% for standardProject in standardProjects %}
 <section class="listing">
   
-  <a href="{{ path('sp_show_project', {'slug': standardProject.slug}) }}">
+  <a href="{{ path('p_show_project', {'uid': standardProject.id|to_uid }) }}">
     <img src="{{ asset(standardProject.getPicture()) }}" width="100" height="100"/>
   </a>
 
   <div class="listingItemInfo">
-    <h4 class="ellipsis"><a href="{{ path('sp_show_project', {'slug': standardProject.slug}) }}">{{ standardProject.name }} ({{ standardProject.slug|lower }})</a></h4>
+    <h4 class="ellipsis"><a href="{{ path('p_show_project', {'uid': standardProject.id|to_uid }) }}">{{ standardProject.name }}</a>{% if standardProject.isPrivate %} ({{ "project.privateShort"|trans }}){% endif %}</h4>
     <div class="ellipsis">{{ standardProject.headline }}</div>
     <div class="muted"><i class="icon-calendar"></i> {{ "project.info.created"|trans({'%date%': standardProject.createdAt|date("date.fullFormat"|trans)}) }}</div>
     <div class="muted"><i class="icon-time"></i> {{ "project.info.updated"|trans({'%date%': standardProject.updatedAt|date("date.fullFormat"|trans)}) }}</div>
@@ -69,7 +69,7 @@
 </section>
 {% endfor %}
 <section>
-{% render(controller("metaGeneralBundle:Default:pagination",{ 'route': 'sp_list_projects', 'page' : pagination.page, 'total' : pagination.totalProjects, 'params' : {'sort': sort } })) %}
+{% render(controller("metaGeneralBundle:Default:pagination",{ 'route': 'p_list_projects', 'page' : pagination.page, 'total' : pagination.totalProjects, 'params' : {'sort': sort } })) %}
 </section>
 {% else %}
 <section>

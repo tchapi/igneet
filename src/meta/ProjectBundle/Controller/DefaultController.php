@@ -30,7 +30,7 @@ class DefaultController extends BaseController
         $maxPerPage = $this->container->getParameter('listings.number_of_items_per_page');
 
         if ( ($page-1) * $maxPerPage > $totalProjects) {
-            return $this->redirect($this->generateUrl('sp_list_projects', array('sort' => $sort)));
+            return $this->redirect($this->generateUrl('p_list_projects', array('sort' => $sort)));
         }
 
         $projects = $repository->findProjectsInCommunityForUser($authenticatedUser->getCurrentCommunity(), $authenticatedUser, $page, $maxPerPage, $sort);
@@ -53,7 +53,7 @@ class DefaultController extends BaseController
                 'error',
                 $this->get('translator')->trans('guest.community.cannot.do')
             );
-            return $this->redirect($this->generateUrl('sp_list_projects'));
+            return $this->redirect($this->generateUrl('p_list_projects'));
         }
 
         $project = new StandardProject();
@@ -85,7 +85,7 @@ class DefaultController extends BaseController
                     $this->get('translator')->trans('project.created', array( '%project%' => $project->getName()))
                 );
 
-                return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $project->getSlug())));
+                return $this->redirect($this->generateUrl('p_show_project', array('uid' => $this->container->get('uid')->toUId($project->getId()) )));
            
             } else {
                
@@ -105,12 +105,12 @@ class DefaultController extends BaseController
     /*
      * Edit a project (via X-Editable)
      */
-    public function editAction(Request $request, $slug){
+    public function editAction(Request $request, $uid){
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('edit', $request->get('token')))
             return new Response($this->get('translator')->trans('invalid.token', array(), 'errors'), 400);
 
-        $this->fetchProjectAndPreComputeRights($slug, false, true);
+        $this->fetchProjectAndPreComputeRights($uid, false, true);
         $error = null;
         $response = null;
 
@@ -127,9 +127,13 @@ class DefaultController extends BaseController
                     $this->base['standardProject']->setHeadline($request->request->get('value'));
                     $objectHasBeenModified = true;
                     break;
+                case 'status':
+                    $this->base['standardProject']->setStatus(intval($request->request->get('value')));
+                    $objectHasBeenModified = true;
+                    break;
                 case 'about':
                     $this->base['standardProject']->setAbout($request->request->get('value'));
-                    $deepLinkingService = $this->container->get('meta.twig.deep_linking_extension');
+                    $deepLinkingService = $this->container->get('deep_linking_extension');
                     $response = $deepLinkingService->convertDeepLinks(
                       $this->container->get('markdown.parser')->transformMarkdown($request->request->get('value'))
                     );
@@ -147,7 +151,7 @@ class DefaultController extends BaseController
                                 $this->get('translator')->trans('project.in.community', array( '%community%' => $community->getName()))
                             );
                             $logService = $this->container->get('logService');
-                            $logService->log($this->getUser(), 'project_enters_community', $this->base['standardProject'], array( 'community' => array( 'routing' => 'community', 'logName' => $community->getLogName(), 'args' => null) ) );
+                            $logService->log($this->getUser(), 'project_enters_community', $this->base['standardProject'], array( 'community' => array( 'logName' => $community->getLogName(), 'identifier' => $community->getId()) ) );
                             $objectHasBeenModified = true;
                             $needsRedirect = true;
                         }
@@ -223,7 +227,7 @@ class DefaultController extends BaseController
                     );
             }
 
-            return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $slug)));
+            return $this->redirect($this->generateUrl('p_show_project', array('uid' => $uid)));
 
         } else {
         
@@ -239,12 +243,12 @@ class DefaultController extends BaseController
     /*
      * Delete a project
      */
-    public function deleteAction(Request $request, $slug){
+    public function deleteAction(Request $request, $uid){
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('delete', $request->get('token')))
-            return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $slug)));
+            return $this->redirect($this->generateUrl('p_show_project', array('uid' => $uid)));
 
-        $this->fetchProjectAndPreComputeRights($slug, true, false);
+        $this->fetchProjectAndPreComputeRights($uid, true, false);
 
         if ($this->base != false) {
         
@@ -257,7 +261,7 @@ class DefaultController extends BaseController
                     $this->get('translator')->trans('project.deleted', array( '%project%' => $this->base['standardProject']->getName()))
                 );
             
-            return $this->redirect($this->generateUrl('sp_list_projects'));
+            return $this->redirect($this->generateUrl('p_list_projects'));
 
         } else {
 
@@ -266,7 +270,7 @@ class DefaultController extends BaseController
                     $this->get('translator')->trans('project.cannot.delete')
                 );
 
-            return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $slug)));
+            return $this->redirect($this->generateUrl('p_show_project', array('uid' => $uid)));
         }
 
     }
@@ -275,13 +279,13 @@ class DefaultController extends BaseController
     /*
      * Reset the picture of a project
      */
-    public function resetPictureAction(Request $request, $slug)
+    public function resetPictureAction(Request $request, $uid)
     {
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('resetPicture', $request->get('token')))
-            return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $slug)));
+            return $this->redirect($this->generateUrl('p_show_project', array('uid' => $uid)));
 
-        $this->fetchProjectAndPreComputeRights($slug, false, true);
+        $this->fetchProjectAndPreComputeRights($uid, false, true);
 
         if ($this->base != false) {
 
@@ -302,7 +306,7 @@ class DefaultController extends BaseController
                 );
         }
 
-        return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $slug)));
+        return $this->redirect($this->generateUrl('p_show_project', array('uid' => $uid)));
 
     }
 
@@ -310,12 +314,12 @@ class DefaultController extends BaseController
     /*
      * Make a project public (it must be in a community before hand)
      */
-    public function makePublicAction(Request $request, $slug)
+    public function makePublicAction(Request $request, $uid)
     {
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('makePublic', $request->get('token')))
-            return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $slug)));
+            return $this->redirect($this->generateUrl('p_show_project', array('uid' => $uid)));
 
-        $this->fetchProjectAndPreComputeRights($slug, true, false);
+        $this->fetchProjectAndPreComputeRights($uid, true, false);
 
         if ($this->base != false && !is_null($this->base['standardProject']->getCommunity())) {
             // A project in the private space cannot be public
@@ -337,7 +341,7 @@ class DefaultController extends BaseController
             );
         }
 
-        return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $slug)));
+        return $this->redirect($this->generateUrl('p_show_project', array('uid' => $uid)));
 
     }
 
@@ -345,12 +349,12 @@ class DefaultController extends BaseController
     /*
      * Make a project private (it is already in a community, obviously, since it's public)
      */
-    public function makePrivateAction(Request $request, $slug)
+    public function makePrivateAction(Request $request, $uid)
     {
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('makePrivate', $request->get('token')))
-            return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $slug)));
+            return $this->redirect($this->generateUrl('p_show_project', array('uid' => $uid)));
 
-        $this->fetchProjectAndPreComputeRights($slug, true, false);
+        $this->fetchProjectAndPreComputeRights($uid, true, false);
 
         if ($this->base != false) {
 
@@ -371,58 +375,21 @@ class DefaultController extends BaseController
             );
         }
 
-        return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $slug)));
+        return $this->redirect($this->generateUrl('p_show_project', array('uid' => $uid)));
 
     }  
-    /*
-     *  Allow to choose a slug and validate it is not already existing. 
-     *  Generally forward to editAction
-     */
-    public function chooseSlugAction(Request $request, $targetAsBase64)
-    {
-
-        $target = json_decode(base64_decode($targetAsBase64), true);
-
-        if ($request->isMethod('POST')) {
-
-            $newSlug = $request->request->get('slug');
-
-            if ("" !== $newSlug) {
-
-                $repository = $this->getDoctrine()->getRepository('metaProjectBundle:StandardProject');
-                $slugExists = $repository->findOneBySlug($newSlug);
-
-                if ($slugExists !== null){
-
-                    $this->get('session')->getFlashBag()->add(
-                        'error',
-                        $this->get('translator')->trans('project.cannot.choose.slug')
-                    );
-
-                } else {
-                
-                    $target['params']['token'] = $request->get('token');
-                    return $this->forward($target['slug'], $target['params']);
-                }
-            }
-
-        } 
-
-        return $this->render('metaProjectBundle:Default:chooseSlug.html.twig', array('targetAsBase64' => $targetAsBase64, 'token' => $request->get('token')));
-
-    }
 
     /*
      * Authenticated user now watches the project
      */
-    public function watchAction(Request $request, $slug)
+    public function watchAction(Request $request, $uid)
     {
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('watch', $request->get('token')))
-            return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $slug)));
+            return $this->redirect($this->generateUrl('p_show_project', array('uid' => $uid)));
 
         $menu = $this->container->getParameter('standardproject.menu');
-        $this->fetchProjectAndPreComputeRights($slug, false, $menu['info']['private']);
+        $this->fetchProjectAndPreComputeRights($uid, false, $menu['info']['private']);
 
         if ($this->base != false) {
 
@@ -460,19 +427,19 @@ class DefaultController extends BaseController
             );
         }
 
-        return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $slug)));
+        return $this->redirect($this->generateUrl('p_show_project', array('uid' => $uid)));
     }
 
     /*
      * Authenticated user now unwatches the project
      */
-    public function unwatchAction(Request $request, $slug)
+    public function unwatchAction(Request $request, $uid)
     {
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('unwatch', $request->get('token')))
-            return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $slug)));
+            return $this->redirect($this->generateUrl('p_show_project', array('uid' => $uid)));
 
         $menu = $this->container->getParameter('standardproject.menu');
-        $this->fetchProjectAndPreComputeRights($slug, false, $menu['info']['private']);
+        $this->fetchProjectAndPreComputeRights($uid, false, $menu['info']['private']);
 
         if ($this->base != false) {
 
@@ -507,7 +474,7 @@ class DefaultController extends BaseController
             );
         }
 
-        return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $slug)));
+        return $this->redirect($this->generateUrl('p_show_project', array('uid' => $uid)));
     }
 
 }

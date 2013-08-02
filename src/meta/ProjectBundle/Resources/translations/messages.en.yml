@@ -9,9 +9,6 @@ project:
   allProjects: "All projects"
   none: "No projects yet !"
   not.found: "This project was not found."
-  choose.slug: "Choose a slug"
-  choose.slugHelp: "You need to indicate a new slug for this project."
-  slug.already.taken: "This slug is already taken - please try another one."
   picture:
     reset: "The picture for this project has successfully been reset."
     cannot.reset: "You cannot reset the picture for this project."
@@ -21,9 +18,6 @@ project:
   createForm:
     name: "Name of this project"
     namePlaceholder: "My new project"
-    slug: "Slug"
-    slugHelp: "Accepted characters : alphanumeric and hyphens"
-    slugPlaceholder: "my-new-project"
     headline: "Headline"
     headlineHelp: "Give your project some nice catchline"
     private: "Private project"
@@ -38,12 +32,14 @@ project:
   already.watching: "You are already watching the project %project%."
   cannot:
     delete: "You do not have sufficient privileges to delete this project."
-    choose.slug: "This slug cannot be chosen at this time. Try to choose a different slug."
     watch: "You cannot watch this project."
     unwatch: "You cannot unwatch this project."
     add.participant: "You are not allowed to add a participant or an owner to this project."
-    remove.participant: "You are not allowed to remove a participant or an owner of this project."
-    remove.self: "You cannot remove yourself from a project."
+    public: "You cannot make this project public."
+    private: "You cannot make this project private."
+    remove:
+      participant: "You are not allowed to remove a participant or an owner of this project."
+      self: "You cannot remove yourself from this project."
   nameHelp: "Change the name of this project"
   headlineHelp: "Change the headline of this project"
   headline.emptyText: "Click to add a headline"
@@ -56,11 +52,9 @@ project:
   make:
     public: "make it public"
     private: "make it private"
-  cannot:
-    public: "You cannot make this project public."
-    private: "You cannot make this project private."
   public: "This project is now public."
   private: "This project is now private."
+  privateShort: "private"
   propose: "Propose this project to a community"
   in.community: "This project is now part of the community %community%."
   originalIdea: "originally from the idea '%idea%'"
@@ -85,6 +79,13 @@ project:
     add.owner: "Add an owner"
     owners: "Owners"
     participants: "Participants"
+    status:
+      title: "Status"
+      active: "Active"
+      sleeping: "Sleeping"
+      launched: "Launched"
+      abandonned: "Abandonned"
+    statusHelp: "What is the status of this project?"
   lists:
     title: "Lists"
     not.found: "This list does not exist."

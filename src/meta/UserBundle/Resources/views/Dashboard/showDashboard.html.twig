@@ -43,18 +43,18 @@
     <div class="content span5">
       <h4>{{ "user.dashboard.last.ideas"|trans }}</h4>
       <ul>
-        {% if last3ideas[0] is defined %}<li><a href="{{ path('i_show_idea', {'id' : last3ideas[0].id }) }}">{{ last3ideas[0].name|raw }}</a> - <em>{{ "user.dashboard.created.on"|trans({ '%date%': last3ideas[0].createdAt|date("date.fullFormat"|trans) }) }}</em></li>{% else %}<li>{{ "user.dashboard.no.ideas"|trans }}</li>{% endif %}
-        {% if last3ideas[1] is defined %}<li><a href="{{ path('i_show_idea', {'id' : last3ideas[1].id }) }}">{{ last3ideas[1].name|raw }}</a> - <em>{{ "user.dashboard.created.on"|trans({ '%date%': last3ideas[1].createdAt|date("date.fullFormat"|trans) }) }}</em></li>{% endif %}
-        {% if last3ideas[2] is defined %}<li><a href="{{ path('i_show_idea', {'id' : last3ideas[2].id }) }}">{{ last3ideas[2].name|raw }}</a> - <em>{{ "user.dashboard.created.on"|trans({ '%date%': last3ideas[2].createdAt|date("date.fullFormat"|trans) }) }}</em></li>{% endif %}
+        {% if last3ideas[0] is defined %}<li><a href="{{ path('i_show_idea', {'uid' : last3ideas[0].id|to_uid}) }}">{{ last3ideas[0].name|raw }}</a> - <em>{{ "user.dashboard.created.on"|trans({ '%date%': last3ideas[0].createdAt|date("date.fullFormat"|trans) }) }}</em></li>{% else %}<li>{{ "user.dashboard.no.ideas"|trans }}</li>{% endif %}
+        {% if last3ideas[1] is defined %}<li><a href="{{ path('i_show_idea', {'uid' : last3ideas[1].id|to_uid}) }}">{{ last3ideas[1].name|raw }}</a> - <em>{{ "user.dashboard.created.on"|trans({ '%date%': last3ideas[1].createdAt|date("date.fullFormat"|trans) }) }}</em></li>{% endif %}
+        {% if last3ideas[2] is defined %}<li><a href="{{ path('i_show_idea', {'uid' : last3ideas[2].id|to_uid}) }}">{{ last3ideas[2].name|raw }}</a> - <em>{{ "user.dashboard.created.on"|trans({ '%date%': last3ideas[2].createdAt|date("date.fullFormat"|trans) }) }}</em></li>{% endif %}
       </ul>
     </div>
 
     <div class="content span6 offset1">
       <h4>{{ "user.dashboard.last.projects"|trans }}</h4>
        <ul>
-        {% if last3projects[0] is defined %}<li><a href="{{ path('sp_show_project', { 'slug': last3projects[0].slug }) }}">{{ last3projects[0].name|raw }}</a> - <em>{{ "user.dashboard.created.on"|trans({ '%date%': last3projects[0].createdAt|date("date.fullFormat"|trans) }) }}</em></li>{% else %}<li>{{ "user.dashboard.no.projects"|trans }}</li>{% endif %}
-        {% if last3projects[1] is defined %}<li><a href="{{ path('sp_show_project', { 'slug': last3projects[1].slug }) }}">{{ last3projects[1].name|raw }}</a> - <em>{{ "user.dashboard.created.on"|trans({ '%date%': last3projects[1].createdAt|date("date.fullFormat"|trans) }) }}</em></li>{% endif %}
-        {% if last3projects[2] is defined %}<li><a href="{{ path('sp_show_project', { 'slug': last3projects[2].slug }) }}">{{ last3projects[2].name|raw }}</a> - <em>{{ "user.dashboard.created.on"|trans({ '%date%': last3projects[2].createdAt|date("date.fullFormat"|trans) }) }}</em></li>{% endif %}
+        {% if last3projects[0] is defined %}<li><a href="{{ path('p_show_project', { 'uid': last3projects[0].id|to_uid }) }}">{{ last3projects[0].name|raw }}</a> - <em>{{ "user.dashboard.created.on"|trans({ '%date%': last3projects[0].createdAt|date("date.fullFormat"|trans) }) }}</em></li>{% else %}<li>{{ "user.dashboard.no.projects"|trans }}</li>{% endif %}
+        {% if last3projects[1] is defined %}<li><a href="{{ path('p_show_project', { 'uid': last3projects[1].id|to_uid }) }}">{{ last3projects[1].name|raw }}</a> - <em>{{ "user.dashboard.created.on"|trans({ '%date%': last3projects[1].createdAt|date("date.fullFormat"|trans) }) }}</em></li>{% endif %}
+        {% if last3projects[2] is defined %}<li><a href="{{ path('p_show_project', { 'uid': last3projects[2].id|to_uid }) }}">{{ last3projects[2].name|raw }}</a> - <em>{{ "user.dashboard.created.on"|trans({ '%date%': last3projects[2].createdAt|date("date.fullFormat"|trans) }) }}</em></li>{% endif %}
       </ul>
     </div>
 
@@ -94,7 +94,7 @@
 
     <div class="content span4">
       {% if top3projects[0] is defined %}
-      <h4><a href="{{ path('sp_show_project_timeline', {'slug': top3projects[0][0].slug }) }}" ><span class="avatar"><img src="{{ asset(top3projects[0][0].picture) }}"  width="20" height="20" class="miniAvatar" /></span> {{ top3projects[0][0].name }}</a></h4>
+      <h4><a href="{{ path('p_show_project_timeline', {'uid': top3projects[0][0].id|to_uid }) }}" ><span class="avatar"><img src="{{ asset(top3projects[0][0].picture) }}"  width="20" height="20" class="miniAvatar" /></span> {{ top3projects[0][0].name }}</a></h4>
       <div class>
         {% if top3projectsActivity[top3projects[0][0].id] is defined %}
         <div class="graph" graph-data='{{ top3projectsActivity[top3projects[0][0].id]|json_encode|raw }}' graph-width="310" graph-height="100">
@@ -113,13 +113,13 @@
         <li>{{ "user.dashboard.watchers"|transchoice(top3projects[0][0].countWatchers, { '%count%': top3projects[0][0].countWatchers}) }}</li>
       </ul>
       {% else %}
-      <div class="blank_dashboard_item">{{ "user.dashboard.no.project"|trans }} <a href="{{ path('sp_new_project') }}" class="btn btn-success">{{ "user.dashboard.new.project"|trans }}</a></div>
+      <div class="blank_dashboard_item">{{ "user.dashboard.no.project"|trans }} <a href="{{ path('p_new_project') }}" class="btn btn-success">{{ "user.dashboard.new.project"|trans }}</a></div>
       {% endif %}
     </div>
 
     <div class="content span4">
       {% if top3projects[1] is defined %}
-      <h4><a href="{{ path('sp_show_project_timeline', {'slug': top3projects[1][0].slug }) }}" ><span class="avatar"><img src="{{ asset(top3projects[1][0].picture) }}"  width="20" height="20" class="miniAvatar" /></span> {{ top3projects[1][0].name }}</a></h4>
+      <h4><a href="{{ path('p_show_project_timeline', {'uid': top3projects[1][0].id|to_uid }) }}" ><span class="avatar"><img src="{{ asset(top3projects[1][0].picture) }}"  width="20" height="20" class="miniAvatar" /></span> {{ top3projects[1][0].name }}</a></h4>
       <div class>
         {% if top3projectsActivity[top3projects[1][0].id] is defined %}
         <div class="graph" graph-data='{{ top3projectsActivity[top3projects[1][0].id]|json_encode|raw }}' graph-width="310" graph-height="100">
@@ -138,13 +138,13 @@
         <li>{{ "user.dashboard.watchers"|transchoice(top3projects[1][0].countWatchers, { '%count%': top3projects[1][0].countWatchers}) }}</li>
       </ul>
       {% else %}
-      <div class="blank_dashboard_item">{{ "user.dashboard.no.project"|trans }} <a href="{{ path('sp_new_project') }}" class="btn btn-success">{{ "user.dashboard.new.project"|trans }}</a></div>
+      <div class="blank_dashboard_item">{{ "user.dashboard.no.project"|trans }} <a href="{{ path('p_new_project') }}" class="btn btn-success">{{ "user.dashboard.new.project"|trans }}</a></div>
       {% endif %}
     </div>
     
     <div class="content span4">
       {% if top3projects[2] is defined %}
-      <h4><a href="{{ path('sp_show_project_timeline', {'slug': top3projects[2][0].slug }) }}" ><span class="avatar"><img src="{{ asset(top3projects[2][0].picture) }}"  width="20" height="20" class="miniAvatar" /></span> {{ top3projects[2][0].name }}</a></h4>
+      <h4><a href="{{ path('p_show_project_timeline', {'uid': top3projects[2][0].id|to_uid }) }}" ><span class="avatar"><img src="{{ asset(top3projects[2][0].picture) }}"  width="20" height="20" class="miniAvatar" /></span> {{ top3projects[2][0].name }}</a></h4>
       <div class>
         {% if top3projectsActivity[top3projects[2][0].id] is defined %}
         <div class="graph" graph-data='{{ top3projectsActivity[top3projects[2][0].id]|json_encode|raw }}' graph-width="310" graph-height="100">
@@ -163,7 +163,7 @@
         <li>{{ "user.dashboard.watchers"|transchoice(top3projects[2][0].countWatchers, { '%count%': top3projects[2][0].countWatchers}) }}</li>
       </ul>
       {% else %}
-      <div class="blank_dashboard_item">{{ "user.dashboard.no.project"|trans }} <a href="{{ path('sp_new_project') }}" class="btn btn-success">{{ "user.dashboard.new.project"|trans }}</a></div>
+      <div class="blank_dashboard_item">{{ "user.dashboard.no.project"|trans }} <a href="{{ path('p_new_project') }}" class="btn btn-success">{{ "user.dashboard.new.project"|trans }}</a></div>
       {% endif %}
     </div>
     
@@ -177,7 +177,7 @@
 
     <div class="content span4">
       {% if top3ideas[0] is defined %}
-      <h4><a href="{{ path('i_show_idea_timeline', {'id': top3ideas[0][0].id }) }}" ><span class="avatar"><img src="{{ asset(top3ideas[0][0].picture) }}"  width="20" height="20" class="miniAvatar" /></span> {{ top3ideas[0][0].name }}</a></h4>
+      <h4><a href="{{ path('i_show_idea_timeline', {'uid': top3ideas[0][0].id|to_uid }) }}" ><span class="avatar"><img src="{{ asset(top3ideas[0][0].picture) }}"  width="20" height="20" class="miniAvatar" /></span> {{ top3ideas[0][0].name }}</a></h4>
       <div class>
         {% if top3ideasActivity[top3ideas[0][0].id] is defined %}
         <div class="graph" graph-data='{{ top3ideasActivity[top3ideas[0][0].id]|json_encode|raw }}' graph-width="310" graph-height="100">
@@ -201,7 +201,7 @@
 
     <div class="content span4">
       {% if top3ideas[1] is defined %}
-      <h4><a href="{{ path('i_show_idea_timeline', {'id': top3ideas[1][0].id }) }}" ><span class="avatar"><img src="{{ asset(top3ideas[1][0].picture) }}"  width="20" height="20" class="miniAvatar" /></span> {{ top3ideas[1][0].name }}</a></h4>
+      <h4><a href="{{ path('i_show_idea_timeline', {'uid': top3ideas[1][0].id|to_uid }) }}" ><span class="avatar"><img src="{{ asset(top3ideas[1][0].picture) }}"  width="20" height="20" class="miniAvatar" /></span> {{ top3ideas[1][0].name }}</a></h4>
       <div class>
         {% if top3ideasActivity[top3ideas[1][0].id] is defined %}
         <div class="graph" graph-data='{{ top3ideasActivity[top3ideas[1][0].id]|json_encode|raw }}' graph-width="310" graph-height="100">
@@ -225,7 +225,7 @@
     
     <div class="content span4">
       {% if top3ideas[2] is defined %}
-      <h4><a href="{{ path('i_show_idea_timeline', {'id': top3ideas[2][0].id }) }}" ><span class="avatar"><img src="{{ asset(top3ideas[2][0].picture) }}"  width="20" height="20" class="miniAvatar" /></span> {{ top3ideas[2][0].name }}</a></h4>
+      <h4><a href="{{ path('i_show_idea_timeline', {'uid': top3ideas[2][0].id|to_uid }) }}" ><span class="avatar"><img src="{{ asset(top3ideas[2][0].picture) }}"  width="20" height="20" class="miniAvatar" /></span> {{ top3ideas[2][0].name }}</a></h4>
       <div class>
         {% if top3ideasActivity[top3ideas[2][0].id] is defined %}
         <div class="graph" graph-data='{{ top3ideasActivity[top3ideas[2][0].id]|json_encode|raw }}' graph-width="310" graph-height="100">

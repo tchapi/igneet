@@ -1,240 +1,319 @@
-# STANDARD PROJECTS
-sp_list_projects:
+# PROJECTS
+
+# /PROJECTS/
+# ---------------
+
+p_list_projects:
     pattern:  /projects/{page}/{sort}
-    defaults: { _controller: metaProjectBundle:Default:list, page: 1, max: 10, sort: update }
+    defaults: { _controller: metaProjectBundle:Default:list, page: 1, archived: false, max: 10, sort: update }
     requirements:
         page: \d+
         sort: update|newest|alpha
 
-sp_new_project:
+p_list_archived_projects:
+    pattern:  /projects/archived{page}/{sort}
+    defaults: { _controller: metaProjectBundle:Default:list, page: 1, archived: true, max: 10, sort: update }
+    requirements:
+        page: \d+
+        sort: update|newest|alpha
+
+p_new_project:
     pattern:  /projects/new
-    defaults: { _controller: metaProjectBundle:Default:create}
+    defaults: { _controller: metaProjectBundle:Default:create }
 
-sp_show_project:
-    pattern:  /project/show/{slug}
-    defaults: { _controller: metaProjectBundle:Info:showInfo}
+# /PROJECT/
+# ---------------
 
-sp_edit_project:
-    pattern:  /project/edit/{slug}
+p_show_project:
+    pattern:  /project/0{uid}
+    defaults: { _controller: metaProjectBundle:Info:showInfo }
+    requirements:
+      uid: "[0-9a-zA-Z]*"
+
+# /PROJECT/EDIT
+# ---------------
+
+p_edit_project:
+    pattern:  /project/0{uid}/edit
     defaults: { _controller: metaProjectBundle:Default:edit }
     requirements:
+        uid: "[0-9a-zA-Z]*"
         _method:  POST
 
-sp_edit_project_reset_picture:
-    pattern:  /project/resetpicture/{slug}
+p_edit_project_reset_picture:
+    pattern:  /project/0{uid}/reset/picture
     defaults: { _controller: metaProjectBundle:Default:resetPicture }
+    requirements:
+        uid: "[0-9a-zA-Z]*"
 
-sp_delete_project:
-    pattern:  /project/delete/{slug}
-    defaults: { _controller: metaProjectBundle:Default:delete}
+p_delete_project:
+    pattern:  /project/0{uid}/delete
+    defaults: { _controller: metaProjectBundle:Default:delete }
+    requirements:
+        uid: "[0-9a-zA-Z]*"
 
-sp_choose_slug:
-    pattern:  /project/slug/{targetAsBase64}
-    defaults: { _controller: metaProjectBundle:Default:chooseSlug}
+p_make_public:
+    pattern:  /project/0{uid}/make/public
+    defaults: { _controller: metaProjectBundle:Default:makePublic }
+    requirements:
+        uid: "[0-9a-zA-Z]*"
 
-sp_make_public:
-    pattern:  /project/publicize/{slug}
-    defaults: { _controller: metaProjectBundle:Default:makePublic}
+p_make_private:
+    pattern:  /project/0{uid}/make/private
+    defaults: { _controller: metaProjectBundle:Default:makePrivate }
+    requirements:
+        uid: "[0-9a-zA-Z]*"
 
-sp_make_private:
-    pattern:  /project/privatize/{slug}
-    defaults: { _controller: metaProjectBundle:Default:makePrivate}
+# /PROJECT/COMMENT
+# ---------------
 
-# COMMENTS
-sp_show_project_comment:
-    pattern:  /project/show/{slug}/comment
+p_show_project_comment:
+    pattern:  /project/0{uid}/comment
     defaults: { _controller: metaProjectBundle:Comment:addStandardProjectComment }
     requirements:
-      id: \d+
+      uid: "[0-9a-zA-Z]*"
 
-# TABS --------------------------
+# /PROJECT/TEAM
+# ---------------
 
-## RESOURCES
-sp_show_project_list_resources:
-    pattern:  /project/show/{slug}/resources/{page}
-    defaults: { _controller: metaProjectBundle:Resource:listResources, page: 1 }
+p_add_owner_to_project:
+    pattern:  /project/0{uid}/team/add/{username}/owner
+    defaults: { _controller: metaProjectBundle:Info:addParticipantOrOwner, owner: true }
     requirements:
-      page: \d+
+      uid: "[0-9a-zA-Z]*"
 
-sp_show_project_resource:
-    pattern:  /project/show/{slug}/resource/{id}
-    defaults: { _controller: metaProjectBundle:Resource:showResource}
+p_add_participant_to_project:
+    pattern:  /project/0{uid}/team/add/{username}/participant
+    defaults: { _controller: metaProjectBundle:Info:addParticipantOrOwner, owner: false }
     requirements:
-      id: \d+
+      uid: "[0-9a-zA-Z]*"
 
-sp_show_project_resource_edit:
-    pattern:  /project/show/{slug}/resource/edit/{id}
-    defaults: { _controller: metaProjectBundle:Resource:editResource }
+p_remove_owner_to_project:
+    pattern:  /project/0{uid}/team/remove/{username}/owner
+    defaults: { _controller: metaProjectBundle:Info:removeParticipantOrOwner, owner: true }
     requirements:
-      id: \d+
-      _method:  POST
+      uid: "[0-9a-zA-Z]*"
 
-sp_show_project_resource_download:
-    pattern:  /project/show/{slug}/resource/download/{id}
-    defaults: { _controller: metaProjectBundle:Resource:downloadResource }
+p_remove_participant_to_project:
+    pattern:  /project/0{uid}/team/remove/{username}/participant
+    defaults: { _controller: metaProjectBundle:Info:removeParticipantOrOwner, owner: false }
     requirements:
-      id: \d+
+      uid: "[0-9a-zA-Z]*"
 
-sp_show_project_resource_delete:
-    pattern:  /project/show/{slug}/resource/delete/{id}
-    defaults: { _controller: metaProjectBundle:Resource:deleteResource }
+p_remove_participant_to_project_self:
+    pattern:  /project/0{uid}/team/remove/{username}/participant/self
+    defaults: { _controller: metaProjectBundle:Info:removeMySelfParticipant}
     requirements:
-      id: \d+
+      uid: "[0-9a-zA-Z]*"
+
+# /PROJECT/WATCH
+# ---------------
+
+p_watch_project:
+    pattern:  /project/0{uid}/watch
+    defaults: { _controller: metaProjectBundle:Default:watch }
+    requirements:
+        uid: "[0-9a-zA-Z]*"
+
+p_unwatch_project:
+    pattern:  /project/0{uid}/unwatch
+    defaults: { _controller: metaProjectBundle:Default:unwatch }
+    requirements:
+        uid: "[0-9a-zA-Z]*"
+
+# /PROJECT/{SUB-ITEM}
+# ---------------
 
 ## TIMELINE
-sp_show_project_timeline:
-    pattern:  /project/show/{slug}/timeline/{page}
+p_show_project_timeline:
+    pattern:  /project/0{uid}/timeline/{page}
     defaults: { _controller: metaProjectBundle:Timeline:showTimeline, page: 1 }
     requirements:
+        uid: "[0-9a-zA-Z]*"
+        page: \d+
+
+## RESOURCES
+p_show_project_list_resources:
+    pattern:  /project/0{uid}/resources/{page}
+    defaults: { _controller: metaProjectBundle:Resource:listResources, page: 1 }
+    requirements:
+      uid: "[0-9a-zA-Z]*"
       page: \d+
 
+p_show_project_resource:
+    pattern:  /project/0{uid}/resource/0{resource_uid}
+    defaults: { _controller: metaProjectBundle:Resource:showResource }
+    requirements:
+      uid: "[0-9a-zA-Z]*"
+      resource_uid: "[0-9a-zA-Z]*"
+
+p_show_project_resource_edit:
+    pattern:  /project/0{uid}/resource/0{resource_uid}/edit
+    defaults: { _controller: metaProjectBundle:Resource:editResource }
+    requirements:
+      uid: "[0-9a-zA-Z]*"
+      resource_uid: "[0-9a-zA-Z]*"
+      _method:  POST
+
+p_show_project_resource_download:
+    pattern:  /project/0{uid}/resource/0{resource_uid}/download
+    defaults: { _controller: metaProjectBundle:Resource:downloadResource }
+    requirements:
+      uid: "[0-9a-zA-Z]*"
+      resource_uid: "[0-9a-zA-Z]*"
+
+p_show_project_resource_delete:
+    pattern:  /project/0{uid}/resource/0{resource_uid}/delete
+    defaults: { _controller: metaProjectBundle:Resource:deleteResource }
+    requirements:
+      uid: "[0-9a-zA-Z]*"
+      resource_uid: "[0-9a-zA-Z]*"
+
 ## LISTS
-sp_show_project_list_home:
-    pattern:  /project/show/{slug}/lists
-    defaults: { _controller: metaProjectBundle:List:showCommonListHome}
-
-sp_show_project_list_new:
-    pattern:  /project/show/{slug}/list/new
-    defaults: { _controller: metaProjectBundle:List:newCommonList}
-
-sp_show_project_list_edit:
-    pattern:  /project/show/{slug}/list/edit/{id}
-    defaults: { _controller: metaProjectBundle:List:editCommonList}
+p_show_project_list_home:
+    pattern:  /project/0{uid}/lists/{page}
+    defaults: { _controller: metaProjectBundle:List:showCommonListHome, page: 1 }
     requirements:
-      id: \d+
+      uid: "[0-9a-zA-Z]*"
+      page: \d+
+
+p_show_project_list_new:
+    pattern:  /project/0{uid}/lists/new
+    defaults: { _controller: metaProjectBundle:List:newCommonList }
+    requirements:
+      uid: "[0-9a-zA-Z]*"
+
+p_show_project_list_rank:
+    pattern:  /project/0{uid}/lists/rank
+    defaults: { _controller: metaProjectBundle:List:rankCommonLists }
+    requirements:
+      uid: "[0-9a-zA-Z]*"
       _method:  POST
 
-sp_show_project_list_delete:
-    pattern:  /project/show/{slug}/list/delete/{id}
-    defaults: { _controller: metaProjectBundle:List:deleteCommonList}
+p_show_project_list:
+    pattern:  /project/0{uid}/list/0{list_uid}
+    defaults: { _controller: metaProjectBundle:List:showCommonList }
     requirements:
-      id: \d+
+      uid: "[0-9a-zA-Z]*"
+      list_uid: "[0-9a-zA-Z]*"
 
-sp_show_project_list:
-    pattern:  /project/show/{slug}/list/{id}/{commonListSlug}
-    defaults: { _controller: metaProjectBundle:List:showCommonList, commonListSlug: _ }
+p_show_project_list_edit:
+    pattern:  /project/0{uid}/list/0{list_uid}/edit
+    defaults: { _controller: metaProjectBundle:List:editCommonList }
     requirements:
-      id: \d+
-
-sp_show_project_list_comment:
-    pattern:  /project/show/{slug}/list/comment/{id}
-    defaults: { _controller: metaProjectBundle:Comment:addCommonListComment}
-    requirements:
-      id: \d+
-
-sp_show_project_list_rank:
-    pattern:  /project/show/{slug}/lists/rank
-    defaults: { _controller: metaProjectBundle:List:rankCommonLists}
-    requirements:
+      uid: "[0-9a-zA-Z]*"
+      list_uid: "[0-9a-zA-Z]*"
       _method:  POST
+
+p_show_project_list_delete:
+    pattern:  /project/0{uid}/list/0{list_uid}/delete
+    defaults: { _controller: metaProjectBundle:List:deleteCommonList }
+    requirements:
+      uid: "[0-9a-zA-Z]*"
+      list_uid: "[0-9a-zA-Z]*"
+
+
+p_show_project_list_comment:
+    pattern:  /project/0{uid}/list/0{list_uid}/comment
+    defaults: { _controller: metaProjectBundle:Comment:addCommonListComment }
+    requirements:
+      uid: "[0-9a-zA-Z]*"
+      list_uid: "[0-9a-zA-Z]*"
 
 ## LIST ITEMS
-sp_show_project_listitem_edit:
-    pattern:  /project/show/{slug}/list/{listId}/item/{id}
-    defaults: { _controller: metaProjectBundle:List:editCommonListItem }
-    requirements:
-      id: \d+
-      listId: \d+
-      _method:  POST
-
-sp_show_project_listitem_do:
-    pattern:  /project/show/{slug}/list/{listId}/item/{id}/do
-    defaults: { _controller: metaProjectBundle:List:toggleCommonListItem, do: true}
-    requirements:
-      id: \d+
-      listId: \d+
-
-sp_show_project_listitem_undo:
-    pattern:  /project/show/{slug}/list/{listId}/item/{id}/undo
-    defaults: { _controller: metaProjectBundle:List:toggleCommonListItem, do: false}
-    requirements:
-      id: \d+
-      listId: \d+
-
-sp_show_project_listitem_delete:
-    pattern:  /project/show/{slug}/list/{listId}/item/{id}/delete
-    defaults: { _controller: metaProjectBundle:List:deleteCommonListItem}
-    requirements:
-      id: \d+
-      listId: \d+
-
-sp_show_project_listitem_new:
-    pattern:  /project/show/{slug}/list/{listId}/item/new/{name}
+p_show_project_listitem_new:
+    pattern:  /project/0{uid}/list/0{list_uid}/items/new/{name}
     defaults: { _controller: metaProjectBundle:List:newCommonListItem, name: "New Item" }
     requirements:
-      listId: \d+
+      uid: "[0-9a-zA-Z]*"
+      list_uid: "[0-9a-zA-Z]*"
 
+p_show_project_listitem_edit:
+    pattern:  /project/0{uid}/list/0{list_uid}/item/0{item_uid}/edit
+    defaults: { _controller: metaProjectBundle:List:editCommonListItem }
+    requirements:
+      uid: "[0-9a-zA-Z]*"
+      list_uid: "[0-9a-zA-Z]*"
+      item_uid: "[0-9a-zA-Z]*"
+      _method:  POST
+
+p_show_project_listitem_do:
+    pattern:  /project/0{uid}/list/0{list_uid}/item/0{item_uid}/do
+    defaults: { _controller: metaProjectBundle:List:toggleCommonListItem, do: true }
+    requirements:
+      uid: "[0-9a-zA-Z]*"
+      list_uid: "[0-9a-zA-Z]*"
+      item_uid: "[0-9a-zA-Z]*"
+
+p_show_project_listitem_undo:
+    pattern:  /project/0{uid}/list/0{list_uid}/item/0{item_uid}/undo
+    defaults: { _controller: metaProjectBundle:List:toggleCommonListItem, do: false }
+    requirements:
+      uid: "[0-9a-zA-Z]*"
+      list_uid: "[0-9a-zA-Z]*"
+      item_uid: "[0-9a-zA-Z]*"
+
+p_show_project_listitem_delete:
+    pattern:  /project/0{uid}/list/0{list_uid}/item/0{item_uid}/delete
+    defaults: { _controller: metaProjectBundle:List:deleteCommonListItem }
+    requirements:
+      uid: "[0-9a-zA-Z]*"
+      list_uid: "[0-9a-zA-Z]*"
+      item_uid: "[0-9a-zA-Z]*"
 
 ## WIKI 
-sp_show_project_wiki:
-    pattern:  /project/show/{slug}/wiki
-    defaults: { _controller: metaProjectBundle:Wiki:showWikiHome}
-
-sp_show_project_wiki_new_page:
-    pattern:  /project/show/{slug}/wiki/page/new
-    defaults: { _controller: metaProjectBundle:Wiki:newWikiPage}
-
-sp_show_project_wiki_edit_page:
-    pattern:  /project/show/{slug}/wiki/page/edit/{id}
-    defaults: { _controller: metaProjectBundle:Wiki:editWikiPage}
+p_show_project_wiki:
+    pattern:  /project/0{uid}/wiki
+    defaults: { _controller: metaProjectBundle:Wiki:showWikiHome }
     requirements:
-      id: \d+
+      uid: "[0-9a-zA-Z]*"
+
+p_show_project_wiki_new_page:
+    pattern:  /project/0{uid}/wiki/pages/new
+    defaults: { _controller: metaProjectBundle:Wiki:newWikiPage }
+    requirements:
+      uid: "[0-9a-zA-Z]*"
+
+p_show_project_wiki_rank:
+    pattern:  /project/0{uid}/wiki/pages/rank
+    defaults: { _controller: metaProjectBundle:Wiki:rankWikiPages }
+    requirements:
+      uid: "[0-9a-zA-Z]*"
       _method: POST
 
-sp_show_project_wiki_delete_page:
-    pattern:  /project/show/{slug}/wiki/page/delete/{id}
-    defaults: { _controller: metaProjectBundle:Wiki:deleteWikiPage}
+p_show_project_wiki_show_page:
+    pattern:  /project/0{uid}/wiki/page/0{page_uid}
+    defaults: { _controller: metaProjectBundle:Wiki:showWikiPage }
     requirements:
-      id: \d+
+      uid: "[0-9a-zA-Z]*"
+      page_uid: "[0-9a-zA-Z]*"
 
-sp_show_project_wiki_make_home_page:
-    pattern:  /project/show/{slug}/wiki/page/make_home/{id}
-    defaults: { _controller: metaProjectBundle:Wiki:makeHomeWikiPage}
+p_show_project_wiki_edit_page:
+    pattern:  /project/0{uid}/wiki/page/0{page_uid}/edit
+    defaults: { _controller: metaProjectBundle:Wiki:editWikiPage }
     requirements:
-      id: \d+
+      uid: "[0-9a-zA-Z]*"
+      page_uid: "[0-9a-zA-Z]*"
+      _method: POST
 
-sp_show_project_wiki_show_page:
-    pattern:  /project/show/{slug}/wiki/page/{id}/{pageSlug}
-    defaults: { _controller: metaProjectBundle:Wiki:showWikiPage, pageSlug: _ }
+p_show_project_wiki_delete_page:
+    pattern:  /project/0{uid}/wiki/page/0{page_uid}/delete
+    defaults: { _controller: metaProjectBundle:Wiki:deleteWikiPage }
     requirements:
-      id: \d+
+      uid: "[0-9a-zA-Z]*"
+      page_uid: "[0-9a-zA-Z]*"
 
-sp_show_project_wikipage_comment:
-    pattern:  /project/show/{slug}/wiki/page/comment/{id}
+p_show_project_wiki_make_home_page:
+    pattern:  /project/0{uid}/wiki/page/0{page_uid}/make/home
+    defaults: { _controller: metaProjectBundle:Wiki:makeHomeWikiPage }
+    requirements:
+      uid: "[0-9a-zA-Z]*"
+      page_uid: "[0-9a-zA-Z]*"
+
+
+p_show_project_wikipage_comment:
+    pattern:  /project/0{uid}/wiki/page/0{page_uid}/comment
     defaults: { _controller: metaProjectBundle:Comment:addWikiPageComment }
     requirements:
-      id: \d+
-
-sp_show_project_wiki_rank:
-    pattern:  /project/show/{slug}/wiki/rank
-    defaults: { _controller: metaProjectBundle:Wiki:rankWikiPages}
-    requirements:
-      _method: POST
-
-# Adding people in projects
-sp_add_owner_to_project:
-    pattern:  /project/edit/{slug}/add_owner/{username}
-    defaults: { _controller: metaProjectBundle:Info:addParticipantOrOwner, owner: true }
-
-sp_add_participant_to_project:
-    pattern:  /project/edit/{slug}/add_participant/{username}
-    defaults: { _controller: metaProjectBundle:Info:addParticipantOrOwner, owner: false }
-
-# Removing people in projects
-sp_remove_owner_to_project:
-    pattern:  /project/edit/{slug}/remove_owner/{username}
-    defaults: { _controller: metaProjectBundle:Info:removeParticipantOrOwner, owner: true }
-
-sp_remove_participant_to_project:
-    pattern:  /project/edit/{slug}/remove_participant/{username}
-    defaults: { _controller: metaProjectBundle:Info:removeParticipantOrOwner, owner: false }
-
-# Watching projects
-sp_watch_project:
-    pattern:  /watch/project/{slug}
-    defaults: { _controller: metaProjectBundle:Default:watch }
-
-sp_unwatch_project:
-    pattern:  /unwatch/project/{slug}
-    defaults: { _controller: metaProjectBundle:Default:unwatch }
-
+      uid: "[0-9a-zA-Z]*"
+      page_uid: "[0-9a-zA-Z]*"

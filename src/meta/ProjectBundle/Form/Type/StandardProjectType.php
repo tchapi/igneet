@@ -11,7 +11,6 @@ class StandardProjectType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('name', null, array('label'  => 'project.createForm.name', 'attr' => array( 'class' => 'input-xxlarge', 'placeholder' => 'project.createForm.namePlaceholder')));
-        $builder->add('slug', null, array('label'  => 'project.createForm.slug', 'attr' => array( 'class' => 'input-xxlarge', 'help' => 'project.createForm.slugHelp', 'placeholder' => 'project.createForm.slugPlaceholder')));
         $builder->add('headline', 'text',  array('required' => false, 'label'  => 'project.createForm.headline', 'attr' => array('class' => 'input-xxlarge', 'help' => 'project.createForm.headlineHelp')));
 
         $builder->add('private', 'checkbox',  array('required' => false, 'data' => $options['isPrivate'], 'disabled' => $options['isPrivate'], 'label'  => 'project.createForm.private', 'attr' => array('help' => 'project.createForm.privateHelp')));

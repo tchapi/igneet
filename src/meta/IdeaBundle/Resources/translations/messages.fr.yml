@@ -12,8 +12,6 @@ idea:
     archived: "Voir les idées archivées"
     all: "« Revenir aux idées"
   new: "Nouvelle idée"
-  concept: "Concept"
-  knowledge: "Connaissance"
   not.found: "Cette idée n'existe pas."
   none: "Aucune idée pour l'instant."
   create: "Créer"
@@ -70,7 +68,7 @@ idea:
       long: "{1}Créée le %date% par %name%|]1,Inf]Créée le %date% par %count% personnes"
     about: "À propos de cette idée"
     creators: "Créateurs"
-    participants: "Participant|Participants"
+    participants: "{0}Aucun participant.|{1}Participant :|]1,Inf]Participants :"
     add.participant: "Ajouter un participant"
   knowledge:
     title: "Connaissance"

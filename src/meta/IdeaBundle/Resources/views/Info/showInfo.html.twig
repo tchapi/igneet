@@ -11,7 +11,7 @@
       <div class="wmd-wrapper well well-small hide" >
         <div class="wmd-panel">
             <div id="wmd-button-bar"></div>
-            <textarea unsaved='no' data-name="about" data-url="{{ path('i_edit_idea', {'id': base.idea.id, 'token': csrf_token('edit') }) }}" class="wmd-input" id="wmd-input">{{ base.idea.about }}</textarea>
+            <textarea unsaved='no' data-name="about" data-url="{{ path('i_edit_idea', {'uid': base.idea.id|to_uid, 'token': csrf_token('edit') }) }}" class="wmd-input" id="wmd-input">{{ base.idea.about }}</textarea>
         </div>
         <div>
           <button id="wmd-save" class="btn btn-primary">{{ "save"|trans }}</button> <span class="muted wmd-message">{{ "saveHelp"|trans }}</span>
@@ -42,7 +42,7 @@
 </section>
 {% if base.idea.community is not null %}
 <section class="colored">
-  <div class="sectionTitle">{% transchoice base.idea.countParticipants %}idea.info.participants{% endtranschoice %} : </div>
+  <div class="sectionTitle">{% transchoice base.idea.countParticipants %}idea.info.participants{% endtranschoice %} </div>
   <ul class="users sectionContent">
   {% for participatingUser in base.idea.participants %}
     {% if not participatingUser.isDeleted %}
@@ -53,7 +53,7 @@
             <span><div>{{ participatingUser.firstName }}</div><div>{{ participatingUser.lastName }}</div></span>
           </div>
         </a>
-        {% if base.isCreator %}<a class="removeUserIcon" href="{{ path('i_remove_participant_to_idea', { 'id': base.idea.id, 'username' : participatingUser.username, 'token': csrf_token('removeParticipant') }) }}"><i class="icon-remove-sign icon-large"></i></a>{% endif %}
+        {% if base.isCreator %}<a class="removeUserIcon" href="{{ path('i_remove_participant_to_idea', { 'uid': base.idea.id|to_uid, 'username' : participatingUser.username, 'token': csrf_token('removeParticipant') }) }}"><i class="icon-remove-sign icon-large"></i></a>{% endif %}
       </li>
     {% endif %}
   {% endfor %}
@@ -73,7 +73,7 @@
 {% if base.isCreator %}
 <section class="colored warning">
   <div class="sectionTitle">{{ "idea.delete"|trans }} : </div>
-  <div class="sectionContent"><a class="btn btn-danger" data-confirm="{{ "idea.deleteHelp"|trans }}" href="{{ path('i_delete_idea', { 'id': base.idea.id, 'token': csrf_token('delete') }) }}">{{ "delete"|trans }}</a> <span class="muted">( <i class="icon-warning-sign"></i> {{ "deleteHelp"|trans }} )</span></div>
+  <div class="sectionContent"><a class="btn btn-danger" data-confirm="{{ "idea.deleteHelp"|trans }}" href="{{ path('i_delete_idea', { 'uid': base.idea.id|to_uid, 'token': csrf_token('delete') }) }}">{{ "delete"|trans }}</a> <span class="muted">( <i class="icon-warning-sign"></i> {{ "deleteHelp"|trans }} )</span></div>
 </section>
 {% endif %}
 {% endblock %}

@@ -1,5 +1,8 @@
 # IDEAS
 
+# /IDEAS/
+# ---------------
+
 i_list_ideas:
     pattern:  /ideas/{page}/{sort}
     defaults: { _controller: metaIdeaBundle:Default:list, page: 1, archived: false, sort: update }
@@ -16,101 +19,117 @@ i_list_archived_ideas:
 
 i_new_idea:
     pattern:  /ideas/new
-    defaults: { _controller: metaIdeaBundle:Default:create}
+    defaults: { _controller: metaIdeaBundle:Default:create }
+
+# /IDEA/
+# ---------------
 
 i_show_idea:
-    pattern:  /idea/show/{id}/{slug}
-    defaults: { _controller: metaIdeaBundle:Default:show, slug: _}
+    pattern:  /idea/0{uid}
+    defaults: { _controller: metaIdeaBundle:Default:show }
     requirements:
-        id: \d+
+        uid: "[0-9a-zA-Z]*"
 
-i_show_idea_concept:
-    pattern:  /idea/concept/{id}/{slug}
-    defaults: { _controller: metaIdeaBundle:Default:showConceptOrKnowledge, slug: _, type: 'concept'}
-    requirements:
-        id: \d+
-
-i_show_idea_knowledge:
-    pattern:  /idea/knowledge/{id}/{slug}
-    defaults: { _controller: metaIdeaBundle:Default:showConceptOrKnowledge, slug: _, type: 'knowledge'}
-    requirements:
-        id: \d+
-
-i_show_idea_timeline:
-    pattern:  /idea/timeline/{id}/{slug}/{page}
-    defaults: { _controller: metaIdeaBundle:Default:showTimeline, slug: _, page: 1}
-    requirements:
-        id: \d+
-        page: \d+
+# /IDEA/EDIT
+# ---------------
 
 i_edit_idea:
-    pattern:  /idea/edit/{id}
+    pattern:  /idea/0{uid}/edit
     defaults: { _controller: metaIdeaBundle:Default:edit }
     requirements:
-        id: \d+
+        uid: "[0-9a-zA-Z]*"
         _method:  POST
 
 i_edit_idea_reset_picture:
-    pattern:  /idea/resetpicture/{id}
+    pattern:  /idea/0{uid}/reset/picture
     defaults: { _controller: metaIdeaBundle:Default:resetPicture }
     requirements:
-        id: \d+
+        uid: "[0-9a-zA-Z]*"
 
 i_delete_idea:
-    pattern:  /idea/delete/{id}
+    pattern:  /idea/0{uid}/delete
     defaults: { _controller: metaIdeaBundle:Default:delete }
     requirements:
-        id: \d+
+        uid: "[0-9a-zA-Z]*"
 
 i_archive_idea:
-    pattern:  /idea/archive/{id}
+    pattern:  /idea/0{uid}/archive
     defaults: { _controller: metaIdeaBundle:Default:archiveOrRecycle, archive: true }
     requirements:
-        id: \d+
+        uid: "[0-9a-zA-Z]*"
 
 i_recycle_idea:
-    pattern:  /idea/recycle/{id}
-    defaults: { _controller: metaIdeaBundle:Default:archiveOrRecycle, archive:false }
+    pattern:  /idea/0{uid}/recycle
+    defaults: { _controller: metaIdeaBundle:Default:archiveOrRecycle, archive: false }
     requirements:
-        id: \d+
-
-# COMMENTS
-i_show_idea_comment:
-    pattern:  /idea/timeline/comment/{id}
-    defaults: { _controller: metaIdeaBundle:Default:addIdeaComment }
-    requirements:
-      id: \d+
-
-# Watching ideas
-i_watch_idea:
-    pattern:  /watch/idea/{id}
-    defaults: { _controller: metaIdeaBundle:Default:watch }
-    requirements:
-        id: \d+
-
-i_unwatch_idea:
-    pattern:  /unwatch/idea/{id}
-    defaults: { _controller: metaIdeaBundle:Default:unwatch }
-    requirements:
-        id: \d+
-
-# Add participant to an idea
-i_add_participant_to_idea:
-    pattern:  /idea/edit/{id}/add_participant/{username}
-    defaults: { _controller: metaIdeaBundle:Default:addParticipant }
-    requirements:
-        id: \d+
-
-i_remove_participant_to_idea:
-    pattern:  /idea/edit/{id}/remove_participant/{username}
-    defaults: { _controller: metaIdeaBundle:Default:removeParticipant }
-    requirements:
-        id: \d+
-
-# Turn idea to project
+        uid: "[0-9a-zA-Z]*"
 
 i_turn_idea_into_project:
-    pattern:  /idea/projectize/{id}
+    pattern:  /idea/0{uid}/make/project
     defaults: { _controller: metaIdeaBundle:Default:projectize }
     requirements:
-        id: \d+
+        uid: "[0-9a-zA-Z]*"
+
+# /IDEA/COMMENT
+# ---------------
+
+i_show_idea_comment:
+    pattern:  /idea/0{uid}/comment
+    defaults: { _controller: metaIdeaBundle:Default:addIdeaComment }
+    requirements:
+      uid: "[0-9a-zA-Z]*"
+
+# /IDEA/TEAM
+# ---------------
+
+i_add_participant_to_idea:
+    pattern:  /idea/0{uid}/team/add/{username}/participant
+    defaults: { _controller: metaIdeaBundle:Default:addParticipant }
+    requirements:
+        uid: "[0-9a-zA-Z]*"
+
+i_remove_participant_to_idea:
+    pattern:  /idea/0{uid}/team/remove/{username}/participant
+    defaults: { _controller: metaIdeaBundle:Default:removeParticipant }
+    requirements:
+        uid: "[0-9a-zA-Z]*"
+
+# /IDEA/WATCH
+# ---------------
+
+i_watch_idea:
+    pattern:  /idea/0{uid}/watch
+    defaults: { _controller: metaIdeaBundle:Default:watch }
+    requirements:
+        uid: "[0-9a-zA-Z]*"
+
+i_unwatch_idea:
+    pattern:  /idea/0{uid}/unwatch
+    defaults: { _controller: metaIdeaBundle:Default:unwatch }
+    requirements:
+        uid: "[0-9a-zA-Z]*"
+
+# /IDEA/{SUB-ITEM}
+# ---------------
+
+## TIMELINE
+i_show_idea_timeline:
+    pattern:  /idea/0{uid}/timeline/{page}
+    defaults: { _controller: metaIdeaBundle:Default:showTimeline, page: 1 }
+    requirements:
+        uid: "[0-9a-zA-Z]*"
+        page: \d+
+
+## CONCEPT
+i_show_idea_concept:
+    pattern:  /idea/0{uid}/concept
+    defaults: { _controller: metaIdeaBundle:Default:showConceptOrKnowledge, type: 'concept' }
+    requirements:
+        uid: "[0-9a-zA-Z]*"
+
+## KNOWLEDGE
+i_show_idea_knowledge:
+    pattern:  /idea/0{uid}/knowledge
+    defaults: { _controller: metaIdeaBundle:Default:showConceptOrKnowledge, type: 'knowledge' }
+    requirements:
+        uid: "[0-9a-zA-Z]*"
