@@ -204,6 +204,12 @@ parameters:
       filter_groups: [deletions, projects, resources]
       type: project
       icon: trash
+    user_change_project_status:
+      combinable: true
+      displayable: true
+      filter_groups: [updates, projects, general]
+      type: project
+      icon: location-arrow
 # User acting on an idea
     idea_enters_community: # DONE
       combinable: false
