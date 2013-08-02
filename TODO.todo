@@ -12,7 +12,7 @@ Todo - Priorités :
     
  ☐  Faire une passe sur les titles/alt des liens d'éditions (les icon-pencils)
 
- ☐ OpenID
+ ✔ OpenID @done (13-08-02 22:51)
    ☐ Vérifier les inviteToken
 
  ☐ Sur les notifs, quand on clique et qu'elles sont a 0 affichées mettre directement une page présentant les anciennes
@@ -28,12 +28,14 @@ Todo - Priorités :
    ☐ Mettre un quick link pour obtenir le deep link de l'élément sur lequel on se trouve
    ✔ FindOneByID quand on va chercher le projet : warning, ca ne marche plus ! @done (13-07-30 18:16)
 
- ☐ faire une page des projets 'archivés'
+ ✘ faire une page des projets 'archivés' @cancelled (13-08-02 22:50)
    \__ + un bouton 'archiver' par projet
    \__ + demander si archiver une idée apres projectize
    \__ abandonner un projet ? faire un bouton pour ca
+ 
+ ☐ Faire un filtre pour les projets non actifs ou lancés
 
- ✔ Pouvoir quitter un projet quand on est pas seul owner ou quand on est participant @done (13-07-30 19:34)
+ ☐ Translate logs 
 
  ☐ [Eric] Tri des resources dans la vue / resources
 
@@ -184,6 +186,7 @@ Todo - entité "Wiki":
 
 Todo - entité "Project":
 
+ ✔ Pouvoir quitter un projet quand on est pas seul owner ou quand on est participant @done (13-07-30 19:34)
  ✔ Listing : mettre X participants and Y owners ... @done (13-01-24 00:02)
  ✔ Créer un nouveau projet @done (13-01-16 20:51)
  ✔ infos d'un projet : quand pas de skills ne pas afficher le vase ? ou All skills welcome OK @done (13-01-16 21:13)

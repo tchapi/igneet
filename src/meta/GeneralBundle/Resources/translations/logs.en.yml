@@ -27,6 +27,7 @@ logs:
   user_add_resource: "%user% has added the resource %resource% to the project %project%."
   user_update_resource: "%user% has updated the resource %resource% of the project %project%."
   user_delete_resource: "%user% has deleted the resource %resource% of the project %project%."
+  user_change_project_status: "%user% has changed the status of the project %project%"
   idea_enters_community: "%idea% is now part of the community %community%."
   user_transform_idea_in_project: "%user% has created a new project %project% from the idea %idea%."
   user_create_idea: "%user% created a new idea %idea%."

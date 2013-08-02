@@ -205,7 +205,11 @@ class DefaultController extends BaseController
                 $em->flush();
 
                 $logService = $this->container->get('logService');
-                $logService->log($this->getUser(), 'user_update_project_info', $this->base['standardProject'], array());
+                if ($request->request->get('name') != 'status') {
+                    $logService->log($this->getUser(), 'user_update_project_info', $this->base['standardProject'], array());
+                } else {
+                    $logService->log($this->getUser(), 'user_change_project_status', $this->base['standardProject'], array());
+                }
             
             } elseif (count($errors) > 0) {
 
