@@ -127,6 +127,10 @@ class DefaultController extends BaseController
                     $this->base['standardProject']->setHeadline($request->request->get('value'));
                     $objectHasBeenModified = true;
                     break;
+                case 'status':
+                    $this->base['standardProject']->setStatus(intval($request->request->get('value')));
+                    $objectHasBeenModified = true;
+                    break;
                 case 'about':
                     $this->base['standardProject']->setAbout($request->request->get('value'));
                     $deepLinkingService = $this->container->get('deep_linking_extension');

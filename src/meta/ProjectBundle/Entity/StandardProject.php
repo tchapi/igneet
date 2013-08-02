@@ -100,6 +100,13 @@ class StandardProject extends Taggable
     private $about;
 
     /**
+     * @var integer $status
+     *
+     * @ORM\Column(name="status", type="integer")
+     */
+    private $status;
+
+    /**
      * Skills I would need as a project (OWNING SIDE)
      * @ORM\ManyToMany(targetEntity="meta\UserBundle\Entity\Skill", inversedBy="skilledStandardProjects")
      * @ORM\JoinTable(name="StandardProject_need_Skill",
@@ -184,6 +191,8 @@ class StandardProject extends Taggable
 
         $this->community = null; // This project does not belong to any community
         $this->private = false;
+
+        $this->status = 0; // Active
 
     }
 
@@ -988,6 +997,30 @@ class StandardProject extends Taggable
     public function isPrivate()
     {
         return $this->private;
+    }
+
+
+    /**
+     * Set status
+     *
+     * @param integer $status
+     * @return StandardProject
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+    
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return integer 
+     */
+    public function getStatus()
+    {
+        return $this->status;
     }
 
 }

@@ -35,8 +35,11 @@ project:
     watch: "You cannot watch this project."
     unwatch: "You cannot unwatch this project."
     add.participant: "You are not allowed to add a participant or an owner to this project."
-    remove.participant: "You are not allowed to remove a participant or an owner of this project."
-    remove.self: "You cannot remove yourself from a project."
+    public: "You cannot make this project public."
+    private: "You cannot make this project private."
+    remove:
+      participant: "You are not allowed to remove a participant or an owner of this project."
+      self: "You cannot remove yourself from this project."
   nameHelp: "Change the name of this project"
   headlineHelp: "Change the headline of this project"
   headline.emptyText: "Click to add a headline"
@@ -49,9 +52,6 @@ project:
   make:
     public: "make it public"
     private: "make it private"
-  cannot:
-    public: "You cannot make this project public."
-    private: "You cannot make this project private."
   public: "This project is now public."
   private: "This project is now private."
   privateShort: "private"
@@ -79,6 +79,13 @@ project:
     add.owner: "Add an owner"
     owners: "Owners"
     participants: "Participants"
+    status:
+      title: "Status"
+      active: "Active"
+      sleeping: "Sleeping"
+      launched: "Launched"
+      abandonned: "Abandonned"
+    statusHelp: "What is the status of this project?"
   lists:
     title: "Lists"
     not.found: "This list does not exist."

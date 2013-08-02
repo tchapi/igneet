@@ -35,8 +35,11 @@ project:
     watch: "Vous ne pouvez pas vous abonner à ce projet."
     unwatch: "Vous ne pouvez pas vous désabonner de ce projet."
     add.participant: "Vous n'avez pas les droits suffisants pour ajouter un participant ou un propriétaire à ce projet."
-    remove.participant: "Vous n'avez pas les droits suffisants pour retirer un participant ou un propriétaire à ce projet."  
-    remove.self: "Vous ne pouvez pas vous retirer d'un projet."
+    public: "Vous ne pouves pas rendre ce projet public."
+    private: "Vous ne pouvez pas rendre ce projet privé"
+    remove:
+      participant: "Vous n'avez pas les droits suffisants pour retirer un participant ou un propriétaire à ce projet."  
+      self: "Vous ne pouvez pas vous retirer de ce projet."
   nameHelp: "Changer le nom de ce projet"
   headlineHelp: "Changer le slogan de ce projet"
   headline.emptyText: "Cliquez pour ajouter un slogan"
@@ -49,9 +52,6 @@ project:
   make:
     public: "rendre ce projet public"
     private: "rendre ce projet privé"
-  cannot:
-    public: "Vous ne pouves pas rendre ce projet public."
-    private: "Vous ne pouvez pas rendre ce projet privé"
   public: "Ce projet est maintenant public."
   private: "Ce projet est maintenant privé."
   privateShort: "privé"
@@ -79,6 +79,13 @@ project:
     add.owner: "Ajouter un propriétaire"
     owners: "Propriétaires"
     participants: "Participants"
+    status:
+      title: "Statut"
+      active: "Actif"
+      sleeping: "Mis en attente"
+      launched: "Lancé"
+      abandonned: "Abandonné"
+    statusHelp: "Où en est ce projet ?"
   lists:
     title: "Listes"
     not.found: "Cette liste n'existe pas."

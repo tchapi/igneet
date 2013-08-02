@@ -200,7 +200,9 @@ class InfoController extends BaseController
 
             if ($toRemoveParticipantOrOwner && (($toRemoveParticipantOrOwner->isOwning($this->base['standardProject']) && $owner === true) || ($toRemoveParticipantOrOwner->isParticipatingIn($this->base['standardProject']) && $owner !== true)) ) {
 
-                if ($toRemoveParticipantOrOwner != $this->getUser()){
+                if ($toRemoveParticipantOrOwner != $this->getUser() || 
+                    !$this->getUser()->isOwning($this->base['standardProject']) ||
+                    $this->getUser()->isOwning($this->base['standardProject']) && $this->base['standardProject']->countOwners() > 1 ){
 
                     if ($owner === true){
 
@@ -254,4 +256,53 @@ class InfoController extends BaseController
         return $this->redirect($this->generateUrl('p_show_project', array('uid' => $uid)));
     }
 
+    /*
+     * Remove myself as a participant of a project
+     */
+    public function removeMySelfParticipantAction(Request $request, $uid, $username)
+    {
+
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('removeMySelfParticipant', $request->get('token')))
+            return $this->redirect($this->generateUrl('p_show_project', array('uid' => $uid)));
+
+        $this->fetchProjectAndPreComputeRights($uid, false, true);
+
+        if ($this->base != false && !is_null($this->base['standardProject']->getCommunity())) {
+
+            $userRepository = $this->getDoctrine()->getRepository('metaUserBundle:User');
+            $toRemoveParticipantOrOwner = $userRepository->findOneByUsername($username);
+
+            if ($toRemoveParticipantOrOwner && $toRemoveParticipantOrOwner->isParticipatingIn($this->base['standardProject']) ) {
+
+                $toRemoveParticipantOrOwner->removeProjectsParticipatedIn($this->base['standardProject']);
+
+                $this->get('session')->getFlashBag()->add(
+                    'success',
+                    $this->get('translator')->trans('project.remove.participant', array('%user%' =>$toRemoveParticipantOrOwner->getFullName(), '%project%' =>$this->base['standardProject']->getName()))
+                );
+
+                $em = $this->getDoctrine()->getManager();
+                $em->flush();
+
+            } else {
+
+                $this->get('session')->getFlashBag()->add(
+                    'error',
+                    $this->get('translator')->trans('project.user.not.participant')
+                );
+            }
+
+        } else {
+
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $this->get('translator')->trans('project.cannot.remove.participant')
+            );
+
+        }
+        
+        // Redirect to list
+        return $this->redirect($this->generateUrl('p_list_projects'));
+
+    }
 }

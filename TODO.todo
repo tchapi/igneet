@@ -23,17 +23,17 @@ Todo - Priorités :
  ✔ Refaire le système de GUID (sic) @done (13-06-30 21:25)
  ✔ logs avec seulement le name et "identifier" dans "objects" @done (13-06-30 21:25)
 
- ☐ + Deep linking : verifier a l'affichage que l'utilisateur a le droit de voir l'objet deep linké !
+   ☐ + Deep linking : verifier a l'affichage que l'utilisateur a le droit de voir l'objet deep linké !
    Sinon mettre en gras mais ne pas linker avec une icone oeil barré (?)
    ☐ Mettre un quick link pour obtenir le deep link de l'élément sur lequel on se trouve
-   ☐ FindOneByID quand on va chercher le projet : warning, ca ne marche plus !
+   ✔ FindOneByID quand on va chercher le projet : warning, ca ne marche plus ! @done (13-07-30 18:16)
 
  ☐ faire une page des projets 'archivés'
    \__ + un bouton 'archiver' par projet
    \__ + demander si archiver une idée apres projectize
    \__ abandonner un projet ? faire un bouton pour ca
 
- ☐ Pouvoir quitter un projet quand on est pas seul owner ou quand on est participant
+ ✔ Pouvoir quitter un projet quand on est pas seul owner ou quand on est participant @done (13-07-30 19:34)
 
  ☐ [Eric] Tri des resources dans la vue / resources
 
