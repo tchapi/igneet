@@ -26,10 +26,10 @@ class UserRepository extends EntityRepository
 
     return $qb->select('COUNT(u)')
             ->from('metaUserBundle:User', 'u')
-            ->leftJoin('u.communities', 'c')
-            ->leftJoin('u.restrictedCommunities', 'rc')
+            ->leftJoin('u.userCommunities', 'uc')
+            ->leftJoin('uc.community', 'c')
             ->where('u.deleted_at IS NULL')
-            ->andWhere('c = :community OR rc = :community')
+            ->andWhere('c = :community')
             ->setParameter('community', $community)
             ->getQuery()
             ->getSingleScalarResult();
@@ -49,16 +49,15 @@ class UserRepository extends EntityRepository
     $qb = $this->getEntityManager()->createQueryBuilder();
     $query = $qb->select('u')
             ->from('metaUserBundle:User', 'u')
-            ->leftJoin('u.communities', 'c')
-            ->where('u.deleted_at IS NULL');
-
-    if ($findGuests === true){
-        $query->leftJoin('u.restrictedCommunities', 'rc')
-        ->andWhere('c = :community OR rc = :community')
-        ->setParameter('community', $community);
-    } else {
-        $query->andWhere('c = :community')
-        ->setParameter('community', $community);
+            ->leftJoin('u.userCommunities', 'uc')
+            ->leftJoin('uc.community', 'c')
+            ->where('u.deleted_at IS NULL')
+            ->andWhere('c = :community')
+            ->setParameter('community', $community);
+            
+    if ($findGuests !== true){
+      $query->andWhere('uc.guest = :guest')
+            ->setParameter('guest', false);
     }
 
     switch ($sort) {
@@ -99,7 +98,8 @@ class UserRepository extends EntityRepository
 
     return $qb->select('u')
             ->from('metaUserBundle:User', 'u')
-            ->leftJoin('u.communities', 'c')
+            ->leftJoin('u.userCommunities', 'uc')
+            ->leftJoin('uc.community', 'c')
             ->where('u.deleted_at IS NULL')
             ->andWhere('c = :community')
             ->setParameter('community', $community)
@@ -125,7 +125,8 @@ class UserRepository extends EntityRepository
     return $qb->select('u')
             ->from('metaUserBundle:User', 'u')
             ->join('u.following', 'f')
-            ->join('u.communities', 'c')
+            ->leftJoin('u.userCommunities', 'uc')
+            ->join('uc.community', 'c')
             ->where('u.deleted_at IS NULL')
             ->andWhere('f = :user')
             ->setParameter('user', $user)
@@ -150,7 +151,8 @@ class UserRepository extends EntityRepository
     return $qb->select('u')
             ->from('metaUserBundle:User', 'u')
             ->join('u.followers', 'f')
-            ->join('u.communities', 'c')
+            ->leftJoin('u.userCommunities', 'uc')
+            ->join('uc.community', 'c')
             ->where('u.deleted_at IS NULL')
             ->andWhere('f = :user')
             ->setParameter('user', $user)
@@ -174,16 +176,15 @@ class UserRepository extends EntityRepository
 
     $query = $qb->select('u')
             ->from('metaUserBundle:User', 'u')
-            ->leftJoin('u.communities', 'c')
-            ->where('u.deleted_at IS NULL');
-
-    if ($findGuest === true){
-        $query->leftJoin('u.restrictedCommunities', 'rc')
-        ->andWhere('c = :community OR rc = :community')
-        ->setParameter('community', $community);
-    } else {
-        $query->andWhere('c = :community')
-        ->setParameter('community', $community);
+            ->leftJoin('u.userCommunities', 'uc')
+            ->leftJoin('uc.community', 'c')
+            ->where('u.deleted_at IS NULL')
+            ->andWhere('c = :community')
+            ->setParameter('community', $community);
+            
+    if ($findGuests !== true){
+      $query->andWhere('uc.guest = :guest')
+            ->setParameter('guest', false);
     }
 
     $query->andWhere('u.username = :username')

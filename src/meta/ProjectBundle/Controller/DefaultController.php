@@ -47,8 +47,11 @@ class DefaultController extends BaseController
     {
         
         $authenticatedUser = $this->getUser();
+        $community = $authenticatedUser->getCurrentCommunity();
 
-        if ($authenticatedUser->isGuestInCurrentCommunity()){
+        $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true));
+
+        if ($userCommunityGuest){
             $this->get('session')->getFlashBag()->add(
                 'error',
                 $this->get('translator')->trans('guest.community.cannot.do')
@@ -57,7 +60,7 @@ class DefaultController extends BaseController
         }
 
         $project = new StandardProject();
-        $form = $this->createForm(new StandardProjectType(), $project, array( 'translator' => $this->get('translator'), 'isPrivate' => is_null($authenticatedUser->getCurrentCommunity())));
+        $form = $this->createForm(new StandardProjectType(), $project, array( 'translator' => $this->get('translator'), 'isPrivate' => is_null($community)));
 
         if ($request->isMethod('POST')) {
 
@@ -67,8 +70,8 @@ class DefaultController extends BaseController
                 
                 $authenticatedUser->addProjectsOwned($project);
 
-                if (!is_null($authenticatedUser->getCurrentCommunity())){
-                    $authenticatedUser->getCurrentCommunity()->addProject($project);
+                if (!is_null($community)){
+                    $community->addProject($project);
                 } else {
                     $project->setPrivate(true); // When in private space, we force privacy
                 }
@@ -144,7 +147,9 @@ class DefaultController extends BaseController
                         $repository = $this->getDoctrine()->getRepository('metaGeneralBundle:Community\Community');
                         $community = $repository->findOneById($request->request->get('value'));
                         
-                        if ($community && $this->getUser()->belongsTo($community)){
+                        $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $this->getUser()->getId(), 'community' => $community->getId(), 'guest' => false));
+
+                        if ($community && $userCommunity){
                             $community->addProject($this->base['standardProject']);
                             $this->get('session')->getFlashBag()->add(
                                 'success',

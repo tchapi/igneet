@@ -52,6 +52,12 @@ u_show_user_dashboard:
     requirements:
         _method:  GET
 
+u_show_user_settings:
+    pattern:  /settings
+    defaults: { _controller: metaUserBundle:Settings:showSettings }
+    requirements:
+        _method:  GET
+
 u_show_user_notifications:
     pattern:  /notifications/{date}
     defaults: { _controller: metaUserBundle:Default:showNotifications, date: null }
@@ -68,6 +74,12 @@ u_count_user_notifications:
 u_edit_user_profile:
     pattern:  /who/{username}
     defaults: { _controller: metaUserBundle:Default:edit }
+    requirements:
+        _method:  POST
+
+u_edit_user_settings:
+    pattern:  /settings
+    defaults: { _controller: metaUserBundle:Settings:editSettings }
     requirements:
         _method:  POST
 

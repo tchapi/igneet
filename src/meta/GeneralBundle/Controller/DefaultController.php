@@ -144,7 +144,9 @@ class DefaultController extends Controller
             $repository = $this->getDoctrine()->getRepository('metaGeneralBundle:Community\Community');
             $community = $repository->findOneById($communityId);
 
-            if ($community && $this->getUser()->belongsTo($community) && isset($target['slug']) && isset($target['params']) ){
+            $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $this->getUser()->getId(), 'community' => $community->getId(), 'guest' => false));
+
+            if ($community && $userCommunity && isset($target['slug']) && isset($target['params']) ){
 
                 $target['params']['community'] = $communityId;
                 $target['params']['token'] = $request->get('token'); // For CSRF
@@ -208,7 +210,9 @@ class DefaultController extends Controller
         $repository = $this->getDoctrine()->getRepository('metaGeneralBundle:Community\Community');
         $community = $repository->findOneById($id);
 
-        if ($community && ( $this->getUser()->belongsTo($community) || $this->getUser()->isGuestOf($community) ) ){
+        $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $this->getUser()->getId(), 'community' => $community->getId()));
+
+        if ($community && $userCommunity ){
             
             $this->get('session')->getFlashBag()->add(
                 'success',

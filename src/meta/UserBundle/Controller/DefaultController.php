@@ -145,8 +145,11 @@ class DefaultController extends Controller
     {
 
         $authenticatedUser = $this->getUser();
+        $community = $authenticatedUser->getCurrentCommunity();
 
-        if (is_null($authenticatedUser->getCurrentCommunity()) || $authenticatedUser->isGuestInCurrentCommunity() ) {
+        $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true));
+
+        if (is_null($community) || $userCommunityGuest ) {
 
             $this->get('session')->getFlashBag()->add(
                 'error',

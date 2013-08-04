@@ -366,4 +366,27 @@ class WikiPage extends Taggable
         return $this->rank;
     }
 
+
+    /**
+     * Add children
+     *
+     * @param \meta\ProjectBundle\Entity\WikiPage $children
+     * @return WikiPage
+     */
+    public function addChildren(\meta\ProjectBundle\Entity\WikiPage $children)
+    {
+        $this->children[] = $children;
+    
+        return $this;
+    }
+
+    /**
+     * Remove children
+     *
+     * @param \meta\ProjectBundle\Entity\WikiPage $children
+     */
+    public function removeChildren(\meta\ProjectBundle\Entity\WikiPage $children)
+    {
+        $this->children->removeElement($children);
+    }
 }

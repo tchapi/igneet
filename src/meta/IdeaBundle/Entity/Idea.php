@@ -880,4 +880,27 @@ class Idea extends Taggable
         return $this->community;
     }
 
+
+    /**
+     * Add logEntries
+     *
+     * @param \meta\GeneralBundle\Entity\Log\IdeaLogEntry $logEntries
+     * @return Idea
+     */
+    public function addLogEntrie(\meta\GeneralBundle\Entity\Log\IdeaLogEntry $logEntries)
+    {
+        $this->logEntries[] = $logEntries;
+    
+        return $this;
+    }
+
+    /**
+     * Remove logEntries
+     *
+     * @param \meta\GeneralBundle\Entity\Log\IdeaLogEntry $logEntries
+     */
+    public function removeLogEntrie(\meta\GeneralBundle\Entity\Log\IdeaLogEntry $logEntries)
+    {
+        $this->logEntries->removeElement($logEntries);
+    }
 }

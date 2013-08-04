@@ -1,0 +1,69 @@
+{% extends 'metaUserBundle::layout.html.twig' %}
+
+{% block title %}{{ parent() }} > Settings{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  {% javascripts '@metaGeneralBundle/Resources/public/js-edit/bootstrap-editable.js' 
+                 '@metaGeneralBundle/Resources/public/js-edit/editable.behaviour.js'
+          filter='?yui_js' %}
+  <script src="{{ asset_url }}"></script>
+  {% endjavascripts %}
+{% endblock %}
+
+{% block stylesheets %}
+  {{ parent() }}
+  {% stylesheets  'bundles/metageneral/css-edit/bootstrap-editable.css' 
+    filter='?yui_css,cssrewrite' %}
+          <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}" />
+  {% endstylesheets %}
+{% endblock %}
+
+{% block header %}
+  <div class="headerAvatarAndActions">
+    <div class="textAvatar"><i class="icon-wrench"></i></div>
+  </div>
+  <div class="objectHeader">
+    <h2>{{ "Settings"|trans }}</h2>
+    <h4>
+      {{ "All your settings"|trans }}
+    </h4>
+  </div>
+{% endblock %}
+
+{% block content %}
+<section>
+  <div class="sectionTitle">{{ "user.email.title"|trans }} : </div>
+  <div class="users sectionContent">
+    <span class="editable" data-url="{{ path('u_edit_user_settings', {'token': csrf_token('editSettings') }) }}" data-name="email" data-emptytext="{{ "user.email.emptyText"|trans }}" data-type="text" data-title="{{ "user.email.help"|trans }}">{{ app.user.email }}</span>
+  </div>
+</section>
+<section>
+  <div class="sectionTitle">{{ "user.password"|trans }} : </div>
+  <div class="users sectionContent">
+    <a href="{{ path('change_password', {'token': csrf_token('changePassword')} ) }}">{{ "user.passwordChange.title"|trans }}</a>
+  </div>
+</section>
+{% if app.user.communities|length > 0 %}
+<section>
+  <div class="sectionTitle colored">{{ "user.digest.settings"|trans }} : </div>
+  <div class="users sectionContent">
+    <div>{{ "user.digest.frequency"|trans }} : <span class="editable" data-title="{{ "user.digest.frequencyHelp"|trans }}" data-name="frequency" data-type="select" data-url="{{ path('u_edit_user_settings', {'token': csrf_token('editSettings') }) }}" data-source="[{value: 1, text: '{{ "daily"|trans }}'}, {value: 2, text: '{{ "weekly"|trans }}'}, {value: 3, text: '{{ "bimonthly"|trans }}'}]">{{ "daily"|trans }}(ici la frequence actuelle)</span></div>
+    <div><input type="checkbox" id="specificDay"> <label for="specificDay">{{ "user.digest.specificDay"|trans }} :</label> <span class="editable" data-title="{{ "user.digest.specificDayHelp"|trans }}" data-name="day" data-type="select" data-url="{{ path('u_edit_user_settings', {'token': csrf_token('editSettings') }) }}" data-source="[{value: 1, text: '{{ "date.monday.long"|trans }}'},{value: 2, text: '{{ "date.tuesday.long"|trans }}'},{value: 3, text: '{{ "date.wednesday.long"|trans }}'},{value: 4, text: '{{ "date.thursday.long"|trans }}'},{value: 5, text: '{{ "date.friday.long"|trans }}'},{value: 6, text: '{{ "date.saturday.long"|trans }}'},{value: 7, text: '{{ "date.sunday.long"|trans }}'}]">{{ "date.monday.long"|trans }}(ici le jour actuel)</span></div>
+    <div><input type="checkbox" id="specificEmails"> <label for="specificEmails">{{ "user.digest.specificEmails"|trans }} :</label></div>
+    <ul>
+      {% for community in app.user.communities %}
+      <li>{{ community.name }} : <span class="editable" data-url="{{ path('u_edit_user_settings', {'token': csrf_token('editSettings') }) }}" data-name="community_{{ community.id|to_uid }}" data-type="text" data-title="{{ "user.email.community.help"|trans }}" value="{{ app.user.email }}"></li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+{% else %}
+<section>
+  <div class="sectionTitle colored">{{ "user.digest.settings"|trans }} : </div>
+  <div class="users sectionContent">
+    You currently are in no community. You will be able to change your digest settings when you enter one or more communities.
+  </div>
+</section>
+{% endif %}
+{% endblock %}
