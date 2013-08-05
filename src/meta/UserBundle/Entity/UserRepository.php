@@ -182,7 +182,7 @@ class UserRepository extends EntityRepository
             ->andWhere('c = :community')
             ->setParameter('community', $community);
             
-    if ($findGuests !== true){
+    if ($findGuest !== true){
       $query->andWhere('uc.guest = :guest')
             ->setParameter('guest', false);
     }

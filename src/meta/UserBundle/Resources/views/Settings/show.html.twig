@@ -44,7 +44,7 @@
     <a href="{{ path('change_password', {'token': csrf_token('changePassword')} ) }}">{{ "user.passwordChange.title"|trans }}</a>
   </div>
 </section>
-{% if app.user.communities|length > 0 %}
+{% if app.user.userCommunities|length > 0 %}
 <section>
   <div class="sectionTitle colored">{{ "user.digest.settings"|trans }} : </div>
   <div class="users sectionContent">
@@ -52,8 +52,8 @@
     <div><input type="checkbox" id="specificDay"> <label for="specificDay">{{ "user.digest.specificDay"|trans }} :</label> <span class="editable" data-title="{{ "user.digest.specificDayHelp"|trans }}" data-name="day" data-type="select" data-url="{{ path('u_edit_user_settings', {'token': csrf_token('editSettings') }) }}" data-source="[{value: 1, text: '{{ "date.monday.long"|trans }}'},{value: 2, text: '{{ "date.tuesday.long"|trans }}'},{value: 3, text: '{{ "date.wednesday.long"|trans }}'},{value: 4, text: '{{ "date.thursday.long"|trans }}'},{value: 5, text: '{{ "date.friday.long"|trans }}'},{value: 6, text: '{{ "date.saturday.long"|trans }}'},{value: 7, text: '{{ "date.sunday.long"|trans }}'}]">{{ "date.monday.long"|trans }}(ici le jour actuel)</span></div>
     <div><input type="checkbox" id="specificEmails"> <label for="specificEmails">{{ "user.digest.specificEmails"|trans }} :</label></div>
     <ul>
-      {% for community in app.user.communities %}
-      <li>{{ community.name }} : <span class="editable" data-url="{{ path('u_edit_user_settings', {'token': csrf_token('editSettings') }) }}" data-name="community_{{ community.id|to_uid }}" data-type="text" data-title="{{ "user.email.community.help"|trans }}" value="{{ app.user.email }}"></li>
+      {% for userCommunity in app.user.userCommunities %}
+      <li>{{ userCommunity.community.name }} : <span class="editable" data-url="{{ path('u_edit_user_settings', {'token': csrf_token('editSettings') }) }}" data-name="community_{{ userCommunity.community.id|to_uid }}" data-type="text" data-title="{{ "user.email.community.help"|trans }}">{% if userCommunity.email is not null %}{{ userCommunity.email }}{% else %}{{ app.user.email }}{% endif %}</span></li>
       {% endfor %}
     </ul>
   </div>

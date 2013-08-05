@@ -290,7 +290,7 @@ class DefaultController extends Controller
         // In the repository, we make sure we only get logs for the communities the current user can see
         if (count($objects['users']) > 0){
             $baseLogRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\BaseLogEntry');
-            $userLogs = $baseLogRepository->countSocialLogsForUsersInCommunities($objects['users'], $authenticatedUser->getCommunities()->toArray(), $from);
+            $userLogs = $baseLogRepository->countSocialLogsForUsersInCommunitiesOfUser($objects['users'], $authenticatedUser, $from);
         } else {
             $userLogs = 0;
         }
@@ -341,7 +341,7 @@ class DefaultController extends Controller
         // In the repository, we make sure we only get logs for the communities the current user can see
         if (count($objects['users']) > 0){
             $baseLogRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\BaseLogEntry');
-            $userLogs = $baseLogRepository->findSocialLogsForUsersInCommunities($objects['users'], $authenticatedUser->getCommunities()->toArray(), $from);
+            $userLogs = $baseLogRepository->findSocialLogsForUsersInCommunitiesOfUser($objects['users'], $authenticatedUser, $from);
             foreach ($userLogs as $notification) { $notifications[] = array( 'createdAt' => date_create($notification->getCreatedAt()->format('Y-m-d H:i:s')), 'data' => $logService->getHTML($notification) ); }
         }
 

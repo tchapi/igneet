@@ -310,7 +310,23 @@ class User implements AdvancedUserInterface
      * Preferred Language for the user interface
      * @ORM\Column(name="culture", type="string", length=5, nullable=true)
      **/
-    private $preferred_language;
+    private $preferredLanguage;
+
+    /**
+     * @var string $digestFrequency
+     *
+     * @ORM\Column(name="digest_frequency", type="string", length=15, nullable=true)
+     * @Assert\Length(max = 15)
+     */
+    private $digestFrequency;
+
+    /**
+     * @var string $digestDay
+     *
+     * @ORM\Column(name="digest_day", type="string", length=15, nullable=true)
+     * @Assert\Length(max = 15)
+     */
+    private $digestDay;
 
     public function __construct() {
         
@@ -344,7 +360,7 @@ class User implements AdvancedUserInterface
         $this->roles = array('ROLE_USER');
         $this->created_at = $this->last_seen_at = $this->updated_at = $this->last_notified_at = new \DateTime('now');
 
-        $this->preferred_language = "en_US";
+        $this->preferredLanguage = "en_US";
 
     }
 
@@ -1589,26 +1605,26 @@ class User implements AdvancedUserInterface
     }
 
     /**
-     * Set preferred_language
+     * Set preferredLanguage
      *
      * @param string $preferredLanguage
      * @return User
      */
     public function setPreferredLanguage($preferredLanguage)
     {
-        $this->preferred_language = $preferredLanguage;
+        $this->preferredLanguage = $preferredLanguage;
 
         return $this;
     }
 
     /**
-     * Get preferred_language
+     * Get preferredLanguage
      *
      * @return string 
      */
     public function getPreferredLanguage()
     {
-        return $this->preferred_language;
+        return $this->preferredLanguage;
     }
 
     /**

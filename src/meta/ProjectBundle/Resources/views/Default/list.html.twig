@@ -20,41 +20,41 @@
       <a href="{{ path('p_list_projects', {'sort': 'update', 'page' : pagination.page}) }}"><i class="icon-time"></i> {{ "filters.recent"|trans }}</a> - 
       <a href="{{ path('p_list_projects', {'sort': 'alpha', 'page' : pagination.page}) }}"><i class="icon-font"></i> {{ "filters.alpha"|trans }}</a>
     </p>
-    {% if not app.user.isGuestInCurrentCommunity() %}<p><a href="{{ path('p_new_project') }}" class="btn btn-success">{{ "project.new"|trans }}</a></p>{% endif %}
+    {% if not userIsGuest %}<p><a href="{{ path('p_new_project') }}" class="btn btn-success">{{ "project.new"|trans }}</a></p>{% endif %}
   </div>
 {% endblock %}
 
 {% block content %}
-{% if standardProjects %}
-{% for standardProject in standardProjects %}
+{% if projects %}
+{% for project in projects %}
 <section class="listing">
   
-  <a href="{{ path('p_show_project', {'uid': standardProject.id|to_uid }) }}">
-    <img src="{{ asset(standardProject.getPicture()) }}" width="100" height="100"/>
+  <a href="{{ path('p_show_project', {'uid': project.id|to_uid }) }}">
+    <img src="{{ asset(project.getPicture()) }}" width="100" height="100"/>
   </a>
 
   <div class="listingItemInfo">
-    <h4 class="ellipsis"><a href="{{ path('p_show_project', {'uid': standardProject.id|to_uid }) }}">{{ standardProject.name }}</a>{% if standardProject.isPrivate %} ({{ "project.privateShort"|trans }}){% endif %}</h4>
-    <div class="ellipsis">{{ standardProject.headline }}</div>
-    <div class="muted"><i class="icon-calendar"></i> {{ "project.info.created"|trans({'%date%': standardProject.createdAt|date("date.fullFormat"|trans)}) }}</div>
-    <div class="muted"><i class="icon-time"></i> {{ "project.info.updated"|trans({'%date%': standardProject.updatedAt|date("date.fullFormat"|trans)}) }}</div>
+    <h4 class="ellipsis"><a href="{{ path('p_show_project', {'uid': project.id|to_uid }) }}">{{ project.name }}</a>{% if project.isPrivate %} ({{ "project.privateShort"|trans }}){% endif %}</h4>
+    <div class="ellipsis">{{ project.headline }}</div>
+    <div class="muted"><i class="icon-calendar"></i> {{ "project.info.created"|trans({'%date%': project.createdAt|date("date.fullFormat"|trans)}) }}</div>
+    <div class="muted"><i class="icon-time"></i> {{ "project.info.updated"|trans({'%date%': project.updatedAt|date("date.fullFormat"|trans)}) }}</div>
   </div>
 
   <div class="listingItemRelatedObjects">
 
     <div class="type">
       <div class="muted pull-right">
-        {{ "project.owners"|transchoice(standardProject.countOwners, { '%count': standardProject.countOwners}) }}, {{ "project.participants"|transchoice(standardProject.countParticipants, { '%count': standardProject.countParticipants}) }}
+        {{ "project.owners"|transchoice(project.countOwners, { '%count': project.countOwners}) }}, {{ "project.participants"|transchoice(project.countParticipants, { '%count': project.countParticipants}) }}
       </div>
     </div>
 
     <ul>
-      {% if standardProject.countParticipants > 5 %}
+      {% if project.countParticipants > 5 %}
       <li>
         <div class="miniTextAvatar">...</div>
       </li>
       {% endif %}
-      {% for user in standardProject.getRandomParticipantsAndOwners(5) %}
+      {% for user in project.getRandomParticipantsAndOwners(5) %}
         {% if not user.isDeleted %}
         <li>
           <a href="{{ path('u_show_user_profile', {'username': user.username}) }}">

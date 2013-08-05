@@ -11,16 +11,63 @@ use Doctrine\ORM\EntityRepository;
 class StandardProjectRepository extends EntityRepository
 {
 
+  private function getGuestCriteria($community, $user)
+  {
+
+    $guestCriteria = '';
+
+    $qb = $this->getEntityManager()->createQueryBuilder();
+    $guest = $qb->select('uc')
+                    ->from('metaUserBundle:UserCommunity', 'uc')
+                    ->where('uc.user = :user')
+                    ->setParameter('user', $user)
+                    ->andWhere('uc.community = :community')
+                    ->setParameter('community', $community)
+                    ->getQuery()
+                    ->getSingleResult(); // We will always have a single line
+
+    if ($guest->getGuest() === false) {
+      $guestCriteria = 'sp.private = 0 OR ';
+    }
+
+    return $guestCriteria;
+
+  }
+
+  private function getQuery($community, $user)
+  {
+
+    $guestCriteria = $this->getGuestCriteria($community, $user);
+
+    $qb = $this->getEntityManager()->createQueryBuilder();
+    $query = $qb->select('sp')
+            ->from('metaProjectBundle:StandardProject', 'sp')
+            ->join('sp.owners', 'u')
+            ->leftJoin('sp.participants', 'u2')
+            ->where('sp.deleted_at IS NULL')
+            ->andWhere( $guestCriteria .'u = :user OR u2 = :user')
+            ->setParameter('user', $user);
+
+    if ($community === null){
+      $query->andWhere('sp.community IS NULL');
+    } else {
+      $query->andWhere('sp.community = :community')
+            ->setParameter('community', $community);
+    }
+
+    return $query;
+
+  }
+
   /* 
    * Count projects in community for user (taking in account guest, privacy and community)
    */
   public function countProjectsInCommunityForUser($community, $user)
   {
     
-    $guestCriteria = $user->isGuestInCurrentCommunity()?'':'sp.private = 0 OR ';
+    $guestCriteria = $this->getGuestCriteria($community, $user);
 
     $qb = $this->getEntityManager()->createQueryBuilder();
-
     $query = $qb->select('COUNT(DISTINCT sp)')
             ->from('metaProjectBundle:StandardProject', 'sp')
             ->join('sp.owners', 'u')
@@ -47,23 +94,7 @@ class StandardProjectRepository extends EntityRepository
   public function findProjectsInCommunityForUser($community, $user, $page, $maxPerPage, $sort)
   {
 
-    $guestCriteria = $user->isGuestInCurrentCommunity()?'':'sp.private = 0 OR ';
-
-    $qb = $this->getEntityManager()->createQueryBuilder();
-    $query = $qb->select('sp')
-            ->from('metaProjectBundle:StandardProject', 'sp')
-            ->join('sp.owners', 'u')
-            ->leftJoin('sp.participants', 'u2')
-            ->where('sp.deleted_at IS NULL')
-            ->andWhere( $guestCriteria .'u = :user OR u2 = :user')
-            ->setParameter('user', $user);
-
-    if ($community === null){
-      $query->andWhere('sp.community IS NULL');
-    } else {
-      $query->andWhere('sp.community = :community')
-            ->setParameter('community', $community);
-    }
+    $query = $this->getQuery($community, $user);
 
     switch ($sort) {
       case 'newest':
@@ -92,26 +123,11 @@ class StandardProjectRepository extends EntityRepository
   public function findAllProjectsInCommunityForUserOwnedBy($community, $user, $owner)
   {
 
-    $guestCriteria = $user->isGuestInCurrentCommunity()?'':'sp.private = 0 OR ';
+    $query = $this->getQuery($community, $user);
 
-    $qb = $this->getEntityManager()->createQueryBuilder();
-    $query = $qb->select('sp')
-            ->from('metaProjectBundle:StandardProject', 'sp')
-            ->join('sp.owners', 'u')
-            ->leftJoin('sp.participants', 'u2')
-            ->join('sp.owners', 'u3')
-            ->where('sp.deleted_at IS NULL')
-            ->andWhere( $guestCriteria .'u = :user OR u2 = :user')
-            ->setParameter('user', $user)
-            ->andWhere('u3 = :owner')
-            ->setParameter('owner', $owner);
-
-    if ($community === null){
-      $query->andWhere('sp.community IS NULL');
-    } else {
-      $query->andWhere('sp.community = :community')
-            ->setParameter('community', $community);
-    }
+    $query->join('sp.owners', 'u3')
+          ->andWhere('u3 = :owner')
+          ->setParameter('owner', $owner);
 
     return $query
             ->groupBy('sp.id')
@@ -126,26 +142,11 @@ class StandardProjectRepository extends EntityRepository
   public function findAllProjectsInCommunityForUserParticipatedInBy($community, $user, $participant)
   {
 
-    $guestCriteria = $user->isGuestInCurrentCommunity()?'':'sp.private = 0 OR ';
+    $query = $this->getQuery($community, $user);
 
-    $qb = $this->getEntityManager()->createQueryBuilder();
-    $query = $qb->select('sp')
-            ->from('metaProjectBundle:StandardProject', 'sp')
-            ->join('sp.owners', 'u')
-            ->leftJoin('sp.participants', 'u2')
-            ->join('sp.participants', 'u3')
-            ->where('sp.deleted_at IS NULL')
-            ->andWhere( $guestCriteria .'u = :user OR u2 = :user')
-            ->setParameter('user', $user)
-            ->andWhere('u3 = :participant')
-            ->setParameter('participant', $participant);
-
-    if ($community === null){
-      $query->andWhere('sp.community IS NULL');
-    } else {
-      $query->andWhere('sp.community = :community')
-            ->setParameter('community', $community);
-    }
+    $query->join('sp.participants', 'u3')
+          ->andWhere('u3 = :participant')
+          ->setParameter('participant', $participant);
 
     return $query
             ->groupBy('sp.id')
@@ -158,28 +159,17 @@ class StandardProjectRepository extends EntityRepository
    */
   public function findAllProjectsWatchedInCommunityForUser($community, $user)
   {
-    
-    $guestCriteria = $user->isGuestInCurrentCommunity()?'':'sp.private = 0 OR ';
 
-    $qb = $this->getEntityManager()->createQueryBuilder();
-    $query = $qb->select('sp')
-            ->from('metaProjectBundle:StandardProject', 'sp')
-            ->join('sp.owners', 'u')
-            ->leftJoin('sp.participants', 'u2')
-            ->join('sp.watchers', 'u3')
-            ->andWhere('sp.deleted_at IS NULL')
-            ->andWhere( $guestCriteria .'u = :user OR u2 = :user')
-            ->andWhere('u3 = :user')
-            ->setParameter('user', $user);
+    $query = $this->getQuery($community, $user);
+
+    $query->join('sp.watchers', 'u3')
+          ->andWhere('u3 = :user')
+          ->setParameter('user', $user);
 
     if ($community === null){
-      $query->andWhere('sp.community IS NULL')
-            ->join('sp.owners', 'c') // In the private space, it needs to be the user's own project
+      $query->join('sp.owners', 'c') // In the private space, it needs to be the user's own project
             ->andWhere('c = :user')
             ->setParameter('user', $user);;
-    } else {
-      $query->andWhere('sp.community = :community')
-            ->setParameter('community', $community);
     }
 
     return $query
@@ -223,23 +213,7 @@ class StandardProjectRepository extends EntityRepository
   public function findLastProjectsInCommunityForUser($community, $user, $max = 3)
   {
  
-    $guestCriteria = $user->isGuestInCurrentCommunity()?'':'sp.private = 0 OR ';
-
-    $qb = $this->getEntityManager()->createQueryBuilder();
-    $query = $qb->select('sp')
-            ->from('metaProjectBundle:StandardProject', 'sp')
-            ->join('sp.owners', 'u')
-            ->leftJoin('sp.participants', 'u2')
-            ->where('sp.deleted_at IS NULL')
-            ->andWhere( $guestCriteria .'u = :user OR u2 = :user')
-            ->setParameter('user', $user);
-
-    if ($community === null){
-      $query->andWhere('sp.community IS NULL');
-    } else {
-      $query->andWhere('sp.community = :community')
-            ->setParameter('community', $community);
-    }
+    $query = $this->getQuery($community, $user);
 
     return $query->groupBy('sp.id')
             ->orderBy('sp.created_at', 'DESC')

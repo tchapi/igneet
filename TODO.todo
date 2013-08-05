@@ -25,12 +25,6 @@ $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCo
 
 --> marche quand community == null ? PRIVATE SPACE ?
 
-isGuestInCurrentCommunity
---> a retirer du StProjeRepo
-
-getCommunities
---> a retirer
-
  ✔ Refaire le système de GUID (sic) @done (13-06-30 21:25)
    ☐ CommunityId ???
  ✔ logs avec seulement le name et "identifier" dans "objects" @done (13-06-30 21:25)
