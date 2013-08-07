@@ -146,4 +146,15 @@ $(document).ready(function(){
 
     });
 
+    /*
+     * Settings page : trigger display
+     */
+    $('#specificDay').change(function(){
+      $('.specificDayChoice').toggle();
+    });
+
+    $('#specificEmails').change(function(){
+      $('.specificEmailsChoice').toggle();
+    });
+
 });
