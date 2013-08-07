@@ -47,7 +47,7 @@ class DefaultController extends Controller
             $user = $repository->findOneByUsername($username);
             if (!$user || $user->isDeleted()) {
                 throw $this->createNotFoundException($this->get('translator')->trans('user.not.found'));
-            } else if ( $commonCommunity = $user->findCommonCommunity($authenticatedUser) ) {
+            } else if ( $commonCommunity = $repository->findCommonCommunity($authenticatedUser, $user) ) {
                 // Yes ! Switch this authenticated user to the good community
                 $authenticatedUser->setCurrentCommunity($commonCommunity);
                 $em = $this->getDoctrine()->getManager();

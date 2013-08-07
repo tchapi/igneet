@@ -1631,23 +1631,6 @@ class User implements AdvancedUserInterface
     }
 
     /**
-     * User and user have a community in common
-     *
-     * @return \meta\GeneralBundle\Entity\Community\Community
-     */
-    public function findCommonCommunity(\meta\UserBundle\Entity\User $user)
-    {
-        /*
-        foreach ($user->getCommunities() as $community) {
-            if ($this->belongsTo($community)){
-                return $community;
-            }
-        }
-        */
-        return null;
-    }
-
-    /**
      * Set currentCommunity
      *
      * @param \meta\GeneralBundle\Entity\Community\Community $currentCommunity

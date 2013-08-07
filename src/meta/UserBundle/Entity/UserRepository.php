@@ -199,4 +199,30 @@ class UserRepository extends EntityRepository
     return $result;
   }
 
+  /*
+   * Find a community that is common to the two users and returns it (the community!)
+   */
+  public function findCommonCommunity($user1, $user2)
+  {
+
+    $qb = $this->getEntityManager()->createQueryBuilder();
+
+    $query = $qb->select('uc, COUNT(uc.user) as nbCommunities')
+            ->from('metaUserBundle:UserCommunity', 'uc')
+            ->where('uc.user = :user1 OR uc.user = :user2')
+            ->setParameter('user1', $user1)
+            ->setParameter('user2', $user2)
+            ->groupBy('uc.community')
+            ->having('nbCommunities > 1')
+            ->getQuery()
+            ->getResult();
+
+    if (isset($query[0]) && isset($query[0][0])){
+      return $query[0][0]->getCommunity();
+    } else {
+      return null;
+    }
+
+  }
+
 }
