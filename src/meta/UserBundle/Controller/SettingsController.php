@@ -50,6 +50,16 @@ class SettingsController extends Controller
                     $authenticatedUser->setEmail($request->request->get('value'));
                     $objectHasBeenModified = true;
                     break;
+                case 'frequency':
+                    $frequencies = array('daily', 'weekly', 'bimonthly');
+                    $authenticatedUser->setDigestFrequency($frequencies[intval($request->request->get('value')) - 1]);
+                    $objectHasBeenModified = true;
+                    break;
+                case 'day':
+                    $days = array('monday', 'tuesday', 'wednesday', 'thursday', 'friday','saturday', 'sunday');
+                    $authenticatedUser->setDigestDay($days[intval($request->request->get('value')) - 1]);
+                    $objectHasBeenModified = true;
+                    break;
             }
 
             $errors = $this->get('validator')->validate($authenticatedUser);

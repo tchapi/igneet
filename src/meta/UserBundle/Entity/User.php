@@ -362,6 +362,9 @@ class User implements AdvancedUserInterface
 
         $this->preferredLanguage = "en_US";
 
+        $this->digestFrequency="weekly";
+        $this->digestDay=null;
+
     }
 
     public function getLogName()
@@ -1745,5 +1748,49 @@ class User implements AdvancedUserInterface
     public function getUserCommunities()
     {
         return $this->userCommunities;
+    }
+
+    /**
+     * Set digestFrequency
+     *
+     * @param string $digestFrequency
+     * @return User
+     */
+    public function setDigestFrequency($digestFrequency)
+    {
+        $this->digestFrequency = $digestFrequency;
+        return $this;
+    }
+
+    /**
+     * Get digestFrequency
+     *
+     * @return string 
+     */
+    public function getDigestFrequency()
+    {
+        return $this->digestFrequency;
+    }
+
+    /**
+     * Set digestDay
+     *
+     * @param string $digestDay
+     * @return User
+     */
+    public function setDigestDay($digestDay)
+    {
+        $this->digestDay = $digestDay;
+        return $this;
+    }
+
+    /**
+     * Get digestDay
+     *
+     * @return string 
+     */
+    public function getDigestDay()
+    {
+        return $this->digestDay;
     }
 }
