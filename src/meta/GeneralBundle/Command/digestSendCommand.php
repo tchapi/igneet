@@ -24,38 +24,41 @@ class digestSendCommand extends ContainerAwareCommand
       $sendMails = $input->getOption('force');
  
       $today = $this->getActualDay();
-      $output->writeln('Today is : ' . $today);
+      $sendBiMonthlyEmails = $this->isEvenWeek();
+      $sendDefaultDayEmails = $this->isDefaultDay();
 
-      // Get userCommunities that must be sent today
+      $output->writeln('Today is : ' . $today.'.');
 
+      if ($sendBiMonthlyEmails){
+        $output->writeln(' # This week we are sending bi-monthly emails.');
+      }
+
+      if ($sendDefaultDayEmails){
+        $output->writeln(" # It's the default day");
+      }
+
+      // List all users to whom we need to send a digest today
       $userRepository = $this->getContainer()->get('doctrine')->getRepository('metaUserBundle:User');
+      $usersToSendDigestsTo = $userRepository->findUsersWhoNeedDigestOnDay($today, $sendBiMonthlyEmails, $sendDefaultDayEmails);
 
-      //
-      // TODO TODO TODO TODO TODO TODO 
-      // TODO TODO TODO TODO TODO TODO 
-      // TODO TODO TODO TODO TODO TODO 
-      // Attention si digestDay est null !!!!
-      // TODO TODO TODO TODO TODO TODO 
-      // TODO TODO TODO TODO TODO TODO 
-      // TODO TODO TODO TODO TODO TODO 
-      // TODO TODO TODO TODO TODO TODO 
-      // TODO TODO TODO TODO TODO TODO 
-      $usersToSendDigestsTo = $userRepository->findByDigestDay($today);
-
+      // Get the communities, and then the emails
       if ($usersToSendDigestsTo){
+
+        $output->writeln(' # We have to notify ' . count($usersToSendDigestsTo) . ' user(s) today');
+
+        foreach ($usersToSendDigestsTo as $user) {
+          $output->writeln("   - " . $user->getFullName());
+        }
 
         $userCommunityRepository = $this->getContainer()->get('doctrine')->getRepository('metaUserBundle:UserCommunity');
 
-        $output->writeln(' # We have to notify ' . count($userCommunityRepository) . ' today');
-
-        //$userCommunityRepository->find
       } else {
 
         $output->writeln(' # No users to notify today.');
 
       }
 
-      //sendMails();
+      // sendMails();
 
     }
 
@@ -66,4 +69,16 @@ class digestSendCommand extends ContainerAwareCommand
 
     }
 
+    private function isEvenWeek(){
+
+      return (intval(date('W')) % 2 == 0);
+
+    }
+
+    private function isDefaultDay(){
+
+      $defaultDay = $this->getContainer()->getParameter('digest.day');
+      return ($this->getActualDay() == $defaultDay);
+
+    }
 }

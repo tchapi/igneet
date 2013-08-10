@@ -225,4 +225,33 @@ class UserRepository extends EntityRepository
 
   }
 
+  /* 
+   * Find users that should be sent a digest on the date passer
+   */
+  public function findUsersWhoNeedDigestOnDay($dayOfWeek, $isEvenWeek, $isDefaultDay)
+  {
+
+    $qb = $this->getEntityManager()->createQueryBuilder();
+
+    $query = $qb->select('u')
+            ->from('metaUserBundle:User', 'u')
+            ->where('u.deleted_at IS NULL');
+
+    if ($isDefaultDay){
+      $digestDayQueryString = "(u.digestDay = '" . $dayOfWeek . "' OR u.digestDay IS NULL OR u.enableSpecificDay = 0)";
+    } else {
+      $digestDayQueryString = "(u.digestDay = '" . $dayOfWeek . "' AND u.enableSpecificDay = 1)";
+    }
+
+    if ($isEvenWeek){
+      $query->andWhere("u.digestFrequency = 'daily' OR " . $digestDayQueryString) ;
+    } else {
+      $query->andWhere("u.digestFrequency = 'daily' OR ( (u.digestFrequency = 'weekly' OR u.digestFrequency IS NULL) AND " . $digestDayQueryString . ")");
+    }
+   
+    return $query->getQuery()
+                 ->getResult();
+
+  }
+
 }

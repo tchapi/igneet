@@ -111,6 +111,5 @@ parameters:
         en:
             code: en_US
             name: "English"
-    digest:
-        day: "monday"
-        frequency: "weekly"
+    digest.day: "monday"
+    digest.frequency: "weekly"
