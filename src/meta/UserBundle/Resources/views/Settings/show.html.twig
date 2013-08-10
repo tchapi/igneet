@@ -52,23 +52,23 @@
     <div>
       <form class="form-horizontal">
         <label class="checkbox">
-          <input type="checkbox" id="specificDay">
+          <input type="checkbox" id="specificDay" {% if app.user.enableSpecificDay %}checked="checked"{% endif %} data-name="specificDayToggle" data-url="{{ path('u_edit_user_settings', {'token': csrf_token('editSettings') }) }}">
           {{ "user.digest.specificDay"|trans }} : 
         </label>
-        <ul class="specificDayChoice hide"><li><span class="editable" data-title="{{ "user.digest.specificDayHelp"|trans }}" data-name="day" data-type="select" data-url="{{ path('u_edit_user_settings', {'token': csrf_token('editSettings') }) }}" data-source="[{value: 1, text: '{{ "date.monday.long"|trans }}'},{value: 2, text: '{{ "date.tuesday.long"|trans }}'},{value: 3, text: '{{ "date.wednesday.long"|trans }}'},{value: 4, text: '{{ "date.thursday.long"|trans }}'},{value: 5, text: '{{ "date.friday.long"|trans }}'},{value: 6, text: '{{ "date.saturday.long"|trans }}'},{value: 7, text: '{{ "date.sunday.long"|trans }}'}]">{% if app.user.digestDay %}{{ ("date." ~ app.user.digestDay ~ ".long")|trans }}{% else %}{{ "date.monday.long"|trans }}{% endif %}</span></li></ul>
+        <ul class="specificDayChoice {% if not app.user.enableSpecificDay %}hide{% endif %}"><li><span class="editable" data-title="{{ "user.digest.specificDayHelp"|trans }}" data-name="day" data-type="select" data-url="{{ path('u_edit_user_settings', {'token': csrf_token('editSettings') }) }}" data-source="[{value: 1, text: '{{ "date.monday.long"|trans }}'},{value: 2, text: '{{ "date.tuesday.long"|trans }}'},{value: 3, text: '{{ "date.wednesday.long"|trans }}'},{value: 4, text: '{{ "date.thursday.long"|trans }}'},{value: 5, text: '{{ "date.friday.long"|trans }}'},{value: 6, text: '{{ "date.saturday.long"|trans }}'},{value: 7, text: '{{ "date.sunday.long"|trans }}'}]">{% if app.user.digestDay %}{{ ("date." ~ app.user.digestDay ~ ".long")|trans }}{% else %}{{ "date.monday.long"|trans }}{% endif %}</span></li></ul>
       </form>
     </div>
     <div>
       <form class="form-horizontal">
         <label class="checkbox">
-          <input type="checkbox" id="specificEmails">
+          <input type="checkbox" id="specificEmails" {% if app.user.enableSpecificEmails %}checked="checked"{% endif %} data-name="specificEmailsToggle" data-url="{{ path('u_edit_user_settings', {'token': csrf_token('editSettings') }) }}">
           {{ "user.digest.specificEmails"|trans }} :
         </label>
       </form>
     </div>
-    <ul class="specificEmailsChoice hide">
+    <ul class="specificEmailsChoice {% if not app.user.enableSpecificEmails %}hide{% endif %}">
       {% for userCommunity in app.user.userCommunities %}
-      <li>{{ userCommunity.community.name }} : <span class="editable" data-url="{{ path('u_edit_user_settings', {'token': csrf_token('editSettings') }) }}" data-name="community_{{ userCommunity.community.id|to_uid }}" data-type="text" data-title="{{ "user.email.community.help"|trans }}">{% if userCommunity.email is not null %}{{ userCommunity.email }}{% else %}{{ app.user.email }}{% endif %}</span></li>
+      <li>{{ userCommunity.community.name }} : <span class="editable" data-url="{{ path('u_edit_user_settings', {'token': csrf_token('editSettings') }) }}" data-name="community" data-pk="{{ userCommunity.community.id|to_uid }}" data-type="text" data-title="{{ "user.digest.specificEmailsHelp"|trans }}">{% if userCommunity.email is not null %}{{ userCommunity.email }}{% else %}{{ app.user.email }}{% endif %}</span></li>
       {% endfor %}
     </ul>
   </div>

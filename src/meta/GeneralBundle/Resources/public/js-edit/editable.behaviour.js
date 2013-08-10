@@ -151,10 +151,18 @@ $(document).ready(function(){
      */
     $('#specificDay').change(function(){
       $('.specificDayChoice').toggle();
+      $.post($(this).attr('data-url'), {
+        name: $(this).attr('data-name'),
+        value: $(this).is(':checked')?1:0
+      });
     });
 
     $('#specificEmails').change(function(){
       $('.specificEmailsChoice').toggle();
+      $.post($(this).attr('data-url'), {
+        name: $(this).attr('data-name'),
+        value: $(this).is(':checked')?1:0
+      });
     });
 
 });

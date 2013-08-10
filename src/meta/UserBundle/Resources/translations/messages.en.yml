@@ -201,3 +201,4 @@ user:
     specificDayHelp: "Choose a day in the week"
     specificDayChoose: "Indicate which day of the week you would prefer to receive the digest"
     specificEmails: "Choose different emails for different communities digests"
+    specificEmailsHelp: "Change the email for this community digest"

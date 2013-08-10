@@ -201,3 +201,4 @@ user:
     specificDayHelp: "Choisissez un jour de la semaine"
     specificDayChoose: "Indiquez quel jour vous souhaitez recevoir le résumé d'activité"
     specificEmails: "Recevoir les résumés sur différents emails par communauté"
+    specificEmailsHelp: "Changez l'email associé au résumé de cette communauté"

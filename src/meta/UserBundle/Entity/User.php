@@ -321,12 +321,26 @@ class User implements AdvancedUserInterface
     private $digestFrequency;
 
     /**
+     * @var boolean $enableSpecificDay
+     *
+     * @ORM\Column(name="enableSpecificDay", type="boolean", nullable=true)
+     */
+    private $enableSpecificDay;
+
+    /**
      * @var string $digestDay
      *
      * @ORM\Column(name="digest_day", type="string", length=15, nullable=true)
      * @Assert\Length(max = 15)
      */
     private $digestDay;
+
+    /**
+     * @var boolean $enableSpecificEmails
+     *
+     * @ORM\Column(name="enableSpecificEmails", type="boolean", nullable=true)
+     */
+    private $enableSpecificEmails;
 
     public function __construct() {
         
@@ -362,8 +376,11 @@ class User implements AdvancedUserInterface
 
         $this->preferredLanguage = "en_US";
 
-        $this->digestFrequency="weekly";
-        $this->digestDay=null;
+        /* digests by mail */
+        $this->digestFrequency = null;
+        $this->enableSpecificDay = false;
+        $this->digestDay = null;
+        $this->enableSpecificEmails = false;
 
     }
 
@@ -1775,5 +1792,49 @@ class User implements AdvancedUserInterface
     public function getDigestDay()
     {
         return $this->digestDay;
+    }
+
+    /**
+     * Set enableSpecificDay
+     *
+     * @param string $enableSpecificDay
+     * @return User
+     */
+    public function setEnableSpecificDay($enableSpecificDay)
+    {
+        $this->enableSpecificDay = $enableSpecificDay;
+        return $this;
+    }
+
+    /**
+     * Get enableSpecificDay
+     *
+     * @return string 
+     */
+    public function getEnableSpecificDay()
+    {
+        return $this->enableSpecificDay;
+    }
+
+    /**
+     * Set enableSpecificEmails
+     *
+     * @param string $enableSpecificEmails
+     * @return User
+     */
+    public function setEnableSpecificEmails($enableSpecificEmails)
+    {
+        $this->enableSpecificEmails = $enableSpecificEmails;
+        return $this;
+    }
+
+    /**
+     * Get enableSpecificEmails
+     *
+     * @return string 
+     */
+    public function getEnableSpecificEmails()
+    {
+        return $this->enableSpecificEmails;
     }
 }

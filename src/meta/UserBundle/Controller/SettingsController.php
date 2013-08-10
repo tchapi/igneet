@@ -60,9 +60,28 @@ class SettingsController extends Controller
                     $authenticatedUser->setDigestDay($days[intval($request->request->get('value')) - 1]);
                     $objectHasBeenModified = true;
                     break;
+                case 'specificDayToggle':
+                    $authenticatedUser->setEnableSpecificDay(($request->request->get('value') == true));
+                    $objectHasBeenModified = true;
+                    break;
+                case 'specificEmailsToggle':
+                    $authenticatedUser->setEnableSpecificEmails(($request->request->get('value') == true));
+                    $objectHasBeenModified = true;
+                    break;
+                case 'community':
+                    $repository = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity');
+                    $userRepository = $repository->findOneBy(array( 'user' => $authenticatedUser->getId(), 'community' => $this->container->get('uid')->fromUId($request->request->get('pk')) ));
+                    if ($userRepository){
+                        $userRepository->setEmail($request->request->get('value'));
+                        $objectHasBeenModified = true;
+                    }                   
+                    break;
             }
 
             $errors = $this->get('validator')->validate($authenticatedUser);
+            if ( count($errors) == 0 && $userRepository){
+                $errors = $this->get('validator')->validate($userRepository);
+            }
 
             if ($objectHasBeenModified === true && count($errors) == 0){
 
