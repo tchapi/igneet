@@ -938,10 +938,12 @@ class DefaultController extends Controller
         }
 
         // Sort !
-        function build_sorter($key) {
-            return function ($a, $b) use ($key) {
-                return $a[$key]>$b[$key];
-            };
+        if (!function_exists('meta\IdeaBundle\Controller\build_sorter')) {
+            function build_sorter($key) {
+                return function ($a, $b) use ($key) {
+                    return $a[$key]>$b[$key];
+                };
+            }
         }
         usort($history, build_sorter('createdAt'));
         
