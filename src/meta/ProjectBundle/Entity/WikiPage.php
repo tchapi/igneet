@@ -108,9 +108,6 @@ class WikiPage extends Taggable
     {
         return $this->title;
     }
-    public function getLogArgs(){
-        return array( 'id' => $this->id );
-    }
 
     /**
      * Get id

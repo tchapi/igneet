@@ -99,9 +99,6 @@ class CommonList extends Taggable
     {
         return $this->name;
     }
-    public function getLogArgs(){
-        return array( 'id' => $this->id );
-    }
 
     /**
      * Get id

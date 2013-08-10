@@ -361,9 +361,6 @@ class User implements AdvancedUserInterface
     {
         return $this->first_name . " " . $this->last_name;
     }
-    public function getLogArgs(){
-        return array( 'username' => $this->username );
-    }
 
     /* 
 
