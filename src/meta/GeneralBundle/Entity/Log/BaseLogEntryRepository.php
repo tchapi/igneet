@@ -68,7 +68,7 @@ class BaseLogEntryRepository extends EntityRepository
     return $result;
   }
 
-  private function getLogsQuery($users, $user, $from)
+  private function getLogsQuery($users, $from, $user, $community)
   {
 
     // Types of logs we want to see from users we follow :
@@ -76,7 +76,7 @@ class BaseLogEntryRepository extends EntityRepository
 
     $qb = $this->getEntityManager()->createQueryBuilder();
 
-    return $qb->from('metaGeneralBundle:Log\BaseLogEntry', 'l')
+    $query = $qb->from('metaGeneralBundle:Log\BaseLogEntry', 'l')
             ->leftJoin('l.community', 'c')
             ->leftJoin('c.userCommunities', 'uc')
             ->where('l.user IN (:users)')
@@ -90,14 +90,21 @@ class BaseLogEntryRepository extends EntityRepository
             ->andWhere('l.created_at > :from')
             ->setParameter('from', $from)
             ->orderBy('l.created_at', 'DESC');
+    
+    if (!is_null($community)) {
+      $query->andWhere('l.community = :community')
+            ->setParameter('community', $community);
+    }
+
+    return $query;
 
   }
 
 
-  public function findSocialLogsForUsersInCommunitiesOfUser($users, $user, $from)
+  public function findSocialLogsForUsersInCommunitiesOfUser($users, $from, $user, $community = null)
   {
 
-    $query = $this->getLogsQuery($users, $user, $from);
+    $query = $this->getLogsQuery($users, $from, $user, $community);
 
     if ($query === null) {
       return null;
@@ -109,10 +116,10 @@ class BaseLogEntryRepository extends EntityRepository
 
   }
 
-  public function countSocialLogsForUsersInCommunitiesOfUser($users, $user, $from)
+  public function countSocialLogsForUsersInCommunitiesOfUser($users, $from, $user, $community = null)
   {
 
-    $query = $this->getLogsQuery($users, $user, $from);
+    $query = $this->getLogsQuery($users, $from, $user, $community);
 
     if ($query === null) {
       return 0;

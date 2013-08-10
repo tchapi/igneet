@@ -28,11 +28,11 @@ class UserLogEntryRepository extends EntityRepository
 
   }
 
-  private function getLogsQuery($user, $from)
+  private function getLogsQuery($from, $user, $community = null)
   {
     $qb = $this->getEntityManager()->createQueryBuilder();
     
-    return $qb->from('metaGeneralBundle:Log\UserLogEntry', 'l')
+    $query = $qb->from('metaGeneralBundle:Log\UserLogEntry', 'l')
             ->where('l.other_user = :user')
             ->setParameter('user', $user)
             ->andWhere('l.type = :type')
@@ -41,23 +41,30 @@ class UserLogEntryRepository extends EntityRepository
             ->setParameter('from', $from)
             ->orderBy('l.created_at', 'DESC');
 
-  }
+    if (!is_null($community)) {
+      $query->andWhere('l.community = :community')
+            ->setParameter('community', $community);
+    }
 
-  public function findLogsForUser($user, $from) // Effectively, gets all logs related to new followers of $user
-  {
-
-    return $this->getLogsQuery($user, $from)->select('l')
-                                            ->getQuery()
-                                            ->getResult();
+    return $query;
 
   }
 
-  public function countLogsForUser($user, $from) // Effectively, conts all logs related to new followers of $user
+  public function findLogsForUser($from, $user, $community = null) // Effectively, gets all logs related to new followers of $user
   {
 
-    return $this->getLogsQuery($user, $from)->select('COUNT(l)')
-                                            ->getQuery()
-                                            ->getSingleScalarResult();
+    return $this->getLogsQuery($user, $from, $community)->select('l')
+                                                        ->getQuery()
+                                                        ->getResult();
+
+  }
+
+  public function countLogsForUser($from, $user, $community = null) // Effectively, conts all logs related to new followers of $user
+  {
+
+    return $this->getLogsQuery($user, $from, $community)->select('COUNT(l)')
+                                                        ->getQuery()
+                                                        ->getSingleScalarResult();
 
   }
 

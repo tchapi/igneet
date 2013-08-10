@@ -11,7 +11,7 @@ use Doctrine\ORM\EntityRepository;
 class IdeaLogEntryRepository extends EntityRepository
 {
 
-  private function getLogsQuery($ideas, $from, $exceptedUser)
+  private function getLogsQuery($ideas, $from, $exceptedUser, $community)
   {
     $qb = $this->getEntityManager()->createQueryBuilder();
     
@@ -26,22 +26,27 @@ class IdeaLogEntryRepository extends EntityRepository
             ->setParameter('user', $exceptedUser);
     }
     
+    if (!is_null($community)) {
+      $query->andWhere('l.community = :community')
+            ->setParameter('community', $community);
+    }
+
     return $query->orderBy('l.created_at', 'DESC');
   }
 
-  public function findLogsForIdeas($ideas, $from, $exceptedUser = null)
+  public function findLogsForIdeas($ideas, $from, $exceptedUser, $community = null)
   {
 
-    return $this->getLogsQuery($ideas, $from, $exceptedUser)->select('l')
+    return $this->getLogsQuery($ideas, $from, $exceptedUser, $community)->select('l')
                                             ->getQuery()
                                             ->getResult();
 
   }
 
-  public function countLogsForIdeas($ideas, $from, $exceptedUser = null)
+  public function countLogsForIdeas($ideas, $from, $exceptedUser, $community = null)
   {
 
-    return $this->getLogsQuery($ideas, $from, $exceptedUser)->select('COUNT(l)')
+    return $this->getLogsQuery($ideas, $from, $exceptedUser, $community)->select('COUNT(l)')
                                             ->getQuery()
                                             ->getSingleScalarResult();
 

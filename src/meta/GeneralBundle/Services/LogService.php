@@ -220,4 +220,129 @@ class LogService
 
     }
 
+    /*
+     * Helpers for count and get Notifications (DRY-style)
+     */
+    private function getAllObjects($user)
+    {
+
+        // Projects
+        $allProjects = array();
+        foreach ($user->getProjectsWatched() as $project) { $allProjects[] = $project; }
+        foreach ($user->getProjectsOwned() as $project) { $allProjects[] = $project; }
+        foreach ($user->getProjectsParticipatedIn() as $project) { $allProjects[] = $project; }
+
+        // Ideas
+        $allIdeas = array();
+        foreach ($user->getIdeasWatched() as $idea){ $allIdeas[] = $idea; }
+        foreach ($user->getIdeasCreated() as $idea){ $allIdeas[] = $idea; }
+        foreach ($user->getIdeasParticipatedIn() as $idea){ $allIdeas[] = $idea; }
+            
+        // Users
+        $usersFollowed = $user->getFollowing()->toArray();
+
+        return array( 'projects' => $allProjects,
+                      'ideas'   => $allIdeas,
+                      'users'   => $usersFollowed);
+    }
+
+    /*
+     * Count the new notifications for a user
+     * No 'backward' style as per the showNotificationsAction (it's just the count of the new stuff)
+     */
+    public function countNotifications($user, $community = null)
+    {
+
+        $objects = $this->getAllObjects($user);
+        $from = $user->getLastNotifiedAt();
+
+        // Around myself
+        $userLogRepository = $this->em->getRepository('metaGeneralBundle:Log\UserLogEntry');
+        $selfLogs = $userLogRepository->countLogsForUser($from, $user, $community); // New followers of user
+
+        // Fetch logs related to the projects
+        if (count($objects['projects']) > 0){
+            $projectLogRepository = $this->em->getRepository('metaGeneralBundle:Log\StandardProjectLogEntry');
+            $projectLogs = $projectLogRepository->countLogsForProjects($objects['projects'], $from, $user, $community);
+        } else {
+            $projectLogs = 0;
+        }
+        
+        // Fetch all logs related to the ideas
+        if (count($objects['ideas']) > 0){
+            $ideaLogRepository = $this->em->getRepository('metaGeneralBundle:Log\IdeaLogEntry');
+            $ideaLogs = $ideaLogRepository->countLogsForIdeas($objects['ideas'], $from, $user, $community);
+        } else {
+            $ideaLogs = 0;
+        }
+
+        // Fetch all logs related to the users followed (their updates, or if they have created new projects or been added into one)
+        // In the repository, we make sure we only get logs for the communities the current user can see
+        if (count($objects['users']) > 0){
+            $baseLogRepository = $this->em->getRepository('metaGeneralBundle:Log\BaseLogEntry');
+            $userLogs = $baseLogRepository->countSocialLogsForUsersInCommunitiesOfUser($objects['users'], $from, $user, $community);
+        } else {
+            $userLogs = 0;
+        }
+
+        $total = $selfLogs + $projectLogs + $ideaLogs + $userLogs;
+
+        return $total;
+    }
+
+    public function getNotifications($user, $date = null, $community = null)
+    {
+
+        $objects = $this->getAllObjects($user);
+
+        // So let's get the stuff
+        $lastNotified = $user->getLastNotifiedAt();
+        $from = is_null($date)?$lastNotified:date_create($date);
+        
+        // Now get the logs
+        $notifications = array();
+
+        // Around myself
+        $userLogRepository = $this->em->getRepository('metaGeneralBundle:Log\UserLogEntry');
+        $selfLogs = $userLogRepository->findLogsForUser($from, $user, $community); // New followers of user
+        foreach ($selfLogs as $notification) { $notifications[] = array( 'createdAt' => date_create($notification->getCreatedAt()->format('Y-m-d H:i:s')), 'data' => $this->getHTML($notification) ); }
+
+        // Fetch logs related to the projects
+        if (count($objects['projects']) > 0){
+            $projectLogRepository = $this->em->getRepository('metaGeneralBundle:Log\StandardProjectLogEntry');
+            $projectLogs = $projectLogRepository->findLogsForProjects($objects['projects'], $from, $user, $community);
+            foreach ($projectLogs as $notification) { $notifications[] = array( 'createdAt' => date_create($notification->getCreatedAt()->format('Y-m-d H:i:s')), 'data' => $this->getHTML($notification) ); }
+        }
+        
+        // Fetch all logs related to the ideas
+        if (count($objects['ideas']) > 0){
+            $ideaLogRepository = $this->em->getRepository('metaGeneralBundle:Log\IdeaLogEntry');
+            $ideaLogs = $ideaLogRepository->findLogsForIdeas($objects['ideas'], $from, $user, $community);
+            foreach ($ideaLogs as $notification) { $notifications[] = array( 'createdAt' => date_create($notification->getCreatedAt()->format('Y-m-d H:i:s')), 'data' => $this->getHTML($notification) ); }
+        }
+
+        // Fetch all logs related to the users followed (their updates, or if they have created new projects or been added into one)
+        // In the repository, we make sure we only get logs for the communities the current user can see
+        if (count($objects['users']) > 0){
+            $baseLogRepository = $this->em->getRepository('metaGeneralBundle:Log\BaseLogEntry');
+            $userLogs = $baseLogRepository->findSocialLogsForUsersInCommunitiesOfUser($objects['users'], $from, $user, $community);
+            foreach ($userLogs as $notification) { $notifications[] = array( 'createdAt' => date_create($notification->getCreatedAt()->format('Y-m-d H:i:s')), 'data' => $this->getHTML($notification) ); }
+        }
+
+        // Sort !
+        if (!function_exists('meta\GeneralBundle\Services\build_sorter')){
+            function build_sorter($key) {
+                return function ($a, $b) use ($key) {
+                    return $a[$key]<$b[$key];
+                };
+            }
+        }
+        $notifications = array_unique($notifications, SORT_REGULAR);
+        usort($notifications, build_sorter('createdAt'));
+
+        return array('notifications' => $notifications,
+                    'lastNotified' => $lastNotified,
+                    'from' => $from
+                );
+    }
 }

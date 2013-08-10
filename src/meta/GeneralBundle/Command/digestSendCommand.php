@@ -22,6 +22,7 @@ class digestSendCommand extends ContainerAwareCommand
     {
       // Should we really send mails
       $sendMails = $input->getOption('force');
+      $verbose = (OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity());
  
       $today = $this->getActualDay();
       $sendBiMonthlyEmails = $this->isEvenWeek();
@@ -44,13 +45,78 @@ class digestSendCommand extends ContainerAwareCommand
       // Get the communities, and then the emails
       if ($usersToSendDigestsTo){
 
-        $output->writeln(' # We have to notify ' . count($usersToSendDigestsTo) . ' user(s) today');
+        $nbUsers = count($usersToSendDigestsTo);
 
-        foreach ($usersToSendDigestsTo as $user) {
-          $output->writeln("   - " . $user->getFullName());
+        $output->writeln(' # We have to notify ' . $nbUsers . ' user(s) today');
+        $userCommunityRepository = $this->getContainer()->get('doctrine')->getRepository('metaUserBundle:UserCommunity');
+
+        if (!$verbose) {
+          $progress = $this->getHelperSet()->get('progress');
+          $progress->start($output, $nbUsers);
         }
 
-        $userCommunityRepository = $this->getContainer()->get('doctrine')->getRepository('metaUserBundle:UserCommunity');
+        foreach ($usersToSendDigestsTo as $user) {
+
+          if (!$verbose) {
+            $progress->advance();
+          } else {
+            $output->writeln("   - " . $user->getFullName());
+          }
+
+          // Get userCommunity
+          $userCommunities = $userCommunityRepository->findByUser($user);
+
+          if (!($user->getEnableSpecificEmails())){
+          
+            // One mail for all the notifications
+            $nbNotifications = $this->getContainer()->get('logService')->countNotifications($user);
+            $notifications = $this->getContainer()->get('logService')->getNotifications($user);
+            if ($verbose) $output->writeln('     * ' . $nbNotifications . " aggregate notifications to send to " . $user->getEmail());
+
+
+          } else {
+            
+            // For each community, get HTML/Text to put in the mail
+
+            foreach ($userCommunities as $userCommunity) {
+              
+              if ($userCommunity->getGuest()) continue;
+
+              $nbNotifications = $this->getContainer()->get('logService')->countNotifications($user, $userCommunity->getCommunity());
+              $notifications = $this->getContainer()->get('logService')->getNotifications($user, null, $userCommunity->getCommunity());
+              if ($verbose) $output->writeln('     * ' . $userCommunity->getCommunity()->getName() . " : " . $nbNotifications . " notifications to send to " . $userCommunity->getEmail());
+
+            }
+
+          }
+
+          // We have the notifications, send the mail (or not)
+          if ($sendMails && $nbNotifications > 0){
+
+            $message = \Swift_Message::newInstance()
+                ->setSubject($this->get('translator')->trans('user.invitation.mail.subject'))
+                ->setFrom($this->container->getParameter('mailer_from'))
+                ->setReplyTo($user->getEmail())
+                ->setTo($user->getEmail())
+                ->setBody(
+                    $this->renderView(
+                        'metaUserBundle:Mail:invite.mail.html.twig',
+                        array('user' => $authenticatedUser, 'inviteToken' => $token?$token->getToken():null, 'invitee' => ($user && !$user->isDeleted()), 'community' => $community, 'project' => null )
+                    ), 'text/html'
+                );
+            $this->get('mailer')->send($message);
+
+            if ($verbose) $output->writeln('     --> Mail sent');
+
+          } else {
+            
+            if ($verbose) $output->writeln('     --> Mail NOT sent');
+
+          }
+
+        }
+
+        if (!$verbose) $progress->finish();
 
       } else {
 
@@ -58,7 +124,6 @@ class digestSendCommand extends ContainerAwareCommand
 
       }
 
-      // sendMails();
 
     }
 

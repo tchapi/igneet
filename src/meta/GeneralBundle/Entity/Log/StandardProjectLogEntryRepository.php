@@ -11,7 +11,7 @@ use Doctrine\ORM\EntityRepository;
 class StandardProjectLogEntryRepository extends EntityRepository
 {
 
-  private function getLogsQuery($projects, $from, $exceptedUser)
+  private function getLogsQuery($projects, $from, $exceptedUser, $community)
   {
     $qb = $this->getEntityManager()->createQueryBuilder();
     
@@ -26,22 +26,27 @@ class StandardProjectLogEntryRepository extends EntityRepository
             ->setParameter('user', $exceptedUser);
     }
     
+    if (!is_null($community)) {
+      $query->andWhere('l.community = :community')
+            ->setParameter('community', $community);
+    }
+
     return $query->orderBy('l.created_at', 'DESC');
   }
 
-  public function findLogsForProjects($projects, $from, $exceptedUser = null)
+  public function findLogsForProjects($projects, $from, $exceptedUser, $community = null)
   {
 
-    return $this->getLogsQuery($projects, $from, $exceptedUser)->select('l')
+    return $this->getLogsQuery($projects, $from, $exceptedUser, $community)->select('l')
                                             ->getQuery()
                                             ->getResult();
 
   }
 
-  public function countLogsForProjects($projects, $from, $exceptedUser = null)
+  public function countLogsForProjects($projects, $from, $exceptedUser, $community = null)
   {
 
-    return $this->getLogsQuery($projects, $from, $exceptedUser)->select('COUNT(l)')
+    return $this->getLogsQuery($projects, $from, $exceptedUser, $community)->select('COUNT(l)')
                                             ->getQuery()
                                             ->getSingleScalarResult();
 
