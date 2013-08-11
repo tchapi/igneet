@@ -202,3 +202,7 @@ user:
     specificDayChoose: "Indicate which day of the week you would prefer to receive the digest"
     specificEmails: "Choose different emails for different communities digests"
     specificEmailsHelp: "Change the email for this community digest"
+    mail:
+      subject: "What's happening on igneet lately"
+      intro: "This is a digest of the notifications you haven't seen yet for the community %community%."
+      intro.generic: "This is a digest of all the notifications you haven't seen yet on igneet."
