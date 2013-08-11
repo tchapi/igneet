@@ -17,17 +17,26 @@ class StandardProjectRepository extends EntityRepository
     $guestCriteria = '';
 
     $qb = $this->getEntityManager()->createQueryBuilder();
-    $guest = $qb->select('uc')
+    $query = $qb->select('uc')
                     ->from('metaUserBundle:UserCommunity', 'uc')
                     ->where('uc.user = :user')
                     ->setParameter('user', $user)
                     ->andWhere('uc.community = :community')
                     ->setParameter('community', $community)
-                    ->getQuery()
-                    ->getSingleResult(); // We will always have a single line
+                    ->getQuery(); 
 
-    if ($guest->getGuest() === false) {
-      $guestCriteria = 'sp.private = 0 OR ';
+    try {
+
+        $guest = $query->getSingleResult();
+
+        if ($guest->getGuest() === false) {
+          $guestCriteria = 'sp.private = 0 OR ';
+        }
+
+    } catch (\Doctrine\Orm\NoResultException $e) {
+
+        // No community
+
     }
 
     return $guestCriteria;
