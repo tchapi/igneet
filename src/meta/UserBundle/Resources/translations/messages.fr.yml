@@ -203,6 +203,7 @@ user:
     specificDayChoose: "Indiquez quel jour vous souhaitez recevoir le résumé d'activité"
     specificEmails: "Recevoir les résumés sur différents emails par communauté"
     specificEmailsHelp: "Changez l'email associé au résumé de cette communauté"
+    noCommunity: "Vous n'appartenez pour l'instant à aucune communauté. Vous pourrez changer vos paramètres de réception des résumés quand vous ferez parti d'une ou plusieurs communautés."
     mail:
       subject: "Quoi de neuf sur igneet récemment"
       intro: "Voici un résumé de ce que vous avez raté sur igneet depuis votre dernier passage dans la communauté %community%."
