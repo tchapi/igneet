@@ -20,13 +20,8 @@ Todo - Priorités :
 
  ☐ Administration des communautés
 
-$community = $authenticatedUser->getCurrentCommunity();
-$userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true));
-
---> marche quand community == null ? PRIVATE SPACE ?
-
  ✔ Refaire le système de GUID (sic) @done (13-06-30 21:25)
-   ☐ CommunityId ???
+   ✔ CommunityId ??? @done (13-08-11 18:32)
  ✔ logs avec seulement le name et "identifier" dans "objects" @done (13-06-30 21:25)
 
    ☐ + Deep linking : verifier a l'affichage que l'utilisateur a le droit de voir l'objet deep linké !
@@ -41,7 +36,7 @@ $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCo
  
  ☐ Faire un filtre pour les projets non actifs ou lancés
 
- ☐ Translate logs 
+ ☐ Translate logs (tous les logs, juste le fichier a traduire)
 
  ☐ [Eric] Tri des resources dans la vue / resources
 
