@@ -414,8 +414,13 @@ class SecurityController extends Controller
             $this->logLastSeenAt();
 
             $community = $authenticatedUser->getCurrentCommunity();
-            $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true));
-
+            if (is_null($community)){
+                // Private space
+                $userCommunityGuest = true;
+            } else {
+               $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true));
+            }
+            
             return $this->render(
                 'metaUserBundle:Security:_authenticated.html.twig',
                 array('user' => $authenticatedUser, 'isGuest' => ($userCommunityGuest != null) )
