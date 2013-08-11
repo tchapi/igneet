@@ -5,14 +5,14 @@ g_home_community:
     defaults: { _controller: metaGeneralBundle:Home:home }
 
 g_switch_community:
-    pattern: /switch/community/{id}
+    pattern: /switch/community/{uid}
     defaults: { _controller: metaGeneralBundle:Default:switchCommunity }
     requirements:
-      id: \d+
+      uid: "[0-9a-zA-Z]*"
 
 g_switch_private_space:
     pattern: /switch/privatespace
-    defaults: { _controller: metaGeneralBundle:Default:switchCommunity, id: null }
+    defaults: { _controller: metaGeneralBundle:Default:switchCommunity, uid: null }
 
 # Language
 

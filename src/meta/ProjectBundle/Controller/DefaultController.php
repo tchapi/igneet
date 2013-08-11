@@ -34,10 +34,13 @@ class DefaultController extends BaseController
             return $this->redirect($this->generateUrl('p_list_projects', array('sort' => $sort)));
         }
         
-        if (is_null($community)){
-            $userCommunityGuest = true;
-        } else {
+        if (!is_null($community)){
+            
             $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true));
+        
+        } else {
+            
+            $userCommunityGuest = null; // You're not guest in your private space
         }
 
         $projects = $repository->findProjectsInCommunityForUser($community, $authenticatedUser, $page, $maxPerPage, $sort);
@@ -56,14 +59,18 @@ class DefaultController extends BaseController
         $authenticatedUser = $this->getUser();
         $community = $authenticatedUser->getCurrentCommunity();
 
-        $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true));
+        if (!is_null($community)){
+            
+            $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true));
+        
+            if ($userCommunityGuest){
+                $this->get('session')->getFlashBag()->add(
+                    'error',
+                    $this->get('translator')->trans('guest.community.cannot.do')
+                );
+                return $this->redirect($this->generateUrl('p_list_projects'));
+            }
 
-        if ($userCommunityGuest){
-            $this->get('session')->getFlashBag()->add(
-                'error',
-                $this->get('translator')->trans('guest.community.cannot.do')
-            );
-            return $this->redirect($this->generateUrl('p_list_projects'));
         }
 
         $project = new StandardProject();
@@ -152,21 +159,26 @@ class DefaultController extends BaseController
                 case 'community':
                     if ($this->base['standardProject']->getCommunity() === null){ 
                         $repository = $this->getDoctrine()->getRepository('metaGeneralBundle:Community\Community');
-                        $community = $repository->findOneById($request->request->get('value'));
+                        $community = $repository->findOneById($this->container->get('uid')->fromUId($request->request->get('value')));
                         
-                        $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $this->getUser()->getId(), 'community' => $community->getId(), 'guest' => false));
+                        if (!is_null($community)){
+                            
+                            $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $this->getUser()->getId(), 'community' => $community->getId(), 'guest' => false));
 
-                        if ($community && $userCommunity){
-                            $community->addProject($this->base['standardProject']);
-                            $this->get('session')->getFlashBag()->add(
-                                'success',
-                                $this->get('translator')->trans('project.in.community', array( '%community%' => $community->getName()))
-                            );
-                            $logService = $this->container->get('logService');
-                            $logService->log($this->getUser(), 'project_enters_community', $this->base['standardProject'], array( 'community' => array( 'logName' => $community->getLogName(), 'identifier' => $community->getId()) ) );
-                            $objectHasBeenModified = true;
-                            $needsRedirect = true;
+                            if ($userCommunity){
+                                $community->addProject($this->base['standardProject']);
+                                $this->get('session')->getFlashBag()->add(
+                                    'success',
+                                    $this->get('translator')->trans('project.in.community', array( '%community%' => $community->getName()))
+                                );
+                                $logService = $this->container->get('logService');
+                                $logService->log($this->getUser(), 'project_enters_community', $this->base['standardProject'], array( 'community' => array( 'logName' => $community->getLogName(), 'identifier' => $community->getId()) ) );
+                                $objectHasBeenModified = true;
+                            }
                         }
+                        
+                        $needsRedirect = true;
+
                     }
                     break;
                 case 'picture':

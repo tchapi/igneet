@@ -139,18 +139,26 @@ class DefaultController extends Controller
 
         if ($request->isMethod('POST')) {
 
-            $communityId = $request->request->get('value');
+            $communityUId = $request->request->get('value');
 
             $repository = $this->getDoctrine()->getRepository('metaGeneralBundle:Community\Community');
-            $community = $repository->findOneById($communityId);
+            $community = $repository->findOneById($this->container->get('uid')->fromUId($communityUId));
 
-            $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $this->getUser()->getId(), 'community' => $community->getId(), 'guest' => false));
+            if ($community) {
 
-            if ($community && $userCommunity && isset($target['slug']) && isset($target['params']) ){
+                $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $this->getUser()->getId(), 'community' => $community->getId(), 'guest' => false));
 
-                $target['params']['community'] = $communityId;
-                $target['params']['token'] = $request->get('token'); // For CSRF
-                return $this->forward($target['slug'], $target['params']);
+                if ($userCommunity && isset($target['slug']) && isset($target['params']) ){
+
+                    $target['params']['community'] = $community->getId();
+                    $target['params']['token'] = $request->get('token'); // For CSRF
+                    return $this->forward($target['slug'], $target['params']);
+
+                } else {
+
+                    throw $this->createNotFoundException();
+
+                }
 
             } else {
 
@@ -160,10 +168,10 @@ class DefaultController extends Controller
 
         } else {
 
-            $repository = $this->getDoctrine()->getRepository('metaGeneralBundle:Community\Community');
-            $communities = $repository->findAllCommunitiesForUser($this->getUser());
+            $repository = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity');
+            $userCommunities = $repository->findBy(array( 'user' => $this->getUser(), 'guest' => false));
 
-            if (count($communities) == 0 ){
+            if (count($userCommunities) == 0 ){
 
                 $this->get('session')->getFlashBag()->add(
                         'warning',
@@ -173,13 +181,13 @@ class DefaultController extends Controller
                 return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $this->getUser()->getUsername())));
             }
 
-            return $this->render('metaGeneralBundle:Community:chooseCommunity.html.twig', array('communities' => $communities, 'targetAsBase64' => $targetAsBase64, 'token' => $request->get('token')));
+            return $this->render('metaGeneralBundle:Community:chooseCommunity.html.twig', array('userCommunities' => $userCommunities, 'targetAsBase64' => $targetAsBase64, 'token' => $request->get('token')));
 
         }
 
     }
 
-    public function switchCommunityAction(Request $request, $id)
+    public function switchCommunityAction(Request $request, $uid)
     {
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('switchCommunity', $request->get('token'))) {
@@ -192,7 +200,7 @@ class DefaultController extends Controller
             return $this->redirect($this->generateUrl('u_me'));
         }
 
-        if ($id === null){ // Private space
+        if ($uid === null){ // Private space
 
             $this->get('session')->getFlashBag()->add(
                 'success',
@@ -208,25 +216,33 @@ class DefaultController extends Controller
 
         // Or a real community ?
         $repository = $this->getDoctrine()->getRepository('metaGeneralBundle:Community\Community');
-        $community = $repository->findOneById($id);
+        $community = $repository->findOneById($this->container->get('uid')->fromUId($uid));
 
-        $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $this->getUser()->getId(), 'community' => $community->getId()));
-
-        if ($community && $userCommunity ){
+        if ($community) {
             
-            $this->get('session')->getFlashBag()->add(
-                'success',
-                $this->get('translator')->trans('member.in.community', array( '%community%' => $community->getName()))
-            );
+            $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $this->getUser()->getId(), 'community' => $community->getId()));
 
-            $em = $this->getDoctrine()->getManager();
-            $this->getUser()->setCurrentCommunity($community);
-            $em->flush();
+            if ($userCommunity ){
+                
+                $this->get('session')->getFlashBag()->add(
+                    'success',
+                    $this->get('translator')->trans('member.in.community', array( '%community%' => $community->getName()))
+                );
 
-            return $this->redirect($this->generateUrl('g_home_community'));
+                $em = $this->getDoctrine()->getManager();
+                $this->getUser()->setCurrentCommunity($community);
+                $em->flush();
+
+                return $this->redirect($this->generateUrl('g_home_community'));
+
+            } else {
+                
+                throw $this->createNotFoundException($this->get('translator')->trans('community.not.found')); // Which is false, but we should not reveal its existence
+
+            }
 
         } else {
-            
+                
             throw $this->createNotFoundException($this->get('translator')->trans('community.not.found')); // Which is false, but we should not reveal its existence
 
         }

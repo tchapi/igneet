@@ -83,7 +83,7 @@ class SettingsController extends Controller
             }
 
             $errors = $this->get('validator')->validate($authenticatedUser);
-            if ( count($errors) == 0 && $userRepository){
+            if ( count($errors) == 0 && isset($userRepository)){
                 $errors = $this->get('validator')->validate($userRepository);
             }
 
