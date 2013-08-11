@@ -58,8 +58,12 @@ class SecurityController extends Controller
         $authenticatedUser = $this->getUser();
         $community = $authenticatedUser->getCurrentCommunity();
 
-        $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true));
-
+        if (!is_null($community)){
+            $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true));
+        } else {
+            $userCommunityGuest = null;
+        }
+        
         if ( !is_null($community) && !$userCommunityGuest ) {
 
             if ($request->isMethod('POST')) {
@@ -414,11 +418,12 @@ class SecurityController extends Controller
             $this->logLastSeenAt();
 
             $community = $authenticatedUser->getCurrentCommunity();
+
             if (is_null($community)){
-                // Private space
-                $userCommunityGuest = true;
+                // Private space, you're not a guest
+                $userCommunityGuest = null;
             } else {
-               $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true));
+                $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true));
             }
             
             return $this->render(

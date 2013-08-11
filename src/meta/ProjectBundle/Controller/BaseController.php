@@ -40,11 +40,15 @@ class BaseController extends Controller
           throw $this->createNotFoundException($this->get('translator')->trans('project.not.found'));
         }
 
-        $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $authenticatedUser->getCurrentCommunity()->getId(), 'guest' => true));
+        if (!is_null($community)){
+          
+          $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true));
+        
+          // User is guest in community
+          if ($userCommunityGuest && !$isOwning && !$isParticipatingIn){
+              throw $this->createNotFoundException($this->get('translator')->trans('project.not.found'));
+          }
 
-        // User is guest in community
-        if ($userCommunityGuest && !$isOwning && !$isParticipatingIn){
-            throw $this->createNotFoundException($this->get('translator')->trans('project.not.found'));
         }
 
         // Project not in community, we might switch 

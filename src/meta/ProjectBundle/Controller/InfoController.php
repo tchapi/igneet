@@ -52,6 +52,9 @@ class InfoController extends BaseController
       
       $community = $project->getCommunity();
 
+      // No sense in private space
+      if (is_null($community)) return null;
+
       if ($user && !$user->isDeleted()) {
 
           // If the user is already in the community, might be a guest

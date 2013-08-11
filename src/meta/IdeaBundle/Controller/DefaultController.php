@@ -47,11 +47,15 @@ class DefaultController extends Controller
           throw $this->createNotFoundException($this->get('translator')->trans('idea.not.found'));
         }
 
-        $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $authenticatedUser->getCurrentCommunity()->getId(), 'guest' => true));
+        // If we're in a community, check we're not guest
+        if (!is_null($community)){
+            $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true));
+        
+             // User is guest in community
+            if ($userCommunityGuest){
+                throw $this->createNotFoundException($this->get('translator')->trans('idea.not.found'));
+            }
 
-        // User is guest in community
-        if ($userCommunityGuest){
-            throw $this->createNotFoundException($this->get('translator')->trans('idea.not.found'));
         }
 
         // Idea not in community, we might switch 
@@ -70,6 +74,7 @@ class DefaultController extends Controller
 
             } else {
 
+                // $community is not null here, for sure
                 $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => false));
 
                 if ($userCommunity){
@@ -82,6 +87,7 @@ class DefaultController extends Controller
                         $this->get('translator')->trans('community.switch', array( '%community%' => $community->getName()))
                     );
                 } else {
+                    // Impossible to reach ?
                     throw $this->createNotFoundException($this->get('translator')->trans('idea.not.found'));
                 }
             }
@@ -115,11 +121,14 @@ class DefaultController extends Controller
         $authenticatedUser = $this->getUser();
         $community = $authenticatedUser->getCurrentCommunity();
 
-        $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true));
+        if (!is_null($community)){
+            $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true));
+        
+            // User is guest in community
+            if ($userCommunityGuest){
+                throw new AccessDeniedHttpException($this->get('translator')->trans('guest.community.cannot.access'), null);
+            }
 
-        // User is guest in community
-        if ($userCommunityGuest){
-            throw new AccessDeniedHttpException($this->get('translator')->trans('guest.community.cannot.access'), null);
         }
 
         $repository = $this->getDoctrine()->getRepository('metaIdeaBundle:Idea');
@@ -186,16 +195,21 @@ class DefaultController extends Controller
         $authenticatedUser = $this->getUser();
         $community = $authenticatedUser->getCurrentCommunity();
 
-        $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true));
+        if (!is_null($community)){
+            
+            $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true));
+        
+            if ($userCommunityGuest){
+                $this->get('session')->getFlashBag()->add(
+                    'error',
+                    $this->get('translator')->trans('guest.community.cannot.do')
+                );
+                return $this->redirect($this->generateUrl('i_list_ideas'));
+            }
 
-        if ($userCommunityGuest){
-            $this->get('session')->getFlashBag()->add(
-                'error',
-                $this->get('translator')->trans('guest.community.cannot.do')
-            );
-            return $this->redirect($this->generateUrl('i_list_ideas'));
         }
-
+        
+       
         $idea = new Idea();
         $form = $this->createForm(new IdeaType(), $idea, array('allowCreators' => !is_null($community), 'community' => $community, 'translator' => $this->get('translator') ));
 
@@ -272,20 +286,23 @@ class DefaultController extends Controller
                 case 'community':
                     if ($this->base['idea']->getCommunity() === null){ 
                         $repository = $this->getDoctrine()->getRepository('metaGeneralBundle:Community\Community');
-                        $community = $repository->findOneById($request->request->get('value'));
+                        $community = $repository->findOneById($this->get('uid')->fromUId($request->request->get('value')));
                         
-                        $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $this->getUser()->getId(), 'community' => $community->getId(), 'guest' => false));
+                        if (!is_null($community)){
+                           
+                            $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $this->getUser()->getId(), 'community' => $community->getId(), 'guest' => false));
 
-                        if ($community && $userCommunity){
-                            $community->addIdea($this->base['idea']);
-                            $this->get('session')->getFlashBag()->add(
-                                'success',
-                                $this->get('translator')->trans('idea.in.community', array( '%community%' => $community->getName())) 
-                            );
-                            $logService = $this->container->get('logService');
-                            $logService->log($this->getUser(), 'idea_enters_community', $this->base['idea'], array( 'community' => array( 'logName' => $community->getLogName(), 'identifier' => $community->getId() ) ) );
-                            $objectHasBeenModified = true;
-                            $needsRedirect = true;
+                            if ($userCommunity){
+                                $community->addIdea($this->base['idea']);
+                                $this->get('session')->getFlashBag()->add(
+                                    'success',
+                                    $this->get('translator')->trans('idea.in.community', array( '%community%' => $community->getName())) 
+                                );
+                                $logService = $this->container->get('logService');
+                                $logService->log($this->getUser(), 'idea_enters_community', $this->base['idea'], array( 'community' => array( 'logName' => $community->getLogName(), 'identifier' => $community->getId() ) ) );
+                                $objectHasBeenModified = true;
+                                $needsRedirect = true;
+                            }
                         }
                     }
                     break;
@@ -769,11 +786,15 @@ class DefaultController extends Controller
         $authenticatedUser = $this->getUser();
         $community = $authenticatedUser->getCurrentCommunity();
 
-        $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true));
+        if (!is_null($community)){
+            
+            $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true));
+        
+            // User is guest in community
+            if ($userCommunityGuest){
+                throw $this->createNotFoundException($this->get('translator')->trans('idea.not.found'));
+            }
 
-        // User is guest in community
-        if ($userCommunityGuest){
-            throw $this->createNotFoundException($this->get('translator')->trans('idea.not.found'));
         }
 
         // The actually authenticated user now watches the idea with $id
@@ -829,11 +850,15 @@ class DefaultController extends Controller
         $authenticatedUser = $this->getUser();
         $community = $authenticatedUser->getCurrentCommunity();
 
-        $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true));
+        if (!is_null($community)){
+            
+            $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true));
 
-        // User is guest in community
-        if ($userCommunityGuest){
-            throw $this->createNotFoundException($this->get('translator')->trans('idea.not.found'));
+            // User is guest in community
+            if ($userCommunityGuest){
+                throw $this->createNotFoundException($this->get('translator')->trans('idea.not.found'));
+            }
+
         }
 
         // The actually authenticated user now unwatches idea with $id
