@@ -159,7 +159,7 @@ class DefaultController extends BaseController
                 case 'community':
                     if ($this->base['standardProject']->getCommunity() === null){ 
                         $repository = $this->getDoctrine()->getRepository('metaGeneralBundle:Community\Community');
-                        $community = $repository->findOneById($request->request->get('value'));
+                        $community = $repository->findOneById($this->container->get('uid')->fromUId($request->request->get('value')));
                         
                         if (!is_null($community)){
                             
@@ -174,9 +174,10 @@ class DefaultController extends BaseController
                                 $logService = $this->container->get('logService');
                                 $logService->log($this->getUser(), 'project_enters_community', $this->base['standardProject'], array( 'community' => array( 'logName' => $community->getLogName(), 'identifier' => $community->getId()) ) );
                                 $objectHasBeenModified = true;
-                                $needsRedirect = true;
                             }
                         }
+                        
+                        $needsRedirect = true;
 
                     }
                     break;

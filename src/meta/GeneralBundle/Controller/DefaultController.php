@@ -145,7 +145,7 @@ class DefaultController extends Controller
             $community = $repository->findOneById($this->container->get('uid')->fromUId($communityUId));
 
             if ($community) {
-            
+
                 $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $this->getUser()->getId(), 'community' => $community->getId(), 'guest' => false));
 
                 if ($userCommunity && isset($target['slug']) && isset($target['params']) ){
@@ -168,10 +168,10 @@ class DefaultController extends Controller
 
         } else {
 
-            $repository = $this->getDoctrine()->getRepository('metaGeneralBundle:Community\Community');
-            $communities = $repository->findAllCommunitiesForUser($this->getUser());
+            $repository = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity');
+            $userCommunities = $repository->findBy(array( 'user' => $this->getUser(), 'guest' => false));
 
-            if (count($communities) == 0 ){
+            if (count($userCommunities) == 0 ){
 
                 $this->get('session')->getFlashBag()->add(
                         'warning',
@@ -181,7 +181,7 @@ class DefaultController extends Controller
                 return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $this->getUser()->getUsername())));
             }
 
-            return $this->render('metaGeneralBundle:Community:chooseCommunity.html.twig', array('communities' => $communities, 'targetAsBase64' => $targetAsBase64, 'token' => $request->get('token')));
+            return $this->render('metaGeneralBundle:Community:chooseCommunity.html.twig', array('userCommunities' => $userCommunities, 'targetAsBase64' => $targetAsBase64, 'token' => $request->get('token')));
 
         }
 
