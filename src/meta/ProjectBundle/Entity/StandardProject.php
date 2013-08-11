@@ -200,9 +200,6 @@ class StandardProject extends Taggable
     {
         return $this->name;
     }
-    public function getLogArgs(){
-        return array( 'id' => $this->id );
-    }
 
     /**
      * Get id
@@ -1023,4 +1020,27 @@ class StandardProject extends Taggable
         return $this->status;
     }
 
+
+    /**
+     * Add logEntries
+     *
+     * @param \meta\GeneralBundle\Entity\Log\StandardProjectLogEntry $logEntries
+     * @return StandardProject
+     */
+    public function addLogEntrie(\meta\GeneralBundle\Entity\Log\StandardProjectLogEntry $logEntries)
+    {
+        $this->logEntries[] = $logEntries;
+    
+        return $this;
+    }
+
+    /**
+     * Remove logEntries
+     *
+     * @param \meta\GeneralBundle\Entity\Log\StandardProjectLogEntry $logEntries
+     */
+    public function removeLogEntrie(\meta\GeneralBundle\Entity\Log\StandardProjectLogEntry $logEntries)
+    {
+        $this->logEntries->removeElement($logEntries);
+    }
 }

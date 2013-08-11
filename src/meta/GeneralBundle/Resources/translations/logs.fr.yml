@@ -1,6 +1,6 @@
 # En attente de traduction
 logs:
-  user_created: "%user% has just joined us — hooray!"
+  user_created: "%user% has just joined us — hooray!"
   user_update_profile: "%user% has updated its profile."
   user_follow_user: "%user% has started following %other_user%."
   user_enters_community: "%user% is now part of the community %community%."

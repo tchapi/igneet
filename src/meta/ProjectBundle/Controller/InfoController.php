@@ -55,7 +55,10 @@ class InfoController extends BaseController
       if ($user && !$user->isDeleted()) {
 
           // If the user is already in the community, might be a guest
-          if ($user->belongsTo($community) || $user->isGuestOf($community)){
+
+          $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $user->getId(), 'community' => $community->getId()));
+
+          if ($userCommunity){
 
               return $user;
 

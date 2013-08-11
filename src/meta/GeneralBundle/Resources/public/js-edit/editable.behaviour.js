@@ -146,4 +146,31 @@ $(document).ready(function(){
 
     });
 
+    /*
+     * Settings page : trigger display
+     */
+    $('#enableDigest').change(function(){
+      $('.digest').toggle();
+      $.post($(this).attr('data-url'), {
+        name: $(this).attr('data-name'),
+        value: $(this).is(':checked')?1:0
+      });
+    });
+
+    $('#specificDay').change(function(){
+      $('.specificDayChoice').toggle();
+      $.post($(this).attr('data-url'), {
+        name: $(this).attr('data-name'),
+        value: $(this).is(':checked')?1:0
+      });
+    });
+
+    $('#specificEmails').change(function(){
+      $('.specificEmailsChoice').toggle();
+      $.post($(this).attr('data-url'), {
+        name: $(this).attr('data-name'),
+        value: $(this).is(':checked')?1:0
+      });
+    });
+
 });

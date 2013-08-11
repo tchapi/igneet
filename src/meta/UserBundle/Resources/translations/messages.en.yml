@@ -5,7 +5,6 @@ user:
   welcome: "Welcome! This is your profile page, where you can directly edit your information by clicking on the underlined text."
   not.found: "This user does not exist."
   already.taken: "This username is already taken."
-  email.registered: "This email is already registered."
   listHelp: "All the users in the community %community% are listed in this page."
   none: "No users !"
   none.inPrivateSpace: "There are no other users in your private space."
@@ -38,7 +37,7 @@ user:
     emptyText: "Add skills"
   email: 
     title: "Your email"
-    info: "only visible to me"
+    registered: "This email is already registered."
     emptyText: "Click to edit your email"
     help: "Your email"
   headline:
@@ -192,3 +191,19 @@ user:
       subject: "Renew your password"
       body: "Please click on the following link to change your password"
   changedPassword: "Your password was changed successfully."
+  settings:
+    menu: "Settings"
+  digest:
+    settings: "Digest settings"
+    enable: "Enable email digests"
+    frequency: "Frequency"
+    frequencyHelp: "Choose the frequency of digests"
+    specificDay: "Choose my own digest day"
+    specificDayHelp: "Choose a day in the week"
+    specificDayChoose: "Indicate which day of the week you would prefer to receive the digest"
+    specificEmails: "Choose different emails for different communities digests"
+    specificEmailsHelp: "Change the email for this community digest"
+    mail:
+      subject: "What's happening on igneet lately"
+      intro: "This is a digest of the notifications you haven't seen yet for the community %community%."
+      intro.generic: "This is a digest of all the notifications you haven't seen yet on igneet."

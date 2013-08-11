@@ -296,29 +296,58 @@ class User implements AdvancedUserInterface
 
     /**
      * Communities this user is in
-     * @ORM\ManyToMany(targetEntity="meta\GeneralBundle\Entity\Community\Community", inversedBy="users")
-     * @ORM\JoinTable(name="User_belongsTo_Community")
+     * @ORM\OneToMany(targetEntity="meta\UserBundle\Entity\UserCommunity", mappedBy="user")
      **/
-    private $communities;
-
-    /**
-     * Communities this user has access due to projects he's part of
-     * @ORM\ManyToMany(targetEntity="meta\GeneralBundle\Entity\Community\Community", inversedBy="guests")
-     * @ORM\JoinTable(name="User_isGuestIn_Community")
-     **/
-    private $restrictedCommunities;
+    private $userCommunities;
 
     /**
      * Current Community this user is in
      * @ORM\ManyToOne(targetEntity="meta\GeneralBundle\Entity\Community\Community")
      **/
-    private $current_community;
+    private $currentCommunity;
 
     /**
      * Preferred Language for the user interface
      * @ORM\Column(name="culture", type="string", length=5, nullable=true)
      **/
-    private $preferred_language;
+    private $preferredLanguage;
+
+    /**
+     * @var boolean $enableDigest
+     *
+     * @ORM\Column(name="enableDigest", type="boolean", nullable=true)
+     */
+    private $enableDigest;
+
+    /**
+     * @var string $digestFrequency
+     *
+     * @ORM\Column(name="digest_frequency", type="string", length=15, nullable=true)
+     * @Assert\Length(max = 15)
+     */
+    private $digestFrequency;
+
+    /**
+     * @var boolean $enableSpecificDay
+     *
+     * @ORM\Column(name="enableSpecificDay", type="boolean", nullable=true)
+     */
+    private $enableSpecificDay;
+
+    /**
+     * @var string $digestDay
+     *
+     * @ORM\Column(name="digest_day", type="string", length=15, nullable=true)
+     * @Assert\Length(max = 15)
+     */
+    private $digestDay;
+
+    /**
+     * @var boolean $enableSpecificEmails
+     *
+     * @ORM\Column(name="enableSpecificEmails", type="boolean", nullable=true)
+     */
+    private $enableSpecificEmails;
 
     public function __construct() {
         
@@ -344,25 +373,28 @@ class User implements AdvancedUserInterface
 
         $this->createdTokens = new ArrayCollection();
 
-        $this->communities = new ArrayCollection();
-        $this->restrictedCommunities = new ArrayCollection();
-        $current_community = null;
+        $this->userCommunities = new ArrayCollection();
+        $currentCommunity = null;
         
         /* init */
         $this->salt = md5(uniqid(null, true));
         $this->roles = array('ROLE_USER');
         $this->created_at = $this->last_seen_at = $this->updated_at = $this->last_notified_at = new \DateTime('now');
 
-        $this->preferred_language = "en_US";
+        $this->preferredLanguage = "en_US";
+
+        /* digests by mail */
+        $this->enableDigest = false;
+        $this->digestFrequency = null;
+        $this->enableSpecificDay = false;
+        $this->digestDay = null;
+        $this->enableSpecificEmails = false;
 
     }
 
     public function getLogName()
     {
         return $this->first_name . " " . $this->last_name;
-    }
-    public function getLogArgs(){
-        return array( 'username' => $this->username );
     }
 
     /* 
@@ -1598,166 +1630,49 @@ class User implements AdvancedUserInterface
     }
 
     /**
-     * Set preferred_language
+     * Set preferredLanguage
      *
      * @param string $preferredLanguage
      * @return User
      */
     public function setPreferredLanguage($preferredLanguage)
     {
-        $this->preferred_language = $preferredLanguage;
+        $this->preferredLanguage = $preferredLanguage;
 
         return $this;
     }
 
     /**
-     * Get preferred_language
+     * Get preferredLanguage
      *
      * @return string 
      */
     public function getPreferredLanguage()
     {
-        return $this->preferred_language;
+        return $this->preferredLanguage;
     }
 
     /**
-     * Add community
-     * BINDING LOGIC IS DONE IN 'COMMUNITY' CLASS 
-     * @param \meta\GeneralBundle\Entity\Community\Community $community
-     * @return User
-     */
-    public function addCommunity(\meta\GeneralBundle\Entity\Community\Community $community)
-    {
-        $this->communities[] = $community;
-    
-        return $this;
-    }
-
-    /**
-     * Remove community
-     * BINDING LOGIC IS DONE IN 'COMMUNITY' CLASS 
-     * @param \meta\GeneralBundle\Entity\Community\Community $community
-     */
-    public function removeCommunity(\meta\GeneralBundle\Entity\Community\Community $community)
-    {
-        $this->communities->removeElement($community);
-    }
-
-    /**
-     * Get communities
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getCommunities()
-    {
-        return $this->communities;
-    }
-
-
-    /**
-     * Add restricted community
-     * BINDING LOGIC IS DONE IN 'COMMUNITY' CLASS 
-     * @param \meta\GeneralBundle\Entity\Community\Community $community
-     * @return User
-     */
-    public function addRestrictedCommunity(\meta\GeneralBundle\Entity\Community\Community $community)
-    {
-        $this->restrictedCommunities[] = $community;
-    
-        return $this;
-    }
-
-    /**
-     * Remove restricted community
-     * BINDING LOGIC IS DONE IN 'COMMUNITY' CLASS 
-     * @param \meta\GeneralBundle\Entity\Community\Community $community
-     */
-    public function removeRestrictedCommunity(\meta\GeneralBundle\Entity\Community\Community $community)
-    {
-        $this->restrictedCommunities->removeElement($community);
-    }
-
-    /**
-     * Get restricted communities
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getRestrictedCommunities()
-    {
-        return $this->restrictedCommunities;
-    }
-
-    /**
-     * User belongs to a community
-     *
-     * @return boolean
-     */
-    public function belongsTo(\meta\GeneralBundle\Entity\Community\Community $community)
-    {
-        return $this->communities->contains($community);
-    }
-
-    /**
-     * User and user have a community in common
-     *
-     * @return \meta\GeneralBundle\Entity\Community\Community
-     */
-    public function findCommonCommunity(\meta\UserBundle\Entity\User $user)
-    {
-        foreach ($user->getCommunities() as $community) {
-            if ($this->belongsTo($community)){
-                return $community;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * User belongs to a restricted community
-     *
-     * @return boolean
-     */
-    public function isGuestOf(\meta\GeneralBundle\Entity\Community\Community $community)
-    {
-        return $this->restrictedCommunities->contains($community);
-    }
-
-    /**
-     * User belongs to a restricted community
-     *
-     * @return boolean
-     */
-    public function isGuestInCurrentCommunity()
-    {
-        if (is_null($this->current_community)){
-            // Private space
-            return false;
-        }
-
-        return $this->isGuestOf($this->current_community);
-    }
-
-    /**
-     * Set current_community
+     * Set currentCommunity
      *
      * @param \meta\GeneralBundle\Entity\Community\Community $currentCommunity
      * @return User
      */
     public function setCurrentCommunity(\meta\GeneralBundle\Entity\Community\Community $currentCommunity = null)
     {
-        $this->current_community = $currentCommunity;
+        $this->currentCommunity = $currentCommunity;
     
         return $this;
     }
 
     /**
-     * Get current_community
+     * Get currentCommunity
      *
      * @return \meta\GeneralBundle\Entity\Community\Community 
      */
     public function getCurrentCommunity()
     {
-        return $this->current_community;
+        return $this->currentCommunity;
     }
 
     /**
@@ -1806,4 +1721,147 @@ class User implements AdvancedUserInterface
         return $this->last_notified_at;
     }
 
+    /**
+     * Add userCommunity
+     *
+     * BINDING LOGIC IS DONE IN 'COMMUNITY' CLASS 
+     * @param \meta\UserBundle\Entity\UserCommunity $userCommunity
+     * @return User
+     */
+    public function addUserCommunity(\meta\UserBundle\Entity\UserCommunity $userCommunity)
+    {
+        $this->userCommunities[] = $userCommunity;
+    
+        return $this;
+    }
+
+    /**
+     * Remove userCommunity
+     *
+     * @param \meta\UserBundle\Entity\UserCommunity $userCommunity
+     */
+    public function removeUserCommunity(\meta\UserBundle\Entity\UserCommunity $userCommunity)
+    {
+        $this->userCommunities->removeElement($userCommunity);
+    }
+
+    /**
+     * Get userCommunities
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getUserCommunities()
+    {
+        return $this->userCommunities;
+    }
+
+    /**
+     * Set digestFrequency
+     *
+     * @param string $digestFrequency
+     * @return User
+     */
+    public function setDigestFrequency($digestFrequency)
+    {
+        $this->digestFrequency = $digestFrequency;
+        return $this;
+    }
+
+    /**
+     * Get digestFrequency
+     *
+     * @return string 
+     */
+    public function getDigestFrequency()
+    {
+        return $this->digestFrequency;
+    }
+
+    /**
+     * Set digestDay
+     *
+     * @param string $digestDay
+     * @return User
+     */
+    public function setDigestDay($digestDay)
+    {
+        $this->digestDay = $digestDay;
+        return $this;
+    }
+
+    /**
+     * Get digestDay
+     *
+     * @return string 
+     */
+    public function getDigestDay()
+    {
+        return $this->digestDay;
+    }
+
+    /**
+     * Set enableSpecificDay
+     *
+     * @param string $enableSpecificDay
+     * @return User
+     */
+    public function setEnableSpecificDay($enableSpecificDay)
+    {
+        $this->enableSpecificDay = $enableSpecificDay;
+        return $this;
+    }
+
+    /**
+     * Get enableSpecificDay
+     *
+     * @return string 
+     */
+    public function getEnableSpecificDay()
+    {
+        return $this->enableSpecificDay;
+    }
+
+    /**
+     * Set enableSpecificEmails
+     *
+     * @param string $enableSpecificEmails
+     * @return User
+     */
+    public function setEnableSpecificEmails($enableSpecificEmails)
+    {
+        $this->enableSpecificEmails = $enableSpecificEmails;
+        return $this;
+    }
+
+    /**
+     * Get enableSpecificEmails
+     *
+     * @return string 
+     */
+    public function getEnableSpecificEmails()
+    {
+        return $this->enableSpecificEmails;
+    }
+
+    /**
+     * Set enableDigest
+     *
+     * @param string $enableDigest
+     * @return User
+     */
+    public function setEnableDigest($enableDigest)
+    {
+        $this->enableDigest = $enableDigest;
+        return $this;
+    }
+
+    /**
+     * Get enableDigest
+     *
+     * @return string 
+     */
+    public function getEnableDigest()
+    {
+        return $this->enableDigest;
+    }
 }

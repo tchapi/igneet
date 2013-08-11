@@ -40,8 +40,10 @@ class BaseController extends Controller
           throw $this->createNotFoundException($this->get('translator')->trans('project.not.found'));
         }
 
+        $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $authenticatedUser->getCurrentCommunity()->getId(), 'guest' => true));
+
         // User is guest in community
-        if ($authenticatedUser->isGuestInCurrentCommunity() && !$isOwning && !$isParticipatingIn){
+        if ($userCommunityGuest && !$isOwning && !$isParticipatingIn){
             throw $this->createNotFoundException($this->get('translator')->trans('project.not.found'));
         }
 
@@ -61,7 +63,10 @@ class BaseController extends Controller
 
             } else {
 
-              if ($authenticatedUser->belongsTo($community) || ($authenticatedUser->isGuestOf($community) && ($isOwning || $isParticipatingIn)) ){
+              $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => false));
+              $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true));
+
+              if ($userCommunity || ($userCommunityGuest && ($isOwning || $isParticipatingIn)) ){
                   $authenticatedUser->setCurrentCommunity($community);
                   $em = $this->getDoctrine()->getManager();
                   $em->flush();

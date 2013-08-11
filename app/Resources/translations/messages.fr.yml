@@ -4,8 +4,32 @@ date:
   timeline: "j/m"
   today: "Aujourd'hui"
   past.week: "Il y a plus d'une semaine"
+  monday:
+    short: "Lun"
+    long: "Lundi"
+  tuesday:
+    short: "Mar"
+    long: "Mardi"
+  wednesday:
+    short: "Mer"
+    long: "Mercredi"
+  thursday:
+    short: "Jeu"
+    long: "Jeudi"
+  friday:
+    short: "Ven"
+    long: "Vendredi"
+  saturday:
+    short: "Sam"
+    long: "Samedi"
+  sunday:
+    short: "Dim"
+    long: "Dimanche"
 time:
   format: "H:i"
+daily: "Quotidien"
+weekly: "Hebdomadaire"
+bimonthly: "Bi-mensuel"
 timeline.reset.filters: "Effacer les filtres"
 timeline.placeholder: "Filtres optionnels"
 cancel: "Annuler"

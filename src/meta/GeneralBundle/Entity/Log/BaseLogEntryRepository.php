@@ -68,37 +68,43 @@ class BaseLogEntryRepository extends EntityRepository
     return $result;
   }
 
-  private function getLogsQuery($users, $allowedCommunities, $from)
+  private function getLogsQuery($users, $from, $user, $community)
   {
-
-    // He has no community apart from private space => no social logs anyway
-    if (count($allowedCommunities) === 0) {
-      return null;
-    }
 
     // Types of logs we want to see from users we follow :
     $types = array('user_update_profile', 'user_create_project', 'user_create_project_from_idea', 'user_create_idea');
 
     $qb = $this->getEntityManager()->createQueryBuilder();
 
-    return $qb->from('metaGeneralBundle:Log\BaseLogEntry', 'l')
+    $query = $qb->from('metaGeneralBundle:Log\BaseLogEntry', 'l')
+            ->leftJoin('l.community', 'c')
+            ->leftJoin('c.userCommunities', 'uc')
             ->where('l.user IN (:users)')
             ->setParameter('users', $users)
             ->andWhere('l.type IN (:types)')
             ->setParameter('types', $types)
-            ->andWhere('l.community IN (:allowedCommunities)')
-            ->setParameter('allowedCommunities', $allowedCommunities)
+            ->andWhere('uc.user = :user')
+            ->setParameter('user', $user)
+            ->andWhere('uc.guest = :guest')
+            ->setParameter('guest', false)
             ->andWhere('l.created_at > :from')
             ->setParameter('from', $from)
             ->orderBy('l.created_at', 'DESC');
+    
+    if (!is_null($community)) {
+      $query->andWhere('l.community = :community')
+            ->setParameter('community', $community);
+    }
+
+    return $query;
 
   }
 
 
-  public function findSocialLogsForUsersInCommunities($users, $allowedCommunities, $from)
+  public function findSocialLogsForUsersInCommunitiesOfUser($users, $from, $user, $community = null)
   {
 
-    $query = $this->getLogsQuery($users, $allowedCommunities, $from);
+    $query = $this->getLogsQuery($users, $from, $user, $community);
 
     if ($query === null) {
       return null;
@@ -110,10 +116,10 @@ class BaseLogEntryRepository extends EntityRepository
 
   }
 
-  public function countSocialLogsForUsersInCommunities($users, $allowedCommunities, $from)
+  public function countSocialLogsForUsersInCommunitiesOfUser($users, $from, $user, $community = null)
   {
 
-    $query = $this->getLogsQuery($users, $allowedCommunities, $from);
+    $query = $this->getLogsQuery($users, $from, $user, $community);
 
     if ($query === null) {
       return 0;

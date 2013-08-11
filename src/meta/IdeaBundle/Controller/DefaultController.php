@@ -47,8 +47,10 @@ class DefaultController extends Controller
           throw $this->createNotFoundException($this->get('translator')->trans('idea.not.found'));
         }
 
+        $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $authenticatedUser->getCurrentCommunity()->getId(), 'guest' => true));
+
         // User is guest in community
-        if ($authenticatedUser->isGuestInCurrentCommunity()){
+        if ($userCommunityGuest){
             throw $this->createNotFoundException($this->get('translator')->trans('idea.not.found'));
         }
 
@@ -68,7 +70,9 @@ class DefaultController extends Controller
 
             } else {
 
-                if ($authenticatedUser->belongsTo($community)){
+                $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => false));
+
+                if ($userCommunity){
                     $this->getUser()->setCurrentCommunity($community);
                     $em = $this->getDoctrine()->getManager();
                     $em->flush();
@@ -109,10 +113,12 @@ class DefaultController extends Controller
     {
 
         $authenticatedUser = $this->getUser();
-        $community = $authenticatedUser->GetCurrentCommunity();
+        $community = $authenticatedUser->getCurrentCommunity();
+
+        $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true));
 
         // User is guest in community
-        if ($authenticatedUser->isGuestInCurrentCommunity()){
+        if ($userCommunityGuest){
             throw new AccessDeniedHttpException($this->get('translator')->trans('guest.community.cannot.access'), null);
         }
 
@@ -180,7 +186,9 @@ class DefaultController extends Controller
         $authenticatedUser = $this->getUser();
         $community = $authenticatedUser->getCurrentCommunity();
 
-        if ($authenticatedUser->isGuestInCurrentCommunity()){
+        $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true));
+
+        if ($userCommunityGuest){
             $this->get('session')->getFlashBag()->add(
                 'error',
                 $this->get('translator')->trans('guest.community.cannot.do')
@@ -266,7 +274,9 @@ class DefaultController extends Controller
                         $repository = $this->getDoctrine()->getRepository('metaGeneralBundle:Community\Community');
                         $community = $repository->findOneById($request->request->get('value'));
                         
-                        if ($community && $this->getUser()->belongsTo($community)){
+                        $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $this->getUser()->getId(), 'community' => $community->getId(), 'guest' => false));
+
+                        if ($community && $userCommunity){
                             $community->addIdea($this->base['idea']);
                             $this->get('session')->getFlashBag()->add(
                                 'success',
@@ -757,15 +767,18 @@ class DefaultController extends Controller
             return $this->redirect($this->generateUrl('i_show_idea', array('uid' => $uid)));
 
         $authenticatedUser = $this->getUser();
+        $community = $authenticatedUser->getCurrentCommunity();
+
+        $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true));
 
         // User is guest in community
-        if ($authenticatedUser->isGuestInCurrentCommunity()){
+        if ($userCommunityGuest){
             throw $this->createNotFoundException($this->get('translator')->trans('idea.not.found'));
         }
 
         // The actually authenticated user now watches the idea with $id
         $repository = $this->getDoctrine()->getRepository('metaIdeaBundle:Idea');
-        $idea = $repository->findOneByIdInCommunityForUser($this->container->get('uid')->fromUId($uid), $authenticatedUser->getCurrentCommunity(), $authenticatedUser, false);
+        $idea = $repository->findOneByIdInCommunityForUser($this->container->get('uid')->fromUId($uid), $community, $authenticatedUser, false);
 
         if ($idea){
 
@@ -814,15 +827,18 @@ class DefaultController extends Controller
             return $this->redirect($this->generateUrl('i_show_idea', array('uid' => $uid)));
 
         $authenticatedUser = $this->getUser();
+        $community = $authenticatedUser->getCurrentCommunity();
+
+        $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true));
 
         // User is guest in community
-        if ($authenticatedUser->isGuestInCurrentCommunity()){
+        if ($userCommunityGuest){
             throw $this->createNotFoundException($this->get('translator')->trans('idea.not.found'));
         }
 
         // The actually authenticated user now unwatches idea with $id
         $repository = $this->getDoctrine()->getRepository('metaIdeaBundle:Idea');
-        $idea = $repository->findOneByIdInCommunityForUser($this->container->get('uid')->fromUId($uid), $authenticatedUser->getCurrentCommunity(), $authenticatedUser, false);
+        $idea = $repository->findOneByIdInCommunityForUser($this->container->get('uid')->fromUId($uid), $community, $authenticatedUser, false);
 
         if ($idea){
 
@@ -922,10 +938,12 @@ class DefaultController extends Controller
         }
 
         // Sort !
-        function build_sorter($key) {
-            return function ($a, $b) use ($key) {
-                return $a[$key]>$b[$key];
-            };
+        if (!function_exists('meta\IdeaBundle\Controller\build_sorter')) {
+            function build_sorter($key) {
+                return function ($a, $b) use ($key) {
+                    return $a[$key]>$b[$key];
+                };
+            }
         }
         usort($history, build_sorter('createdAt'));
         

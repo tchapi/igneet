@@ -25,18 +25,21 @@ class DefaultController extends BaseController
         $repository = $this->getDoctrine()->getRepository('metaProjectBundle:StandardProject');
 
         $authenticatedUser = $this->getUser();
+        $community = $authenticatedUser->getCurrentCommunity();
 
-        $totalProjects = $repository->countProjectsInCommunityForUser($authenticatedUser->getCurrentCommunity(), $authenticatedUser);
+        $totalProjects = $repository->countProjectsInCommunityForUser($community, $authenticatedUser);
         $maxPerPage = $this->container->getParameter('listings.number_of_items_per_page');
 
         if ( ($page-1) * $maxPerPage > $totalProjects) {
             return $this->redirect($this->generateUrl('p_list_projects', array('sort' => $sort)));
         }
+        
+        $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true));
 
-        $projects = $repository->findProjectsInCommunityForUser($authenticatedUser->getCurrentCommunity(), $authenticatedUser, $page, $maxPerPage, $sort);
+        $projects = $repository->findProjectsInCommunityForUser($community, $authenticatedUser, $page, $maxPerPage, $sort);
 
         $pagination = array( 'page' => $page, 'totalProjects' => $totalProjects);
-        return $this->render('metaProjectBundle:Default:list.html.twig', array('standardProjects' => $projects, 'pagination' => $pagination, 'sort' => $sort));
+        return $this->render('metaProjectBundle:Default:list.html.twig', array('projects' => $projects, 'pagination' => $pagination, 'sort' => $sort, 'userIsGuest' => ($userCommunityGuest !== null)));
 
     }
 
@@ -47,8 +50,11 @@ class DefaultController extends BaseController
     {
         
         $authenticatedUser = $this->getUser();
+        $community = $authenticatedUser->getCurrentCommunity();
 
-        if ($authenticatedUser->isGuestInCurrentCommunity()){
+        $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true));
+
+        if ($userCommunityGuest){
             $this->get('session')->getFlashBag()->add(
                 'error',
                 $this->get('translator')->trans('guest.community.cannot.do')
@@ -57,7 +63,7 @@ class DefaultController extends BaseController
         }
 
         $project = new StandardProject();
-        $form = $this->createForm(new StandardProjectType(), $project, array( 'translator' => $this->get('translator'), 'isPrivate' => is_null($authenticatedUser->getCurrentCommunity())));
+        $form = $this->createForm(new StandardProjectType(), $project, array( 'translator' => $this->get('translator'), 'isPrivate' => is_null($community)));
 
         if ($request->isMethod('POST')) {
 
@@ -67,8 +73,8 @@ class DefaultController extends BaseController
                 
                 $authenticatedUser->addProjectsOwned($project);
 
-                if (!is_null($authenticatedUser->getCurrentCommunity())){
-                    $authenticatedUser->getCurrentCommunity()->addProject($project);
+                if (!is_null($community)){
+                    $community->addProject($project);
                 } else {
                     $project->setPrivate(true); // When in private space, we force privacy
                 }
@@ -144,7 +150,9 @@ class DefaultController extends BaseController
                         $repository = $this->getDoctrine()->getRepository('metaGeneralBundle:Community\Community');
                         $community = $repository->findOneById($request->request->get('value'));
                         
-                        if ($community && $this->getUser()->belongsTo($community)){
+                        $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $this->getUser()->getId(), 'community' => $community->getId(), 'guest' => false));
+
+                        if ($community && $userCommunity){
                             $community->addProject($this->base['standardProject']);
                             $this->get('session')->getFlashBag()->add(
                                 'success',
