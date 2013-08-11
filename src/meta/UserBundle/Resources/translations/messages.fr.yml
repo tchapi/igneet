@@ -195,6 +195,7 @@ user:
     menu: "Paramètres"
   digest:
     settings: "Résumés par mail"
+    enable: "Activer l'envoi de résumés par mail"
     frequency: "Fréquence"
     frequencyHelp: "Choisissez la fréquence des résumés"
     specificDay: "Choisir mon propre jour de réception"

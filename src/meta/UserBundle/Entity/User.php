@@ -313,6 +313,13 @@ class User implements AdvancedUserInterface
     private $preferredLanguage;
 
     /**
+     * @var boolean $enableDigest
+     *
+     * @ORM\Column(name="enableDigest", type="boolean", nullable=true)
+     */
+    private $enableDigest;
+
+    /**
      * @var string $digestFrequency
      *
      * @ORM\Column(name="digest_frequency", type="string", length=15, nullable=true)
@@ -377,6 +384,7 @@ class User implements AdvancedUserInterface
         $this->preferredLanguage = "en_US";
 
         /* digests by mail */
+        $this->enableDigest = false;
         $this->digestFrequency = null;
         $this->enableSpecificDay = false;
         $this->digestDay = null;
@@ -1833,5 +1841,27 @@ class User implements AdvancedUserInterface
     public function getEnableSpecificEmails()
     {
         return $this->enableSpecificEmails;
+    }
+
+    /**
+     * Set enableDigest
+     *
+     * @param string $enableDigest
+     * @return User
+     */
+    public function setEnableDigest($enableDigest)
+    {
+        $this->enableDigest = $enableDigest;
+        return $this;
+    }
+
+    /**
+     * Get enableDigest
+     *
+     * @return string 
+     */
+    public function getEnableDigest()
+    {
+        return $this->enableDigest;
     }
 }

@@ -50,6 +50,10 @@ class SettingsController extends Controller
                     $authenticatedUser->setEmail($request->request->get('value'));
                     $objectHasBeenModified = true;
                     break;
+                case 'digestToggle':
+                    $authenticatedUser->setEnableDigest(($request->request->get('value') == true));
+                    $objectHasBeenModified = true;
+                    break;
                 case 'frequency':
                     $frequencies = array('daily', 'weekly', 'bimonthly');
                     $authenticatedUser->setDigestFrequency($frequencies[intval($request->request->get('value')) - 1]);

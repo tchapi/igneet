@@ -64,7 +64,14 @@ class digestSendCommand extends ContainerAwareCommand
           if (!$verbose) {
             $progress->advance();
           } else {
-            $output->writeln("   - <question>" . $user->getFullName() . "</question>");
+            $output->writeln("   - <info>" . $user->getFullName() . "</info>");
+          }
+
+          if (!($user->getEnableDigest())) {
+
+            if ($verbose) $output->writeln('     --> <error>DOES NOT</error> want digests');
+            continue;
+          
           }
 
           // Get userCommunity

@@ -195,6 +195,7 @@ user:
     menu: "Settings"
   digest:
     settings: "Digest settings"
+    enable: "Enable email digests"
     frequency: "Frequency"
     frequencyHelp: "Choose the frequency of digests"
     specificDay: "Choose my own digest day"
