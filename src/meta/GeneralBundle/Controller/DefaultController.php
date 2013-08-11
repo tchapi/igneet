@@ -142,7 +142,7 @@ class DefaultController extends Controller
             $communityUId = $request->request->get('value');
 
             $repository = $this->getDoctrine()->getRepository('metaGeneralBundle:Community\Community');
-            $community = $repository->findOneById($this->get('uid')->fromUId($communityUId));
+            $community = $repository->findOneById($this->container->get('uid')->fromUId($communityUId));
 
             if ($community) {
             
@@ -216,7 +216,7 @@ class DefaultController extends Controller
 
         // Or a real community ?
         $repository = $this->getDoctrine()->getRepository('metaGeneralBundle:Community\Community');
-        $community = $repository->findOneById($this->get('uid')->fromUId($uid));
+        $community = $repository->findOneById($this->container->get('uid')->fromUId($uid));
 
         if ($community) {
             

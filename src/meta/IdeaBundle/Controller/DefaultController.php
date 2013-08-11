@@ -286,7 +286,7 @@ class DefaultController extends Controller
                 case 'community':
                     if ($this->base['idea']->getCommunity() === null){ 
                         $repository = $this->getDoctrine()->getRepository('metaGeneralBundle:Community\Community');
-                        $community = $repository->findOneById($this->get('uid')->fromUId($request->request->get('value')));
+                        $community = $repository->findOneById($this->container->get('uid')->fromUId($request->request->get('value')));
                         
                         if (!is_null($community)){
                            

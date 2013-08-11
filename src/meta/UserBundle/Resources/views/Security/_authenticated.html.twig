@@ -39,7 +39,7 @@
             <li><a href="{{ path('g_switch_private_space', {'token': csrf_token('switchCommunity') }) }}"><i class="icon-{% if user.currentCommunity is null %}ok{% endif %}"></i> {{ "private.space"|trans }}</a></li>
 
             {% for userCommunity in user.userCommunities %}
-              <li><a href="{{ path('g_switch_community', { 'id': userCommunity.community.id, 'token': csrf_token('switchCommunity') } ) }}"><i class="icon-{% if user.currentCommunity == userCommunity.community %}ok{% endif %}"></i> {{ userCommunity.community.name }}{% if userCommunity.guest %} <i class="icon-lock"></i>{% endif %}</a></li>
+              <li><a href="{{ path('g_switch_community', { 'uid': userCommunity.community.id|to_uid, 'token': csrf_token('switchCommunity') } ) }}"><i class="icon-{% if user.currentCommunity == userCommunity.community %}ok{% endif %}"></i> {{ userCommunity.community.name }}{% if userCommunity.guest %} <i class="icon-lock"></i>{% endif %}</a></li>
             {% endfor %}
 
             {% if user.currentCommunity is not null and not isGuest %}
