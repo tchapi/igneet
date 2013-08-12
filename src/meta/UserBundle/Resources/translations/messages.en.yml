@@ -196,6 +196,7 @@ user:
   digest:
     settings: "Digest settings"
     enable: "Enable email digests"
+    info: "By default, digest emails are sent on late Monday morning, and gather all your unseen notifications on all communities on igneet."
     frequency: "Frequency"
     frequencyHelp: "Choose the frequency of digests"
     specificDay: "Choose my own digest day"

@@ -49,6 +49,9 @@
   <div class="sectionTitle colored">{{ "user.digest.settings"|trans }} : </div>
   <div class="users sectionContent">
     <div>
+      <em>{{ "user.digest.info"|trans }}</em>
+    </div>
+    <div>
       <form class="form-horizontal">
         <label class="checkbox">
           <input type="checkbox" id="enableDigest" {% if app.user.enableDigest %}checked="checked"{% endif %} data-name="digestToggle" data-url="{{ path('u_edit_user_settings', {'token': csrf_token('editSettings') }) }}">

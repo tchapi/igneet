@@ -337,6 +337,7 @@ class LogService
                 };
             }
         }
+        
         $notifications = array_unique($notifications, SORT_REGULAR);
         usort($notifications, build_sorter('createdAt'));
 

@@ -196,6 +196,7 @@ user:
   digest:
     settings: "Résumés par mail"
     enable: "Activer l'envoi de résumés par mail"
+    info: "Par défaut, les résumés sont envoyés les lundi, en fin de matinée, et regroupent l'ensemble des notifications que vous n'avez pas encore vu sur igneet."
     frequency: "Fréquence"
     frequencyHelp: "Choisissez la fréquence des résumés"
     specificDay: "Choisir mon propre jour de réception"
