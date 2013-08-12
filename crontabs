@@ -1,1 +1,1 @@
-00 11 * * * php {CONSOLE} digest:send --verbose --force > /dev/null
+00 11 * * * php [CONSOLE] digest:send --verbose --force > /dev/null
