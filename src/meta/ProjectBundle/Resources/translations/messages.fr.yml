@@ -114,7 +114,9 @@ project:
       deleted: "L'item de liste a été supprimé avec succès."
   resources:
     title: "Ressources"
-    not.found: "Cette ressource n'existe pas existe."
+    not:
+      found: "Cette ressource n'existe pas existe."
+      downloadable: "Le fichier attaché à cette ressource n'a pas pu être trouvé - il a sûrement été supprimé ou bougé."
     titleHelp: "Changer le titre de cette ressource"
     change: "Changer cette ressource"
     delete: "Supprimer cette ressource"

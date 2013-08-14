@@ -341,12 +341,24 @@ class ResourceController extends BaseController
 
             if ($resource && $resource->getOriginalFilename() !== ""){
 
-              $response = new Response();
-              $response->headers->set('Content-type', 'application/octet-stream');
-              $response->headers->set('Content-Disposition', sprintf('attachment; filename="%s"', $resource->getOriginalFilename()));
-              $response->setContent(file_get_contents($resource->getAbsoluteUrlPath()));
+              $content = @file_get_contents($resource->getAbsoluteUrlPath());
 
-              return $response;
+              if ($content == false){
+
+                $this->get('session')->getFlashBag()->add(
+                    'error',
+                    $this->get('translator')->trans('project.resources.not.downloadable')
+                );
+
+              } else {
+
+                  $response = new Response();
+                  $response->headers->set('Content-type', 'application/octet-stream');
+                  $response->headers->set('Content-Disposition', sprintf('attachment; filename="%s"', $resource->getOriginalFilename()));
+                  $response->setContent($content);
+
+                  return $response;
+              }
 
             } else {
 

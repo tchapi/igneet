@@ -114,7 +114,9 @@ project:
       deleted: "Your list item was successfully deleted."
   resources:
     title: "Resources"
-    not.found: "This resource does not exist."
+    not:
+      found: "This resource does not exist."
+      downloadable: "The file associated to this resource could not be found - it may have moved or been deleted."
     titleHelp: "Change the title of this resource"
     change: "Change this resource"
     delete: "Delete this resource"
