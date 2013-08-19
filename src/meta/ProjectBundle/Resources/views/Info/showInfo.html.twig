@@ -94,6 +94,12 @@
 </section>
 {% endif %}
 {% if base.isOwning %}
+<section class="colored info">
+  <div class="sectionTitle">{{ "project.launch"|trans }} : </div>
+  <div class="sectionContent"><a class="btn btn-primary" data-confirm="{{ "project.launchHelp"|trans }}" href="{{ path('p_launch_project', { 'uid': base.standardProject.id|to_uid, 'token': csrf_token('launch') }) }}">{{ "project.launch.button"|trans }}</a></div>
+</section>
+{% endif %}
+{% if base.isOwning %}
 <section class="colored warning">
   <div class="sectionTitle">{{ "project.delete"|trans }} : </div>
   <div class="sectionContent"><a class="btn btn-danger" data-confirm="{{ "project.deleteHelp"|trans }}" href="{{ path('p_delete_project', { 'uid': base.standardProject.id|to_uid, 'token': csrf_token('delete') }) }}">{{ "delete"|trans }}</a> <span class="muted">( <i class="icon-warning-sign"></i> {{ "deleteHelp"|trans }} )</span></div>

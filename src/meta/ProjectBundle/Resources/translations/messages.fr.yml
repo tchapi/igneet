@@ -162,3 +162,6 @@ project:
     mail:
       sent: "Un mail de notification a été envoyé à %mail% en votre nom. Il/elle sera ajouté(e) au projet lors de sa prochaine connexion."
       subject: "Vous avez été invité à rejoindre un projet sur igneet !"
+  launch: "Listes-aide"
+  launch.button: "Ajouter les listes d'aide à ce projet"
+  launchHelp: "Vous êtes sur le point de créer des listes d'accompagnement pour ce projet - êtes-vous sûr ?""
