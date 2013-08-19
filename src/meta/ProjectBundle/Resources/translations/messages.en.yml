@@ -100,6 +100,7 @@ project:
     deleteHelp: "Are you sure you want to delete this list ?"
     created: "Your list %list% was successfully created."
     deleted: "Your list %list% was successfully deleted."
+    done: "Progress : %advance%%"
     items:
       none: "No list item yet !"
       not.found: "This list item does not exist."
@@ -162,3 +163,6 @@ project:
     mail:
       sent: "An invitation was sent to %mail% on your behalf. She/He will be added to the project when she/he signs up."
       subject: "You've been invited to a project on igneet"
+  launch: "Help-lists"
+  launch.button: "Add help lists to this project"
+  launchHelp: "You are about to add help lists to this project - are you sure ?"
