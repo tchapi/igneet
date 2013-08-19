@@ -57,7 +57,7 @@
         <span class="muted date">{{ "project.lists.items.createdAt"|trans({ '%date%': item.createdAt|date("date.format"|trans)}) }}</span>
         <a href="{{ path('p_show_project_listitem_do', {'uid': base.standardProject.id|to_uid, 'list_uid': commonList.id|to_uid, 'item_uid': item.id|to_uid, 'token': csrf_token('toggleCommonListItem') }) }}" title="{{ "project.lists.items.finishHelp"|trans }}"><i class="icon-ok text-success"></i></a>
         {% endif %}
-        <a class="editable-trigger" data-target="listitem-{{ item.id }}" title="{{ "project.lists.items.editHelp"|trans }}"><i class="icon-pencil"></i></a> | 
+        <a class="editable-trigger" data-target="listitem-{{ item.id|to_uid }}" title="{{ "project.lists.items.editHelp"|trans }}"><i class="icon-pencil"></i></a> | 
         <a href="{{ path('p_show_project_listitem_delete', {'uid': base.standardProject.id|to_uid, 'list_uid': commonList.id|to_uid, 'item_uid': item.id|to_uid, 'token': csrf_token('deleteCommonListItem') }) }}" title="{{ "project.lists.items.deleteHelp"|trans }}"><i class="icon-remove text-error"></i></a>
       </div>
       {% endif %}
