@@ -252,7 +252,7 @@ class DefaultController extends Controller
         $authenticatedUser = $this->getUser();
         $logService = $this->container->get('logService');
 
-        $notifications = array_merge(array('user' => $authenticatedUser), $logService->getNotifications($authenticatedUser, $date, null));
+        $notifications = array_merge(array('user' => $authenticatedUser), $logService->getNotifications($authenticatedUser, $date, null, null));
 
         // Lastly, we update the last_notified_at date
         $authenticatedUser->setLastNotifiedAt(new \DateTime('now'));

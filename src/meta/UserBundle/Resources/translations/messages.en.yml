@@ -193,6 +193,8 @@ user:
   changedPassword: "Your password was changed successfully."
   settings:
     menu: "Settings"
+    title: "Settings"
+    help: "All your account settings"
   digest:
     settings: "Digest settings"
     enable: "Enable email digests"

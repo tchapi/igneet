@@ -193,6 +193,8 @@ user:
   changedPassword: "Votre mot de passe a été changé avec succès."
   settings:
     menu: "Paramètres"
+    title: "Paramètres"
+    help: "Tous les paramètres de votre compte"
   digest:
     settings: "Résumés par mail"
     enable: "Activer l'envoi de résumés par mail"
