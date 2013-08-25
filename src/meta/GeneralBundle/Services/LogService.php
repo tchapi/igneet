@@ -101,7 +101,7 @@ class LogService
 
     }
 
-    public function getText($logEntryOrComment)
+    public function getText($logEntryOrComment, $locale = null)
     {
 
         if ( is_null($logEntryOrComment) ) {
@@ -117,13 +117,17 @@ class LogService
             $parameters = $this->getParameters($logEntryOrComment);
 
             // We get the text for the log
-            return $this->translator->trans( "logs." . $logEntryOrComment->getType(), $parameters, 'logs' );
+            if (!is_null($locale)) {
+                return $this->translator->trans( "logs." . $logEntryOrComment->getType(), $parameters, 'logs', $locale);
+            } else {
+                return $this->translator->trans( "logs." . $logEntryOrComment->getType(), $parameters, 'logs' );
+            }
 
         }
 
     }
 
-    public function getHTML($logEntryOrComment)
+    public function getHTML($logEntryOrComment, $locale = null)
     {
 
         if ( is_null($logEntryOrComment) ) {
@@ -136,21 +140,21 @@ class LogService
             $user = $logEntryOrComment->getUser();
             $date = $logEntryOrComment->getCreatedAt();
 
-            return $this->twig->render($this->template_item_comment, array('user' => $user, 'comment' => $logEntryOrComment));
-            
+            return $this->twig->render($this->template_item_comment, array('user' => $user, 'comment' => $logEntryOrComment, 'locale' => $locale));
+
         } else {
 
             $parameters = $this->getParameters($logEntryOrComment);
 
             // We get the formatted text for the log
-            $text = $this->translator->trans( "logs." . $logEntryOrComment->getType(), $parameters, 'logs' );
+            $text = $this->translator->trans( "logs." . $logEntryOrComment->getType(), $parameters, 'logs', $locale );
 
             $date = $logEntryOrComment->getCreatedAt();
             $user = $logEntryOrComment->getUser();
             $combinedCount = $logEntryOrComment->getCombinedCount();
             $icon = $this->log_types[$logEntryOrComment->getType()]['icon'];
 
-            return $this->twig->render($this->template_item, array( 'icon' => $icon, 'user' => $user, 'text' => $text, 'date' => $date, 'combinedCount' => $combinedCount));
+            return $this->twig->render($this->template_item, array( 'icon' => $icon, 'user' => $user, 'text' => $text, 'date' => $date, 'combinedCount' => $combinedCount, 'locale' => $locale));
 
         }
 
@@ -290,7 +294,7 @@ class LogService
         return $total;
     }
 
-    public function getNotifications($user, $date = null, $community = null)
+    public function getNotifications($user, $date = null, $community = null, $locale = null)
     {
 
         $objects = $this->getAllObjects($user);
@@ -305,20 +309,20 @@ class LogService
         // Around myself
         $userLogRepository = $this->em->getRepository('metaGeneralBundle:Log\UserLogEntry');
         $selfLogs = $userLogRepository->findLogsForUser($from, $user, $community); // New followers of user
-        foreach ($selfLogs as $notification) { $notifications[] = array( 'createdAt' => date_create($notification->getCreatedAt()->format('Y-m-d H:i:s')), 'data' => $this->getHTML($notification) ); }
+        foreach ($selfLogs as $notification) { $notifications[] = array( 'createdAt' => date_create($notification->getCreatedAt()->format('Y-m-d H:i:s')), 'data' => $this->getHTML($notification, $locale) ); }
 
         // Fetch logs related to the projects
         if (count($objects['projects']) > 0){
             $projectLogRepository = $this->em->getRepository('metaGeneralBundle:Log\StandardProjectLogEntry');
             $projectLogs = $projectLogRepository->findLogsForProjects($objects['projects'], $from, $user, $community);
-            foreach ($projectLogs as $notification) { $notifications[] = array( 'createdAt' => date_create($notification->getCreatedAt()->format('Y-m-d H:i:s')), 'data' => $this->getHTML($notification) ); }
+            foreach ($projectLogs as $notification) { $notifications[] = array( 'createdAt' => date_create($notification->getCreatedAt()->format('Y-m-d H:i:s')), 'data' => $this->getHTML($notification, $locale) ); }
         }
         
         // Fetch all logs related to the ideas
         if (count($objects['ideas']) > 0){
             $ideaLogRepository = $this->em->getRepository('metaGeneralBundle:Log\IdeaLogEntry');
             $ideaLogs = $ideaLogRepository->findLogsForIdeas($objects['ideas'], $from, $user, $community);
-            foreach ($ideaLogs as $notification) { $notifications[] = array( 'createdAt' => date_create($notification->getCreatedAt()->format('Y-m-d H:i:s')), 'data' => $this->getHTML($notification) ); }
+            foreach ($ideaLogs as $notification) { $notifications[] = array( 'createdAt' => date_create($notification->getCreatedAt()->format('Y-m-d H:i:s')), 'data' => $this->getHTML($notification, $locale) ); }
         }
 
         // Fetch all logs related to the users followed (their updates, or if they have created new projects or been added into one)
@@ -326,7 +330,7 @@ class LogService
         if (count($objects['users']) > 0){
             $baseLogRepository = $this->em->getRepository('metaGeneralBundle:Log\BaseLogEntry');
             $userLogs = $baseLogRepository->findSocialLogsForUsersInCommunitiesOfUser($objects['users'], $from, $user, $community);
-            foreach ($userLogs as $notification) { $notifications[] = array( 'createdAt' => date_create($notification->getCreatedAt()->format('Y-m-d H:i:s')), 'data' => $this->getHTML($notification) ); }
+            foreach ($userLogs as $notification) { $notifications[] = array( 'createdAt' => date_create($notification->getCreatedAt()->format('Y-m-d H:i:s')), 'data' => $this->getHTML($notification, $locale) ); }
         }
 
         // Sort !

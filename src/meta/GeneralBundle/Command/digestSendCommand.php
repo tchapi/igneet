@@ -61,10 +61,12 @@ class digestSendCommand extends ContainerAwareCommand
 
         foreach ($usersToSendDigestsTo as $user) {
 
+          $locale = $user->getPreferredLanguage();
+
           if (!$verbose) {
             $progress->advance();
           } else {
-            $output->writeln("   - <info>" . $user->getFullName() . "</info>");
+            $output->writeln("   - <info>" . $user->getFullName() . "</info> (Locale : " . $locale . ")");
           }
 
           if (!($user->getEnableDigest())) {
@@ -73,6 +75,7 @@ class digestSendCommand extends ContainerAwareCommand
             continue;
           
           }
+
 
           // Get userCommunity
           $userCommunities = $userCommunityRepository->findByUser($user);
@@ -83,21 +86,19 @@ class digestSendCommand extends ContainerAwareCommand
              * One mail for all the notifications
              */
 
-            // -- DEBUG One mail for all the notifications
             $nbNotifications = $this->getContainer()->get('logService')->countNotifications($user);
             if ($verbose) $output->writeln('     * ' . $nbNotifications . " aggregate notification(s) to send to " . $user->getEmail());
-            // -- END DEBUG
-
-            $notificationsArray = $this->getContainer()->get('logService')->getNotifications($user);
+  
+            $notificationsArray = $this->getContainer()->get('logService')->getNotifications($user, null, null, $locale);
 
             $messages[] = \Swift_Message::newInstance()
-                ->setSubject($this->getContainer()->get('translator')->trans('user.digest.mail.subject'))
+                ->setSubject($this->getContainer()->get('translator')->trans('user.digest.mail.subject', array(), null, $locale))
                 ->setFrom($this->getContainer()->getParameter('mailer_from'))
                 ->setTo($user->getEmail())
                 ->setBody(
                     $this->getContainer()->get('templating')->render(
                         'metaGeneralBundle:Digest:digest.mail.html.twig',
-                        array('notifications' => $notificationsArray['notifications'], 'lastNotified' => $notificationsArray['lastNotified'], 'from' => $notificationsArray['from'], 'community' => null)
+                        array('notifications' => $notificationsArray['notifications'], 'lastNotified' => $notificationsArray['lastNotified'], 'from' => $notificationsArray['from'], 'community' => null, 'locale' => $locale)
                     ), 'text/html'
                 );
 
@@ -111,21 +112,19 @@ class digestSendCommand extends ContainerAwareCommand
               
               if ($userCommunity->getGuest()) continue;
 
-              // -- DEBUG One mail for all the notifications
               $nbNotifications = $this->getContainer()->get('logService')->countNotifications($user, $userCommunity->getCommunity());
               if ($verbose) $output->writeln('     * ' . $userCommunity->getCommunity()->getName() . " : " . $nbNotifications . " notification(s) to send to " . $userCommunity->getEmail());
-              // -- END DEBUG
 
-              $notificationsArray = $this->getContainer()->get('logService')->getNotifications($user, null, $userCommunity->getCommunity());
+              $notificationsArray = $this->getContainer()->get('logService')->getNotifications($user, null, $userCommunity->getCommunity(), $locale);
               
               $messages[] = \Swift_Message::newInstance()
-                ->setSubject($this->getContainer()->get('translator')->trans('user.digest.mail.subject'))
+                ->setSubject($this->getContainer()->get('translator')->trans('user.digest.mail.subject', array(), null, $locale))
                 ->setFrom($this->getContainer()->getParameter('mailer_from'))
                 ->setTo($user->getEmail())
                 ->setBody(
                     $this->getContainer()->get('templating')->render(
                         'metaGeneralBundle:Digest:digest.mail.html.twig',
-                        array('notifications' => $notificationsArray['notifications'], 'lastNotified' => $notificationsArray['lastNotified'], 'from' => $notificationsArray['from'], 'community' => $userCommunity->getCommunity())
+                        array('notifications' => $notificationsArray['notifications'], 'lastNotified' => $notificationsArray['lastNotified'], 'from' => $notificationsArray['from'], 'community' => $userCommunity->getCommunity(), 'locale' => $locale)
                     ), 'text/html'
                 );
 

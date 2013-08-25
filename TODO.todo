@@ -17,10 +17,11 @@ Todo - Priorités :
 
  ☐ Sur les notifs, quand on clique et qu'elles sont a 0 affichées mettre directement une page présentant les anciennes
  ✔ notifs mails @done (13-08-11 20:27)
- ☐ texte présentant le jour par défaut dans settings
+ ✔ texte présentant le jour par défaut dans settings @done (13-08-24 15:31)
 
- ☐ Langage dans les mails envoyés via une commande digest:send ? prendre la LANG de l'user en cours
-
+ ✔ Langage dans les mails envoyés via une commande digest:send ? prendre la LANG de l'user en cours @done (13-08-25 16:25)
+ ✔ Locale dans les logs ??? Pourquoi ca marche pas @done (13-08-25 16:56)
+   
  ☐ Administration des communautés
 
  ✔ Refaire le système de GUID (sic) @done (13-06-30 21:25)
@@ -39,7 +40,7 @@ Todo - Priorités :
  
  ☐ Faire un filtre pour les projets non actifs ou lancés
 
- ☐ Translate logs (tous les logs, juste le fichier a traduire)
+ ✔ Translate logs (tous les logs, juste le fichier a traduire) @done (13-08-25 16:25)
 
  ☐ [Eric] Tri des resources dans la vue / resources
 

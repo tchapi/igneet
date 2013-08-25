@@ -1,6 +1,6 @@
 {% extends 'metaUserBundle::layout.html.twig' %}
 
-{% block title %}{{ parent() }} > Settings{% endblock %}
+{% block title %}{{ parent() }} > {{ "user.settings.title"|trans }}{% endblock %}
 
 {% block javascripts %}
   {{ parent() }}
@@ -24,9 +24,9 @@
     <div class="textAvatar"><i class="icon-wrench"></i></div>
   </div>
   <div class="objectHeader">
-    <h2>{{ "Settings"|trans }}</h2>
+    <h2>{{ "user.settings.title"|trans }}</h2>
     <h4>
-      {{ "All your settings"|trans }}
+      {{ "user.settings.help"|trans }}
     </h4>
   </div>
 {% endblock %}
