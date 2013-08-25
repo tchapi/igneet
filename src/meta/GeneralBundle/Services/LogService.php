@@ -140,29 +140,21 @@ class LogService
             $user = $logEntryOrComment->getUser();
             $date = $logEntryOrComment->getCreatedAt();
 
-            if (!is_null($locale)) {
-                return $this->twig->render($this->template_item_comment, array('user' => $user, 'comment' => $logEntryOrComment), null, $locale);
-            } else {
-                return $this->twig->render($this->template_item_comment, array('user' => $user, 'comment' => $logEntryOrComment));
-            }
+            return $this->twig->render($this->template_item_comment, array('user' => $user, 'comment' => $logEntryOrComment, 'locale' => $locale));
 
         } else {
 
             $parameters = $this->getParameters($logEntryOrComment);
 
             // We get the formatted text for the log
-            $text = $this->translator->trans( "logs." . $logEntryOrComment->getType(), $parameters, 'logs' );
+            $text = $this->translator->trans( "logs." . $logEntryOrComment->getType(), $parameters, 'logs', $locale );
 
             $date = $logEntryOrComment->getCreatedAt();
             $user = $logEntryOrComment->getUser();
             $combinedCount = $logEntryOrComment->getCombinedCount();
             $icon = $this->log_types[$logEntryOrComment->getType()]['icon'];
 
-            if (!is_null($locale)) {
-                return $this->twig->render($this->template_item, array( 'icon' => $icon, 'user' => $user, 'text' => $text, 'date' => $date, 'combinedCount' => $combinedCount), null, $locale);
-            } else {
-                return $this->twig->render($this->template_item, array( 'icon' => $icon, 'user' => $user, 'text' => $text, 'date' => $date, 'combinedCount' => $combinedCount));
-            }
+            return $this->twig->render($this->template_item, array( 'icon' => $icon, 'user' => $user, 'text' => $text, 'date' => $date, 'combinedCount' => $combinedCount, 'locale' => $locale));
 
         }
 
