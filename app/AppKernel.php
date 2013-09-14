@@ -16,14 +16,12 @@ class AppKernel extends Kernel
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
-            new JMS\AopBundle\JMSAopBundle(),
-            new JMS\DiExtraBundle\JMSDiExtraBundle($this),
-            new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
 
             /* Third Party */
             new Knp\Bundle\MarkdownBundle\KnpMarkdownBundle(), /* Provides Markdown conversion */
             new Bazinga\ExposeTranslationBundle\BazingaExposeTranslationBundle(), /* Provides translation for JS files */
+            new Fp\OpenIdBundle\FpOpenIdBundle(), /* To use Open Id for login */
 
             new meta\GeneralBundle\metaGeneralBundle(),
             new meta\UserBundle\metaUserBundle(),

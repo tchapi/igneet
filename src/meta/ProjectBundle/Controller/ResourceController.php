@@ -70,13 +70,13 @@ class ResourceController extends BaseController
     /*
      * List all the resources of the project
      */
-    public function listResourcesAction(Request $request, $slug, $page)
+    public function listResourcesAction(Request $request, $uid, $page)
     {
         $menu = $this->container->getParameter('standardproject.menu');
-        $this->fetchProjectAndPreComputeRights($slug, false, $menu['resources']['private']);
+        $this->fetchProjectAndPreComputeRights($uid, false, $menu['resources']['private']);
 
         if ($this->base == false) 
-          return $this->forward('metaProjectBundle:Base:showRestricted', array('slug' => $slug));
+          return $this->forward('metaProjectBundle:Base:showRestricted', array('uid' => $uid));
 
         $types = $this->container->getParameter('standardproject.resource_types');
         $providers = $this->container->getParameter('standardproject.resource_providers');
@@ -106,14 +106,14 @@ class ResourceController extends BaseController
                 $em->flush();
 
                 $logService = $this->container->get('logService');
-                $logService->log($this->getUser(), 'user_add_resource', $this->base['standardProject'], array( 'resource' => array( 'routing' => 'resource', 'logName' => $resource->getLogName(), 'args' => $resource->getLogArgs()) ));
+                $logService->log($this->getUser(), 'user_add_resource', $this->base['standardProject'], array( 'resource' => array( 'logName' => $resource->getLogName(), 'identifier' => $resource->getId()) ));
 
                 $this->get('session')->getFlashBag()->add(
                     'success',
                     $this->get('translator')->trans('project.resources.created', array( '%resource%' => $resource->getTitle(), '%project%' => $this->base['standardProject']->getName()))
                 );
 
-                return $this->redirect($this->generateUrl('sp_show_project_list_resources', array('slug' => $this->base['standardProject']->getSlug())));
+                return $this->redirect($this->generateUrl('p_show_project_list_resources', array('uid' => $uid)));
            
             } else {
                
@@ -133,19 +133,19 @@ class ResourceController extends BaseController
     /*
      * Show a resource of a project
      */
-    public function showResourceAction($slug, $id)
+    public function showResourceAction($uid, $resource_uid)
     {
         $menu = $this->container->getParameter('standardproject.menu');
-        $this->fetchProjectAndPreComputeRights($slug, false, $menu['resources']['private']);
+        $this->fetchProjectAndPreComputeRights($uid, false, $menu['resources']['private']);
 
         if ($this->base == false) 
-          return $this->forward('metaProjectBundle:Base:showRestricted', array('slug' => $slug));
+          return $this->forward('metaProjectBundle:Base:showRestricted', array('uid' => $uid));
 
         $types = $this->container->getParameter('standardproject.resource_types');
         $providers = $this->container->getParameter('standardproject.resource_providers');
 
         $repository = $this->getDoctrine()->getRepository('metaProjectBundle:Resource');
-        $resource = $repository->findOneById($id);
+        $resource = $repository->findOneById($this->container->get('uid')->fromUId($resource_uid));
 
         if (!$resource){
             throw $this->createNotFoundException($this->get('translator')->trans('project.resources.not.found'));
@@ -162,20 +162,20 @@ class ResourceController extends BaseController
     /*
      * Edit a resource (via X-Editable)
      */
-    public function editResourceAction(Request $request, $slug, $id)
+    public function editResourceAction(Request $request, $uid, $resource_uid)
     {
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('edit', $request->get('token')))
-            return $this->redirect($this->generateUrl('sp_show_project_list_resources', array('slug' => $slug)));
+            return $this->redirect($this->generateUrl('p_show_project_list_resources', array('uid' => $uid)));
           
-        $this->fetchProjectAndPreComputeRights($slug, false, true);
+        $this->fetchProjectAndPreComputeRights($uid, false, true);
         $error = null;
         $response = null;
 
         if ($this->base != false) {
 
             $repository = $this->getDoctrine()->getRepository('metaProjectBundle:Resource');
-            $resource = $repository->findOneById($id);
+            $resource = $repository->findOneById($this->container->get('uid')->fromUId($resource_uid));
 
             if ($resource) {
 
@@ -241,7 +241,7 @@ class ResourceController extends BaseController
                     $em->flush();
 
                     $logService = $this->container->get('logService');
-                    $logService->log($this->getUser(), 'user_update_resource', $this->base['standardProject'], array( 'resource' => array( 'routing' => 'resource', 'logName' => $resource->getLogName(), 'args' => $resource->getLogArgs()) ) );
+                    $logService->log($this->getUser(), 'user_update_resource', $this->base['standardProject'], array( 'resource' => array( 'logName' => $resource->getLogName(), 'identifier' => $resource->getId()) ) );
                 
                 } elseif (count($errors) > 0) {
 
@@ -269,7 +269,7 @@ class ResourceController extends BaseController
                 );
             }
 
-            return $this->redirect($this->generateUrl('sp_show_project_list_resources', array('slug' => $slug)));
+            return $this->redirect($this->generateUrl('p_show_project_list_resources', array('uid' => $uid)));
 
         } else {
         
@@ -284,22 +284,22 @@ class ResourceController extends BaseController
     /*
      * Delete a resource in the project
      */
-    public function deleteResourceAction(Request $request, $slug, $id)
+    public function deleteResourceAction(Request $request, $uid, $resource_uid)
     {
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('delete', $request->get('token')))
-            return $this->redirect($this->generateUrl('sp_show_project_list_resources', array('slug' => $slug)));
+            return $this->redirect($this->generateUrl('p_show_project_list_resources', array('uid' => $uid)));
           
-        $this->fetchProjectAndPreComputeRights($slug, false, true);
+        $this->fetchProjectAndPreComputeRights($uid, false, true);
 
         if ($this->base != false) {
 
             $repository = $this->getDoctrine()->getRepository('metaProjectBundle:Resource');
-            $resource = $repository->findOneById($id);
+            $resource = $repository->findOneById($this->container->get('uid')->fromUId($resource_uid));
 
             if ($resource){
 
                 $logService = $this->container->get('logService');
-                $logService->log($this->getUser(), 'user_delete_resource', $this->base['standardProject'], array( 'resource' => array( 'routing' => 'resource', 'logName' => $resource->getLogName(), 'args' => $resource->getLogArgs())) );
+                $logService->log($this->getUser(), 'user_delete_resource', $this->base['standardProject'], array( 'resource' => array( 'logName' => $resource->getLogName(), 'identifier' => $resource->getId())) );
 
                 $this->base['standardProject']->setUpdatedAt(new \DateTime('now'));
                 $em = $this->getDoctrine()->getManager();
@@ -322,31 +322,43 @@ class ResourceController extends BaseController
             
         }
 
-        return $this->redirect($this->generateUrl('sp_show_project_list_resources', array('slug' => $slug)));
+        return $this->redirect($this->generateUrl('p_show_project_list_resources', array('uid' => $uid)));
 
     }
 
     /*
      * Download a resource
      */
-    public function downloadResourceAction(Request $request, $slug, $id)
+    public function downloadResourceAction(Request $request, $uid, $resource_uid)
     {
         $menu = $this->container->getParameter('standardproject.menu');
-        $this->fetchProjectAndPreComputeRights($slug, false, $menu['resources']['private']);
+        $this->fetchProjectAndPreComputeRights($uid, false, $menu['resources']['private']);
 
         if ($this->base != false) {
 
             $repository = $this->getDoctrine()->getRepository('metaProjectBundle:Resource');
-            $resource = $repository->findOneById($id);
+            $resource = $repository->findOneById($this->container->get('uid')->fromUId($resource_uid));
 
             if ($resource && $resource->getOriginalFilename() !== ""){
 
-              $response = new Response();
-              $response->headers->set('Content-type', 'application/octet-stream');
-              $response->headers->set('Content-Disposition', sprintf('attachment; filename="%s"', $resource->getOriginalFilename()));
-              $response->setContent(file_get_contents($resource->getAbsoluteUrlPath()));
+              $content = @file_get_contents($resource->getAbsoluteUrlPath());
 
-              return $response;
+              if ($content == false){
+
+                $this->get('session')->getFlashBag()->add(
+                    'error',
+                    $this->get('translator')->trans('project.resources.not.downloadable')
+                );
+
+              } else {
+
+                  $response = new Response();
+                  $response->headers->set('Content-type', 'application/octet-stream');
+                  $response->headers->set('Content-Disposition', sprintf('attachment; filename="%s"', $resource->getOriginalFilename()));
+                  $response->setContent($content);
+
+                  return $response;
+              }
 
             } else {
 
@@ -359,7 +371,7 @@ class ResourceController extends BaseController
             
         }
 
-        return $this->redirect($this->generateUrl('sp_show_project_list_resources', array('slug' => $slug)));
+        return $this->redirect($this->generateUrl('p_show_project_list_resources', array('uid' => $uid)));
 
     }
 

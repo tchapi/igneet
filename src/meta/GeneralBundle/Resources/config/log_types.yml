@@ -1,14 +1,38 @@
 parameters:
   general.log_concurrent_merge_interval: 3600
   general.log_routing:
-    community: g_home_community
-    user: u_show_user_profile
-    project: sp_show_project
-    idea: i_show_idea
-    other_user: u_show_user_profile
-    list: sp_show_project_list
-    resource: sp_show_project_resource
-    wikipage: sp_show_project_wiki_show_page
+    community: 
+      path: g_home_community
+      is_uid: true
+      key: uid
+    user: 
+      path: u_show_user_profile
+      is_uid: false
+      key: username
+    project: 
+      path: p_show_project
+      is_uid: true
+      key: uid
+    idea: 
+      path: i_show_idea
+      is_uid: true
+      key: uid
+    other_user: 
+      path: u_show_user_profile
+      is_uid: false
+      key: username
+    list: 
+      path: p_show_project_list
+      is_uid: true
+      key: list_uid
+    resource:
+      path: p_show_project_resource
+      is_uid: true
+      key: resource_uid
+    wikipage: 
+      path: p_show_project_wiki_show_page
+      is_uid: true
+      key: page_uid
   general.log_types:
 # User acting for his profile or on another user
     user_created: # DONE
@@ -180,6 +204,12 @@ parameters:
       filter_groups: [deletions, projects, resources]
       type: project
       icon: trash
+    user_change_project_status:
+      combinable: true
+      displayable: true
+      filter_groups: [updates, projects, general]
+      type: project
+      icon: location-arrow
 # User acting on an idea
     idea_enters_community: # DONE
       combinable: false

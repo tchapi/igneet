@@ -9,7 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection,
 /**
  * Community
  * @ORM\Table(name="Community")
- * @ORM\Entity(repositoryClass="meta\GeneralBundle\Entity\Community\CommunityRepository")
+ * @ORM\Entity()
  *
  */
 class Community
@@ -61,15 +61,9 @@ class Community
     
     /**
      * Users in this community
-     * @ORM\ManyToMany(targetEntity="meta\UserBundle\Entity\User", mappedBy="communities")
+     * @ORM\OneToMany(targetEntity="meta\UserBundle\Entity\UserCommunity", mappedBy="community")
      **/
-    private $users;
-
-    /**
-     * Guests in this community
-     * @ORM\ManyToMany(targetEntity="meta\UserBundle\Entity\User", mappedBy="restrictedCommunities")
-     **/
-    private $guests;
+    private $userCommunities;
 
     /**
      * Constructor
@@ -80,8 +74,8 @@ class Community
 
         $this->projects = new ArrayCollection();
         $this->ideas = new ArrayCollection();
-        $this->users = new ArrayCollection();
-        $this->guests = new ArrayCollection();
+        $this->usersCommunities = new ArrayCollection();
+    
     }
     
     public function getLogName()
@@ -322,5 +316,38 @@ class Community
     public function getCreatedAt()
     {
         return $this->created_at;
+    }
+
+    /**
+     * Add userCommunity
+     *
+     * @param \meta\UserBundle\Entity\UserCommunity $userCommunity
+     * @return Community
+     */
+    public function addUserCommunity(\meta\UserBundle\Entity\UserCommunity $userCommunity)
+    {
+        $this->userCommunities[] = $userCommunity;
+    
+        return $this;
+    }
+
+    /**
+     * Remove userCommunity
+     *
+     * @param \meta\UserBundle\Entity\UserCommunity $userCommunity
+     */
+    public function removeUserCommunity(\meta\UserBundle\Entity\UserCommunity $userCommunity)
+    {
+        $this->userCommunities->removeElement($userCommunity);
+    }
+
+    /**
+     * Get userCommunities
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getUserCommunities()
+    {
+        return $this->userCommunities;
     }
 }

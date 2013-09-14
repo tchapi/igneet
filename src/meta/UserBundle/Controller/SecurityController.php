@@ -58,7 +58,13 @@ class SecurityController extends Controller
         $authenticatedUser = $this->getUser();
         $community = $authenticatedUser->getCurrentCommunity();
 
-        if ( !is_null($community) && !$authenticatedUser->isGuestInCurrentCommunity() ) {
+        if (!is_null($community)){
+            $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true));
+        } else {
+            $userCommunityGuest = null;
+        }
+        
+        if ( !is_null($community) && !$userCommunityGuest ) {
 
             if ($request->isMethod('POST')) {
             
@@ -81,8 +87,12 @@ class SecurityController extends Controller
                     $mailOrUsername = $user->getEmail();
                     $token = null;
 
+                    $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $user->getId(), 'community' => $community->getId(), 'guest' => false));
+
+                    $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $user->getId(), 'community' => $community->getId(), 'guest' => true));
+
                     // If the user is already in the community
-                    if ($user->belongsTo($community)){
+                    if ($userCommunity){
 
                         $this->get('session')->getFlashBag()->add(
                             'warning',
@@ -92,12 +102,12 @@ class SecurityController extends Controller
                         return $this->redirect($this->generateUrl('invite'));
 
                     // If the user is already a guest in the community
-                    } elseif ($user->isGuestOf($community)) {
+                    } elseif ($userCommunityGuest) {
 
                         $community->removeGuest($user);
                         $community->addUser($user);
                         $logService = $this->container->get('logService');
-                        $logService->log($this->getUser(), 'user_enters_community', $user, array( 'community' => array( 'routing' => 'community', 'logName' => $community->getLogName(), 'args' => null) ) );
+                        $logService->log($this->getUser(), 'user_enters_community', $user, array( 'community' => array( 'logName' => $community->getLogName(), 'identifier' => $community->getId()) ) );
                             
                         $this->get('session')->getFlashBag()->add(
                             'success',
@@ -109,7 +119,7 @@ class SecurityController extends Controller
 
                         $community->addUser($user);
                         $logService = $this->container->get('logService');
-                        $logService->log($this->getUser(), 'user_enters_community', $user, array( 'community' => array( 'routing' => 'community', 'logName' => $community->getLogName(), 'args' => null) ) );
+                        $logService->log($this->getUser(), 'user_enters_community', $user, array( 'community' => array( 'logName' => $community->getLogName(), 'identifier' => $community->getId()) ) );
                             
                         $this->get('session')->getFlashBag()->add(
                             'success',
@@ -358,7 +368,7 @@ class SecurityController extends Controller
                         $this->get('translator')->trans('user.changedPassword')
                     );
 
-                    return $this->redirect($this->generateUrl('u_me'));
+                    return $this->redirect($this->generateUrl('u_show_user_settings'));
 
                 } else {
 
@@ -407,9 +417,18 @@ class SecurityController extends Controller
 
             $this->logLastSeenAt();
 
+            $community = $authenticatedUser->getCurrentCommunity();
+
+            if (is_null($community)){
+                // Private space, you're not a guest
+                $userCommunityGuest = null;
+            } else {
+                $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true));
+            }
+            
             return $this->render(
                 'metaUserBundle:Security:_authenticated.html.twig',
-                array('user' => $authenticatedUser)
+                array('user' => $authenticatedUser, 'isGuest' => ($userCommunityGuest != null) )
             );
 
         } else {

@@ -51,13 +51,6 @@ class Idea extends Taggable
      * @Assert\NotBlank()
      */
     private $name;
-
-    /**
-     * @var string $slug
-     *
-     * @ORM\Column(name="slug", type="string", length=255, nullable=true)
-     */
-    private $slug;
     
     /**
      * @var string
@@ -180,9 +173,6 @@ class Idea extends Taggable
     public function getLogName()
     {
         return $this->name;
-    }
-    public function getLogArgs(){
-        return array( 'id' => $this->id );
     }
 
     /**
@@ -694,28 +684,6 @@ class Idea extends Taggable
     }
 
     /**
-     * Set slug
-     *
-     * @param string $slug
-     * @return Idea
-     */
-    public function setSlug($slug)
-    {
-        $this->slug = $slug;
-        return $this;
-    }
-
-    /**
-     * Get slug
-     *
-     * @return string 
-     */
-    public function getSlug()
-    {
-        return $this->slug;
-    }
-
-    /**
      * Add resultingProjects
      *
      * BINDING LOGIC IS DONE IN 'STANDARDPROJECT' CLASS
@@ -909,4 +877,27 @@ class Idea extends Taggable
         return $this->community;
     }
 
+
+    /**
+     * Add logEntries
+     *
+     * @param \meta\GeneralBundle\Entity\Log\IdeaLogEntry $logEntries
+     * @return Idea
+     */
+    public function addLogEntrie(\meta\GeneralBundle\Entity\Log\IdeaLogEntry $logEntries)
+    {
+        $this->logEntries[] = $logEntries;
+    
+        return $this;
+    }
+
+    /**
+     * Remove logEntries
+     *
+     * @param \meta\GeneralBundle\Entity\Log\IdeaLogEntry $logEntries
+     */
+    public function removeLogEntrie(\meta\GeneralBundle\Entity\Log\IdeaLogEntry $logEntries)
+    {
+        $this->logEntries->removeElement($logEntries);
+    }
 }

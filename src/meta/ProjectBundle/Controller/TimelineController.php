@@ -12,13 +12,13 @@ class TimelineController extends BaseController
     /*
      * Display the timeline tab of a project
      */
-    public function showTimelineAction($slug, $page)
+    public function showTimelineAction($uid, $page)
     {
         $menu = $this->container->getParameter('standardproject.menu');
-        $this->fetchProjectAndPreComputeRights($slug, false, $menu['timeline']['private']);
+        $this->fetchProjectAndPreComputeRights($uid, false, $menu['timeline']['private']);
 
         if ($this->base == false) 
-          return $this->forward('metaProjectBundle:Base:showRestricted', array('slug' => $slug));
+          return $this->forward('metaProjectBundle:Base:showRestricted', array('uid' => $uid));
 
         return $this->render('metaProjectBundle:Timeline:showTimeline.html.twig', 
             array('base' => $this->base));
@@ -31,14 +31,14 @@ class TimelineController extends BaseController
     /*
      * Output the timeline history
      */
-    public function historyAction($slug, $page)
+    public function historyAction($uid, $page)
     {
 
         $menu = $this->container->getParameter('standardproject.menu');
-        $this->fetchProjectAndPreComputeRights($slug, false, $menu['timeline']['private']);
+        $this->fetchProjectAndPreComputeRights($uid, false, $menu['timeline']['private']);
 
         if ($this->base == false) 
-          return $this->forward('metaProjectBundle:Base:showRestricted', array('slug' => $slug));
+          return $this->forward('metaProjectBundle:Base:showRestricted', array('uid' => $uid));
 
         $format = $this->get('translator')->trans('date.timeline');
         $this->timeframe = array( 'today' => array( 'name' => $this->get('translator')->trans('date.today'), 'data' => array()),
@@ -82,10 +82,12 @@ class TimelineController extends BaseController
         }
 
         // Sort !
-        function build_sorter($key) {
-            return function ($a, $b) use ($key) {
-                return $a[$key]>$b[$key];
-            };
+        if (!function_exists('meta\ProjectBundle\Controller\build_sorter')) {
+          function build_sorter($key) {
+              return function ($a, $b) use ($key) {
+                  return $a[$key]>$b[$key];
+              };
+          }
         }
         usort($history, build_sorter('createdAt'));
         

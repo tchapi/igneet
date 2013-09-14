@@ -7,6 +7,7 @@ imports:
     - { resource: @metaGeneralBundle/Resources/config/log_types.yml }
     - { resource: @metaGeneralBundle/Resources/config/deep_linking_tags.yml }
     - { resource: @metaGeneralBundle/Resources/config/services.yml }
+    - { resource: @metaProjectBundle/Resources/config/launch_lists.yml }
 
 framework:
     #esi:             ~
@@ -24,11 +25,15 @@ framework:
     session:
         save_path: "%kernel.root_dir%/var/sessions"
     trusted_proxies: ~
+    serializer:
+        enabled: true
 
 # Services
 services:
     serializer.method:
         class: Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer
+        tags:
+         - { name: serializer.normalizer }
     serializer.encoder.json:
         class: Symfony\Component\Serializer\Encoder\JsonEncoder
     serializer:
@@ -47,6 +52,7 @@ twig:
         mailer_contact: "%mailer_contact%"
         enable_static_site: "%enable_static_site%"
         available_languages: "%available.languages%"
+        project_statuses: "%project_statuses%"
 
 # Assetic Configuration
 assetic:
@@ -78,6 +84,11 @@ doctrine:
         auto_generate_proxy_classes: "%kernel.debug%"
         auto_mapping: true
 
+# Open ID
+fp_open_id:
+    db_driver: orm
+    identity_class: meta\UserBundle\Entity\OpenIdIdentity
+
 # Swiftmailer Configuration
 swiftmailer:
     transport: "%mailer_transport%"
@@ -89,6 +100,11 @@ swiftmailer:
 # Application specific
 parameters:
     listings.number_of_items_per_page: 8
+    project_statuses:
+        0: active
+        1: sleeping
+        2: launched
+        3: abandonned
     available.languages:
         fr:
             code: fr_FR
@@ -96,3 +112,5 @@ parameters:
         en:
             code: en_US
             name: "English"
+    digest.day: "monday"
+    digest.frequency: "weekly"

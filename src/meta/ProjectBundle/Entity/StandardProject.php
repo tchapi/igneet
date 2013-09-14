@@ -15,7 +15,6 @@ use meta\GeneralBundle\Entity\Behaviour\Taggable;
  * @ORM\Table(name="StandardProject")
  * @ORM\Entity(repositoryClass="meta\ProjectBundle\Entity\StandardProjectRepository")
  * @ORM\HasLifecycleCallbacks
- * @UniqueEntity(fields="slug", message="project.slug.already.taken")
  */
 class StandardProject extends Taggable
 {
@@ -35,16 +34,6 @@ class StandardProject extends Taggable
      * @Assert\NotBlank()
      */
     private $name;
-
-    /**
-     * @var string $slug
-     *
-     * @ORM\Column(name="slug", type="string", length=255, unique=true)
-     * @Assert\NotBlank()
-     * @Assert\Length(min = "3")
-     * @Assert\Regex(pattern="/^[a-zA-Z0-9\-]+$/")
-     */
-    private $slug;
 
     /**
      * @var string $headline
@@ -109,6 +98,13 @@ class StandardProject extends Taggable
      * @ORM\Column(name="about", type="text", nullable=true)
      */
     private $about;
+
+    /**
+     * @var integer $status
+     *
+     * @ORM\Column(name="status", type="integer")
+     */
+    private $status;
 
     /**
      * Skills I would need as a project (OWNING SIDE)
@@ -196,14 +192,13 @@ class StandardProject extends Taggable
         $this->community = null; // This project does not belong to any community
         $this->private = false;
 
+        $this->status = 0; // Active
+
     }
 
     public function getLogName()
     {
         return $this->name;
-    }
-    public function getLogArgs(){
-        return array( 'slug' => $this->slug );
     }
 
     /**
@@ -680,29 +675,6 @@ class StandardProject extends Taggable
     }
 
     /**
-     * Set slug
-     *
-     * @param string $slug
-     * @return StandardProject
-     */
-    public function setSlug($slug)
-    {
-        $this->slug = $slug;
-    
-        return $this;
-    }
-
-    /**
-     * Get slug
-     *
-     * @return string 
-     */
-    public function getSlug()
-    {
-        return $this->slug;
-    }
-
-    /**
      * Add CommonList
      *
      * @param meta\ProjectBundle\Entity\CommonList $commonList
@@ -1024,4 +996,51 @@ class StandardProject extends Taggable
         return $this->private;
     }
 
+
+    /**
+     * Set status
+     *
+     * @param integer $status
+     * @return StandardProject
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+    
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return integer 
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+
+    /**
+     * Add logEntries
+     *
+     * @param \meta\GeneralBundle\Entity\Log\StandardProjectLogEntry $logEntries
+     * @return StandardProject
+     */
+    public function addLogEntrie(\meta\GeneralBundle\Entity\Log\StandardProjectLogEntry $logEntries)
+    {
+        $this->logEntries[] = $logEntries;
+    
+        return $this;
+    }
+
+    /**
+     * Remove logEntries
+     *
+     * @param \meta\GeneralBundle\Entity\Log\StandardProjectLogEntry $logEntries
+     */
+    public function removeLogEntrie(\meta\GeneralBundle\Entity\Log\StandardProjectLogEntry $logEntries)
+    {
+        $this->logEntries->removeElement($logEntries);
+    }
 }

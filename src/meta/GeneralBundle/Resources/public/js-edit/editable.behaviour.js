@@ -18,6 +18,7 @@ $(document).ready(function(){
         pk: 1,
         placement: 'bottom',
         display:  function(value, sourceData) {
+            
                     $(this).empty();
                     if (sourceData) {
                       var selected = $.grep(sourceData,function(e,i){
@@ -29,9 +30,11 @@ $(document).ready(function(){
                         $(this).append('<li class="label" rel="' + selected[i].value + '">' + selected[i].text + '</li>');
                       }
                     } else {
-                      var len = value.length;
-                      for(var i=0; i<len; i++){
-                        $(this).append('<li class="label">' + value[i] + '</li>');
+                      if (value){
+                        var len = value.length;
+                        for(var i=0; i<len; i++){
+                          $(this).append('<li class="label">' + value[i] + '</li>');
+                        }
                       }
                     }
                   },
@@ -144,6 +147,33 @@ $(document).ready(function(){
       
       return false;
 
+    });
+
+    /*
+     * Settings page : trigger display
+     */
+    $('#enableDigest').change(function(){
+      $('.digest').toggle();
+      $.post($(this).attr('data-url'), {
+        name: $(this).attr('data-name'),
+        value: $(this).is(':checked')?1:0
+      });
+    });
+
+    $('#specificDay').change(function(){
+      $('.specificDayChoice').toggle();
+      $.post($(this).attr('data-url'), {
+        name: $(this).attr('data-name'),
+        value: $(this).is(':checked')?1:0
+      });
+    });
+
+    $('#specificEmails').change(function(){
+      $('.specificEmailsChoice').toggle();
+      $.post($(this).attr('data-url'), {
+        name: $(this).attr('data-name'),
+        value: $(this).is(':checked')?1:0
+      });
     });
 
 });

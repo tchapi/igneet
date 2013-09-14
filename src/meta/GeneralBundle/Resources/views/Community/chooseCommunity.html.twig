@@ -20,8 +20,8 @@
         <div class="controls">
           <input type="hidden" name="name" id="name" value="community"/>
           <select id="value" name="value" required="required">
-            {% for community in communities %}
-            <option value="{{ community.id }}">{{ community.name }}</option>
+            {% for userCommunity in userCommunities %}
+            <option value="{{ userCommunity.community.id|to_uid }}">{{ userCommunity.community.name }}</option>
             {% endfor %}
           </select>
         </div>

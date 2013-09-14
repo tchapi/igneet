@@ -28,7 +28,7 @@
 
   <div class="listingItemInfo">
     <h4 class="ellipsis"><a href="{{ path('u_show_user_profile', {'username': user.username}) }}">{{ user.getFullName() }}</a>
-      {% if user.isGuestOf(app.user.currentCommunity) %} ({{ "guest"|trans }}){% endif %}
+      {% if user.userCommunities[0].guest %} ({{ "guest"|trans }}){% endif %}
     </h4>
     <div class="ellipsis">{{ user.headline }}</div>
     <div class="muted"><i class="icon-calendar"></i> {{ "user.list.member.since"|trans({ '%date%': user.createdAt|date("date.format"|trans) }) }}</div>

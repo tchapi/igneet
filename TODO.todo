@@ -1,6 +1,8 @@
 
 ## TODO ##
 
+Todo - Priorités :
+
  ☐ Pagination de la timeline => bof ?
 
  ☐ Enable / Disable edition dans le menu utilisateur ?
@@ -8,29 +10,29 @@
        $('.editable').editable('toggleDisabled');
    });    
     
- ☐  Faire une passe sur les titles/alt des liens d'éditions (les icon-pencils)
+ ☐ Vérifier les inviteToken lors d'une inscription avec OpenId
 
- ✔ projects dont je ne suis pas participant : je vois les trucs ou pas ??? @done (13-05-05 19:51)
+ ☐ Sur les notifs, quand on clique et qu'elles sont a 0 affichées mettre directement une page présentant les anciennes
 
- ☐ Deep linking : verifier a l'affichage que l'utilisateur a le droit de voir l'objet deep linké !
-   Sinon mettre en gras mais ne pas linker avec une icone oail barré (?)
+ ☐ Administration des communautés
 
- ✔ Switch de langue @done (13-05-25 23:57)
- ✔ help sur les form field de type checkbox a mettre @done (13-05-26 18:31)
- ✔ création d'un projet dans private space : disable la case private (et la cocher) @done (13-05-23 23:37)
- ✔ "Please confirm" des notifs de confirmation  : a traduire !! @done (13-05-26 17:56)
- ✔ Supprimer les removeLogEntrie (trucs finissant par ie dans User) - vérifier qu'ils sont pas appelés @done (13-05-26 12:56)
+   ☐ + Deep linking : verifier a l'affichage que l'utilisateur a le droit de voir l'objet deep linké !
+   Sinon mettre en gras mais ne pas linker avec une icone oeil barré (?)
+   ☐ Mettre un quick link pour obtenir le deep link de l'élément sur lequel on se trouve
+
+ ✘ faire une page des projets 'archivés' @cancelled (13-08-02 22:50)
+   \__ + un bouton 'archiver' par projet
+   \__ + demander si archiver une idée apres projectize
+   \__ abandonner un projet ? faire un bouton pour ca
  
- ✔ Flashbags a remplacer PARTOUT @done (13-05-05 21:54)
- ✔ Enlever les logs dont je suis l'initiateur @done (13-05-09 21:24)
+ ☐ Faire un filtre pour les projets non actifs ou lancés
 
- ✔ liste des skills a la creation d'un user : a traduire @done (13-05-05 20:14)
- ✔ translation : placeholders pour le select2 ? a gerer dans le DOM si possible @done (13-05-05 21:27)
- ✔ traduire les noms des fields de form et les helps - normalement |trans est fait par défaut dans les templates @done (13-04-15 22:48)
- ✔ translate popins de validation de suppression @done (13-05-26 22:34)
-
- ☐ taille des inputs : http://d.pr/i/dHGr lors de la traduction
  ☐ [Eric] Tri des resources dans la vue / resources
+
+Todo - Post-Passe-Créa :
+
+ ☐ CREA : taille des inputs : http://d.pr/i/dHGr lors de la traduction
+ ☐  Faire une passe sur les titles/alt des liens d'éditions (les icon-pencils)
 
 Todo - Entity "Community" :
 
@@ -137,7 +139,22 @@ Todo - General / Users :
        \--> graphe
      ✔ - LAST 3 contributors on this project (liste en dessous du projet) @done (13-02-23 22:52)
    ✔ (idem ideas) @done (13-02-23 22:52)
- 
+ ✔ Switch de langue @done (13-05-25 23:57)
+ ✔ help sur les form field de type checkbox a mettre @done (13-05-26 18:31)
+ ✔ "Please confirm" des notifs de confirmation  : a traduire !! @done (13-05-26 17:56)
+ ✔ Supprimer les removeLogEntrie (trucs finissant par ie dans User) - vérifier qu'ils sont pas appelés @done (13-05-26 12:56)
+ ✔ Flashbags a remplacer PARTOUT @done (13-05-05 21:54)
+ ✔ Enlever les logs dont je suis l'initiateur @done (13-05-09 21:24)
+ ✔ liste des skills a la creation d'un user : a traduire @done (13-05-05 20:14)
+ ✔ translation : placeholders pour le select2 ? a gerer dans le DOM si possible @done (13-05-05 21:27)
+ ✔ traduire les noms des fields de form et les helps - normalement |trans est fait par défaut dans les templates @done (13-04-15 22:48)
+ ✔ translate popins de validation de suppression @done (13-05-26 22:34)
+ ✔ Refaire le système de GUID (sic) @done (13-06-30 21:25)
+   ✔ CommunityId ??? @done (13-08-11 18:32)
+ ✔ logs avec seulement le name et "identifier" dans "objects" @done (13-06-30 21:25)
+ ✔ Translate logs (tous les logs, juste le fichier a traduire) @done (13-08-25 16:25)
+ ✔ OpenID @done (13-08-02 22:51)
+
  ✘ Rajouter un badge 'YOU' quand l'utilisateur courant est affiché @cancelled (13-02-13 14:08)
  ✘ watch / unwatch quand tu es owner ou participant ou createur --> a degager @cancelled (13-01-26 11:25)
    \__ si, ça a un intérêt
@@ -163,16 +180,15 @@ Todo - entité "Wiki":
  ✔ Wiki - parenting @done (13-02-12 22:33)
  ✔ Highlight la page en cours dans la liste de gauche @done (13-01-22 00:00)
 
-Todo - entité "StandardProject":
+Todo - entité "Project":
 
+ ✔ Pouvoir quitter un projet quand on est pas seul owner ou quand on est participant @done (13-07-30 19:34)
  ✔ Listing : mettre X participants and Y owners ... @done (13-01-24 00:02)
  ✔ Créer un nouveau projet @done (13-01-16 20:51)
  ✔ infos d'un projet : quand pas de skills ne pas afficher le vase ? ou All skills welcome OK @done (13-01-16 21:13)
  ✔ log des modifs sur les projets @done (13-01-17 23:08)
- ✔ faire une page des projets 'archivés' @done (13-02-24 16:27)
-   \__ + un bouton 'archiver' par projet
-   \__ + demander si archiver un projet apres projectize
-   \__ abandonner un projet ? 
+ ✔ projects dont je ne suis pas participant : je vois les trucs ou pas ??? @done (13-05-05 19:51)
+ ✔ création d'un projet dans private space : disable la case private (et la cocher) @done (13-05-23 23:37)
 
  ✘ Background image pour les projets ? BOF BOF @cancelled (13-01-21 23:49)
 
@@ -229,7 +245,12 @@ Todo - Community:
    ✘ - discussion @cancelled (13-03-02 12:52)
       tagger 'concept' ou 'connaissance' dans le fil de discussion
  ✘ au niveau meta, la timeline ne ressort que les trucs publics des projets en dessous @cancelled (13-03-02 12:53)
+ ✔ notifs mails @done (13-08-11 20:27)
+ ✔ texte présentant le jour par défaut dans settings @done (13-08-24 15:31)
 
+ ✔ Langage dans les mails envoyés via une commande digest:send ? prendre la LANG de l'user en cours @done (13-08-25 16:25)
+ ✔ Locale dans les logs ??? Pourquoi ca marche pas @done (13-08-25 16:56)
+   
 Todo - Search:
 
  ☐ Recherche

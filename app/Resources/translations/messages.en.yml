@@ -4,8 +4,32 @@ date:
   timeline: "M j"
   today: "Today"
   past.week: "A week ago"
+  monday:
+    short: "Mon"
+    long: "Monday"
+  tuesday:
+    short: "Tue"
+    long: "Tuesday"
+  wednesday:
+    short: "Wed"
+    long: "Wednesday"
+  thursday:
+    short: "Thu"
+    long: "Thursday"
+  friday:
+    short: "Fri"
+    long: "Friday"
+  saturday:
+    short: "Sat"
+    long: "Saturday"
+  sunday:
+    short: "Sun"
+    long: "Sunday"
 time:
   format: "h:i A"
+daily: "Daily"
+weekly: "Weekly"
+bimonthly: "Bi-monthly"
 timeline.reset.filters: "Reset filters"
 timeline.placeholder: "Optional timeline filters"
 cancel: "Cancel"

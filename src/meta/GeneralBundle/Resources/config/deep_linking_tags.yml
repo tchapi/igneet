@@ -4,17 +4,17 @@ parameters:
       routing: u_show_user_profile
       icon: user
     project:
-      routing: sp_show_project
+      routing: p_show_project
       icon: beaker
     idea:
       routing: i_show_idea
       icon: lightbulb
     wikipage:
-      routing: sp_show_project_wiki_show_page
+      routing: p_show_project_wiki_show_page
       icon: file
     list:
-      routing: sp_show_project_list
+      routing: p_show_project_list
       icon: list
     resource:
-      routing: sp_show_project_resource
+      routing: p_show_project_resource
       icon: file-alt

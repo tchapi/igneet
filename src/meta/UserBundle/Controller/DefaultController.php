@@ -3,12 +3,18 @@
 namespace meta\UserBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller,
+    Symfony\Component\Security\Core\SecurityContext,
     Symfony\Component\HttpFoundation\Request,
     Symfony\Component\HttpFoundation\File\File,
     Symfony\Component\HttpFoundation\Response,
     Symfony\Component\EventDispatcher\EventDispatcher,
     Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken,
     Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
+
+use Fp\OpenIdBundle\RelyingParty\Exception\OpenIdAuthenticationCanceledException;
+use Fp\OpenIdBundle\RelyingParty\RecoveredFailureRelyingParty;
+use Fp\OpenIdBundle\Security\Core\Authentication\Token\OpenIdToken;
+use meta\UserBundle\Entity\OpenIdIdentity;
 
 /*
  * Importing Class definitions
@@ -41,7 +47,7 @@ class DefaultController extends Controller
             $user = $repository->findOneByUsername($username);
             if (!$user || $user->isDeleted()) {
                 throw $this->createNotFoundException($this->get('translator')->trans('user.not.found'));
-            } else if ( $commonCommunity = $user->findCommonCommunity($authenticatedUser) ) {
+            } else if ( $commonCommunity = $repository->findCommonCommunity($authenticatedUser, $user) ) {
                 // Yes ! Switch this authenticated user to the good community
                 $authenticatedUser->setCurrentCommunity($commonCommunity);
                 $em = $this->getDoctrine()->getManager();
@@ -139,8 +145,15 @@ class DefaultController extends Controller
     {
 
         $authenticatedUser = $this->getUser();
+        $community = $authenticatedUser->getCurrentCommunity();
 
-        if (is_null($authenticatedUser->getCurrentCommunity()) || $authenticatedUser->isGuestInCurrentCommunity() ) {
+        if (!is_null($community)){  
+            $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true));
+        } else {
+            $userCommunityGuest = null;
+        }
+
+        if (is_null($community) || $userCommunityGuest ) {
 
             $this->get('session')->getFlashBag()->add(
                 'error',
@@ -218,77 +231,16 @@ class DefaultController extends Controller
                 ));
     }
 
+    
     /*
-     * Helper for count and show Notifications (DRY-style)
-     */
-    private function getAllObjects()
-    {
-
-        $authenticatedUser = $this->getUser();
-
-        // Projects
-        $allProjects = array();
-        foreach ($authenticatedUser->getProjectsWatched() as $project) { $allProjects[] = $project; }
-        foreach ($authenticatedUser->getProjectsOwned() as $project) { $allProjects[] = $project; }
-        foreach ($authenticatedUser->getProjectsParticipatedIn() as $project) { $allProjects[] = $project; }
-
-        // Ideas
-        $allIdeas = array();
-        foreach ($authenticatedUser->getIdeasWatched() as $idea){ $allIdeas[] = $idea; }
-        foreach ($authenticatedUser->getIdeasCreated() as $idea){ $allIdeas[] = $idea; }
-        foreach ($authenticatedUser->getIdeasParticipatedIn() as $idea){ $allIdeas[] = $idea; }
-            
-        // Users
-        $usersFollowed = $authenticatedUser->getFollowing()->toArray();
-
-        return array( 'projects' => $allProjects,
-                      'ideas'   => $allIdeas,
-                      'users'   => $usersFollowed);
-    }
-
-    /*
-     * Count the new notifications for a user
-     * No 'backward' style as per the showNotificationsAction (it's just the count of the new stuff)
-     */
+     * Corresponding actions
+     */ 
     public function countNotificationsAction()
     {
         $authenticatedUser = $this->getUser();
-        $from = $authenticatedUser->getLastNotifiedAt();
-        
-        $objects = $this->getAllObjects();
+        $logService = $this->container->get('logService');
 
-        // Around myself
-        $userLogRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\UserLogEntry');
-        $selfLogs = $userLogRepository->countLogsForUser($authenticatedUser, $from); // New followers of user
-
-        // Fetch logs related to the projects
-        if (count($objects['projects']) > 0){
-            $projectLogRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\StandardProjectLogEntry');
-            $projectLogs = $projectLogRepository->countLogsForProjects($objects['projects'], $from, $authenticatedUser);
-        } else {
-            $projectLogs = 0;
-        }
-        
-        // Fetch all logs related to the ideas
-        if (count($objects['ideas']) > 0){
-            $ideaLogRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\IdeaLogEntry');
-            $ideaLogs = $ideaLogRepository->countLogsForIdeas($objects['ideas'], $from, $authenticatedUser);
-        } else {
-            $ideaLogs = 0;
-        }
-
-        // Fetch all logs related to the users followed (their updates, or if they have created new projects or been added into one)
-        // In the repository, we make sure we only get logs for the communities the current user can see
-        if (count($objects['users']) > 0){
-            $baseLogRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\BaseLogEntry');
-            $userLogs = $baseLogRepository->countSocialLogsForUsersInCommunities($objects['users'], $authenticatedUser->getCommunities()->toArray(), $from);
-        } else {
-            $userLogs = 0;
-        }
-
-        $total = $selfLogs + $projectLogs + $ideaLogs + $userLogs;
-
-        return new Response($total);
+        return new Response($logService->countNotifications($authenticatedUser, null));
     }
 
     /*
@@ -298,71 +250,34 @@ class DefaultController extends Controller
     {
     
         $authenticatedUser = $this->getUser();
-
-        // So let's get the stuff
-        $lastNotified = $authenticatedUser->getLastNotifiedAt();
-        $from = is_null($date)?$lastNotified:date_create($date);
-        
-        $objects = $this->getAllObjects();
-
-        // Now get the logs
         $logService = $this->container->get('logService');
-        $notifications = array();
 
-        // Around myself
-        $userLogRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\UserLogEntry');
-        $selfLogs = $userLogRepository->findLogsForUser($authenticatedUser, $from); // New followers of user
-        foreach ($selfLogs as $notification) { $notifications[] = array( 'createdAt' => date_create($notification->getCreatedAt()->format('Y-m-d H:i:s')), 'data' => $logService->getHTML($notification) ); }
-
-        // Fetch logs related to the projects
-        if (count($objects['projects']) > 0){
-            $projectLogRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\StandardProjectLogEntry');
-            $projectLogs = $projectLogRepository->findLogsForProjects($objects['projects'], $from, $authenticatedUser);
-            foreach ($projectLogs as $notification) { $notifications[] = array( 'createdAt' => date_create($notification->getCreatedAt()->format('Y-m-d H:i:s')), 'data' => $logService->getHTML($notification) ); }
-        }
-        
-        // Fetch all logs related to the ideas
-        if (count($objects['ideas']) > 0){
-            $ideaLogRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\IdeaLogEntry');
-            $ideaLogs = $ideaLogRepository->findLogsForIdeas($objects['ideas'], $from, $authenticatedUser);
-            foreach ($ideaLogs as $notification) { $notifications[] = array( 'createdAt' => date_create($notification->getCreatedAt()->format('Y-m-d H:i:s')), 'data' => $logService->getHTML($notification) ); }
-        }
-
-        // Fetch all logs related to the users followed (their updates, or if they have created new projects or been added into one)
-        // In the repository, we make sure we only get logs for the communities the current user can see
-        if (count($objects['users']) > 0){
-            $baseLogRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\BaseLogEntry');
-            $userLogs = $baseLogRepository->findSocialLogsForUsersInCommunities($objects['users'], $authenticatedUser->getCommunities()->toArray(), $from);
-            foreach ($userLogs as $notification) { $notifications[] = array( 'createdAt' => date_create($notification->getCreatedAt()->format('Y-m-d H:i:s')), 'data' => $logService->getHTML($notification) ); }
-        }
-
-        // Sort !
-        function build_sorter($key) {
-            return function ($a, $b) use ($key) {
-                return $a[$key]<$b[$key];
-            };
-        }
-        $notifications = array_unique($notifications, SORT_REGULAR);
-        usort($notifications, build_sorter('createdAt'));
+        $notifications = array_merge(array('user' => $authenticatedUser), $logService->getNotifications($authenticatedUser, $date, null, null));
 
         // Lastly, we update the last_notified_at date
         $authenticatedUser->setLastNotifiedAt(new \DateTime('now'));
 
-        return $this->render('metaUserBundle:Dashboard:showNotifications.html.twig', 
-            array('user' => $authenticatedUser,
-                  'notifications' => $notifications,
-                  'lastNotified' => $lastNotified,
-                  'from' => $from
-                ));
+        return $this->render('metaUserBundle:Dashboard:showNotifications.html.twig', $notifications);
+    }
+
+    /*
+     * Shows the user the different signin methods available
+     */
+    public function chooseSignupProviderAction($inviteToken)
+    {
+    
+        return $this->render('metaUserBundle:Default:chooseProvider.html.twig', array('inviteToken' => $inviteToken));
+
     }
 
     /*
      * Create a form for a new user to signin AND process the result when POSTed
      */
-    public function createAction(Request $request, $inviteToken)
+    public function createAction(Request $request, $inviteToken, $openid)
     {
         
         $authenticatedUser = $this->getUser();
+        $em = $this->getDoctrine()->getManager();
 
         if ($authenticatedUser) {
 
@@ -396,20 +311,105 @@ class DefaultController extends Controller
         
         }
 
+        // In case it's open id, we need to check some basics
+        if ($openid == true) {
+
+             $failure = $request->getSession()->get(SecurityContext::AUTHENTICATION_ERROR);
+
+            if (false == $failure) {
+                $this->get('session')->getFlashBag()->add(
+                    'error',
+                    $this->get('translator')->trans('openid.error', array(), 'errors')
+                );
+                return $this->redirect($this->generateUrl('login'));
+            }
+
+            if ($failure instanceof OpenIdAuthenticationCanceledException) {
+                
+                // User cancelled
+                $this->get('session')->getFlashBag()->add(
+                    'warning',
+                    $this->get('translator')->trans('user.cancelled.signup')
+                );
+                return $this->redirect($this->generateUrl('login'));
+            }
+
+            $token = $failure->getToken();
+
+            if (false == $token instanceof OpenIdToken) {
+
+                $this->get('session')->getFlashBag()->add(
+                    'error',
+                    $this->get('translator')->trans('openid.error', array(), 'errors')
+                );
+                return $this->redirect($this->generateUrl('login'));
+
+            }
+
+            // Merges
+            $attributes = array_merge(array(
+                'contact/email' => '',
+                'namePerson/first' => '',
+                'namePerson/last' => '',
+                ), $token->getAttributes())
+            ;
+
+            // Already in ?
+            $alreadyUser = $em->getRepository('metaUserBundle:User')->findOneBy(array(
+                'email' => $attributes['contact/email']
+            ));
+
+            if ($alreadyUser){
+
+                if ($alreadyUser->isDeleted()){
+                    // Error will be screened automatically
+                    return $this->redirect($this->generateUrl('login'));
+                }
+            }
+
+        }
+
         $user = new User();
-        $form = $this->createForm(new UserType(), $user, array( 'translator' => $this->get('translator')));
+
+        if ($openid == true){
+            // We already know some stuff
+            $user->setEmail($attributes['contact/email']);
+            $user->setFirstname($attributes['namePerson/first']);
+            $user->setLastname($attributes['namePerson/last']);
+
+            // Create a dummy password
+            $factory = $this->get('security.encoder_factory');
+            $encoder = $factory->getEncoder($user);
+            $user->setPassword($encoder->encodePassword($user->getSalt(), $user->getSalt()));
+        }
+
+        $form = $this->createForm(new UserType(), $user, array( 'translator' => $this->get('translator'), 'openid' => $openid));
 
         if ($request->isMethod('POST')) {
 
             $form->bind($request);
 
             if ($form->isValid()) {
-                
-                $factory = $this->get('security.encoder_factory');
-                $encoder = $factory->getEncoder($user);
-                $user->setPassword($encoder->encodePassword($user->getPassword(), $user->getSalt()));
 
-                $em = $this->getDoctrine()->getManager();
+                if ($openid === true){
+
+                    // We have to create an OpenId and persist it
+                    $openIdIdentity = new OpenIdIdentity();
+                    $openIdIdentity->setIdentity($token->getIdentity());
+                    $openIdIdentity->setAttributes($attributes);
+                    $openIdIdentity->setUser($user);
+
+                    $em->persist($openIdIdentity);
+
+                } else {
+
+                    // Not open id, we just set the password :
+                    $factory = $this->get('security.encoder_factory');
+                    $encoder = $factory->getEncoder($user);
+                    $user->setPassword($encoder->encodePassword($user->getPassword(), $user->getSalt()));
+                    
+                }
+
                 $em->persist($user); // doing it now cause log() flushes the $em
                 $em->flush(); // We do a first flush here so that next logs will behave correctly
 
@@ -432,7 +432,7 @@ class DefaultController extends Controller
                         if ($inviteTokenObject->getCommunityType() === 'user'){
                             $inviteTokenObject->getCommunity()->addUser($user);
                             $logService = $this->container->get('logService');
-                            $logService->log($this->getUser(), 'user_enters_community', $user, array( 'community' => array( 'routing' => 'community', 'logName' => $inviteTokenObject->getCommunity()->getLogName(), 'args' => null) ) );
+                            $logService->log($this->getUser(), 'user_enters_community', $user, array( 'community' => array( 'logName' => $inviteTokenObject->getCommunity()->getLogName() ) ) );
                         } else {
                             $inviteTokenObject->getCommunity()->addGuest($user);
                         }
@@ -446,11 +446,11 @@ class DefaultController extends Controller
                         if ($inviteTokenObject->getProjectType() === 'owner'){
                             $user->addProjectsOwned($inviteTokenObject->getProject());
                             $logService = $this->container->get('logService');
-                            $logService->log($user, 'user_is_made_owner_project', $inviteTokenObject->getProject(), array( 'other_user' => array( 'routing' => 'user', 'logName' => $inviteTokenObject->getReferalUser()->getLogName(), 'args' => $inviteTokenObject->getReferalUser()->getLogArgs()) ));
+                            $logService->log($user, 'user_is_made_owner_project', $inviteTokenObject->getProject(), array( 'other_user' => array( 'logName' => $inviteTokenObject->getReferalUser()->getLogName(), 'identifier' => $inviteTokenObject->getReferalUser()->getUsername()) ));
                         } else {
                             $user->addProjectsParticipatedIn($inviteTokenObject->getProject());
                             $logService = $this->container->get('logService');
-                            $logService->log($user, 'user_is_made_participant_project', $inviteTokenObject->getProject(), array( 'other_user' => array( 'routing' => 'user', 'logName' => $inviteTokenObject->getReferalUser()->getLogName(), 'args' => $inviteTokenObject->getReferalUser()->getLogArgs()) ));
+                            $logService->log($user, 'user_is_made_participant_project', $inviteTokenObject->getProject(), array( 'other_user' => array( 'logName' => $inviteTokenObject->getReferalUser()->getLogName(), 'identifier' => $inviteTokenObject->getReferalUser()->getUsername()) ));
                         }
 
                     }
@@ -466,8 +466,18 @@ class DefaultController extends Controller
                     $this->get('translator')->trans('user.welcome')
                 );
 
-                return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $user->getUsername())));
-           
+                // Returns and redirects
+                if ($openid === true ) {
+
+                    return $this->redirect($this->generateUrl('fp_openid_security_check', array(
+                        RecoveredFailureRelyingParty::RECOVERED_QUERY_PARAMETER => 1
+                    )));
+
+                } else {
+
+                    return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $user->getUsername())));
+                }
+
             } else {
                
                $this->get('session')->getFlashBag()->add(
@@ -479,7 +489,7 @@ class DefaultController extends Controller
 
         }
 
-        return $this->render('metaUserBundle:Default:create.html.twig', array('form' => $form->createView(), 'inviteToken' => $inviteToken));
+        return $this->render('metaUserBundle:Default:create.html.twig', array('form' => $form->createView(), 'inviteToken' => $inviteToken, 'openid' => $openid));
 
     }
 
@@ -523,7 +533,7 @@ class DefaultController extends Controller
                     break;
                 case 'about':
                     $authenticatedUser->setAbout($request->request->get('value'));
-                    $deepLinkingService = $this->container->get('meta.twig.deep_linking_extension');
+                    $deepLinkingService = $this->container->get('deep_linking_extension');
                     $response = $deepLinkingService->convertDeepLinks(
                       $this->container->get('markdown.parser')->transformMarkdown($request->request->get('value'))
                     );

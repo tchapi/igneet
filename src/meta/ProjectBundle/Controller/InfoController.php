@@ -14,16 +14,16 @@ class InfoController extends BaseController
     /*
      * Show the info tab
      */
-    public function showInfoAction($slug)
+    public function showInfoAction($uid)
     {
         $menu = $this->container->getParameter('standardproject.menu');
-        $this->fetchProjectAndPreComputeRights($slug, false, $menu['info']['private']);
+        $this->fetchProjectAndPreComputeRights($uid, false, $menu['info']['private']);
 
         if ($this->base == false) 
-          return $this->forward('metaProjectBundle:Default:showRestricted', array('slug' => $slug));
+          return $this->forward('metaProjectBundle:Default:showRestricted', array('uid' => $uid));
 
-        $targetOwnerAsBase64 = array('slug' => 'metaProjectBundle:Info:addParticipantOrOwner', 'external' => true, 'params' => array('slug' => $slug,'owner' => true));
-        $targetParticipantAsBase64 = array('slug' => 'metaProjectBundle:Info:addParticipantOrOwner', 'external' => true, 'params' => array('slug' => $slug,'owner' => false));
+        $targetOwnerAsBase64 = array('slug' => 'metaProjectBundle:Info:addParticipantOrOwner', 'external' => true, 'params' => array('uid' => $uid,'owner' => true));
+        $targetParticipantAsBase64 = array('slug' => 'metaProjectBundle:Info:addParticipantOrOwner', 'external' => true, 'params' => array('uid' => $uid,'owner' => false));
 
         return $this->render('metaProjectBundle:Info:showInfo.html.twig', 
             array('base' => $this->base, 
@@ -52,10 +52,16 @@ class InfoController extends BaseController
       
       $community = $project->getCommunity();
 
+      // No sense in private space
+      if (is_null($community)) return null;
+
       if ($user && !$user->isDeleted()) {
 
           // If the user is already in the community, might be a guest
-          if ($user->belongsTo($community) || $user->isGuestOf($community)){
+
+          $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $user->getId(), 'community' => $community->getId()));
+
+          if ($userCommunity){
 
               return $user;
 
@@ -103,13 +109,13 @@ class InfoController extends BaseController
     /*
      * Add a participant to a project
      */
-    public function addParticipantOrOwnerAction(Request $request, $slug, $mailOrUsername, $owner)
+    public function addParticipantOrOwnerAction(Request $request, $uid, $mailOrUsername, $owner)
     {
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('addParticipantOrOwner', $request->get('token')))
-            return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $slug)));
+            return $this->redirect($this->generateUrl('p_show_project', array('uid' => $uid)));
 
-        $this->fetchProjectAndPreComputeRights($slug, true, false);
+        $this->fetchProjectAndPreComputeRights($uid, true, false);
 
         if ($this->base != false && !is_null($this->base['standardProject']->getCommunity())) {
 
@@ -131,7 +137,7 @@ class InfoController extends BaseController
                   }
 
                   $logService = $this->container->get('logService');
-                  $logService->log($newParticipantOrOwner, 'user_is_made_owner_project', $this->base['standardProject'], array( 'other_user' => array( 'routing' => 'user', 'logName' => $this->getUser()->getLogName(), 'args' => $this->getUser()->getLogArgs()) ));
+                  $logService->log($newParticipantOrOwner, 'user_is_made_owner_project', $this->base['standardProject'], array( 'other_user' => array( 'logName' => $this->getUser()->getLogName(), 'identifier' => $this->getUser()->getUsername()) ));
 
                   $this->get('session')->getFlashBag()->add(
                       'success',
@@ -143,7 +149,7 @@ class InfoController extends BaseController
                   $newParticipantOrOwner->addProjectsParticipatedIn($this->base['standardProject']);
 
                   $logService = $this->container->get('logService');
-                  $logService->log($newParticipantOrOwner, 'user_is_made_participant_project', $this->base['standardProject'], array( 'other_user' => array( 'routing' => 'user', 'logName' => $this->getUser()->getLogName(), 'args' => $this->getUser()->getLogArgs()) ));
+                  $logService->log($newParticipantOrOwner, 'user_is_made_participant_project', $this->base['standardProject'], array( 'other_user' => array( 'logName' => $this->getUser()->getLogName(), 'identifier' => $this->getUser()->getUsername()) ));
 
                   $this->get('session')->getFlashBag()->add(
                       'success',
@@ -179,19 +185,19 @@ class InfoController extends BaseController
 
         }
 
-        return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $slug)));
+        return $this->redirect($this->generateUrl('p_show_project', array('uid' => $uid)));
     }
 
     /*
      * Remove a participant from a project
      */
-    public function removeParticipantOrOwnerAction(Request $request, $slug, $username, $owner)
+    public function removeParticipantOrOwnerAction(Request $request, $uid, $username, $owner)
     {
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('removeParticipantOrOwner', $request->get('token')))
-            return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $slug)));
+            return $this->redirect($this->generateUrl('p_show_project', array('uid' => $uid)));
 
-        $this->fetchProjectAndPreComputeRights($slug, true, false);
+        $this->fetchProjectAndPreComputeRights($uid, true, false);
 
         if ($this->base != false && !is_null($this->base['standardProject']->getCommunity())) {
 
@@ -200,7 +206,9 @@ class InfoController extends BaseController
 
             if ($toRemoveParticipantOrOwner && (($toRemoveParticipantOrOwner->isOwning($this->base['standardProject']) && $owner === true) || ($toRemoveParticipantOrOwner->isParticipatingIn($this->base['standardProject']) && $owner !== true)) ) {
 
-                if ($toRemoveParticipantOrOwner != $this->getUser()){
+                if ($toRemoveParticipantOrOwner != $this->getUser() || 
+                    !$this->getUser()->isOwning($this->base['standardProject']) ||
+                    $this->getUser()->isOwning($this->base['standardProject']) && $this->base['standardProject']->countOwners() > 1 ){
 
                     if ($owner === true){
 
@@ -251,7 +259,56 @@ class InfoController extends BaseController
 
         }
 
-        return $this->redirect($this->generateUrl('sp_show_project', array('slug' => $slug)));
+        return $this->redirect($this->generateUrl('p_show_project', array('uid' => $uid)));
     }
 
+    /*
+     * Remove myself as a participant of a project
+     */
+    public function removeMySelfParticipantAction(Request $request, $uid, $username)
+    {
+
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('removeMySelfParticipant', $request->get('token')))
+            return $this->redirect($this->generateUrl('p_show_project', array('uid' => $uid)));
+
+        $this->fetchProjectAndPreComputeRights($uid, false, true);
+
+        if ($this->base != false && !is_null($this->base['standardProject']->getCommunity())) {
+
+            $userRepository = $this->getDoctrine()->getRepository('metaUserBundle:User');
+            $toRemoveParticipantOrOwner = $userRepository->findOneByUsername($username);
+
+            if ($toRemoveParticipantOrOwner && $toRemoveParticipantOrOwner->isParticipatingIn($this->base['standardProject']) ) {
+
+                $toRemoveParticipantOrOwner->removeProjectsParticipatedIn($this->base['standardProject']);
+
+                $this->get('session')->getFlashBag()->add(
+                    'success',
+                    $this->get('translator')->trans('project.remove.participant', array('%user%' =>$toRemoveParticipantOrOwner->getFullName(), '%project%' =>$this->base['standardProject']->getName()))
+                );
+
+                $em = $this->getDoctrine()->getManager();
+                $em->flush();
+
+            } else {
+
+                $this->get('session')->getFlashBag()->add(
+                    'error',
+                    $this->get('translator')->trans('project.user.not.participant')
+                );
+            }
+
+        } else {
+
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $this->get('translator')->trans('project.cannot.remove.participant')
+            );
+
+        }
+        
+        // Redirect to list
+        return $this->redirect($this->generateUrl('p_list_projects'));
+
+    }
 }

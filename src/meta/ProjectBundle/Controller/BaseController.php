@@ -12,11 +12,11 @@ class BaseController extends Controller
     /*
      * Common helper for fetching project and computing rights
      */
-    public function fetchProjectAndPreComputeRights($slug, $mustBeOwner = false, $mustParticipate = false)
+    public function fetchProjectAndPreComputeRights($uid, $mustBeOwner = false, $mustParticipate = false)
     {
 
         $repository = $this->getDoctrine()->getRepository('metaProjectBundle:StandardProject');
-        $project = $repository->findOneBySlug($slug); // We do not enforce community here to be able to switch the user later on
+        $project = $repository->findOneById($this->container->get('uid')->fromUId($uid)); // We do not enforce community here to be able to switch the user later on
 
         // Unexistant or deleted project
         if (!$project || $project->isDeleted()){
@@ -40,9 +40,15 @@ class BaseController extends Controller
           throw $this->createNotFoundException($this->get('translator')->trans('project.not.found'));
         }
 
-        // User is guest in community
-        if ($authenticatedUser->isGuestInCurrentCommunity() && !$isOwning && !$isParticipatingIn){
-            throw $this->createNotFoundException($this->get('translator')->trans('project.not.found'));
+        if (!is_null($community)){
+          
+          $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true));
+        
+          // User is guest in community
+          if ($userCommunityGuest && !$isOwning && !$isParticipatingIn){
+              throw $this->createNotFoundException($this->get('translator')->trans('project.not.found'));
+          }
+
         }
 
         // Project not in community, we might switch 
@@ -61,7 +67,10 @@ class BaseController extends Controller
 
             } else {
 
-              if ($authenticatedUser->belongsTo($community) || ($authenticatedUser->isGuestOf($community) && ($isOwning || $isParticipatingIn)) ){
+              $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => false));
+              $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true));
+
+              if ($userCommunity || ($userCommunityGuest && ($isOwning || $isParticipatingIn)) ){
                   $authenticatedUser->setCurrentCommunity($community);
                   $em = $this->getDoctrine()->getManager();
                   $em->flush();
@@ -77,8 +86,8 @@ class BaseController extends Controller
             }
         }
 
-        $targetPictureAsBase64 = array ('slug' => 'metaProjectBundle:Default:edit', 'params' => array('slug' => $slug ), 'crop' => true);
-        $targetProposeToCommunityAsBase64 = array('slug' => 'metaProjectBundle:Default:edit', 'params' => array('slug' => $slug));
+        $targetPictureAsBase64 = array ('slug' => 'metaProjectBundle:Default:edit', 'params' => array('uid' => $uid ), 'crop' => true);
+        $targetProposeToCommunityAsBase64 = array('slug' => 'metaProjectBundle:Default:edit', 'params' => array('uid' => $uid));
 
         // Compute endowed/vacant skills
         $vacantSkills = array();
@@ -124,9 +133,9 @@ class BaseController extends Controller
     /*
      * Output a standard restricted partial
      */ 
-    public function showRestrictedAction($slug)
+    public function showRestrictedAction($uid)
     {
-        $this->fetchProjectAndPreComputeRights($slug, false, false);
+        $this->fetchProjectAndPreComputeRights($uid, false, false);
 
         return $this->render('metaProjectBundle:Security:restricted.html.twig', 
             array('base' => $this->base));
@@ -135,10 +144,10 @@ class BaseController extends Controller
     /*
      * Output the navbar for the idea
      */
-    public function navbarAction($activeMenu, $slug)
+    public function navbarAction($activeMenu, $uid)
     {
         $menu = $this->container->getParameter('standardproject.menu');
 
-        return $this->render('metaProjectBundle:Base:navbar.html.twig', array('menu' => $menu, 'activeMenu' => $activeMenu, 'slug' => $slug));
+        return $this->render('metaProjectBundle:Base:navbar.html.twig', array('menu' => $menu, 'activeMenu' => $activeMenu, 'uid' => $uid));
     }
 }

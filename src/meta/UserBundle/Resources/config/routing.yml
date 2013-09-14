@@ -26,7 +26,15 @@ change_password:
 
 u_signup:
     pattern:  /signup/{inviteToken}
-    defaults: { _controller: metaUserBundle:Default:create, inviteToken: null }
+    defaults: { _controller: metaUserBundle:Default:create, inviteToken: null, openid: false }
+
+u_signup_choice:
+    pattern:  /signup_choice/{inviteToken}
+    defaults: { _controller: metaUserBundle:Default:chooseSignupProvider, inviteToken: null }
+
+u_signup_finish:
+    pattern:  /signup_finish/{inviteToken}
+    defaults: { _controller: metaUserBundle:Default:create, inviteToken: null, openid: true }
 
 u_me:
     pattern:  /me
@@ -41,6 +49,12 @@ u_show_user_profile:
 u_show_user_dashboard:
     pattern:  /dashboard
     defaults: { _controller: metaUserBundle:Default:showDashboard }
+    requirements:
+        _method:  GET
+
+u_show_user_settings:
+    pattern:  /settings
+    defaults: { _controller: metaUserBundle:Settings:showSettings }
     requirements:
         _method:  GET
 
@@ -60,6 +74,12 @@ u_count_user_notifications:
 u_edit_user_profile:
     pattern:  /who/{username}
     defaults: { _controller: metaUserBundle:Default:edit }
+    requirements:
+        _method:  POST
+
+u_edit_user_settings:
+    pattern:  /settings
+    defaults: { _controller: metaUserBundle:Settings:editSettings }
     requirements:
         _method:  POST
 

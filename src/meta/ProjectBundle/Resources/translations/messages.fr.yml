@@ -9,9 +9,6 @@ project:
   allProjects: "Tous les projets"
   none: "Pas encore de projets !"
   not.found: "Ce projet n'existe pas."
-  choose.slug: "Choisissez un slug"
-  choose.slugHelp: "Veuillez indiquer un nom court pour ce projet."
-  slug.already.taken: "Ce nom court est déjà pris, veuiller en indiquer un autre."
   picture:
     reset: "L'image de ce projet a été réinitialisée avec succès."
     cannot.reset: "Vous n'avez pas les droits pour réinitialiser l'image de ce projet."
@@ -21,9 +18,6 @@ project:
   createForm:
     name: "Nom du projet"
     namePlaceholder: "Mon nouveau projet"
-    slug: "Nom court"
-    slugHelp: "Caractères acceptés : alphanumérique et tirets"
-    slugPlaceholder: "mon-nouveau-projet"
     headline: "Slogan"
     headlineHelp: "Expliquez votre projet en une phrase"
     private: "Projet privé"
@@ -37,13 +31,15 @@ project:
   not.watching: "Vous n'êtes pas abonné au projet %project%."
   already.watching: "Vous êtes déjà abonné au projet %project%."
   cannot:
-    choose.slug: "Ce nom court ne peut être utilisé. Veuillez en choisir un autre."
     delete: "Vous n'avez pas les droits suffisants pour supprimer ce projet."
     watch: "Vous ne pouvez pas vous abonner à ce projet."
     unwatch: "Vous ne pouvez pas vous désabonner de ce projet."
     add.participant: "Vous n'avez pas les droits suffisants pour ajouter un participant ou un propriétaire à ce projet."
-    remove.participant: "Vous n'avez pas les droits suffisants pour retirer un participant ou un propriétaire à ce projet."  
-    remove.self: "Vous ne pouvez pas vous retirer d'un projet."
+    public: "Vous ne pouves pas rendre ce projet public."
+    private: "Vous ne pouvez pas rendre ce projet privé"
+    remove:
+      participant: "Vous n'avez pas les droits suffisants pour retirer un participant ou un propriétaire à ce projet."  
+      self: "Vous ne pouvez pas vous retirer de ce projet."
   nameHelp: "Changer le nom de ce projet"
   headlineHelp: "Changer le slogan de ce projet"
   headline.emptyText: "Cliquez pour ajouter un slogan"
@@ -56,11 +52,9 @@ project:
   make:
     public: "rendre ce projet public"
     private: "rendre ce projet privé"
-  cannot:
-    public: "Vous ne pouves pas rendre ce projet public."
-    private: "Vous ne pouvez pas rendre ce projet privé"
   public: "Ce projet est maintenant public."
   private: "Ce projet est maintenant privé."
+  privateShort: "privé"
   propose: "Proposer ce projet à la communauté"
   in.community: "Ce projet fait maintenant partie de la communauté %community%."
   originalIdea: "de l'idée originale '%idea%'"
@@ -85,6 +79,13 @@ project:
     add.owner: "Ajouter un propriétaire"
     owners: "Propriétaires"
     participants: "Participants"
+    status:
+      title: "Statut"
+      active: "Actif"
+      sleeping: "Mis en attente"
+      launched: "Lancé"
+      abandonned: "Abandonné"
+    statusHelp: "Où en est ce projet ?"
   lists:
     title: "Listes"
     not.found: "Cette liste n'existe pas."
@@ -99,6 +100,7 @@ project:
     deleteHelp: "Êtes-vous sûr de vouloir supprimer cette liste ?"
     created: "La liste %list% a été créée avec succès."
     deleted: "La liste %list% a été supprimée avec succès."
+    done: "Réalisé à %advance%%"
     items:
       none: "Aucun item pour l'instant !"
       not.found: "Cet item de liste n'existe pas."
@@ -113,7 +115,9 @@ project:
       deleted: "L'item de liste a été supprimé avec succès."
   resources:
     title: "Ressources"
-    not.found: "Cette ressource n'existe pas existe."
+    not:
+      found: "Cette ressource n'existe pas existe."
+      downloadable: "Le fichier attaché à cette ressource n'a pas pu être trouvé - il a sûrement été supprimé ou bougé."
     titleHelp: "Changer le titre de cette ressource"
     change: "Changer cette ressource"
     delete: "Supprimer cette ressource"
@@ -159,3 +163,6 @@ project:
     mail:
       sent: "Un mail de notification a été envoyé à %mail% en votre nom. Il/elle sera ajouté(e) au projet lors de sa prochaine connexion."
       subject: "Vous avez été invité à rejoindre un projet sur igneet !"
+  launch: "Listes-aide"
+  launch.button: "Ajouter les listes d'aide à ce projet"
+  launchHelp: "Vous êtes sur le point de créer des listes d'accompagnement pour ce projet - êtes-vous sûr ?"

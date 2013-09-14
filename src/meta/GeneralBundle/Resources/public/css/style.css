@@ -122,6 +122,7 @@ div.content form section > .sectionContent{
 }
 div.content section.colored{ background: #EEE;}
 div.content section.colored.warning{ background: lightPink;}
+div.content section.colored.info{ background: lightBlue;}
 /* Column-type sections */
 div.content div.menu{
   width: 180px;

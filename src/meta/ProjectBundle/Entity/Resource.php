@@ -114,9 +114,6 @@ class Resource extends Taggable
     {
         return $this->title;
     }
-    public function getLogArgs(){
-        return array('id' => $this->id);
-    }
 
     /**
      * Set url

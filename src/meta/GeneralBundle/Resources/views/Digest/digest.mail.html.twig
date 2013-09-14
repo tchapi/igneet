@@ -1,0 +1,30 @@
+{% if not locale %}{% set locale = 'en_US' %}{% endif %}
+<h3>{{ "mail.hello"|trans({}, "messages", locale) }}</h3>
+
+<h4>{% if community is not null %}{{ "user.digest.mail.intro"|trans({ '%community%': community.name}, "messages", locale) }}{% else %}{{ "user.digest.mail.intro.generic"|trans({}, "messages", locale) }}{% endif %}</h4>
+
+{% if notifications|length > 0 %}
+  <section>
+    <ul class="timeline">
+      {% set currentDate = "now"|date_modify("+1 day") %}
+      {% for notification in notifications %}
+
+        {% if notification['createdAt']|date('Y-m-d') < currentDate|date('Y-m-d') %}
+          <li class="dateWrapper date"><div class="date-wrapper"><div class="date">{{ notification['createdAt']|date("date.timeline"|trans({}, "messages", locale)) }}</div></div></li>
+          {% set currentDate = notification['createdAt'] %}
+        {% endif %}
+
+        <li class="logWrapper full"><div class="log{% if notification['createdAt']|date('c') > lastNotified|date('c') %} bold{% endif %}">{{ notification['data']|raw }}</div></li>
+
+      {% endfor %}
+    </ul>
+  </section>
+{% else %}
+  <section class="centered">
+    <i class="muted icon-ok icon-4x"></i>
+    <br />{{ "user.notifications.none"|trans({}, "messages", locale) }}
+  </section>
+{% endif %}
+
+<p><em>{{ "mail.automated"|trans({}, "messages", locale) }}</em></p>
+<p><strong>{{ "team"|trans({}, "messages", locale) }}</strong></p>
