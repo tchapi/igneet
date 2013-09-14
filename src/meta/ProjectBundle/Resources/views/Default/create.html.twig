@@ -23,10 +23,10 @@
 
 {% form_theme form _self %}
 
-{% use 'form_div_layout.html.twig' with field_widget as base_field_widget %}
+{% use 'form_div_layout.html.twig' with form_widget_simple as base_form_widget_simple %}
 
-{% block field_widget %}
-    {{ block('base_field_widget') }}
+{% block form_widget_simple %}
+    {{ block('base_form_widget_simple') }}
     {% if required or attr.help is defined %}
         <span class="help-block">{% if required %}<span class="muted">* {{ "required"|trans }}</span>{% endif %} {% if attr.help is defined %}{{ attr.help|trans }}{% endif %}</span>
     {% endif %}
