@@ -25,9 +25,11 @@ class IdeaType extends AbstractType
                 'class' => 'meta\UserBundle\Entity\User',
                 'query_builder' => function(\Doctrine\ORM\EntityRepository $er) use ($community){
                     return $er->createQueryBuilder("u")
-                              ->join('u.communities', 'c')
+                              ->join('u.userCommunities', 'uc')
+                              ->join('uc.community', 'c')
                               ->where("u.deleted_at IS NULL")
                               ->andWhere("c = :community")
+                              ->andWhere("uc.guest = 0")
                               ->setParameter('community', $community)
                               ->orderBy("u.username", "ASC");
                 },
