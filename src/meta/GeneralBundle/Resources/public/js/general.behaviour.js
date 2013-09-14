@@ -24,4 +24,18 @@ $(document).ready(function(){
 
   });
 
+  // Select all of shortcode when visible
+  $("#shortcode-trigger").click(function(){
+    $("#shortcode").toggle(200, function(){
+
+      if ($("#shortcode").is(":visible")){
+        $("#shortcode input").focus();
+        $("#shortcode input:text").select();
+      } else {
+        $("#shortcode input").blur();
+      }
+
+    });
+  });
+
 });

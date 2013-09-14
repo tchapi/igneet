@@ -2,6 +2,8 @@
 
 {% block title %}{{ parent() }}{% if wikiPage %} | {{ "project.wiki.title"|trans }} : {{ wikiPage.title }}{% endif %}{% endblock %}
 
+{% set shortcode %}[[wikipage:{{ wikiPage.id|to_uid }}]]{% endset %}
+
 {% block navbar %}
 {% render(controller("metaProjectBundle:Default:navbar", { 'activeMenu' : 'wiki', 'uid' : base.standardProject.id|to_uid })) %}
 {% endblock %}

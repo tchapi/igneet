@@ -2,6 +2,8 @@
 
 {% block title %}{{ parent() }} | {{ "project.info.title"|trans }}{% endblock %}
 
+{% set shortcode %}[[project:{{ base.standardProject.id|to_uid }}]]{% endset %}
+
 {% block navbar %}
 {% render(controller("metaProjectBundle:Default:navbar", { 'activeMenu' : 'info', 'uid' : base.standardProject.id|to_uid })) %}
 {% endblock %}

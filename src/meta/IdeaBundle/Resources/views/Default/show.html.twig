@@ -2,6 +2,8 @@
 
 {% block title %}{{ parent() }} > {{ base.idea.name }}{% endblock %}
 
+{% set shortcode %}[[idea:{{ base.idea.id|to_uid }}]]{% endset %}
+
 {% block javascripts %}
   {{ parent() }}
     {% javascripts '@metaGeneralBundle/Resources/public/js/comments.behaviour.js' 

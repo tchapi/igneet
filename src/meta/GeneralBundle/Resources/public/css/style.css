@@ -28,6 +28,14 @@ h1, h2, h3, h4, h5, h6 {
   right: 4px;
 }
 
+.shortcode{
+  padding: 10px;
+}
+#shortcode input{
+  margin: 7px;
+  background: #CCC;
+}
+
 div#workspace{
   transition: opacity 150ms 350ms ease-in;
   margin-top: 20px;

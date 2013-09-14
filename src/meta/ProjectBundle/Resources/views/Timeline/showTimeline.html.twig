@@ -2,6 +2,8 @@
 
 {% block title %}{{ parent() }} | {{ "project.timeline.title"|trans }}{% endblock %}
 
+{% set shortcode %}[[project:{{ base.standardProject.id|to_uid }}]]{% endset %}
+
 {% block javascripts %}
   {{ parent() }}
     {% javascripts '@metaGeneralBundle/Resources/public/js/select2.behaviour.js' 
