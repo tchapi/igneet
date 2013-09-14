@@ -2,6 +2,8 @@
 
 {% block title %}{{ parent() }} > {{ user.getFullName() }}{% endblock %}
 
+{% set shortcode %}[[user:{{ user.username }}]]{% endset %}
+
 {% block javascripts %}
   {{ parent() }}
   {% if isMe %}
