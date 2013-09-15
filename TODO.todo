@@ -18,8 +18,7 @@ Todo - Priorités :
 
    ☐ + Deep linking : verifier a l'affichage que l'utilisateur a le droit de voir l'objet deep linké !
    Sinon mettre en gras mais ne pas linker avec une icone oeil barré (?)
-   ☐ Mettre un quick link pour obtenir le deep link de l'élément sur lequel on se trouve
-
+ 
  ✘ faire une page des projets 'archivés' @cancelled (13-08-02 22:50)
    \__ + un bouton 'archiver' par projet
    \__ + demander si archiver une idée apres projectize
@@ -154,6 +153,7 @@ Todo - General / Users :
  ✔ logs avec seulement le name et "identifier" dans "objects" @done (13-06-30 21:25)
  ✔ Translate logs (tous les logs, juste le fichier a traduire) @done (13-08-25 16:25)
  ✔ OpenID @done (13-08-02 22:51)
+ ✔ Mettre un quick link pour obtenir le deep link de l'élément sur lequel on se trouve @done (13-09-15 18:21)
 
  ✘ Rajouter un badge 'YOU' quand l'utilisateur courant est affiché @cancelled (13-02-13 14:08)
  ✘ watch / unwatch quand tu es owner ou participant ou createur --> a degager @cancelled (13-01-26 11:25)
