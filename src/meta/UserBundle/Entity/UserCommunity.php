@@ -50,9 +50,29 @@ class UserCommunity
      */
     private $guest;
 
+    /**
+     * @var date $created_at
+     * 
+     * @ORM\Column(name="created_at", type="datetime")
+     * @Assert\NotBlank()
+     * @Assert\DateTime()
+     */
+    private $created_at;  
+    
+    /**
+     * @var date $deleted_at
+     * 
+     * @ORM\Column(name="deleted_at", type="datetime")
+     * @Assert\NotBlank()
+     * @Assert\DateTime()
+     */
+    private $deleted_at;
+
     public function __construct() {
         
         $this->guest = false;
+        $this->created_at = new \DateTime('now');
+        $this->deleted_at = null;
 
     }
 
