@@ -6,7 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller,
     Symfony\Component\HttpFoundation\Request,
     Symfony\Component\HttpFoundation\Response;
 
-use meta\UserBundle\Entity\UserInviteToken;
+use meta\UserBundle\Entity\UserInviteToken,
+    meta\UserBundle\Entity\UserCommunity;
 
 class InfoController extends BaseController
 {
@@ -68,7 +69,13 @@ class InfoController extends BaseController
           // The user has no link with the current community, we must add him as a guest
           } else {
 
-              $community->addGuest($user);
+              $userCommunity = new UserCommunity();
+              $userCommunity->setUser($user);
+              $userCommunity->setCommunity($community);
+
+              $userCommunity->setGuest(true);
+              $em->persist($userCommunity);
+              
               $em->flush();
 
               return $user;
