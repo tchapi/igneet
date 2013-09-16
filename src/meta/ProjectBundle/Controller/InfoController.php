@@ -72,8 +72,8 @@ class InfoController extends BaseController
               $userCommunity = new UserCommunity();
               $userCommunity->setUser($user);
               $userCommunity->setCommunity($community);
-              $userCommunity->setGuest(true);
 
+              $userCommunity->setGuest(true);
               $em->persist($userCommunity);
 
               $em->flush();
