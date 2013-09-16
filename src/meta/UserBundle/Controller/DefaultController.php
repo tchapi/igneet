@@ -20,7 +20,8 @@ use meta\UserBundle\Entity\OpenIdIdentity;
  * Importing Class definitions
  */
 use meta\UserBundle\Entity\User,
-    meta\UserBundle\Form\Type\UserType;
+    meta\UserBundle\Form\Type\UserType,
+    meta\UserBundle\Entity\UserCommunity;
 
 class DefaultController extends Controller
 {
