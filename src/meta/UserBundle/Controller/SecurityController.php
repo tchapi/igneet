@@ -104,8 +104,8 @@ class SecurityController extends Controller
                     // If the user is already a guest in the community
                     } elseif ($userCommunityGuest) {
 
-                        $community->removeGuest($user);
-                        $community->addUser($user);
+                        // User is not guest anymore, we already have a userCommunity object
+                        $userCommunityGuest->setGuest(false);
                         $logService = $this->container->get('logService');
                         $logService->log($this->getUser(), 'user_enters_community', $user, array( 'community' => array( 'logName' => $community->getLogName(), 'identifier' => $community->getId()) ) );
                             
@@ -117,7 +117,14 @@ class SecurityController extends Controller
                     // The user has no link with the current community
                     } else {
 
-                        $community->addUser($user);
+                        // Creates the userCommunity
+                        $userCommunity = new UserCommunity();
+                        $userCommunity->setUser($user);
+                        $userCommunity->setCommunity($community);
+                        $userCommunity->setGuest(false);
+
+                        $em->persist($userCommunity);
+
                         $logService = $this->container->get('logService');
                         $logService->log($this->getUser(), 'user_enters_community', $user, array( 'community' => array( 'logName' => $community->getLogName(), 'identifier' => $community->getId()) ) );
                             
@@ -244,12 +251,12 @@ class SecurityController extends Controller
 
                 $this->get('session')->getFlashBag()->add(
                     'success',
-                    $this->get('translator')->trans('user.changePassword.sent', array( '%mail%' => $mail))
+                    $this->get('translator')->trans('user.passwordChange.sent', array( '%mail%' => $mail))
                 );
 
                 // Sends mail to invitee
                 $message = \Swift_Message::newInstance()
-                    ->setSubject($this->get('translator')->trans('user.changePassword.mail.subject'))
+                    ->setSubject($this->get('translator')->trans('user.passwordChange.mail.subject'))
                     ->setFrom($this->container->getParameter('mailer_from'))
                     ->setTo($mail)
                     ->setBody(
