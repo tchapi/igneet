@@ -71,6 +71,7 @@ class UserCommunity
     public function __construct() {
         
         $this->guest = false;
+        $this->email = null;
         $this->created_at = new \DateTime('now');
         $this->deleted_at = null;
 

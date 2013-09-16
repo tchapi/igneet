@@ -104,8 +104,8 @@ class SecurityController extends Controller
                     // If the user is already a guest in the community
                     } elseif ($userCommunityGuest) {
 
-                        $community->removeGuest($user);
-                        $community->addUser($user);
+                        // User is not guest anymore, we already have a userCommunity object
+                        $userCommunityGuest->setGuest(false);
                         $logService = $this->container->get('logService');
                         $logService->log($this->getUser(), 'user_enters_community', $user, array( 'community' => array( 'logName' => $community->getLogName(), 'identifier' => $community->getId()) ) );
                             
@@ -117,7 +117,14 @@ class SecurityController extends Controller
                     // The user has no link with the current community
                     } else {
 
-                        $community->addUser($user);
+                        // Creates the userCommunity
+                        $userCommunity = new UserCommunity();
+                        $userCommunity->setUser($user);
+                        $userCommunity->setCommunity($community);
+                        $userCommunity->setGuest(false);
+
+                        $em->persist($userCommunity);
+
                         $logService = $this->container->get('logService');
                         $logService->log($this->getUser(), 'user_enters_community', $user, array( 'community' => array( 'logName' => $community->getLogName(), 'identifier' => $community->getId()) ) );
                             

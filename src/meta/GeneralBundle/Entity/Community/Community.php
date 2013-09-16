@@ -172,45 +172,6 @@ class Community
     }
 
     /**
-     * Add user
-     *
-     * @param \meta\UserBundle\Entity\User $user
-     * @return Community
-     */
-    public function addUser(\meta\UserBundle\Entity\User $user)
-    {
-        if (!is_null($user)){
-            $user->addCommunity($this);
-            $this->users[] = $user;
-        }
-    
-        return $this;
-    }
-
-    /**
-     * Remove user
-     *
-     * @param \meta\UserBundle\Entity\User $user
-     */
-    public function removeUser(\meta\UserBundle\Entity\User $user)
-    {
-        if (!is_null($user)){
-            $user->removeCommunity($this);
-            $this->users->removeElement($user);
-        }
-    }
-
-    /**
-     * Get users
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getUsers()
-    {
-        return $this->users;
-    }
-
-    /**
      * Add guest
      *
      * @param \meta\UserBundle\Entity\User $guest

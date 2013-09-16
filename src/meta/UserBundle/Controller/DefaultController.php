@@ -430,12 +430,22 @@ class DefaultController extends Controller
                     if (!is_null($inviteTokenObject->getCommunity())){
 
                         if ($inviteTokenObject->getCommunityType() === 'user'){
-                            $inviteTokenObject->getCommunity()->addUser($user);
+
                             $logService = $this->container->get('logService');
                             $logService->log($this->getUser(), 'user_enters_community', $user, array( 'community' => array( 'logName' => $inviteTokenObject->getCommunity()->getLogName() ) ) );
+                        
                         } else {
+
                             $inviteTokenObject->getCommunity()->addGuest($user);
                         }
+
+                        // Creates the userCommunity
+                        $userCommunity = new UserCommunity();
+                        $userCommunity->setUser($user);
+                        $userCommunity->setCommunity($inviteTokenObject->getCommunity());
+                        $userCommunity->setGuest( !($inviteTokenObject->getCommunityType() === 'user') );
+
+                        $em->persist($userCommunity);
                         
                         $user->setCurrentCommunity($inviteTokenObject->getCommunity());
 
