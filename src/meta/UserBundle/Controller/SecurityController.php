@@ -244,12 +244,12 @@ class SecurityController extends Controller
 
                 $this->get('session')->getFlashBag()->add(
                     'success',
-                    $this->get('translator')->trans('user.changePassword.sent', array( '%mail%' => $mail))
+                    $this->get('translator')->trans('user.passwordChange.sent', array( '%mail%' => $mail))
                 );
 
                 // Sends mail to invitee
                 $message = \Swift_Message::newInstance()
-                    ->setSubject($this->get('translator')->trans('user.changePassword.mail.subject'))
+                    ->setSubject($this->get('translator')->trans('user.passwordChange.mail.subject'))
                     ->setFrom($this->container->getParameter('mailer_from'))
                     ->setTo($mail)
                     ->setBody(
