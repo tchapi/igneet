@@ -60,10 +60,9 @@ class UserCommunity
     private $created_at;  
     
     /**
-     * @var date $deleted_at
-     * 
-     * @ORM\Column(name="deleted_at", type="datetime")
-     * @Assert\NotBlank()
+     * @var \DateTime $deleted_at
+     *
+     * @ORM\Column(name="deleted_at", type="datetime", nullable=true)
      * @Assert\DateTime()
      */
     private $deleted_at;
