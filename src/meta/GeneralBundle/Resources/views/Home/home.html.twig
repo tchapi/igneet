@@ -8,8 +8,13 @@
     <div class="textAvatar"><i class="icon-home"></i></div>
   </div>
   <div class="objectHeader">
-    <h2>{% if app.user.currentCommunity is null %}{% trans %}private.space{% endtrans %}{% else %}{{ app.user.currentCommunity.name }}{%endif %}</h2>
-    <h4>{% trans with {'%projects%': totalProjects, '%ideas%': totalIdeas} %}community.homeHelp{% endtrans %}</h4>
+    {% if app.user.currentCommunity is null %}
+      <h2>{{ "private.space"|trans }}</h2>
+    {% else %}
+      <h2>{{ app.user.currentCommunity.name }}</h2>
+      <h4>{{ app.user.currentCommunity.headline }}</h4>
+    {% endif %}
+    <h5>{% trans with {'%projects%': totalProjects, '%ideas%': totalIdeas} %}community.homeHelp{% endtrans %}</h5>
     {% if app.user.currentCommunity is not null %}
       <p>{% trans with {'%users%': totalUsersAndGuests} %}community.homeHelpUsers{% endtrans %}</p>
     {% endif %}
