@@ -68,7 +68,13 @@ class InfoController extends BaseController
           // The user has no link with the current community, we must add him as a guest
           } else {
 
-              $community->addGuest($user);
+              $userCommunity = new UserCommunity();
+              $userCommunity->setUser($user);
+              $userCommunity->setCommunity($community);
+              $userCommunity->setGuest(true);
+
+              $em->persist($userCommunity);
+
               $em->flush();
 
               return $user;

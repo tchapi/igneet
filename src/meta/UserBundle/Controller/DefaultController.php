@@ -435,9 +435,6 @@ class DefaultController extends Controller
                             $logService = $this->container->get('logService');
                             $logService->log($this->getUser(), 'user_enters_community', $user, array( 'community' => array( 'logName' => $inviteTokenObject->getCommunity()->getLogName() ) ) );
                         
-                        } else {
-
-                            $inviteTokenObject->getCommunity()->addGuest($user);
                         }
 
                         // Creates the userCommunity
