@@ -177,4 +177,71 @@ class UserCommunity
     {
         return $this->community;
     }
+
+    /**
+     * Set created_at
+     *
+     * @param \DateTime $createdAt
+     * @return User
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->created_at = $createdAt;
+        return $this;
+    }
+
+    /**
+     * Get created_at
+     *
+     * @return \DateTime 
+     */
+    public function getCreatedAt()
+    {
+        return $this->created_at;
+    }
+
+    /**
+     * Set deleted_at
+     *
+     * @param \DateTime $deletedAt
+     * @return User
+     */
+    public function setDeletedAt($deletedAt)
+    {
+        $this->deleted_at = $deletedAt;
+    
+        return $this;
+    }
+
+    /**
+     * Get deleted_at
+     *
+     * @return \DateTime 
+     */
+    public function getDeletedAt()
+    {
+        return $this->deleted_at;
+    }
+
+    /**
+     * Is deleted
+     *
+     * @return boolean 
+     */
+    public function isDeleted()
+    {
+        return !($this->deleted_at === NULL);
+    }
+
+    /**
+     * Deletes
+     *
+     * @return User 
+     */
+    public function delete()
+    {
+        $this->deleted_at = new \DateTime('now');
+        return $this;
+    }
+
 }
