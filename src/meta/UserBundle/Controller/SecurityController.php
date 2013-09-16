@@ -6,8 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller,
     Symfony\Component\HttpFoundation\Request,
     Symfony\Component\Security\Core\SecurityContext;
 
-use meta\UserBundle\Entity\UserInviteToken;
-
+use meta\UserBundle\Entity\UserInviteToken,
+    meta\UserBundle\Entity\UserCommunity;
 /*
  * Importing Class definitions
  */
