@@ -1,1 +1,38 @@
-Home Admin
+{% extends '::base.html.twig' %}
+
+{% block title %}Administration{% endblock %}
+
+{% block body %}
+<header>
+  <h1>Administration</h1>
+</header>
+<div class="content clearfix">
+  <section>
+
+    <p>Summary for <strong>{{ app.request.host }}</strong> from <input type="text"> to <input type="text"> </p>
+
+    <h4>Turnover / Churn</h4>
+    <ul>
+      <li>New users : </li>
+      <li>Lost users : </li>
+    </ul>
+
+    <h4>User base</h4>
+
+    <ul>
+      <li>Total users at the start of the period : </li>
+      <li>Total users at the end of the period : (evol. %)</li>
+    </ul>
+
+    <h4>Activity</h4>
+
+    <ul>
+      <li>Active during the period : </li>
+      <li>Notified during the period : </li>
+    </ul>
+    
+  </section>
+</div>
+{% endblock %}
+
+
