@@ -9,26 +9,27 @@
 <div class="content clearfix">
   <section>
 
-    <p>Summary for <strong>{{ app.request.host }}</strong> from <input type="text"> to <input type="text"> </p>
+    <p>Summary for <strong>{{ app.request.host }}</strong> from <input type="text" value="{{ start_date }}"> to <input type="text" value="{{ end_date }}"> <input type="submit" class="btn btn-primary" value="Refresh" /></p>
 
     <h4>Turnover / Churn</h4>
     <ul>
-      <li>New users : </li>
-      <li>Lost users : </li>
+      <li>New users : {{ stats.nb_created }}</li>
+      <li>Lost users : {{ stats.nb_deleted }}</li>
     </ul>
 
     <h4>User base</h4>
 
     <ul>
-      <li>Total users at the start of the period : </li>
-      <li>Total users at the end of the period : (evol. %)</li>
+      {% set total_users_prev = stats.total_users - stats.nb_created + stats.nb_deleted %}
+      <li>Total users at the start of the period : {{ total_users_prev }}</li>
+      <li>Total users at the end of the period : {{ stats.total_users }} (evol. {{ ((stats.total_users - total_users_prev) * 100 / stats.total_users)|number_format(1, '.', ',') }}%)</li>
     </ul>
 
     <h4>Activity</h4>
 
     <ul>
-      <li>Active during the period : </li>
-      <li>Notified during the period : </li>
+      <li>Active during the period : {{ stats.active_users }}</li>
+      <li>Notified during the period : {{ stats.notified_users }}</li>
     </ul>
     
   </section>

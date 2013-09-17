@@ -1,3 +1,3 @@
 a_home:
-    path:  /
-    defaults: { _controller: metaAdminBundle:Default:home }
+    path:  /{start}/{end}
+    defaults: { _controller: metaAdminBundle:Default:home, start: null, end: null }
