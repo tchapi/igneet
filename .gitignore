@@ -11,6 +11,7 @@ web/uploads/*
 web/bundles/*
 web/css/*
 web/js/*
+web/id.php
 
 # Configuration files
 app/config/parameters.ini
