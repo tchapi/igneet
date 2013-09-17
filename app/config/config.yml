@@ -8,6 +8,7 @@ imports:
     - { resource: @metaGeneralBundle/Resources/config/deep_linking_tags.yml }
     - { resource: @metaGeneralBundle/Resources/config/services.yml }
     - { resource: @metaProjectBundle/Resources/config/launch_lists.yml }
+    - { resource: @metaAdminBundle/Resources/config/services.yml }
 
 framework:
     #esi:             ~

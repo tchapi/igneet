@@ -1,7 +1,8 @@
 parameters:
-#    meta_admin.example.class: meta\AdminBundle\Example
+    admin.stats.class: meta\AdminBundle\Stats\Stats
 
 services:
-#    meta_admin.example:
-#        class: %meta_admin.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+    stats:
+        class: %admin.stats.class%
+        arguments: 
+            entity_manager: "@doctrine.orm.entity_manager"
