@@ -78,7 +78,7 @@ class digestSendCommand extends ContainerAwareCommand
 
 
           // Get userCommunity
-          $userCommunities = $userCommunityRepository->findByUser($user);
+          $userCommunities = $userCommunityRepository->findBy(array("user" => $user, "deleted_at" => null));
 
           if (!($user->getEnableSpecificEmails())){
           

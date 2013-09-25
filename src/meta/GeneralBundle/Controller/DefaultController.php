@@ -146,7 +146,7 @@ class DefaultController extends Controller
 
             if ($community) {
 
-                $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $this->getUser()->getId(), 'community' => $community->getId(), 'guest' => false));
+                $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $this->getUser()->getId(), 'community' => $community->getId(), 'guest' => false, 'deleted_at' => null));
 
                 if ($userCommunity && isset($target['slug']) && isset($target['params']) ){
 
@@ -169,7 +169,7 @@ class DefaultController extends Controller
         } else {
 
             $repository = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity');
-            $userCommunities = $repository->findBy(array( 'user' => $this->getUser(), 'guest' => false));
+            $userCommunities = $repository->findBy(array( 'user' => $this->getUser(), 'guest' => false, 'deleted_at' => null));
 
             if (count($userCommunities) == 0 ){
 
@@ -220,7 +220,7 @@ class DefaultController extends Controller
 
         if ($community) {
             
-            $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $this->getUser()->getId(), 'community' => $community->getId()));
+            $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $this->getUser()->getId(), 'community' => $community->getId(), 'deleted_at' => null));
 
             if ($userCommunity ){
                 

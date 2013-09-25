@@ -49,7 +49,7 @@ class DefaultController extends Controller
 
         // If we're in a community, check we're not guest
         if (!is_null($community)){
-            $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true));
+            $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true, 'deleted_at' => null));
         
              // User is guest in community
             if ($userCommunityGuest){
@@ -75,7 +75,7 @@ class DefaultController extends Controller
             } else {
 
                 // $community is not null here, for sure
-                $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => false));
+                $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => false, 'deleted_at' => null));
 
                 if ($userCommunity){
                     $this->getUser()->setCurrentCommunity($community);
@@ -122,7 +122,7 @@ class DefaultController extends Controller
         $community = $authenticatedUser->getCurrentCommunity();
 
         if (!is_null($community)){
-            $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true));
+            $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true, 'deleted_at' => null));
         
             // User is guest in community
             if ($userCommunityGuest){
@@ -197,7 +197,7 @@ class DefaultController extends Controller
 
         if (!is_null($community)){
             
-            $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true));
+            $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true, 'deleted_at' => null));
         
             if ($userCommunityGuest){
                 $this->get('session')->getFlashBag()->add(
@@ -290,7 +290,7 @@ class DefaultController extends Controller
                         
                         if (!is_null($community)){
                            
-                            $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $this->getUser()->getId(), 'community' => $community->getId(), 'guest' => false));
+                            $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $this->getUser()->getId(), 'community' => $community->getId(), 'guest' => false, 'deleted_at' => null));
 
                             if ($userCommunity){
                                 $community->addIdea($this->base['idea']);
@@ -788,7 +788,7 @@ class DefaultController extends Controller
 
         if (!is_null($community)){
             
-            $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true));
+            $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true, 'deleted_at' => null));
         
             // User is guest in community
             if ($userCommunityGuest){
@@ -852,7 +852,7 @@ class DefaultController extends Controller
 
         if (!is_null($community)){
             
-            $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true));
+            $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true, 'deleted_at' => null));
 
             // User is guest in community
             if ($userCommunityGuest){

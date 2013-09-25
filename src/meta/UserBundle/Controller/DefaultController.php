@@ -149,7 +149,7 @@ class DefaultController extends Controller
         $community = $authenticatedUser->getCurrentCommunity();
 
         if (!is_null($community)){  
-            $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true));
+            $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true, 'deleted_at' => null));
         } else {
             $userCommunityGuest = null;
         }

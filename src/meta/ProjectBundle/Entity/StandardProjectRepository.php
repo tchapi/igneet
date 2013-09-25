@@ -22,6 +22,7 @@ class StandardProjectRepository extends EntityRepository
                     ->where('uc.user = :user')
                     ->setParameter('user', $user)
                     ->andWhere('uc.community = :community')
+                    ->andWhere('uc.deleted_at IS NULL')
                     ->setParameter('community', $community)
                     ->getQuery(); 
 
