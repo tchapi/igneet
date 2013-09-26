@@ -12,9 +12,14 @@ project:
   picture:
     reset: "The picture for this project has successfully been reset."
     cannot.reset: "You cannot reset the picture for this project."
+  list:
+    all: "Show all projects"
+    closed: "Only show closed projects"
+    sleeping: "Only show sleeping projects"
   listHelp:
     community: "You will find here the list of projects in the community %community%."
     privateSpace: "You will find here all the projects in your own private space."
+    statuses: "Actually only showing projets with status : %statuses%"
   createForm:
     name: "Name of this project"
     namePlaceholder: "My new project"

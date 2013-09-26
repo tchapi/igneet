@@ -19,7 +19,7 @@ class DefaultController extends BaseController
     /*
      * List all projects in the given community, for the user
      */
-    public function listAction($page, $sort)
+    public function listAction($page, $sort, $statuses)
     {
 
         $repository = $this->getDoctrine()->getRepository('metaProjectBundle:StandardProject');
@@ -27,7 +27,7 @@ class DefaultController extends BaseController
         $authenticatedUser = $this->getUser();
         $community = $authenticatedUser->getCurrentCommunity();
 
-        $totalProjects = $repository->countProjectsInCommunityForUser($community, $authenticatedUser);
+        $totalProjects = $repository->countProjectsInCommunityForUser($community, $authenticatedUser, $statuses);
         $maxPerPage = $this->container->getParameter('listings.number_of_items_per_page');
 
         if ( ($page-1) * $maxPerPage > $totalProjects) {
@@ -43,10 +43,17 @@ class DefaultController extends BaseController
             $userCommunityGuest = null; // You're not guest in your private space
         }
 
-        $projects = $repository->findProjectsInCommunityForUser($community, $authenticatedUser, $page, $maxPerPage, $sort);
+        $projects = $repository->findProjectsInCommunityForUser($community, $authenticatedUser, $page, $maxPerPage, $sort, $statuses);
+
+        $map_status = $this->container->getParameter('project_statuses');
+        $translator = $this->get('translator');
+        $statuses_names = array_map( 
+                function($status_code) use ($map_status, $translator) { return $translator->trans("project.info.status." . $map_status[$status_code]); }, 
+                $statuses
+        ); 
 
         $pagination = array( 'page' => $page, 'totalProjects' => $totalProjects);
-        return $this->render('metaProjectBundle:Default:list.html.twig', array('projects' => $projects, 'pagination' => $pagination, 'sort' => $sort, 'userIsGuest' => ($userCommunityGuest != null)));
+        return $this->render('metaProjectBundle:Default:list.html.twig', array('projects' => $projects, 'pagination' => $pagination, 'sort' => $sort, 'userIsGuest' => ($userCommunityGuest != null), 'statuses' => $statuses_names ));
 
     }
 
