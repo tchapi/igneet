@@ -44,7 +44,7 @@ class StandardProjectRepository extends EntityRepository
 
   }
 
-  private function getQuery($community, $user)
+  private function getQuery($community, $user, $statuses = array(0,1,2,3))
   {
 
     $guestCriteria = $this->getGuestCriteria($community, $user);
@@ -55,6 +55,8 @@ class StandardProjectRepository extends EntityRepository
             ->join('sp.owners', 'u')
             ->leftJoin('sp.participants', 'u2')
             ->where('sp.deleted_at IS NULL')
+            ->andWhere('sp.status IN (:statuses)')
+            ->setParameter('statuses', $statuses)
             ->andWhere( $guestCriteria .'u = :user OR u2 = :user')
             ->setParameter('user', $user);
 
@@ -72,7 +74,7 @@ class StandardProjectRepository extends EntityRepository
   /* 
    * Count projects in community for user (taking in account guest, privacy and community)
    */
-  public function countProjectsInCommunityForUser($community, $user)
+  public function countProjectsInCommunityForUser($community, $user, $statuses)
   {
     
     $guestCriteria = $this->getGuestCriteria($community, $user);
@@ -83,6 +85,8 @@ class StandardProjectRepository extends EntityRepository
             ->join('sp.owners', 'u')
             ->leftJoin('sp.participants', 'u2')
             ->where('sp.deleted_at IS NULL')
+            ->andWhere('sp.status IN (:statuses)')
+            ->setParameter('statuses', $statuses)
             ->andWhere( $guestCriteria .'u = :user OR u2 = :user')
             ->setParameter('user', $user);
 
@@ -101,10 +105,10 @@ class StandardProjectRepository extends EntityRepository
   /* 
    * Fetch projects in community for user (taking in account guest, privacy and community)
    */
-  public function findProjectsInCommunityForUser($community, $user, $page, $maxPerPage, $sort)
+  public function findProjectsInCommunityForUser($community, $user, $page, $maxPerPage, $sort, $statuses)
   {
 
-    $query = $this->getQuery($community, $user);
+    $query = $this->getQuery($community, $user, $statuses);
 
     switch ($sort) {
       case 'newest':
