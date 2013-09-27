@@ -5,14 +5,21 @@
 
 p_list_projects:
     pattern:  /projects/{page}/{sort}
-    defaults: { _controller: metaProjectBundle:Default:list, page: 1, archived: false, max: 10, sort: update }
+    defaults: { _controller: metaProjectBundle:Default:list, page: 1, statuses: [0,1,2,3], max: 10, sort: update }
     requirements:
         page: \d+
         sort: update|newest|alpha
 
-p_list_archived_projects:
-    pattern:  /projects/archived{page}/{sort}
-    defaults: { _controller: metaProjectBundle:Default:list, page: 1, archived: true, max: 10, sort: update }
+p_list_sleeping_projects:
+    pattern:  /projects/sleeping/{page}/{sort}
+    defaults: { _controller: metaProjectBundle:Default:list, page: 1, statuses: [1], max: 10, sort: update }
+    requirements:
+        page: \d+
+        sort: update|newest|alpha
+
+p_list_closed_projects:
+    pattern:  /projects/closed/{page}/{sort}
+    defaults: { _controller: metaProjectBundle:Default:list, page: 1, statuses: [2,3], max: 10, sort: update }
     requirements:
         page: \d+
         sort: update|newest|alpha
