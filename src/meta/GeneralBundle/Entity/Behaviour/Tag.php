@@ -49,7 +49,7 @@ class Tag
      */
     public function __construct($tagName)
     {
-        $this->name = $tagName;
+        $this->name = strtolower($tagName);
         $this->tagged_objects = new ArrayCollection();
     }
     
@@ -106,7 +106,7 @@ class Tag
      */
     public function setName($name)
     {
-        $this->name = $name;
+        $this->name = strtolower($name);
         return $this;
     }
 
@@ -117,7 +117,7 @@ class Tag
      */
     public function getName()
     {
-        return $this->name;
+        return strtolower($this->name); // Backward compatibility with former behavior
     }
 
     /**

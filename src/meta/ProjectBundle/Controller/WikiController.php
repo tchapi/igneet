@@ -297,7 +297,7 @@ class WikiController extends BaseController
                           );
                         break;
                     case 'tags':
-                        $tagsAsArray = $request->request->get('value');
+                        $tagsAsArray = array_map('strtolower', $request->request->get('value'));
 
                         $wikiPage->clearTags();
 
