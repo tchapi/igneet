@@ -44,7 +44,7 @@ class StandardProjectRepository extends EntityRepository
 
   }
 
-  private function getQuery($community, $user, $statuses = array(0,1,2,3))
+  private function getQuery($community, $user, $statuses = null)
   {
 
     $guestCriteria = $this->getGuestCriteria($community, $user);
@@ -55,10 +55,13 @@ class StandardProjectRepository extends EntityRepository
             ->join('sp.owners', 'u')
             ->leftJoin('sp.participants', 'u2')
             ->where('sp.deleted_at IS NULL')
-            ->andWhere('sp.status IN (:statuses)')
-            ->setParameter('statuses', $statuses)
             ->andWhere( $guestCriteria .'u = :user OR u2 = :user')
             ->setParameter('user', $user);
+
+    if ( !is_null($statuses) ) { // We have to filter status
+      $query->andWhere('sp.status IN (:statuses)')
+            ->setParameter('statuses', $statuses);
+    }
 
     if ($community === null){
       $query->andWhere('sp.community IS NULL');
@@ -74,7 +77,7 @@ class StandardProjectRepository extends EntityRepository
   /* 
    * Count projects in community for user (taking in account guest, privacy and community)
    */
-  public function countProjectsInCommunityForUser($community, $user, $statuses)
+  public function countProjectsInCommunityForUser($community, $user, $statuses = null)
   {
     
     $guestCriteria = $this->getGuestCriteria($community, $user);
@@ -85,10 +88,13 @@ class StandardProjectRepository extends EntityRepository
             ->join('sp.owners', 'u')
             ->leftJoin('sp.participants', 'u2')
             ->where('sp.deleted_at IS NULL')
-            ->andWhere('sp.status IN (:statuses)')
-            ->setParameter('statuses', $statuses)
             ->andWhere( $guestCriteria .'u = :user OR u2 = :user')
             ->setParameter('user', $user);
+
+    if ( !is_null($statuses) ) { // We have to filter status
+      $query->andWhere('sp.status IN (:statuses)')
+            ->setParameter('statuses', $statuses);
+    }
 
     if ($community === null){
       $query->andWhere('sp.community IS NULL');

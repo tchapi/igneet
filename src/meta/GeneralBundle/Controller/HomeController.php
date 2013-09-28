@@ -21,7 +21,7 @@ class HomeController extends Controller
         $totalIdeas = $ideaRepository->countIdeasInCommunityForUser($community, $authenticatedUser, false);
         
         $projectRepository = $this->getDoctrine()->getRepository('metaProjectBundle:StandardProject');
-        $totalProjects = $projectRepository->countProjectsInCommunityForUser($community, $authenticatedUser);
+        $totalProjects = $projectRepository->countProjectsInCommunityForUser($community, $authenticatedUser, null);
         
         $userRepository = $this->getDoctrine()->getRepository('metaUserBundle:User');
         $totalUsersAndGuests = $userRepository->countUsersInCommunity($community);
