@@ -206,7 +206,7 @@ class ResourceController extends BaseController
                         $needsRedirect = true;
                         break;
                     case 'tags':
-                        $tagsAsArray = $request->request->get('value');
+                        $tagsAsArray = array_map('strtolower', $request->request->get('value'));
 
                         $resource->clearTags();
 

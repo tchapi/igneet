@@ -190,7 +190,7 @@ class ListController extends BaseController
                         $objectHasBeenModified = true;
                         break;
                     case 'tags':
-                        $tagsAsArray = $request->request->get('value');
+                        $tagsAsArray = array_map('strtolower', $request->request->get('value'));
 
                         $commonList->clearTags();
 
