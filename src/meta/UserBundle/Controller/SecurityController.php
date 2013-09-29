@@ -346,12 +346,13 @@ class SecurityController extends Controller
 
                 // Changes password
                 $user->setSalt(md5(uniqid(null, true)));
-                $user->setToken(null);
-
+                
                 $errors = $this->get('validator')->validate($user);
-            
-                if( count($errors) === 0){
 
+                $em = $this->getDoctrine()->getManager();
+
+                if( count($errors) === 0){
+                    
                     if ($flavour === 'reactivate'){
 
                         $this->get('session')->getFlashBag()->add(
@@ -363,11 +364,12 @@ class SecurityController extends Controller
 
                     }
 
+                    $user->setToken(null);
+
                     // Now that it is validated, let's crypt the whole thing
                     $factory = $this->get('security.encoder_factory');
                     $encoder = $factory->getEncoder($user);
                     $user->setPassword($encoder->encodePassword($user->getPassword(), $user->getSalt()));
-                    $em = $this->getDoctrine()->getManager();
                     $em->flush();
 
                     $this->get('session')->getFlashBag()->add(
@@ -383,6 +385,9 @@ class SecurityController extends Controller
                         'error',
                         $this->get('translator')->trans($errors[0]->getMessage())
                     );
+
+                    // We need this otherwise the null token / password / etc might be flushed !
+                    $em->refresh($user);
 
                     return $this->render('metaUserBundle:Security:changePassword.html.twig', array('passwordToken' => $passwordToken, 'flavour' => $flavour));
         
