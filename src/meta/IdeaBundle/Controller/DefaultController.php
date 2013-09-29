@@ -155,7 +155,7 @@ class DefaultController extends Controller
 
         $this->fetchIdeaAndPreComputeRights($uid, false, false);
         
-        $targetParticipantAsBase64 = array ('slug' => 'metaIdeaBundle:Default:addParticipant', 'external' => false, 'params' => array('uid' => $uid, 'owner' => false));
+        $targetParticipantAsBase64 = array('slug' => 'metaIdeaBundle:Default:addParticipant', 'external' => false, 'params' => array('uid' => $uid, 'owner' => false, 'guest' => false));
 
         return $this->render('metaIdeaBundle:Info:showInfo.html.twig', 
             array('base' => $this->base,
