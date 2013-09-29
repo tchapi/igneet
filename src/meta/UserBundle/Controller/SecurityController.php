@@ -274,7 +274,7 @@ class SecurityController extends Controller
 
                 $this->get('session')->getFlashBag()->add(
                     'error',
-                    $this->get('translator')->trans('user.cannot.recover')
+                    $this->get('translator')->trans('user.cannot.' . $flavour)
                 );
 
                 return $this->redirect($this->generateUrl('u_me'));
@@ -381,7 +381,7 @@ class SecurityController extends Controller
 
                     $this->get('session')->getFlashBag()->add(
                         'error',
-                        $errors[0]->getMessage()
+                        $this->get('translator')->trans($errors[0]->getMessage())
                     );
 
                     return $this->render('metaUserBundle:Security:changePassword.html.twig', array('passwordToken' => $passwordToken, 'flavour' => $flavour));

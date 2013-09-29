@@ -600,7 +600,7 @@ class DefaultController extends Controller
 
             } elseif (count($errors) > 0) {
 
-                $error = $errors[0]->getMessage();
+                $error = $this->get('translator')->trans($errors[0]->getMessage());
             }
 
         } else {

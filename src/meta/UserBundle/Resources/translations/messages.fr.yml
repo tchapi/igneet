@@ -20,7 +20,8 @@ user:
     followSelf: "Vous ne pouvez pas vous abonner à vous-même."
     unfollow: "Vous ne pouvez pas vous désabonner de cet utilisateur."
     unfollowSelf: "Vous ne pouvez pas vous désabonner de vous-même."
-    recover: "Vous ne pouvez pas récupérer votre mot de passe : essayez de réactiver votre compte d'abord."
+    recover: "Vous ne pouvez pas récupérer votre mot de passe : assurez-vous d'avoir tapé la bonne adresse email, ou essayez de réactiver votre compte si vous l'avez préalablement supprimé."
+    reactivate: "Vous ne pouvez pas réactiver votre compte : celui-ci n'a jamais existé, ou est encore actif. Si vous avez perdu votre mot de passe, réinitialisez-le au préalable."
   picture:
     reset: "Votre photo de profil a été réinitialisée avec succès."
     cannot.reset: "Vous ne pouvez pas réinitialiser la photo de profil de cet utilisateur."
