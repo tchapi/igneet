@@ -283,6 +283,10 @@ div.smallObjectInfos span{
 .icon-header            { background-position: -120px 3px; }
 .icon-hr-line           { background-position: -144px 3px; }
 
+.popover-content
+{
+  font-size: 14px;
+}
 
 textarea.wmd-input{
   width: 100%;
