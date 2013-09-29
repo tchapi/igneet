@@ -53,6 +53,7 @@ twig:
         enable_static_site: "%enable_static_site%"
         available_languages: "%available.languages%"
         project_statuses: "%project_statuses%"
+        base_path: "%base_path%"
 
 # Assetic Configuration
 assetic:
@@ -99,6 +100,11 @@ swiftmailer:
 
 # Application specific
 parameters:
+    # This is a fantastic hack to be able to use absolute-path images in the CLI without breaking everything
+    router.request_context.host: "%host%"
+    router.request_context.scheme: "%scheme%"
+    base_path: "%scheme%://%host%"
+    # End of hack
     listings.number_of_items_per_page: 8
     project_statuses:
         0: active

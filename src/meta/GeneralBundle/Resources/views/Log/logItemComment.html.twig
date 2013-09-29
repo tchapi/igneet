@@ -1,9 +1,9 @@
 {% if locale is not defined %}{% set locale = app.user.getPreferredLanguage() %}{% endif %}
 <div class="avatar">
   {% if not user.isDeleted %}
-  <img src="{{ user.avatar }}" width="30" height="30" class="avatar"/>
+  <img src="{% if user.isAvatarGravatar %}{{ user.avatar }}{% else %}{{ base_path ~ user.avatar }}{% endif %}" width="30" height="30" class="avatar"/>
   {% else %}
-  <img src="{{ asset("/bundles/metageneral/img/defaults/user.png") }}" width="30" height="30" class="avatar"/>
+  <img src="{{ base_path ~ "/bundles/metageneral/img/defaults/user.png" }}" width="30" height="30" class="avatar"/>
   {% endif %}
 </div>
 <div class="comment">
