@@ -20,7 +20,7 @@ user:
     followSelf: "You cannot follow yourself."
     unfollow: "You cannot unfollow this user."
     unfollowSelf: "You cannot unfollow yourself."
-    recover: "You cannot recover your account."
+    recover: "You cannot recover your password : try reactivating your account first."
   picture:
     reset: "Your avatar has successfully been reset."
     cannot.reset: "You cannot reset the avatar for this user."
