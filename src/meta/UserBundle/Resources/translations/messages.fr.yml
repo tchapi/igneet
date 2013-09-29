@@ -141,7 +141,7 @@ user:
   not.following: "Vous ne suivez pas l'utilisateur %user%."
   unfollowing: "Vous ne suivez plus l'utilisateur %user%."
   already.in.community: "L'utilisateur %user% est déjà membre de la communauté %community%."
-  belonging.community: "L'utilisateur %user% est désormais membres de la communauté %community. Un mail de notification lui a été envoyé en votre nom."
+  belonging.community: "L'utilisateur %user% est désormais membre de la communauté %community%. Un mail de notification lui a été envoyé en votre nom."
   invitation:
     title: "Inviter un utilisateur"
     community: "L'utilisateur sera invité à rejoindre la communauté %community%."
