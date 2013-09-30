@@ -260,26 +260,3 @@ parameters:
       type: idea
       icon: eye-open
 
-# Backward compatibility :
-    user_is_made_participant_idea: # DELETE
-      combinable: false
-      displayable: true
-      filter_groups: [updates, users, ideas, social]
-      type: idea
-      icon: group
-    user_is_made_owner_project: # DELETE
-      combinable: false
-      displayable: true
-      filter_groups: [updates, users, projects, social]
-      type: project
-      icon: key
-    user_is_made_participant_project: # DELETE
-      combinable: false
-      displayable: true
-      filter_groups: [updates, users, projects, social]
-      type: project
-      icon: group
-
-
-
-

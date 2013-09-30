@@ -37,11 +37,6 @@ logs:
   user_made_user_participant_idea: "%user% a promu %other_user% en participant de l'idée %idea%."
   user_watch_idea: "%user% s'est abonné à l'idée %idea%."
 
-# Backward compatibility :
-  user_is_made_owner_project: "%user% a été promu propriétaire du projet %project% par %other_user%." # Reliquat
-  user_is_made_participant_project: "%user% a été promu participant du projet %project% par %other_user%." # Reliquat
-  user_is_made_participant_idea: "%user% a été promu participant de l'idée %idea% par %other_user%." # Reliquat
-
 groups: 
   projects: Projets
   ideas: Idées

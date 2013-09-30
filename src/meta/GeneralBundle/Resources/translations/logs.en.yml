@@ -37,11 +37,6 @@ logs:
   user_made_user_participant_idea: "%user% made %other_user% a participant in the idea %idea%."
   user_watch_idea: "%user% has started watching the idea %idea%."
 
-# Backward compatibility :
-  user_is_made_participant_idea: "%user% was made a participant in the idea %idea% by %other_user%." # Reliquat
-  user_is_made_owner_project: "%user% was promoted owner of the project %project% by %other_user%." # Reliquat
-  user_is_made_participant_project: "%user% was made a participant in the project %project% by %other_user%." # Reliquat
-
 groups: 
   projects: Projects
   ideas: Ideas
