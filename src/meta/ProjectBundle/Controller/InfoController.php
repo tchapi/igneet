@@ -144,7 +144,8 @@ class InfoController extends BaseController
                   }
 
                   $logService = $this->container->get('logService');
-                  $logService->log($newParticipantOrOwner, 'user_is_made_owner_project', $this->base['standardProject'], array( 'other_user' => array( 'logName' => $this->getUser()->getLogName(), 'identifier' => $this->getUser()->getUsername()) ));
+                  //$logService->log($newParticipantOrOwner, 'user_is_made_owner_project', $this->base['standardProject'], array( 'other_user' => array( 'logName' => $this->getUser()->getLogName(), 'identifier' => $this->getUser()->getUsername()) ));
+                  $logService->log($this->getUser(), 'user_made_user_owner_project', $this->base['standardProject'], array( 'other_user' => array( 'logName' => $newParticipantOrOwner->getLogName(), 'identifier' => $newParticipantOrOwner->getUsername()) ));
 
                   $this->get('session')->getFlashBag()->add(
                       'success',
@@ -156,7 +157,8 @@ class InfoController extends BaseController
                   $newParticipantOrOwner->addProjectsParticipatedIn($this->base['standardProject']);
 
                   $logService = $this->container->get('logService');
-                  $logService->log($newParticipantOrOwner, 'user_is_made_participant_project', $this->base['standardProject'], array( 'other_user' => array( 'logName' => $this->getUser()->getLogName(), 'identifier' => $this->getUser()->getUsername()) ));
+                  //$logService->log($newParticipantOrOwner, 'user_is_made_participant_project', $this->base['standardProject'], array( 'other_user' => array( 'logName' => $this->getUser()->getLogName(), 'identifier' => $this->getUser()->getUsername()) ));
+                  $logService->log($this->getUser(), 'user_made_user_participant_project', $this->base['standardProject'], array( 'other_user' => array( 'logName' => $newParticipantOrOwner->getLogName(), 'identifier' => $newParticipantOrOwner->getUsername()) ));
 
                   $this->get('session')->getFlashBag()->add(
                       'success',

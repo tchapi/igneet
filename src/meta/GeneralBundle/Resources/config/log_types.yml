@@ -84,13 +84,13 @@ parameters:
       filter_groups: [creations, projects, ideas]
       type: project
       icon: beaker
-    user_is_made_owner_project: # DONE
+    user_made_user_owner_project: # DONE
       combinable: false
       displayable: true
       filter_groups: [updates, users, projects, social]
       type: project
       icon: key
-    user_is_made_participant_project: # DONE
+    user_made_user_participant_project: # DONE
       combinable: false
       displayable: true
       filter_groups: [updates, users, projects, social]
@@ -247,7 +247,7 @@ parameters:
       filter_groups: [updates, general, ideas]
       type: idea
       icon: edit
-    user_is_made_participant_idea: # DONE
+    user_made_user_participant_idea: # DONE
       combinable: false
       displayable: true
       filter_groups: [updates, users, ideas, social]
@@ -260,8 +260,25 @@ parameters:
       type: idea
       icon: eye-open
 
-
-
+# Backward compatibility :
+    user_is_made_participant_idea: # DELETE
+      combinable: false
+      displayable: true
+      filter_groups: [updates, users, ideas, social]
+      type: idea
+      icon: group
+    user_is_made_owner_project: # DELETE
+      combinable: false
+      displayable: true
+      filter_groups: [updates, users, projects, social]
+      type: project
+      icon: key
+    user_is_made_participant_project: # DELETE
+      combinable: false
+      displayable: true
+      filter_groups: [updates, users, projects, social]
+      type: project
+      icon: group
 
 
 

@@ -701,7 +701,8 @@ class DefaultController extends Controller
                 );
 
                 $logService = $this->container->get('logService');
-                $logService->log($newParticipant, 'user_is_made_participant_idea', $this->base['idea'], array( 'other_user' => array('logName' => $this->getUser()->getLogName(), 'identifier' => $this->getUser()->getUsername()) ));
+                //$logService->log($newParticipant, 'user_is_made_participant_idea', $this->base['idea'], array( 'other_user' => array('logName' => $this->getUser()->getLogName(), 'identifier' => $this->getUser()->getUsername()) ));
+                $logService->log($this->getUser(), 'user_is_made_participant_idea', $this->base['idea'], array( 'other_user' => array('logName' => $newParticipant->getLogName(), 'identifier' => $newParticipant->getUsername()) ));
 
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
