@@ -267,6 +267,18 @@ class DefaultController extends Controller
     public function chooseSignupProviderAction($inviteToken)
     {
     
+        $authenticatedUser = $this->getUser();
+
+        if ($authenticatedUser) {
+
+            $this->get('session')->getFlashBag()->add(
+                'warning',
+                $this->get('translator')->trans('user.already.logged.long', array( '%user%' => $authenticatedUser->getUsername()))
+            );
+
+            return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $authenticatedUser->getUsername())));
+        }
+
         return $this->render('metaUserBundle:Default:chooseProvider.html.twig', array('inviteToken' => $inviteToken));
 
     }
