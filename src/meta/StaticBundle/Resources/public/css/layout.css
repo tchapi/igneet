@@ -246,10 +246,21 @@ p.separator {
 	height: 420px;
 }
 
-.separator a:hover,a:visited,a:link,a:active {
+.separator a:hover {
+	color: #000;
+}
+
+.separator a:active {
+	color: #000;
+}
+
+.separator a:visited {
 	color: #fff;
 }
 
+.separator a:link {
+	color: #fff;
+}
 
 #separator_2 p.separator{
 	padding-top: 160px;
