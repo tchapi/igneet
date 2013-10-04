@@ -246,6 +246,11 @@ p.separator {
 	height: 420px;
 }
 
+.separator a:hover,a:visited,a:link,a:active {
+	color: #fff;
+}
+
+
 #separator_2 p.separator{
 	padding-top: 160px;
 }
