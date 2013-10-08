@@ -180,6 +180,8 @@ div.smallObjectInfos span{
 
 .smallHeaderAvatar{
   border: 1px solid #555;
+  width: 20px;
+  height: 20px;
 }
 
 .imageCropWrapper{
@@ -337,6 +339,8 @@ img.smallAvatar{
   display: inline-block;
   vertical-align: top;
   border-radius: 3px 0 0 3px;
+  width: 70px;
+  height: 70px;
 }
 img.miniAvatar{
   display: inline-block;
