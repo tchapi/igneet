@@ -47,7 +47,8 @@ class UserRepository extends EntityRepository
     }
 
     $qb = $this->getEntityManager()->createQueryBuilder();
-    $query = $qb->select('u')
+    $query = $qb->select('u AS user')
+            ->addSelect('uc.guest AS isGuest') // We select as well the boolean 'isGuest'
             ->from('metaUserBundle:User', 'u')
             ->leftJoin('u.userCommunities', 'uc')
             ->leftJoin('uc.community', 'c')
