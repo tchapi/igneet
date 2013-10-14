@@ -16,7 +16,7 @@
     {% endif %}
     <h5>{% trans with {'%projects%': totalProjects, '%ideas%': totalIdeas} %}community.homeHelp{% endtrans %}</h5>
     {% if app.user.currentCommunity is not null %}
-      <p>{% trans with {'%users%': totalUsersAndGuests} %}community.homeHelpUsers{% endtrans %}</p>
+      <p>{% transchoice totalUsersAndGuests with {'%users%': totalUsersAndGuests} %}community.homeHelpUsers{% endtranschoice %}</p>
     {% endif %}
   </div>
 </header>

@@ -155,7 +155,7 @@ class DefaultController extends Controller
 
         $this->fetchIdeaAndPreComputeRights($uid, false, false);
         
-        $targetParticipantAsBase64 = array ('slug' => 'metaIdeaBundle:Default:addParticipant', 'external' => false, 'params' => array('uid' => $uid, 'owner' => false));
+        $targetParticipantAsBase64 = array('slug' => 'metaIdeaBundle:Default:addParticipant', 'external' => false, 'params' => array('uid' => $uid, 'owner' => false, 'guest' => false));
 
         return $this->render('metaIdeaBundle:Info:showInfo.html.twig', 
             array('base' => $this->base,
@@ -370,7 +370,7 @@ class DefaultController extends Controller
 
             } elseif (count($errors) > 0) {
 
-                $error = $errors[0]->getMessage();
+                $error = $this->get('translator')->trans($errors[0]->getMessage());
             }
 
         } else {
@@ -701,7 +701,7 @@ class DefaultController extends Controller
                 );
 
                 $logService = $this->container->get('logService');
-                $logService->log($newParticipant, 'user_is_made_participant_idea', $this->base['idea'], array( 'other_user' => array('logName' => $this->getUser()->getLogName(), 'identifier' => $this->getUser()->getUsername()) ));
+                $logService->log($this->getUser(), 'user_is_made_participant_idea', $this->base['idea'], array( 'other_user' => array('logName' => $newParticipant->getLogName(), 'identifier' => $newParticipant->getUsername()) ));
 
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();

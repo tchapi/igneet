@@ -226,7 +226,7 @@ class ListController extends BaseController
                 
                 } elseif (count($errors) > 0) {
 
-                    $error = $errors[0]->getMessage();
+                    $error = $this->get('translator')->trans($errors[0]->getMessage());
                 }
 
             } else {
@@ -381,7 +381,7 @@ class ListController extends BaseController
                                                                                                                        'list_item' => array( 'logName' => $commonListItem->getLogName() )) );
                 } elseif (count($errors) > 0) {
 
-                    $error = $errors[0]->getMessage(); 
+                    $error = $this->get('translator')->trans($errors[0]->getMessage()); 
                 }
 
             } else {

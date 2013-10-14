@@ -20,7 +20,8 @@ user:
     followSelf: "Vous ne pouvez pas vous abonner à vous-même."
     unfollow: "Vous ne pouvez pas vous désabonner de cet utilisateur."
     unfollowSelf: "Vous ne pouvez pas vous désabonner de vous-même."
-    recover: "Vous ne pouvez pas récupérer votre compte."
+    recover: "Vous ne pouvez pas récupérer votre mot de passe : assurez-vous d'avoir tapé la bonne adresse email, ou essayez de réactiver votre compte si vous l'avez préalablement supprimé."
+    reactivate: "Vous ne pouvez pas réactiver votre compte : celui-ci n'a jamais existé, ou est encore actif. Si vous avez perdu votre mot de passe, réinitialisez-le au préalable."
   picture:
     reset: "Votre photo de profil a été réinitialisée avec succès."
     cannot.reset: "Vous ne pouvez pas réinitialiser la photo de profil de cet utilisateur."
@@ -141,7 +142,7 @@ user:
   not.following: "Vous ne suivez pas l'utilisateur %user%."
   unfollowing: "Vous ne suivez plus l'utilisateur %user%."
   already.in.community: "L'utilisateur %user% est déjà membre de la communauté %community%."
-  belonging.community: "L'utilisateur %user% est désormais membres de la communauté %community. Un mail de notification lui a été envoyé en votre nom."
+  belonging.community: "L'utilisateur %user% est désormais membre de la communauté %community%. Un mail de notification lui a été envoyé en votre nom."
   invitation:
     title: "Inviter un utilisateur"
     community: "L'utilisateur sera invité à rejoindre la communauté %community%."

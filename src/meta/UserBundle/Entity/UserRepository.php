@@ -47,7 +47,8 @@ class UserRepository extends EntityRepository
     }
 
     $qb = $this->getEntityManager()->createQueryBuilder();
-    $query = $qb->select('u')
+    $query = $qb->select('u AS user')
+            ->addSelect('uc.guest AS isGuest') // We select as well the boolean 'isGuest'
             ->from('metaUserBundle:User', 'u')
             ->leftJoin('u.userCommunities', 'uc')
             ->leftJoin('uc.community', 'c')
@@ -87,7 +88,7 @@ class UserRepository extends EntityRepository
   /*
    * Fetch all users in a given community, except the user $user
    */
-  public function findAllUsersInCommunityExceptMe($user, $community)
+  public function findAllUsersInCommunityExceptMe($user, $community, $findGuests)
   {
     
     if ($community === null){
@@ -96,7 +97,7 @@ class UserRepository extends EntityRepository
 
     $qb = $this->getEntityManager()->createQueryBuilder();
 
-    return $qb->select('u')
+    $query = $qb->select('u')
             ->from('metaUserBundle:User', 'u')
             ->leftJoin('u.userCommunities', 'uc')
             ->leftJoin('uc.community', 'c')
@@ -104,7 +105,14 @@ class UserRepository extends EntityRepository
             ->andWhere('c = :community')
             ->setParameter('community', $community)
             ->andWhere('u <> :user')
-            ->setParameter('user', $user)
+            ->setParameter('user', $user);
+
+    if ($findGuests !== true){
+      $query->andWhere('uc.guest = :guest')
+            ->setParameter('guest', false);
+    }
+
+    return $query
             ->getQuery()
             ->getResult();
 

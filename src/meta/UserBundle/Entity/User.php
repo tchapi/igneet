@@ -586,6 +586,11 @@ class User implements AdvancedUserInterface
 
     }
 
+    public function isAvatarGravatar()
+    {
+        return ($this->avatar === null);
+    }
+
     public function getAbsoluteAvatarPath()
     {
         return null === $this->avatar

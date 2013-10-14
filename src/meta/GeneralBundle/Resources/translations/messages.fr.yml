@@ -13,7 +13,7 @@ community:
   home: "Accueil"
   invite: "Inviter quelqu'un"
   homeHelp: "Retrouvez vos %projects% projets et %ideas% idées."
-  homeHelpUsers: "%users% utilisateurs et invités contribuent à cette communauté."
+  homeHelpUsers: "{1} Une personne contribue à cette communauté.|]1,Inf] %users% personnes contribuent à cette communauté."
   not.found: "Cette communauté n'existe pas."
   choose: "Choisir une communauté"
   chooseHelp: "Veuillez indiquer une communauté pour finaliser votre action."

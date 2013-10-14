@@ -267,6 +267,18 @@ class DefaultController extends Controller
     public function chooseSignupProviderAction($inviteToken)
     {
     
+        $authenticatedUser = $this->getUser();
+
+        if ($authenticatedUser) {
+
+            $this->get('session')->getFlashBag()->add(
+                'warning',
+                $this->get('translator')->trans('user.already.logged.long', array( '%user%' => $authenticatedUser->getUsername()))
+            );
+
+            return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $authenticatedUser->getUsername())));
+        }
+
         return $this->render('metaUserBundle:Default:chooseProvider.html.twig', array('inviteToken' => $inviteToken));
 
     }
@@ -454,11 +466,13 @@ class DefaultController extends Controller
                         if ($inviteTokenObject->getProjectType() === 'owner'){
                             $user->addProjectsOwned($inviteTokenObject->getProject());
                             $logService = $this->container->get('logService');
-                            $logService->log($user, 'user_is_made_owner_project', $inviteTokenObject->getProject(), array( 'other_user' => array( 'logName' => $inviteTokenObject->getReferalUser()->getLogName(), 'identifier' => $inviteTokenObject->getReferalUser()->getUsername()) ));
+                            $logService->log($inviteTokenObject->getReferalUser(), 'user_made_user_owner_project', $inviteTokenObject->getProject(), array( 'other_user' => array( 'logName' => $user->getLogName(), 'identifier' => $user->getUsername()) ));
+
                         } else {
                             $user->addProjectsParticipatedIn($inviteTokenObject->getProject());
                             $logService = $this->container->get('logService');
-                            $logService->log($user, 'user_is_made_participant_project', $inviteTokenObject->getProject(), array( 'other_user' => array( 'logName' => $inviteTokenObject->getReferalUser()->getLogName(), 'identifier' => $inviteTokenObject->getReferalUser()->getUsername()) ));
+                            $logService->log($inviteTokenObject->getReferalUser(), 'user_made_user_participant_project', $inviteTokenObject->getProject(), array( 'other_user' => array( 'logName' => $user->getLogName(), 'identifier' => $user->getUsername()) ));
+
                         }
 
                     }
@@ -600,7 +614,7 @@ class DefaultController extends Controller
 
             } elseif (count($errors) > 0) {
 
-                $error = $errors[0]->getMessage();
+                $error = $this->get('translator')->trans($errors[0]->getMessage());
             }
 
         } else {
@@ -807,7 +821,7 @@ class DefaultController extends Controller
         } else {
 
             $repository = $this->getDoctrine()->getRepository('metaUserBundle:User');
-            $users = $repository->findAllUsersInCommunityExceptMe($authenticatedUser, $authenticatedUser->getCurrentCommunity());
+            $users = $repository->findAllUsersInCommunityExceptMe($authenticatedUser, $authenticatedUser->getCurrentCommunity(), $target['params']['guest']);
 
             return $this->render('metaUserBundle:Default:choose.html.twig', array('users' => $users, 'external' => $target['external'], 'targetAsBase64' => $targetAsBase64, 'token' => $request->get('token')));
 

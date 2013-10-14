@@ -94,7 +94,7 @@
 {% endjavascripts %}
         {% import '_locale.html.twig' as locale %}
         <script src="{{ url('bazinga_exposetranslation_js', { '_locale' : locale.echoLocaleCode() }) }}"></script>
-{% if ga_tracker_id != 0 %}
+{% if ga_tracker_id != "0" %}
         <script type="text/javascript">
 
           var _gaq = _gaq || [];

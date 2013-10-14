@@ -41,6 +41,7 @@ security:
             form_login:
                 login_path: /app/login
                 check_path: /app/login_check
+                default_target_path: /app/
                 remember_me: true
 
             logout:
