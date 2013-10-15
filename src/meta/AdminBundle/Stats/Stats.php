@@ -39,4 +39,20 @@ class Stats
 
   }
 
+  public function getNewUsers($start, $end)
+  {
+
+    $qb = $this->em->createQueryBuilder();
+    $query = $qb->select('u')
+            ->from('metaUserBundle:User', 'u')
+            ->where('u.created_at > :start')
+            ->setParameter('start', $start)
+            ->andWhere('u.created_at < :end')
+            ->setParameter('end', $end)
+            ->andWhere('u.deleted_at IS NULL')
+            ->getQuery();
+
+    return $query->getResult();
+  }
+
 }

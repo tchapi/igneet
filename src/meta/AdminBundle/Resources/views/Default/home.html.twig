@@ -7,13 +7,14 @@
   <h1>Administration</h1>
 </header>
 <div class="content clearfix">
-  <section>
 
-    <p>Summary for <strong>{{ app.request.host }}</strong> from <input type="text" value="{{ start_date }}"> to <input type="text" value="{{ end_date }}"> <input type="submit" class="btn btn-primary" value="Refresh" /></p>
+  {{ include('metaAdminBundle:Default:_datepicker.html.twig', {'admin_route': 'a_home'}) }}
+  
+  <section>
 
     <h4>Turnover / Churn</h4>
     <ul>
-      <li>New users : {{ stats.nb_created }}</li>
+      <li>New users : {{ stats.nb_created }} (Get the <a href="{{ path('a_new_users', { 'start': start_date, 'end': end_date} ) }}">full list</a>)</li>
       <li>Lost users : {{ stats.nb_deleted }}</li>
     </ul>
 
