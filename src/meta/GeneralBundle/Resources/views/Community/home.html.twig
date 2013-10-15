@@ -12,7 +12,7 @@
       <h2>{{ "private.space"|trans }}</h2>
     {% else %}
       <h2>{{ app.user.currentCommunity.name }}</h2>
-      <h4>{{ app.user.currentCommunity.headline }}</h4>
+      <h4>{{ app.user.currentCommunity.headline }} - <span class="label label-info">{{ app.user.currentCommunity.type }}</span></h4>
     {% endif %}
     <h5>{% trans with {'%projects%': totalProjects, '%ideas%': totalIdeas} %}community.homeHelp{% endtrans %}</h5>
     {% if app.user.currentCommunity is not null %}

@@ -12,12 +12,22 @@ member.in:
 community:
   home: "Accueil"
   invite: "Inviter quelqu'un"
+  create: "Créer une communauté"
   homeHelp: "Retrouvez vos %projects% projets et %ideas% idées."
   homeHelpUsers: "{1} Une personne contribue à cette communauté.|]1,Inf] %users% personnes contribuent à cette communauté."
   not.found: "Cette communauté n'existe pas."
   choose: "Choisir une communauté"
   chooseHelp: "Veuillez indiquer une communauté pour finaliser votre action."
   switch: "Vous avez été automatiquement basculé dans la communauté %community%."
+  title: "Communautés"
+  new: "Nouvelle communauté"
+  createHelp: "Créez une nouvelle communauté pour travailler autour de projets et d'idées communes."
+  createForm:
+    name: "Nom de la communauté"
+    namePlaceholder: "Ma nouvelle communauté"
+    headline: "Slogan"
+    headlinePlaceholder: "Donnez un slogan accrocheur à votre communauté"
+  created: "La communauté %community% a été créée avec succès"
 # File uploads
 file:
   choose: "Choisir un fichier"

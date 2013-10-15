@@ -1,0 +1,16 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}{{ parent() }} > {{ "community.title"|trans }}{% endblock %}
+
+{% block body %}
+<header class="community">
+{% block header %}{% endblock %}
+</header>
+{% block navbar %}{% endblock %}
+<div class="content community clearfix">
+{% block content %}{% endblock %}
+</div>
+<footer>
+{% block footer %}{% endblock %}
+</footer>
+{% endblock %}

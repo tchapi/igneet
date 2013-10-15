@@ -12,12 +12,22 @@ member.in:
 community:
   home: "Home"
   invite: "Invite someone"
+  create: "Create a community"
   homeHelp: "Home of %projects% projects and %ideas% ideas."
   homeHelpUsers: "{1} One user contributes to this community.|]1,Inf] %users% people contribute to this community."
   not.found: "This community does not exist."
   choose: "Choose a community"
   chooseHelp: "You need to indicate a specific community to continue with your request."
   switch: "You have automatically been switched to the community %community%."
+  title: "Communities"
+  new: "New community"
+  createHelp: "Create a new community so you can work on ideas and projects in a team."
+  createForm:
+    name: "Name this community"
+    namePlaceholder: "My new community"
+    headline: "Headline"
+    headlinePlaceholder: "Give your community some nice catchline"
+  created: "The community %community% has been created successfully."
 # File uploads
 file:
   choose: "Choose a file"
