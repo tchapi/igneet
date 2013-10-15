@@ -386,6 +386,20 @@ div.miniTextAvatar i{
   width: 30px;
 }
 
+/**************/
+/* COMMUNITY  */
+/**************/
+
+.label-demo{
+  background-color: hsl(35, 95%, 50%); /* warning */
+}
+.label-association{
+  background-color: hsl(121, 32%, 40%); /* success */
+}
+.label-entreprise{
+  background-color: hsl(200, 50%, 45%); /* info */
+}
+
 /*********************/
 /*  Listing & Mutual */
 /*********************/

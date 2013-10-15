@@ -37,6 +37,7 @@ class Community
      * @ORM\Column(name="type", type="string", length=30)
      */
     private $type;
+    // demo, association, entreprise
 
     /**
      * @var string $headline
