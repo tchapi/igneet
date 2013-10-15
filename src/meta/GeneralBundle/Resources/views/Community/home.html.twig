@@ -1,6 +1,6 @@
 {% extends '::base.html.twig' %}
 
-{% block title %}{{ parent() }} > {% if app.user.currentCommunity is null %}{{ "private.space"|trans }}{% else %}{{ app.user.currentCommunity.name }}{%endif %} | {{ "community.home"|trans }}{% endblock %}
+{% block title %}{{ parent() }} > {{ app.user.currentCommunity.name }} | {{ "community.home"|trans }}{% endblock %}
 
 {% block body %}
 <header class="home">
@@ -8,16 +8,10 @@
     <div class="textAvatar"><i class="icon-home"></i></div>
   </div>
   <div class="objectHeader">
-    {% if app.user.currentCommunity is null %}
-      <h2>{{ "private.space"|trans }}</h2>
-    {% else %}
-      <h2>{{ app.user.currentCommunity.name }}</h2>
-      <h4>{{ app.user.currentCommunity.headline }} - <span class="label label-{{ app.user.currentCommunity.type }}">{{ app.user.currentCommunity.type }}</span></h4>
-    {% endif %}
+    <h2>{{ app.user.currentCommunity.name }}</h2>
+    <h4>{{ app.user.currentCommunity.headline }}</h4>
     <h5>{% trans with {'%projects%': totalProjects, '%ideas%': totalIdeas} %}community.homeHelp{% endtrans %}</h5>
-    {% if app.user.currentCommunity is not null %}
-      <p>{% transchoice totalUsersAndGuests with {'%users%': totalUsersAndGuests} %}community.homeHelpUsers{% endtranschoice %}</p>
-    {% endif %}
+    <p>{% transchoice totalUsersAndGuests with {'%users%': totalUsersAndGuests} %}community.homeHelpUsers{% endtranschoice %}</p>
   </div>
 </header>
 <div class="content home clearfix">

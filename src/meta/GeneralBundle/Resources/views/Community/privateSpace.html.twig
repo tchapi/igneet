@@ -1,0 +1,20 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}{{ parent() }} > {{ "private.space"|trans }} | {{ "community.home"|trans }}{% endblock %}
+
+{% block body %}
+<header class="home">
+  <div class="headerAvatarAndActions">
+    <div class="textAvatar"><i class="icon-home"></i></div>
+  </div>
+  <div class="objectHeader">
+    <h2>{{ "private.space"|trans }}</h2>
+  </div>
+</header>
+<div class="content home clearfix">
+
+</div>
+<footer>
+{% block footer %}{% endblock %}
+</footer>
+{% endblock %}

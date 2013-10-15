@@ -10,6 +10,8 @@ member.in:
   community: "Bienvenue dans l'espace de travail de la communauté %community%."
   private.space: "Bienvenue dans votre espace de travail personnel."
 community:
+  invalid: "Oups, votre communauté %community% est arrivée à expiration. Veuillez consulter les différents tarifs proposés pour continuer à y collaborer."
+  upgrade: "Choisissez un package pour votre communauté"
   home: "Accueil"
   invite: "Inviter quelqu'un"
   create: "Créer une communauté"

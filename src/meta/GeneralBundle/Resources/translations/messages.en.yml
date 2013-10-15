@@ -10,6 +10,8 @@ member.in:
   community: "You are now browsing the %community% community space."
   private.space: "You are now back in your private space."
 community:
+  invalid: "Oops, your community %community% is no longer valid. Please upgrade it now to re-enable it."
+  upgrade: "Upgrade your community"
   home: "Home"
   invite: "Invite someone"
   create: "Create a community"

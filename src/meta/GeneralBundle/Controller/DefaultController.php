@@ -224,6 +224,20 @@ class DefaultController extends Controller
 
             if ($userCommunity ){
                 
+                // We put this test after knowing that we can go to the community, since
+                // we don't want a unauthorized user to know if a community has not been
+                // paid for.
+                if ( !($community->isValid()) ){
+
+                     $this->get('session')->getFlashBag()->add(
+                        'error',
+                        $this->get('translator')->trans('community.invalid', array('%community%' => $community->getName()))
+                    );
+
+                    return $this->redirect($this->generateUrl('g_upgrade_community', array( 'uid' => $this->container->get('uid')->toUId($community->getId()))));
+
+                }
+
                 $this->get('session')->getFlashBag()->add(
                     'success',
                     $this->get('translator')->trans('member.in.community', array( '%community%' => $community->getName()))

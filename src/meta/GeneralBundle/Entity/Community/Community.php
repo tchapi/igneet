@@ -299,6 +299,14 @@ class Community
     }
 
     /**
+     * Is valid if valid_until > now()
+     */
+    public function isValid()
+    {
+        return ($this->valid_until > new \DateTime('now') );
+    }
+
+    /**
      * Get valid_until
      *
      * @return \DateTime 

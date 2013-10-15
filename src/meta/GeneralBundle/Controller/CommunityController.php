@@ -21,19 +21,29 @@ class CommunityController extends Controller
         $authenticatedUser = $this->getUser();
         $community = $authenticatedUser->GetCurrentCommunity();
         
-        $ideaRepository = $this->getDoctrine()->getRepository('metaIdeaBundle:Idea');
-        $totalIdeas = $ideaRepository->countIdeasInCommunityForUser($community, $authenticatedUser, false);
-        
-        $projectRepository = $this->getDoctrine()->getRepository('metaProjectBundle:StandardProject');
-        $totalProjects = $projectRepository->countProjectsInCommunityForUser($community, $authenticatedUser, null);
-        
-        $userRepository = $this->getDoctrine()->getRepository('metaUserBundle:User');
-        $totalUsersAndGuests = $userRepository->countUsersInCommunity($community);
+        // In a real community
+        if ( !is_null($community) ){
 
-        return $this->render('metaGeneralBundle:Community:home.html.twig', array(
-          'totalProjects' => $totalProjects,
-          'totalIdeas' => $totalIdeas,
-          'totalUsersAndGuests' => $totalUsersAndGuests));
+          // WILL DISAPPEAR WITH THE NEW HOME
+          $ideaRepository = $this->getDoctrine()->getRepository('metaIdeaBundle:Idea');
+          $totalIdeas = $ideaRepository->countIdeasInCommunityForUser($community, $authenticatedUser, false);
+          
+          $projectRepository = $this->getDoctrine()->getRepository('metaProjectBundle:StandardProject');
+          $totalProjects = $projectRepository->countProjectsInCommunityForUser($community, $authenticatedUser, null);
+          
+          $userRepository = $this->getDoctrine()->getRepository('metaUserBundle:User');
+          $totalUsersAndGuests = $userRepository->countUsersInCommunity($community);
+
+          return $this->render('metaGeneralBundle:Community:home.html.twig', array(
+            'totalProjects' => $totalProjects,
+            'totalIdeas' => $totalIdeas,
+            'totalUsersAndGuests' => $totalUsersAndGuests));
+
+        } else {
+          // Or in your private space ?
+          return $this->render('metaGeneralBundle:Community:privateSpace.html.twig');
+        }
+       
 
     }
 
@@ -83,6 +93,13 @@ class CommunityController extends Controller
         }
 
         return $this->render('metaGeneralBundle:Community:create.html.twig', array('form' => $form->createView()));
+
+    }
+
+    public function upgradeAction()
+    {
+
+        return $this->render('metaGeneralBundle:Community:upgrade.html.twig');
 
     }
 

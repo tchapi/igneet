@@ -18,6 +18,12 @@ g_create_community:
     pattern: /communities/new
     defaults: { _controller: metaGeneralBundle:Community:create}
 
+g_upgrade_community:
+    pattern: /community/upgrade/{uid}
+    defaults: { _controller: metaGeneralBundle:Community:upgrade}
+    requirements:
+      uid: "[0-9a-zA-Z]*"
+
 # Language
 
 g_switch_language:
