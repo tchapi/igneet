@@ -176,7 +176,7 @@ class BaseController extends Controller
      */
     public function navbarAction($activeMenu, $uid)
     {
-        $menu = $this->container->getParameter('standardproject.menu');
+        $menu = $this->container->getParameter('project.menu');
 
         return $this->render('metaProjectBundle:Base:navbar.html.twig', array('menu' => $menu, 'activeMenu' => $activeMenu, 'uid' => $uid));
     }

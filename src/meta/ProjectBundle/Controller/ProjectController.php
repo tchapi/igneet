@@ -306,7 +306,7 @@ class ProjectController extends BaseController
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('watch', $request->get('token')))
             return $this->redirect($this->generateUrl('p_show_project', array('uid' => $uid)));
 
-        $menu = $this->container->getParameter('standardproject.menu');
+        $menu = $this->container->getParameter('project.menu');
         $this->preComputeRights(array('mustBeOwner' => false, 'mustParticipate' => $menu['info']['private']));
 
         if ($this->access != false) {
@@ -356,7 +356,7 @@ class ProjectController extends BaseController
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('unwatch', $request->get('token')))
             return $this->redirect($this->generateUrl('p_show_project', array('uid' => $uid)));
 
-        $menu = $this->container->getParameter('standardproject.menu');
+        $menu = $this->container->getParameter('project.menu');
         $this->preComputeRights(array('mustBeOwner' => false, 'mustParticipate' => $menu['info']['private']));
 
         if ($this->access != false) {

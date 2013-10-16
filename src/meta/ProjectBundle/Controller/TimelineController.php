@@ -14,7 +14,7 @@ class TimelineController extends BaseController
      */
     public function showTimelineAction($uid, $page)
     {
-        $menu = $this->container->getParameter('standardproject.menu');
+        $menu = $this->container->getParameter('project.menu');
         $this->fetchProjectAndPreComputeRights($uid, false, $menu['timeline']['private']);
 
         if ($this->base == false) 
@@ -34,7 +34,7 @@ class TimelineController extends BaseController
     public function historyAction($uid, $page)
     {
 
-        $menu = $this->container->getParameter('standardproject.menu');
+        $menu = $this->container->getParameter('project.menu');
         $this->fetchProjectAndPreComputeRights($uid, false, $menu['timeline']['private']);
 
         if ($this->base == false) 

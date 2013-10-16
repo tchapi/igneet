@@ -21,7 +21,7 @@ class WikiController extends BaseController
      */
     public function showWikiHomeAction($uid)
     {
-        $menu = $this->container->getParameter('standardproject.menu');
+        $menu = $this->container->getParameter('project.menu');
         $this->fetchProjectAndPreComputeRights($uid, false, $menu['wiki']['private']);
 
         if ($this->base == false) 
@@ -66,7 +66,7 @@ class WikiController extends BaseController
      */
     public function showWikiPageAction($uid, $page_uid)
     {
-        $menu = $this->container->getParameter('standardproject.menu');
+        $menu = $this->container->getParameter('project.menu');
         $this->fetchProjectAndPreComputeRights($uid, false, $menu['wiki']['private']);
 
         if ($this->base == false) 

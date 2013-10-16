@@ -72,7 +72,7 @@ class ResourceController extends BaseController
      */
     public function listResourcesAction(Request $request, $uid, $page)
     {
-        $menu = $this->container->getParameter('standardproject.menu');
+        $menu = $this->container->getParameter('project.menu');
         $this->fetchProjectAndPreComputeRights($uid, false, $menu['resources']['private']);
 
         if ($this->base == false) 
@@ -135,7 +135,7 @@ class ResourceController extends BaseController
      */
     public function showResourceAction($uid, $resource_uid)
     {
-        $menu = $this->container->getParameter('standardproject.menu');
+        $menu = $this->container->getParameter('project.menu');
         $this->fetchProjectAndPreComputeRights($uid, false, $menu['resources']['private']);
 
         if ($this->base == false) 
@@ -331,7 +331,7 @@ class ResourceController extends BaseController
      */
     public function downloadResourceAction(Request $request, $uid, $resource_uid)
     {
-        $menu = $this->container->getParameter('standardproject.menu');
+        $menu = $this->container->getParameter('project.menu');
         $this->fetchProjectAndPreComputeRights($uid, false, $menu['resources']['private']);
 
         if ($this->base != false) {

@@ -17,7 +17,7 @@ class InfoController extends BaseController
      */
     public function showInfoAction($uid)
     {
-        $menu = $this->container->getParameter('standardproject.menu');
+        $menu = $this->container->getParameter('project.menu');
         $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => $menu['info']['private']));
 
         if ($this->access == false) 

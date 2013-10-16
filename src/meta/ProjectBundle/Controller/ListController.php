@@ -21,7 +21,7 @@ class ListController extends BaseController
      */
     public function showCommonListHomeAction($uid)
     {
-        $menu = $this->container->getParameter('standardproject.menu');
+        $menu = $this->container->getParameter('project.menu');
 
         $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => $menu['lists']['private']));
 
@@ -50,7 +50,7 @@ class ListController extends BaseController
      */
     public function showCommonListAction($uid, $list_uid)
     {
-        $menu = $this->container->getParameter('standardproject.menu');
+        $menu = $this->container->getParameter('project.menu');
         $this->preComputeRights(array("mustBeOwner" =>false, "mustParticipate" => $menu['lists']['private']));
 
         if ($this->access == false) 

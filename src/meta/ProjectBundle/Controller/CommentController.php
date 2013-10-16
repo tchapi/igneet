@@ -22,8 +22,8 @@ class CommentController extends BaseController
      */
     public function addStandardProjectCommentAction(Request $request, $uid){
 
-        $menu = $this->container->getParameter('standardproject.menu');
-        $this->fetchProjectAndPreComputeRights($uid, false, $menu['timeline']['private']);
+        $menu = $this->container->getParameter('project.menu');
+        $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => $menu['timeline']['private']));
 
         if ($this->base != false) {
 
@@ -39,14 +39,14 @@ class CommentController extends BaseController
                 if ($form->isValid()) {
 
                     $comment->setUser($this->getUser());
-                    $this->base['standardProject']->addComment($comment);
+                    $this->base['project']->addComment($comment);
                     
                     $em = $this->getDoctrine()->getManager();
                     $em->persist($comment);
                     $em->flush();
 
                     $logService = $this->container->get('logService');
-                    $logService->log($this->getUser(), 'user_comment_project', $this->base['standardProject'], array());
+                    $logService->log($this->getUser(), 'user_comment_project', $this->base['project'], array());
 
                     $this->get('session')->getFlashBag()->add(
                         'success',
@@ -68,7 +68,7 @@ class CommentController extends BaseController
                 $route = $this->get('router')->generate('p_show_project_comment', array('uid' => $uid));
 
                 return $this->render('metaGeneralBundle:Comment:timelineCommentBox.html.twig', 
-                    array('object' => $this->base['standardProject'], 'route' => $route, 'form' => $form->createView()));
+                    array('object' => $this->base['project'], 'route' => $route, 'form' => $form->createView()));
 
             }
 
@@ -83,12 +83,12 @@ class CommentController extends BaseController
      */
     public function addWikiPageCommentAction(Request $request, $uid, $page_uid){
 
-        $menu = $this->container->getParameter('standardproject.menu');
-        $this->fetchProjectAndPreComputeRights($uid, false, $menu['wiki']['private']);
+        $menu = $this->container->getParameter('project.menu');
+        $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => $menu['wiki']['private']));
 
         if ($this->base != false) {
 
-            $wiki = $this->base['standardProject']->getWiki();
+            $wiki = $this->base['project']->getWiki();
 
             if ($wiki){
 
@@ -115,7 +115,7 @@ class CommentController extends BaseController
                             $em->flush();
 
                             $logService = $this->container->get('logService');
-                            $logService->log($this->getUser(), 'user_comment_wikipage', $this->base['standardProject'], array( 'wikipage' => array( 'logName' => $wikiPage->getLogName(), 'identifier' => $wikiPage->getId()) ));
+                            $logService->log($this->getUser(), 'user_comment_wikipage', $this->base['project'], array( 'wikipage' => array( 'logName' => $wikiPage->getLogName(), 'identifier' => $wikiPage->getId()) ));
 
                             $this->get('session')->getFlashBag()->add(
                                 'success',
@@ -154,13 +154,13 @@ class CommentController extends BaseController
      */
     public function addCommonListCommentAction(Request $request, $uid, $list_uid){
 
-        $menu = $this->container->getParameter('standardproject.menu');
-        $this->fetchProjectAndPreComputeRights($uid, false, $menu['lists']['private']);
+        $menu = $this->container->getParameter('project.menu');
+        $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => $menu['lists']['private']));
 
         if ($this->base != false) {
 
             $repository = $this->getDoctrine()->getRepository('metaProjectBundle:CommonList');
-            $commonList = $repository->findOneByIdInProject($this->container->get('uid')->fromUId($list_uid), $this->base['standardProject']->getId());
+            $commonList = $repository->findOneByIdInProject($this->container->get('uid')->fromUId($list_uid), $this->base['project']->getId());
 
             if ($commonList){
                 $comment = new CommonListComment();
@@ -182,7 +182,7 @@ class CommentController extends BaseController
                         $em->flush();
 
                         $logService = $this->container->get('logService');
-                        $logService->log($this->getUser(), 'user_comment_list', $this->base['standardProject'], array( 'list' => array( 'logName' => $commonList->getLogName(), 'identifier' => $commonList->getId()) ));
+                        $logService->log($this->getUser(), 'user_comment_list', $this->base['project'], array( 'list' => array( 'logName' => $commonList->getLogName(), 'identifier' => $commonList->getId()) ));
 
                         $this->get('session')->getFlashBag()->add(
                             'success',
