@@ -72,7 +72,7 @@ class CommunityController extends Controller
                 $em->flush();
                 
                 $logService = $this->container->get('logService');
-                $logService->log($authenticatedUser, 'user_create_community', $idea, array());
+                $logService->log($authenticatedUser, 'user_create_community', $community, array());
 
                 $this->get('session')->getFlashBag()->add(
                     'success',
