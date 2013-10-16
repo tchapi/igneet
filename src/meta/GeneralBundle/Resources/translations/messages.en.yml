@@ -1,6 +1,18 @@
 # Community
 private.space: "My private space"
 private.space.back: "You have automatically been switched to your private space."
+private.space.project:
+  title: "Projects"
+  text: "In projects you can store information as lists, wiki, or just plain text, and add documents."
+  create: "Create a new project now"
+private.space.idea:
+  title: "Ideas"
+  text: "Ideas are meant to gather your thoughts on new products, services, or keep track of anything you like."
+  create: "Create a new idea now"
+private.space.community:
+  title: "Communities"
+  text: "Communities are groups of user that can interact on common projects and ideas, and work together."
+  create: "Create a new community now"
 member.have.no.community: "You do not belong to any community at this time."
 guest: "Guest"
 guest.community.cannot:
