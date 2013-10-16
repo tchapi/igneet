@@ -2,7 +2,7 @@
 
 {% block title %}{{ parent() }} | {{ "project.timeline.title"|trans }}{% endblock %}
 
-{% set shortcode %}[[project:{{ base.standardProject.id|to_uid }}]]{% endset %}
+{% set shortcode %}[[project:{{ base.project.id|to_uid }}]]{% endset %}
 
 {% block javascripts %}
   {{ parent() }}
@@ -13,14 +13,14 @@
 {% endblock %}
 
 {% block navbar %}
-{% render(controller("metaProjectBundle:Default:navbar", { 'activeMenu' : 'timeline', 'uid' : base.standardProject.id|to_uid })) %}
+{% render(controller("metaProjectBundle:Base:navbar", { 'activeMenu' : 'timeline', 'uid' : base.project.id|to_uid })) %}
 {% endblock %}
 
 {% block content %}
 <section>
-{% render(controller("metaProjectBundle:Comment:addStandardProjectComment", { 'uid' : base.standardProject.id|to_uid })) %}
+{% render(controller("metaProjectBundle:Comment:addStandardProjectComment", { 'uid' : base.project.id|to_uid })) %}
 </section>
 <section>
-{% render(controller("metaProjectBundle:Timeline:history", { 'uid' : base.standardProject.id|to_uid, 'page' : 1 })) %}
+{% render(controller("metaProjectBundle:Timeline:history", { 'uid' : base.project.id|to_uid, 'page' : 1 })) %}
 </section>
 {% endblock %}

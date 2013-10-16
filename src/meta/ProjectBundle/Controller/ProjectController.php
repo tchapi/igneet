@@ -4,128 +4,11 @@ namespace meta\ProjectBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller,
     Symfony\Component\HttpFoundation\Request,
-    Symfony\Component\HttpFoundation\File\File,
     Symfony\Component\HttpFoundation\Response;
 
-/*
- * Importing Class definitions
- */
-use meta\ProjectBundle\Entity\StandardProject,
-    meta\ProjectBundle\Form\Type\StandardProjectType;
-
-class DefaultController extends BaseController
+class ProjectController extends BaseController
 {
-
-    /*
-     * List all projects in the given community, for the user
-     */
-    public function listAction($page, $sort, $statuses)
-    {
-
-        $repository = $this->getDoctrine()->getRepository('metaProjectBundle:StandardProject');
-
-        $authenticatedUser = $this->getUser();
-        $community = $authenticatedUser->getCurrentCommunity();
-
-        $totalProjects = $repository->countProjectsInCommunityForUser($community, $authenticatedUser, $statuses);
-        $maxPerPage = $this->container->getParameter('listings.number_of_items_per_page');
-
-        if ( ($page-1) * $maxPerPage > $totalProjects) {
-            return $this->redirect($this->generateUrl('p_list_projects', array('sort' => $sort)));
-        }
-        
-        if (!is_null($community)){
-            
-            $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true, 'deleted_at' => null));
-        
-        } else {
-            
-            $userCommunityGuest = null; // You're not guest in your private space
-        }
-
-        $projects = $repository->findProjectsInCommunityForUser($community, $authenticatedUser, $page, $maxPerPage, $sort, $statuses);
-
-        $map_status = $this->container->getParameter('project_statuses');
-        $translator = $this->get('translator');
-        $statuses_names = array_map( 
-                function($status_code) use ($map_status, $translator) { return $translator->trans("project.info.status." . $map_status[$status_code]); }, 
-                $statuses
-        ); 
-
-        $pagination = array( 'page' => $page, 'totalProjects' => $totalProjects);
-        return $this->render('metaProjectBundle:Default:list.html.twig', array('projects' => $projects, 'pagination' => $pagination, 'sort' => $sort, 'userIsGuest' => ($userCommunityGuest != null), 'statuses' => $statuses_names ));
-
-    }
-
-    /*
-     * Create a project
-     */
-    public function createAction(Request $request)
-    {
-        
-        $authenticatedUser = $this->getUser();
-        $community = $authenticatedUser->getCurrentCommunity();
-
-        if (!is_null($community)){
-            
-            $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true, 'deleted_at' => null));
-        
-            if ($userCommunityGuest){
-                $this->get('session')->getFlashBag()->add(
-                    'error',
-                    $this->get('translator')->trans('guest.community.cannot.do')
-                );
-                return $this->redirect($this->generateUrl('p_list_projects'));
-            }
-
-        }
-
-        $project = new StandardProject();
-        $form = $this->createForm(new StandardProjectType(), $project, array( 'translator' => $this->get('translator'), 'isPrivate' => is_null($community)));
-
-        if ($request->isMethod('POST')) {
-
-            $form->bind($request);
-
-            if ($form->isValid()) {
-                
-                $authenticatedUser->addProjectsOwned($project);
-
-                if (!is_null($community)){
-                    $community->addProject($project);
-                } else {
-                    $project->setPrivate(true); // When in private space, we force privacy
-                }
-
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($project);
-                $em->flush();
-
-                $logService = $this->container->get('logService');
-                $logService->log($authenticatedUser, 'user_create_project', $project, array() );
-
-                $this->get('session')->getFlashBag()->add(
-                    'success',
-                    $this->get('translator')->trans('project.created', array( '%project%' => $project->getName()))
-                );
-
-                return $this->redirect($this->generateUrl('p_show_project', array('uid' => $this->container->get('uid')->toUId($project->getId()) )));
-           
-            } else {
-               
-               $this->get('session')->getFlashBag()->add(
-                    'error',
-                    $this->get('translator')->trans('information.not.valid', array(), 'errors')
-                );
-
-            }
-
-        }
-
-        return $this->render('metaProjectBundle:Default:create.html.twig', array('form' => $form->createView()));
-
-    }
-
+    
     /*
      * Edit a project (via X-Editable)
      */
@@ -134,29 +17,29 @@ class DefaultController extends BaseController
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('edit', $request->get('token')))
             return new Response($this->get('translator')->trans('invalid.token', array(), 'errors'), 400);
 
-        $this->fetchProjectAndPreComputeRights($uid, false, true);
+        $this->preComputeRights(array('mustBeOwner' => false, 'mustParticipate' => true));
         $error = null;
         $response = null;
 
-        if ($this->base != false) {
+        if ($this->access != false) {
         
             $objectHasBeenModified = false;
 
             switch ($request->request->get('name')) {
                 case 'name':
-                    $this->base['standardProject']->setName($request->request->get('value'));
+                    $this->base['project']->setName($request->request->get('value'));
                     $objectHasBeenModified = true;
                     break;
                 case 'headline':
-                    $this->base['standardProject']->setHeadline($request->request->get('value'));
+                    $this->base['project']->setHeadline($request->request->get('value'));
                     $objectHasBeenModified = true;
                     break;
                 case 'status':
-                    $this->base['standardProject']->setStatus(intval($request->request->get('value')));
+                    $this->base['project']->setStatus(intval($request->request->get('value')));
                     $objectHasBeenModified = true;
                     break;
                 case 'about':
-                    $this->base['standardProject']->setAbout($request->request->get('value'));
+                    $this->base['project']->setAbout($request->request->get('value'));
                     $deepLinkingService = $this->container->get('deep_linking_extension');
                     $response = $deepLinkingService->convertDeepLinks(
                       $this->container->get('markdown.parser')->transformMarkdown($request->request->get('value'))
@@ -164,7 +47,7 @@ class DefaultController extends BaseController
                     $objectHasBeenModified = true;
                     break;
                 case 'community':
-                    if ($this->base['standardProject']->getCommunity() === null){ 
+                    if ($this->base['project']->getCommunity() === null){ 
                         $repository = $this->getDoctrine()->getRepository('metaGeneralBundle:Community\Community');
                         $community = $repository->findOneById($this->container->get('uid')->fromUId($request->request->get('value')));
                         
@@ -173,13 +56,13 @@ class DefaultController extends BaseController
                             $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $this->getUser()->getId(), 'community' => $community->getId(), 'guest' => false, 'deleted_at' => null));
 
                             if ($userCommunity){
-                                $community->addProject($this->base['standardProject']);
+                                $community->addProject($this->base['project']);
                                 $this->get('session')->getFlashBag()->add(
                                     'success',
                                     $this->get('translator')->trans('project.in.community', array( '%community%' => $community->getName()))
                                 );
                                 $logService = $this->container->get('logService');
-                                $logService->log($this->getUser(), 'project_enters_community', $this->base['standardProject'], array( 'community' => array( 'logName' => $community->getLogName(), 'identifier' => $community->getId()) ) );
+                                $logService->log($this->getUser(), 'project_enters_community', $this->base['project'], array( 'community' => array( 'logName' => $community->getLogName(), 'identifier' => $community->getId()) ) );
                                 $objectHasBeenModified = true;
                             }
                         }
@@ -207,8 +90,8 @@ class DefaultController extends BaseController
                      * Otherwise, as file is not part of the mapping,
                      * @ORM\PreUpdate will not be called and the file will not be persisted
                      */
-                    $this->base['standardProject']->setUpdatedAt(new \DateTime('now')); 
-                    $this->base['standardProject']->setFile(new File($preparedFilename.".cropped"));
+                    $this->base['project']->setUpdatedAt(new \DateTime('now')); 
+                    $this->base['project']->setFile(new File($preparedFilename.".cropped"));
 
                     $objectHasBeenModified = true;
                     $needsRedirect = true;
@@ -219,16 +102,16 @@ class DefaultController extends BaseController
                     $repository = $this->getDoctrine()->getRepository('metaUserBundle:Skill');
                     $skills = $repository->findSkillsByArrayOfSlugs($skillSlugsAsArray);
                     
-                    $this->base['standardProject']->clearNeededSkills();
+                    $this->base['project']->clearNeededSkills();
                     foreach($skills as $skill){
-                        $this->base['standardProject']->addNeededSkill($skill);
+                        $this->base['project']->addNeededSkill($skill);
                     }
                     $objectHasBeenModified = true;
                     break;
             }
 
             $validator = $this->get('validator');
-            $errors = $validator->validate($this->base['standardProject']);
+            $errors = $validator->validate($this->base['project']);
 
             if ($objectHasBeenModified === true && count($errors) == 0){
 
@@ -237,9 +120,9 @@ class DefaultController extends BaseController
 
                 $logService = $this->container->get('logService');
                 if ($request->request->get('name') != 'status') {
-                    $logService->log($this->getUser(), 'user_update_project_info', $this->base['standardProject'], array());
+                    $logService->log($this->getUser(), 'user_update_project_info', $this->base['project'], array());
                 } else {
-                    $logService->log($this->getUser(), 'user_change_project_status', $this->base['standardProject'], array());
+                    $logService->log($this->getUser(), 'user_change_project_status', $this->base['project'], array());
                 }
             
             } elseif (count($errors) > 0) {
@@ -283,17 +166,17 @@ class DefaultController extends BaseController
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('delete', $request->get('token')))
             return $this->redirect($this->generateUrl('p_show_project', array('uid' => $uid)));
 
-        $this->fetchProjectAndPreComputeRights($uid, true, false);
+        $this->preComputeRights(array('mustBeOwner' => true, 'mustParticipate' => false));
 
-        if ($this->base != false) {
+        if ($this->access != false) {
         
             $em = $this->getDoctrine()->getManager();
-            $this->base['standardProject']->delete();
+            $this->base['project']->delete();
             $em->flush();
 
             $this->get('session')->getFlashBag()->add(
                     'success',
-                    $this->get('translator')->trans('project.deleted', array( '%project%' => $this->base['standardProject']->getName()))
+                    $this->get('translator')->trans('project.deleted', array( '%project%' => $this->base['project']->getName()))
                 );
             
             return $this->redirect($this->generateUrl('p_list_projects'));
@@ -320,11 +203,11 @@ class DefaultController extends BaseController
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('resetPicture', $request->get('token')))
             return $this->redirect($this->generateUrl('p_show_project', array('uid' => $uid)));
 
-        $this->fetchProjectAndPreComputeRights($uid, false, true);
+        $this->preComputeRights(array('mustBeOwner' => false, 'mustParticipate' => true));
 
-        if ($this->base != false) {
+        if ($this->access != false) {
 
-            $this->base['standardProject']->setPicture(null);
+            $this->base['project']->setPicture(null);
             $em = $this->getDoctrine()->getManager();
             $em->flush();
 
@@ -354,12 +237,12 @@ class DefaultController extends BaseController
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('makePublic', $request->get('token')))
             return $this->redirect($this->generateUrl('p_show_project', array('uid' => $uid)));
 
-        $this->fetchProjectAndPreComputeRights($uid, true, false);
+        $this->preComputeRights(array('mustBeOwner' => true, 'mustParticipate' => false));
 
-        if ($this->base != false && !is_null($this->base['standardProject']->getCommunity())) {
+        if ($this->access != false && !is_null($this->base['project']->getCommunity())) {
             // A project in the private space cannot be public
 
-            $this->base['standardProject']->setPrivate(false);
+            $this->base['project']->setPrivate(false);
             $em = $this->getDoctrine()->getManager();
             $em->flush();
 
@@ -389,11 +272,11 @@ class DefaultController extends BaseController
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('makePrivate', $request->get('token')))
             return $this->redirect($this->generateUrl('p_show_project', array('uid' => $uid)));
 
-        $this->fetchProjectAndPreComputeRights($uid, true, false);
+        $this->preComputeRights(array('mustBeOwner' => true, 'mustParticipate' => false));
 
-        if ($this->base != false) {
+        if ($this->access != false) {
 
-            $this->base['standardProject']->setPrivate(true);
+            $this->base['project']->setPrivate(true);
             $em = $this->getDoctrine()->getManager();
             $em->flush();
 
@@ -424,32 +307,32 @@ class DefaultController extends BaseController
             return $this->redirect($this->generateUrl('p_show_project', array('uid' => $uid)));
 
         $menu = $this->container->getParameter('standardproject.menu');
-        $this->fetchProjectAndPreComputeRights($uid, false, $menu['info']['private']);
+        $this->preComputeRights(array('mustBeOwner' => false, 'mustParticipate' => $menu['info']['private']));
 
-        if ($this->base != false) {
+        if ($this->access != false) {
 
             $authenticatedUser = $this->getUser();
 
-            if ( !($authenticatedUser->isWatchingProject($this->base['standardProject'])) ){
+            if ( !($authenticatedUser->isWatchingProject($this->base['project'])) ){
 
-                $authenticatedUser->addProjectsWatched($this->base['standardProject']);
+                $authenticatedUser->addProjectsWatched($this->base['project']);
 
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
 
                 $logService = $this->container->get('logService');
-                $logService->log($authenticatedUser, 'user_watch_project', $this->base['standardProject'], array());
+                $logService->log($authenticatedUser, 'user_watch_project', $this->base['project'], array());
 
                 $this->get('session')->getFlashBag()->add(
                     'success',
-                    $this->get('translator')->trans('project.watching', array('%project%' => $this->base['standardProject']->getName() ))
+                    $this->get('translator')->trans('project.watching', array('%project%' => $this->base['project']->getName() ))
                 );
 
             } else {
 
                 $this->get('session')->getFlashBag()->add(
                     'warning',
-                    $this->get('translator')->trans('project.already.watching', array('%project%' => $this->base['standardProject']->getName() ))
+                    $this->get('translator')->trans('project.already.watching', array('%project%' => $this->base['project']->getName() ))
                 );
 
             }
@@ -474,29 +357,29 @@ class DefaultController extends BaseController
             return $this->redirect($this->generateUrl('p_show_project', array('uid' => $uid)));
 
         $menu = $this->container->getParameter('standardproject.menu');
-        $this->fetchProjectAndPreComputeRights($uid, false, $menu['info']['private']);
+        $this->preComputeRights(array('mustBeOwner' => false, 'mustParticipate' => $menu['info']['private']));
 
-        if ($this->base != false) {
+        if ($this->access != false) {
 
             $authenticatedUser = $this->getUser();
 
-            if ( $authenticatedUser->isWatchingProject($this->base['standardProject']) ){
+            if ( $authenticatedUser->isWatchingProject($this->base['project']) ){
 
-                $authenticatedUser->removeProjectsWatched($this->base['standardProject']);
+                $authenticatedUser->removeProjectsWatched($this->base['project']);
 
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
 
                 $this->get('session')->getFlashBag()->add(
                     'success',
-                    $this->get('translator')->trans('project.unwatching', array('%project%' => $this->base['standardProject']->getName() ))
+                    $this->get('translator')->trans('project.unwatching', array('%project%' => $this->base['project']->getName() ))
                 );
 
             } else {
 
                 $this->get('session')->getFlashBag()->add(
                     'warning',
-                    $this->get('translator')->trans('project.not.watching', array('%project%' => $this->base['standardProject']->getName() ))
+                    $this->get('translator')->trans('project.not.watching', array('%project%' => $this->base['project']->getName() ))
                 );
 
             }

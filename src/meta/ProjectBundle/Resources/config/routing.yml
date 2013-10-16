@@ -5,28 +5,28 @@
 
 p_list_projects:
     pattern:  /projects/{page}/{sort}
-    defaults: { _controller: metaProjectBundle:Default:list, page: 1, statuses: [0,1,2,3], max: 10, sort: update }
+    defaults: { _controller: metaProjectBundle:Projects:list, page: 1, statuses: [0,1,2,3], max: 10, sort: update }
     requirements:
         page: \d+
         sort: update|newest|alpha
 
 p_list_sleeping_projects:
     pattern:  /projects/sleeping/{page}/{sort}
-    defaults: { _controller: metaProjectBundle:Default:list, page: 1, statuses: [1], max: 10, sort: update }
+    defaults: { _controller: metaProjectBundle:Projects:list, page: 1, statuses: [1], max: 10, sort: update }
     requirements:
         page: \d+
         sort: update|newest|alpha
 
 p_list_closed_projects:
     pattern:  /projects/closed/{page}/{sort}
-    defaults: { _controller: metaProjectBundle:Default:list, page: 1, statuses: [2,3], max: 10, sort: update }
+    defaults: { _controller: metaProjectBundle:Projects:list, page: 1, statuses: [2,3], max: 10, sort: update }
     requirements:
         page: \d+
         sort: update|newest|alpha
 
 p_new_project:
     pattern:  /projects/new
-    defaults: { _controller: metaProjectBundle:Default:create }
+    defaults: { _controller: metaProjectBundle:Projects:create }
 
 # /PROJECT/
 # ---------------
@@ -42,32 +42,32 @@ p_show_project:
 
 p_edit_project:
     pattern:  /project/0{uid}/edit
-    defaults: { _controller: metaProjectBundle:Default:edit }
+    defaults: { _controller: metaProjectBundle:Project:edit }
     requirements:
         uid: "[0-9a-zA-Z]*"
         _method:  POST
 
 p_edit_project_reset_picture:
     pattern:  /project/0{uid}/reset/picture
-    defaults: { _controller: metaProjectBundle:Default:resetPicture }
+    defaults: { _controller: metaProjectBundle:Project:resetPicture }
     requirements:
         uid: "[0-9a-zA-Z]*"
 
 p_delete_project:
     pattern:  /project/0{uid}/delete
-    defaults: { _controller: metaProjectBundle:Default:delete }
+    defaults: { _controller: metaProjectBundle:Project:delete }
     requirements:
         uid: "[0-9a-zA-Z]*"
 
 p_make_public:
     pattern:  /project/0{uid}/make/public
-    defaults: { _controller: metaProjectBundle:Default:makePublic }
+    defaults: { _controller: metaProjectBundle:Project:makePublic }
     requirements:
         uid: "[0-9a-zA-Z]*"
 
 p_make_private:
     pattern:  /project/0{uid}/make/private
-    defaults: { _controller: metaProjectBundle:Default:makePrivate }
+    defaults: { _controller: metaProjectBundle:Project:makePrivate }
     requirements:
         uid: "[0-9a-zA-Z]*"
 
@@ -118,13 +118,13 @@ p_remove_participant_to_project_self:
 
 p_watch_project:
     pattern:  /project/0{uid}/watch
-    defaults: { _controller: metaProjectBundle:Default:watch }
+    defaults: { _controller: metaProjectBundle:Project:watch }
     requirements:
         uid: "[0-9a-zA-Z]*"
 
 p_unwatch_project:
     pattern:  /project/0{uid}/unwatch
-    defaults: { _controller: metaProjectBundle:Default:unwatch }
+    defaults: { _controller: metaProjectBundle:Project:unwatch }
     requirements:
         uid: "[0-9a-zA-Z]*"
 
