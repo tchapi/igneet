@@ -114,13 +114,15 @@ class IdeaController extends Controller
             }
         }
 
+        // Base objects
         $this->base = array('idea' => $idea,
                             'isAlreadyWatching' => $isAlreadyWatching,
                             'isParticipatingIn' => $isParticipatingIn,
                             'isCreator' => $isCreator,
                             'canEdit' =>  $isCreator || $isParticipatingIn
                            );
-
+        // Is access granted ?
+        $this->access = false;
     }
 
     /*
@@ -133,12 +135,14 @@ class IdeaController extends Controller
              ($options['mustParticipate'] && !$this->base['isParticipatingIn'] && !$this->base['isCreator'])
             ) {
            
-            $this->base = false;
+            $this->access = false;
 
         } else {
 
-            $targetPictureAsBase64 = array('slug' => 'metaIdeaBundle:Idea:edit', 'params' => array('uid' => $this->base['idea']->getId() ), 'crop' => true);
-            $targetProposeToCommunityAsBase64 = array('slug' => 'metaIdeaBundle:Idea:edit', 'params' => array('uid' => $this->base['idea']->getId() ));
+            $this->access = true;
+
+            $targetPictureAsBase64 = array('slug' => 'metaIdeaBundle:Idea:edit', 'params' => array('uid' => $this->container->get('uid')->toUId($this->base['idea']->getId()) ), 'crop' => true);
+            $targetProposeToCommunityAsBase64 = array('slug' => 'metaIdeaBundle:Idea:edit', 'params' => array('uid' => $this->container->get('uid')->toUId($this->base['idea']->getId()) ));
             $this->base['targetPictureAsBase64'] = base64_encode(json_encode($targetPictureAsBase64));
             $this->base['targetProposeToCommunityAsBase64'] = base64_encode(json_encode($targetProposeToCommunityAsBase64));
         }
@@ -153,7 +157,7 @@ class IdeaController extends Controller
 
         $this->preComputeRights(array('mustBeCreator' => false, 'mustParticipate' => false));
 
-        if ($this->base != false) {
+        if ($this->access != false) {
 
             $targetParticipantAsBase64 = array('slug' => 'metaIdeaBundle:Idea:addParticipant', 'external' => false, 'params' => array('uid' => $uid, 'owner' => false, 'guest' => false));
 
@@ -180,7 +184,7 @@ class IdeaController extends Controller
     {
         $this->preComputeRights(array('mustBeCreator' => false, 'mustParticipate' => false));
 
-        if ($this->base != false) {
+        if ($this->access != false) {
 
             return $this->render('metaIdeaBundle:Timeline:showTimeline.html.twig', 
                 array('base' => $this->base));
@@ -205,7 +209,7 @@ class IdeaController extends Controller
 
         $this->preComputeRights(array('mustBeCreator' => false, 'mustParticipate' => false));
         
-        if ($this->base != false) {
+        if ($this->access != false) {
 
             return $this->render('metaIdeaBundle:Info:show' . ucfirst($type) . '.html.twig', 
                 array('base' => $this->base));
@@ -234,7 +238,7 @@ class IdeaController extends Controller
         $error = null;
         $response = null;
 
-        if ($this->base != false) {
+        if ($this->access != false) {
         
             $objectHasBeenModified = false;
 
@@ -377,7 +381,7 @@ class IdeaController extends Controller
 
         $this->preComputeRights(array('mustBeCreator' => true, 'mustParticipate' => false));
 
-        if ($this->base != false) {
+        if ($this->access != false) {
         
             $em = $this->getDoctrine()->getManager();
             $this->base['idea']->delete();
@@ -413,7 +417,7 @@ class IdeaController extends Controller
 
         $this->preComputeRights(array('mustBeCreator' => false, 'mustParticipate' => false));
 
-        if ($this->base != false) {
+        if ($this->access != false) {
 
             $em = $this->getDoctrine()->getManager();
             
@@ -455,7 +459,7 @@ class IdeaController extends Controller
 
         $this->preComputeRights(array('mustBeCreator' => false, 'mustParticipate' => true));
 
-        if ($this->base != false) {
+        if ($this->access != false) {
 
             $this->base['idea']->setPicture(null);
             $em = $this->getDoctrine()->getManager();
@@ -489,7 +493,7 @@ class IdeaController extends Controller
 
         $this->preComputeRights(array('mustBeCreator' => false, 'mustParticipate' => false));
 
-        if ($this->base != false && $this->base['idea']->isArchived() === false){
+        if ($this->access != false && $this->base['idea']->isArchived() === false){
 
             $em = $this->getDoctrine()->getManager();
 
@@ -591,7 +595,7 @@ class IdeaController extends Controller
 
             $this->preComputeRights(array('mustBeCreator' => false, 'mustParticipate' => false));
 
-            if ($this->base != false) {
+            if ($this->access != false) {
                 
                 $form->bind($request);
 
@@ -651,7 +655,7 @@ class IdeaController extends Controller
 
         $this->preComputeRights(array('mustBeCreator' => true, 'mustParticipate' => false));
 
-        if ($this->base != false && !is_null($this->base['idea']->getCommunity()) ) {
+        if ($this->access != false && !is_null($this->base['idea']->getCommunity()) ) {
 
             $userRepository = $this->getDoctrine()->getRepository('metaUserBundle:User');
             $newParticipant = $userRepository->findOneByUsernameInCommunity($mailOrUsername, false, $this->base['idea']->getCommunity());
@@ -705,7 +709,7 @@ class IdeaController extends Controller
 
         $this->preComputeRights(array('mustBeCreator' => true, 'mustParticipate' => false));
 
-        if ($this->base != false && !is_null($this->base['idea']->getCommunity())) {
+        if ($this->access != false && !is_null($this->base['idea']->getCommunity())) {
 
             $userRepository = $this->getDoctrine()->getRepository('metaUserBundle:User');
             $toRemoveParticipant = $userRepository->findOneByUsernameInCommunity($username, false, $this->base['idea']->getCommunity());
@@ -756,7 +760,7 @@ class IdeaController extends Controller
 
         $this->preComputeRights(array('mustBeCreator' => false, 'mustParticipate' => false));
 
-        if ($this->base != false) {
+        if ($this->access != false) {
 
             if ( !($authenticatedUser->isWatchingIdea($this->base['idea'])) ){
 
@@ -807,7 +811,7 @@ class IdeaController extends Controller
 
         $this->preComputeRights(array('mustBeCreator' => false, 'mustParticipate' => false));
 
-        if ($this->base != false) {
+        if ($this->access != false) {
 
             // The actually authenticated user now unwatches $idea
             if ( $authenticatedUser->isWatchingIdea($this->base['idea']) ){

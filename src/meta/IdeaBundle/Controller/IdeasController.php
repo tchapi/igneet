@@ -55,7 +55,6 @@ class IdeasController extends Controller
 
         }
 
-
     }
 
     /*
