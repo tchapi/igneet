@@ -22,19 +22,19 @@ class WikiController extends BaseController
     public function showWikiHomeAction($uid)
     {
         $menu = $this->container->getParameter('project.menu');
-        $this->fetchProjectAndPreComputeRights($uid, false, $menu['wiki']['private']);
+        $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => $menu['wiki']['private']));
 
-        if ($this->base == false) 
+        if ($this->access == false) 
           return $this->forward('metaProjectBundle:Base:showRestricted', array('uid' => $uid));
 
-        $wiki = $this->base['standardProject']->getWiki();
+        $wiki = $this->base['project']->getWiki();
 
         if ( !($wiki) ){
 
           $wiki = new Wiki();
 
-          $this->base['standardProject']->setWiki($wiki);
-          $this->base['standardProject']->setUpdatedAt(new \DateTime('now'));
+          $this->base['project']->setWiki($wiki);
+          $this->base['project']->setUpdatedAt(new \DateTime('now'));
 
           $em = $this->getDoctrine()->getManager();
           $em->persist($wiki);
@@ -67,12 +67,12 @@ class WikiController extends BaseController
     public function showWikiPageAction($uid, $page_uid)
     {
         $menu = $this->container->getParameter('project.menu');
-        $this->fetchProjectAndPreComputeRights($uid, false, $menu['wiki']['private']);
+        $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => $menu['wiki']['private']));
 
-        if ($this->base == false) 
+        if ($this->access == false) 
           return $this->forward('metaProjectBundle:Base:showRestricted', array('uid' => $uid));
 
-        $wiki = $this->base['standardProject']->getWiki();
+        $wiki = $this->base['project']->getWiki();
 
         if (!$wiki){
           return $this->forward('metaProjectBundle:Wiki:showWikiHome', array('uid' => $uid));
@@ -102,12 +102,12 @@ class WikiController extends BaseController
     public function newWikiPageAction(Request $request, $uid)
     {
 
-        $this->fetchProjectAndPreComputeRights($uid, false, true);
+        $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => true));
 
-        if ($this->base == false) 
+        if ($this->access == false) 
           return $this->forward('metaProjectBundle:Base:showRestricted', array('uid' => $uid));
 
-        $wiki = $this->base['standardProject']->getWiki();
+        $wiki = $this->base['project']->getWiki();
 
         if (!$wiki){
           return $this->forward('metaProjectBundle:Wiki:showWikiHome', array('uid' => $uid));
@@ -124,15 +124,15 @@ class WikiController extends BaseController
 
             if ($form->isValid()) {
 
-                $this->base['standardProject']->getWiki()->addPage($wikiPage); /* ADD CHILD */
-                $this->base['standardProject']->setUpdatedAt(new \DateTime('now'));
+                $this->base['project']->getWiki()->addPage($wikiPage); /* ADD CHILD */
+                $this->base['project']->setUpdatedAt(new \DateTime('now'));
 
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($wikiPage);
                 $em->flush();
 
                 $logService = $this->container->get('logService');
-                $logService->log($this->getUser(), 'user_create_wikipage', $this->base['standardProject'], array( 'wikipage' => array( 'logName' => $wikiPage->getLogName(), 'identifier' => $wikiPage->getId()) ));
+                $logService->log($this->getUser(), 'user_create_wikipage', $this->base['project'], array( 'wikipage' => array( 'logName' => $wikiPage->getLogName(), 'identifier' => $wikiPage->getId()) ));
 
                 $this->get('session')->getFlashBag()->add(
                     'success',
@@ -164,12 +164,12 @@ class WikiController extends BaseController
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('makeHomeWikiPage', $request->get('token')))
             return $this->redirect($this->generateUrl('p_show_project_wiki', array('uid' => $uid)));
 
-        $this->fetchProjectAndPreComputeRights($uid, false, true);
+        $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => true));
 
-        if ($this->base == false) 
+        if ($this->access == false) 
           return $this->forward('metaProjectBundle:Base:showRestricted', array('uid' => $uid));
 
-        $wiki = $this->base['standardProject']->getWiki();
+        $wiki = $this->base['project']->getWiki();
 
         if (!$wiki){
           return $this->forward('metaProjectBundle:Wiki:showWikiHome', array('uid' => $uid));
@@ -199,7 +199,7 @@ class WikiController extends BaseController
 
           $em = $this->getDoctrine()->getManager();
           $wiki->setHomePage($wikiPage);
-          $this->base['standardProject']->setUpdatedAt(new \DateTime('now'));
+          $this->base['project']->setUpdatedAt(new \DateTime('now'));
           $em->flush();
 
         }
@@ -213,11 +213,11 @@ class WikiController extends BaseController
      */
     public function rankWikiPagesAction(Request $request, $uid)
     {
-        $this->fetchProjectAndPreComputeRights($uid, false, true);
+        $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => true));
 
-        if ($this->base != false) {
+        if ($this->access != false) {
 
-            $wiki = $this->base['standardProject']->getWiki();
+            $wiki = $this->base['project']->getWiki();
 
             if ($wiki) {
 
@@ -231,7 +231,7 @@ class WikiController extends BaseController
                     if ($wikiPage) $wikiPage->setRank(intval($key));
                 }
 
-                $this->base['standardProject']->setUpdatedAt(new \DateTime('now'));
+                $this->base['project']->setUpdatedAt(new \DateTime('now'));
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
         
@@ -260,13 +260,13 @@ class WikiController extends BaseController
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('editWikiPage', $request->get('token')))
             return new Response($this->get('translator')->trans('invalid.token', array(), 'errors'), 400);
 
-        $this->fetchProjectAndPreComputeRights($uid, false, true);
+        $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => true));
         $error = null;
         $response = null;
 
-        if ($this->base != false) {
+        if ($this->access != false) {
 
-            $wiki = $this->base['standardProject']->getWiki();
+            $wiki = $this->base['project']->getWiki();
 
             if ($wiki){
 
@@ -325,11 +325,11 @@ class WikiController extends BaseController
 
                 if ($objectHasBeenModified === true && count($errors) == 0){
                     
-                    $this->base['standardProject']->setUpdatedAt(new \DateTime('now'));
+                    $this->base['project']->setUpdatedAt(new \DateTime('now'));
                     $em->flush();
 
                     $logService = $this->container->get('logService');
-                    $logService->log($this->getUser(), 'user_update_wikipage', $this->base['standardProject'], array( 'wikipage' => array( 'logName' => $wikiPage->getLogName(), 'identifier' => $wikiPage->getId() ) ));
+                    $logService->log($this->getUser(), 'user_update_wikipage', $this->base['project'], array( 'wikipage' => array( 'logName' => $wikiPage->getLogName(), 'identifier' => $wikiPage->getId() ) ));
                 
                 } elseif (count($errors) > 0) {
 
@@ -371,11 +371,11 @@ class WikiController extends BaseController
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('deleteWikiPage', $request->get('token')))
             return $this->redirect($this->generateUrl('p_show_project_wiki', array('uid' => $uid)));
 
-        $this->fetchProjectAndPreComputeRights($uid, false, true);
+        $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => true));
 
-        if ($this->base != false) {
+        if ($this->access != false) {
 
-            $wiki = $this->base['standardProject']->getWiki();
+            $wiki = $this->base['project']->getWiki();
 
             if ($wiki){
 
@@ -394,11 +394,11 @@ class WikiController extends BaseController
                   }
 
                   $logService = $this->container->get('logService');
-                  $logService->log($this->getUser(), 'user_delete_wikipage', $this->base['standardProject'], array( 'wikipage' => array( 'logName' => $wikiPage->getLogName() )) );
+                  $logService->log($this->getUser(), 'user_delete_wikipage', $this->base['project'], array( 'wikipage' => array( 'logName' => $wikiPage->getLogName() )) );
 
                   $em = $this->getDoctrine()->getManager();
                   $em->remove($wikiPage);
-                  $this->base['standardProject']->setUpdatedAt(new \DateTime('now'));
+                  $this->base['project']->setUpdatedAt(new \DateTime('now'));
 
                   $em->flush();
 

@@ -15,9 +15,9 @@ class TimelineController extends BaseController
     public function showTimelineAction($uid, $page)
     {
         $menu = $this->container->getParameter('project.menu');
-        $this->fetchProjectAndPreComputeRights($uid, false, $menu['timeline']['private']);
+        $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => $menu['timeline']['private']));
 
-        if ($this->base == false) 
+        if ($this->access == false) 
           return $this->forward('metaProjectBundle:Base:showRestricted', array('uid' => $uid));
 
         return $this->render('metaProjectBundle:Timeline:showTimeline.html.twig', 
@@ -35,9 +35,9 @@ class TimelineController extends BaseController
     {
 
         $menu = $this->container->getParameter('project.menu');
-        $this->fetchProjectAndPreComputeRights($uid, false, $menu['timeline']['private']);
+        $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => $menu['timeline']['private']));
 
-        if ($this->base == false) 
+        if ($this->access == false) 
           return $this->forward('metaProjectBundle:Base:showRestricted', array('uid' => $uid));
 
         $format = $this->get('translator')->trans('date.timeline');
@@ -52,7 +52,7 @@ class TimelineController extends BaseController
                             );
 
         $repository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\StandardProjectLogEntry');
-        $entries = $repository->findByStandardProject($this->base['standardProject']);
+        $entries = $repository->findByStandardProject($this->base['project']);
 
         $history = array();
 
@@ -72,7 +72,7 @@ class TimelineController extends BaseController
         }
 
         // Comments
-        foreach ($this->base['standardProject']->getComments() as $comment) {
+        foreach ($this->base['project']->getComments() as $comment) {
 
           $text = $logService->getHTML($comment);
           $createdAt = date_create($comment->getCreatedAt()->format('Y-m-d H:i:s')); // not for display

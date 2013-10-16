@@ -21,8 +21,8 @@ class ResourceController extends BaseController
      */
     private function guessProviderAndType($file, $url){
 
-        $types = $this->container->getParameter('standardproject.resource_types');
-        $providers = $this->container->getParameter('standardproject.resource_providers');
+        $types = $this->container->getParameter('project.resource_types');
+        $providers = $this->container->getParameter('project.resource_providers');
 
         if ($file == null) {
 
@@ -73,13 +73,13 @@ class ResourceController extends BaseController
     public function listResourcesAction(Request $request, $uid, $page)
     {
         $menu = $this->container->getParameter('project.menu');
-        $this->fetchProjectAndPreComputeRights($uid, false, $menu['resources']['private']);
+        $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => $menu['resources']['private']));
 
         if ($this->base == false) 
           return $this->forward('metaProjectBundle:Base:showRestricted', array('uid' => $uid));
 
-        $types = $this->container->getParameter('standardproject.resource_types');
-        $providers = $this->container->getParameter('standardproject.resource_providers');
+        $types = $this->container->getParameter('project.resource_types');
+        $providers = $this->container->getParameter('project.resource_providers');
 
         $resource = new Resource();
         $form = $this->createForm(new ResourceType(), $resource);
@@ -93,8 +93,8 @@ class ResourceController extends BaseController
             if ($form->isValid() && 
               ($request->files->get('resource[file]', null, true) != null || preg_match( $pattern, $resource->getUrl() ) == 1 ) ) {
 
-                $this->base['standardProject']->addResource($resource);
-                $this->base['standardProject']->setUpdatedAt(new \DateTime('now'));
+                $this->base['project']->addResource($resource);
+                $this->base['project']->setUpdatedAt(new \DateTime('now'));
 
                 // Guess resource type and provider
                 $guess = $this->guessProviderAndType($request->files->get('resource[file]', null, true), $resource->getUrl());
@@ -106,11 +106,11 @@ class ResourceController extends BaseController
                 $em->flush();
 
                 $logService = $this->container->get('logService');
-                $logService->log($this->getUser(), 'user_add_resource', $this->base['standardProject'], array( 'resource' => array( 'logName' => $resource->getLogName(), 'identifier' => $resource->getId()) ));
+                $logService->log($this->getUser(), 'user_add_resource', $this->base['project'], array( 'resource' => array( 'logName' => $resource->getLogName(), 'identifier' => $resource->getId()) ));
 
                 $this->get('session')->getFlashBag()->add(
                     'success',
-                    $this->get('translator')->trans('project.resources.created', array( '%resource%' => $resource->getTitle(), '%project%' => $this->base['standardProject']->getName()))
+                    $this->get('translator')->trans('project.resources.created', array( '%resource%' => $resource->getTitle(), '%project%' => $this->base['project']->getName()))
                 );
 
                 return $this->redirect($this->generateUrl('p_show_project_list_resources', array('uid' => $uid)));
@@ -136,13 +136,13 @@ class ResourceController extends BaseController
     public function showResourceAction($uid, $resource_uid)
     {
         $menu = $this->container->getParameter('project.menu');
-        $this->fetchProjectAndPreComputeRights($uid, false, $menu['resources']['private']);
+        $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => $menu['resources']['private']));
 
         if ($this->base == false) 
           return $this->forward('metaProjectBundle:Base:showRestricted', array('uid' => $uid));
 
-        $types = $this->container->getParameter('standardproject.resource_types');
-        $providers = $this->container->getParameter('standardproject.resource_providers');
+        $types = $this->container->getParameter('project.resource_types');
+        $providers = $this->container->getParameter('project.resource_providers');
 
         $repository = $this->getDoctrine()->getRepository('metaProjectBundle:Resource');
         $resource = $repository->findOneById($this->container->get('uid')->fromUId($resource_uid));
@@ -168,7 +168,7 @@ class ResourceController extends BaseController
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('edit', $request->get('token')))
             return $this->redirect($this->generateUrl('p_show_project_list_resources', array('uid' => $uid)));
           
-        $this->fetchProjectAndPreComputeRights($uid, false, true);
+        $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => true));
         $error = null;
         $response = null;
 
@@ -236,12 +236,12 @@ class ResourceController extends BaseController
                 if ($objectHasBeenModified === true && count($errors) == 0){
 
                     $resource->setUpdatedAt(new \DateTime('now')); 
-                    $this->base['standardProject']->setUpdatedAt(new \DateTime('now'));
+                    $this->base['project']->setUpdatedAt(new \DateTime('now'));
                     $em = $this->getDoctrine()->getManager();
                     $em->flush();
 
                     $logService = $this->container->get('logService');
-                    $logService->log($this->getUser(), 'user_update_resource', $this->base['standardProject'], array( 'resource' => array( 'logName' => $resource->getLogName(), 'identifier' => $resource->getId()) ) );
+                    $logService->log($this->getUser(), 'user_update_resource', $this->base['project'], array( 'resource' => array( 'logName' => $resource->getLogName(), 'identifier' => $resource->getId()) ) );
                 
                 } elseif (count($errors) > 0) {
 
@@ -289,7 +289,7 @@ class ResourceController extends BaseController
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('delete', $request->get('token')))
             return $this->redirect($this->generateUrl('p_show_project_list_resources', array('uid' => $uid)));
           
-        $this->fetchProjectAndPreComputeRights($uid, false, true);
+        $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => true));
 
         if ($this->base != false) {
 
@@ -299,16 +299,16 @@ class ResourceController extends BaseController
             if ($resource){
 
                 $logService = $this->container->get('logService');
-                $logService->log($this->getUser(), 'user_delete_resource', $this->base['standardProject'], array( 'resource' => array( 'logName' => $resource->getLogName(), 'identifier' => $resource->getId())) );
+                $logService->log($this->getUser(), 'user_delete_resource', $this->base['project'], array( 'resource' => array( 'logName' => $resource->getLogName(), 'identifier' => $resource->getId())) );
 
-                $this->base['standardProject']->setUpdatedAt(new \DateTime('now'));
+                $this->base['project']->setUpdatedAt(new \DateTime('now'));
                 $em = $this->getDoctrine()->getManager();
                 $em->remove($resource);
                 $em->flush();
 
                 $this->get('session')->getFlashBag()->add(
                     'success',
-                    $this->get('translator')->trans('project.resources.deleted', array( '%project%' => $this->base['standardProject']->getName()))
+                    $this->get('translator')->trans('project.resources.deleted', array( '%project%' => $this->base['project']->getName()))
                 );
 
             } else {
@@ -332,7 +332,7 @@ class ResourceController extends BaseController
     public function downloadResourceAction(Request $request, $uid, $resource_uid)
     {
         $menu = $this->container->getParameter('project.menu');
-        $this->fetchProjectAndPreComputeRights($uid, false, $menu['resources']['private']);
+        $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => $menu['resources']['private']));
 
         if ($this->base != false) {
 

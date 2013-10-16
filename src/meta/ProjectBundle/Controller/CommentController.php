@@ -25,7 +25,7 @@ class CommentController extends BaseController
         $menu = $this->container->getParameter('project.menu');
         $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => $menu['timeline']['private']));
 
-        if ($this->base != false) {
+        if ($this->access != false) {
 
             $comment = new StandardProjectComment();
             $form = $this->createFormBuilder($comment)
@@ -86,7 +86,7 @@ class CommentController extends BaseController
         $menu = $this->container->getParameter('project.menu');
         $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => $menu['wiki']['private']));
 
-        if ($this->base != false) {
+        if ($this->access != false) {
 
             $wiki = $this->base['project']->getWiki();
 
@@ -157,7 +157,7 @@ class CommentController extends BaseController
         $menu = $this->container->getParameter('project.menu');
         $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => $menu['lists']['private']));
 
-        if ($this->base != false) {
+        if ($this->access != false) {
 
             $repository = $this->getDoctrine()->getRepository('metaProjectBundle:CommonList');
             $commonList = $repository->findOneByIdInProject($this->container->get('uid')->fromUId($list_uid), $this->base['project']->getId());
