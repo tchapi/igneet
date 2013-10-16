@@ -202,11 +202,12 @@ class DefaultController extends Controller
 
         if ($uid === null){ // Private space
 
-            $this->get('session')->getFlashBag()->add(
-                'success',
-                $this->get('translator')->trans('member.in.private.space')
-            );
-
+            if (!$request->get('redirect')){
+                $this->get('session')->getFlashBag()->add(
+                    'success',
+                    $this->get('translator')->trans('member.in.private.space')
+                );
+            }
             $em = $this->getDoctrine()->getManager();
             $this->getUser()->setCurrentCommunity(null);
             $em->flush();

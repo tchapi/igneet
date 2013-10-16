@@ -12,20 +12,18 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller,
  * Importing Class definitions
  */
 use meta\IdeaBundle\Entity\Idea,
-    meta\IdeaBundle\Form\Type\IdeaType,
     meta\IdeaBundle\Entity\Comment\IdeaComment,
     meta\ProjectBundle\Entity\StandardProject,
     meta\ProjectBundle\Entity\Wiki,
     meta\ProjectBundle\Entity\WikiPage;
 
-class DefaultController extends Controller
+class IdeaController extends Controller
 {
-        
-    /*
-     * Common helper to fetch idea and rights
-     */
-    public function fetchIdeaAndPreComputeRights($uid, $mustBeCreator = false, $mustParticipate = false)
+    
+    public function preExecute(Request $request)
     {
+
+        $uid = $request->get('uid');
 
         $repository = $this->getDoctrine()->getRepository('metaIdeaBundle:Idea');
         $idea = $repository->findOneById($this->container->get('uid')->fromUId($uid)); // We do not enforce community here to be able to switch the user later on
@@ -47,13 +45,36 @@ class DefaultController extends Controller
           throw $this->createNotFoundException($this->get('translator')->trans('idea.not.found'));
         }
 
-        // If we're in a community, check we're not guest
+        // If we're in a community
         if (!is_null($community)){
+
+            // Check we're not guest
             $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true, 'deleted_at' => null));
         
-             // User is guest in community
             if ($userCommunityGuest){
+                // User is guest in community
                 throw $this->createNotFoundException($this->get('translator')->trans('idea.not.found'));
+            }
+
+            // And that community is valid ?
+            if ( !($community->isValid()) ){
+
+                $this->get('session')->getFlashBag()->add(
+                    'error',
+                    $this->get('translator')->trans('community.invalid', array( "%community%" => $community->getName()) )
+                );
+
+                // Back in private space, ahah
+                $authenticatedUser->setCurrentCommunity(null);
+                $em = $this->getDoctrine()->getManager();
+                $em->flush();
+
+                $this->get('session')->getFlashBag()->add(
+                  'info',
+                  $this->get('translator')->trans('private.space.back')
+                );
+
+                return $this->redirect($this->generateUrl('g_switch_private_space', array('token' => $this->get('form.csrf_provider')->generateCsrfToken('switchCommunity'), 'redirect' => true)));
             }
 
         }
@@ -92,58 +113,35 @@ class DefaultController extends Controller
                 }
             }
         }
-        
-        $targetPictureAsBase64 = array('slug' => 'metaIdeaBundle:Default:edit', 'params' => array('uid' => $uid ), 'crop' => true);
-        $targetProposeToCommunityAsBase64 = array('slug' => 'metaIdeaBundle:Default:edit', 'params' => array('uid' => $uid ));
 
-        if ( ($mustBeCreator && !$isCreator) || ($mustParticipate && !$isParticipatingIn && !$isCreator) ) {
-          $this->base = false;
-        } else {
-          $this->base = array('idea' => $idea,
-                              'isAlreadyWatching' => $isAlreadyWatching,
-                              'isParticipatingIn' => $isParticipatingIn,
-                              'isCreator' => $isCreator,
-                              'targetPictureAsBase64' => base64_encode(json_encode($targetPictureAsBase64)),
-                              'targetProposeToCommunityAsBase64' => base64_encode(json_encode($targetProposeToCommunityAsBase64)),
-                              'canEdit' =>  $isCreator || $isParticipatingIn
-                            );
-        }
+        $this->base = array('idea' => $idea,
+                            'isAlreadyWatching' => $isAlreadyWatching,
+                            'isParticipatingIn' => $isParticipatingIn,
+                            'isCreator' => $isCreator,
+                            'canEdit' =>  $isCreator || $isParticipatingIn
+                           );
 
     }
 
-
     /*
-     * List all the ideas in the community
+     * Common helper to compute rights
      */
-    public function listAction($page, $archived, $sort)
+    public function preComputeRights($options)
     {
 
-        $authenticatedUser = $this->getUser();
-        $community = $authenticatedUser->getCurrentCommunity();
+        if ( ($options['mustBeCreator'] && !$this->base['isCreator']) || 
+             ($options['mustParticipate'] && !$this->base['isParticipatingIn'] && !$this->base['isCreator'])
+            ) {
+           
+            $this->base = false;
 
-        if (!is_null($community)){
-            $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true, 'deleted_at' => null));
-        
-            // User is guest in community
-            if ($userCommunityGuest){
-                throw new AccessDeniedHttpException($this->get('translator')->trans('guest.community.cannot.access'), null);
-            }
+        } else {
 
+            $targetPictureAsBase64 = array('slug' => 'metaIdeaBundle:Idea:edit', 'params' => array('uid' => $this->base['idea']->getId() ), 'crop' => true);
+            $targetProposeToCommunityAsBase64 = array('slug' => 'metaIdeaBundle:Idea:edit', 'params' => array('uid' => $this->base['idea']->getId() ));
+            $this->base['targetPictureAsBase64'] = base64_encode(json_encode($targetPictureAsBase64));
+            $this->base['targetProposeToCommunityAsBase64'] = base64_encode(json_encode($targetProposeToCommunityAsBase64));
         }
-
-        $repository = $this->getDoctrine()->getRepository('metaIdeaBundle:Idea');
-
-        $totalIdeas = $repository->countIdeasInCommunityForUser($community, $authenticatedUser, $archived);
-        $maxPerPage = $this->container->getParameter('listings.number_of_items_per_page');
-
-        if ( ($page-1) * $maxPerPage > $totalIdeas) {
-            return $this->redirect($this->generateUrl('i_list_ideas', array('sort' => $sort)));
-        }
-
-        $ideas = $repository->findIdeasInCommunityForUser($community, $authenticatedUser, $page, $maxPerPage, $sort, $archived);
-
-        $pagination = array( 'page' => $page, 'totalIdeas' => $totalIdeas);
-        return $this->render('metaIdeaBundle:Default:list.html.twig', array('ideas' => $ideas, 'archived' => $archived, 'pagination' => $pagination, 'sort' => $sort));
 
     }
     
@@ -153,13 +151,26 @@ class DefaultController extends Controller
     public function showAction($uid)
     {
 
-        $this->fetchIdeaAndPreComputeRights($uid, false, false);
-        
-        $targetParticipantAsBase64 = array('slug' => 'metaIdeaBundle:Default:addParticipant', 'external' => false, 'params' => array('uid' => $uid, 'owner' => false, 'guest' => false));
+        $this->preComputeRights(array('mustBeCreator' => false, 'mustParticipate' => false));
 
-        return $this->render('metaIdeaBundle:Info:showInfo.html.twig', 
-            array('base' => $this->base,
-                'targetParticipantAsBase64' => base64_encode(json_encode($targetParticipantAsBase64)) ));
+        if ($this->base != false) {
+
+            $targetParticipantAsBase64 = array('slug' => 'metaIdeaBundle:Idea:addParticipant', 'external' => false, 'params' => array('uid' => $uid, 'owner' => false, 'guest' => false));
+
+            return $this->render('metaIdeaBundle:Info:showInfo.html.twig', 
+                array('base' => $this->base,
+                    'targetParticipantAsBase64' => base64_encode(json_encode($targetParticipantAsBase64)) ));
+
+        } else {
+
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $this->get('translator')->trans('idea.access')
+            );
+            
+            return $this->redirect($this->generateUrl('i_list_ideas'));
+        }
+
     }
 
     /*
@@ -167,10 +178,22 @@ class DefaultController extends Controller
      */
     public function showTimelineAction($uid, $page)
     {
-        $this->fetchIdeaAndPreComputeRights($uid, false, false);
+        $this->preComputeRights(array('mustBeCreator' => false, 'mustParticipate' => false));
 
-        return $this->render('metaIdeaBundle:Timeline:showTimeline.html.twig', 
-            array('base' => $this->base));
+        if ($this->base != false) {
+
+            return $this->render('metaIdeaBundle:Timeline:showTimeline.html.twig', 
+                array('base' => $this->base));
+
+        } else {
+
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $this->get('translator')->trans('idea.access')
+            );
+            
+            return $this->redirect($this->generateUrl('i_list_ideas'));
+        }
     }
 
 
@@ -180,81 +203,22 @@ class DefaultController extends Controller
     public function showConceptOrKnowledgeAction($uid, $type)
     {
 
-        $this->fetchIdeaAndPreComputeRights($uid, false, false);
+        $this->preComputeRights(array('mustBeCreator' => false, 'mustParticipate' => false));
         
-        return $this->render('metaIdeaBundle:Info:show' . ucfirst($type) . '.html.twig', 
-            array('base' => $this->base));
-    }
+        if ($this->base != false) {
 
-    /*
-     * Create a form for a new idea AND process result when POSTed
-     */
-    public function createAction(Request $request)
-    {
-        
-        $authenticatedUser = $this->getUser();
-        $community = $authenticatedUser->getCurrentCommunity();
+            return $this->render('metaIdeaBundle:Info:show' . ucfirst($type) . '.html.twig', 
+                array('base' => $this->base));
 
-        if (!is_null($community)){
+        } else {
+
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $this->get('translator')->trans('idea.access')
+            );
             
-            $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true, 'deleted_at' => null));
-        
-            if ($userCommunityGuest){
-                $this->get('session')->getFlashBag()->add(
-                    'error',
-                    $this->get('translator')->trans('guest.community.cannot.do')
-                );
-                return $this->redirect($this->generateUrl('i_list_ideas'));
-            }
-
+            return $this->redirect($this->generateUrl('i_list_ideas'));
         }
-        
-       
-        $idea = new Idea();
-        $form = $this->createForm(new IdeaType(), $idea, array('allowCreators' => !is_null($community), 'community' => $community, 'translator' => $this->get('translator') ));
-
-        if ($request->isMethod('POST')) {
-
-            $form->bind($request);
-
-            // Prevents users in the private space from creating ideas with other creators
-            if ($form->isValid() && ( !is_null($community) || count($idea->getCreators()) === 0 ) ) {
-
-                if ( !$idea->getCreators()->contains($authenticatedUser) ){
-                    $idea->addCreator($authenticatedUser);
-                }
-
-                if ( !is_null($community) ){
-                    $community->addIdea($idea);
-                }
-
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($idea);
-                $em->flush();
-                
-                $logService = $this->container->get('logService');
-                $logService->log($authenticatedUser, 'user_create_idea', $idea, array());
-
-                $this->get('session')->getFlashBag()->add(
-                    'success',
-                    $this->get('translator')->trans('idea.created', array( '%idea%' => $idea->getName()))
-                );
-
-                return $this->redirect($this->generateUrl('i_show_idea', array('uid' => $this->container->get('uid')->toUId($idea->getId()))));
-           
-            } else {
-               
-               $this->get('session')->getFlashBag()->add(
-                    'error',
-                    $this->get('translator')->trans('information.not.valid', array(), 'errors')
-                );
-
-            }
-
-        }
-
-        return $this->render('metaIdeaBundle:Default:create.html.twig', array('form' => $form->createView()));
-
     }
 
     /*
@@ -266,7 +230,7 @@ class DefaultController extends Controller
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('edit', $request->get('token')))
             return new Response($this->get('translator')->trans('invalid.token', array(), 'errors'), 400);
 
-        $this->fetchIdeaAndPreComputeRights($uid, false, true);
+        $this->preComputeRights(array('mustBeCreator' => false, 'mustParticipate' => true));
         $error = null;
         $response = null;
 
@@ -411,7 +375,7 @@ class DefaultController extends Controller
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('delete', $request->get('token')))
             return $this->redirect($this->generateUrl('i_show_idea', array('uid' => $uid)));
 
-        $this->fetchIdeaAndPreComputeRights($uid, true, false);
+        $this->preComputeRights(array('mustBeCreator' => true, 'mustParticipate' => false));
 
         if ($this->base != false) {
         
@@ -447,7 +411,7 @@ class DefaultController extends Controller
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('archiveOrRecycle', $request->get('token')))
             return $this->redirect($this->generateUrl('i_show_idea', array('uid' => $uid)));
 
-        $this->fetchIdeaAndPreComputeRights($uid, true, false);
+        $this->preComputeRights(array('mustBeCreator' => false, 'mustParticipate' => false));
 
         if ($this->base != false) {
 
@@ -489,7 +453,7 @@ class DefaultController extends Controller
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('resetPicture', $request->get('token')))
             return $this->redirect($this->generateUrl('i_show_idea', array('uid' => $uid)));
 
-        $this->fetchIdeaAndPreComputeRights($uid, false, true);
+        $this->preComputeRights(array('mustBeCreator' => false, 'mustParticipate' => true));
 
         if ($this->base != false) {
 
@@ -523,7 +487,7 @@ class DefaultController extends Controller
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('projectize', $request->get('token')))
             return $this->redirect($this->generateUrl('i_show_idea', array('uid' => $uid)));
 
-        $this->fetchIdeaAndPreComputeRights($uid, true, false);
+        $this->preComputeRights(array('mustBeCreator' => false, 'mustParticipate' => false));
 
         if ($this->base != false && $this->base['idea']->isArchived() === false){
 
@@ -617,17 +581,18 @@ class DefaultController extends Controller
      */
     public function addIdeaCommentAction(Request $request, $uid){
 
-        $this->fetchIdeaAndPreComputeRights($uid, false, false);
+        $comment = new IdeaComment();
+        $form = $this->createFormBuilder($comment)
+            ->add('text', 'textarea', array('attr' => array('placeholder' => $this->get('translator')->trans('comment.placeholder') )))
+            ->getForm();
 
-        if ($this->base != false) {
+        // Routed
+        if ($request->isMethod('POST')) {
 
-            $comment = new IdeaComment();
-            $form = $this->createFormBuilder($comment)
-                ->add('text', 'textarea', array('attr' => array('placeholder' => $this->get('translator')->trans('comment.placeholder') )))
-                ->getForm();
+            $this->preComputeRights(array('mustBeCreator' => false, 'mustParticipate' => false));
 
-            if ($request->isMethod('POST')) {
-
+            if ($this->base != false) {
+                
                 $form->bind($request);
 
                 if ($form->isValid()) {
@@ -656,15 +621,18 @@ class DefaultController extends Controller
                 }
 
                 return $this->redirect($this->generateUrl('i_show_idea_timeline', array('uid' => $uid)));
-
-            } else {
-
-                $route = $this->get('router')->generate('i_show_idea_comment', array('uid' => $uid));
-
-                return $this->render('metaGeneralBundle:Comment:timelineCommentBox.html.twig', 
-                    array('object' => $this->base['idea'], 'route' => $route, 'form' => $form->createView()));
-
             }
+
+        } else { // Non-routed
+
+            $route = $this->get('router')->generate('i_show_idea_comment', array('uid' => $uid));
+
+            // We can fetch directly here since it is a non routed action
+            $ideaRepository = $this->getDoctrine()->getRepository('metaIdeaBundle:Idea');
+            $idea = $ideaRepository->findOneById($this->container->get('uid')->fromUId($uid));
+
+            return $this->render('metaGeneralBundle:Comment:timelineCommentBox.html.twig', 
+                array('object' => $idea, 'route' => $route, 'form' => $form->createView()));
 
         }
 
@@ -681,7 +649,7 @@ class DefaultController extends Controller
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('addParticipant', $request->get('token')))
             return $this->redirect($this->generateUrl('i_show_idea', array('uid' => $uid)));
 
-        $this->fetchIdeaAndPreComputeRights($uid, false, true);
+        $this->preComputeRights(array('mustBeCreator' => true, 'mustParticipate' => false));
 
         if ($this->base != false && !is_null($this->base['idea']->getCommunity()) ) {
 
@@ -735,7 +703,7 @@ class DefaultController extends Controller
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('removeParticipant', $request->get('token')))
             return $this->redirect($this->generateUrl('i_show_idea', array('uid' => $uid)));
 
-        $this->fetchIdeaAndPreComputeRights($uid, true, false);
+        $this->preComputeRights(array('mustBeCreator' => true, 'mustParticipate' => false));
 
         if ($this->base != false && !is_null($this->base['idea']->getCommunity())) {
 
@@ -786,26 +754,13 @@ class DefaultController extends Controller
         $authenticatedUser = $this->getUser();
         $community = $authenticatedUser->getCurrentCommunity();
 
-        if (!is_null($community)){
-            
-            $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true, 'deleted_at' => null));
-        
-            // User is guest in community
-            if ($userCommunityGuest){
-                throw $this->createNotFoundException($this->get('translator')->trans('idea.not.found'));
-            }
+        $this->preComputeRights(array('mustBeCreator' => false, 'mustParticipate' => false));
 
-        }
+        if ($this->base != false) {
 
-        // The actually authenticated user now watches the idea with $id
-        $repository = $this->getDoctrine()->getRepository('metaIdeaBundle:Idea');
-        $idea = $repository->findOneByIdInCommunityForUser($this->container->get('uid')->fromUId($uid), $community, $authenticatedUser, false);
+            if ( !($authenticatedUser->isWatchingIdea($this->base['idea'])) ){
 
-        if ($idea){
-
-            if ( !($authenticatedUser->isWatchingIdea($idea)) ){
-
-                $authenticatedUser->addIdeasWatched($idea);
+                $authenticatedUser->addIdeasWatched($this->base['idea']);
 
                 $logService = $this->container->get('logService');
                 $logService->log($authenticatedUser, 'user_watch_idea', $idea, array());
@@ -815,14 +770,14 @@ class DefaultController extends Controller
 
                 $this->get('session')->getFlashBag()->add(
                     'success',
-                    $this->get('translator')->trans('idea.watching', array('%idea%' => $idea->getName()))
+                    $this->get('translator')->trans('idea.watching', array('%idea%' => $this->base['idea']->getName()))
                 );
 
             } else {
 
                 $this->get('session')->getFlashBag()->add(
                     'warning',
-                    $this->get('translator')->trans('idea.already.watching', array('%idea%' => $idea->getName()))
+                    $this->get('translator')->trans('idea.already.watching', array('%idea%' => $this->base['idea']->getName()))
                 );
 
             }
@@ -850,40 +805,28 @@ class DefaultController extends Controller
         $authenticatedUser = $this->getUser();
         $community = $authenticatedUser->getCurrentCommunity();
 
-        if (!is_null($community)){
-            
-            $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true, 'deleted_at' => null));
+        $this->preComputeRights(array('mustBeCreator' => false, 'mustParticipate' => false));
 
-            // User is guest in community
-            if ($userCommunityGuest){
-                throw $this->createNotFoundException($this->get('translator')->trans('idea.not.found'));
-            }
+        if ($this->base != false) {
 
-        }
+            // The actually authenticated user now unwatches $idea
+            if ( $authenticatedUser->isWatchingIdea($this->base['idea']) ){
 
-        // The actually authenticated user now unwatches idea with $id
-        $repository = $this->getDoctrine()->getRepository('metaIdeaBundle:Idea');
-        $idea = $repository->findOneByIdInCommunityForUser($this->container->get('uid')->fromUId($uid), $community, $authenticatedUser, false);
-
-        if ($idea){
-
-            if ( $authenticatedUser->isWatchingIdea($idea) ){
-
-                $authenticatedUser->removeIdeasWatched($idea);
+                $authenticatedUser->removeIdeasWatched($this->base['idea']);
 
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
 
                 $this->get('session')->getFlashBag()->add(
                     'success',
-                    $this->get('translator')->trans('idea.unwatching', array('%idea%' => $idea->getName()))
+                    $this->get('translator')->trans('idea.unwatching', array('%idea%' => $this->base['idea']->getName()))
                 );
 
             } else {
 
                 $this->get('session')->getFlashBag()->add(
                     'warning',
-                    $this->get('translator')->trans('idea.not.watching', array('%idea%' => $idea->getName()))
+                    $this->get('translator')->trans('idea.not.watching', array('%idea%' => $this->base['idea']->getName()))
                 );
 
             }
@@ -892,7 +835,7 @@ class DefaultController extends Controller
 
            $this->get('session')->getFlashBag()->add(
                 'error',
-                $this->get('translator')->trans('idea.cannot.unwatch')
+                $this->get('translator')->trans('idea.cannot.watch')
             ); 
 
         }
@@ -902,6 +845,7 @@ class DefaultController extends Controller
 
     /* ********************************************************************* */
     /*                           Non-routed actions                          */
+    /*                     are NOT subject to Pre-execute                    */
     /* ********************************************************************* */
 
     /*
@@ -919,8 +863,6 @@ class DefaultController extends Controller
      */
     public function historyAction($uid, $page){
 
-        $this->fetchIdeaAndPreComputeRights($uid, false, false);
-
         $format = $this->get('translator')->trans('date.timeline');
         $this->timeframe = array( 'today' => array( 'name' => $this->get('translator')->trans('date.today'), 'data' => array()),
                             'd-1'   => array( 'name' => date($format, strtotime("-1 day")), 'data' => array() ),
@@ -932,8 +874,12 @@ class DefaultController extends Controller
                             'before'=> array( 'name' => $this->get('translator')->trans('date.past.week'), 'data' => array() )
                             );
 
+        // We can fetch directly here since it is a non routed action
+        $ideaRepository = $this->getDoctrine()->getRepository('metaIdeaBundle:Idea');
+        $idea = $ideaRepository->findOneById($this->container->get('uid')->fromUId($uid));
+
         $repository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\IdeaLogEntry');
-        $entries = $repository->findByIdea($this->base['idea']);
+        $entries = $repository->findByIdea($idea);
 
         $history = array();
 
@@ -953,7 +899,7 @@ class DefaultController extends Controller
         }
 
         // Comments
-        foreach ($this->base['idea']->getComments() as $comment) {
+        foreach ($idea->getComments() as $comment) {
 
           $text = $logService->getHTML($comment);
           $createdAt = date_create($comment->getCreatedAt()->format('Y-m-d H:i:s')); // not for display

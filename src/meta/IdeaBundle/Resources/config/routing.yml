@@ -5,28 +5,28 @@
 
 i_list_ideas:
     pattern:  /ideas/{page}/{sort}
-    defaults: { _controller: metaIdeaBundle:Default:list, page: 1, archived: false, sort: update }
+    defaults: { _controller: metaIdeaBundle:Ideas:list, page: 1, archived: false, sort: update }
     requirements:
         page: \d+
         sort: update|newest|alpha
 
 i_list_archived_ideas:
     pattern:  /ideas/archived/{page}/{sort}
-    defaults: { _controller: metaIdeaBundle:Default:list, page: 1, archived: true, sort: update }
+    defaults: { _controller: metaIdeaBundle:Ideas:list, page: 1, archived: true, sort: update }
     requirements:
         page: \d+
         sort: update|newest|alpha
 
 i_new_idea:
     pattern:  /ideas/new
-    defaults: { _controller: metaIdeaBundle:Default:create }
+    defaults: { _controller: metaIdeaBundle:Ideas:create }
 
 # /IDEA/
 # ---------------
 
 i_show_idea:
     pattern:  /idea/0{uid}
-    defaults: { _controller: metaIdeaBundle:Default:show }
+    defaults: { _controller: metaIdeaBundle:Idea:show }
     requirements:
         uid: "[0-9a-zA-Z]*"
 
@@ -35,38 +35,38 @@ i_show_idea:
 
 i_edit_idea:
     pattern:  /idea/0{uid}/edit
-    defaults: { _controller: metaIdeaBundle:Default:edit }
+    defaults: { _controller: metaIdeaBundle:Idea:edit }
     requirements:
         uid: "[0-9a-zA-Z]*"
         _method:  POST
 
 i_edit_idea_reset_picture:
     pattern:  /idea/0{uid}/reset/picture
-    defaults: { _controller: metaIdeaBundle:Default:resetPicture }
+    defaults: { _controller: metaIdeaBundle:Idea:resetPicture }
     requirements:
         uid: "[0-9a-zA-Z]*"
 
 i_delete_idea:
     pattern:  /idea/0{uid}/delete
-    defaults: { _controller: metaIdeaBundle:Default:delete }
+    defaults: { _controller: metaIdeaBundle:Idea:delete }
     requirements:
         uid: "[0-9a-zA-Z]*"
 
 i_archive_idea:
     pattern:  /idea/0{uid}/archive
-    defaults: { _controller: metaIdeaBundle:Default:archiveOrRecycle, archive: true }
+    defaults: { _controller: metaIdeaBundle:Idea:archiveOrRecycle, archive: true }
     requirements:
         uid: "[0-9a-zA-Z]*"
 
 i_recycle_idea:
     pattern:  /idea/0{uid}/recycle
-    defaults: { _controller: metaIdeaBundle:Default:archiveOrRecycle, archive: false }
+    defaults: { _controller: metaIdeaBundle:Idea:archiveOrRecycle, archive: false }
     requirements:
         uid: "[0-9a-zA-Z]*"
 
 i_turn_idea_into_project:
     pattern:  /idea/0{uid}/make/project
-    defaults: { _controller: metaIdeaBundle:Default:projectize }
+    defaults: { _controller: metaIdeaBundle:Idea:projectize }
     requirements:
         uid: "[0-9a-zA-Z]*"
 
@@ -75,7 +75,7 @@ i_turn_idea_into_project:
 
 i_show_idea_comment:
     pattern:  /idea/0{uid}/comment
-    defaults: { _controller: metaIdeaBundle:Default:addIdeaComment }
+    defaults: { _controller: metaIdeaBundle:Idea:addIdeaComment }
     requirements:
       uid: "[0-9a-zA-Z]*"
 
@@ -84,13 +84,13 @@ i_show_idea_comment:
 
 i_add_participant_to_idea:
     pattern:  /idea/0{uid}/team/add/{username}/participant
-    defaults: { _controller: metaIdeaBundle:Default:addParticipant }
+    defaults: { _controller: metaIdeaBundle:Idea:addParticipant }
     requirements:
         uid: "[0-9a-zA-Z]*"
 
 i_remove_participant_to_idea:
     pattern:  /idea/0{uid}/team/remove/{username}/participant
-    defaults: { _controller: metaIdeaBundle:Default:removeParticipant }
+    defaults: { _controller: metaIdeaBundle:Idea:removeParticipant }
     requirements:
         uid: "[0-9a-zA-Z]*"
 
@@ -99,13 +99,13 @@ i_remove_participant_to_idea:
 
 i_watch_idea:
     pattern:  /idea/0{uid}/watch
-    defaults: { _controller: metaIdeaBundle:Default:watch }
+    defaults: { _controller: metaIdeaBundle:Idea:watch }
     requirements:
         uid: "[0-9a-zA-Z]*"
 
 i_unwatch_idea:
     pattern:  /idea/0{uid}/unwatch
-    defaults: { _controller: metaIdeaBundle:Default:unwatch }
+    defaults: { _controller: metaIdeaBundle:Idea:unwatch }
     requirements:
         uid: "[0-9a-zA-Z]*"
 
@@ -115,7 +115,7 @@ i_unwatch_idea:
 ## TIMELINE
 i_show_idea_timeline:
     pattern:  /idea/0{uid}/timeline/{page}
-    defaults: { _controller: metaIdeaBundle:Default:showTimeline, page: 1 }
+    defaults: { _controller: metaIdeaBundle:Idea:showTimeline, page: 1 }
     requirements:
         uid: "[0-9a-zA-Z]*"
         page: \d+
@@ -123,13 +123,13 @@ i_show_idea_timeline:
 ## CONCEPT
 i_show_idea_concept:
     pattern:  /idea/0{uid}/concept
-    defaults: { _controller: metaIdeaBundle:Default:showConceptOrKnowledge, type: 'concept' }
+    defaults: { _controller: metaIdeaBundle:Idea:showConceptOrKnowledge, type: 'concept' }
     requirements:
         uid: "[0-9a-zA-Z]*"
 
 ## KNOWLEDGE
 i_show_idea_knowledge:
     pattern:  /idea/0{uid}/knowledge
-    defaults: { _controller: metaIdeaBundle:Default:showConceptOrKnowledge, type: 'knowledge' }
+    defaults: { _controller: metaIdeaBundle:Idea:showConceptOrKnowledge, type: 'knowledge' }
     requirements:
         uid: "[0-9a-zA-Z]*"

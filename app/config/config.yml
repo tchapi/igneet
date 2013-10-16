@@ -41,6 +41,10 @@ services:
         arguments:
             - [@serializer.method]
             - {json: @serializer.encoder.json }
+    controller_listener: # Global listener to execute a preExecute() function in all controllers
+        class: meta\GeneralBundle\Listener\ControllerListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onCoreController }
 
 # Twig Configuration
 twig:

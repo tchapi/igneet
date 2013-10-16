@@ -26,5 +26,5 @@
 {% endblock %}
 
 {% block navbar %}
-{% render(controller("metaIdeaBundle:Default:navbar",{ 'activeMenu' : 'concept', 'uid' : base.idea.id|to_uid })) %}
+{% render(controller("metaIdeaBundle:Idea:navbar",{ 'activeMenu' : 'concept', 'uid' : base.idea.id|to_uid })) %}
 {% endblock %}
