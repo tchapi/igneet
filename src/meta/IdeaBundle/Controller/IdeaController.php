@@ -878,12 +878,8 @@ class IdeaController extends Controller
                             'before'=> array( 'name' => $this->get('translator')->trans('date.past.week'), 'data' => array() )
                             );
 
-        // We can fetch directly here since it is a non routed action
-        $ideaRepository = $this->getDoctrine()->getRepository('metaIdeaBundle:Idea');
-        $idea = $ideaRepository->findOneById($this->container->get('uid')->fromUId($uid));
-
         $repository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\IdeaLogEntry');
-        $entries = $repository->findByIdea($idea);
+        $entries = $repository->findByIdea($this->base['idea']);
 
         $history = array();
 
@@ -903,7 +899,7 @@ class IdeaController extends Controller
         }
 
         // Comments
-        foreach ($idea->getComments() as $comment) {
+        foreach ($this->base['idea']->getComments() as $comment) {
 
           $text = $logService->getHTML($comment);
           $createdAt = date_create($comment->getCreatedAt()->format('Y-m-d H:i:s')); // not for display
