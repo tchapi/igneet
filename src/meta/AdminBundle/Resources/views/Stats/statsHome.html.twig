@@ -1,20 +1,16 @@
-{% extends '::base.html.twig' %}
+{% extends 'metaAdminBundle::layout.html.twig' %}
 
-{% block title %}Administration{% endblock %}
+{% block title %}{{ parent() }} > Stats{% endblock %}
 
-{% block body %}
-<header>
-  <h1>Administration</h1>
-</header>
-<div class="content clearfix">
+{% block content %}
 
-  {{ include('metaAdminBundle:Default:_datepicker.html.twig', {'admin_route': 'a_home'}) }}
+  {{ include('metaAdminBundle:Stats:_datepicker.html.twig', {'admin_route': 'a_stats_home'}) }}
   
   <section>
 
     <h4>Turnover / Churn</h4>
     <ul>
-      <li>New users : {{ stats.nb_created }} (Get the <a href="{{ path('a_new_users', { 'start': start_date, 'end': end_date} ) }}">full list</a>)</li>
+      <li>New users : {{ stats.nb_created }} (Get the <a href="{{ path('a_stats_users', { 'start': start_date, 'end': end_date} ) }}">full list</a>)</li>
       <li>Lost users : {{ stats.nb_deleted }}</li>
     </ul>
 
@@ -34,7 +30,7 @@
     </ul>
     
   </section>
-</div>
+
 {% endblock %}
 
 

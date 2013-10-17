@@ -24,25 +24,27 @@
           <div class="navbar navbar-fixed-top navbar-inverse">
             <div class="navbar-inner">
               <a class="brand" href="{{ path('home') }}"><i class='icon-fire'></i> igneet</a>
-              {% render(controller("metaUserBundle:Security:currentUserMenu")) %}
-              {% if shortcode is defined %}
-                <div class="pull-right">
-                  <ul class="nav pull-right">
-                    <li class="dropdown">
-                      <a id="shortcode-trigger" href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <i class="icon-link icon-large"></i> 
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-                <div id="shortcode" class="pull-right hide">
-                  <ul class="nav pull-right">
-                    <li>
-                      <input type="text" onfocus="this.select()" value="{{ shortcode }}" />
-                    </li>
-                  </ul>
-                </div>
-              {% endif %}
+              {% block menu %}
+                {% render(controller("metaUserBundle:Security:currentUserMenu")) %}
+                {% if shortcode is defined %}
+                  <div class="pull-right">
+                    <ul class="nav pull-right">
+                      <li class="dropdown">
+                        <a id="shortcode-trigger" href="#" class="dropdown-toggle" data-toggle="dropdown">
+                          <i class="icon-link icon-large"></i> 
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div id="shortcode" class="pull-right hide">
+                    <ul class="nav pull-right">
+                      <li>
+                        <input type="text" onfocus="this.select()" value="{{ shortcode }}" />
+                      </li>
+                    </ul>
+                  </div>
+                {% endif %}
+              {% endblock %}
             </div>
           </div>
         </header>

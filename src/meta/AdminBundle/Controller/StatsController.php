@@ -7,14 +7,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller,
 
 use meta\AdminBundle\Stats\Stats;
 
-class DefaultController extends Controller
+class StatsController extends Controller
 {
     public function homeAction($start,$end, Request $request)
     {
 
         // Redirects to the correct url - it's because I don't want the FOS JS Bundle in here to create routing in JS on the fly
         if ( $request->query->get('start') && $request->query->get('end') ){
-          return $this->redirect($this->generateUrl('a_home', array('start' => $request->query->get('start'), 'end' => $request->query->get('end'))) );
+          return $this->redirect($this->generateUrl('a_stats_home', array('start' => $request->query->get('start'), 'end' => $request->query->get('end'))) );
         }
 
         if (is_null($start) || is_null($end)){
@@ -26,16 +26,16 @@ class DefaultController extends Controller
 
         $stats = $this->get("stats")->getCombinedStats($start,$end);
 
-        return $this->render('metaAdminBundle:Default:home.html.twig', array("stats" => $stats[0], "start_date" => $start, "end_date" => $end));
+        return $this->render('metaAdminBundle:Stats:statsHome.html.twig', array("stats" => $stats[0], "start_date" => $start, "end_date" => $end));
    
     }
 
-    public function newUsersAction($start, $end, Request $request)
+    public function statsUsersAction($start, $end, Request $request)
     {
 
         // Redirects to the correct url - it's because I don't want the FOS JS Bundle in here to create routing in JS on the fly
         if ( $request->query->get('start') && $request->query->get('end') ){
-          return $this->redirect($this->generateUrl('a_new_users', array('start' => $request->query->get('start'), 'end' => $request->query->get('end'))) );
+          return $this->redirect($this->generateUrl('a_stats_users', array('start' => $request->query->get('start'), 'end' => $request->query->get('end'))) );
         }
 
         if (is_null($start) || is_null($end)){
@@ -47,7 +47,7 @@ class DefaultController extends Controller
 
         $users = $this->get("stats")->getNewUsers($start,$end);
 
-        return $this->render('metaAdminBundle:Default:newUsers.html.twig', array("users" => $users, "start_date" => $start, "end_date" => $end));
+        return $this->render('metaAdminBundle:Stats:statsUsers.html.twig', array("users" => $users, "start_date" => $start, "end_date" => $end));
 
     }
 }

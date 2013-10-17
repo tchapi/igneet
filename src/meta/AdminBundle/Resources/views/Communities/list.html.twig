@@ -1,0 +1,30 @@
+{% extends 'metaAdminBundle::layout.html.twig' %}
+
+{% block title %}{{ parent() }} > Communities{% endblock %}
+
+{% block content %}
+
+  <section>
+
+    <h4>Communities</h4>
+
+    {% if communities|length == 0 %}
+    No communities to show
+    {% else %}
+    <ul>
+      {% for community in communities %}
+      <li><strong>{{ community.getName() }}</strong> : <span class="muted">{{ community.headline }}</span> <span class="label label-{{ community.type }}">{{ community.type }}</span>
+        <ul>
+          <li>Created on : {{ community.createdAt|date('d-m-Y') }}</li>
+          <li>Validity : {% if community.isValid %}<span class="badge badge-success"><i class="icon icon-ok"></i> Valid until {{ community.validUntil|date("Y-m-d") }}</span> - <a href="">Extend</a>{% else %}<span class="badge badge-error"><i class="icon icon-cross"></i> Not valid</span> - <a href="">Renew</a>{% endif %}</li>
+        </ul>
+      </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    
+  </section>
+
+{% endblock %}
+
+
