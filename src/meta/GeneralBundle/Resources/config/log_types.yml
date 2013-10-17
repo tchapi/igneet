@@ -34,6 +34,13 @@ parameters:
       is_uid: true
       key: page_uid
   general.log_types:
+# Communities
+    user_create_community:
+      combinable: false
+      displayable: true
+      filter_groups: [creations, community, social]
+      type: community
+      icon: group
 # User acting for his profile or on another user
     user_created: # DONE
       combinable: false

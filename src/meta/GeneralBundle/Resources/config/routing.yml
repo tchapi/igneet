@@ -2,7 +2,7 @@
 
 g_home_community:
     pattern: /
-    defaults: { _controller: metaGeneralBundle:Home:home }
+    defaults: { _controller: metaGeneralBundle:Community:home }
 
 g_switch_community:
     pattern: /switch/community/{uid}
@@ -13,6 +13,16 @@ g_switch_community:
 g_switch_private_space:
     pattern: /switch/privatespace
     defaults: { _controller: metaGeneralBundle:Default:switchCommunity, uid: null }
+
+g_create_community:
+    pattern: /communities/new
+    defaults: { _controller: metaGeneralBundle:Community:create}
+
+g_upgrade_community:
+    pattern: /community/upgrade/{uid}
+    defaults: { _controller: metaGeneralBundle:Community:upgrade}
+    requirements:
+      uid: "[0-9a-zA-Z]*"
 
 # Language
 

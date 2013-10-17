@@ -45,6 +45,7 @@ deleteHelp: "Warning : you cannot undo this"
 continue: "Continue"
 unsaved.changes: "Unsaved changes"
 required: "Required"
+browse.all: "Browse all"
 # Header
 home: "Home"
 login: "Login"

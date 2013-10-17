@@ -32,6 +32,14 @@ class Community
     private $name;
 
     /**
+     * @var string $type
+     *
+     * @ORM\Column(name="type", type="string", length=30)
+     */
+    private $type;
+    // demo, association, entreprise
+
+    /**
      * @var string $headline
      *
      * @ORM\Column(name="headline", type="string", length=255, nullable=true)
@@ -46,6 +54,15 @@ class Community
      * @Assert\DateTime()
      */
     private $created_at;
+
+    /**
+     * @var \DateTime $valid_until
+     *
+     * @ORM\Column(name="valid_until", type="datetime")
+     * @Assert\NotBlank()
+     * @Assert\DateTime()
+     */
+    private $valid_until;
 
     /**
      * Projects in this community
@@ -75,7 +92,11 @@ class Community
         $this->projects = new ArrayCollection();
         $this->ideas = new ArrayCollection();
         $this->usersCommunities = new ArrayCollection();
-    
+
+        // BILLING
+        $this->type = "demo"; // By default, all communities are not _yet_ paid for
+        $this->valid_until = new \DateTime('now + 1 month'); // Default validity for a demo
+
     }
     
     public function getLogName()
@@ -194,6 +215,30 @@ class Community
         return $this->name;
     }
 
+  /**
+     * Set type
+     *
+     * @param string $type
+     * @return Community
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+    
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return string 
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+
     /**
      * Set headline
      *
@@ -238,6 +283,37 @@ class Community
     public function getCreatedAt()
     {
         return $this->created_at;
+    }
+
+    /**
+     * Set valid_until
+     *
+     * @param \DateTime $validUntil
+     * @return Community
+     */
+    public function setValidUntil($validUntil)
+    {
+        $this->valid_until = $validUntil;
+    
+        return $this;
+    }
+
+    /**
+     * Is valid if valid_until > now()
+     */
+    public function isValid()
+    {
+        return ($this->valid_until > new \DateTime('now') );
+    }
+
+    /**
+     * Get valid_until
+     *
+     * @return \DateTime 
+     */
+    public function getValidUntil()
+    {
+        return $this->valid_until;
     }
 
     /**

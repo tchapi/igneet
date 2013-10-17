@@ -1,6 +1,18 @@
 # Community
 private.space: "Mon espace privé"
 private.space.back: "Vous avez été automatiquement basculé dans votre espace privé."
+private.space.project:
+  title: "Projets"
+  text: "Les projets permettent d'organiser l'information sous forme de wiki, listes, documents, etc ..."
+  create: "Créer un projet !"
+private.space.idea:
+  title: "Idées"
+  text: "Les idées créées sur igneet regroupent des concepts et des connaissances sur des projets en devenir."
+  create: "Créer une nouvelle idée"
+private.space.community:
+  title: "Communautés"
+  text: "Les communautés sont des groupes d'utilisateurs qui peuvent échanger, commenter, travailler ensemble sur des projets et des idées facilement."
+  create: "Créer une nouvelle communauté"
 member.have.no.community: "Vous n'appartenez à aucune communauté pour le moment."
 guest: "Invité"
 guest.community.cannot:
@@ -10,14 +22,26 @@ member.in:
   community: "Bienvenue dans l'espace de travail de la communauté %community%."
   private.space: "Bienvenue dans votre espace de travail personnel."
 community:
+  invalid: "Oups, votre communauté %community% est arrivée à expiration. Veuillez consulter les différents tarifs proposés pour continuer à y collaborer."
+  upgrade: "Choisissez un package pour votre communauté"
   home: "Accueil"
   invite: "Inviter quelqu'un"
+  create: "Créer une communauté"
   homeHelp: "Retrouvez vos %projects% projets et %ideas% idées."
   homeHelpUsers: "{1} Une personne contribue à cette communauté.|]1,Inf] %users% personnes contribuent à cette communauté."
   not.found: "Cette communauté n'existe pas."
   choose: "Choisir une communauté"
   chooseHelp: "Veuillez indiquer une communauté pour finaliser votre action."
   switch: "Vous avez été automatiquement basculé dans la communauté %community%."
+  title: "Communautés"
+  new: "Nouvelle communauté"
+  createHelp: "Créez une nouvelle communauté pour travailler autour de projets et d'idées communes."
+  createForm:
+    name: "Nom de la communauté"
+    namePlaceholder: "Ma nouvelle communauté"
+    headline: "Slogan"
+    headlinePlaceholder: "Donnez un slogan accrocheur à votre communauté"
+  created: "La communauté %community% a été créée avec succès"
 # File uploads
 file:
   choose: "Choisir un fichier"

@@ -1,22 +1,14 @@
-{% extends 'metaIdeaBundle::layout.html.twig' %}
+{% extends 'metaGeneralBundle:Community:layout.html.twig' %}
 
-{% block title %}{{ parent() }} > {{ "idea.new"|trans }}{% endblock %}
-
-{% block javascripts %}
-  {{ parent() }}
-    {% javascripts '@metaGeneralBundle/Resources/public/js/select2.behaviour.js' 
-            filter='?yui_js' %}
-    <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
-{% endblock %}
+{% block title %}{{ parent() }} > {{ "community.new"|trans }}{% endblock %}
 
 {% block header %}
   <div class="headerAvatarAndActions">
     <div class="textAvatar"><i class="icon-beaker"></i></div>
   </div>
   <div class="objectHeader">
-    <h2>{{ "idea.new"|trans }}</h2>
-    <h4>{{ "idea.createHelp"|trans }}</h4>
+    <h2>{{ "community.new"|trans }}</h2>
+    <h4>{{ "community.createHelp"|trans }}</h4>
   </div>
 {% endblock %}
 
@@ -57,10 +49,10 @@
 
 {% block content %}
 <div class="formContent">
-  <form action="{{ path('i_new_idea') }}" method="post" {{ form_enctype(form) }} class="form-horizontal">
+  <form action="{{ path('g_create_community') }}" method="post" {{ form_enctype(form) }} class="form-horizontal">
       {{ form_widget(form) }}
       <div class="form-actions">
-        <input type="submit" value="{{ "idea.create"|trans }}" class="btn btn-success" />
+        <input type="submit" value="{{ "community.create"|trans }}" class="btn btn-success" />
       </div>
   </form>
 </div>

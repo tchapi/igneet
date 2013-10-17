@@ -3,7 +3,7 @@
 {% block title %}{{ parent() }} | {{ "project.wiki.new"|trans }}{% endblock %}
 
 {% block navbar %}
-{% render(controller("metaProjectBundle:Default:navbar", { 'activeMenu' : 'wiki', 'uid' : base.standardProject.id|to_uid })) %}
+{% render(controller("metaProjectBundle:Base:navbar", { 'activeMenu' : 'wiki', 'uid' : base.project.id|to_uid })) %}
 {% endblock %}
 
 {% form_theme form _self %}
@@ -19,7 +19,7 @@
 {% endblock form_row %}
 
 {% block content %}
-<form action="{{ path('p_show_project_wiki_new_page', {'uid': base.standardProject.id|to_uid}) }}" method="post" {{ form_enctype(form) }}>
+<form action="{{ path('p_show_project_wiki_new_page', {'uid': base.project.id|to_uid}) }}" method="post" {{ form_enctype(form) }}>
   <section>
     <h4>{{ "project.wiki.newHelp"|trans }} :</h4>
   </section>

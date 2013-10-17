@@ -1,5 +1,5 @@
 parameters:
-  standardproject.menu:
+  project.menu:
     timeline:
       icon: icon-comments-alt
       route: p_show_project_timeline

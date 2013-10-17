@@ -39,6 +39,7 @@ idea:
   archived: "L'idée %idea% a été archivée avec succès."
   recycled: "L'idée %idea% a été recyclée avec succès."
   cannot:
+    access: "Vous n'avez pas les droits suffisants pour accéder à cette idée."
     delete: "Vous n'avez pas les droits suffisants pour supprimer cette idée."
     archiveOrRecycle: "Vous n'avez pas les droits suffisants pour archiver ou recycler cette idée."
     projectize: "Vous n'avez pas les droits pour transformer cette idée en projet car vous n'en êtes pas le créateur et/ou cette idée est archivée."

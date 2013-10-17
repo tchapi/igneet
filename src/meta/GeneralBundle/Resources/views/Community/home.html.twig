@@ -1,0 +1,23 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}{{ parent() }} > {{ app.user.currentCommunity.name }} | {{ "community.home"|trans }}{% endblock %}
+
+{% block body %}
+<header class="home">
+  <div class="headerAvatarAndActions">
+    <div class="textAvatar"><i class="icon-home"></i></div>
+  </div>
+  <div class="objectHeader">
+    <h2>{{ app.user.currentCommunity.name }}</h2>
+    <h4>{{ app.user.currentCommunity.headline }}</h4>
+    <h5>{% trans with {'%projects%': totalProjects, '%ideas%': totalIdeas} %}community.homeHelp{% endtrans %}</h5>
+    <p>{% transchoice totalUsersAndGuests with {'%users%': totalUsersAndGuests} %}community.homeHelpUsers{% endtranschoice %}</p>
+  </div>
+</header>
+<div class="content home clearfix">
+
+</div>
+<footer>
+{% block footer %}{% endblock %}
+</footer>
+{% endblock %}

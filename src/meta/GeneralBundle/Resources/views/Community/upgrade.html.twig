@@ -1,0 +1,22 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}{{ parent() }} > {{ "community.upgrade"|trans }}{% endblock %}
+
+{% block body %}
+<header class="home">
+  <div class="headerAvatarAndActions">
+    <div class="textAvatar"><i class="icon-circle-arrow-up"></i></div>
+  </div>
+  <div class="objectHeader">
+    <h2>{{ "community.upgrade"|trans }}</h2>
+    <h4>...</h4>
+    <h5>...</h5>
+  </div>
+</header>
+<div class="content home clearfix">
+
+</div>
+<footer>
+{% block footer %}{% endblock %}
+</footer>
+{% endblock %}

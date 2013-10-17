@@ -1,0 +1,51 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}{{ parent() }} > {{ "private.space"|trans }} | {{ "community.home"|trans }}{% endblock %}
+
+{% block body %}
+<header class="home">
+  <div class="headerAvatarAndActions">
+    <div class="textAvatar"><i class="icon-home"></i></div>
+  </div>
+  <div class="objectHeader">
+    <h2>{{ "private.space"|trans }}</h2>
+  </div>
+</header>
+<div class="content home clearfix">
+  <section>
+    <div class="headerAvatarAndActions">
+      <div class="textAvatar"><i class="icon-list-alt"></i></div>
+    </div>
+    <div class="objectHeader">
+      <h2>{{ "private.space.project.title"|trans }}</h2>
+      <p>{{ "private.space.project.text"|trans }}</p>
+      <p><a href="{{ path('p_list_projects') }}" >{{ "browse.all"|trans }}</a></p>
+      <p><a href="{{ path('p_new_project') }}" class="btn btn-primary">{{ "private.space.project.create"|trans }}</a></p>
+    </div>
+  </section>
+  <section>
+    <div class="headerAvatarAndActions">
+      <div class="textAvatar"><i class="icon-paper-clip"></i></div>
+    </div>
+    <div class="objectHeader">
+      <h2>{{ "private.space.idea.title"|trans }}</h2>
+      <p>{{ "private.space.idea.text"|trans }}</p>
+      <p><a href="{{ path('i_list_ideas') }}" >{{ "browse.all"|trans }}</a></p>
+      <p><a href="{{ path('i_new_idea') }}" class="btn btn-primary">{{ "private.space.idea.create"|trans }}</a></p>
+    </div>
+  </section>
+  <section>
+    <div class="headerAvatarAndActions">
+      <div class="textAvatar"><i class="icon-group"></i></div>
+    </div>
+    <div class="objectHeader">
+      <h2>{{ "private.space.community.title"|trans }}</h2>
+      <p>{{ "private.space.community.text"|trans }}</p>
+      <p><a href="{{ path('g_create_community') }}" class="btn btn-success">{{ "private.space.community.create"|trans }}</a></p>
+    </div>
+  </section>
+</div>
+<footer>
+{% block footer %}{% endblock %}
+</footer>
+{% endblock %}
