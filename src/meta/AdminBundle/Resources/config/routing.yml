@@ -20,4 +20,8 @@ a_stats_users:
 # ADMINISTRATE
 a_communities:
     path:  /communities
-    defaults: { _controller: metaAdminBundle:Communities:list, start: null, end: null }
+    defaults: { _controller: metaAdminBundle:Communities:list }
+
+a_extend_community:
+    path:  /community/extend
+    defaults: { _controller: metaAdminBundle:Communities:extend }

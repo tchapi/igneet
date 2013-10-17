@@ -2,6 +2,23 @@
 
 {% block title %}{{ parent() }} > Communities{% endblock %}
 
+{% block javascripts %}
+  {{ parent() }}
+  {% javascripts '@metaGeneralBundle/Resources/public/js-edit/bootstrap-editable.js' 
+                 '@metaGeneralBundle/Resources/public/js-edit/editable.behaviour.js'
+          filter='?yui_js' %}
+  <script src="{{ asset_url }}"></script>
+  {% endjavascripts %}
+{% endblock %}
+
+{% block stylesheets %}
+  {{ parent() }}
+  {% stylesheets  'bundles/metageneral/css-edit/bootstrap-editable.css' 
+    filter='?yui_css,cssrewrite' %}
+          <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}" />
+  {% endstylesheets %}
+{% endblock %}
+
 {% block content %}
 
   <section>
@@ -15,8 +32,9 @@
       {% for community in communities %}
       <li><strong>{{ community.getName() }}</strong> : <span class="muted">{{ community.headline }}</span> <span class="label label-{{ community.type }}">{{ community.type }}</span>
         <ul>
-          <li>Created on : {{ community.createdAt|date('d-m-Y') }}</li>
-          <li>Validity : {% if community.isValid %}<span class="badge badge-success"><i class="icon icon-ok"></i> Valid until {{ community.validUntil|date("Y-m-d") }}</span> - <a href="">Extend</a>{% else %}<span class="badge badge-error"><i class="icon icon-cross"></i> Not valid</span> - <a href="">Renew</a>{% endif %}</li>
+          <li>Created on : {{ community.createdAt|date('d/m/Y') }}</li>
+          <li>Validity : {% if community.isValid %}<span class="badge badge-success"><i class="icon icon-ok"></i> Valid</span>{% else %}<span class="badge badge-error"><i class="icon icon-cross"></i> Expired</span>{% endif %}</li>
+          <li>Valid until : <a href="#" id="{{ community.id|to_uid}}" data-type="date" data-viewformat="dd/mm/yyyy" data-pk="{{ community.id|to_uid}}" data-placement="right" data-original-title="Choose the new validity date" data-url="{{ path('a_extend_community') }}" class="editable editable-click">{{ community.validUntil|date("d/m/Y") }}</a></li>
         </ul>
       </li>
       {% endfor %}
