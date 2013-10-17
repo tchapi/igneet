@@ -17,10 +17,6 @@ Todo - Priorités :
  ☐ Administration des communautés
      Créer un role d'administrateur
      Créer une page d'édition du nom, description
-     BILLING
-     switch_community OK
-     auto_switch : il faut vérifier que la communauté est ok
-     lien direct vers un projet par exemple : idem
 
    ☐ + Deep linking : verifier a l'affichage que l'utilisateur a le droit de voir l'objet deep linké !
    Sinon mettre en gras mais ne pas linker avec une icone oeil barré (?)
