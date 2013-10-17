@@ -110,7 +110,7 @@ class digestSendCommand extends ContainerAwareCommand
 
             foreach ($userCommunities as $userCommunity) {
               
-              if ($userCommunity->getGuest()) continue;
+              if ($userCommunity->isGuest()) continue;
 
               $nbNotifications = $this->getContainer()->get('logService')->countNotifications($user, $userCommunity->getCommunity());
               if ($verbose) $output->writeln('     * ' . $userCommunity->getCommunity()->getName() . " : " . $nbNotifications . " notification(s) to send to " . $userCommunity->getEmail());
