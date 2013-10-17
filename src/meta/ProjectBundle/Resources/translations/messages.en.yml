@@ -168,6 +168,4 @@ project:
     mail:
       sent: "An invitation was sent to %mail% on your behalf. She/He will be added to the project when she/he signs up."
       subject: "You've been invited to a project on igneet"
-  launch: "Help-lists"
-  launch.button: "Add help lists to this project"
-  launchHelp: "You are about to add help lists to this project - are you sure ?"
+

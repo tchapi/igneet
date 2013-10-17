@@ -227,12 +227,6 @@ p_show_project_list_comment:
       uid: "[0-9a-zA-Z]*"
       list_uid: "[0-9a-zA-Z]*"
 
-p_launch_project:
-    pattern:  /project/0{uid}/launch
-    defaults: { _controller: metaProjectBundle:List:addLaunchingLists }
-    requirements:
-      uid: "[0-9a-zA-Z]*"
-
 
 ## LIST ITEMS
 p_show_project_listitem_new:
