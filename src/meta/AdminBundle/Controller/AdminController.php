@@ -14,7 +14,7 @@ class AdminController extends Controller
     public function homeAction()
     {
 
-      return new Response('home');
+        return $this->render('metaAdminBundle:Default:home.html.twig');
 
     }
 
