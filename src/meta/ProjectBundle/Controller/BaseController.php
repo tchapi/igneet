@@ -6,6 +6,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller,
     Symfony\Component\HttpFoundation\Request,
     Symfony\Component\HttpFoundation\Response;
 
+use meta\UserBundle\Entity\UserInviteToken,
+    meta\UserBundle\Entity\UserCommunity;
+    
 class BaseController extends Controller
 {
     
