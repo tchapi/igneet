@@ -19,6 +19,7 @@ resources:
 providers:
   gdocs: "Google Documents / Google Drive"
   dropbox: "Dropbox storage"
+  evernote: "Evernote public note"
   droplr: "Droplr file storage"
   youtube: "Youtube video"
   skydrive: "Microsoft Skydrive"
