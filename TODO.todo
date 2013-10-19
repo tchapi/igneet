@@ -15,12 +15,8 @@ Todo - Priorités :
  ☐ Sur les notifs, quand on clique et qu'elles sont a 0 affichées mettre directement une page présentant les anciennes
 
  ☐ Administration des communautés
-     Créer un role d'administrateur
-     Créer une page d'édition du nom, description
-     BILLING
-     switch_community OK
-     auto_switch : il faut vérifier que la communauté est ok
-     lien direct vers un projet par exemple : idem
+     ✔ Créer un role d'administrateur => ok dans user_Community @done (13-10-19 17:34)
+     ☐ Créer une page d'édition du nom, description
 
    ☐ + Deep linking : verifier a l'affichage que l'utilisateur a le droit de voir l'objet deep linké !
    Sinon mettre en gras mais ne pas linker avec une icone oeil barré (?)
@@ -30,11 +26,15 @@ Todo - Priorités :
    \__ + demander si archiver une idée apres projectize
    \__ abandonner un projet ? faire un bouton pour ca
 
+ 
+ ☐ [Eric] Tri des resources dans la vue / resources
+
  ✔ Faire un filtre pour les projets non actifs ou lancés @done (13-09-26 19:16)
+ ✔ delete user => il faut deleter les userCommunity associés @done (13-10-23 20:07)
+
+Travail de fond :
  
  ☐ Passer les arguments en array() au lieu de liste ...
-
- ☐ [Eric] Tri des resources dans la vue / resources
 
 Todo - Post-Passe-Créa :
 
@@ -55,7 +55,6 @@ Home de community (penser au private space !!)
 Managers qui peuvent éditer la communauté et inviter
 "Request a manager to invite XXXX" => le manager a un tableau de validation
 
-Un user n'a pas le droit de créer une communauté pour l'instant
 IDEES gestion des users dans le private space : ne pas avoir d'user !
  ✔ - idées / créateurs @done (13-03-25 22:41)
  ✔ - ajouter un owner/ participant : non @done (13-03-25 23:02)

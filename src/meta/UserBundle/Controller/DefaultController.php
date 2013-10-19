@@ -36,7 +36,7 @@ class DefaultController extends Controller
 
         $repository = $this->getDoctrine()->getRepository('metaUserBundle:User');
         if ($username !== $authenticatedUser->getUsername()){
-            $user = $repository->findOneByUsernameInCommunity($username, true, $authenticatedUser->getCurrentCommunity());
+            $user = $repository->findOneByUsernameInCommunity(array('username' => $username, 'community' => $authenticatedUser->getCurrentCommunity(), 'findGuest' => true));
         } else {
             $user = $authenticatedUser;
         }
@@ -49,15 +49,39 @@ class DefaultController extends Controller
             if (!$user || $user->isDeleted()) {
                 throw $this->createNotFoundException($this->get('translator')->trans('user.not.found'));
             } else if ( $commonCommunity = $repository->findCommonCommunity($authenticatedUser, $user) ) {
-                // Yes ! Switch this authenticated user to the good community
-                $authenticatedUser->setCurrentCommunity($commonCommunity);
-                $em = $this->getDoctrine()->getManager();
-                $em->flush();
+                // Yes ! Switch this authenticated user to the good community if it is valid
 
-                $this->get('session')->getFlashBag()->add(
-                  'info',
-                  $this->get('translator')->trans('community.switch', array( '%community%' => $commonCommunity->getName()))
-                );
+                if ( !($commonCommunity->isValid()) ){
+
+                    $this->get('session')->getFlashBag()->add(
+                        'error',
+                        $this->get('translator')->trans('community.invalid', array( "%community%" => $commonCommunity->getName()) )
+                    );
+
+                    // Back in private space, ahah
+                    $authenticatedUser->setCurrentCommunity(null);
+                    $em = $this->getDoctrine()->getManager();
+                    $em->flush();
+
+                    $this->get('session')->getFlashBag()->add(
+                      'info',
+                      $this->get('translator')->trans('private.space.back')
+                    );
+
+                    return $this->redirect($this->generateUrl('g_switch_private_space', array('token' => $this->get('form.csrf_provider')->generateCsrfToken('switchCommunity'), 'redirect' => true)));
+                
+                } else {
+
+                    $authenticatedUser->setCurrentCommunity($commonCommunity);
+                    $em = $this->getDoctrine()->getManager();
+                    $em->flush();
+
+                    $this->get('session')->getFlashBag()->add(
+                      'info',
+                      $this->get('translator')->trans('community.switch', array( '%community%' => $commonCommunity->getName()))
+                    );
+                }
+
             } else {
                 throw $this->createNotFoundException($this->get('translator')->trans('user.not.found'));
             }
@@ -125,7 +149,7 @@ class DefaultController extends Controller
 
         $repository = $this->getDoctrine()->getRepository('metaUserBundle:User');
 
-        $totalUsers = $repository->countUsersInCommunity($community);
+        $totalUsers = $repository->countUsersInCommunity(array('community' => $community));
         $maxPerPage = $this->container->getParameter('listings.number_of_items_per_page');
 
         if ( ($page-1) * $maxPerPage > $totalUsers) {
@@ -697,22 +721,41 @@ class DefaultController extends Controller
             $deletable = true;
 
             // Performs checks for ownerships
+            $projects = "";
             foreach ($authenticatedUser->getProjectsOwned() as $project) {
                 if (!$project->isDeleted() && $project->countOwners() == 1){
                     // not good : we're the only owner
                     $deletable = false;
-                    break;
+                    $projects .= $project->getName(). ",";
                 }
             }
-            foreach ($authenticatedUser->getIdeasCreated() as $idea) {
-                if (!$idea->isDeleted() && $idea->countCreators() == 1){
-                    // we're the only creator : we have to delete the idea
-                    $idea->delete();
+
+            // Performs checks for community management
+            $communities = "";
+            $userRepository = $this->getDoctrine()->getRepository('metaUserBundle:User');
+            foreach ($authenticatedUser->getUserCommunities() as $userCommunity) {
+                $nbManagersInCommunity = $userRepository->countManagersInCommunity(array('community' => $userCommunity->getCommunity()));
+                if ($nbManagersInCommunity == 1){
+                    // not good : we're the only manager of the community
+                    $deletable = false;
+                    $communities .= $userCommunity->getCommunity()->getName(). ",";
                 }
             }
 
             // Projects must have at least an owner
             if ($deletable === true ) {
+
+                foreach ($authenticatedUser->getIdeasCreated() as $idea) {
+                    if (!$idea->isDeleted() && $idea->countCreators() == 1){
+                        // we're the only creator : we have to delete the idea
+                        $idea->delete();
+                    }
+                }
+
+                foreach ($authenticatedUser->getUserCommunities() as $userCommunity) {
+                    // We delete the userCommunity object
+                    $userCommunity->delete();
+                }
 
                 // Delete the user
                 $em = $this->getDoctrine()->getManager();
@@ -726,17 +769,10 @@ class DefaultController extends Controller
 
             } else {
 
-                $projects = "";
-                foreach ($authenticatedUser->getProjectsOwned() as $project) {
-                    if (!$project->isDeleted() && $project->countOwners() == 1){
-                        $projects .= $project->getName(). ",";
-                    }
-                }
-
                 // Let's notify the user with the projects he still owns alone
                 $this->get('session')->getFlashBag()->add(
                     'error',
-                    $this->get('translator')->trans('user.cannot.delete', array( '%projects%' => substr($projects, 0, -1)))
+                    $this->get('translator')->trans('user.cannot.delete', array( '%projects%' => substr($projects, 0, -1), '%communities%' => substr($communities, 0, -1)))
                 );
 
                 return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $username)));
@@ -823,8 +859,21 @@ class DefaultController extends Controller
             $repository = $this->getDoctrine()->getRepository('metaUserBundle:User');
             $users = $repository->findAllUsersInCommunityExceptMe($authenticatedUser, $authenticatedUser->getCurrentCommunity(), $target['params']['guest']);
 
-            return $this->render('metaUserBundle:Default:choose.html.twig', array('users' => $users, 'external' => $target['external'], 'targetAsBase64' => $targetAsBase64, 'token' => $request->get('token')));
+            if (count($users) > 0){
 
+                return $this->render('metaUserBundle:Default:choose.html.twig', array('users' => $users, 'external' => $target['external'], 'targetAsBase64' => $targetAsBase64, 'token' => $request->get('token')));
+
+            } else {
+
+                $this->get('session')->getFlashBag()->add(
+                    'warning',
+                    $this->get('translator')->trans('user.none.to.choose')
+                );
+
+                return $this->redirect($this->generateUrl('g_home_community'));
+
+            }
+            
         }
 
     }
@@ -843,7 +892,7 @@ class DefaultController extends Controller
         if ($username !== $authenticatedUser->getUsername()){
 
             $repository = $this->getDoctrine()->getRepository('metaUserBundle:User');
-            $user = $repository->findOneByUsernameInCommunity($username, true, $authenticatedUser->getCurrentCommunity());
+            $user = $repository->findOneByUsernameInCommunity(array('username' => $username, 'community' => $authenticatedUser->getCurrentCommunity(), 'findGuest' => true));
 
             if ($user && !$user->isDeleted()){
 
@@ -905,7 +954,7 @@ class DefaultController extends Controller
         if ($username !== $authenticatedUser->getUsername()){
 
             $repository = $this->getDoctrine()->getRepository('metaUserBundle:User');
-            $user = $repository->findOneByUsernameInCommunity($username, true, $authenticatedUser->getCurrentCommunity());
+            $user = $repository->findOneByUsernameInCommunity(array('username' => $username, 'community' => $authenticatedUser->getCurrentCommunity(), 'findGuest' => true));
 
             if ($user && !$user->isDeleted()){
 

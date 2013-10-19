@@ -26,10 +26,10 @@ class SecurityController extends Controller
 
             $this->get('session')->getFlashBag()->add(
                 'warning',
-                $this->get('translator')->trans('user.already.logged.short', array( '%user%' => $authenticatedUser->getUsername()))
+                $this->get('translator')->trans('user.already.logged.short', array('%user%' => $authenticatedUser->getUsername()))
             );
 
-            return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $authenticatedUser->getUsername())));
+            return $this->redirect($this->generateUrl('g_home_community'));
         } 
 
         $request = $this->getRequest();
@@ -59,12 +59,19 @@ class SecurityController extends Controller
         $community = $authenticatedUser->getCurrentCommunity();
 
         if (!is_null($community)){
-            $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true, 'deleted_at' => null));
+            $userCommunityManager = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'manager' => true, 'deleted_at' => null));
         } else {
-            $userCommunityGuest = null;
+
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $this->get('translator')->trans('user.invitation.privatespace')
+            );
+
+            return $this->redirect($this->generateUrl('g_home_community'));
+        
         }
         
-        if ( !is_null($community) && !$userCommunityGuest ) {
+        if ( !is_null($community) && $userCommunityManager ) {
 
             if ($request->isMethod('POST')) {
             
@@ -171,7 +178,7 @@ class SecurityController extends Controller
                     );
                 $this->get('mailer')->send($message);
 
-                return $this->redirect($this->generateUrl('u_me'));
+                return $this->redirect($this->generateUrl('g_home_community'));
 
             } else {
 
@@ -433,14 +440,14 @@ class SecurityController extends Controller
 
             if (is_null($community)){
                 // Private space, you're not a guest
-                $userCommunityGuest = null;
+                $userCommunity = null;
             } else {
-                $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true, 'deleted_at' => null));
+                $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'deleted_at' => null));
             }
             
             return $this->render(
                 'metaUserBundle:Security:_authenticated.html.twig',
-                array('user' => $authenticatedUser, 'isGuest' => ($userCommunityGuest != null) )
+                array('user' => $authenticatedUser, 'currentUserCommunity' => $userCommunity )
             );
 
         } else {

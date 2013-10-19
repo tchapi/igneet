@@ -7,6 +7,7 @@ user:
   already.taken: "Ce nom d'utilisateur est déjà utilisé."
   listHelp: "Tous les utilisateurs de la communauté %community% sont listés ici."
   none: "Pas d'utilisateurs !"
+  none.to.choose: "Vous ne pouvez pas choisir d'utilisateur pour le moment car aucun ne sont disponibles dans votre communauté pour l'action choisie. Invitez de nouveaux utilisateurs ou contactez le manager de votre communauté."
   none.inPrivateSpace: "Dans votre espace privé, il n'y a pas d'utilisateurs autres que vous."
   no.dashboard: "Il n'y a pas de tableau de bord dans votre espace privé ou dans une communauté dans laquelle vous êtes invité."
   signup.link.already.used: "Ce lien d'invitation a déjà été utilisé."
@@ -14,7 +15,7 @@ user:
     short: "Vous êtes déjà connecté en tant que %user%."
     long: "Vous êtes déjà connecté en tant que %user%. Pour créer un nouveau compte, veuillez d'abord vous déconnecter."
   cannot:
-    delete: "Vous ne pouvez pas supprimer votre compte; Vous êtes toujours propriétaire unique de projets (%projects%). Ajoutez de nouveaux propriétaires à vos projets et réessayez."
+    delete: "Vous ne pouvez pas supprimer votre compte; Vous êtes toujours propriétaire unique de projets (%projects%) et/ou de communautés (%communities%). Ajoutez de nouveaux propriétaires à vos projets et réessayez."
     delete.other: "Vous ne pouvez pas supprimer le compte d'un autre utilisateur."
     follow: "Vous ne pouvez pas vous abonner à cet utilisateur."
     followSelf: "Vous ne pouvez pas vous abonner à vous-même."
@@ -151,7 +152,8 @@ user:
     field: "Indiquez un nom d'utilisateur ou un mail valide"
     button: "Inviter cet utilisateur"
     sent: "Une invitation a été envoyée à %mail% en votre nom."
-    impossible: "Vous devez êtes membre de la communauté pour inviter un autre utilisateur."
+    impossible: "Vous devez êtes manager de la communauté pour inviter un autre utilisateur."
+    privatespace: "Vous ne pouvez pas inviter de gens dans votre espace privé"
     mail:
       subject: "Vous avez été invité à rejoindre une communauté sur igneet !"
       body:

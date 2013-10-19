@@ -24,6 +24,9 @@ member.in:
 community:
   invalid: "Oops, your community %community% is no longer valid. Please upgrade it now to re-enable it."
   upgrade: "Upgrade your community"
+  manage: "Manage your community"
+  not.manager: "You are not manager of the community %community%."
+  not.manageable: "Your private space is not a manageable community"
   home: "Home"
   invite: "Invite someone"
   create: "Create a community"
@@ -36,6 +39,17 @@ community:
   title: "Communities"
   new: "New community"
   createHelp: "Create a new community so you can work on ideas and projects in a team."
+  managers: "Managers"
+  add.manager: "Add a manager"
+  manager:
+    added: "%user% is now a manager of the community %community%."
+    already: "%user% is already a manager of the community %community%."
+    removed: "%user% is no longer a manager of the community %community%."
+    not: "%user% is not a manager of the community %community%."
+    atleast: "There must be at least one manager in the community %community%."
+  cannot:
+    add: "You cannot add guests as managers, or this user does not exist."
+    remove: "You cannot remove this manager from the community."
   createForm:
     name: "Name this community"
     namePlaceholder: "My new community"

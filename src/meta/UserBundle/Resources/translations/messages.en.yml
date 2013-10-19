@@ -7,6 +7,7 @@ user:
   already.taken: "This username is already taken."
   listHelp: "All the users in the community %community% are listed in this page."
   none: "No users !"
+  none.to.choose: "You cannot choose from any users since there are none in your community for the required actions. Invite new users first and try again, as ask a community manager."
   none.inPrivateSpace: "There are no other users in your private space."
   no.dashboard: "There is no dashboard in your private space or in a community in which you are a guest."
   signup.link.already.used: "This signup link has already been used."
@@ -14,7 +15,7 @@ user:
     short: "You are already logged in as %user%."
     long: "You are already logged in as %user%. If you wish to create another account, please logout first."
   cannot:
-    delete: "You cannot delete your account; you still own projects (%projects%). Make sure your projects have another owner and try again."
+    delete: "You cannot delete your account; you still own projects (%projects%) and/or manage communities (%communities%). Make sure your projects have another owner and try again."
     delete.other: "You cannot delete someone else's account."
     follow: "You cannot follow this user."
     followSelf: "You cannot follow yourself."
@@ -151,7 +152,8 @@ user:
     field: "Indicate a valid e-mail or username"
     button: "Invite this user"
     sent: "An invitation was sent to %mail% on your behalf."
-    impossible: "You need to be in a non-guest community space to invite someone."
+    impossible: "You need to be a manager of the community to invite someone."
+    privatespace: "You cannot invite someone into your private space"
     mail:
       subject: "You've been invited to a community on igneet !"
       body:

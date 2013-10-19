@@ -51,6 +51,13 @@ class UserCommunity
     private $guest;
 
     /**
+     * @var boolean $manager
+     *
+     * @ORM\Column(name="manager", type="boolean", nullable=true)
+     */
+    private $manager;
+
+    /**
      * @var date $created_at
      * 
      * @ORM\Column(name="created_at", type="datetime")
@@ -70,6 +77,8 @@ class UserCommunity
     public function __construct() {
         
         $this->guest = false;
+        $this->manager = false;
+        
         $this->email = null;
         $this->created_at = new \DateTime('now');
         $this->deleted_at = null;
@@ -130,6 +139,49 @@ class UserCommunity
     public function getGuest()
     {
         return $this->guest;
+    }
+
+    /**
+     * Is guest
+     *
+     * @return boolean 
+     */
+    public function isGuest()
+    {
+        return ($this->guest === true);
+    }
+
+    /**
+     * Set manager
+     *
+     * @param boolean $manager
+     * @return UserInCommunity
+     */
+    public function setManager($manager)
+    {
+        $this->manager = $manager;
+    
+        return $this;
+    }
+
+    /**
+     * Get manager
+     *
+     * @return boolean 
+     */
+    public function getManager()
+    {
+        return $this->manager;
+    }
+
+    /**
+     * Is manager
+     *
+     * @return boolean 
+     */
+    public function isManager()
+    {
+        return ($this->manager === true);
     }
 
     /**
