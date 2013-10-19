@@ -5,7 +5,7 @@ g_home_community:
     defaults: { _controller: metaGeneralBundle:Community:home }
 
 g_switch_community:
-    pattern: /switch/community/{uid}
+    pattern: /community/switch/{uid}
     defaults: { _controller: metaGeneralBundle:Default:switchCommunity }
     requirements:
       uid: "[0-9a-zA-Z]*"
@@ -21,6 +21,12 @@ g_create_community:
 g_upgrade_community:
     pattern: /community/upgrade/{uid}
     defaults: { _controller: metaGeneralBundle:Community:upgrade}
+    requirements:
+      uid: "[0-9a-zA-Z]*"
+
+g_manage_community:
+    pattern: /community/manage/{uid}
+    defaults: { _controller: metaGeneralBundle:Community:manage, uid: null}
     requirements:
       uid: "[0-9a-zA-Z]*"
 

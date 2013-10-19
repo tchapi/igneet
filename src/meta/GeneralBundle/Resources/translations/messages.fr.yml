@@ -24,6 +24,9 @@ member.in:
 community:
   invalid: "Oups, votre communauté %community% est arrivée à expiration. Veuillez consulter les différents tarifs proposés pour continuer à y collaborer."
   upgrade: "Choisissez un package pour votre communauté"
+  manage: "Managez votre communauté"
+  not.manager: "Vous devez être manager de la communauté %community% pour accéder à cette page."
+  not.manageable: "Votre espace privé n'a pas vocation à être managé."
   home: "Accueil"
   invite: "Inviter quelqu'un"
   create: "Créer une communauté"

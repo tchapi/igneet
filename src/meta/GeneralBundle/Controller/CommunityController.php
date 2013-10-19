@@ -103,4 +103,67 @@ class CommunityController extends Controller
 
     }
 
+    public function manageAction($uid)
+    {
+
+        $authenticatedUser = $this->getUser();
+
+        if (is_null($uid)){
+
+            $community = $authenticatedUser->getCurrentCommunity();
+
+        } else {
+
+            // Or a real community ?
+            $repository = $this->getDoctrine()->getRepository('metaGeneralBundle:Community\Community');
+            $community = $repository->findOneById($this->container->get('uid')->fromUId($uid));
+
+        }
+
+        if ( !is_null($community) && $community){
+
+            // Is the user manager ?
+            $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'deleted_at' => null, 'manager' => true));
+
+            if ($userCommunity){
+            
+                if($community !== $authenticatedUser->getCurrentCommunity()){
+                
+                    // We need to switch, for the sake of consistency
+                    $authenticatedUser->setCurrentCommunity($community);
+                    $em = $this->getDoctrine()->getManager();
+                    $em->flush();
+
+                    $this->get('session')->getFlashBag()->add(
+                      'info',
+                      $this->get('translator')->trans('community.switch', array( '%community%' => $community->getName()))
+                    );
+
+                }
+
+                return $this->render('metaGeneralBundle:Community:manage.html.twig');
+
+            } else {
+
+                $this->get('session')->getFlashBag()->add(
+                  'error',
+                  $this->get('translator')->trans('community.not.manager', array( '%community%' => $community->getName()))
+                );
+
+                return $this->redirect($this->generateUrl('g_home_community'));
+    
+            }    
+
+        } else {
+
+                $this->get('session')->getFlashBag()->add(
+                  'info',
+                  $this->get('translator')->trans('community.not.manageable')
+                );
+
+                return $this->redirect($this->generateUrl('g_home_community'));
+        }
+
+    }
+
 }
