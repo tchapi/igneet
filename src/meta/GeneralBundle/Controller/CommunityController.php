@@ -24,24 +24,46 @@ class CommunityController extends Controller
         // In a real community
         if ( !is_null($community) ){
 
-          // WILL DISAPPEAR WITH THE NEW HOME
-          $ideaRepository = $this->getDoctrine()->getRepository('metaIdeaBundle:Idea');
-          $totalIdeas = $ideaRepository->countIdeasInCommunityForUser($community, $authenticatedUser, false);
-          
-          $projectRepository = $this->getDoctrine()->getRepository('metaProjectBundle:StandardProject');
-          $totalProjects = $projectRepository->countProjectsInCommunityForUser($community, $authenticatedUser, null);
-          
-          $userRepository = $this->getDoctrine()->getRepository('metaUserBundle:User');
-          $totalUsersAndGuests = $userRepository->countUsersInCommunity($community);
+            // Is community valid ?
+            if(!$community->isValid()){
 
-          return $this->render('metaGeneralBundle:Community:home.html.twig', array(
-            'totalProjects' => $totalProjects,
-            'totalIdeas' => $totalIdeas,
-            'totalUsersAndGuests' => $totalUsersAndGuests));
+                $this->get('session')->getFlashBag()->add(
+                    'error',
+                    $this->get('translator')->trans('community.invalid', array( "%community%" => $community->getName()) )
+                );
+
+                // Back in private space, ahah
+                $authenticatedUser->setCurrentCommunity(null);
+                $em = $this->getDoctrine()->getManager();
+                $em->flush();
+
+                $this->get('session')->getFlashBag()->add(
+                  'info',
+                  $this->get('translator')->trans('private.space.back')
+                );
+
+                return $this->redirect($this->generateUrl('g_switch_private_space', array('token' => $this->get('form.csrf_provider')->generateCsrfToken('switchCommunity'), 'redirect' => true)));
+
+            }
+
+            // WILL DISAPPEAR WITH THE NEW HOME
+            $ideaRepository = $this->getDoctrine()->getRepository('metaIdeaBundle:Idea');
+            $totalIdeas = $ideaRepository->countIdeasInCommunityForUser($community, $authenticatedUser, false);
+
+            $projectRepository = $this->getDoctrine()->getRepository('metaProjectBundle:StandardProject');
+            $totalProjects = $projectRepository->countProjectsInCommunityForUser($community, $authenticatedUser, null);
+
+            $userRepository = $this->getDoctrine()->getRepository('metaUserBundle:User');
+            $totalUsersAndGuests = $userRepository->countUsersInCommunity($community);
+
+            return $this->render('metaGeneralBundle:Community:home.html.twig', array(
+                        'totalProjects' => $totalProjects,
+                        'totalIdeas' => $totalIdeas,
+                        'totalUsersAndGuests' => $totalUsersAndGuests));
 
         } else {
-          // Or in your private space ?
-          return $this->render('metaGeneralBundle:Community:privateSpace.html.twig');
+            // Or in your private space ?
+            return $this->render('metaGeneralBundle:Community:privateSpace.html.twig');
         }
        
 
