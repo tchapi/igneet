@@ -49,15 +49,39 @@ class DefaultController extends Controller
             if (!$user || $user->isDeleted()) {
                 throw $this->createNotFoundException($this->get('translator')->trans('user.not.found'));
             } else if ( $commonCommunity = $repository->findCommonCommunity($authenticatedUser, $user) ) {
-                // Yes ! Switch this authenticated user to the good community
-                $authenticatedUser->setCurrentCommunity($commonCommunity);
-                $em = $this->getDoctrine()->getManager();
-                $em->flush();
+                // Yes ! Switch this authenticated user to the good community if it is valid
 
-                $this->get('session')->getFlashBag()->add(
-                  'info',
-                  $this->get('translator')->trans('community.switch', array( '%community%' => $commonCommunity->getName()))
-                );
+                if ( !($commonCommunity->isValid()) ){
+
+                    $this->get('session')->getFlashBag()->add(
+                        'error',
+                        $this->get('translator')->trans('community.invalid', array( "%community%" => $commonCommunity->getName()) )
+                    );
+
+                    // Back in private space, ahah
+                    $authenticatedUser->setCurrentCommunity(null);
+                    $em = $this->getDoctrine()->getManager();
+                    $em->flush();
+
+                    $this->get('session')->getFlashBag()->add(
+                      'info',
+                      $this->get('translator')->trans('private.space.back')
+                    );
+
+                    return $this->redirect($this->generateUrl('g_switch_private_space', array('token' => $this->get('form.csrf_provider')->generateCsrfToken('switchCommunity'), 'redirect' => true)));
+                
+                } else {
+
+                    $authenticatedUser->setCurrentCommunity($commonCommunity);
+                    $em = $this->getDoctrine()->getManager();
+                    $em->flush();
+
+                    $this->get('session')->getFlashBag()->add(
+                      'info',
+                      $this->get('translator')->trans('community.switch', array( '%community%' => $commonCommunity->getName()))
+                    );
+                }
+
             } else {
                 throw $this->createNotFoundException($this->get('translator')->trans('user.not.found'));
             }

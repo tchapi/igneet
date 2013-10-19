@@ -151,7 +151,8 @@ user:
     field: "Indicate a valid e-mail or username"
     button: "Invite this user"
     sent: "An invitation was sent to %mail% on your behalf."
-    impossible: "You need to be in a non-guest community space to invite someone."
+    impossible: "You need to be a manager of the community to invite someone."
+    privatespace: "You cannot invite someone into your private space"
     mail:
       subject: "You've been invited to a community on igneet !"
       body:

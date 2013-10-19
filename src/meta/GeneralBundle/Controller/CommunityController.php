@@ -24,24 +24,46 @@ class CommunityController extends Controller
         // In a real community
         if ( !is_null($community) ){
 
-          // WILL DISAPPEAR WITH THE NEW HOME
-          $ideaRepository = $this->getDoctrine()->getRepository('metaIdeaBundle:Idea');
-          $totalIdeas = $ideaRepository->countIdeasInCommunityForUser($community, $authenticatedUser, false);
-          
-          $projectRepository = $this->getDoctrine()->getRepository('metaProjectBundle:StandardProject');
-          $totalProjects = $projectRepository->countProjectsInCommunityForUser($community, $authenticatedUser, null);
-          
-          $userRepository = $this->getDoctrine()->getRepository('metaUserBundle:User');
-          $totalUsersAndGuests = $userRepository->countUsersInCommunity($community);
+            // Is community valid ?
+            if(!$community->isValid()){
 
-          return $this->render('metaGeneralBundle:Community:home.html.twig', array(
-            'totalProjects' => $totalProjects,
-            'totalIdeas' => $totalIdeas,
-            'totalUsersAndGuests' => $totalUsersAndGuests));
+                $this->get('session')->getFlashBag()->add(
+                    'error',
+                    $this->get('translator')->trans('community.invalid', array( "%community%" => $community->getName()) )
+                );
+
+                // Back in private space, ahah
+                $authenticatedUser->setCurrentCommunity(null);
+                $em = $this->getDoctrine()->getManager();
+                $em->flush();
+
+                $this->get('session')->getFlashBag()->add(
+                  'info',
+                  $this->get('translator')->trans('private.space.back')
+                );
+
+                return $this->redirect($this->generateUrl('g_switch_private_space', array('token' => $this->get('form.csrf_provider')->generateCsrfToken('switchCommunity'), 'redirect' => true)));
+
+            }
+
+            // WILL DISAPPEAR WITH THE NEW HOME
+            $ideaRepository = $this->getDoctrine()->getRepository('metaIdeaBundle:Idea');
+            $totalIdeas = $ideaRepository->countIdeasInCommunityForUser($community, $authenticatedUser, false);
+
+            $projectRepository = $this->getDoctrine()->getRepository('metaProjectBundle:StandardProject');
+            $totalProjects = $projectRepository->countProjectsInCommunityForUser($community, $authenticatedUser, null);
+
+            $userRepository = $this->getDoctrine()->getRepository('metaUserBundle:User');
+            $totalUsersAndGuests = $userRepository->countUsersInCommunity($community);
+
+            return $this->render('metaGeneralBundle:Community:home.html.twig', array(
+                        'totalProjects' => $totalProjects,
+                        'totalIdeas' => $totalIdeas,
+                        'totalUsersAndGuests' => $totalUsersAndGuests));
 
         } else {
-          // Or in your private space ?
-          return $this->render('metaGeneralBundle:Community:privateSpace.html.twig');
+            // Or in your private space ?
+            return $this->render('metaGeneralBundle:Community:privateSpace.html.twig');
         }
        
 
@@ -100,6 +122,69 @@ class CommunityController extends Controller
     {
 
         return $this->render('metaGeneralBundle:Community:upgrade.html.twig');
+
+    }
+
+    public function manageAction($uid)
+    {
+
+        $authenticatedUser = $this->getUser();
+
+        if (is_null($uid)){
+
+            $community = $authenticatedUser->getCurrentCommunity();
+
+        } else {
+
+            // Or a real community ?
+            $repository = $this->getDoctrine()->getRepository('metaGeneralBundle:Community\Community');
+            $community = $repository->findOneById($this->container->get('uid')->fromUId($uid));
+
+        }
+
+        if ( !is_null($community) && $community){
+
+            // Is the user manager ?
+            $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'deleted_at' => null, 'manager' => true));
+
+            if ($userCommunity){
+            
+                if($community !== $authenticatedUser->getCurrentCommunity()){
+                
+                    // We need to switch, for the sake of consistency
+                    $authenticatedUser->setCurrentCommunity($community);
+                    $em = $this->getDoctrine()->getManager();
+                    $em->flush();
+
+                    $this->get('session')->getFlashBag()->add(
+                      'info',
+                      $this->get('translator')->trans('community.switch', array( '%community%' => $community->getName()))
+                    );
+
+                }
+
+                return $this->render('metaGeneralBundle:Community:manage.html.twig');
+
+            } else {
+
+                $this->get('session')->getFlashBag()->add(
+                  'error',
+                  $this->get('translator')->trans('community.not.manager', array( '%community%' => $community->getName()))
+                );
+
+                return $this->redirect($this->generateUrl('g_home_community'));
+    
+            }    
+
+        } else {
+
+                $this->get('session')->getFlashBag()->add(
+                  'info',
+                  $this->get('translator')->trans('community.not.manageable')
+                );
+
+                return $this->redirect($this->generateUrl('g_home_community'));
+        }
 
     }
 

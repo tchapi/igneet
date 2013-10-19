@@ -30,7 +30,7 @@ class StandardProjectRepository extends EntityRepository
 
         $guest = $query->getSingleResult();
 
-        if ($guest->getGuest() === false) {
+        if (!$guest->isGuest()) {
           $guestCriteria = 'sp.private = 0 OR ';
         }
 

@@ -1,0 +1,28 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}{{ parent() }} > {{ "community.manage"|trans }}{% endblock %}
+
+{% block body %}
+<header class="home">
+  <div class="headerAvatarAndActions">
+    <div class="textAvatar"><i class="icon-wrench"></i></div>
+  </div>
+  <div class="objectHeader">
+    <h2>{{ "community.manage"|trans }}</h2>
+    <h4>...</h4>
+    <h5>...</h5>
+  </div>
+</header>
+<div class="content home clearfix">
+
+<section>
+
+<a href="{{ path('invite') }}" class="btn btn-primary">{{ "community.invite"|trans }}</a>
+
+</section>
+
+</div>
+<footer>
+{% block footer %}{% endblock %}
+</footer>
+{% endblock %}
