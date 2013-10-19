@@ -56,6 +56,10 @@ parameters:
       pattern: /docs\.google\.com/
       icon: provider_gdocs
       downloadable: false
+    evernote:
+      pattern: /evernote\.com\/pub/
+      icon: provider_evernote
+      downloadable: false
     dropbox:
       pattern: /dropbox\.com/
       icon: provider_dropbox
