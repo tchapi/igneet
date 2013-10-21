@@ -125,22 +125,12 @@ class CommunityController extends Controller
 
     }
 
-    public function manageAction($uid)
+    public function manageAction()
     {
 
         $authenticatedUser = $this->getUser();
 
-        if (is_null($uid)){
-
-            $community = $authenticatedUser->getCurrentCommunity();
-
-        } else {
-
-            // Or a real community ?
-            $repository = $this->getDoctrine()->getRepository('metaGeneralBundle:Community\Community');
-            $community = $repository->findOneById($this->container->get('uid')->fromUId($uid));
-
-        }
+        $community = $authenticatedUser->getCurrentCommunity();
 
         if ( !is_null($community) && $community){
 
@@ -149,21 +139,13 @@ class CommunityController extends Controller
 
             if ($userCommunity){
             
-                if($community !== $authenticatedUser->getCurrentCommunity()){
-                
-                    // We need to switch, for the sake of consistency
-                    $authenticatedUser->setCurrentCommunity($community);
-                    $em = $this->getDoctrine()->getManager();
-                    $em->flush();
+                // Retrieve all the actual managers from the community
+                $userCommunityManagers = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('community' => $community->getId(), 'deleted_at' => null, 'manager' => true));
 
-                    $this->get('session')->getFlashBag()->add(
-                      'info',
-                      $this->get('translator')->trans('community.switch', array( '%community%' => $community->getName()))
-                    );
+                $targetManagerAsBase64 = array('slug' => 'metaGeneralBundle:Community:addManager', 'params' => array('uid' => $this->container->get('uid')->toUId($community->getId()) ));
+                $targetManagerAsBase64 = base64_encode(json_encode($targetManagerAsBase64));
 
-                }
-
-                return $this->render('metaGeneralBundle:Community:manage.html.twig');
+                return $this->render('metaGeneralBundle:Community:manage.html.twig', array('userCommunityManagers' => $userCommunityManagers, 'targetManagerAsBase64' => $targetManagerAsBase64));
 
             } else {
 

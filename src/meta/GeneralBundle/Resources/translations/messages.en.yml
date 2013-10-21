@@ -39,6 +39,8 @@ community:
   title: "Communities"
   new: "New community"
   createHelp: "Create a new community so you can work on ideas and projects in a team."
+  managers: "Managers"
+  add.manager: "Add a manager"
   createForm:
     name: "Name this community"
     namePlaceholder: "My new community"

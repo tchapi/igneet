@@ -39,6 +39,8 @@ community:
   title: "Communautés"
   new: "Nouvelle communauté"
   createHelp: "Créez une nouvelle communauté pour travailler autour de projets et d'idées communes."
+  managers: "Managers"
+  add.manager: "Ajouter un manager"
   createForm:
     name: "Nom de la communauté"
     namePlaceholder: "Ma nouvelle communauté"

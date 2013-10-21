@@ -5,7 +5,7 @@ g_home_community:
     defaults: { _controller: metaGeneralBundle:Community:home }
 
 g_switch_community:
-    pattern: /community/switch/{uid}
+    pattern: /community/switch/0{uid}
     defaults: { _controller: metaGeneralBundle:Default:switchCommunity }
     requirements:
       uid: "[0-9a-zA-Z]*"
@@ -16,17 +16,27 @@ g_switch_private_space:
 
 g_create_community:
     pattern: /communities/new
-    defaults: { _controller: metaGeneralBundle:Community:create}
+    defaults: { _controller: metaGeneralBundle:Community:create }
 
 g_upgrade_community:
-    pattern: /community/upgrade/{uid}
-    defaults: { _controller: metaGeneralBundle:Community:upgrade}
+    pattern: /community/upgrade/0{uid}
+    defaults: { _controller: metaGeneralBundle:Community:upgrade }
     requirements:
       uid: "[0-9a-zA-Z]*"
 
 g_manage_community:
-    pattern: /community/manage/{uid}
-    defaults: { _controller: metaGeneralBundle:Community:manage, uid: null}
+    pattern: /community/manage
+    defaults: { _controller: metaGeneralBundle:Community:manage }
+
+g_add_manager_community:
+    pattern:  /community/0{uid}/team/add/{username}/manager
+    defaults: { _controller: metaGeneralBundle:Community:addManager }
+    requirements:
+      uid: "[0-9a-zA-Z]*"
+
+g_remove_manager_community:
+    pattern:  /community/0{uid}/team/remove/{username}/manager
+    defaults: { _controller: metaGeneralBundle:Community:removeManager }
     requirements:
       uid: "[0-9a-zA-Z]*"
 
