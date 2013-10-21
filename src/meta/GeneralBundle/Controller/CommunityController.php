@@ -87,6 +87,7 @@ class CommunityController extends Controller
                 $userCommunity->setUser($authenticatedUser);
                 $userCommunity->setCommunity($community);
                 $userCommunity->setGuest(false);
+                $userCommunity->setManager(true); // The one who creates is a manager by default
 
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($community);
