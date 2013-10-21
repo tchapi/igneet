@@ -7,6 +7,7 @@ user:
   already.taken: "This username is already taken."
   listHelp: "All the users in the community %community% are listed in this page."
   none: "No users !"
+  none.to.choose: "You cannot choose from any users since there are none in your community for the required actions. Invite new users first and try again, as ask a community manager."
   none.inPrivateSpace: "There are no other users in your private space."
   no.dashboard: "There is no dashboard in your private space or in a community in which you are a guest."
   signup.link.already.used: "This signup link has already been used."

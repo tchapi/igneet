@@ -15,10 +15,10 @@ class UserRepository extends EntityRepository
    * Count all users in a given community
    * Includes GUESTS as well
    */
-  public function countUsersInCommunity($community)
+  public function countUsersInCommunity($options)
   {
     
-    if ($community === null){
+    if ($options['community'] === null){
       return 0;
     }
 
@@ -30,7 +30,32 @@ class UserRepository extends EntityRepository
             ->leftJoin('uc.community', 'c')
             ->where('u.deleted_at IS NULL')
             ->andWhere('c = :community')
-            ->setParameter('community', $community)
+            ->setParameter('community', $options['community'])
+            ->getQuery()
+            ->getSingleScalarResult();
+
+  }
+
+  /*
+   * Count all managers in a given community
+   */
+  public function countManagersInCommunity($options)
+  {
+    
+    if ($options['community'] === null){
+      return 0;
+    }
+
+    $qb = $this->getEntityManager()->createQueryBuilder();
+
+    return $qb->select('COUNT(u)')
+            ->from('metaUserBundle:User', 'u')
+            ->leftJoin('u.userCommunities', 'uc')
+            ->leftJoin('uc.community', 'c')
+            ->where('u.deleted_at IS NULL')
+            ->andWhere('uc.manager = 1')
+            ->andWhere('c = :community')
+            ->setParameter('community', $options['community'])
             ->getQuery()
             ->getSingleScalarResult();
 
@@ -173,10 +198,10 @@ class UserRepository extends EntityRepository
   /*
    * Find a user by its username in a given community
    */
-  public function findOneByUsernameInCommunity($username, $findGuest, $community)
+  public function findOneByUsernameInCommunity($options) //$username, $findGuest, $community)
   {
 
-    if ($community === null){
+    if ($options['community'] === null){
       return null;
     }
 
@@ -188,15 +213,15 @@ class UserRepository extends EntityRepository
             ->leftJoin('uc.community', 'c')
             ->where('u.deleted_at IS NULL')
             ->andWhere('c = :community')
-            ->setParameter('community', $community);
+            ->setParameter('community', $options['community']);
             
-    if ($findGuest !== true){
+    if ($options['findGuest'] !== true){
       $query->andWhere('uc.guest = :guest')
             ->setParameter('guest', false);
     }
 
     $query->andWhere('u.username = :username')
-          ->setParameter('username', $username);
+          ->setParameter('username', $options['username']);
 
     try {
         $result = $query->getQuery()->getSingleResult();

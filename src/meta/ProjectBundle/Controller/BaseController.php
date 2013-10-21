@@ -221,7 +221,6 @@ class BaseController extends Controller
       if ($user && !$user->isDeleted()) {
 
           // If the user is already in the community, might be a guest
-
           $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $user->getId(), 'community' => $community->getId(), 'deleted_at' => null));
 
           if ($userCommunity){

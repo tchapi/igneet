@@ -41,6 +41,15 @@ community:
   createHelp: "Créez une nouvelle communauté pour travailler autour de projets et d'idées communes."
   managers: "Managers"
   add.manager: "Ajouter un manager"
+  manager:
+    added: "%user% est maintenant manager de la communauté %community%."
+    already: "%user% est déjà manager de la communauté %community%."
+    removed: "%user% n'est plus un manager de la communauté %community%."
+    not: "%user% n'est pas un manager de la communauté %community%."
+    atleast: "Il doit y avoir au moins un manager dans la communauté %community%."
+  cannot:
+    add: "Cet utilisateur n'existe pas ou ne peux pas être ajouté aux managers de la communauté en tant qu'invité."
+    remove: "Cet utilisateur ne peut pas être retiré des managers de la communauté."
   createForm:
     name: "Nom de la communauté"
     namePlaceholder: "Ma nouvelle communauté"

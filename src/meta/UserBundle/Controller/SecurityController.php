@@ -178,7 +178,7 @@ class SecurityController extends Controller
                     );
                 $this->get('mailer')->send($message);
 
-                return $this->redirect($this->generateUrl('u_me'));
+                return $this->redirect($this->generateUrl('g_home_community'));
 
             } else {
 

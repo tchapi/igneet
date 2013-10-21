@@ -36,7 +36,7 @@ class DefaultController extends Controller
 
         $repository = $this->getDoctrine()->getRepository('metaUserBundle:User');
         if ($username !== $authenticatedUser->getUsername()){
-            $user = $repository->findOneByUsernameInCommunity($username, true, $authenticatedUser->getCurrentCommunity());
+            $user = $repository->findOneByUsernameInCommunity(array('username' => $username, 'community' => $authenticatedUser->getCurrentCommunity(), 'findGuest' => true));
         } else {
             $user = $authenticatedUser;
         }
@@ -149,7 +149,7 @@ class DefaultController extends Controller
 
         $repository = $this->getDoctrine()->getRepository('metaUserBundle:User');
 
-        $totalUsers = $repository->countUsersInCommunity($community);
+        $totalUsers = $repository->countUsersInCommunity(array('community' => $community));
         $maxPerPage = $this->container->getParameter('listings.number_of_items_per_page');
 
         if ( ($page-1) * $maxPerPage > $totalUsers) {
@@ -847,8 +847,21 @@ class DefaultController extends Controller
             $repository = $this->getDoctrine()->getRepository('metaUserBundle:User');
             $users = $repository->findAllUsersInCommunityExceptMe($authenticatedUser, $authenticatedUser->getCurrentCommunity(), $target['params']['guest']);
 
-            return $this->render('metaUserBundle:Default:choose.html.twig', array('users' => $users, 'external' => $target['external'], 'targetAsBase64' => $targetAsBase64, 'token' => $request->get('token')));
+            if (count($users) > 0){
 
+                return $this->render('metaUserBundle:Default:choose.html.twig', array('users' => $users, 'external' => $target['external'], 'targetAsBase64' => $targetAsBase64, 'token' => $request->get('token')));
+
+            } else {
+
+                $this->get('session')->getFlashBag()->add(
+                    'warning',
+                    $this->get('translator')->trans('user.none.to.choose')
+                );
+
+                return $this->redirect($this->generateUrl('g_home_community'));
+
+            }
+            
         }
 
     }
@@ -867,7 +880,7 @@ class DefaultController extends Controller
         if ($username !== $authenticatedUser->getUsername()){
 
             $repository = $this->getDoctrine()->getRepository('metaUserBundle:User');
-            $user = $repository->findOneByUsernameInCommunity($username, true, $authenticatedUser->getCurrentCommunity());
+            $user = $repository->findOneByUsernameInCommunity(array('username' => $username, 'community' => $authenticatedUser->getCurrentCommunity(), 'findGuest' => true));
 
             if ($user && !$user->isDeleted()){
 
@@ -929,7 +942,7 @@ class DefaultController extends Controller
         if ($username !== $authenticatedUser->getUsername()){
 
             $repository = $this->getDoctrine()->getRepository('metaUserBundle:User');
-            $user = $repository->findOneByUsernameInCommunity($username, true, $authenticatedUser->getCurrentCommunity());
+            $user = $repository->findOneByUsernameInCommunity(array('username' => $username, 'community' => $authenticatedUser->getCurrentCommunity(), 'findGuest' => true));
 
             if ($user && !$user->isDeleted()){
 

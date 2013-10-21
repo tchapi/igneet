@@ -23,8 +23,8 @@ class InfoController extends BaseController
         if ($this->access == false) 
           return $this->forward('metaProjectBundle:Default:showRestricted', array('uid' => $uid));
 
-        $targetOwnerAsBase64 = array('slug' => 'metaProjectBundle:Info:addParticipantOrOwner', 'external' => true, 'params' => array('uid' => $uid,'owner' => true));
-        $targetParticipantAsBase64 = array('slug' => 'metaProjectBundle:Info:addParticipantOrOwner', 'external' => true, 'params' => array('uid' => $uid,'owner' => false));
+        $targetOwnerAsBase64 = array('slug' => 'metaProjectBundle:Info:addParticipantOrOwner', 'external' => true, 'params' => array('uid' => $uid,'owner' => true, 'guest' => true));
+        $targetParticipantAsBase64 = array('slug' => 'metaProjectBundle:Info:addParticipantOrOwner', 'external' => true, 'params' => array('uid' => $uid,'owner' => false, 'guest' => true));
 
         return $this->render('metaProjectBundle:Info:showInfo.html.twig', 
             array('base' => $this->base, 
