@@ -198,7 +198,7 @@ class UserRepository extends EntityRepository
   /*
    * Find a user by its username in a given community
    */
-  public function findOneByUsernameInCommunity($options) //$username, $findGuest, $community)
+  public function findOneByUsernameInCommunity($options)
   {
 
     if ($options['community'] === null){
