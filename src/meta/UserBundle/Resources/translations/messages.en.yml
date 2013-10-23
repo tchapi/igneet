@@ -15,7 +15,7 @@ user:
     short: "You are already logged in as %user%."
     long: "You are already logged in as %user%. If you wish to create another account, please logout first."
   cannot:
-    delete: "You cannot delete your account; you still own projects (%projects%). Make sure your projects have another owner and try again."
+    delete: "You cannot delete your account; you still own projects (%projects%) and/or manage communities (%communities%). Make sure your projects have another owner and try again."
     delete.other: "You cannot delete someone else's account."
     follow: "You cannot follow this user."
     followSelf: "You cannot follow yourself."

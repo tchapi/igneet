@@ -16,7 +16,7 @@ Todo - Priorités :
 
  ☐ Administration des communautés
      ✔ Créer un role d'administrateur => ok dans user_Community @done (13-10-19 17:34)
-     Créer une page d'édition du nom, description
+     ☐ Créer une page d'édition du nom, description
 
    ☐ + Deep linking : verifier a l'affichage que l'utilisateur a le droit de voir l'objet deep linké !
    Sinon mettre en gras mais ne pas linker avec une icone oeil barré (?)
@@ -26,11 +26,11 @@ Todo - Priorités :
    \__ + demander si archiver une idée apres projectize
    \__ abandonner un projet ? faire un bouton pour ca
 
- ✔ Faire un filtre pour les projets non actifs ou lancés @done (13-09-26 19:16)
  
  ☐ [Eric] Tri des resources dans la vue / resources
 
- ☐ delete user => il faut deleter les userCommunity associés
+ ✔ Faire un filtre pour les projets non actifs ou lancés @done (13-09-26 19:16)
+ ✔ delete user => il faut deleter les userCommunity associés @done (13-10-23 20:07)
 
 Travail de fond :
  

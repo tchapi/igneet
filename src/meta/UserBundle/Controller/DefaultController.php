@@ -721,22 +721,41 @@ class DefaultController extends Controller
             $deletable = true;
 
             // Performs checks for ownerships
+            $projects = "";
             foreach ($authenticatedUser->getProjectsOwned() as $project) {
                 if (!$project->isDeleted() && $project->countOwners() == 1){
                     // not good : we're the only owner
                     $deletable = false;
-                    break;
+                    $projects .= $project->getName(). ",";
                 }
             }
-            foreach ($authenticatedUser->getIdeasCreated() as $idea) {
-                if (!$idea->isDeleted() && $idea->countCreators() == 1){
-                    // we're the only creator : we have to delete the idea
-                    $idea->delete();
+
+            // Performs checks for community management
+            $communities = "";
+            $userRepository = $this->getDoctrine()->getRepository('metaUserBundle:User');
+            foreach ($authenticatedUser->getUserCommunities() as $userCommunity) {
+                $nbManagersInCommunity = $userRepository->countManagersInCommunity(array('community' => $userCommunity->getCommunity()));
+                if ($nbManagersInCommunity == 1){
+                    // not good : we're the only manager of the community
+                    $deletable = false;
+                    $communities .= $userCommunity->getCommunity()->getName(). ",";
                 }
             }
 
             // Projects must have at least an owner
             if ($deletable === true ) {
+
+                foreach ($authenticatedUser->getIdeasCreated() as $idea) {
+                    if (!$idea->isDeleted() && $idea->countCreators() == 1){
+                        // we're the only creator : we have to delete the idea
+                        $idea->delete();
+                    }
+                }
+
+                foreach ($authenticatedUser->getUserCommunities() as $userCommunity) {
+                    // We delete the userCommunity object
+                    $userCommunity->delete();
+                }
 
                 // Delete the user
                 $em = $this->getDoctrine()->getManager();
@@ -750,17 +769,10 @@ class DefaultController extends Controller
 
             } else {
 
-                $projects = "";
-                foreach ($authenticatedUser->getProjectsOwned() as $project) {
-                    if (!$project->isDeleted() && $project->countOwners() == 1){
-                        $projects .= $project->getName(). ",";
-                    }
-                }
-
                 // Let's notify the user with the projects he still owns alone
                 $this->get('session')->getFlashBag()->add(
                     'error',
-                    $this->get('translator')->trans('user.cannot.delete', array( '%projects%' => substr($projects, 0, -1)))
+                    $this->get('translator')->trans('user.cannot.delete', array( '%projects%' => substr($projects, 0, -1), '%communities%' => substr($communities, 0, -1)))
                 );
 
                 return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $username)));
