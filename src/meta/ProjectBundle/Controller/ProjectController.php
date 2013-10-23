@@ -4,6 +4,7 @@ namespace meta\ProjectBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller,
     Symfony\Component\HttpFoundation\Request,
+    Symfony\Component\HttpFoundation\File\File,
     Symfony\Component\HttpFoundation\Response;
 
 class ProjectController extends BaseController
