@@ -1,6 +1,6 @@
 {% if last_page > 1 %}
-<div class="pagination pagination-centered">
-  <ul>
+<div class="pagination-centered">
+  <ul class="pagination">
     {% if current_page == 1 %}<li class="disabled"><span>&laquo;</span></li>
     {% else %}<li><a href="{{ path(route, params|merge({ 'page': previous_page })) }}">&laquo;</a></li>{% endif %}
     {% for page in 1..last_page %}

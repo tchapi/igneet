@@ -194,6 +194,10 @@ div.smallObjectInfos span{
   margin: auto;
 }
 
+.pagination-centered {
+  text-align: center;
+}
+
 /*******************/
 /* Nestable tweaks */
 /*******************/
