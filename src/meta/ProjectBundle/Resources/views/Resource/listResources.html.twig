@@ -43,7 +43,7 @@
             {{ "tags.none"|trans }}
           {% endif %}
           <ul class="tags" >
-          {% for tag in resource.tags %}<li class="label" rel="{{ tag.name }}">{{ tag.name }}</li>{% endfor %}
+          {% for tag in resource.tags %}<li class="label label-default" rel="{{ tag.name }}">{{ tag.name }}</li>{% endfor %}
           </ul>
         </span>
       </li>

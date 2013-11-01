@@ -72,6 +72,13 @@ div.cart > footer{
   padding: 20px;
 }
 
+div.card .navbar{
+  margin-bottom: 0;
+  border-radius: 0;
+  border: 0;
+  border-bottom: 1px solid hsl(0, 0%, 80%);
+}
+
 .ellipsis{
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -133,7 +140,7 @@ div.content section.colored.warning{ background: lightPink;}
 div.content section.colored.info{ background: lightBlue;}
 /* Column-type sections */
 div.content div.menu{
-  width: 180px;
+  width: 220px;
   float: right;
   background-color: #eee;
   padding: 28px 20px 10px 20px;
@@ -143,7 +150,7 @@ div.content section.centered{
   padding: 50px;
 }
 div.content div.column{
-  width: 738px;
+  width: 958px;
   border-left: 220px solid #eee; /* The width and color of the rail */
   margin-left: -220px;
   float: right;
@@ -427,6 +434,7 @@ div.listingItemRelatedObjects ul{
   overflow: hidden;
   width: 220px;
   margin-left: 0px;
+  padding: 0px;
   height: 32px;
   direction: rtl;
 }
@@ -610,7 +618,7 @@ ul.timeline li.logWrapper .fullDate{
   display: none;
 }
 ul.timeline li.logWrapper.full .fullDate{
-  display: inline-block;
+  display: inline;
 }
 ul.timeline div.log{
   border-top: 1px solid #DDD;

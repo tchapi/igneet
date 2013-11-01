@@ -60,7 +60,7 @@
   {% if base.canEdit %}
       <li>
         <a href="{{ path('u_choose_user', {'targetAsBase64': targetParticipantAsBase64, 'token': csrf_token('addParticipant')  }) }}">
-          <div class="smallTextAvatar"><i class="icon-plus-sign"></i></div>
+          <div class="smallTextAvatar"><i class="fa fa-plus-circle"></i></div>
           <div class="smallObjectInfos ellipsis-multiline">
             <span>{{ "idea.info.add.participant"|trans }}</span>
           </div>

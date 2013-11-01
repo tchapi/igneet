@@ -27,13 +27,13 @@ $(document).ready(function(){
                       $(this).empty();
                       var len = selected.length;
                       for(var i=0; i<len; i++){
-                        $(this).append('<li class="label" rel="' + selected[i].value + '">' + selected[i].text + '</li>');
+                        $(this).append('<li class="label label-default" rel="' + selected[i].value + '">' + selected[i].text + '</li>');
                       }
                     } else {
                       if (value){
                         var len = value.length;
                         for(var i=0; i<len; i++){
-                          $(this).append('<li class="label">' + value[i] + '</li>');
+                          $(this).append('<li class="label label-default">' + value[i] + '</li>');
                         }
                       }
                     }

@@ -55,7 +55,7 @@
   {% if base.isOwning and base.project.community is not null %}
       <li>
         <a href="{{ path('u_choose_user', {'targetAsBase64': targetOwnerAsBase64, 'token': csrf_token('addParticipantOrOwner') }) }}">
-          <div class="smallTextAvatar"><i class="icon-plus-sign"></i></div>
+          <div class="smallTextAvatar"><i class="fa fa-plus-circle"></i></div>
           <div class="smallObjectInfos ellipsis-multiline">
             <span>{{ "project.info.add.owner"|trans }}</span>
           </div>
@@ -85,7 +85,7 @@
   {% if base.isOwning and base.project.community is not null %}
       <li>
         <a href="{{ path('u_choose_user', {'targetAsBase64': targetParticipantAsBase64, 'token': csrf_token('addParticipantOrOwner') }) }}">
-          <div class="smallTextAvatar"><i class="icon-plus-sign"></i></div>
+          <div class="smallTextAvatar"><i class="fa fa-plus-circle"></i></div>
           <div class="smallObjectInfos ellipsis-multiline">
             <span>{{ "project.info.add.participant"|trans }}</span>
           </div>

@@ -39,7 +39,7 @@
       {{ "tags.none"|trans }}
     {% endif %}
     <ul data-toggle="manual" data-title="{{ "tags.help"|trans }}" data-emptytext="{{ "tags.emptyText"|trans }}" data-url="{{ path('p_show_project_list_edit', {'uid': base.project.id|to_uid, 'list_uid': commonList.id|to_uid, 'token': csrf_token('editCommonList') }) }}" data-type="select2" data-name="tags" class="tags tags-target editable-li" >
-    {% for tag in commonList.tags %}<li class="label" rel="{{ tag.name }}" style="background-color: #{{ tag.color }}">{{ tag.name }}</li>{% endfor %}
+    {% for tag in commonList.tags %}<li class="label label-default" rel="{{ tag.name }}" style="background-color: #{{ tag.color }}">{{ tag.name }}</li>{% endfor %}
     </ul>
     {% if base.canEdit %} <a class="editable-trigger" data-target="tags">&hellip;<i class="icon-pencil"></i></a>{% endif %}
   </div>
@@ -87,7 +87,7 @@
   </ul>
   {% if base.canEdit %}
   <div class="menu_new">
-    <a href="{{ path('p_show_project_list_new', {'uid': base.project.id|to_uid }) }}"><i class="icon-plus-sign"></i> {{ "project.lists.new"|trans }}</a>
+    <a href="{{ path('p_show_project_list_new', {'uid': base.project.id|to_uid }) }}"><i class="fa fa-plus-circle"></i> {{ "project.lists.new"|trans }}</a>
   </div>
   {% endif %}
 </div>

@@ -47,7 +47,7 @@
         {{ "tags.none"|trans }}
       {% endif %}
       <ul data-toggle="manual" data-title="{{ "tags.help"|trans }}" data-emptytext="{{ "tags.emptyText"|trans }}" data-url="{{ path('p_show_project_resource_edit', {'uid': base.project.id|to_uid, 'resource_uid' : resource.id|to_uid, 'token': csrf_token('edit') }) }}" data-type="select2" data-name="tags" class="tags tags{{ resource.id|to_uid }}-target editable-li" >
-      {% for tag in resource.tags %}<li class="label" rel="{{ tag.name }}">{{ tag.name }}</li>{% endfor %}
+      {% for tag in resource.tags %}<li class="label label-default" rel="{{ tag.name }}">{{ tag.name }}</li>{% endfor %}
       </ul>
       {% if base.canEdit %} <a class="editable-trigger" data-target="tags{{ resource.id|to_uid }}">&hellip;<i class="icon-pencil"></i></a>{% endif %}
     </div>
