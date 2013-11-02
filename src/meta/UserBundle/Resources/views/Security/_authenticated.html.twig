@@ -1,7 +1,7 @@
 <ul class="nav navbar-nav">
   <li><a href="{{ path('g_home_community') }}">{{ "home"|trans }} ({% if user.currentCommunity is null %}{{ "private.space"|trans }}{% else %}{{ user.currentCommunity.name }}{% if currentUserCommunity and currentUserCommunity.guest %} <i class="fa fa-fw fa-lock"></i>{% endif %}{% endif %})</a></li>
   <li><a href="{{ path('p_list_projects') }}">{{ "project.allProjects"|trans }}</a></li>
-  {% if currentUserCommunity and not currentUserCommunity.guest %}
+  {% if (currentUserCommunity and not currentUserCommunity.guest) or currentUserCommunity is null %}
   <li><a href="{{ path('i_list_ideas') }}">{{ "idea.allIdeas"|trans }}</a></li>
   {% endif %}
   {% if user.currentCommunity is not null %}

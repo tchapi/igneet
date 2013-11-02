@@ -2,7 +2,9 @@
 
 {% block title %}{{ parent() }}{% if commonList %} | {{ "project.lists.title"|trans }} : {{ commonList.name }}{% endif %}{% endblock %}
 
-{% set shortcode %}[[list:{{ commonList.id|to_uid }}]]{% endset %}
+{% if commonList %}
+  {% set shortcode %}[[list:{{ commonList.id|to_uid }}]]{% endset %}
+{% endif %}
 
 {% block navbar %}
 {% render(controller("metaProjectBundle:Base:navbar", { 'activeMenu' : 'lists', 'uid' : base.project.id|to_uid })) %}
