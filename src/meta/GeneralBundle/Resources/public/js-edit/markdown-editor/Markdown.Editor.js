@@ -1038,7 +1038,14 @@
             // The main dialog box.
             dialog = doc.createElement("div");
             dialog.className = "modal hide fade";
-            dialog.style.display = "none";
+
+            modal_dialog = doc.createElement("div");
+            modal_dialog.className = "modal-dialog";
+            dialog.appendChild(modal_dialog);
+
+            content_dialog = doc.createElement("div");
+            content_dialog.className = "modal-content";
+            modal_dialog.appendChild(content_dialog);
 
             // The header.
             var header = doc.createElement("div");
@@ -1049,12 +1056,12 @@
             // The body.
             var body = doc.createElement("div");
             body.className = "modal-body";
-            dialog.appendChild(body);
+            content_dialog.appendChild(body);
 
             // The footer.
             var footer = doc.createElement("div");
             footer.className = "modal-footer";
-            dialog.appendChild(footer);
+            content_dialog.appendChild(footer);
 
             // The dialog text.
             var question = doc.createElement("p");
@@ -1089,7 +1096,7 @@
 
             // The cancel button
             var cancelButton = doc.createElement("button");
-            cancelButton.className = "btn btn-primary";
+            cancelButton.className = "btn btn-default";
             cancelButton.type = "button";
             cancelButton.onclick = function () { return close(true); };
             cancelButton.innerHTML = Translator.get('cancel');
@@ -1398,9 +1405,9 @@
                 group5.className = group5.className + " pull-right";
                 var helpButton = document.createElement("button");
                 var helpButtonImage = document.createElement("i");
-                helpButtonImage.className = "icon-question-sign";
+                helpButtonImage.className = "fa fa-question-circle";
                 helpButton.appendChild(helpButtonImage);
-                helpButton.className = "btn";
+                helpButton.className = "btn btn-default";
                 helpButton.id = "wmd-help-button" + postfix;
                 helpButton.isHelp = true;
                 helpButton.title = helpOptions.title || defaultHelpHoverTitle;
