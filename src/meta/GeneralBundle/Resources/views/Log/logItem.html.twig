@@ -1,5 +1,5 @@
 {% if locale is not defined %}{% set locale = app.user.getPreferredLanguage() %}{% endif %}
-<span class="icon-{{ icon }} icon-large"></span> — 
+<span class="fa fa-{{ icon }} fa-lg"></span> — 
 <span class="label label-default fullDate">{{ date|date("date.format"|trans({}, 'messages', locale)) }}</span> <span class="label label-info">{{ date|date("time.format"|trans({}, 'messages', locale)) }}</span>
 <span class="avatar">
   {% if not user.isDeleted %}
