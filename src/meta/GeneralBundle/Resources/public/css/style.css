@@ -289,7 +289,7 @@ div.smallObjectInfos span{
 .icon-hr-line
 {
   background: url(../../../bundles/metageneral/img/Markdown.Editor.Icons.png) no-repeat scroll;
-  height: 20px;
+  height: 19px;
   width: 14px;
   display: block !important;
 }
@@ -323,6 +323,10 @@ textarea.wmd-input{
   border-bottom: 1px solid #DDD;
   padding: 5px 0;
   margin-bottom: 10px;
+}
+
+#wmd-button-bar{
+  margin-bottom: 6px;
 }
 
 .editable-trigger,

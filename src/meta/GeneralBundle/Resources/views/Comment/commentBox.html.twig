@@ -3,11 +3,11 @@
     {% set count = object.comments|length %}
     {% transchoice count with {'%count%': count} %}comments.count{% endtranschoice %}
   </span>
-  <a class="commentsBoxToggle"><i class="icon-resize-small"></i> {% trans %}toggle{% endtrans %}</a>
+  <a class="commentsBoxToggle"><i class="fa fa-resize-small"></i> {% trans %}toggle{% endtrans %}</a>
   <div class="commentsContent">
     <div class="commentsInfo">
       {% transchoice count with {'%count%': count} %}comments.count{% endtranschoice %}
-      <i class='icon-comments pull-right'></i>
+      <i class='fa fa-comments pull-right'></i>
     </div>
     <div class="commentsForm">
       <div class="avatar">
@@ -47,11 +47,11 @@
             {% if not comment.isDeleted %}
             <div class="actions">
               <div class="validations tooltip-trigger{% if app.user in comment.validators %} validated{% endif %}" data-toggle="tooltip" title="{% for user in comment.validators %}{{ user.getFullName() }}<br />{% endfor %}" data-placement="bottom">
-                <strong><a title="{{ "comment.vote"|trans }}" class="validate-trigger" data-url="{{ path('g_validate_comment', {'id': comment.id, 'token': csrf_token('validateComment')} ) }}"><i class="icon-thumbs-up"></i></a> <span>{{ comment.validators|length }}</span></strong>
+                <strong><a title="{{ "comment.vote"|trans }}" class="validate-trigger" data-url="{{ path('g_validate_comment', {'id': comment.id, 'token': csrf_token('validateComment')} ) }}"><i class="fa fa-thumbs-up"></i></a> <span>{{ comment.validators|length }}</span></strong>
               </div>
               {% if comment.user == app.user %}
               <div class="delete">
-                <a class="delete-trigger" data-url="{{ path('g_delete_comment', {'id': comment.id, 'token': csrf_token('deleteComment')} ) }}" title="{{ "comment.delete"|trans }}"><i class="icon-trash"></i></a>
+                <a class="delete-trigger" data-url="{{ path('g_delete_comment', {'id': comment.id, 'token': csrf_token('deleteComment')} ) }}" title="{{ "comment.delete"|trans }}"><i class="fa fa-trash-o"></i></a>
               </div>
               {% endif %}
             </div>

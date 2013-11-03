@@ -4,7 +4,7 @@
 
 {% block header %}
   <div class="headerAvatarAndActions">
-    <div class="textAvatar"><i class="icon-lock"></i></div>
+    <div class="textAvatar"><i class="fa fa-lock"></i></div>
   </div>
   <div class="objectHeader">
     <h2>{{ "user.login.title"|trans }}</h2>
@@ -36,8 +36,8 @@
     <div class="sectionContent">
       <input type="submit" name="{{ "user.login.signin"|trans }}" class="btn btn-info"/>
     </div>
-    <a href="{{ path('fp_openid_security_check', { 'openid_identifier': "https://www.google.com/accounts/o8/id" }) }}" class="btn"><i class="icon-google-plus"></i></a>
-    <a href="{{ path('fp_openid_security_check', { 'openid_identifier': "https://openid.stackexchange.com/" }) }}" class="btn"><i class="icon-stackexchange"></i></a>
+    <a href="{{ path('fp_openid_security_check', { 'openid_identifier': "https://www.google.com/accounts/o8/id" }) }}" class="btn"><i class="fa fa-google-plus-square"></i></a>
+    <a href="{{ path('fp_openid_security_check', { 'openid_identifier': "https://openid.stackexchange.com/" }) }}" class="btn"><i class="fa fa-stack-exchange"></i></a>
   </section>
 </form>
 {% endblock %}

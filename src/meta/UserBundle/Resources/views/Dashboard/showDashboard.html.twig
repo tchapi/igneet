@@ -21,11 +21,11 @@
     <h2>{{ "user.dashboard.title"|trans }}</h2>
     <h4>{{ "user.dashboard.recent.activity"|trans }} :</h4>
     <div>
-      <i class="icon-flag"></i> {{ "user.dashboard.last.activity"|trans({ '%date%': lastActivity|date("date.fullFormat"|trans) }) }}
+      <i class="fa fa-flag"></i> {{ "user.dashboard.last.activity"|trans({ '%date%': lastActivity|date("date.fullFormat"|trans) }) }}
     </div>
 
     <div>
-      <i class="icon-comments-alt"></i> {{ "user.dashboard.comments"|transchoice(user.comments|length, { '%count%': user.comments|length, '%public%': user.countPublicComments }) }}
+      <i class="fa fa-comments"></i> {{ "user.dashboard.comments"|transchoice(user.comments|length, { '%count%': user.comments|length, '%public%': user.countPublicComments }) }}
     </div>
 
   </div>
@@ -37,7 +37,7 @@
 {% block content %}
 
 <section>
-  <div class="heading"><i class="icon-home"></i> {{ "user.dashboard.recently.community"|trans }}</div>
+  <div class="heading"><i class="fa fa-home"></i> {{ "user.dashboard.recently.community"|trans }}</div>
   <div class="row-fluid">
 
     <div class="content span5">
@@ -63,7 +63,7 @@
 </section>
 
 <section>
-  <div class="heading"><i class="icon-group"></i> {{ "user.dashboard.social"|trans }}</div>
+  <div class="heading"><i class="fa fa-group"></i> {{ "user.dashboard.social"|trans }}</div>
   <div class="row-fluid">
 
     <div class="content span5">
@@ -89,7 +89,7 @@
 </section>
 
 <section class="colored">
-  <div class="heading"><i class="icon-beaker"></i> {{ "user.dashboard.top.projects"|trans }}</div>
+  <div class="heading"><i class="fa fa-flask"></i> {{ "user.dashboard.top.projects"|trans }}</div>
   <div class="row-fluid">
 
     <div class="content span4">
@@ -172,7 +172,7 @@
 </section>
 
 <section>
-  <div class="heading"><i class="icon-lightbulb"></i> {{ "user.dashboard.top.ideas"|trans }}</div>
+  <div class="heading"><i class="fa fa-lightbulb"></i> {{ "user.dashboard.top.ideas"|trans }}</div>
   <div class="row-fluid">
 
     <div class="content span4">

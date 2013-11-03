@@ -83,7 +83,7 @@ $(document).ready(function(){
 
     // Save function with states
     $('.wmd-input[unsaved="no"]').keyup(function(){
-      $(this).parent().parent().find(".wmd-message").html('<span class="alert">' + Translator.get('alert.unsaved.changes') + '</span>');
+      $(this).parent().parent().find(".wmd-message").html('<span class="alert alert-warning">' + Translator.get('alert.unsaved.changes') + '</span>');
       $(this).attr('unsaved', 'yes');
     });
 

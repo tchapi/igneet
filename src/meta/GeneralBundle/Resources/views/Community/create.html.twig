@@ -4,7 +4,7 @@
 
 {% block header %}
   <div class="headerAvatarAndActions">
-    <div class="textAvatar"><i class="icon-beaker"></i></div>
+    <div class="textAvatar"><i class="fa fa-flask"></i></div>
   </div>
   <div class="objectHeader">
     <h2>{{ "community.new"|trans }}</h2>
@@ -28,7 +28,7 @@
         {% if errors|length > 0 %}
         <ul class="error_list">
             {% for error in errors %}
-                <li><i class="icon-warning-sign"></i> {{ error.message }}</li>
+                <li><i class="fa fa-warning"></i> {{ error.message }}</li>
             {% endfor %}
         </ul>
         {% endif %}

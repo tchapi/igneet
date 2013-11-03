@@ -4,16 +4,16 @@
 
 {% block header %}
   <div class="headerAvatarAndActions">
-    <div class="textAvatar"><i class="icon-group"></i></div>
+    <div class="textAvatar"><i class="fa fa-group"></i></div>
   </div>
   <div class="objectHeader">
     <h2>{{ "user.allUsers"|trans }}</h2>
     <h4>{{ "user.listHelp"|trans({ '%community%': app.user.currentCommunity.name}) }}</h4>
     <p>{{ "filters.sort"|trans }} : 
-      <a href="{{ path('u_list_users', {'sort': 'newest', 'page' : pagination.page}) }}"><i class="icon-star"></i> {{ "filters.newest"|trans }}</a> - 
-      <a href="{{ path('u_list_users', {'sort': 'update', 'page' : pagination.page}) }}"><i class="icon-time"></i> {{ "filters.recent"|trans }}</a> - 
-      <a href="{{ path('u_list_users', {'sort': 'active', 'page' : pagination.page}) }}"><i class="icon-dashboard"></i> {{ "filters.active"|trans }}</a> - 
-      <a href="{{ path('u_list_users', {'sort': 'alpha',  'page' : pagination.page}) }}"><i class="icon-font"></i> {{ "filters.alpha"|trans }}</a></p>
+      <a href="{{ path('u_list_users', {'sort': 'newest', 'page' : pagination.page}) }}"><i class="fa fa-star"></i> {{ "filters.newest"|trans }}</a> - 
+      <a href="{{ path('u_list_users', {'sort': 'update', 'page' : pagination.page}) }}"><i class="fa fa-clock-o"></i> {{ "filters.recent"|trans }}</a> - 
+      <a href="{{ path('u_list_users', {'sort': 'active', 'page' : pagination.page}) }}"><i class="fa fa-dashboard"></i> {{ "filters.active"|trans }}</a> - 
+      <a href="{{ path('u_list_users', {'sort': 'alpha',  'page' : pagination.page}) }}"><i class="fa fa-font"></i> {{ "filters.alpha"|trans }}</a></p>
   </div>
 {% endblock %}
 
@@ -32,8 +32,8 @@
       {% if userAndIsGuest['isGuest'] %} ({{ "guest"|trans }}){% endif %}
     </h4>
     <div class="ellipsis">{{ user.headline }}</div>
-    <div class="muted"><i class="icon-calendar"></i> {{ "user.list.member.since"|trans({ '%date%': user.createdAt|date("date.format"|trans) }) }}</div>
-    <div class="muted"><i class="icon-time"></i>
+    <div class="muted"><i class="fa fa-calendar"></i> {{ "user.list.member.since"|trans({ '%date%': user.createdAt|date("date.format"|trans) }) }}</div>
+    <div class="muted"><i class="fa fa-clock-o"></i>
       {% if user.initiatedLogEntries|length > 0 %}
       {{ "user.list.last.updated.full"|trans({ '%update%': user.updatedAt|date("date.format"|trans), '%seen%': user.lastSeenAt|date("date.format"|trans), '%contrib%' : (user.initiatedLogEntries|last).createdAt|date("date.fullFormat"|trans) }) }}
       {% else %}

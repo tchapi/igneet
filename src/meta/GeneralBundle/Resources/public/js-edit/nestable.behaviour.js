@@ -35,8 +35,8 @@ $(document).ready(function(){
   // Triggers nestable()
   sortableList.nestable({
     listNodeName: 'ul',
-    expandBtnHTML: '<button data-action="expand"><i class="icon-folder-close-alt"></i></button>',
-    collapseBtnHTML: '<button data-action="collapse"><i class="icon-folder-open-alt"></i></button>',
+    expandBtnHTML: '<button data-action="expand"><i class="fa fa-folder-o"></i></button>',
+    collapseBtnHTML: '<button data-action="collapse"><i class="fa fa-folder-open-o"></i></button>',
     callback : updateRanksAndNesting
   });
 

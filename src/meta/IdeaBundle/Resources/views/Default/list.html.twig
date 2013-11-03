@@ -4,7 +4,7 @@
 
 {% block header %}
   <div class="headerAvatarAndActions">
-    <div class="textAvatar"><i class="icon-paper-clip"></i></div>
+    <div class="textAvatar"><i class="fa fa-paperclip"></i></div>
   </div>
   <div class="objectHeader">
     <h2>{% if archived %}{{ "idea.titleArchived"|trans }}{% else %}{{ "idea.title"|trans }}{% endif %}</h2>
@@ -16,9 +16,9 @@
       {% endif %}
     </h4>
     <p>{{ "filters.sort"|trans }} :
-      <a href="{{ path(archived?'i_list_archived_ideas':'i_list_ideas', {'sort': 'newest', 'page' : pagination.page}) }}"><i class="icon-star"></i> {{ "filters.newest"|trans }}</a> - 
-      <a href="{{ path(archived?'i_list_archived_ideas':'i_list_ideas', {'sort': 'update', 'page' : pagination.page}) }}"><i class="icon-time"></i> {{ "filters.recent"|trans }}</a> - 
-      <a href="{{ path(archived?'i_list_archived_ideas':'i_list_ideas', {'sort': 'alpha', 'page' : pagination.page}) }}"><i class="icon-font"></i> {{ "filters.alpha"|trans }}</a>
+      <a href="{{ path(archived?'i_list_archived_ideas':'i_list_ideas', {'sort': 'newest', 'page' : pagination.page}) }}"><i class="fa fa-star"></i> {{ "filters.newest"|trans }}</a> - 
+      <a href="{{ path(archived?'i_list_archived_ideas':'i_list_ideas', {'sort': 'update', 'page' : pagination.page}) }}"><i class="fa fa-clock-o"></i> {{ "filters.recent"|trans }}</a> - 
+      <a href="{{ path(archived?'i_list_archived_ideas':'i_list_ideas', {'sort': 'alpha', 'page' : pagination.page}) }}"><i class="fa fa-font"></i> {{ "filters.alpha"|trans }}</a>
     </p>
     <p>
     {% if not archived %}
@@ -43,10 +43,10 @@
     <div class="listingItemInfo">
       <h4 class="ellipsis"><a href="{{ path('i_show_idea', {'uid': idea.id|to_uid }) }}">{{ idea.name }}</a></h4>
       <div class="ellipsis">{{ idea.headline }}</div>
-      <div class="muted"><i class="icon-calendar"></i>
+      <div class="muted"><i class="fa fa-calendar"></i>
        {{ "idea.info.created.long"|transchoice(idea.countCreators, {'%date%': idea.createdAt|date("date.fullFormat"|trans), '%name%': idea.getACreator().getFullName(), '%count%': idea.countCreators}) }}
       </div>
-      <div class="muted"><i class="icon-time"></i> {{ "idea.info.last.updated"|trans({'%date%': idea.updatedAt|date("date.fullFormat"|trans)}) }}</div>
+      <div class="muted"><i class="fa fa-clock-o"></i> {{ "idea.info.last.updated"|trans({'%date%': idea.updatedAt|date("date.fullFormat"|trans)}) }}</div>
     </div>
 
     {% if idea.countWatchers > 0 %}

@@ -10,11 +10,11 @@
 
 {% block content %}
 <section>
-  <div class="wmd-heading"><i class="icon-bullhorn"></i> {{ "project.info.about"|trans }} : {% if base.canEdit %}<a class="pull-right markdown-trigger">&hellip;<i class="icon-pencil"></i></a>{% endif %}</div>
+  <div class="wmd-heading"><i class="fa fa-bullhorn"></i> {{ "project.info.about"|trans }} : {% if base.canEdit %}<a class="pull-right markdown-trigger">&hellip;<i class="fa fa-pencil"></i></a>{% endif %}</div>
   <div>
     {% if base.canEdit %}
-      <div class="wmd-message-top hide alert"><i class="icon-warning-sign"></i> {{ "unsaved.changes"|trans }}</div>
-      <div class="wmd-wrapper well well-small hide" >
+      <div class="wmd-message-top alert alert-warning" style="display: none;"><i class="fa fa-warning"></i> {{ "unsaved.changes"|trans }}</div>
+      <div class="wmd-wrapper well well-small" style="display: none;">
         <div class="wmd-panel">
             <div id="wmd-button-bar"></div>
             <textarea unsaved='no' data-name="about" data-url="{{ path('p_edit_project', {'uid': base.project.id|to_uid, 'token': csrf_token('edit')}) }}" class="wmd-input" id="wmd-input">{{ base.project.about }}</textarea>
@@ -31,7 +31,7 @@
   </div>
 </section>
 <section class="colored first">
-  <div class="sectionTitle"><i class="icon-location-arrow"></i> {{ "project.info.status.title"|trans }} : </div>
+  <div class="sectionTitle"><i class="fa fa-location-arrow"></i> {{ "project.info.status.title"|trans }} : </div>
   <div class="sectionContent">
     <span class="editable" data-title="{{ "project.info.statusHelp"|trans }}" data-name="status" data-type="select" data-url="{{ path('p_edit_project', {'uid': base.project.id|to_uid, 'token': csrf_token('edit') }) }}" data-source="[{% for key, value in project_statuses %} {value: {{key}}, text: '{{ ("project.info.status." ~ value)|trans }}'}, {% endfor %}]">{{ ("project.info.status." ~ project_statuses[base.project.status])|trans }}</span>
   </div>
@@ -48,7 +48,7 @@
             <span><div>{{ owningUser.firstName }}</div><div>{{ owningUser.lastName }}</div></span>
           </div>
         </a>
-        {% if base.isOwning %}<a class="removeUserIcon" href="{{ path('p_remove_owner_to_project', { 'uid': base.project.id|to_uid, 'username' : owningUser.username, 'token': csrf_token('removeParticipantOrOwner') }) }}"><i class="icon-remove-sign icon-large"></i></a>{% endif %}
+        {% if base.isOwning %}<a class="removeUserIcon" href="{{ path('p_remove_owner_to_project', { 'uid': base.project.id|to_uid, 'username' : owningUser.username, 'token': csrf_token('removeParticipantOrOwner') }) }}"><i class="fa fa-times fa-lg"></i></a>{% endif %}
       </li>
     {% endif %}
   {% endfor %}
@@ -77,8 +77,8 @@
             <span><div>{{ participatingUser.firstName }}</div><div>{{ participatingUser.lastName }}</div></span>
           </div>
         </a>
-        {% if base.isOwning %}<a class="removeUserIcon" href="{{ path('p_remove_participant_to_project', { 'uid': base.project.id|to_uid, 'username' : participatingUser.username, 'token': csrf_token('removeParticipantOrOwner') }) }}"><i class="icon-remove-sign icon-large"></i></a>{% endif %}
-        {% if app.user == participatingUser %}<a class="removeUserIcon" href="{{ path('p_remove_participant_to_project_self', { 'uid': base.project.id|to_uid, 'username' : participatingUser.username, 'token': csrf_token('removeMySelfParticipant') }) }}"><i class="icon-remove-sign icon-large"></i></a>{% endif %}
+        {% if base.isOwning %}<a class="removeUserIcon" href="{{ path('p_remove_participant_to_project', { 'uid': base.project.id|to_uid, 'username' : participatingUser.username, 'token': csrf_token('removeParticipantOrOwner') }) }}"><i class="fa fa-times fa-lg"></i></a>{% endif %}
+        {% if app.user == participatingUser %}<a class="removeUserIcon" href="{{ path('p_remove_participant_to_project_self', { 'uid': base.project.id|to_uid, 'username' : participatingUser.username, 'token': csrf_token('removeMySelfParticipant') }) }}"><i class="fa fa-times fa-lg"></i></a>{% endif %}
       </li>
     {% endif %}
   {% endfor %}
@@ -98,7 +98,7 @@
 {% if base.isOwning %}
 <section class="colored warning">
   <div class="sectionTitle">{{ "project.delete"|trans }} : </div>
-  <div class="sectionContent"><a class="btn btn-danger" data-confirm="{{ "project.deleteHelp"|trans }}" href="{{ path('p_delete_project', { 'uid': base.project.id|to_uid, 'token': csrf_token('delete') }) }}">{{ "delete"|trans }}</a> <span class="muted">( <i class="icon-warning-sign"></i> {{ "deleteHelp"|trans }} )</span></div>
+  <div class="sectionContent"><a class="btn btn-danger" data-confirm="{{ "project.deleteHelp"|trans }}" href="{{ path('p_delete_project', { 'uid': base.project.id|to_uid, 'token': csrf_token('delete') }) }}">{{ "delete"|trans }}</a> <span class="muted">( <i class="fa fa-warning"></i> {{ "deleteHelp"|trans }} )</span></div>
 </section>
 {% endif %}
 {% endblock %}

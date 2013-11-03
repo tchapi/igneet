@@ -5,7 +5,7 @@
 {% block body %}
 <header class="home">
   <div class="headerAvatarAndActions">
-    <div class="textAvatar"><i class="icon-wrench"></i></div>
+    <div class="textAvatar"><i class="fa fa-wrench"></i></div>
   </div>
   <div class="objectHeader">
     <h2>{{ "community.manage"|trans }}</h2>
@@ -31,14 +31,14 @@
               <span><div>{{ managerCommunity.user.firstName }}</div><div>{{ managerCommunity.user.lastName }}</div></span>
             </div>
           </a>
-          <a class="removeUserIcon" href="{{ path('g_remove_manager_community', { 'uid': managerCommunity.community.id|to_uid, 'username' : managerCommunity.user.username, 'token': csrf_token('removeManager') }) }}"><i class="icon-remove-sign icon-large"></i></a>
+          <a class="removeUserIcon" href="{{ path('g_remove_manager_community', { 'uid': managerCommunity.community.id|to_uid, 'username' : managerCommunity.user.username, 'token': csrf_token('removeManager') }) }}"><i class="fa fa-trash-o fa-lg"></i></a>
         </li>
 
     {% endfor %}
 
     <li>
       <a href="{{ path('u_choose_user', {'targetAsBase64': targetManagerAsBase64, 'token': csrf_token('addManager') }) }}">
-        <div class="smallTextAvatar"><i class="fa fa-icon-circle fa-lg"></i></div>
+        <div class="smallTextAvatar"><i class="fa fa-plus-circle fa-lg"></i></div>
         <div class="smallObjectInfos ellipsis-multiline">
           <span>{{ "community.add.manager"|trans }}</span>
         </div>

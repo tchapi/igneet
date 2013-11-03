@@ -27,7 +27,7 @@
 <section class="listInfo">
   <h4 class="editable" data-title="{{ "project.lists.nameHelp"|trans }}" data-name="name" data-url="{{ path('p_show_project_list_edit', {'uid': base.project.id|to_uid, 'list_uid': commonList.id|to_uid, 'token': csrf_token('editCommonList') }) }}" data-type="text">{{ commonList.name }} </h4>
   <p><span class="editable description-target" data-title="{{ "project.lists.descriptionHelp"|trans }}" data-name="description" data-url="{{ path('p_show_project_list_edit', {'uid': base.project.id|to_uid, 'list_uid': commonList.id|to_uid, 'token': csrf_token('editCommonList') }) }}" data-toggle="manual" data-type="textarea" data-emptytext="{{ "project.lists.description.emptyText"|trans }}">{{ commonList.description }}</span>
-  {% if base.canEdit %} <a class="editable-trigger" data-target="description">&hellip;<i class="icon-pencil"></i></a>{% endif %}</p>
+  {% if base.canEdit %} <a class="editable-trigger" data-target="description">&hellip;<i class="fa fa-pencil"></i></a>{% endif %}</p>
   <div class="muted">
     {{ "project.lists.done"|trans({'%advance%': commonList.getProgress() }) }}
     <div class="progress progress-striped">
@@ -43,7 +43,7 @@
     <ul data-toggle="manual" data-title="{{ "tags.help"|trans }}" data-emptytext="{{ "tags.emptyText"|trans }}" data-url="{{ path('p_show_project_list_edit', {'uid': base.project.id|to_uid, 'list_uid': commonList.id|to_uid, 'token': csrf_token('editCommonList') }) }}" data-type="select2" data-name="tags" class="tags tags-target editable-li" >
     {% for tag in commonList.tags %}<li class="label label-default" rel="{{ tag.name }}" style="background-color: #{{ tag.color }}">{{ tag.name }}</li>{% endfor %}
     </ul>
-    {% if base.canEdit %} <a class="editable-trigger" data-target="tags">&hellip;<i class="icon-pencil"></i></a>{% endif %}
+    {% if base.canEdit %} <a class="editable-trigger" data-target="tags">&hellip;<i class="fa fa-pencil"></i></a>{% endif %}
   </div>
 </section>
 <section>
@@ -56,18 +56,18 @@
       <div class="actions">
         {% if item.done %}
         <span class="muted date">{{ "project.lists.items.doneAt"|trans({ '%date%': item.doneAt|date("date.format"|trans)}) }}</span>
-        <a href="{{ path('p_show_project_listitem_undo', {'uid': base.project.id|to_uid, 'list_uid': commonList.id|to_uid, 'item_uid': item.id|to_uid, 'token': csrf_token('toggleCommonListItem') }) }}" title="{{ "project.lists.items.recycleHelp"|trans }}"><i class="icon-repeat"></i></a>
+        <a href="{{ path('p_show_project_listitem_undo', {'uid': base.project.id|to_uid, 'list_uid': commonList.id|to_uid, 'item_uid': item.id|to_uid, 'token': csrf_token('toggleCommonListItem') }) }}" title="{{ "project.lists.items.recycleHelp"|trans }}"><i class="fa fa-repeat"></i></a>
         {% else %}
         <span class="muted date">{{ "project.lists.items.createdAt"|trans({ '%date%': item.createdAt|date("date.format"|trans)}) }}</span>
-        <a href="{{ path('p_show_project_listitem_do', {'uid': base.project.id|to_uid, 'list_uid': commonList.id|to_uid, 'item_uid': item.id|to_uid, 'token': csrf_token('toggleCommonListItem') }) }}" title="{{ "project.lists.items.finishHelp"|trans }}"><i class="icon-ok text-success"></i></a>
+        <a href="{{ path('p_show_project_listitem_do', {'uid': base.project.id|to_uid, 'list_uid': commonList.id|to_uid, 'item_uid': item.id|to_uid, 'token': csrf_token('toggleCommonListItem') }) }}" title="{{ "project.lists.items.finishHelp"|trans }}"><i class="fa fa-check text-success"></i></a>
         {% endif %}
-        <a class="editable-trigger" data-target="listitem-{{ item.id|to_uid }}" title="{{ "project.lists.items.editHelp"|trans }}"><i class="icon-pencil"></i></a> | 
-        <a href="{{ path('p_show_project_listitem_delete', {'uid': base.project.id|to_uid, 'list_uid': commonList.id|to_uid, 'item_uid': item.id|to_uid, 'token': csrf_token('deleteCommonListItem') }) }}" title="{{ "project.lists.items.deleteHelp"|trans }}"><i class="icon-remove text-error"></i></a>
+        <a class="editable-trigger" data-target="listitem-{{ item.id|to_uid }}" title="{{ "project.lists.items.editHelp"|trans }}"><i class="fa fa-pencil"></i></a> | 
+        <a href="{{ path('p_show_project_listitem_delete', {'uid': base.project.id|to_uid, 'list_uid': commonList.id|to_uid, 'item_uid': item.id|to_uid, 'token': csrf_token('deleteCommonListItem') }) }}" title="{{ "project.lists.items.deleteHelp"|trans }}"><i class="fa fa-times text-error"></i></a>
       </div>
       {% endif %}
     </li>
   {% endfor %}
-    <li><a href="{{ path('p_show_project_listitem_new', {'uid': base.project.id|to_uid, 'list_uid': commonList.id|to_uid}) }}"><i class="icon-plus"></i>{{ "project.lists.items.new"|trans }}</a></li>
+    <li><a href="{{ path('p_show_project_listitem_new', {'uid': base.project.id|to_uid, 'list_uid': commonList.id|to_uid}) }}"><i class="fa fa-plus"></i>{{ "project.lists.items.new"|trans }}</a></li>
   </ul>
 {% else %}
   <p class="muted">{{ "project.lists.items.none"|trans }} {% if base.canEdit %}<a href="{{ path('p_show_project_listitem_new', {'uid': base.project.id|to_uid, 'list_uid': commonList.id|to_uid}) }}">{{ "project.lists.items.new"|trans }}</a></p>{% endif %}
@@ -82,8 +82,8 @@
   <ul class="lists sortable dd-list" data-url="{{ path('p_show_project_list_rank', {'uid': base.project.id|to_uid}) }}">
   {% for list in commonLists %}
       <li class="{% if list.id == commonList.id|to_uid %}active {% endif %}{% if base.canEdit %}dd-item dd-nochildren{% endif %}" id="{{ list.id|to_uid }}">
-        {% if base.canEdit %}<div class="dd-handle"><i class="icon-reorder"></i></div>{% endif %}
-        {% if base.canEdit %}<a data-confirm="{{ "project.lists.deleteHelp"|trans }}" href="{{ path('p_show_project_list_delete', {'uid': base.project.id|to_uid, 'list_uid': list.id|to_uid, 'token': csrf_token('deleteCommonList')}) }}"><i class="icon-remove-sign"></i></a>{% endif %} <a href="{{ path('p_show_project_list', {'uid': base.project.id|to_uid, 'list_uid': list.id|to_uid }) }}" title="{{ list.name }}" class="page_title">{{ list.name }} ({{list.getProgress()}}%)</a>
+        {% if base.canEdit %}<div class="dd-handle"><i class="fa fa-reorder"></i></div>{% endif %}
+        {% if base.canEdit %}<a data-confirm="{{ "project.lists.deleteHelp"|trans }}" href="{{ path('p_show_project_list_delete', {'uid': base.project.id|to_uid, 'list_uid': list.id|to_uid, 'token': csrf_token('deleteCommonList')}) }}"><i class="fa fa-times"></i></a>{% endif %} <a href="{{ path('p_show_project_list', {'uid': base.project.id|to_uid, 'list_uid': list.id|to_uid }) }}" title="{{ list.name }}" class="page_title">{{ list.name }} ({{list.getProgress()}}%)</a>
       </li>
   {% endfor %}
   </ul>
