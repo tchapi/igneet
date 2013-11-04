@@ -4,6 +4,8 @@
 
 {% if commonList %}
   {% set shortcode %}[[list:{{ commonList.id|to_uid }}]]{% endset %}
+{% else %}
+  {% set shortcode %}[[project:{{ base.project.id|to_uid }}]]{% endset %}
 {% endif %}
 
 {% block navbar %}
