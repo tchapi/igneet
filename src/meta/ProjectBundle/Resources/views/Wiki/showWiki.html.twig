@@ -2,7 +2,11 @@
 
 {% block title %}{{ parent() }}{% if wikiPage %} | {{ "project.wiki.title"|trans }} : {{ wikiPage.title }}{% endif %}{% endblock %}
 
-{% set shortcode %}[[wikipage:{{ wikiPage.id|to_uid }}]]{% endset %}
+{% if wikiPage %}
+  {% set shortcode %}[[wikipage:{{ wikiPage.id|to_uid }}]]{% endset %}
+{% else %}
+  {% set shortcode %}[[project:{{ base.project.id|to_uid }}]]{% endset %}
+{% endif %}
 
 {% block navbar %}
 {% render(controller("metaProjectBundle:Base:navbar", { 'activeMenu' : 'wiki', 'uid' : base.project.id|to_uid })) %}
