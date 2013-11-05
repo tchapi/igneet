@@ -18,3 +18,4 @@ parameters:
     ga_tracker_id: 0
     host: igneet.com
     scheme: http
+    shared_projects: []

@@ -36,69 +36,71 @@
     <span class="editable" data-title="{{ "project.info.statusHelp"|trans }}" data-name="status" data-type="select" data-url="{{ path('p_edit_project', {'uid': base.project.id|to_uid, 'token': csrf_token('edit') }) }}" data-source="[{% for key, value in project_statuses %} {value: {{key}}, text: '{{ ("project.info.status." ~ value)|trans }}'}, {% endfor %}]">{{ ("project.info.status." ~ project_statuses[base.project.status])|trans }}</span>
   </div>
 </section>
-<section class="colored">
-  <div class="sectionTitle">{{ "project.info.owners"|trans }} : </div>
-  <ul class="users sectionContent">
-  {% for owningUser in base.project.owners %}
-    {% if not owningUser.isDeleted %}
-      <li>
-        <a href="{{ path('u_show_user_profile', {'username': owningUser.username}) }}">
-          <img src="{{ owningUser.avatar }}" width="70" height="70" class="smallAvatar"/>
-          <div class="smallObjectInfos ellipsis-multiline">
-            <span><div>{{ owningUser.firstName }}</div><div>{{ owningUser.lastName }}</div></span>
-          </div>
-        </a>
-        {% if base.isOwning %}<a class="removeUserIcon" href="{{ path('p_remove_owner_to_project', { 'uid': base.project.id|to_uid, 'username' : owningUser.username, 'token': csrf_token('removeParticipantOrOwner') }) }}"><i class="icon-remove-sign icon-large"></i></a>{% endif %}
-      </li>
+{% if not base.shared %}
+  <section class="colored">
+    <div class="sectionTitle">{{ "project.info.owners"|trans }} : </div>
+    <ul class="users sectionContent">
+    {% for owningUser in base.project.owners %}
+      {% if not owningUser.isDeleted %}
+        <li>
+          <a href="{{ path('u_show_user_profile', {'username': owningUser.username}) }}">
+            <img src="{{ owningUser.avatar }}" width="70" height="70" class="smallAvatar"/>
+            <div class="smallObjectInfos ellipsis-multiline">
+              <span><div>{{ owningUser.firstName }}</div><div>{{ owningUser.lastName }}</div></span>
+            </div>
+          </a>
+          {% if base.isOwning %}<a class="removeUserIcon" href="{{ path('p_remove_owner_to_project', { 'uid': base.project.id|to_uid, 'username' : owningUser.username, 'token': csrf_token('removeParticipantOrOwner') }) }}"><i class="icon-remove-sign icon-large"></i></a>{% endif %}
+        </li>
+      {% endif %}
+    {% endfor %}
+    {% if base.isOwning and base.project.community is not null %}
+        <li>
+          <a href="{{ path('u_choose_user', {'targetAsBase64': targetOwnerAsBase64, 'token': csrf_token('addParticipantOrOwner') }) }}">
+            <div class="smallTextAvatar"><i class="icon-plus-sign"></i></div>
+            <div class="smallObjectInfos ellipsis-multiline">
+              <span>{{ "project.info.add.owner"|trans }}</span>
+            </div>
+          </a>
+        </li>
     {% endif %}
-  {% endfor %}
-  {% if base.isOwning and base.project.community is not null %}
-      <li>
-        <a href="{{ path('u_choose_user', {'targetAsBase64': targetOwnerAsBase64, 'token': csrf_token('addParticipantOrOwner') }) }}">
-          <div class="smallTextAvatar"><i class="icon-plus-sign"></i></div>
-          <div class="smallObjectInfos ellipsis-multiline">
-            <span>{{ "project.info.add.owner"|trans }}</span>
-          </div>
-        </a>
-      </li>
-  {% endif %}
-  </ul>
-</section>
-{% if (base.project.countParticipants > 0 or base.isOwning) and base.project.community is not null %}
-<section class="colored">
-  <div class="sectionTitle">{{ "project.info.participants"|trans }} : </div>
-  <ul class="users sectionContent">
-  {% for participatingUser in base.project.participants %}
-    {% if not participatingUser.isDeleted %}
-      <li>
-        <a href="{{ path('u_show_user_profile', {'username': participatingUser.username}) }}">
-          <img src="{{ participatingUser.avatar }}" width="70" height="70" class="smallAvatar"/>
-          <div class="smallObjectInfos ellipsis-multiline">
-            <span><div>{{ participatingUser.firstName }}</div><div>{{ participatingUser.lastName }}</div></span>
-          </div>
-        </a>
-        {% if base.isOwning %}<a class="removeUserIcon" href="{{ path('p_remove_participant_to_project', { 'uid': base.project.id|to_uid, 'username' : participatingUser.username, 'token': csrf_token('removeParticipantOrOwner') }) }}"><i class="icon-remove-sign icon-large"></i></a>{% endif %}
-        {% if app.user == participatingUser %}<a class="removeUserIcon" href="{{ path('p_remove_participant_to_project_self', { 'uid': base.project.id|to_uid, 'username' : participatingUser.username, 'token': csrf_token('removeMySelfParticipant') }) }}"><i class="icon-remove-sign icon-large"></i></a>{% endif %}
-      </li>
+    </ul>
+  </section>
+  {% if (base.project.countParticipants > 0 or base.isOwning) and base.project.community is not null %}
+  <section class="colored">
+    <div class="sectionTitle">{{ "project.info.participants"|trans }} : </div>
+    <ul class="users sectionContent">
+    {% for participatingUser in base.project.participants %}
+      {% if not participatingUser.isDeleted %}
+        <li>
+          <a href="{{ path('u_show_user_profile', {'username': participatingUser.username}) }}">
+            <img src="{{ participatingUser.avatar }}" width="70" height="70" class="smallAvatar"/>
+            <div class="smallObjectInfos ellipsis-multiline">
+              <span><div>{{ participatingUser.firstName }}</div><div>{{ participatingUser.lastName }}</div></span>
+            </div>
+          </a>
+          {% if base.isOwning %}<a class="removeUserIcon" href="{{ path('p_remove_participant_to_project', { 'uid': base.project.id|to_uid, 'username' : participatingUser.username, 'token': csrf_token('removeParticipantOrOwner') }) }}"><i class="icon-remove-sign icon-large"></i></a>{% endif %}
+          {% if app.user == participatingUser %}<a class="removeUserIcon" href="{{ path('p_remove_participant_to_project_self', { 'uid': base.project.id|to_uid, 'username' : participatingUser.username, 'token': csrf_token('removeMySelfParticipant') }) }}"><i class="icon-remove-sign icon-large"></i></a>{% endif %}
+        </li>
+      {% endif %}
+    {% endfor %}
+    {% if base.isOwning and base.project.community is not null %}
+        <li>
+          <a href="{{ path('u_choose_user', {'targetAsBase64': targetParticipantAsBase64, 'token': csrf_token('addParticipantOrOwner') }) }}">
+            <div class="smallTextAvatar"><i class="icon-plus-sign"></i></div>
+            <div class="smallObjectInfos ellipsis-multiline">
+              <span>{{ "project.info.add.participant"|trans }}</span>
+            </div>
+          </a>
+        </li>
     {% endif %}
-  {% endfor %}
-  {% if base.isOwning and base.project.community is not null %}
-      <li>
-        <a href="{{ path('u_choose_user', {'targetAsBase64': targetParticipantAsBase64, 'token': csrf_token('addParticipantOrOwner') }) }}">
-          <div class="smallTextAvatar"><i class="icon-plus-sign"></i></div>
-          <div class="smallObjectInfos ellipsis-multiline">
-            <span>{{ "project.info.add.participant"|trans }}</span>
-          </div>
-        </a>
-      </li>
+    </ul>
+  </section>
   {% endif %}
-  </ul>
-</section>
-{% endif %}
-{% if base.isOwning %}
-<section class="colored warning">
-  <div class="sectionTitle">{{ "project.delete"|trans }} : </div>
-  <div class="sectionContent"><a class="btn btn-danger" data-confirm="{{ "project.deleteHelp"|trans }}" href="{{ path('p_delete_project', { 'uid': base.project.id|to_uid, 'token': csrf_token('delete') }) }}">{{ "delete"|trans }}</a> <span class="muted">( <i class="icon-warning-sign"></i> {{ "deleteHelp"|trans }} )</span></div>
-</section>
+  {% if base.isOwning %}
+  <section class="colored warning">
+    <div class="sectionTitle">{{ "project.delete"|trans }} : </div>
+    <div class="sectionContent"><a class="btn btn-danger" data-confirm="{{ "project.deleteHelp"|trans }}" href="{{ path('p_delete_project', { 'uid': base.project.id|to_uid, 'token': csrf_token('delete') }) }}">{{ "delete"|trans }}</a> <span class="muted">( <i class="icon-warning-sign"></i> {{ "deleteHelp"|trans }} )</span></div>
+  </section>
+  {% endif %}
 {% endif %}
 {% endblock %}

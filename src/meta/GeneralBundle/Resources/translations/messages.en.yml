@@ -1,6 +1,7 @@
 # Community
 private.space: "My private space"
 private.space.back: "You have automatically been switched to your private space."
+private.space.new: "New to igneet ? You can browse these shared projects to learn a bit more :"
 private.space.project:
   title: "Projects"
   text: "In projects you can store information as lists, wiki, or just plain text, and add documents."

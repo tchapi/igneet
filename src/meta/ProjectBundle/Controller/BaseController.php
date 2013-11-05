@@ -25,6 +25,8 @@ class BaseController extends Controller
           throw $this->createNotFoundException($this->get('translator')->trans('project.not.found'));
         }
 
+        $shared = in_array($project->getId(), $this->container->getParameter('shared.projects'));
+
         $authenticatedUser = $this->getUser();
         $community = $project->getCommunity();
 
@@ -32,8 +34,8 @@ class BaseController extends Controller
         $isOwning = $authenticatedUser && ($authenticatedUser->isOwning($project));
         $isParticipatingIn = $authenticatedUser && ($authenticatedUser->isParticipatingIn($project));
         
-        // Project in private space, but not owner nor participant
-        if (is_null($community) && !$isOwning && !$isParticipatingIn){
+        // Project in private space, but not owner nor participant, and not shared
+        if (is_null($community) && !$isOwning && !$isParticipatingIn && !$shared){
           throw $this->createNotFoundException($this->get('translator')->trans('project.not.found'));
         }
 
@@ -77,7 +79,7 @@ class BaseController extends Controller
         // Project not in community, we might switch 
         if ($community !== $authenticatedUser->getCurrentCommunity()){
 
-            if (is_null($community) && ($isOwning || $isParticipatingIn) ){
+            if (is_null($community) && ($isOwning || $isParticipatingIn || $shared) ){
 
               $authenticatedUser->setCurrentCommunity(null);
               $em = $this->getDoctrine()->getManager();
@@ -136,7 +138,8 @@ class BaseController extends Controller
                             'isParticipatingIn' => $isParticipatingIn,
                             'isOwning' => $isOwning,
                             'canEdit' =>  $isOwning || $isParticipatingIn,
-                            'vacantSkills' => $vacantSkills
+                            'vacantSkills' => $vacantSkills,
+                            'shared' => $shared
                            );
 
         // Is access granted ?

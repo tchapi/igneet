@@ -62,8 +62,11 @@ class CommunityController extends Controller
                         'totalUsersAndGuests' => $totalUsersAndGuests));
 
         } else {
+
             // Or in your private space ?
-            return $this->render('metaGeneralBundle:Community:privateSpace.html.twig');
+            $projectRepository = $this->getDoctrine()->getRepository('metaProjectBundle:StandardProject');
+            $shared_projects = $projectRepository->findById($this->container->getParameter('shared.projects'));
+            return $this->render('metaGeneralBundle:Community:privateSpace.html.twig', array( 'shared_projects' => $shared_projects));
         }
        
 

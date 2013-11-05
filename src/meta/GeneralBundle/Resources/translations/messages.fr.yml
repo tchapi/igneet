@@ -1,6 +1,7 @@
 # Community
 private.space: "Mon espace privé"
 private.space.back: "Vous avez été automatiquement basculé dans votre espace privé."
+private.space.new: "Nouveau sur igneet ? Vous pouvez parcourir ces projets partagés pour en apprendre un peu plus :"
 private.space.project:
   title: "Projets"
   text: "Les projets permettent d'organiser l'information sous forme de wiki, listes, documents, etc ..."

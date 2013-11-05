@@ -108,6 +108,7 @@ parameters:
     router.request_context.scheme: "%scheme%"
     base_path: "%scheme%://%host%"
     # End of hack
+    shared.projects: "%shared_projects%"
     listings.number_of_items_per_page: 8
     project_statuses:
         0: active
