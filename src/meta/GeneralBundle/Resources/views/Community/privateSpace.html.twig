@@ -9,6 +9,17 @@
   </div>
   <div class="objectHeader">
     <h2>{{ "private.space"|trans }}</h2>
+    {% if shared_projects %}
+    <div class="alert alert-info">
+      <p>{{ "private.space.new"|trans }}
+        <ul>
+        {% for project in shared_projects %}
+          <li><a href="{{ path('p_show_project', {uid: project.id|to_uid}) }}">{{ project.name }}</a></li>
+        {% endfor %}
+        </ul>
+      </p>
+    </div>
+    {% endif %}
   </div>
 </header>
 <div class="content home clearfix">

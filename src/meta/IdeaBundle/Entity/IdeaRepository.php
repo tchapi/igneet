@@ -13,27 +13,32 @@ class IdeaRepository extends EntityRepository
 
   /*
    * Count ideas in the given community, accessible to the user (for the private space)
+   * Options :
+   * - 'community'
+   * - 'user'
+   * - 'archived'
    */
-  public function countIdeasInCommunityForUser($community, $user, $archived = false)
+  public function countIdeasInCommunityForUser($options)
   {
 
-    $modifier = $archived?'NOT ':'';
+    $archived = $options['archived']?'NOT ':'';
+
     $qb = $this->getEntityManager()->createQueryBuilder();
 
     $query = $qb->select('COUNT(i)')
             ->from('metaIdeaBundle:Idea', 'i')
-            ->where('i.archived_at IS ' . $modifier . 'NULL')
+            ->where('i.archived_at IS ' . $archived . 'NULL')
             ->andWhere('i.deleted_at IS NULL');
 
-    if ($community === null){
+    if ($options['community'] === null){
       $query->join('i.creators', 'u')
             ->leftJoin('i.participants', 'u2')
             ->andWhere('i.community IS NULL')
             ->andWhere('u = :user OR u2 = :user')
-            ->setParameter('user', $user);
+            ->setParameter('user', $options['user']);
     } else {
       $query->andWhere('i.community = :community')
-            ->setParameter('community', $community);
+            ->setParameter('community', $options['community']);
     }
 
     return $query->getQuery()
@@ -43,29 +48,38 @@ class IdeaRepository extends EntityRepository
 
  /*
   * Fetch ideas in the given communities, accessible to the user (for the private space)
+   * Options :
+   * - 'community'
+   * - 'user'
+   * - 'archived'
+   * v Pagination
+   * - 'page'
+   * - 'maxPerPage'
+   * - 'sort'
   */
-  public function findIdeasInCommunityForUser($community, $user, $page, $maxPerPage, $sort, $archived = false)
+  public function findIdeasInCommunityForUser($options)
   {
     
-    $modifier = $archived?'NOT ':'';
+    $archived = $options['archived']?'NOT ':'';
+
     $qb = $this->getEntityManager()->createQueryBuilder();
     $query = $qb->select('i')
             ->from('metaIdeaBundle:Idea', 'i')
-            ->where('i.archived_at IS ' . $modifier . 'NULL')
+            ->where('i.archived_at IS ' . $archived . 'NULL')
             ->andWhere('i.deleted_at IS NULL');
 
-    if ($community === null){
+    if ($options['community'] === null){
       $query->join('i.creators', 'u')
             ->leftJoin('i.participants', 'u2')
             ->andWhere('i.community IS NULL')
             ->andWhere('u = :user OR u2 = :user')
-            ->setParameter('user', $user);
+            ->setParameter('user', $options['user']);
     } else {
       $query->andWhere('i.community = :community')
-            ->setParameter('community', $community);
+            ->setParameter('community', $options['community']);
     }
 
-    switch ($sort) {
+    switch ($options['sort']) {
       case 'newest':
         $query->orderBy('i.created_at', 'DESC');
         break;
@@ -79,8 +93,8 @@ class IdeaRepository extends EntityRepository
     }
 
     return $query
-            ->setFirstResult(($page-1)*$maxPerPage)
-            ->setMaxResults($maxPerPage)
+            ->setFirstResult(($options['page']-1)*$options['maxPerPage'])
+            ->setMaxResults($options['maxPerPage'])
             ->getQuery()
             ->getResult();
   }
@@ -174,67 +188,35 @@ class IdeaRepository extends EntityRepository
   }
 
   /*
-   * Find a user by id in a given community
-   */
-  public function findOneByIdInCommunityForUser($id, $community, $user, $archived = false)
-  {
-
-    $modifier = $archived?'NOT ':'';
-    $qb = $this->getEntityManager()->createQueryBuilder();
-
-    $query = $qb->select('i')
-            ->from('metaIdeaBundle:Idea', 'i')
-            ->where('i.archived_at IS ' . $modifier . 'NULL')
-            ->andWhere('i.deleted_at IS NULL');
-
-    if ($community === null){
-      $query->join('i.creators', 'u') 
-            ->leftJoin('i.participants', 'u2')
-            ->andWhere('i.community IS NULL')
-            ->andWhere('u = :user OR u2 = :user')
-            ->setParameter('user', $user);
-    } else {
-      $query->andWhere('i.community = :community')
-            ->setParameter('community', $community);
-    }
-       
-    $query = $query->andWhere('i.id = :id')
-                   ->setParameter('id', $id)
-                   ->getQuery();
-
-    try {
-        $result = $query->getSingleResult();
-    } catch (\Doctrine\Orm\NoResultException $e) {
-        $result = null;
-    }
-
-    return $result;
-
-  }
-
-  /*
    * Fetch the top N idea for a user in a given community
+   * Options :
+   * - 'community'
+   * - 'user'
+   * - 'archived'
+   * - 'max' results
    */
-  public function findTopIdeasInCommunityForUser($community, $user, $max = 3, $archived = false)
+  public function findTopIdeasInCommunityForUser($options)
   {
     
-    $modifier = $archived?'NOT ':'';
+    $archived = $options['archived']?'NOT ':'';
+    $max = $options['max']?$options['max']:3;
+
     $qb = $this->getEntityManager()->createQueryBuilder();
 
     $query = $qb->select('i, MAX(l.created_at) as last_update')
             ->from('metaIdeaBundle:Idea', 'i')
             ->join('i.logEntries', 'l')
             ->join('i.creators', 'u')
-            ->where('i.archived_at IS ' . $modifier . 'NULL')
+            ->where('i.archived_at IS ' . $archived . 'NULL')
             ->andWhere('u = :user')
             ->andWhere('i.deleted_at IS NULL')
-            ->setParameter('user', $user);
+            ->setParameter('user', $options['user']);
 
-    if ($community === null){
+    if ($options['community'] === null){
       $query->andWhere('i.community IS NULL');
     } else {
       $query->andWhere('i.community = :community')
-            ->setParameter('community', $community);
+            ->setParameter('community', $options['community']);
     }
     
     return $query->groupBy('i.id')
@@ -247,25 +229,31 @@ class IdeaRepository extends EntityRepository
 
   /*
   * Fetch last N ideas in the given communities, accessible to the user (for the private space)
+  * Options :
+  * - 'community'
+  * - 'user'
+  * - 'max' results
   */
-  public function findLastIdeasInCommunityForUser($community, $user, $max = 3)
+  public function findLastIdeasInCommunityForUser($options)
   {
     
+    $max = $options['max']?$options['max']:3;
+
     $qb = $this->getEntityManager()->createQueryBuilder();
     $query = $qb->select('i')
             ->from('metaIdeaBundle:Idea', 'i')
             ->where('i.archived_at IS NULL')
             ->andWhere('i.deleted_at IS NULL');
 
-    if ($community === null){
+    if ($options['community'] === null){
       $query->join('i.creators', 'u')
             ->leftJoin('i.participants', 'u2')
             ->andWhere('i.community IS NULL')
             ->andWhere('u = :user OR u2 = :user')
-            ->setParameter('user', $user);
+            ->setParameter('user', $options['user']);
     } else {
       $query->andWhere('i.community = :community')
-            ->setParameter('community', $community);
+            ->setParameter('community', $options['community']);
     }
 
     return $query

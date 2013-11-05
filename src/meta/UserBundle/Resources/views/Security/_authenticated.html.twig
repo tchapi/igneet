@@ -29,14 +29,13 @@
         </a>
         <ul class="dropdown-menu">
             <li><a href="{{ path('u_me') }}"><i class="icon-user"></i> {{ "user.menu"|trans }}</a></li>
-            {% if user.currentCommunity is not null and currentUserCommunity and not currentUserCommunity.guest %}
-            <li><a href="{{ path('u_show_user_dashboard') }}"><i class="icon-dashboard"></i> {{ "user.dashboard.menu"|trans }}</a>
-            {% endif %}
             <li><a href="{{ path('u_show_user_settings') }}"><i class="icon-wrench"></i> {{ "user.settings.menu"|trans }}</a></li>
             
-            </li><li class="divider"></li>
+            <li class="divider"></li>
             
             <li><a href="{{ path('g_switch_private_space', {'token': csrf_token('switchCommunity') }) }}"><i class="icon-{% if user.currentCommunity is null %}ok{% endif %}"></i> {{ "private.space"|trans }}</a></li>
+
+            <li class="divider"></li>
 
             {% for userCommunity in user.userCommunities if not userCommunity.isDeleted %}
               <li><a href="{{ path('g_switch_community', { 'uid': userCommunity.community.id|to_uid, 'token': csrf_token('switchCommunity') } ) }}"><i class="icon-{% if user.currentCommunity == userCommunity.community %}ok{% endif %}"></i> {{ userCommunity.community.name }}{% if userCommunity.guest %} <i class="icon-lock"></i>{% else %} <span class="label label-{{ userCommunity.community.type }}">{{ userCommunity.community.type }}</span>{% endif %}</a></li>
