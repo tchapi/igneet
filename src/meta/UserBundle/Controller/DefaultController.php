@@ -164,100 +164,6 @@ class DefaultController extends Controller
     }
 
     /*
-     * Show a user dashboard
-     */
-    public function showDashboardAction()
-    {
-
-        $authenticatedUser = $this->getUser();
-        $community = $authenticatedUser->getCurrentCommunity();
-
-        if (!is_null($community)){  
-            $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true, 'deleted_at' => null));
-        } else {
-            $userCommunityGuest = null;
-        }
-
-        if (is_null($community) || $userCommunityGuest ) {
-
-            $this->get('session')->getFlashBag()->add(
-                'error',
-                $this->get('translator')->trans('user.no.dashboard')
-            );
-
-            return $this->redirect($this->generateUrl('u_me'));
-        } 
-
-        // So let's get the stuff
-        $logRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\BaseLogEntry');
-        $userLogRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\UserLogEntry');
-        $commentRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Comment\BaseComment');
-        $projectRepository = $this->getDoctrine()->getRepository('metaProjectBundle:StandardProject');
-        $ideaRepository = $this->getDoctrine()->getRepository('metaIdeaBundle:Idea');
-
-        // Last recorded activity
-        $lastActivity = $logRepository->findLastActivityDateForUser($authenticatedUser);
-
-        // 7 days activity
-        $last7daysActivity = $logRepository->computeWeekActivityForUser($authenticatedUser);
-
-        // Recent social activity
-        $lastSocial_raw = $userLogRepository->findLastSocialActivityForUser($authenticatedUser, 3);
-        $logService = $this->container->get('logService');
-        $lastSocial = array();
-        foreach ($lastSocial as $entry) {
-            $lastSocial[] = $logService->getText($entry);
-        }
-
-        $last7daysCommentActivity = $commentRepository->computeWeekCommentActivityForUser($authenticatedUser);
-        
-        // Top 3 projects
-        $top3projects = $projectRepository->findTopProjectsInCommunityForUser($authenticatedUser->getCurrentCommunity(), $authenticatedUser, 3);
-        $top3projectsActivity = array();
-
-        if (count($top3projects)){
-            $top3projectsActivity_raw = $projectRepository->computeWeekActivityForProjects($top3projects);
-            
-            foreach ($top3projectsActivity_raw as $key => $value) {
-                $top3projectsActivity[$value['id']][] = $value;
-            }
-        }
-
-        // Last 3 projects created in the community for user (private taken into account)
-        $last3projects = $projectRepository->findLastProjectsInCommunityForUser($authenticatedUser->getCurrentCommunity(), $authenticatedUser, 3);
-        
-        // Top 3 ideas
-        $top3ideas = $ideaRepository->findTopIdeasInCommunityForUser($authenticatedUser->getCurrentCommunity(), $authenticatedUser, 3);
-        $top3ideasActivity = array();
-
-        if (count($top3ideas)){
-            $top3ideasActivity_raw = $ideaRepository->computeWeekActivityForIdeas($top3ideas);
-            
-            foreach ($top3ideasActivity_raw as $key => $value) {
-                $top3ideasActivity[$value['id']][] = $value;
-            }
-        }
-
-        // Last 3 ideas created in the community
-        $last3ideas = $ideaRepository->findLastIdeasInCommunityForUser($authenticatedUser->getCurrentCommunity(), $authenticatedUser, 3);
-
-        return $this->render('metaUserBundle:Dashboard:showDashboard.html.twig', 
-            array('user' => $authenticatedUser,
-                  'lastActivity' => $lastActivity['date'],
-                  'last7daysActivity' => $last7daysActivity,
-                  'last7daysCommentActivity' => $last7daysCommentActivity,
-                  'lastSocial' => $lastSocial,
-                  'top3projects' => $top3projects,
-                  'top3projectsActivity' => $top3projectsActivity,
-                  'last3projects' => $last3projects,
-                  'top3ideas' => $top3ideas,
-                  'top3ideasActivity' => $top3ideasActivity,
-                  'last3ideas' => $last3ideas
-                ));
-    }
-
-    
-    /*
      * Corresponding actions
      */ 
     public function countNotificationsAction()
@@ -282,7 +188,7 @@ class DefaultController extends Controller
         // Lastly, we update the last_notified_at date
         $authenticatedUser->setLastNotifiedAt(new \DateTime('now'));
 
-        return $this->render('metaUserBundle:Dashboard:showNotifications.html.twig', $notifications);
+        return $this->render('metaUserBundle:Notifications:showNotifications.html.twig', $notifications);
     }
 
     /*
