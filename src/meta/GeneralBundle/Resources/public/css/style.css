@@ -520,6 +520,7 @@ div.navbar.project > div.navbar-inner{
   border-right: none;
   border-left: none;
 }
+div.communityInfo,
 div.projectInfo,
 div.ideaInfo{
   display: inline-block;
@@ -528,6 +529,8 @@ div.ideaInfo{
   height: 150px;
   width: 540px;
 }
+
+div.communityActions,
 div.projectAbout,
 div.ideaAbout{
   display: inline-block;

@@ -40,12 +40,31 @@ class Community
     // demo, association, entreprise
 
     /**
+     * @var string $picture
+     *
+     * @ORM\Column(name="picture", type="string", length=255, nullable=true)
+     */
+    private $picture;
+
+    /**
+     * @Assert\File(maxSize="10000000")
+     */
+    protected $file;
+
+    /**
      * @var string $headline
      *
      * @ORM\Column(name="headline", type="string", length=255, nullable=true)
      */
     private $headline;
     
+    /**
+     * @var string $about
+     *
+     * @ORM\Column(name="about", type="text", nullable=true)
+     */
+    private $about;
+
     /**
      * @var \DateTime $created_at
      *
@@ -238,6 +257,107 @@ class Community
         return $this->type;
     }
 
+    /**
+     * Set picture
+     *
+     * @param string $picture
+     * @return StandardProject
+     */
+    public function setPicture($picture)
+    {
+        $this->picture = $picture;
+        return $this;
+    }
+
+    /**
+     * Get picture
+     *
+     * @return string 
+     */
+    public function getPicture()
+    {
+        if ($this->picture === null)
+            return "/bundles/metageneral/img/defaults/community.png";
+        else
+            return $this->getPictureWebPath();
+    }
+
+    public function getRawPicture()
+    {
+        return $this->picture;
+    }
+
+    public function getAbsolutePicturePath()
+    {
+        return null === $this->picture
+            ? null
+            : $this->getUploadRootDir().'/'.$this->picture;
+    }
+
+    public function getPictureWebPath()
+    {
+        return null === $this->picture
+            ? null
+            : '/'.$this->getUploadDir().'/'.$this->picture;
+    }
+
+    private function getUploadRootDir()
+    {
+        // the absolute directory path where uploaded
+        // documents should be saved
+        return __DIR__.'/../../../../web/'.$this->getUploadDir();
+    }
+
+    private function getUploadDir()
+    {
+        // get rid of the __DIR__ so it doesn't screw up
+        // when displaying uploaded doc/image in the view.
+        return 'uploads/pictures';
+    }
+
+
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    public function setFile($file)
+    {
+        $this->file = $file;
+    }
+
+    /**
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function preUpload()
+    {
+        if (null !== $this->file) {
+            // Generate a unique name
+
+            $filename = sha1(uniqid(mt_rand(), true));
+            $this->picture = $filename.'.'.$this->file->guessExtension();
+        }
+    }
+
+    /**
+     * @ORM\PostPersist()
+     * @ORM\PostUpdate()
+     */
+    public function upload()
+    {
+        if (null === $this->file) {
+            return;
+        }
+
+        // if there is an error when moving the file, an exception will
+        // be automatically thrown by move(). This will properly prevent
+        // the entity from being persisted to the database on error
+        $this->file->move($this->getUploadRootDir(), $this->picture);
+
+        unset($this->file);
+    }
+
 
     /**
      * Set headline
@@ -261,7 +381,29 @@ class Community
     {
         return $this->headline;
     }
+    
+    /**
+     * Set about
+     *
+     * @param string $about
+     * @return StandardProject
+     */
+    public function setAbout($about)
+    {
+        $this->about = $about;
+        return $this;
+    }
 
+    /**
+     * Get about
+     *
+     * @return string 
+     */
+    public function getAbout()
+    {
+        return $this->about;
+    }
+    
     /**
      * Set created_at
      *

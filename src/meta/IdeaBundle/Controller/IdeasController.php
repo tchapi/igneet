@@ -68,14 +68,14 @@ class IdeasController extends Controller
 
         $repository = $this->getDoctrine()->getRepository('metaIdeaBundle:Idea');
 
-        $totalIdeas = $repository->countIdeasInCommunityForUser($community, $authenticatedUser, $archived);
+        $totalIdeas = $repository->countIdeasInCommunityForUser(array( 'community' => $community, 'user' => $authenticatedUser, 'archived' => $archived));
         $maxPerPage = $this->container->getParameter('listings.number_of_items_per_page');
 
         if ( ($page-1) * $maxPerPage > $totalIdeas) {
             return $this->redirect($this->generateUrl('i_list_ideas', array('sort' => $sort)));
         }
 
-        $ideas = $repository->findIdeasInCommunityForUser($community, $authenticatedUser, $page, $maxPerPage, $sort, $archived);
+        $ideas = $repository->findIdeasInCommunityForUser(array( 'community' => $community, 'user' => $authenticatedUser, 'archived' => $archived, 'page' => $page, 'maxPerPage' => $maxPerPage, 'sort' => $sort));
 
         $pagination = array( 'page' => $page, 'totalIdeas' => $totalIdeas);
         return $this->render('metaIdeaBundle:Default:list.html.twig', array('ideas' => $ideas, 'archived' => $archived, 'pagination' => $pagination, 'sort' => $sort));
