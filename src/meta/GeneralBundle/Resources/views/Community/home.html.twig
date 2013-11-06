@@ -19,8 +19,8 @@
 
   {% if isManager %}
   <div class="communityActions">
-    <p><a href="{{ path('invite') }}" class="btn btn-success">{{ "community.invite.short"|trans }}</a></p>
-    <p><a href="{{ path('g_manage_community') }}" class="btn btn-primary">{{ "community.manage.short"|trans }}</a></p>
+    <p><a href="{{ path('invite') }}" class="btn btn-success"><i class="fa fa-user"></i> {{ "community.invite.short"|trans }}</a></p>
+    <p><a href="{{ path('g_manage_community') }}" class="btn btn-primary"><i class="fa fa-cogs"></i> {{ "community.manage.short"|trans }}</a></p>
   </div>
   {% endif %}
 
@@ -30,10 +30,10 @@
 
   {% if not isGuest %}
   <section>
-    <div class="heading"><i class="icon-home"></i> {{ "community.home.recently.community"|trans }}</div>
+    <div class="heading"><i class="fa fa-home"></i> {{ "community.home.recently.community"|trans }}</div>
     <div class="row">
 
-      <span class="span4">
+      <span class="col-md-4">
         <h4>{{ "community.home.last.ideas"|trans }}</h4>
         {% if lastIdeas|length > 0 %}
           <ul>
@@ -46,7 +46,7 @@
         {% endif %}
       </span>
 
-      <span class="span4">
+      <span class="col-md-4">
         <h4>{{ "community.home.last.projects"|trans }}</h4>
         {% if lastProjects|length > 0 %}
           <ul>
@@ -59,7 +59,7 @@
         {% endif %}
       </span>
 
-      <span class="span3">
+      <span class="col-md-4">
         <h4>{{ "community.home.recentlyOnline"|trans }}</h4>
         {% if recentlyOnlineUsers|length > 1 %}
           <ul>

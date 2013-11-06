@@ -41,7 +41,7 @@
 
         {% if user.currentCommunity is not null and currentUserCommunity and currentUserCommunity.manager %}
         <li class="divider"></li>
-        <li><a href="{{ path('g_manage_community') }}"><i class="fa fa-fw fa-wrench"></i> {{ "community.manage"|trans }}</a></li>
+        <li><a href="{{ path('g_manage_community') }}"><i class="fa fa-fw fa-cogs"></i> {{ "community.manage"|trans }}</a></li>
         {% endif %}
         <li class="divider"></li>
         <li><a href="{{ path('g_create_community') }}"><i class="fa fa-fw fa-plus-circle"></i> {{ "community.create"|trans }}</a></li>
