@@ -12,15 +12,6 @@
 
 <ul class="nav navbar-nav navbar-right">
 
-  <li>
-    <a href="{{ path('u_show_user_notifications') }}" title="{{ "user.notifications.help"|trans }}">
-      <i class="fa fa-fw fa-comments fa-lg"></i> 
-        <span id="notificationsCount" class="badge badge-info" data-update-path="{{ path('u_count_user_notifications') }}">
-          <i class="fa fa-fw fa-spinner fa-spin"></i>
-        </span>
-    </a>
-  </li>
-
   <li class="dropdown">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
       <img src="{{ asset(user.getAvatar()) }}" width="20px" height="20px" class="smallHeaderAvatar"/> {{ user.getFullName() }} <b class="caret"></b>
@@ -49,6 +40,15 @@
         <li class="divider"></li>
         <li><a href="{{ path('logout') }}"><i class="fa fa-fw fa-power-off"></i> {{ "logout"|trans }}</a></li>
     </ul>
+  </li>
+  
+  <li>
+    <a href="{{ path('u_show_user_notifications') }}" title="{{ "user.notifications.help"|trans }}">
+      <i class="fa fa-fw fa-comments fa-lg"></i> 
+        <span id="notificationsCount" class="badge badge-info" data-update-path="{{ path('u_count_user_notifications') }}">
+          <i class="fa fa-fw fa-spinner fa-spin"></i>
+        </span>
+    </a>
   </li>
   
 </ul>
