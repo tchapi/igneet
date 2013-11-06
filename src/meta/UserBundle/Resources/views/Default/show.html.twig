@@ -245,12 +245,6 @@
 </section>
 {% endif %}
 
-<section class="colored">
-  <div class="sectionTitle">{{ "user.activity"|trans }} :</div>
-  <div class="projects sectionContent">
-    {{ "user.dashboard.comments"|transchoice(user.comments|length, { '%count%': user.comments|length, '%public%': user.countPublicComments }) }}
-  </div>
-</section>
 {% if isMe %}
 <section class="colored warning">
   <div class="sectionTitle">{{ "user.delete"|trans }} : </div>

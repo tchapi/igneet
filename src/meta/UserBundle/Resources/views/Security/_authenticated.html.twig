@@ -9,6 +9,7 @@
   {% endif %}
 </ul>
 {{ include('metaGeneralBundle:Default:_languageSwitch.html.twig') }}
+
 <ul class="nav navbar-nav navbar-right">
 
   <li>
@@ -26,14 +27,13 @@
     </a>
     <ul class="dropdown-menu">
         <li><a href="{{ path('u_me') }}"><i class="fa fa-fw fa-user"></i> {{ "user.menu"|trans }}</a></li>
-        {% if user.currentCommunity is not null and currentUserCommunity and not currentUserCommunity.guest %}
-        <li><a href="{{ path('u_show_user_dashboard') }}"><i class="fa fa-fw fa-dashboard"></i> {{ "user.dashboard.menu"|trans }}</a>
-        {% endif %}
         <li><a href="{{ path('u_show_user_settings') }}"><i class="fa fa-fw fa-wrench"></i> {{ "user.settings.menu"|trans }}</a></li>
         
         </li><li class="divider"></li>
         
         <li><a href="{{ path('g_switch_private_space', {'token': csrf_token('switchCommunity') }) }}">{% if user.currentCommunity is null %}<i class="fa fa-check"></i> {% endif %}{{ "private.space"|trans }}</a></li>
+
+        <li class="divider"></li>
 
         {% for userCommunity in user.userCommunities if not userCommunity.isDeleted %}
           <li><a href="{{ path('g_switch_community', { 'uid': userCommunity.community.id|to_uid, 'token': csrf_token('switchCommunity') } ) }}">{% if user.currentCommunity == userCommunity.community %}<i class="fa fa-check"></i> {% endif %}{{ userCommunity.community.name }}{% if userCommunity.guest %} <i class="fa fa-lock"></i>{% else %} <span class="label label-{{ userCommunity.community.type }}">{{ userCommunity.community.type }}</span>{% endif %}</a></li>
@@ -52,6 +52,3 @@
   </li>
   
 </ul>
-
-
-

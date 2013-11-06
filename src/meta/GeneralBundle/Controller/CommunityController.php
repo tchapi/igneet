@@ -46,24 +46,34 @@ class CommunityController extends Controller
 
             }
 
-            // WILL DISAPPEAR WITH THE NEW HOME
+            // Is the user manager or guest ?
+            $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'deleted_at' => null));
+            
+            // Last ideas
             $ideaRepository = $this->getDoctrine()->getRepository('metaIdeaBundle:Idea');
-            $totalIdeas = $ideaRepository->countIdeasInCommunityForUser($community, $authenticatedUser, false);
+            $lastIdeas = $ideaRepository->findLastIdeasInCommunityForUser(array('community' => $community, 'user' => $authenticatedUser, 'max' => 3));
 
+            // Last projects
             $projectRepository = $this->getDoctrine()->getRepository('metaProjectBundle:StandardProject');
-            $totalProjects = $projectRepository->countProjectsInCommunityForUser($community, $authenticatedUser, null);
+            $lastProjects = $projectRepository->findLastProjectsInCommunityForUser(array('community' => $community, 'user' => $authenticatedUser, 'max' => 3));
 
+            // Actually connected
             $userRepository = $this->getDoctrine()->getRepository('metaUserBundle:User');
-            $totalUsersAndGuests = $userRepository->countUsersInCommunity(array('community' => $community));
+            $recentlyOnlineUsers = $userRepository->findAllRecentlyOnlineUsersInCommunity(array('community' => $community, 'time' => new \DateTime('now - 5 minutes')));
 
             return $this->render('metaGeneralBundle:Community:home.html.twig', array(
-                        'totalProjects' => $totalProjects,
-                        'totalIdeas' => $totalIdeas,
-                        'totalUsersAndGuests' => $totalUsersAndGuests));
+                        'isManager' => ($userCommunity && $userCommunity->isManager()),
+                        'isGuest' => ($userCommunity && $userCommunity->isGuest()),
+                        'lastProjects' => $lastProjects,
+                        'lastIdeas' => $lastIdeas,
+                        'recentlyOnlineUsers' => $recentlyOnlineUsers));
 
         } else {
+
             // Or in your private space ?
-            return $this->render('metaGeneralBundle:Community:privateSpace.html.twig');
+            $projectRepository = $this->getDoctrine()->getRepository('metaProjectBundle:StandardProject');
+            $shared_projects = $projectRepository->findById($this->container->getParameter('shared.projects'));
+            return $this->render('metaGeneralBundle:Community:privateSpace.html.twig', array( 'shared_projects' => $shared_projects));
         }
        
 

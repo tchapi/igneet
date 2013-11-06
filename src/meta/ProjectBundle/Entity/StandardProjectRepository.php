@@ -200,23 +200,25 @@ class StandardProjectRepository extends EntityRepository
   /*
    * Fetch top N projects for the user in the given community
    */
-  public function findTopProjectsInCommunityForUser($community, $user, $max = 3)
+  public function findTopProjectsInCommunityForUser($options)
   {
     
+    $max = $options['max']?$options['max']:3;
+
     $qb = $this->getEntityManager()->createQueryBuilder();
     $query = $qb->select('sp, MAX(l.created_at) AS last_update')
             ->from('metaProjectBundle:StandardProject', 'sp')
             ->join('sp.logEntries', 'l')
             ->join('sp.owners', 'u')
             ->where('u = :user')
-            ->setParameter('user', $user)
+            ->setParameter('user', $options['user'])
             ->andWhere('sp.deleted_at IS NULL');
 
-    if ($community === null){
+    if ($options['community'] === null){
       $query->andWhere('sp.community IS NULL');
     } else {
       $query->andWhere('sp.community = :community')
-            ->setParameter('community', $community);
+            ->setParameter('community', $options['community']);
     }
     
     return $query->groupBy('sp.id')
@@ -229,11 +231,17 @@ class StandardProjectRepository extends EntityRepository
 
    /*
    * Fetch last N projects for the user in the given community
+   * Options :
+   * - 'community'
+   * - 'user'
+   * - 'max' results
    */
-  public function findLastProjectsInCommunityForUser($community, $user, $max = 3)
+  public function findLastProjectsInCommunityForUser($options)
   {
+
+    $max = $options['max']?$options['max']:3;
  
-    $query = $this->getQuery($community, $user);
+    $query = $this->getQuery($options['community'], $options['user']);
 
     return $query->groupBy('sp.id')
             ->orderBy('sp.created_at', 'DESC')

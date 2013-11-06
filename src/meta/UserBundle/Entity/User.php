@@ -1228,22 +1228,6 @@ class User implements AdvancedUserInterface
     }
 
     /**
-     * Count public comments
-     *
-     * @return integer
-     */
-    public function countPublicComments()
-    {
-        $count = 0;
-
-        foreach ($this->comments as $comment) {
-            if ($comment->isPublic()) $count++;
-        }
-
-        return $count;
-    }
-
-    /**
      * Add ideaWatched
      *
      * @param \meta\IdeaBundle\Entity\Idea $ideaWatched
