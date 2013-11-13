@@ -9,5 +9,7 @@ test*
 exclude.rsync
 TODO*
 README.md
+crontabs
+composer.*
 LICENSE
 UPGRADE.md
