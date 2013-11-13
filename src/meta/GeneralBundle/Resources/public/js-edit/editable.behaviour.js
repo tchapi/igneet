@@ -107,7 +107,7 @@ $(document).ready(function(){
          contentBox.html(data);             
       })
       .error(function(errors) {
-         messagesBox.html('<span class="alert alert-error">' + Translator.get('alert.error.saving.changes') + '</span>');
+         messagesBox.html('<span class="alert alert-danger">' + Translator.get('alert.error.saving.changes') + '</span>');
       });
 
     });
