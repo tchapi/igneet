@@ -2,6 +2,7 @@ idea:
   title: "Ideas"
   titleArchived: "Archived Ideas"
   allIdeas: "All Ideas"
+  allIdeas.menu: "Ideas"
   listHelp:
     community: "You will find here the list of ideas in the community %community%."
     privateSpace: "You will find here all the ideas in your own private space."

@@ -7,6 +7,7 @@ project:
   deleted: "The project %project% has been deleted successfully."
   deleteHelp: "Are you sure you want to delete this project ?"
   allProjects: "All projects"
+  allProjects.menu: "Projects"
   none: "No projects yet !"
   not.found: "This project was not found."
   picture:

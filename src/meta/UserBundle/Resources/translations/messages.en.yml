@@ -1,6 +1,7 @@
 user:
   title: "Users"
   allUsers: "All Users"
+  allUsers.menu: "Users"
   menu: "My profile"
   welcome: "Welcome! This is your profile page, where you can directly edit your information by clicking on the underlined text."
   not.found: "This user does not exist."
