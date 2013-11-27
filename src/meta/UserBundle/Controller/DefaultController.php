@@ -765,7 +765,7 @@ class DefaultController extends Controller
             $repository = $this->getDoctrine()->getRepository('metaUserBundle:User');
             $users = $repository->findAllUsersInCommunityExceptMe($authenticatedUser, $authenticatedUser->getCurrentCommunity(), $target['params']['guest']);
 
-            if (count($users) > 0){
+            if (count($users) > 0 || $target['external'] == true){
 
                 return $this->render('metaUserBundle:Default:choose.html.twig', array('users' => $users, 'external' => $target['external'], 'targetAsBase64' => $targetAsBase64, 'token' => $request->get('token')));
 

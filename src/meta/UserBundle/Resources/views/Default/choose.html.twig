@@ -15,6 +15,7 @@
 
 {% block content %}
 <form action="{{ path('u_choose_user', { 'targetAsBase64' : targetAsBase64, 'token': token }) }}" method="post" class="form-horizontal">
+   
     <section>
       <div class="sectionTitle"><label for="username" class="required {% if users|length == 0 %}muted{% endif %}">{{ "user.choose.field"|trans }} : </label></div>
       <div class="sectionContent">
