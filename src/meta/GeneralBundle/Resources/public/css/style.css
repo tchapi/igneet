@@ -553,7 +553,7 @@ div.ideaAbout{
   vertical-align: top;
   padding: 5px 20px;
   height: 140px;
-  width: 100px;
+  width: 200px;
 }
 a.removeUserIcon{
   position: absolute;
@@ -574,6 +574,7 @@ div.timeline_filters{
 }
 ul.timeline{
   margin: 0;
+  padding: 0;
 }
 ul.timeline div.date-wrapper {
   margin-left: 414px;
@@ -772,7 +773,7 @@ ul.comments li div.comment{
 }
 ul.timeline li div.comment{
   display: inline-block;
-  width: 835px;
+  width: 794px;
 }
 
 ul.comments .actions,
