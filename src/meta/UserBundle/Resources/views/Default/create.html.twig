@@ -33,9 +33,9 @@
 {% endblock %}
 
 {% block form_row %}
-<div class="control-group {% if errors %}error{% endif %}">
-  <label class="control-label" for="inputEmail">{{ form_label(form) }}</label>
-  <div class="controls">
+<div class="form-group {% if errors %}error{% endif %}">
+  <label class="control-label col-sm-4" for="inputEmail">{{ form_label(form) }}</label>
+  <div class="controls col-sm-8">
     {{ form_widget(form) }}
     {% if errors %}
     <span class="help-block error-block">{{ form_errors(form) }}</span>
@@ -65,8 +65,10 @@
 <div class="formContent">
   <form action="{% if openid %}{{ path('u_signup_finish', { 'inviteToken': inviteToken }) }}{% else %}{{ path('u_signup', { 'inviteToken': inviteToken }) }}{% endif %}" method="post" {{ form_enctype(form) }} class="form-horizontal">
       {{ form_widget(form) }}
-      <div class="form-actions">
-        <input type="submit" value="{{ "user.createForm.create"|trans }}" class="btn btn-success" />
+      <div class="form-group">
+        <div class="col-sm-offset-4 col-sm-8">
+          <input type="submit" value="{{ "user.createForm.create"|trans }}" class="btn btn-success" />
+        </div>
       </div>
   </form>
 </div>
