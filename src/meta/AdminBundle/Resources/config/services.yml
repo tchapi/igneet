@@ -1,0 +1,8 @@
+parameters:
+    admin.stats.class: meta\AdminBundle\Stats\Stats
+
+services:
+    stats:
+        class: %admin.stats.class%
+        arguments: 
+            entity_manager: "@doctrine.orm.entity_manager"
