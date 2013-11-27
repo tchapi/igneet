@@ -6,10 +6,12 @@
 
 {% block stylesheets %}
 
-{% stylesheets  'bundles/metageneral/css/bootstrap.scss' 
+{% stylesheets  'bundles/metageneral/css/_normalize.scss'
+                'bundles/metageneral/css/_zen-grids.scss'
+                
                 'bundles/metageneral/css/font-awesome.scss' 
-                'bundles/metageneral/css/select2.css' 
-                'bundles/metageneral/css/style.css' 
+                'bundles/metageneral/css/select2.css'
+                'bundles/metageneral/css/_custom.scss' 
   filter='?yui_css,cssrewrite' output='css/min/base.css' %}
         <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}" />
 {% endstylesheets %}
