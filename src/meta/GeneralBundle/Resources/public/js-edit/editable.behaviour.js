@@ -176,6 +176,8 @@ $(document).ready(function(){
       $.post($(this).attr('data-url'), {
         name: $(this).attr('data-name'),
         value: $(this).is(':checked')?1:0
+      }, function(){
+        setFlash('success', Translator.get('user.settings.saved'));
       });
     });
 
@@ -184,6 +186,8 @@ $(document).ready(function(){
       $.post($(this).attr('data-url'), {
         name: $(this).attr('data-name'),
         value: $(this).is(':checked')?1:0
+      }, function(){
+        setFlash('success', Translator.get('user.settings.saved'));
       });
     });
 
@@ -192,6 +196,8 @@ $(document).ready(function(){
       $.post($(this).attr('data-url'), {
         name: $(this).attr('data-name'),
         value: $(this).is(':checked')?1:0
+      }, function(){
+        setFlash('success', Translator.get('user.settings.saved'));
       });
     });
 

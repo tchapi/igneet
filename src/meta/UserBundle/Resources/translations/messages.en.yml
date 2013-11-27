@@ -169,6 +169,7 @@ user:
     menu: "Settings"
     title: "Settings"
     help: "All your account settings"
+    saved: "Your settings have successfully been saved."
   digest:
     settings: "Digest settings"
     enable: "Enable email digests"
