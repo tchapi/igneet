@@ -6,37 +6,51 @@
 // Customs
 @import "_variables.scss";
 
-body{
+body {
   background-color: $background;
+  margin-top: $navbar-height;
 }
 
-a{
+footer {
+  text-align: center;
+  padding: zen-half-gutter();
+  margin-top: $zen-gutters;
+}
+
+a {
   color: $primary;
   text-decoration: none;
 }
 
-header{
-  background-color: $navbar-color;
-  @include zen-grid-container();
-  @include zen-grid-background();
+/* NAVIGATION */
+nav {
+  background-color: $navbar-background;
+  height: $navbar-height;
+  position: fixed;
+  top: 0px;
 }
 
-header nav{
-  @include zen-grid-item(12,1);
+nav > ul {
+  list-style-type: none; 
+}
+nav > ul > li {
+ display: inline;
+ padding: zen-half-gutter();
 }
 
-.content-container{
+/* CONTENT CONTAINER */
+.content-container {
   margin: 0 auto;
   width: $main-width;
   @include zen-grid-container();
   @include zen-grid-background();
 }
 
-.footer-container{
+.footer-container {
 
 }
 
 
-.content-container > .login{
+.content-container > .login {
   @include zen-grid-item(8,3);
 }
