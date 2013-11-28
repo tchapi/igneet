@@ -1,40 +1,36 @@
-{% extends 'metaUserBundle::layout.html.twig' %}
+{% extends '::base.html.twig' %}
 
 {% block title %}{{ parent() }} > {{ "login"|trans }}{% endblock %}
 
-{% block header %}
-  <div class="objectHeader">
-    <!-- A supprimer (les textes ne sont utilisés que sur cette page) -->
-    <a href="{{ path('u_signup_choice') }}" /> {{ "user.login.signup"|trans }}</a>
-    <a href="{{ path('recover') }}" /> {{ "user.login.recover"|trans }} </a>
-    <a href="{{ path('reactivate') }}" /> {{ "user.login.reactivate"|trans }} </a>
+{% block body %}
+  <div class="login">
+    {% if error %}
+    <div class="alert alert-danger">{{ error.message|trans({},'errors') }}</div>
+    {% endif %}
+    <form action="{{ path('login_check') }}" method="POST">
+      <section>
+        <div class="sectionTitle"><label for="username">{{ "user.login.login"|trans }} :</label></div>
+        <div class="sectionContent">
+          <input id="username" type="text" name="_username" value="{{ last_username }}" />
+        </div>
+      </section>
+      <section>
+        <div class="sectionTitle"><label for="password">{{ "user.login.password"|trans }} :</label></div>
+        <div class="sectionContent">
+          <input id="password" type="password" name="_password" />
+        </div>
+      </section>
+      <a href="{{ path('recover') }}" /> {{ "user.login.recover"|trans }} </a>
+      <a href="{{ path('reactivate') }}" /> {{ "user.login.reactivate"|trans }} </a>
+      <section>
+        <div class="sectionTitle"></div>
+        <div class="sectionContent">
+          <a href="{{ path('u_signup_choice') }}" /> {{ "user.login.signup"|trans }}</a>
+          <input type="submit" name="{{ "user.login.signin"|trans }}" class="btn btn-info"/>
+        </div>
+        <a href="{{ path('fp_openid_security_check', { 'openid_identifier': "https://www.google.com/accounts/o8/id" }) }}" class="btn"><i class="fa fa-google-plus-square"></i></a>
+        <a href="{{ path('fp_openid_security_check', { 'openid_identifier': "https://openid.stackexchange.com/" }) }}" class="btn"><i class="fa fa-stack-exchange"></i></a>
+      </section>
+    </form>
   </div>
-{% endblock %}
-
-{% block content %}
-{% if error %}
-<div class="alert alert-danger">{{ error.message|trans({},'errors') }}</div>
-{% endif %}
-<form action="{{ path('login_check') }}" method="POST">
-  <section>
-    <div class="sectionTitle"><label for="username">{{ "user.login.login"|trans }} :</label></div>
-    <div class="sectionContent">
-      <input id="username" type="text" name="_username" value="{{ last_username }}" />
-    </div>
-  </section>
-  <section>
-    <div class="sectionTitle"><label for="password">{{ "user.login.password"|trans }} :</label></div>
-    <div class="sectionContent">
-      <input id="password" type="password" name="_password" />
-    </div>
-  </section>
-  <section>
-    <div class="sectionTitle"></div>
-    <div class="sectionContent">
-      <input type="submit" name="{{ "user.login.signin"|trans }}" class="btn btn-info"/>
-    </div>
-    <a href="{{ path('fp_openid_security_check', { 'openid_identifier': "https://www.google.com/accounts/o8/id" }) }}" class="btn"><i class="fa fa-google-plus-square"></i></a>
-    <a href="{{ path('fp_openid_security_check', { 'openid_identifier': "https://openid.stackexchange.com/" }) }}" class="btn"><i class="fa fa-stack-exchange"></i></a>
-  </section>
-</form>
 {% endblock %}

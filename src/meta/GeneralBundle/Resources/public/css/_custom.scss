@@ -1,25 +1,42 @@
-// Imports
+// Libs
 @import "_normalize.scss";
 @import "_zen-grids.scss";
-@import "font-awesome.scss"; 
+@import "_font-awesome.scss"; 
 
-// SCSS custom styles here
+// Customs
+@import "_variables.scss";
 
+body{
+  background-color: $background;
+}
 
-$background: #1e1e1e;
-$primary: #e37000;
-$secondary: #e37000;
+a{
+  color: $primary;
+  text-decoration: none;
+}
 
-// Zen-grids
-$zen-columns: 12; // Set the total number of columns in the grid.
-$zen-gutters: 10px;
+header{
+  background-color: $navbar-color;
+  @include zen-grid-container();
+  @include zen-grid-background();
+}
 
-// The main width of the container
-$main-width: 980px;
+header nav{
+  @include zen-grid-item(12,1);
+}
 
-.container{
+.content-container{
   margin: 0 auto;
   width: $main-width;
   @include zen-grid-container();
   @include zen-grid-background();
+}
+
+.footer-container{
+
+}
+
+
+.content-container > .login{
+  @include zen-grid-item(8,3);
 }
