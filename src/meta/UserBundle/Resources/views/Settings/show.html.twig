@@ -59,7 +59,7 @@
         </label>
       </form>
     </div>
-    <div class="digest {% if not app.user.enableDigest %}hidden{% endif %}">
+    <div class="digest" {% if not app.user.enableDigest %}style="display: none;"{% endif %}>
       <div>{{ "user.digest.frequency"|trans }} : <span class="editable" data-title="{{ "user.digest.frequencyHelp"|trans }}" data-name="frequency" data-type="select" data-url="{{ path('u_edit_user_settings', {'token': csrf_token('editSettings') }) }}" data-source="[{value: 1, text: '{{ "daily"|trans }}'}, {value: 2, text: '{{ "weekly"|trans }}'}, {value: 3, text: '{{ "bimonthly"|trans }}'}]">{% if app.user.digestFrequency %}{{ app.user.digestFrequency|trans }}{% else %}{{ "weekly"|trans }}{% endif %}</span></div>
       <div>
         <form class="form-horizontal">
