@@ -112,6 +112,14 @@ by http://knplabs.com/
 
 - - -
 
+### Zen Grids - next.zengrids.com
+
+This code is under the GPL license. 
+
+Built by @JohnAlbin
+
+- - -
+
 For the static site only :
 
  * Skeleton V1.2 - Copyright 2011, Dave Gamache

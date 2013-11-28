@@ -3,14 +3,11 @@
 {% block title %}{{ parent() }} > {{ "login"|trans }}{% endblock %}
 
 {% block header %}
-  <div class="headerAvatarAndActions">
-    <div class="textAvatar"><i class="fa fa-lock"></i></div>
-  </div>
   <div class="objectHeader">
-    <h2>{{ "user.login.title"|trans }}</h2>
-    <h4>{{ "user.login.help"|trans }}</h4>
-    <p>{{ "user.login.text1"|trans({'%link%': '<a href="' ~ path('u_signup_choice') ~ '" />' ~ "user.login.signup"|trans ~ '</a>' })|raw }}</p>
-    <p>{{ "user.login.text2"|trans({'%recover%': '<a href="' ~ path('recover') ~ '" />' ~ "user.login.recover"|trans ~ '</a>', '%reactivate%': '<a href="' ~ path('reactivate') ~ '" />' ~ "user.login.reactivate"|trans ~ '</a>' })|raw }}</p>
+    <!-- A supprimer (les textes ne sont utilisés que sur cette page) -->
+    <a href="{{ path('u_signup_choice') }}" /> {{ "user.login.signup"|trans }}</a>
+    <a href="{{ path('recover') }}" /> {{ "user.login.recover"|trans }} </a>
+    <a href="{{ path('reactivate') }}" /> {{ "user.login.reactivate"|trans }} </a>
   </div>
 {% endblock %}
 

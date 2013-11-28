@@ -1,1 +1,25 @@
+// Imports
+@import "_normalize.scss";
+@import "_zen-grids.scss";
+@import "font-awesome.scss"; 
+
 // SCSS custom styles here
+
+
+$background: #1e1e1e;
+$primary: #e37000;
+$secondary: #e37000;
+
+// Zen-grids
+$zen-columns: 12; // Set the total number of columns in the grid.
+$zen-gutters: 10px;
+
+// The main width of the container
+$main-width: 980px;
+
+.container{
+  margin: 0 auto;
+  width: $main-width;
+  @include zen-grid-container();
+  @include zen-grid-background();
+}

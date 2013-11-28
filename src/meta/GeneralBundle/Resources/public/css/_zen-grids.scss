@@ -1,3 +1,12 @@
 // Import the partials for Zen Grids.
 
 @import "zen-grids/grids";
+
+// For use in development only
+/*
+During development, it is often useful for the layout designer
+to see the grid columns as the grid items are arranged on the page.
+The “background” module can provide a background image for use
+during grid development.
+*/
+@import "zen-grids/background";
