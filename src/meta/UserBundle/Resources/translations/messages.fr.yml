@@ -61,6 +61,8 @@ user:
     recover: "Mot de passe perdu ?"
     login: "Votre nom d'utilisateur"
     password: "Votre mot de passe"
+    gplus.title: "Se connecter avec votre compte Google"
+    stacke.title: "Se connecter avec votre compte Stack Exchange"
   choose:
     title: "Choisissez un utilisateur"
     help: "Vous devez indiquer un utilisateur pour continuer avec votre requête."

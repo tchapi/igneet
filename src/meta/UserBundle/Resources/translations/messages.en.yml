@@ -61,6 +61,8 @@ user:
     recover: "Lost your password ?"
     login: "Your username"
     password: "Your password"
+    gplus.title: "Connect with your Google account"
+    stacke.title: "Connect with your Stack Exchange account"
   choose:
     title: "Choose a user"
     help: "You need to indicate a specific user to continue with your request."

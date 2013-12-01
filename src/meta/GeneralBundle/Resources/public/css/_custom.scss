@@ -62,7 +62,10 @@ nav > ul > li {
 .content-container {
   margin: 0 auto;
   width: $main-width;
-  @include media($tablet, $mobile) { width: 100%; }
+  @include media($tablet, $mobile) { 
+    width: 100%;
+    padding: 0px 15px;
+  }
   @include outer-container();
 }
 
@@ -129,8 +132,8 @@ $login-h1-size: 4em;
     }
   }
   form.login {
-    & > * {
-      height: 60px;
+    position: relative;
+    & > *:not(.openid) {
       padding: 20px 10px;
       margin-bottom: 2px;
     }
@@ -142,10 +145,13 @@ $login-h1-size: 4em;
       &:focus{ background: $_input-background-focus; outline: 0; }
       &:hover:not(:focus){ background: $_input-hover; }
 
-      &::-webkit-input-placeholder { color: $_input-placeholder; }
-      &:-moz-placeholder { /* Firefox 18- */ color: $_input-placeholder; }
-      &::-moz-placeholder {  /* Firefox 19+ */ color: $_input-placeholder; }
-      &:-ms-input-placeholder { color: $_input-placeholder; }
+      @include placeholder { color: $_input-placeholder; }
+    }
+    .openid {
+      position: absolute;
+      right: 6px;
+      top: 8px;
+      z-index: 2;
     }
     aside {
       @include span-columns(4 of 8);
@@ -166,6 +172,9 @@ $login-h1-size: 4em;
       }
       color: $_text;
       text-align: center;
+      &:hover{
+        color: $_primary;
+      }
     }
     input[type=submit]{
       @include span-columns(2 of 8);
@@ -179,6 +188,9 @@ $login-h1-size: 4em;
       }
       background: $_submit-background;
       color: $_text;
+      &:hover{
+        background: $_primary;
+      }
     }
   }
 }

@@ -12,6 +12,22 @@
   <form action="{{ path('login_check') }}" method="POST" class="login">
 
     <input id="username" type="text" name="_username" value="{{ last_username }}" placeholder="{{ "user.login.login"|trans }}"/>
+      
+    <div class="openid">
+      <a href="{{ path('fp_openid_security_check', { 'openid_identifier': "https://www.google.com/accounts/o8/id" }) }}" title="{{ "user.login.gplus.title"|trans }}">
+        <span class="fa-stack fa-lg">
+          <i class="fa fa-square fa-stack-2x"></i>
+          <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+        </span>
+      </a>
+      <a href="{{ path('fp_openid_security_check', { 'openid_identifier': "https://openid.stackexchange.com/" }) }}" title="{{ "user.login.stacke.title"|trans }}">
+        <span class="fa-stack fa-lg">
+          <i class="fa fa-square fa-stack-2x"></i>
+          <i class="fa fa-stack-exchange fa-stack-1x fa-inverse"></i>
+        </span>
+      </a>
+    </div>
+
     <input id="password" type="password" name="_password" placeholder="{{ "user.login.password"|trans }}"/>
     
     {% if error %}
@@ -25,13 +41,6 @@
 
     <a class="signup" href="{{ path('u_signup_choice') }}" /> {{ "user.login.signup"|trans }}</a>
     <input type="submit" value="{{ "user.login.signin"|trans }}"/>
-
-    <a href="{{ path('fp_openid_security_check', { 'openid_identifier': "https://www.google.com/accounts/o8/id" }) }}">
-      <i class="fa fa-google-plus-square"></i>
-    </a>
-    <a href="{{ path('fp_openid_security_check', { 'openid_identifier': "https://openid.stackexchange.com/" }) }}">
-      <i class="fa fa-stack-exchange"></i>
-    </a>
 
   </form>
 
