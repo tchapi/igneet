@@ -55,12 +55,12 @@ user:
   about: "À propos de l'utilisateur %user%"
   activity: "Activité"
   login:
-    signup: "créer un"
-    reactivate: "Réactiver"
-    recover: "Mot de passe perdu"
-    login: "Nom d'utilisateur"
-    password: "Mot de passe"
+    signup: "S'enregistrer"
     signin: "Connexion"
+    reactivate: "Réactiver"
+    recover: "Mot de passe perdu ?"
+    login: "Votre nom d'utilisateur"
+    password: "Votre mot de passe"
   choose:
     title: "Choisissez un utilisateur"
     help: "Vous devez indiquer un utilisateur pour continuer avec votre requête."

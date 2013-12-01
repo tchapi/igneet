@@ -3,24 +3,27 @@
 {% block title %}{{ parent() }} > {{ "login"|trans }}{% endblock %}
 
 {% block container %}
-
-<div class="login">
+  
+  <header class="login">
+    <i class="logo-igneet-64"></i>
+    <h1>Igneet</h1>
+    <span>{{ app.request.host }}</span>
+  </header>
 
   {% if error %}
   <div class="alert alert-danger">{{ error.message|trans({},'errors') }}</div>
   {% endif %}
   
-  <form action="{{ path('login_check') }}" method="POST">
-    <label for="username">{{ "user.login.login"|trans }} :</label>
-    <input id="username" type="text" name="_username" value="{{ last_username }}" />
-    <label for="password">{{ "user.login.password"|trans }} :</label>
-    <input id="password" type="password" name="_password" />
+  <form action="{{ path('login_check') }}" method="POST" class="login">
+
+    <input id="username" type="text" name="_username" value="{{ last_username }}" placeholder="{{ "user.login.login"|trans }}"/>
+    <input id="password" type="password" name="_password" placeholder="{{ "user.login.password"|trans }}"/>
      
     <a href="{{ path('recover') }}" /> {{ "user.login.recover"|trans }} </a>
     <a href="{{ path('reactivate') }}" /> {{ "user.login.reactivate"|trans }} </a>
     <a href="{{ path('u_signup_choice') }}" /> {{ "user.login.signup"|trans }}</a>
     
-    <input type="submit" name="{{ "user.login.signin"|trans }}"/>
+    <input type="submit" value="{{ "user.login.signin"|trans }}"/>
     <a href="{{ path('fp_openid_security_check', { 'openid_identifier': "https://www.google.com/accounts/o8/id" }) }}">
       <i class="fa fa-google-plus-square"></i>
     </a>
@@ -28,7 +31,5 @@
       <i class="fa fa-stack-exchange"></i>
     </a>
   </form>
-
-</div>
 
 {% endblock %}

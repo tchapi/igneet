@@ -7,7 +7,9 @@
 @import "_variables.scss";
 
 body {
-  background-color: $background;
+  background-color: $_background;
+}
+body div.push-wrapper{
   margin-top: $navbar-height;
 }
 
@@ -18,13 +20,29 @@ footer {
 }
 
 a {
-  color: $primary;
+  color: $_primary;
   text-decoration: none;
+}
+input {
+  border: none;
+}
+
+// Logos
+@for $i from 4 through 9 {
+  $size: pow(2,$i);
+  .logo-igneet-#{$size} {
+    width: #{$size}px;
+    height: #{$size}px;
+    display: inline-block;
+    margin-right: #{$size/8}px;
+    vertical-align: middle;
+    background: 0 0 transparent url('#{$img-path}logo/logo-#{$size}.png') no-repeat;
+  }
 }
 
 /* NAVIGATION */
 nav {
-  background-color: $navbar-background;
+  background-color: $_navbar-background;
   height: $navbar-height;
   position: fixed;
   top: 0px;
@@ -45,12 +63,46 @@ nav > ul > li {
   @include zen-grid-container();
   @include zen-grid-background();
 }
+@media all and (min-width: 200px) and (max-width: $main-width) {
+  .content-container {
+    width: inherit;
+  }
+}
 
+/* GLOBAL FOOTER */
 .footer-container {
 
 }
 
+/* LOGIN */
+.content-container {
+  *.login {
+    @include zen-new-row();
+    @include zen-grid-item(8,3);
+  }
+  header {
+    h1 {
+      display: inline-block;
+      color: $_text;
+      font-size: 4em;
+      vertical-align: middle;
+    }
+  }
+  form {
+    input[type=text], input[type=password] {
+      @include zen-grid-flow-item(8,8);
+      height: 60px;
+      padding: 20px 10px;
+      background: $_input-background;
+      color: $_input-foreground;
+      margin-bottom: 2px;
+    
+      &:focus{ background: $_input-background-focus; outline: 0; }
 
-.content-container > .login {
-  @include zen-grid-item(8,3);
+      &::-webkit-input-placeholder { color: $_input-placeholder; }
+      &:-moz-placeholder { /* Firefox 18- */ color: $_input-placeholder; }
+      &::-moz-placeholder {  /* Firefox 19+ */ color: $_input-placeholder; }
+      &:-ms-input-placeholder { color: $_input-placeholder; }
+    }
+  }
 }

@@ -1,7 +1,16 @@
 // Colors
-$background: #1e1e1e;
-$primary: #e37000;
-$secondary: #e37000;
+$_background: #1e1e1e;
+$_primary: #e37000;
+$_secondary: #e37000;
+
+$_text: #FFFFFF;
+$_link: #646464;
+
+// Inputs :: DARK
+$_input-background: #252525;
+$_input-background-focus: $_primary;
+$_input-placeholder: #4c4c4c;
+$_input-foreground: $_text;
 
 // Zen-grids
 $zen-columns: 12; // Set the total number of columns in the grid.
@@ -9,7 +18,10 @@ $zen-gutters: 20px;
 
 // Navbar
 $navbar-height: 40px;
-$navbar-background: #282828;
+$_navbar-background: #282828;
 
 // The main width of the container
 $main-width: 980px;
+
+// Img path
+$img-path: "../img/";

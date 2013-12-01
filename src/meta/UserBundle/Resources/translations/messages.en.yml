@@ -55,12 +55,12 @@ user:
   about: "About %user%"
   activity: "Activity"
   login:
-    signup: "signup"
-    reactivate: "Reactivate"
-    recover: "Lost password"
-    login: "Login"
-    password: "Password"
+    signup: "Sign up"
     signin: "Sign in"
+    reactivate: "Reactivate"
+    recover: "Lost your password ?"
+    login: "Your username"
+    password: "Your password"
   choose:
     title: "Choose a user"
     help: "You need to indicate a specific user to continue with your request."
