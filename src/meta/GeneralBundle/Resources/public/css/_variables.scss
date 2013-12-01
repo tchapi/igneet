@@ -1,19 +1,26 @@
-@import "neat/_neat-helpers.scss"; // or "neat-helpers" when in Rails
+@import "neat/_neat-helpers.scss";
 
-// Colors
+/* ******************************************************************** */
+/*                                Colors                                */
+/* ******************************************************************** */
 $_background: #1e1e1e;
 $_primary: #e37000;
 $_secondary: #e37000;
+$_error: #9c3535;
 
 $_text: #FFFFFF;
 $_link: #646464;
 
+
+/* ******************************************************************** */
+
 // Inputs :: DARK
+$_submit-background: #313131;
 $_input-background: #252525;
 $_input-background-focus: $_primary;
 $_input-placeholder: #4c4c4c;
+$_input-hover: $_submit-background;
 $_input-foreground: $_text;
-$_submit-background: #313131;
 
 // Navbar
 $navbar-height: 40px;
@@ -23,6 +30,9 @@ $_navbar-background: #282828;
 $main-width: 980px;
 $mobile-width: 480px;
 
+/* ******************************************************************** */
+/*                             NEAT SETTINGS                            */
+/* ******************************************************************** */
 // Change the grid settings
 $gutter: 20px;
 $grids-columns: 12;

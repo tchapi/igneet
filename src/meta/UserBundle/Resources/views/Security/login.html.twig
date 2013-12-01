@@ -8,22 +8,22 @@
     <h1><i class="logo-igneet-64"></i> Igneet</h1>
     <span>{{ app.request.host }}</span>
   </header>
-
-  {% if error %}
-  <div class="alert alert-danger">{{ error.message|trans({},'errors') }}</div>
-  {% endif %}
   
   <form action="{{ path('login_check') }}" method="POST" class="login">
 
     <input id="username" type="text" name="_username" value="{{ last_username }}" placeholder="{{ "user.login.login"|trans }}"/>
     <input id="password" type="password" name="_password" placeholder="{{ "user.login.password"|trans }}"/>
     
+    {% if error %}
+    <div class="error"><i class="fa fa-exclamation-triangle"></i> {{ error.message|trans({},'errors') }}</div>
+    {% endif %}
+
     <aside>
       <a href="{{ path('recover') }}" /> {{ "user.login.recover"|trans }} </a>
-      <a href="{{ path('reactivate') }}" /> {{ "user.login.reactivate"|trans }} </a>
+      <!-- <a href="{{ path('reactivate') }}" /> {{ "user.login.reactivate"|trans }} </a> -->
     </aside>
 
-    <a class="signin" href="{{ path('u_signup_choice') }}" /> {{ "user.login.signup"|trans }}</a>
+    <a class="signup" href="{{ path('u_signup_choice') }}" /> {{ "user.login.signup"|trans }}</a>
     <input type="submit" value="{{ "user.login.signin"|trans }}"/>
 
     <a href="{{ path('fp_openid_security_check', { 'openid_identifier': "https://www.google.com/accounts/o8/id" }) }}">

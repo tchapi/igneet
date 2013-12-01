@@ -56,8 +56,8 @@ user:
   activity: "Activity"
   login:
     signup: "Sign up"
-    signin: "Sign in"
-    reactivate: "Reactivate"
+    signin: "Log in"
+    reactivate: "Account deleted ?"
     recover: "Lost your password ?"
     login: "Your username"
     password: "Your password"

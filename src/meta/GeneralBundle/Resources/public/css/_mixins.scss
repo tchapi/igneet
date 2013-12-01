@@ -1,0 +1,20 @@
+/* ******************************************************************** */
+/*                             CUSTOM MIXINS                            */
+/* ******************************************************************** */
+
+@mixin logo-font(){
+  letter-spacing: -0.05em;
+  font-family: 'gotham_medium', 'Arial', sans-serif;
+}
+
+@mixin up-triangle($size, $color){
+  &:before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: -$size;
+    left: 15px;
+    @include triangle($size, $color, up); // Thanks to the Bourbon Add-on
+  }
+  position: relative;
+}

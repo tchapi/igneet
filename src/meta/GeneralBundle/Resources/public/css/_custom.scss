@@ -1,11 +1,16 @@
 // Libs
-@import "_normalize.scss";
-@import "bourbon/_bourbon.scss";
-@import "_variables.scss";
-@import "neat/_neat.scss";
-@import "_font-awesome.scss"; 
+@import "_normalize";
+@import "_font-awesome";
+@import "bourbon/_bourbon"; 
+@import "_fonts";
+@import "_variables";
+@import "_mixins";
+@import "neat/_neat";
 
-body { background-color: $_background; }
+body {
+  background-color: $_background; 
+  font-family: 'gotham_book', 'Arial', sans-serif;
+}
 
 /* Helper to account for pages that contain no navbar, and thus don't need a top margin for the body */
 body div.push-wrapper{ margin-top: $navbar-height; }
@@ -13,7 +18,8 @@ body div.push-wrapper{ margin-top: $navbar-height; }
 footer {
   text-align: center;
   padding: $gutter/2;
-  margin-top: $gutter;
+  margin-top: $gutter*2;
+  font-size: 0.8em;
 }
 
 a {
@@ -60,6 +66,13 @@ nav > ul > li {
   @include outer-container();
 }
 
+/* ERRORS AND ALERTS */
+.error {
+  @include up-triangle(20px, $_error);
+  color: $_text;
+  background-color: $_error;
+}
+
 
 /* ******************************************************************** */
 /* ******************************************************************** */
@@ -72,7 +85,7 @@ nav > ul > li {
 /* ******************************************************************** */
 $login-h1-size: 4em;
 .content-container {
-  & > * {
+  & > *.login {
     @include span-columns(8);
     @include shift(2);
     @include media($tablet, $mobile) {
@@ -81,17 +94,27 @@ $login-h1-size: 4em;
     }
   }
   header.login {
+    margin-top: 130px;
+    margin-bottom: 80px;
+    @include media($tablet, $mobile) {
+      margin-top: 30px;
+      margin-bottom: 20px;
+    }
     h1 {
       @include span-columns(5 of 8);
       @include media($tablet, $mobile) {
         @include fill-parent();
       }
+      @include logo-font;
       display: inline-block;
       color: $_text;
       font-size: $login-h1-size;
       margin-top: 0px;
       margin-bottom: 0px;
       vertical-align: middle;
+      & > i {
+        margin-bottom: 10px;
+      }
     }
     span {
       @include span-columns(3 of 8);
@@ -100,22 +123,24 @@ $login-h1-size: 4em;
         display: none;
       }
       text-align: right;
-      line-height: $login-h1-size;
+      /*line-height: $login-h1-size; // Padding works better here */
+      padding-top: 40px;
       color: $_link;
     }
   }
-  form {
+  form.login {
     & > * {
       height: 60px;
       padding: 20px 10px;
+      margin-bottom: 2px;
     }
     input[type=text], input[type=password] {
       @include fill-parent();
       background: $_input-background;
       color: $_input-foreground;
-      margin-bottom: 2px;
-    
+      
       &:focus{ background: $_input-background-focus; outline: 0; }
+      &:hover:not(:focus){ background: $_input-hover; }
 
       &::-webkit-input-placeholder { color: $_input-placeholder; }
       &:-moz-placeholder { /* Firefox 18- */ color: $_input-placeholder; }
@@ -131,7 +156,7 @@ $login-h1-size: 4em;
         display: none;
       }
     }
-    a.signin{
+    a.signup{
       @include span-columns(2 of 8);
       @include media($tablet) {
         @include span-columns(1 of 4);
@@ -139,6 +164,7 @@ $login-h1-size: 4em;
       @include media($mobile) {
         display: none;
       }
+      color: $_text;
       text-align: center;
     }
     input[type=submit]{
@@ -152,6 +178,7 @@ $login-h1-size: 4em;
         @include fill-parent();
       }
       background: $_submit-background;
+      color: $_text;
     }
   }
 }

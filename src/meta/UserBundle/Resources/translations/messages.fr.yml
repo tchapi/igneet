@@ -57,7 +57,7 @@ user:
   login:
     signup: "S'enregistrer"
     signin: "Connexion"
-    reactivate: "Réactiver"
+    reactivate: "Compte supprimé ?"
     recover: "Mot de passe perdu ?"
     login: "Votre nom d'utilisateur"
     password: "Votre mot de passe"
