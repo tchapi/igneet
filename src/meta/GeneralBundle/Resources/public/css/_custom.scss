@@ -1,33 +1,29 @@
 // Libs
 @import "_normalize.scss";
-@import "_zen-grids.scss";
+@import "bourbon/_bourbon.scss";
+@import "_variables.scss";
+@import "neat/_neat.scss";
 @import "_font-awesome.scss"; 
 
-// Customs
-@import "_variables.scss";
+body { background-color: $_background; }
 
-body {
-  background-color: $_background;
-}
-body div.push-wrapper{
-  margin-top: $navbar-height;
-}
+/* Helper to account for pages that contain no navbar, and thus don't need a top margin for the body */
+body div.push-wrapper{ margin-top: $navbar-height; }
 
 footer {
   text-align: center;
-  padding: zen-half-gutter();
-  margin-top: $zen-gutters;
+  padding: $gutter/2;
+  margin-top: $gutter;
 }
 
 a {
   color: $_primary;
   text-decoration: none;
 }
-input {
-  border: none;
-}
 
-// Logos
+input { border: none; }
+
+/* STANDARD LOGOS & SIZES */
 @for $i from 4 through 9 {
   $size: pow(2,$i);
   .logo-igneet-#{$size} {
@@ -40,6 +36,7 @@ input {
   }
 }
 
+
 /* NAVIGATION */
 nav {
   background-color: $_navbar-background;
@@ -48,51 +45,72 @@ nav {
   top: 0px;
 }
 
-nav > ul {
-  list-style-type: none; 
-}
+nav > ul { list-style-type: none; }
 nav > ul > li {
  display: inline;
- padding: zen-half-gutter();
+ padding: $gutter/2;
 }
+
 
 /* CONTENT CONTAINER */
 .content-container {
   margin: 0 auto;
   width: $main-width;
-  @include zen-grid-container();
-  @include zen-grid-background();
-}
-@media all and (min-width: 200px) and (max-width: $main-width) {
-  .content-container {
-    width: inherit;
-  }
+  @include media($tablet, $mobile) { width: 100%; }
+  @include outer-container();
 }
 
-/* GLOBAL FOOTER */
-.footer-container {
 
-}
+/* ******************************************************************** */
+/* ******************************************************************** */
+/* ******************************************************************** */
 
-/* LOGIN */
+
+
+/* ******************************************************************** */
+/*                                LOGIN                                 */
+/* ******************************************************************** */
+$login-h1-size: 4em;
 .content-container {
-  *.login {
-    @include zen-new-row();
-    @include zen-grid-item(8,3);
+  & > * {
+    @include span-columns(8);
+    @include shift(2);
+    @include media($tablet, $mobile) {
+      @include fill-parent();
+      @include shift(0);
+    }
   }
-  header {
+  header.login {
     h1 {
+      @include span-columns(5 of 8);
+      @include media($tablet, $mobile) {
+        @include fill-parent();
+      }
       display: inline-block;
       color: $_text;
-      font-size: 4em;
+      font-size: $login-h1-size;
+      margin-top: 0px;
+      margin-bottom: 0px;
       vertical-align: middle;
+    }
+    span {
+      @include span-columns(3 of 8);
+      @include omega;
+      @include media($tablet, $mobile) {
+        display: none;
+      }
+      text-align: right;
+      line-height: $login-h1-size;
+      color: $_link;
     }
   }
   form {
-    input[type=text], input[type=password] {
-      @include zen-grid-flow-item(8,8);
+    & > * {
       height: 60px;
       padding: 20px 10px;
+    }
+    input[type=text], input[type=password] {
+      @include fill-parent();
       background: $_input-background;
       color: $_input-foreground;
       margin-bottom: 2px;
@@ -103,6 +121,37 @@ nav > ul > li {
       &:-moz-placeholder { /* Firefox 18- */ color: $_input-placeholder; }
       &::-moz-placeholder {  /* Firefox 19+ */ color: $_input-placeholder; }
       &:-ms-input-placeholder { color: $_input-placeholder; }
+    }
+    aside {
+      @include span-columns(4 of 8);
+      @include media($tablet) {
+        @include span-columns(2 of 4);
+      }
+      @include media($mobile) {
+        display: none;
+      }
+    }
+    a.signin{
+      @include span-columns(2 of 8);
+      @include media($tablet) {
+        @include span-columns(1 of 4);
+      }
+      @include media($mobile) {
+        display: none;
+      }
+      text-align: center;
+    }
+    input[type=submit]{
+      @include span-columns(2 of 8);
+      @include omega;
+      @include media($tablet) {
+        @include span-columns(1 of 4);
+        @include omega;
+      }
+      @include media($mobile) {
+        @include fill-parent();
+      }
+      background: $_submit-background;
     }
   }
 }

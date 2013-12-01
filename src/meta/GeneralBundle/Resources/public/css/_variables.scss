@@ -1,3 +1,5 @@
+@import "neat/_neat-helpers.scss"; // or "neat-helpers" when in Rails
+
 // Colors
 $_background: #1e1e1e;
 $_primary: #e37000;
@@ -11,10 +13,7 @@ $_input-background: #252525;
 $_input-background-focus: $_primary;
 $_input-placeholder: #4c4c4c;
 $_input-foreground: $_text;
-
-// Zen-grids
-$zen-columns: 12; // Set the total number of columns in the grid.
-$zen-gutters: 20px;
+$_submit-background: #313131;
 
 // Navbar
 $navbar-height: 40px;
@@ -22,6 +21,21 @@ $_navbar-background: #282828;
 
 // The main width of the container
 $main-width: 980px;
+$mobile-width: 480px;
+
+// Change the grid settings
+$gutter: 20px;
+$grids-columns: 12;
+$column: ceil($main-width/$grids-columns);
+$max-width: $main-width;
+
+// DEBUG
+$visual-grid: true;
+$visual-grid-opacity: 0.2;
+
+// Define your breakpoints
+$tablet: new-breakpoint(max-width $main-width 4);
+$mobile: new-breakpoint(max-width $mobile-width 1);
 
 // Img path
 $img-path: "../img/";
