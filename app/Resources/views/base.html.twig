@@ -21,6 +21,7 @@
     <body>
 
         <header>
+          
           <nav class="navbar navbar-default navbar-fixed-top navbar-inverse" role="navigation">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
@@ -34,7 +35,9 @@
             </div>
 
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-              {% render(controller("metaUserBundle:Security:currentUserMenu")) %}
+              {% block menu %}
+                  {% render(controller("metaUserBundle:Security:currentUserMenu")) %}
+              {% endblock %}
 
               {% if shortcode is defined %}
                 <ul class="nav navbar-nav navbar-right">
