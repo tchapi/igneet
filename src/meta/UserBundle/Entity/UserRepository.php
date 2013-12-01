@@ -15,10 +15,10 @@ class UserRepository extends EntityRepository
    * Count all users in a given community
    * Includes GUESTS as well
    */
-  public function countUsersInCommunity($community)
+  public function countUsersInCommunity($options)
   {
     
-    if ($community === null){
+    if ($options['community'] === null){
       return 0;
     }
 
@@ -30,7 +30,32 @@ class UserRepository extends EntityRepository
             ->leftJoin('uc.community', 'c')
             ->where('u.deleted_at IS NULL')
             ->andWhere('c = :community')
-            ->setParameter('community', $community)
+            ->setParameter('community', $options['community'])
+            ->getQuery()
+            ->getSingleScalarResult();
+
+  }
+
+  /*
+   * Count all managers in a given community
+   */
+  public function countManagersInCommunity($options)
+  {
+    
+    if ($options['community'] === null){
+      return 0;
+    }
+
+    $qb = $this->getEntityManager()->createQueryBuilder();
+
+    return $qb->select('COUNT(u)')
+            ->from('metaUserBundle:User', 'u')
+            ->leftJoin('u.userCommunities', 'uc')
+            ->leftJoin('uc.community', 'c')
+            ->where('u.deleted_at IS NULL')
+            ->andWhere('uc.manager = 1')
+            ->andWhere('c = :community')
+            ->setParameter('community', $options['community'])
             ->getQuery()
             ->getSingleScalarResult();
 
@@ -88,7 +113,7 @@ class UserRepository extends EntityRepository
   /*
    * Fetch all users in a given community, except the user $user
    */
-  public function findAllUsersInCommunityExceptMe($user, $community)
+  public function findAllUsersInCommunityExceptMe($user, $community, $findGuests)
   {
     
     if ($community === null){
@@ -97,7 +122,7 @@ class UserRepository extends EntityRepository
 
     $qb = $this->getEntityManager()->createQueryBuilder();
 
-    return $qb->select('u')
+    $query = $qb->select('u')
             ->from('metaUserBundle:User', 'u')
             ->leftJoin('u.userCommunities', 'uc')
             ->leftJoin('uc.community', 'c')
@@ -105,7 +130,14 @@ class UserRepository extends EntityRepository
             ->andWhere('c = :community')
             ->setParameter('community', $community)
             ->andWhere('u <> :user')
-            ->setParameter('user', $user)
+            ->setParameter('user', $user);
+
+    if ($findGuests !== true){
+      $query->andWhere('uc.guest = :guest')
+            ->setParameter('guest', false);
+    }
+
+    return $query
             ->getQuery()
             ->getResult();
 
@@ -166,10 +198,10 @@ class UserRepository extends EntityRepository
   /*
    * Find a user by its username in a given community
    */
-  public function findOneByUsernameInCommunity($username, $findGuest, $community)
+  public function findOneByUsernameInCommunity($options)
   {
 
-    if ($community === null){
+    if ($options['community'] === null){
       return null;
     }
 
@@ -181,15 +213,15 @@ class UserRepository extends EntityRepository
             ->leftJoin('uc.community', 'c')
             ->where('u.deleted_at IS NULL')
             ->andWhere('c = :community')
-            ->setParameter('community', $community);
+            ->setParameter('community', $options['community']);
             
-    if ($findGuest !== true){
+    if ($options['findGuest'] !== true){
       $query->andWhere('uc.guest = :guest')
             ->setParameter('guest', false);
     }
 
     $query->andWhere('u.username = :username')
-          ->setParameter('username', $username);
+          ->setParameter('username', $options['username']);
 
     try {
         $result = $query->getQuery()->getSingleResult();
@@ -198,6 +230,32 @@ class UserRepository extends EntityRepository
     }
 
     return $result;
+  }
+
+  /*
+   * Find all users for which last_seen_at is close to 'now'
+   */
+  public function findAllRecentlyOnlineUsersInCommunity($options)
+  {
+
+    if ($options['community'] === null){
+      return null;
+    }
+
+    $qb = $this->getEntityManager()->createQueryBuilder();
+
+    $query = $qb->select('u')
+            ->from('metaUserBundle:User', 'u')
+            ->leftJoin('u.userCommunities', 'uc')
+            ->leftJoin('uc.community', 'c')
+            ->where('u.deleted_at IS NULL')
+            ->andWhere('c = :community')
+            ->setParameter('community', $options['community'])
+            ->andWhere('u.last_seen_at > :time')
+            ->setParameter('time', $options['time']);
+
+    return  $query->getQuery()
+                  ->getResult();
   }
 
   /*
@@ -211,6 +269,7 @@ class UserRepository extends EntityRepository
     $query = $qb->select('uc, COUNT(uc.user) as nbCommunities')
             ->from('metaUserBundle:UserCommunity', 'uc')
             ->where('uc.user = :user1 OR uc.user = :user2')
+            ->andWhere('uc.deleted_at IS NULL')
             ->setParameter('user1', $user1)
             ->setParameter('user2', $user2)
             ->groupBy('uc.community')

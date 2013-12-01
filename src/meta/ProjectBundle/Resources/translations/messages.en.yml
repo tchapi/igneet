@@ -7,14 +7,20 @@ project:
   deleted: "The project %project% has been deleted successfully."
   deleteHelp: "Are you sure you want to delete this project ?"
   allProjects: "All projects"
+  allProjects.menu: "Projects"
   none: "No projects yet !"
   not.found: "This project was not found."
   picture:
     reset: "The picture for this project has successfully been reset."
     cannot.reset: "You cannot reset the picture for this project."
+  list:
+    all: "Show all projects"
+    closed: "Only show closed projects"
+    sleeping: "Only show sleeping projects"
   listHelp:
     community: "You will find here the list of projects in the community %community%."
     privateSpace: "You will find here all the projects in your own private space."
+    statuses: "Actually only showing projets with status : %statuses%"
   createForm:
     name: "Name of this project"
     namePlaceholder: "My new project"
@@ -163,6 +169,4 @@ project:
     mail:
       sent: "An invitation was sent to %mail% on your behalf. She/He will be added to the project when she/he signs up."
       subject: "You've been invited to a project on igneet"
-  launch: "Help-lists"
-  launch.button: "Add help lists to this project"
-  launchHelp: "You are about to add help lists to this project - are you sure ?"
+

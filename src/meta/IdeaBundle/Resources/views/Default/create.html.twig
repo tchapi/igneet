@@ -12,7 +12,7 @@
 
 {% block header %}
   <div class="headerAvatarAndActions">
-    <div class="textAvatar"><i class="icon-beaker"></i></div>
+    <div class="textAvatar"><i class="fa fa-flask"></i></div>
   </div>
   <div class="objectHeader">
     <h2>{{ "idea.new"|trans }}</h2>
@@ -36,7 +36,7 @@
         {% if errors|length > 0 %}
         <ul class="error_list">
             {% for error in errors %}
-                <li><i class="icon-warning-sign"></i> {{ error.message }}</li>
+                <li><i class="fa fa-warning"></i> {{ error.message }}</li>
             {% endfor %}
         </ul>
         {% endif %}
@@ -44,9 +44,9 @@
 {% endblock form_errors %}
 
 {% block form_row %}
-<div class="control-group {% if errors %}error{% endif %}">
-  <label class="control-label" for="inputEmail">{{ form_label(form) }}</label>
-  <div class="controls">
+<div class="form-group {% if errors %}error{% endif %}">
+  <label class="control-label col-sm-4">{{ form_label(form) }}</label>
+  <div class="col-sm-8">
     {{ form_widget(form) }}
     {% if errors %}
     <span class="help-block error-block">{{ form_errors(form) }}</span>
@@ -59,8 +59,10 @@
 <div class="formContent">
   <form action="{{ path('i_new_idea') }}" method="post" {{ form_enctype(form) }} class="form-horizontal">
       {{ form_widget(form) }}
-      <div class="form-actions">
-        <input type="submit" value="{{ "idea.create"|trans }}" class="btn btn-success" />
+      <div class="form-group">
+        <div class="col-sm-offset-4 col-sm-8">
+          <input type="submit" value="{{ "idea.create"|trans }}" class="btn btn-success" />
+        </div>
       </div>
   </form>
 </div>

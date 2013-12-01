@@ -15,8 +15,8 @@ Todo - Priorités :
  ☐ Sur les notifs, quand on clique et qu'elles sont a 0 affichées mettre directement une page présentant les anciennes
 
  ☐ Administration des communautés
-     Créer un role d'administrateur
-     Créer une page d'édition du nom, description
+     ✔ Créer un role d'administrateur => ok dans user_Community @done (13-10-19 17:34)
+     ☐ Créer une page d'édition du nom, description
 
    ☐ + Deep linking : verifier a l'affichage que l'utilisateur a le droit de voir l'objet deep linké !
    Sinon mettre en gras mais ne pas linker avec une icone oeil barré (?)
@@ -25,17 +25,21 @@ Todo - Priorités :
    \__ + un bouton 'archiver' par projet
    \__ + demander si archiver une idée apres projectize
    \__ abandonner un projet ? faire un bouton pour ca
+
  
- ☐ USerCommunities : prendre en compte le deleted_at ....
-
- ☐ Faire un filtre pour les projets non actifs ou lancés
-
  ☐ [Eric] Tri des resources dans la vue / resources
+
+ ✔ Faire un filtre pour les projets non actifs ou lancés @done (13-09-26 19:16)
+ ✔ delete user => il faut deleter les userCommunity associés @done (13-10-23 20:07)
+
+Travail de fond :
+ 
+ ☐ Passer les arguments en array() au lieu de liste ...
 
 Todo - Post-Passe-Créa :
 
  ☐ CREA : taille des inputs : http://d.pr/i/dHGr lors de la traduction
- ☐  Faire une passe sur les titles/alt des liens d'éditions (les icon-pencils)
+ ☐ Faire une passe sur les titles/alt des liens d'éditions (les icon-pencils)
 
 Todo - Entity "Community" :
 
@@ -51,7 +55,6 @@ Home de community (penser au private space !!)
 Managers qui peuvent éditer la communauté et inviter
 "Request a manager to invite XXXX" => le manager a un tableau de validation
 
-Un user n'a pas le droit de créer une communauté pour l'instant
 IDEES gestion des users dans le private space : ne pas avoir d'user !
  ✔ - idées / créateurs @done (13-03-25 22:41)
  ✔ - ajouter un owner/ participant : non @done (13-03-25 23:02)
@@ -84,7 +87,8 @@ PROJECT gestion des users dans le private space : ne pas avoir d'user !
  ✔ follow de gens pas dans ma communauté : impossible @done (13-03-27 13:43)
  ✔ voir les profils users dans le private space : non ! @done (13-03-26 22:09)
  ✔ projet / idées dans mon private space : je suis seul créateur / owner (??) @done (13-03-25 22:41)
- ✔ Community notifications @done (13-04-01 21:31)
+ ✔ Community notifications @done (13-04-01 21:31) 
+ ✔ USerCommunities : prendre en compte le deleted_at .... @done (13-09-23 14:48)
 
 Todo - General / Users :
 

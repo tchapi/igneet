@@ -1021,40 +1021,52 @@
 
         // Create the text input box form/window.
         var createDialog = function () {
-            // <div class="modal" id="myModal">
-            //   <div class="modal-header">
-            //     <a class="close" data-dismiss="modal">×</a>
-            //     <h3>Modal header</h3>
-            //   </div>
-            //   <div class="modal-body">
-            //     <p>One fine body…</p>
-            //   </div>
-            //   <div class="modal-footer">
-            //     <a href="#" class="btn btn-primary">Save changes</a>
-            //     <a href="#" class="btn">Close</a>
-            //   </div>
-            // </div>
+
+            // <div class="modal fade">
+            //   <div class="modal-dialog">
+            //     <div class="modal-content">
+            //       <div class="modal-header">
+            //         
+            //         <h4 class="modal-title">Modal title</h4>
+            //       </div>
+            //       <div class="modal-body">
+            //         <p>One fine body&hellip;</p>
+            //       </div>
+            //       <div class="modal-footer">
+            //         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            //         <button type="button" class="btn btn-primary">Save changes</button>
+            //       </div>
+            //     </div><!-- /.modal-content -->
+            //   </div><!-- /.modal-dialog -->
+            // </div><!-- /.modal -->
 
             // The main dialog box.
             dialog = doc.createElement("div");
             dialog.className = "modal hide fade";
-            dialog.style.display = "none";
+
+            modal_dialog = doc.createElement("div");
+            modal_dialog.className = "modal-dialog";
+            dialog.appendChild(modal_dialog);
+
+            content_dialog = doc.createElement("div");
+            content_dialog.className = "modal-content";
+            modal_dialog.appendChild(content_dialog);
 
             // The header.
             var header = doc.createElement("div");
             header.className = "modal-header";
-            header.innerHTML = '<a class="close" data-dismiss="modal">×</a> <h3>'+title+'</h3>';
-            dialog.appendChild(header);
+            header.innerHTML = '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button> <h4 class="modal-title">'+title+'</h4>';
+            content_dialog.appendChild(header);
 
             // The body.
             var body = doc.createElement("div");
             body.className = "modal-body";
-            dialog.appendChild(body);
+            content_dialog.appendChild(body);
 
             // The footer.
             var footer = doc.createElement("div");
             footer.className = "modal-footer";
-            dialog.appendChild(footer);
+            content_dialog.appendChild(footer);
 
             // The dialog text.
             var question = doc.createElement("p");
@@ -1089,7 +1101,7 @@
 
             // The cancel button
             var cancelButton = doc.createElement("button");
-            cancelButton.className = "btn btn-primary";
+            cancelButton.className = "btn btn-default";
             cancelButton.type = "button";
             cancelButton.onclick = function () { return close(true); };
             cancelButton.innerHTML = Translator.get('cancel');
@@ -1333,7 +1345,7 @@
 
             var makeButton = function (id, title, icon, textOp, group) {
                 var button = document.createElement("button");
-                button.className = "btn";
+                button.className = "btn btn-default";
                 var buttonImage = document.createElement("i");
                 buttonImage.className = icon;
                 button.id = id + postfix;
@@ -1359,38 +1371,38 @@
             }
 
             group1 = makeGroup(1);
-            buttons.bold = makeButton("wmd-bold-button", Translator.get('markdown.bold') + " - Ctrl+B", "icon-bold", bindCommand("doBold"), group1);
-            buttons.italic = makeButton("wmd-italic-button", Translator.get('markdown.italic') + " - Ctrl+I", "icon-italic", bindCommand("doItalic"), group1);
+            buttons.bold = makeButton("wmd-bold-button", Translator.get('markdown.bold') + " - Ctrl+B", "fa fa-bold", bindCommand("doBold"), group1);
+            buttons.italic = makeButton("wmd-italic-button", Translator.get('markdown.italic') + " - Ctrl+I", "fa fa-italic", bindCommand("doItalic"), group1);
             
             group2 = makeGroup(2);
-            buttons.link = makeButton("wmd-link-button", Translator.get('markdown.link') + " - Ctrl+L", "icon-globe", bindCommand(function (chunk, postProcessing) {
+            buttons.link = makeButton("wmd-link-button", Translator.get('markdown.link') + " - Ctrl+L", "fa fa-globe", bindCommand(function (chunk, postProcessing) {
                 return this.doLinkOrImage(chunk, postProcessing, false);
             }), group2);
-            buttons.quote = makeButton("wmd-quote-button", Translator.get('markdown.blockquote') + " - Ctrl+Q", "icon-quote-left", bindCommand("doBlockquote"), group2);
-            buttons.code = makeButton("wmd-code-button", Translator.get('markdown.code.sample') + " - Ctrl+K", "icon-code", bindCommand("doCode"), group2);
-            buttons.image = makeButton("wmd-image-button", Translator.get('markdown.image') + " - Ctrl+G", "icon-picture", bindCommand(function (chunk, postProcessing) {
+            buttons.quote = makeButton("wmd-quote-button", Translator.get('markdown.blockquote') + " - Ctrl+Q", "fa fa-quote-left", bindCommand("doBlockquote"), group2);
+            buttons.code = makeButton("wmd-code-button", Translator.get('markdown.code.sample') + " - Ctrl+K", "fa fa-code", bindCommand("doCode"), group2);
+            buttons.image = makeButton("wmd-image-button", Translator.get('markdown.image') + " - Ctrl+G", "fa fa-picture-o", bindCommand(function (chunk, postProcessing) {
                 return this.doLinkOrImage(chunk, postProcessing, true);
             }), group2);
 
             group3 = makeGroup(3);
-            buttons.olist = makeButton("wmd-olist-button", Translator.get('markdown.list.numbered') + " - Ctrl+O", "icon-list-ol", bindCommand(function (chunk, postProcessing) {
+            buttons.olist = makeButton("wmd-olist-button", Translator.get('markdown.list.numbered') + " - Ctrl+O", "fa fa-list-ol", bindCommand(function (chunk, postProcessing) {
                 this.doList(chunk, postProcessing, true);
             }), group3);
-            buttons.ulist = makeButton("wmd-ulist-button", Translator.get('markdown.list.bulletted') + " - Ctrl+U", "icon-list", bindCommand(function (chunk, postProcessing) {
+            buttons.ulist = makeButton("wmd-ulist-button", Translator.get('markdown.list.bulletted') + " - Ctrl+U", "fa fa-list-ul", bindCommand(function (chunk, postProcessing) {
                 this.doList(chunk, postProcessing, false);
             }), group3);
             buttons.heading = makeButton("wmd-heading-button", Translator.get('markdown.heading') + " - Ctrl+H", "icon-header", bindCommand("doHeading"), group3);
             buttons.hr = makeButton("wmd-hr-button", Translator.get('markdown.rule') + " - Ctrl+R", "icon-hr-line", bindCommand("doHorizontalRule"), group3);
             
             group4 = makeGroup(4);
-            buttons.undo = makeButton("wmd-undo-button", Translator.get('markdown.undo') + " - Ctrl+Z", "icon-undo", null, group4);
+            buttons.undo = makeButton("wmd-undo-button", Translator.get('markdown.undo') + " - Ctrl+Z", "fa fa-undo", null, group4);
             buttons.undo.execute = function (manager) { if (manager) manager.undo(); };
 
             var redoTitle = /win/.test(nav.platform.toLowerCase()) ?
                 Translator.get('markdown.redo') + " - Ctrl+Y" :
                 Translator.get('markdown.redo') + " - Ctrl+Shift+Z"; // mac and other non-Windows platforms
 
-            buttons.redo = makeButton("wmd-redo-button", redoTitle, "icon-share-alt", null, group4);
+            buttons.redo = makeButton("wmd-redo-button", redoTitle, "fa fa-repeat", null, group4);
             buttons.redo.execute = function (manager) { if (manager) manager.redo(); };
 
             if (helpOptions) {
@@ -1398,9 +1410,9 @@
                 group5.className = group5.className + " pull-right";
                 var helpButton = document.createElement("button");
                 var helpButtonImage = document.createElement("i");
-                helpButtonImage.className = "icon-question-sign";
+                helpButtonImage.className = "fa fa-question-circle";
                 helpButton.appendChild(helpButtonImage);
-                helpButton.className = "btn";
+                helpButton.className = "btn btn-default";
                 helpButton.id = "wmd-help-button" + postfix;
                 helpButton.isHelp = true;
                 helpButton.title = helpOptions.title || defaultHelpHoverTitle;

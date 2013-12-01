@@ -1,0 +1,87 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}{{ parent() }} > {{ app.user.currentCommunity.name }} | {{ "community.home"|trans }}{% endblock %}
+
+{% block body %}
+<header class="home">
+
+  <div class="headerAvatarAndActions">
+    <img src="{{ asset(app.user.currentCommunity.getPicture()) }}" width="150" height="150" class="avatar"/>
+  </div>
+
+  <div class="communityInfo">
+
+    <h2 class="ellipsis">{{ app.user.currentCommunity.name }}</h2>
+    <h4 class="ellipsis">{{ app.user.currentCommunity.headline }}</h4>
+    <p>{{ app.user.currentCommunity.about }}</p>
+
+  </div>
+
+  {% if isManager %}
+  <div class="communityActions">
+    <p><a href="{{ path('invite') }}" class="btn btn-success"><i class="fa fa-user"></i> {{ "community.invite.short"|trans }}</a></p>
+    <p><a href="{{ path('g_manage_community') }}" class="btn btn-primary"><i class="fa fa-cogs"></i> {{ "community.manage.short"|trans }}</a></p>
+  </div>
+  {% endif %}
+
+</header>
+
+<div class="content home clearfix">
+
+  {% if not isGuest %}
+  <section>
+    <div class="heading"><i class="fa fa-home"></i> {{ "community.home.recently.community"|trans }}</div>
+    <div class="row">
+
+      <span class="col-md-4">
+        <h4>{{ "community.home.last.ideas"|trans }}</h4>
+        {% if lastIdeas|length > 0 %}
+          <ul>
+          {% for idea in lastIdeas %}
+            <li><a href="{{ path('i_show_idea', { uid: idea.id|to_uid} ) }}">{{ idea.name }}</a> - <em>{{ "community.home.created.on"|trans({ '%date%': idea.createdAt|date("date.fullFormat"|trans) }) }}</em></li>
+          {% endfor %}
+          </ul>
+        {% else %}
+          <em class="muted">{{ "community.home.no.ideas"|trans }}</em>
+        {% endif %}
+      </span>
+
+      <span class="col-md-4">
+        <h4>{{ "community.home.last.projects"|trans }}</h4>
+        {% if lastProjects|length > 0 %}
+          <ul>
+          {% for project in lastProjects %}
+            <li><a href="{{ path('p_show_project', { uid: project.id|to_uid} ) }}">{{ project.name }}</a> - <em>{{ "community.home.created.on"|trans({ '%date%': project.createdAt|date("date.fullFormat"|trans) }) }}</em></li>
+          {% endfor %}
+          </ul>
+        {% else %}
+          <em class="muted">{{ "community.home.no.projects"|trans }}</em>
+        {% endif %}
+      </span>
+
+      <span class="col-md-4">
+        <h4>{{ "community.home.recentlyOnline"|trans }}</h4>
+        {% if recentlyOnlineUsers|length > 1 %}
+          <ul>
+          {% for user in recentlyOnlineUsers if (user != app.user) %}
+            <li>
+              <a href="{{ path('u_show_user_profile', {'username': user.username}) }}">
+                <img src="{{ user.avatar }}" title="{{ user.getFullName() }}" width="30" height="30" class="miniAvatar"/>
+              </a>
+            </li>
+          {% endfor %}
+          </ul>
+        {% else %}
+          <em class="muted">{{ "community.home.no.people"|trans }}</em>
+        {% endif %}
+      </span>
+
+    </div>
+  </section>
+  {% endif %}
+
+</div>
+<footer>
+{% block footer %}{% endblock %}
+</footer>
+{% endblock %}

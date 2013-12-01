@@ -34,6 +34,13 @@ parameters:
       is_uid: true
       key: page_uid
   general.log_types:
+# Communities
+    user_create_community:
+      combinable: false
+      displayable: true
+      filter_groups: [creations, community, social]
+      type: community
+      icon: group
 # User acting for his profile or on another user
     user_created: # DONE
       combinable: false
@@ -52,7 +59,7 @@ parameters:
       displayable: true
       filter_groups: [general, users, social]
       type: other_user
-      icon: pushpin
+      icon: thumb-tack
     user_enters_community: # DONE
       combinable: false
       displayable: true
@@ -71,26 +78,26 @@ parameters:
       displayable: true
       filter_groups: [creations, projects]
       type: project
-      icon: beaker
+      icon: flask
     user_comment_project: # DONE
       combinable: false
       displayable: false
       filter_groups: [comments, projects]
       type: project
-      icon: beaker
+      icon: flask
     user_create_project_from_idea: # DONE
       combinable: false
       displayable: true
       filter_groups: [creations, projects, ideas]
       type: project
-      icon: beaker
-    user_is_made_owner_project: # DONE
+      icon: flask
+    user_made_user_owner_project: # DONE
       combinable: false
       displayable: true
       filter_groups: [updates, users, projects, social]
       type: project
       icon: key
-    user_is_made_participant_project: # DONE
+    user_made_user_participant_project: # DONE
       combinable: false
       displayable: true
       filter_groups: [updates, users, projects, social]
@@ -101,7 +108,7 @@ parameters:
       displayable: true
       filter_groups: [users, projects, social]
       type: project
-      icon: eye-open
+      icon: eye
     user_update_project_info: # DONE
       combinable: true
       displayable: true
@@ -113,7 +120,7 @@ parameters:
       displayable: true
       filter_groups: [creations, projects, wiki]
       type: project
-      icon: file-alt
+      icon: file-text-o
     user_update_wikipage: # DONE
       combinable: true
       displayable: true
@@ -125,13 +132,13 @@ parameters:
       displayable: true
       filter_groups: [comments, projects, wiki]
       type: project
-      icon: comments-alt
+      icon: comments
     user_delete_wikipage: # DONE
       combinable: false
       displayable: true
       filter_groups: [deletions, projects, wiki]
       type: project
-      icon: trash
+      icon: trash-o
     user_create_list: # DONE
       combinable: false
       displayable: true
@@ -149,19 +156,19 @@ parameters:
       displayable: true
       filter_groups: [comments, projects, lists]
       type: project
-      icon: comments-alt
+      icon: comments
     user_delete_list: # DONE
       combinable: false
       displayable: true
       filter_groups: [deletions, projects, lists]
       type: project
-      icon: trash
+      icon: trash-o
     user_create_list_item: # DONE
       combinable: false
       displayable: true
       filter_groups: [creations, projects, lists]
       type: project
-      icon: indent-right
+      icon: indent
     user_update_list_item: # DONE
       combinable: true
       displayable: true
@@ -173,7 +180,7 @@ parameters:
       displayable: true
       filter_groups: [deletions, projects, lists]
       type: project
-      icon: indent-left
+      icon: outdent
     user_do_list_item: # DONE
       combinable: false
       displayable: true
@@ -185,7 +192,7 @@ parameters:
       displayable: true
       filter_groups: [updates, projects, lists]
       type: project
-      icon: check-empty
+      icon: square-o
     user_add_resource: 
       combinable: false
       displayable: true
@@ -222,19 +229,19 @@ parameters:
       displayable: true
       filter_groups: [creations, projects, ideas]
       type: idea
-      icon: upload-alt
+      icon: upload
     user_create_idea: # DONE
       combinable: false
       displayable: true
       filter_groups: [creations, ideas]
       type: idea
-      icon: lightbulb
+      icon: lightbulb-o
     user_comment_idea: # DONE
       combinable: false
       displayable: false
       filter_groups: [comments, ideas]
       type: idea
-      icon: lightbulb
+      icon: lightbulb-o
     user_is_made_creator_idea: # DONE
       combinable: false
       displayable: true
@@ -247,7 +254,7 @@ parameters:
       filter_groups: [updates, general, ideas]
       type: idea
       icon: edit
-    user_is_made_participant_idea: # DONE
+    user_made_user_participant_idea: # DONE
       combinable: false
       displayable: true
       filter_groups: [updates, users, ideas, social]
@@ -258,11 +265,5 @@ parameters:
       displayable: true
       filter_groups: [users, ideas, social]
       type: idea
-      icon: eye-open
-
-
-
-
-
-
+      icon: eye
 

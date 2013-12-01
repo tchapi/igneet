@@ -36,7 +36,7 @@ class DefaultController extends Controller
 
         $repository = $this->getDoctrine()->getRepository('metaUserBundle:User');
         if ($username !== $authenticatedUser->getUsername()){
-            $user = $repository->findOneByUsernameInCommunity($username, true, $authenticatedUser->getCurrentCommunity());
+            $user = $repository->findOneByUsernameInCommunity(array('username' => $username, 'community' => $authenticatedUser->getCurrentCommunity(), 'findGuest' => true));
         } else {
             $user = $authenticatedUser;
         }
@@ -49,15 +49,39 @@ class DefaultController extends Controller
             if (!$user || $user->isDeleted()) {
                 throw $this->createNotFoundException($this->get('translator')->trans('user.not.found'));
             } else if ( $commonCommunity = $repository->findCommonCommunity($authenticatedUser, $user) ) {
-                // Yes ! Switch this authenticated user to the good community
-                $authenticatedUser->setCurrentCommunity($commonCommunity);
-                $em = $this->getDoctrine()->getManager();
-                $em->flush();
+                // Yes ! Switch this authenticated user to the good community if it is valid
 
-                $this->get('session')->getFlashBag()->add(
-                  'info',
-                  $this->get('translator')->trans('community.switch', array( '%community%' => $commonCommunity->getName()))
-                );
+                if ( !($commonCommunity->isValid()) ){
+
+                    $this->get('session')->getFlashBag()->add(
+                        'error',
+                        $this->get('translator')->trans('community.invalid', array( "%community%" => $commonCommunity->getName()) )
+                    );
+
+                    // Back in private space, ahah
+                    $authenticatedUser->setCurrentCommunity(null);
+                    $em = $this->getDoctrine()->getManager();
+                    $em->flush();
+
+                    $this->get('session')->getFlashBag()->add(
+                      'info',
+                      $this->get('translator')->trans('private.space.back')
+                    );
+
+                    return $this->redirect($this->generateUrl('g_switch_private_space', array('token' => $this->get('form.csrf_provider')->generateCsrfToken('switchCommunity'), 'redirect' => true)));
+                
+                } else {
+
+                    $authenticatedUser->setCurrentCommunity($commonCommunity);
+                    $em = $this->getDoctrine()->getManager();
+                    $em->flush();
+
+                    $this->get('session')->getFlashBag()->add(
+                      'info',
+                      $this->get('translator')->trans('community.switch', array( '%community%' => $commonCommunity->getName()))
+                    );
+                }
+
             } else {
                 throw $this->createNotFoundException($this->get('translator')->trans('user.not.found'));
             }
@@ -125,7 +149,7 @@ class DefaultController extends Controller
 
         $repository = $this->getDoctrine()->getRepository('metaUserBundle:User');
 
-        $totalUsers = $repository->countUsersInCommunity($community);
+        $totalUsers = $repository->countUsersInCommunity(array('community' => $community));
         $maxPerPage = $this->container->getParameter('listings.number_of_items_per_page');
 
         if ( ($page-1) * $maxPerPage > $totalUsers) {
@@ -139,100 +163,6 @@ class DefaultController extends Controller
 
     }
 
-    /*
-     * Show a user dashboard
-     */
-    public function showDashboardAction()
-    {
-
-        $authenticatedUser = $this->getUser();
-        $community = $authenticatedUser->getCurrentCommunity();
-
-        if (!is_null($community)){  
-            $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true));
-        } else {
-            $userCommunityGuest = null;
-        }
-
-        if (is_null($community) || $userCommunityGuest ) {
-
-            $this->get('session')->getFlashBag()->add(
-                'error',
-                $this->get('translator')->trans('user.no.dashboard')
-            );
-
-            return $this->redirect($this->generateUrl('u_me'));
-        } 
-
-        // So let's get the stuff
-        $logRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\BaseLogEntry');
-        $userLogRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\UserLogEntry');
-        $commentRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Comment\BaseComment');
-        $projectRepository = $this->getDoctrine()->getRepository('metaProjectBundle:StandardProject');
-        $ideaRepository = $this->getDoctrine()->getRepository('metaIdeaBundle:Idea');
-
-        // Last recorded activity
-        $lastActivity = $logRepository->findLastActivityDateForUser($authenticatedUser);
-
-        // 7 days activity
-        $last7daysActivity = $logRepository->computeWeekActivityForUser($authenticatedUser);
-
-        // Recent social activity
-        $lastSocial_raw = $userLogRepository->findLastSocialActivityForUser($authenticatedUser, 3);
-        $logService = $this->container->get('logService');
-        $lastSocial = array();
-        foreach ($lastSocial as $entry) {
-            $lastSocial[] = $logService->getText($entry);
-        }
-
-        $last7daysCommentActivity = $commentRepository->computeWeekCommentActivityForUser($authenticatedUser);
-        
-        // Top 3 projects
-        $top3projects = $projectRepository->findTopProjectsInCommunityForUser($authenticatedUser->getCurrentCommunity(), $authenticatedUser, 3);
-        $top3projectsActivity = array();
-
-        if (count($top3projects)){
-            $top3projectsActivity_raw = $projectRepository->computeWeekActivityForProjects($top3projects);
-            
-            foreach ($top3projectsActivity_raw as $key => $value) {
-                $top3projectsActivity[$value['id']][] = $value;
-            }
-        }
-
-        // Last 3 projects created in the community for user (private taken into account)
-        $last3projects = $projectRepository->findLastProjectsInCommunityForUser($authenticatedUser->getCurrentCommunity(), $authenticatedUser, 3);
-        
-        // Top 3 ideas
-        $top3ideas = $ideaRepository->findTopIdeasInCommunityForUser($authenticatedUser->getCurrentCommunity(), $authenticatedUser, 3);
-        $top3ideasActivity = array();
-
-        if (count($top3ideas)){
-            $top3ideasActivity_raw = $ideaRepository->computeWeekActivityForIdeas($top3ideas);
-            
-            foreach ($top3ideasActivity_raw as $key => $value) {
-                $top3ideasActivity[$value['id']][] = $value;
-            }
-        }
-
-        // Last 3 ideas created in the community
-        $last3ideas = $ideaRepository->findLastIdeasInCommunityForUser($authenticatedUser->getCurrentCommunity(), $authenticatedUser, 3);
-
-        return $this->render('metaUserBundle:Dashboard:showDashboard.html.twig', 
-            array('user' => $authenticatedUser,
-                  'lastActivity' => $lastActivity['date'],
-                  'last7daysActivity' => $last7daysActivity,
-                  'last7daysCommentActivity' => $last7daysCommentActivity,
-                  'lastSocial' => $lastSocial,
-                  'top3projects' => $top3projects,
-                  'top3projectsActivity' => $top3projectsActivity,
-                  'last3projects' => $last3projects,
-                  'top3ideas' => $top3ideas,
-                  'top3ideasActivity' => $top3ideasActivity,
-                  'last3ideas' => $last3ideas
-                ));
-    }
-
-    
     /*
      * Corresponding actions
      */ 
@@ -258,7 +188,7 @@ class DefaultController extends Controller
         // Lastly, we update the last_notified_at date
         $authenticatedUser->setLastNotifiedAt(new \DateTime('now'));
 
-        return $this->render('metaUserBundle:Dashboard:showNotifications.html.twig', $notifications);
+        return $this->render('metaUserBundle:Notifications:showNotifications.html.twig', $notifications);
     }
 
     /*
@@ -466,11 +396,13 @@ class DefaultController extends Controller
                         if ($inviteTokenObject->getProjectType() === 'owner'){
                             $user->addProjectsOwned($inviteTokenObject->getProject());
                             $logService = $this->container->get('logService');
-                            $logService->log($user, 'user_is_made_owner_project', $inviteTokenObject->getProject(), array( 'other_user' => array( 'logName' => $inviteTokenObject->getReferalUser()->getLogName(), 'identifier' => $inviteTokenObject->getReferalUser()->getUsername()) ));
+                            $logService->log($inviteTokenObject->getReferalUser(), 'user_made_user_owner_project', $inviteTokenObject->getProject(), array( 'other_user' => array( 'logName' => $user->getLogName(), 'identifier' => $user->getUsername()) ));
+
                         } else {
                             $user->addProjectsParticipatedIn($inviteTokenObject->getProject());
                             $logService = $this->container->get('logService');
-                            $logService->log($user, 'user_is_made_participant_project', $inviteTokenObject->getProject(), array( 'other_user' => array( 'logName' => $inviteTokenObject->getReferalUser()->getLogName(), 'identifier' => $inviteTokenObject->getReferalUser()->getUsername()) ));
+                            $logService->log($inviteTokenObject->getReferalUser(), 'user_made_user_participant_project', $inviteTokenObject->getProject(), array( 'other_user' => array( 'logName' => $user->getLogName(), 'identifier' => $user->getUsername()) ));
+
                         }
 
                     }
@@ -612,7 +544,7 @@ class DefaultController extends Controller
 
             } elseif (count($errors) > 0) {
 
-                $error = $errors[0]->getMessage();
+                $error = $this->get('translator')->trans($errors[0]->getMessage());
             }
 
         } else {
@@ -695,22 +627,41 @@ class DefaultController extends Controller
             $deletable = true;
 
             // Performs checks for ownerships
+            $projects = "";
             foreach ($authenticatedUser->getProjectsOwned() as $project) {
                 if (!$project->isDeleted() && $project->countOwners() == 1){
                     // not good : we're the only owner
                     $deletable = false;
-                    break;
+                    $projects .= $project->getName(). ",";
                 }
             }
-            foreach ($authenticatedUser->getIdeasCreated() as $idea) {
-                if (!$idea->isDeleted() && $idea->countCreators() == 1){
-                    // we're the only creator : we have to delete the idea
-                    $idea->delete();
+
+            // Performs checks for community management
+            $communities = "";
+            $userRepository = $this->getDoctrine()->getRepository('metaUserBundle:User');
+            foreach ($authenticatedUser->getUserCommunities() as $userCommunity) {
+                $nbManagersInCommunity = $userRepository->countManagersInCommunity(array('community' => $userCommunity->getCommunity()));
+                if ($nbManagersInCommunity == 1){
+                    // not good : we're the only manager of the community
+                    $deletable = false;
+                    $communities .= $userCommunity->getCommunity()->getName(). ",";
                 }
             }
 
             // Projects must have at least an owner
             if ($deletable === true ) {
+
+                foreach ($authenticatedUser->getIdeasCreated() as $idea) {
+                    if (!$idea->isDeleted() && $idea->countCreators() == 1){
+                        // we're the only creator : we have to delete the idea
+                        $idea->delete();
+                    }
+                }
+
+                foreach ($authenticatedUser->getUserCommunities() as $userCommunity) {
+                    // We delete the userCommunity object
+                    $userCommunity->delete();
+                }
 
                 // Delete the user
                 $em = $this->getDoctrine()->getManager();
@@ -724,17 +675,10 @@ class DefaultController extends Controller
 
             } else {
 
-                $projects = "";
-                foreach ($authenticatedUser->getProjectsOwned() as $project) {
-                    if (!$project->isDeleted() && $project->countOwners() == 1){
-                        $projects .= $project->getName(). ",";
-                    }
-                }
-
                 // Let's notify the user with the projects he still owns alone
                 $this->get('session')->getFlashBag()->add(
                     'error',
-                    $this->get('translator')->trans('user.cannot.delete', array( '%projects%' => substr($projects, 0, -1)))
+                    $this->get('translator')->trans('user.cannot.delete', array( '%projects%' => substr($projects, 0, -1), '%communities%' => substr($communities, 0, -1)))
                 );
 
                 return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $username)));
@@ -819,10 +763,23 @@ class DefaultController extends Controller
         } else {
 
             $repository = $this->getDoctrine()->getRepository('metaUserBundle:User');
-            $users = $repository->findAllUsersInCommunityExceptMe($authenticatedUser, $authenticatedUser->getCurrentCommunity());
+            $users = $repository->findAllUsersInCommunityExceptMe($authenticatedUser, $authenticatedUser->getCurrentCommunity(), $target['params']['guest']);
 
-            return $this->render('metaUserBundle:Default:choose.html.twig', array('users' => $users, 'external' => $target['external'], 'targetAsBase64' => $targetAsBase64, 'token' => $request->get('token')));
+            if (count($users) > 0 || $target['external'] == true){
 
+                return $this->render('metaUserBundle:Default:choose.html.twig', array('users' => $users, 'external' => $target['external'], 'targetAsBase64' => $targetAsBase64, 'token' => $request->get('token')));
+
+            } else {
+
+                $this->get('session')->getFlashBag()->add(
+                    'warning',
+                    $this->get('translator')->trans('user.none.to.choose')
+                );
+
+                return $this->redirect($this->generateUrl('g_home_community'));
+
+            }
+            
         }
 
     }
@@ -841,7 +798,7 @@ class DefaultController extends Controller
         if ($username !== $authenticatedUser->getUsername()){
 
             $repository = $this->getDoctrine()->getRepository('metaUserBundle:User');
-            $user = $repository->findOneByUsernameInCommunity($username, true, $authenticatedUser->getCurrentCommunity());
+            $user = $repository->findOneByUsernameInCommunity(array('username' => $username, 'community' => $authenticatedUser->getCurrentCommunity(), 'findGuest' => true));
 
             if ($user && !$user->isDeleted()){
 
@@ -903,7 +860,7 @@ class DefaultController extends Controller
         if ($username !== $authenticatedUser->getUsername()){
 
             $repository = $this->getDoctrine()->getRepository('metaUserBundle:User');
-            $user = $repository->findOneByUsernameInCommunity($username, true, $authenticatedUser->getCurrentCommunity());
+            $user = $repository->findOneByUsernameInCommunity(array('username' => $username, 'community' => $authenticatedUser->getCurrentCommunity(), 'findGuest' => true));
 
             if ($user && !$user->isDeleted()){
 

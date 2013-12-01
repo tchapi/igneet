@@ -7,8 +7,8 @@ logs:
   user_create_project: "%user% created a new project %project%."
   user_comment_project: "%user% commented on the project %project%."
   user_create_project_from_idea: "%user% created a new project %project% from the idea %idea%."
-  user_is_made_owner_project: "%user% was promoted owner of the project %project% by %other_user%."
-  user_is_made_participant_project: "%user% was made a participant in the project %project% by %other_user%."
+  user_made_user_owner_project: "%user% made %other_user% an owner of the project %project%."
+  user_made_user_participant_project: "%user% made %other_user% a participant in the project %project%."
   user_watch_project: "%user% has started watching the project %project%."
   user_update_project_info: "%user% has updated some information for the project %project%."
   user_create_wikipage: "%user% has created a new page %wikipage% in project %project%'s wiki."
@@ -34,8 +34,9 @@ logs:
   user_comment_idea: "%user% commented on the idea %idea%."
   user_is_made_creator_idea: "%other_user% transfered owner of the idea %idea% to %user%."
   user_update_idea_info: "%user% has updated some information for the idea %idea%."
-  user_is_made_participant_idea: "%user% was made a participant in the idea %idea% by %other_user%."
+  user_made_user_participant_idea: "%user% made %other_user% a participant in the idea %idea%."
   user_watch_idea: "%user% has started watching the idea %idea%."
+  user_create_community: "%user% has created the %community% community."
 
 groups: 
   projects: Projects

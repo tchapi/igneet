@@ -4,11 +4,11 @@
 
 {% block content %}
 <section>
-  <div class="wmd-heading"><i class="icon-bullhorn"></i> {{ "idea.info.about"|trans }} {% if base.canEdit %}<a class="pull-right markdown-trigger">&hellip;<i class="icon-pencil"></i></a>{% endif %}</div>
+  <div class="wmd-heading"><i class="fa fa-bullhorn"></i> {{ "idea.info.about"|trans }} {% if base.canEdit %}<a class="pull-right markdown-trigger">&hellip;<i class="fa fa-pencil"></i></a>{% endif %}</div>
   <div>
 
-      <div class="wmd-message-top hide alert"><i class="icon-warning-sign"></i> {{ "unsaved.changes"|trans }}</div>
-      <div class="wmd-wrapper well well-small hide" >
+      <div class="wmd-message-top alert alert-warning" style="display: none;"><i class="fa fa-warning"></i> {{ "unsaved.changes"|trans }}</div>
+      <div class="wmd-wrapper well well-small" style="display: none;">
         <div class="wmd-panel">
             <div id="wmd-button-bar"></div>
             <textarea unsaved='no' data-name="about" data-url="{{ path('i_edit_idea', {'uid': base.idea.id|to_uid, 'token': csrf_token('edit') }) }}" class="wmd-input" id="wmd-input">{{ base.idea.about }}</textarea>
@@ -53,14 +53,14 @@
             <span><div>{{ participatingUser.firstName }}</div><div>{{ participatingUser.lastName }}</div></span>
           </div>
         </a>
-        {% if base.isCreator %}<a class="removeUserIcon" href="{{ path('i_remove_participant_to_idea', { 'uid': base.idea.id|to_uid, 'username' : participatingUser.username, 'token': csrf_token('removeParticipant') }) }}"><i class="icon-remove-sign icon-large"></i></a>{% endif %}
+        {% if base.isCreator %}<a class="removeUserIcon" href="{{ path('i_remove_participant_to_idea', { 'uid': base.idea.id|to_uid, 'username' : participatingUser.username, 'token': csrf_token('removeParticipant') }) }}"><i class="fa fa-times fa-lg"></i></a>{% endif %}
       </li>
     {% endif %}
   {% endfor %}
   {% if base.canEdit %}
       <li>
         <a href="{{ path('u_choose_user', {'targetAsBase64': targetParticipantAsBase64, 'token': csrf_token('addParticipant')  }) }}">
-          <div class="smallTextAvatar"><i class="icon-plus-sign"></i></div>
+          <div class="smallTextAvatar"><i class="fa fa-plus-circle"></i></div>
           <div class="smallObjectInfos ellipsis-multiline">
             <span>{{ "idea.info.add.participant"|trans }}</span>
           </div>
@@ -73,7 +73,7 @@
 {% if base.isCreator %}
 <section class="colored warning">
   <div class="sectionTitle">{{ "idea.delete"|trans }} : </div>
-  <div class="sectionContent"><a class="btn btn-danger" data-confirm="{{ "idea.deleteHelp"|trans }}" href="{{ path('i_delete_idea', { 'uid': base.idea.id|to_uid, 'token': csrf_token('delete') }) }}">{{ "delete"|trans }}</a> <span class="muted">( <i class="icon-warning-sign"></i> {{ "deleteHelp"|trans }} )</span></div>
+  <div class="sectionContent"><a class="btn btn-danger" data-confirm="{{ "idea.deleteHelp"|trans }}" href="{{ path('i_delete_idea', { 'uid': base.idea.id|to_uid, 'token': csrf_token('delete') }) }}">{{ "delete"|trans }}</a> <span class="muted">( <i class="fa fa-warning"></i> {{ "deleteHelp"|trans }} )</span></div>
 </section>
 {% endif %}
 {% endblock %}

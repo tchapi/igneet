@@ -146,7 +146,7 @@ class DefaultController extends Controller
 
             if ($community) {
 
-                $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $this->getUser()->getId(), 'community' => $community->getId(), 'guest' => false));
+                $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $this->getUser()->getId(), 'community' => $community->getId(), 'guest' => false, 'deleted_at' => null));
 
                 if ($userCommunity && isset($target['slug']) && isset($target['params']) ){
 
@@ -169,7 +169,7 @@ class DefaultController extends Controller
         } else {
 
             $repository = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity');
-            $userCommunities = $repository->findBy(array( 'user' => $this->getUser(), 'guest' => false));
+            $userCommunities = $repository->findBy(array( 'user' => $this->getUser(), 'guest' => false, 'deleted_at' => null));
 
             if (count($userCommunities) == 0 ){
 
@@ -202,11 +202,12 @@ class DefaultController extends Controller
 
         if ($uid === null){ // Private space
 
-            $this->get('session')->getFlashBag()->add(
-                'success',
-                $this->get('translator')->trans('member.in.private.space')
-            );
-
+            if (!$request->get('redirect')){
+                $this->get('session')->getFlashBag()->add(
+                    'success',
+                    $this->get('translator')->trans('member.in.private.space')
+                );
+            }
             $em = $this->getDoctrine()->getManager();
             $this->getUser()->setCurrentCommunity(null);
             $em->flush();
@@ -220,10 +221,24 @@ class DefaultController extends Controller
 
         if ($community) {
             
-            $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $this->getUser()->getId(), 'community' => $community->getId()));
+            $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $this->getUser()->getId(), 'community' => $community->getId(), 'deleted_at' => null));
 
             if ($userCommunity ){
                 
+                // We put this test after knowing that we can go to the community, since
+                // we don't want a unauthorized user to know if a community has not been
+                // paid for.
+                if ( !($community->isValid()) ){
+
+                     $this->get('session')->getFlashBag()->add(
+                        'error',
+                        $this->get('translator')->trans('community.invalid', array('%community%' => $community->getName()))
+                    );
+
+                    return $this->redirect($this->generateUrl('g_upgrade_community', array( 'uid' => $this->container->get('uid')->toUId($community->getId()))));
+
+                }
+
                 $this->get('session')->getFlashBag()->add(
                     'success',
                     $this->get('translator')->trans('member.in.community', array( '%community%' => $community->getName()))

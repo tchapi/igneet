@@ -41,6 +41,8 @@ security:
             form_login:
                 login_path: /app/login
                 check_path: /app/login_check
+                always_use_default_target_path: true
+                default_target_path: /app/
                 remember_me: true
 
             logout:
@@ -55,6 +57,9 @@ security:
             anonymous: ~
 
     access_control:
+        # Admin
+        # - { path: ^/admin/users, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/admin, roles: ROLE_ADMIN }
         # Application
         - { path: /app/login.*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: /app/language/.*, roles: IS_AUTHENTICATED_ANONYMOUSLY }

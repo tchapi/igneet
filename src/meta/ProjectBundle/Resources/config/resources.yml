@@ -1,5 +1,5 @@
 parameters:
-  standardproject.resource_types:
+  project.resource_types:
     pdf: 
       icon: file_extension_pdf
       displayable: true
@@ -51,7 +51,7 @@ parameters:
     other: 
       icon: document_comments
       displayable: false
-  standardproject.resource_providers:
+  project.resource_providers:
     gdocs:
       pattern: /docs\.google\.com/
       icon: provider_gdocs

@@ -72,6 +72,13 @@ div.cart > footer{
   padding: 20px;
 }
 
+div.card .navbar{
+  margin-bottom: 0;
+  border-radius: 0;
+  border: 0;
+  border-bottom: 1px solid hsl(0, 0%, 80%);
+}
+
 .ellipsis{
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -133,7 +140,7 @@ div.content section.colored.warning{ background: lightPink;}
 div.content section.colored.info{ background: lightBlue;}
 /* Column-type sections */
 div.content div.menu{
-  width: 180px;
+  width: 220px;
   float: right;
   background-color: #eee;
   padding: 28px 20px 10px 20px;
@@ -143,7 +150,7 @@ div.content section.centered{
   padding: 50px;
 }
 div.content div.column{
-  width: 738px;
+  width: 958px;
   border-left: 220px solid #eee; /* The width and color of the rail */
   margin-left: -220px;
   float: right;
@@ -192,6 +199,10 @@ div.smallObjectInfos span{
 }
 .imageCropWrapper div{
   margin: auto;
+}
+
+.pagination-centered {
+  text-align: center;
 }
 
 /*******************/
@@ -278,13 +289,17 @@ div.smallObjectInfos span{
 .icon-hr-line
 {
   background: url(../../../bundles/metageneral/img/Markdown.Editor.Icons.png) no-repeat scroll;
-  height: 20px;
+  height: 19px;
   width: 14px;
   display: block !important;
 }
 .icon-header            { background-position: -120px 3px; }
 .icon-hr-line           { background-position: -144px 3px; }
 
+.popover-content
+{
+  font-size: 14px;
+}
 
 textarea.wmd-input{
   width: 100%;
@@ -308,6 +323,10 @@ textarea.wmd-input{
   border-bottom: 1px solid #DDD;
   padding: 5px 0;
   margin-bottom: 10px;
+}
+
+#wmd-button-bar{
+  margin-bottom: 6px;
 }
 
 .editable-trigger,
@@ -382,6 +401,20 @@ div.miniTextAvatar i{
   width: 30px;
 }
 
+/**************/
+/* COMMUNITY  */
+/**************/
+
+.label-demo{
+  background-color: hsl(35, 95%, 50%); /* warning */
+}
+.label-association{
+  background-color: hsl(121, 32%, 40%); /* success */
+}
+.label-entreprise{
+  background-color: hsl(200, 50%, 45%); /* info */
+}
+
 /*********************/
 /*  Listing & Mutual */
 /*********************/
@@ -405,6 +438,7 @@ div.listingItemRelatedObjects ul{
   overflow: hidden;
   width: 220px;
   margin-left: 0px;
+  padding: 0px;
   height: 32px;
   direction: rtl;
 }
@@ -502,6 +536,7 @@ div.navbar.project > div.navbar-inner{
   border-right: none;
   border-left: none;
 }
+div.communityInfo,
 div.projectInfo,
 div.ideaInfo{
   display: inline-block;
@@ -510,13 +545,15 @@ div.ideaInfo{
   height: 150px;
   width: 540px;
 }
+
+div.communityActions,
 div.projectAbout,
 div.ideaAbout{
   display: inline-block;
   vertical-align: top;
   padding: 5px 20px;
   height: 140px;
-  width: 100px;
+  width: 200px;
 }
 a.removeUserIcon{
   position: absolute;
@@ -537,6 +574,7 @@ div.timeline_filters{
 }
 ul.timeline{
   margin: 0;
+  padding: 0;
 }
 ul.timeline div.date-wrapper {
   margin-left: 414px;
@@ -588,7 +626,7 @@ ul.timeline li.logWrapper .fullDate{
   display: none;
 }
 ul.timeline li.logWrapper.full .fullDate{
-  display: inline-block;
+  display: inline;
 }
 ul.timeline div.log{
   border-top: 1px solid #DDD;
@@ -735,7 +773,7 @@ ul.comments li div.comment{
 }
 ul.timeline li div.comment{
   display: inline-block;
-  width: 835px;
+  width: 832px;
 }
 
 ul.comments .actions,
@@ -789,37 +827,4 @@ ul.resources{
 div.resourceDetail{
   margin-left: 36px;
   margin-top: 10px;
-}
-
-/*************/
-/* DASHBOARD */
-/*************/
-.blank_dashboard_item{
-  background: lightgreen;
-  padding: 152px 10px;
-  text-align: center;
-}
-/**************/
-/*   GRAPHS   */
-/**************/
-
-header .graph{
-  position: absolute;
-  bottom: 0;
-  right: 10px;
-}
-.graph_placeholder{
-  height: 21px;
-  padding: 62px 0;
-  background: #CCC;
-  text-align: center;
-}
-.axis path, .axis line {
-  fill: none;
-  stroke: #DDD;
-  shape-rendering: crispEdges;
-}
-.axis text, .top-label {
-  font-family: sans-serif;
-  font-size: 10px;
 }

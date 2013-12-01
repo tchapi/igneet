@@ -1,0 +1,55 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}{{ parent() }} > {{ "community.manage"|trans }}{% endblock %}
+
+{% block body %}
+<header class="home">
+  <div class="headerAvatarAndActions">
+    <div class="textAvatar"><i class="fa fa-cogs"></i></div>
+  </div>
+  <div class="objectHeader">
+    <h2>{{ "community.manage"|trans }}</h2>
+    <h4>{{ "community.manageHelp"|trans }}</h4>
+    <h5>{{ "community.validUntil"|trans({'%date%': app.user.currentCommunity.validUntil|date("date.fullFormat"|trans) }) }}</h5>
+  </div>
+</header>
+<div class="content home clearfix">
+
+  <section>
+    <a href="{{ path('invite') }}" class="btn btn-success"><i class="fa fa-user"></i> {{ "community.invite"|trans }}</a>
+  </section>
+
+  <section class="colored">
+    <div class="sectionTitle">{{ "community.managers"|trans }} : </div>
+    <ul class="users sectionContent">
+    {% for managerCommunity in userCommunityManagers %}
+     
+        <li>
+          <a href="{{ path('u_show_user_profile', {'username': managerCommunity.user.username}) }}">
+            <img src="{{ managerCommunity.user.avatar }}" width="70" height="70" class="smallAvatar"/>
+            <div class="smallObjectInfos ellipsis-multiline">
+              <span><div>{{ managerCommunity.user.firstName }}</div><div>{{ managerCommunity.user.lastName }}</div></span>
+            </div>
+          </a>
+          <a class="removeUserIcon" href="{{ path('g_remove_manager_community', { 'uid': managerCommunity.community.id|to_uid, 'username' : managerCommunity.user.username, 'token': csrf_token('removeManager') }) }}"><i class="fa fa-trash-o fa-lg"></i></a>
+        </li>
+
+    {% endfor %}
+
+    <li>
+      <a href="{{ path('u_choose_user', {'targetAsBase64': targetManagerAsBase64, 'token': csrf_token('addManager') }) }}">
+        <div class="smallTextAvatar"><i class="fa fa-plus-circle"></i></div>
+        <div class="smallObjectInfos ellipsis-multiline">
+          <span>{{ "community.add.manager"|trans }}</span>
+        </div>
+      </a>
+    </li>
+
+    </ul>
+  </section>
+
+</div>
+<footer>
+{% block footer %}{% endblock %}
+</footer>
+{% endblock %}

@@ -4,7 +4,7 @@
 
 {% block header %}
   <div class="headerAvatarAndActions">
-    <div class="textAvatar"><i class="icon-search"></i></div>
+    <div class="textAvatar"><i class="fa fa-search"></i></div>
   </div>
   <div class="objectHeader">
     <h2>{{ "user.choose.title"|trans }}</h2>
@@ -15,6 +15,7 @@
 
 {% block content %}
 <form action="{{ path('u_choose_user', { 'targetAsBase64' : targetAsBase64, 'token': token }) }}" method="post" class="form-horizontal">
+   
     <section>
       <div class="sectionTitle"><label for="username" class="required {% if users|length == 0 %}muted{% endif %}">{{ "user.choose.field"|trans }} : </label></div>
       <div class="sectionContent">

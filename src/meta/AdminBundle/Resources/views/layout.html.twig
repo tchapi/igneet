@@ -1,0 +1,18 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}Administration{% endblock %}
+
+{% block menu %}
+  {% render(controller("metaAdminBundle:Admin:currentUserMenu")) %}
+{% endblock %}
+
+{% block body %}
+<header>
+  <h1>Administration</h1>
+</header>
+
+<div class="content clearfix">
+{% block content %}
+{% endblock %}
+</div>
+{% endblock %}

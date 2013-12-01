@@ -27,13 +27,13 @@ $(document).ready(function(){
                       $(this).empty();
                       var len = selected.length;
                       for(var i=0; i<len; i++){
-                        $(this).append('<li class="label" rel="' + selected[i].value + '">' + selected[i].text + '</li>');
+                        $(this).append('<li class="label label-default" rel="' + selected[i].value + '">' + selected[i].text + '</li>');
                       }
                     } else {
                       if (value){
                         var len = value.length;
                         for(var i=0; i<len; i++){
-                          $(this).append('<li class="label">' + value[i] + '</li>');
+                          $(this).append('<li class="label label-default">' + value[i] + '</li>');
                         }
                       }
                     }
@@ -83,7 +83,7 @@ $(document).ready(function(){
 
     // Save function with states
     $('.wmd-input[unsaved="no"]').keyup(function(){
-      $(this).parent().parent().find(".wmd-message").html('<span class="alert">' + Translator.get('alert.unsaved.changes') + '</span>');
+      $(this).parent().parent().find(".wmd-message").html('<span class="alert alert-warning">' + Translator.get('alert.unsaved.changes') + '</span>');
       $(this).attr('unsaved', 'yes');
     });
 
@@ -107,7 +107,7 @@ $(document).ready(function(){
          contentBox.html(data);             
       })
       .error(function(errors) {
-         messagesBox.html('<span class="alert alert-error">' + Translator.get('alert.error.saving.changes') + '</span>');
+         messagesBox.html('<span class="alert alert-danger">' + Translator.get('alert.error.saving.changes') + '</span>');
       });
 
     });
@@ -137,12 +137,31 @@ $(document).ready(function(){
      */
     $('a[data-confirm]').click(function(ev) {
       
+      var modal = '<div id="dataConfirmModal" class="modal fade">' +
+                    '<div class="modal-dialog">' +
+                      '<div class="modal-content">' +
+                        '<div class="modal-header">' +
+                          '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' +
+                          '<h4 class="modal-title" id="dataConfirmLabel">' + Translator.get('alert.please.confirm') + '</h4>' +
+                        '</div>' +
+                        '<div class="modal-body">' +
+                        '</div>' +
+                        '<div class="modal-footer">' +
+                          '<button type="button" class="btn btn-default" data-dismiss="modal">' + Translator.get('cancel') + '</button>' +
+                          '<button type="button" class="btn btn-primary" id="dataConfirmOK">' + Translator.get('ok') + '</button>' +
+                        '</div>' +
+                      '</div><!-- /.modal-content -->' +
+                    '</div><!-- /.modal-dialog -->' +
+                  '</div><!-- /.modal -->';
+
       var href = $(this).attr('href');
       if (!$('#dataConfirmModal').length) {
-        $('body').append('<div id="dataConfirmModal" class="modal" role="dialog" aria-labelledby="dataConfirmLabel" aria-hidden="true"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="dataConfirmLabel">' + Translator.get('alert.please.confirm') + '</h3></div><div class="modal-body"></div><div class="modal-footer"><button class="btn" data-dismiss="modal" aria-hidden="true">' + Translator.get('cancel') + '</button><a class="btn btn-primary" id="dataConfirmOK">' + Translator.get('ok') + '</a></div></div>');
+        $('body').append(modal);
       } 
       $('#dataConfirmModal').find('.modal-body').text($(this).attr('data-confirm'));
-      $('#dataConfirmOK').attr('href', href);
+      $('#dataConfirmOK').click(function(){
+        document.location.href = href;
+      });
       $('#dataConfirmModal').modal({show:true});
       
       return false;
@@ -157,6 +176,8 @@ $(document).ready(function(){
       $.post($(this).attr('data-url'), {
         name: $(this).attr('data-name'),
         value: $(this).is(':checked')?1:0
+      }, function(){
+        setFlash('success', Translator.get('user.settings.saved'));
       });
     });
 
@@ -165,6 +186,8 @@ $(document).ready(function(){
       $.post($(this).attr('data-url'), {
         name: $(this).attr('data-name'),
         value: $(this).is(':checked')?1:0
+      }, function(){
+        setFlash('success', Translator.get('user.settings.saved'));
       });
     });
 
@@ -173,6 +196,8 @@ $(document).ready(function(){
       $.post($(this).attr('data-url'), {
         name: $(this).attr('data-name'),
         value: $(this).is(':checked')?1:0
+      }, function(){
+        setFlash('success', Translator.get('user.settings.saved'));
       });
     });
 

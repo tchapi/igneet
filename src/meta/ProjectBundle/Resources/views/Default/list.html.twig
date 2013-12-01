@@ -4,7 +4,7 @@
 
 {% block header %}
   <div class="headerAvatarAndActions">
-    <div class="textAvatar"><i class="icon-list-alt"></i></div>
+    <div class="textAvatar"><i class="fa fa-list"></i></div>
   </div>
   <div class="objectHeader">
     <h2>{{ "project.allProjects"|trans }}</h2>
@@ -16,11 +16,22 @@
       {% endif %}
     </h4>
     <p>{{ "filters.sort"|trans }} :
-      <a href="{{ path('p_list_projects', {'sort': 'newest', 'page' : pagination.page}) }}"><i class="icon-star"></i> {{ "filters.newest"|trans }}</a> - 
-      <a href="{{ path('p_list_projects', {'sort': 'update', 'page' : pagination.page}) }}"><i class="icon-time"></i> {{ "filters.recent"|trans }}</a> - 
-      <a href="{{ path('p_list_projects', {'sort': 'alpha', 'page' : pagination.page}) }}"><i class="icon-font"></i> {{ "filters.alpha"|trans }}</a>
+      <a href="{{ path('p_list_projects', {'sort': 'newest', 'page' : pagination.page}) }}"><i class="fa fa-star"></i> {{ "filters.newest"|trans }}</a> - 
+      <a href="{{ path('p_list_projects', {'sort': 'update', 'page' : pagination.page}) }}"><i class="fa fa-clock-o"></i> {{ "filters.recent"|trans }}</a> - 
+      <a href="{{ path('p_list_projects', {'sort': 'alpha', 'page' : pagination.page}) }}"><i class="fa fa-font"></i> {{ "filters.alpha"|trans }}</a>
     </p>
-    {% if not userIsGuest %}<p><a href="{{ path('p_new_project') }}" class="btn btn-success">{{ "project.new"|trans }}</a></p>{% endif %}
+    {% if statuses|length < 4 %}
+      <p class="muted">{{ "project.listHelp.statuses"|trans({'%statuses%': statuses|join(', ') }) }}</p>
+    {% endif %}
+    <p>
+      {% if not userIsGuest %}<a href="{{ path('p_new_project') }}" class="btn btn-success">{{ "project.new"|trans }}</a>{% endif %}
+      {% if statuses|length == 4 %}
+        <a href="{{ path('p_list_sleeping_projects') }}" class="btn btn-warning">{{ "project.list.sleeping"|trans }}</a>
+        <a href="{{ path('p_list_closed_projects') }}" class="btn btn-info">{{ "project.list.closed"|trans }}</a>
+      {% else %}
+        <a href="{{ path('p_list_projects') }}" class="btn btn-primary">{{ "project.list.all"|trans }}</a>
+      {% endif %}
+    </p>
   </div>
 {% endblock %}
 
@@ -36,8 +47,8 @@
   <div class="listingItemInfo">
     <h4 class="ellipsis"><a href="{{ path('p_show_project', {'uid': project.id|to_uid }) }}">{{ project.name }}</a>{% if project.isPrivate %} ({{ "project.privateShort"|trans }}){% endif %}</h4>
     <div class="ellipsis">{{ project.headline }}</div>
-    <div class="muted"><i class="icon-calendar"></i> {{ "project.info.created"|trans({'%date%': project.createdAt|date("date.fullFormat"|trans)}) }}</div>
-    <div class="muted"><i class="icon-time"></i> {{ "project.info.updated"|trans({'%date%': project.updatedAt|date("date.fullFormat"|trans)}) }}</div>
+    <div class="muted"><i class="fa fa-calendar"></i> {{ "project.info.created"|trans({'%date%': project.createdAt|date("date.fullFormat"|trans)}) }}</div>
+    <div class="muted"><i class="fa fa-clock-o"></i> {{ "project.info.updated"|trans({'%date%': project.updatedAt|date("date.fullFormat"|trans)}) }}</div>
   </div>
 
   <div class="listingItemRelatedObjects">

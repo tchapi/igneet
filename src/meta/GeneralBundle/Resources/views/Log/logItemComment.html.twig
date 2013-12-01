@@ -1,9 +1,9 @@
 {% if locale is not defined %}{% set locale = app.user.getPreferredLanguage() %}{% endif %}
 <div class="avatar">
   {% if not user.isDeleted %}
-  <img src="{{ user.avatar }}" width="30" height="30" class="avatar"/>
+  <img src="{% if user.isAvatarGravatar %}{{ user.avatar }}{% else %}{{ base_path ~ user.avatar }}{% endif %}" width="30" height="30" class="avatar"/>
   {% else %}
-  <img src="{{ asset("/bundles/metageneral/img/defaults/user.png") }}" width="30" height="30" class="avatar"/>
+  <img src="{{ base_path ~ "/bundles/metageneral/img/defaults/user.png" }}" width="30" height="30" class="avatar"/>
   {% endif %}
 </div>
 <div class="comment">
@@ -26,11 +26,11 @@
 {% if not comment.isDeleted %}
 <div class="actions">
   <div class="validations tooltip-trigger{% if app.user in comment.validators %} validated{% endif %}" data-toggle="tooltip" title="{% for user in comment.validators %}{{ user.getFullName() }}<br />{% endfor %}" data-placement="bottom">
-    <strong><a title="{{ "comment.vote"|trans({}, 'messages', locale) }}" class="validate-trigger" data-url="{{ path('g_validate_comment', {'id': comment.id, 'token': csrf_token('validateComment')} ) }}"><i class="icon-thumbs-up"></i></a> <span>{{ comment.validators|length }}</span></strong>
+    <strong><a title="{{ "comment.vote"|trans({}, 'messages', locale) }}" class="validate-trigger" data-url="{{ path('g_validate_comment', {'id': comment.id, 'token': csrf_token('validateComment')} ) }}"><i class="fa fa-thumbs-o-up"></i></a> <span>{{ comment.validators|length }}</span></strong>
   </div>
   {% if comment.user == app.user %}
   <div class="delete">
-    <a class="delete-trigger" data-url="{{ path('g_delete_comment', {'id': comment.id, 'token': csrf_token('deleteComment')} ) }}" title="{{ "comment.delete"|trans({}, 'messages', locale) }}"><i class="icon-trash"></i></a>
+    <a class="delete-trigger" data-url="{{ path('g_delete_comment', {'id': comment.id, 'token': csrf_token('deleteComment')} ) }}" title="{{ "comment.delete"|trans({}, 'messages', locale) }}"><i class="fa fa-trash-o"></i></a>
   </div>
   {% endif %}
 </div>

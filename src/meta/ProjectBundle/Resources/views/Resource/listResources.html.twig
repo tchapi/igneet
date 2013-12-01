@@ -2,10 +2,10 @@
 
 {% block title %}{{ parent() }} | {{ "project.resources.title"|trans }}{% endblock %}
 
-{% set shortcode %}[[project:{{ base.standardProject.id|to_uid }}]]{% endset %}
+{% set shortcode %}[[project:{{ base.project.id|to_uid }}]]{% endset %}
 
 {% block navbar %}
-{% render(controller("metaProjectBundle:Default:navbar", { 'activeMenu' : 'resources', 'uid' : base.standardProject.id|to_uid })) %}
+{% render(controller("metaProjectBundle:Base:navbar", { 'activeMenu' : 'resources', 'uid' : base.project.id|to_uid })) %}
 {% endblock %}
 
 {% form_theme form _self %}
@@ -21,21 +21,21 @@
 {% endblock form_row %}
 
 {% block content %}
-{% if base.standardProject.resources|length > 0 %}
+{% if base.project.resources|length > 0 %}
 <section class="colored">
   <div class="sectionTitle">{{ "project.resources.available"|trans }} :</div>
   <div class="sectionContent">
   <ul class="resources">
-  {% for resource in base.standardProject.resources %}
+  {% for resource in base.project.resources %}
       <li>
-        <a href="{{ path('p_show_project_resource', {'uid': base.standardProject.id|to_uid, 'resource_uid': resource.id|to_uid}) }}">
+        <a href="{{ path('p_show_project_resource', {'uid': base.project.id|to_uid, 'resource_uid': resource.id|to_uid}) }}">
           <img src="{{ asset('/bundles/metageneral/img/icons/' ~ providers[resource.provider].icon ~ '.png') }}" width="32px" height="32px"/> 
           <img src="{{ asset('/bundles/metageneral/img/icons/' ~ types[resource.type].icon ~ '.png') }}" width="32px" height="32px"/>
           <span>{{ resource.title }}</span>{% if resource.originalFilename %} <em>({{ resource.originalFilename }})</em>{% endif %}
         </a>
         - 
-        {% if types[resource.type].displayable or not providers[resource.provider].downloadable %}<a title="{{ "project.resources.open"|trans }}" href="{{ resource.url }}" target="_blank"><i class="icon-external-link"></i></a>{% endif %}
-        {% if providers[resource.provider].downloadable %}<a title="{{ "project.resources.download"|trans }}" href="{{ path('p_show_project_resource_download', {'uid': base.standardProject.id|to_uid, 'resource_uid': resource.id|to_uid})}}"><i class="icon-download"></i></a>{% endif %}
+        {% if types[resource.type].displayable or not providers[resource.provider].downloadable %}<a title="{{ "project.resources.open"|trans }}" href="{{ resource.url }}" target="_blank"><i class="fa fa-external-link"></i></a>{% endif %}
+        {% if providers[resource.provider].downloadable %}<a title="{{ "project.resources.download"|trans }}" href="{{ path('p_show_project_resource_download', {'uid': base.project.id|to_uid, 'resource_uid': resource.id|to_uid})}}"><i class="fa fa-download"></i></a>{% endif %}
         <span>
           {% if resource.tags|length > 0 %}
             {{ "tags.title"|trans }} :
@@ -43,7 +43,7 @@
             {{ "tags.none"|trans }}
           {% endif %}
           <ul class="tags" >
-          {% for tag in resource.tags %}<li class="label" rel="{{ tag.name }}">{{ tag.name }}</li>{% endfor %}
+          {% for tag in resource.tags %}<li class="label label-default" rel="{{ tag.name }}">{{ tag.name }}</li>{% endfor %}
           </ul>
         </span>
       </li>
@@ -57,7 +57,7 @@
 </section>
 {% endif %}
 {% if base.canEdit %}
-<form action="{{ path('p_show_project_list_resources', {'uid': base.standardProject.id|to_uid}) }}" method="post" {{ form_enctype(form) }}>
+<form action="{{ path('p_show_project_list_resources', {'uid': base.project.id|to_uid}) }}" method="post" {{ form_enctype(form) }}>
   <section>
     <h4>{{ "project.resources.add"|trans }} :</h4>
   </section>

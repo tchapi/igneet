@@ -7,14 +7,20 @@ project:
   deleted: "Le projet %project% a été supprimé avec succès."
   deleteHelp: "Êtes-vous sûr de vouloir supprimer ce projet ?"
   allProjects: "Tous les projets"
+  allProjects.menu: "Projets"
   none: "Pas encore de projets !"
   not.found: "Ce projet n'existe pas."
   picture:
     reset: "L'image de ce projet a été réinitialisée avec succès."
     cannot.reset: "Vous n'avez pas les droits pour réinitialiser l'image de ce projet."
+  list:
+    all: "Voir tous les projets"
+    closed: "Ne voir que les projets fermés"
+    sleeping: "Ne voir que les projets en attente"
   listHelp:
     community: "Vous trouverez ici tous les projets de la communauté %community%."
     privateSpace: "Vous trouverez ici tous les projets de votre espace privé."
+    statuses: "Seuls sont affichés les projets de statut : %statuses%"
   createForm:
     name: "Nom du projet"
     namePlaceholder: "Mon nouveau projet"
@@ -163,6 +169,3 @@ project:
     mail:
       sent: "Un mail de notification a été envoyé à %mail% en votre nom. Il/elle sera ajouté(e) au projet lors de sa prochaine connexion."
       subject: "Vous avez été invité à rejoindre un projet sur igneet !"
-  launch: "Listes-aide"
-  launch.button: "Ajouter les listes d'aide à ce projet"
-  launchHelp: "Vous êtes sur le point de créer des listes d'accompagnement pour ce projet - êtes-vous sûr ?"

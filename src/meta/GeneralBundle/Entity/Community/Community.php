@@ -32,12 +32,39 @@ class Community
     private $name;
 
     /**
+     * @var string $type
+     *
+     * @ORM\Column(name="type", type="string", length=30)
+     */
+    private $type;
+    // demo, association, entreprise
+
+    /**
+     * @var string $picture
+     *
+     * @ORM\Column(name="picture", type="string", length=255, nullable=true)
+     */
+    private $picture;
+
+    /**
+     * @Assert\File(maxSize="10000000")
+     */
+    protected $file;
+
+    /**
      * @var string $headline
      *
      * @ORM\Column(name="headline", type="string", length=255, nullable=true)
      */
     private $headline;
     
+    /**
+     * @var string $about
+     *
+     * @ORM\Column(name="about", type="text", nullable=true)
+     */
+    private $about;
+
     /**
      * @var \DateTime $created_at
      *
@@ -46,6 +73,15 @@ class Community
      * @Assert\DateTime()
      */
     private $created_at;
+
+    /**
+     * @var \DateTime $valid_until
+     *
+     * @ORM\Column(name="valid_until", type="datetime")
+     * @Assert\NotBlank()
+     * @Assert\DateTime()
+     */
+    private $valid_until;
 
     /**
      * Projects in this community
@@ -75,7 +111,11 @@ class Community
         $this->projects = new ArrayCollection();
         $this->ideas = new ArrayCollection();
         $this->usersCommunities = new ArrayCollection();
-    
+
+        // BILLING
+        $this->type = "demo"; // By default, all communities are not _yet_ paid for
+        $this->valid_until = new \DateTime('now + 1 month'); // Default validity for a demo
+
     }
     
     public function getLogName()
@@ -194,6 +234,131 @@ class Community
         return $this->name;
     }
 
+  /**
+     * Set type
+     *
+     * @param string $type
+     * @return Community
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+    
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return string 
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * Set picture
+     *
+     * @param string $picture
+     * @return StandardProject
+     */
+    public function setPicture($picture)
+    {
+        $this->picture = $picture;
+        return $this;
+    }
+
+    /**
+     * Get picture
+     *
+     * @return string 
+     */
+    public function getPicture()
+    {
+        if ($this->picture === null)
+            return "/bundles/metageneral/img/defaults/community.png";
+        else
+            return $this->getPictureWebPath();
+    }
+
+    public function getRawPicture()
+    {
+        return $this->picture;
+    }
+
+    public function getAbsolutePicturePath()
+    {
+        return null === $this->picture
+            ? null
+            : $this->getUploadRootDir().'/'.$this->picture;
+    }
+
+    public function getPictureWebPath()
+    {
+        return null === $this->picture
+            ? null
+            : '/'.$this->getUploadDir().'/'.$this->picture;
+    }
+
+    private function getUploadRootDir()
+    {
+        // the absolute directory path where uploaded
+        // documents should be saved
+        return __DIR__.'/../../../../web/'.$this->getUploadDir();
+    }
+
+    private function getUploadDir()
+    {
+        // get rid of the __DIR__ so it doesn't screw up
+        // when displaying uploaded doc/image in the view.
+        return 'uploads/pictures';
+    }
+
+
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    public function setFile($file)
+    {
+        $this->file = $file;
+    }
+
+    /**
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function preUpload()
+    {
+        if (null !== $this->file) {
+            // Generate a unique name
+
+            $filename = sha1(uniqid(mt_rand(), true));
+            $this->picture = $filename.'.'.$this->file->guessExtension();
+        }
+    }
+
+    /**
+     * @ORM\PostPersist()
+     * @ORM\PostUpdate()
+     */
+    public function upload()
+    {
+        if (null === $this->file) {
+            return;
+        }
+
+        // if there is an error when moving the file, an exception will
+        // be automatically thrown by move(). This will properly prevent
+        // the entity from being persisted to the database on error
+        $this->file->move($this->getUploadRootDir(), $this->picture);
+
+        unset($this->file);
+    }
+
+
     /**
      * Set headline
      *
@@ -216,7 +381,29 @@ class Community
     {
         return $this->headline;
     }
+    
+    /**
+     * Set about
+     *
+     * @param string $about
+     * @return StandardProject
+     */
+    public function setAbout($about)
+    {
+        $this->about = $about;
+        return $this;
+    }
 
+    /**
+     * Get about
+     *
+     * @return string 
+     */
+    public function getAbout()
+    {
+        return $this->about;
+    }
+    
     /**
      * Set created_at
      *
@@ -238,6 +425,37 @@ class Community
     public function getCreatedAt()
     {
         return $this->created_at;
+    }
+
+    /**
+     * Set valid_until
+     *
+     * @param \DateTime $validUntil
+     * @return Community
+     */
+    public function setValidUntil($validUntil)
+    {
+        $this->valid_until = $validUntil;
+    
+        return $this;
+    }
+
+    /**
+     * Is valid if valid_until > now()
+     */
+    public function isValid()
+    {
+        return ($this->valid_until > new \DateTime('now') );
+    }
+
+    /**
+     * Get valid_until
+     *
+     * @return \DateTime 
+     */
+    public function getValidUntil()
+    {
+        return $this->valid_until;
     }
 
     /**

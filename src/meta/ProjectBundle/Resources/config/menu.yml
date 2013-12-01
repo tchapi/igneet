@@ -1,22 +1,22 @@
 parameters:
-  standardproject.menu:
+  project.menu:
     timeline:
-      icon: icon-comments-alt
+      icon: fa fa-comments
       route: p_show_project_timeline
       private: false
     info:
-      icon: icon-info-sign
+      icon: fa fa-info-circle
       route: p_show_project
       private: false
     lists:
-      icon: icon-tasks
+      icon: fa fa-tasks
       route: p_show_project_list_home
       private: false
     resources:
-      icon: icon-file
+      icon: fa fa-file
       route: p_show_project_list_resources
       private: false
     wiki:
-      icon: icon-font
+      icon: fa fa-font
       route: p_show_project_wiki
       private: false

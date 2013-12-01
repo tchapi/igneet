@@ -16,5 +16,6 @@ parameters:
     mailer_from: null
     mailer_contact: null
     ga_tracker_id: 0
-    router.request_context.host: igneet.com
-    router.request_context.scheme: http
+    host: igneet.com
+    scheme: http
+    shared_projects: []

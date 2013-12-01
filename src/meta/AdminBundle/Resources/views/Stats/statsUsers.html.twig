@@ -1,0 +1,27 @@
+{% extends 'metaAdminBundle::layout.html.twig' %}
+
+{% block title %}{{ parent() }} > Stats : New Users {% endblock %}
+
+{% block content %}
+
+  {{ include('metaAdminBundle:Stats:_datepicker.html.twig', {'admin_route': 'a_stats_users'}) }}
+  
+  <section>
+
+    <h4>List of new users (non deleted yet)</h4>
+
+    {% if users|length == 0 %}
+    No new users in this period
+    {% else %}
+    <ul>
+      {% for user in users %}
+      <li>{{ user.getFullName() }} (<a href="{{ path('u_show_user_profile', {'username': user.username}) }}">{{ user.username }}</a>) — created on {{ user.createdAt|date('d-m-Y') }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    
+  </section>
+
+{% endblock %}
+
+

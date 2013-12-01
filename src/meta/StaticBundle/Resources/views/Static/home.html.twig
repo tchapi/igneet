@@ -18,7 +18,7 @@
                   'bundles/metastatic/css/skeleton.css' 
                   'bundles/metastatic/css/style.css' 
                   'bundles/metastatic/css/fonts.css' 
-                  'bundles/metageneral/css/font-awesome.css' 
+                  'bundles/metageneral/css/font-awesome.scss' 
     filter='?yui_css,cssrewrite' output='css/min/static.css' %}
           <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}" />
   {% endstylesheets %}
@@ -30,7 +30,7 @@
 
   <div class="ribbon-wrapper right fixed">
       <div class="ribbon">
-          <a href="http://app.igneet.com/login" target="_blank"><i class="icon-lock"></i> Login</a>
+          <a href="http://app.igneet.com/login" target="_blank"><i class="fa fa-lock"></i> Login</a>
       </div>
   </div>
 
@@ -40,7 +40,7 @@
     
     <div class="title">
       <div class="intro-line"></div>
-      <h1 class="small"><i class="icon-fire"></i> Voici igneet</h1>
+      <h1 class="small"><i class="logo-igneet"></i> Voici igneet</h1>
       <div class="intro-line"></div>
       <p>Entrepreneurs, donnez à vos communautés l’outil dont elles ont besoin</p>
    
@@ -53,7 +53,7 @@
     <nav>
 
       <ul>
-        <li><a href="#intro"><i class="icon-home"></i></a></li>
+        <li><a href="#intro"><i class="fa fa-home"></i></a></li>
         <li><a href="#why">Pourquoi ?</a></li>
         <li><a href="#what">C'est quoi ?</a></li>
         <li><a href="#features">Fonctionnalités</a></li>
@@ -116,7 +116,7 @@
       <div class="clear"></div>
 
       <div class="action">
-        <p><i class="icon-group icon-2x"></i></p>
+        <p><i class="fa fa-group fa-2x"></i></p>
         <p>Initialement, Igneet a été imaginé et réalisé pour supporter l'activité de <strong><a href="http://www.thirdplace.fr" target="_blank">ThirdPlace</a></strong> — <em>association permettant à de jeunes entrepreneurs de travailler ensemble, à l’émergence de nouveaux produits ou services.</em></p>
       </div>
 
@@ -144,32 +144,32 @@
 
       <div class="one-third column serv-list">
         <h4>Listes & Espace wiki</h4>
-        <i class="icon-list-alt icon-4x"></i>
+        <i class="fa fa-list fa-4x"></i>
         <p>Chaque projet peut accueillir un wiki simple et efficace ainsi qu'une quantité illimitée de listes (Todo, tâches, etc) pour faciliter l'organisation de votre projet.</p>
       </div>
       <div class="one-third column serv-list">
         <h4>Gestion des droits</h4>
-        <i class="icon-lock icon-4x"></i>
+        <i class="fa fa-lock fa-4x"></i>
         <p>Décidez simplement de ce que vous partagez de votre projet, et avec qui vous le partagez !</p>
       </div>
       <div class="one-third column serv-list">
         <h4>Timeline et historique</h4>
-        <i class="icon-comments-alt icon-4x"></i>
+        <i class="fa fa-comments fa-4x"></i>
         <p>Toutes les actions importantes sur vos projets, vos communautés ou idées sont gardées en mémoire et constituent la timeline du projet. En un coup d'oeil, vous savez ce qui s'est passé.</p>
       </div>
       <div class="one-third column serv-list">
         <h4>Tableau de bord</h4>
-        <i class="icon-dashboard icon-4x"></i>
+        <i class="fa fa-dashboard fa-4x"></i>
         <p>Dans votre profil, un tableau de bord personnel complet reprend l'état d'avancement de vos projets et idées, en vous donnant quelques insights sur ce qui se passe dans vos communautés.</p>
       </div>
       <div class="one-third column serv-list">
         <h4>Social & connecté</h4>
-        <i class="icon-link icon-4x"></i>
+        <i class="fa fa-link fa-4x"></i>
         <p>Tous les éléments avec lesquels vous travaillez peuvent être connectés intelligement. N'importe où dans Igneet, et en un clic, il est possible de faire un lien vers tout objet (une tâche, une page wiki, un document, ...). Tous les éléments essentiels peuvent recevoir des commentaires contextualisés ou encore des "+1".</p>
       </div>
       <div class="one-third column serv-list">
         <h4>Ressources</h4>
-        <i class="icon-file-alt icon-4x"></i>
+        <i class="fa fa-file fa-4x"></i>
         <p>Sur igneet, il est très simple d'ajouter les ressources dont vous avez besoin : documents externes, pages webs, fichiers. Les types de documents sont automatiquement détectés, et vous pouvez toujours choisir de les héberger sur notre plate-forme ou sur vos outils habituels (Dropbox, Google Drive, ...).</p>
       </div>
 
@@ -196,7 +196,7 @@
 
         <p>Les inscriptions à Igneet sont ouvertes et gratuites. Il vous suffit de suivre le lien suivant et créer votre compte. Vous pourrez profiter d'Igneet dans une minute.</p>
 
-        <div style="text-align: center"><a href="http://app.igneet.com/signup_choice" target="_blank"><div class="button1"><i class="icon-ok"></i>M'inscrire maintenant !</div></a></div>
+        <div style="text-align: center"><a href="http://app.igneet.com/signup_choice" target="_blank"><div class="button1"><i class="fa fa-check"></i>M'inscrire maintenant !</div></a></div>
 
         <div class="clear"></div><br>
 
@@ -275,10 +275,10 @@
           <p class="t-type">Fondateur & Développeur Lead</p>
           <p>Développeur & geek, passionné de technologies et d'entrepreneuriat.<br/>Activiste hacker et maker, Directeur technique de CKAB.<br />Ingénieur civil des Mines de Paris et titulaire d'un cursus de design à Créapole.</p>
           <ul>
-            <li><a target="_blank" href="http://twitter.com/tuneefy" class="social"><i class="icon-twitter-sign icon-2x"></i></a></li>
-            <li><a target="_blank" href="http://www.linkedin.com/in/cyrilchapellier" class="social"><i class="icon-linkedin-sign icon-2x"></i></a></li>
-            <li><a target="_blank" href="http://github.com/tchapi" class="social"><i class="icon-github-sign icon-2x"></i></a></li>
-            <li><a target="_blank" href="http://about.me/tchap" class="social"><i class="icon-external-link-sign icon-2x"></i></a></li>
+            <li><a target="_blank" href="http://twitter.com/tuneefy" class="social"><i class="fa fa-twitter-square fa-2x"></i></a></li>
+            <li><a target="_blank" href="http://www.linkedin.com/in/cyrilchapellier" class="social"><i class="fa fa-linkedin-square fa-2x"></i></a></li>
+            <li><a target="_blank" href="http://github.com/tchapi" class="social"><i class="fa fa-github-square fa-2x"></i></a></li>
+            <li><a target="_blank" href="http://about.me/tchap" class="social"><i class="fa fa-external-link-square fa-2x"></i></a></li>
           </ul>
         </div>
 
@@ -288,8 +288,8 @@
           <p class="t-type">Fondateur</p>
           <p>Spécialiste des théories de la conception et du management de l'innovation (<em>intervenant aux Mines de Paris &amp; écoles de Condé</em>).<br>Jury de diplôme du Master de Design Global des écoles de Condé.<br>Ingénieur des Mines de Paris, 7 ans passés dans l'innovation et le management de projets.</p>
           <ul>
-            <li><a target="_blank" href="http://twitter.com/benjaminduban" class="social"><i class="icon-twitter-sign icon-2x"></i></a></li>
-            <li><a target="_blank" href="http://fr.linkedin.com/in/benjaminduban/" class="social"><i class="icon-linkedin-sign icon-2x"></i></a></li>
+            <li><a target="_blank" href="http://twitter.com/benjaminduban" class="social"><i class="fa fa-twitter-square fa-2x"></i></a></li>
+            <li><a target="_blank" href="http://fr.linkedin.com/in/benjaminduban/" class="social"><i class="fa fa-linkedin-square fa-2x"></i></a></li>
           </ul>
         </div>
 
@@ -304,14 +304,14 @@
         </div>
 
         <div class="sixteen columns ">
-          <p><i class="icon-quote-left icon-4x pull-left icon-muted"></i>
+          <p><i class="fa fa-quote-left fa-4x pull-left fa-muted"></i>
 Comme beaucoup je me suis escrimé des années sur des combinaisons Google Docs / Gmail / Dropbox, Outlook + des répertoire partagés, ou même SharePoint... Et comme beaucoup je n'en ai jamais été satisfait : le coeur de ce qu'est la collaboration n'y est pas, la capitalisation des échanges finit inexorablement par se déliter dans une mer d'emails, inefficace et crispante. Igneet vient compléter plusieurs outils qui sont individuellement excellents, et les unit par une couche de collaboration simple, sobre, puissante. Les débats et les avis sont capitalisés, on peut enfin réfléchir à plusieurs sur de nombreux sujets en parallèle, tout en étant à distance et désynchronisés. C'est tout simplement ce qu'il me fallait. Bravo ! <strong>Eric, <em>Entrepreneur - Fondateur d'Exadress</em></strong>
           </p>
         </div>
         <div class="clear"></div><br />
 
         <div class="sixteen columns ">
-          <p><i class="icon-quote-left icon-4x pull-left icon-muted"></i>
+          <p><i class="fa fa-quote-left fa-4x pull-left fa-muted"></i>
 C'est une évidence, mais l'équipe Igneet travaille avec Igneet ! Le nombre d'emails a drastiquement diminué, et il est désormais possible d'avoir en un coup d'oeil les dernières actions et l'historique du projet. Nous avons également éliminé les discussions inutiles sur le choix exclusif d'un outil qui rassemblerait toutes nos infos : Drive, Evernote ou DropBox ? La réponse est simple, le meilleur de chacun, fédéré sur Igneet. <strong>Benjamin & Cyril, <em>Fondateurs d'Igneet</em></strong>
           </p>
         </div>
@@ -328,11 +328,11 @@ C'est une évidence, mais l'équipe Igneet travaille avec Igneet ! Le nombre d'e
       <div class="clear"></div><br>
 
       <div class="sixteen columns">
-        <p><i class="icon-thumbs-up"></i> <strong>Nous sommes bien sûr ouverts à toute forme de collaboration et / ou partenariats.</strong></p>
+        <p><i class="fa fa-thumbs-up"></i> <strong>Nous sommes bien sûr ouverts à toute forme de collaboration et / ou partenariats.</strong></p>
 
         <p>Si vous pensez pouvoir nous aider à améliorer l’outil, à le développer ou à lui apporter de la visibilité, n’hésitez pas à nous contacter </p>
 
-        <p><i class="icon-signin"></i> <strong>Vous souhaitez rejoindre l'équipe et faire avancer le projet ?</strong></p>
+        <p><i class="fa fa-sign-in"></i> <strong>Vous souhaitez rejoindre l'équipe et faire avancer le projet ?</strong></p>
 
         <p>N'hésitez pas à nous faire part de vos envies et de votre motivation à {{ mailer_contact }} (<em>ou en utilisant le formulaire de contact ci-dessous</em>).<br />
         Nous recherchons principalement des gens motivés par l’entrepreneuriat, autonomes, et ayant évidemment une bonne connaissance des outils web de gestion de projet.</p></p><br />
@@ -387,8 +387,8 @@ C'est une évidence, mais l'équipe Igneet travaille avec Igneet ! Le nombre d'e
                   
                   <h5>Plus d'informations</h5>
               
-                  <p class="white"><i class="icon-envelope"></i> <a href="mailto:{{ mailer_contact }}">{{ mailer_contact }}</a></p>
-                  <p class="white"><i class="icon-home"></i> Paris, France</p>
+                  <p class="white"><i class="fa fa-envelope"></i> <a href="mailto:{{ mailer_contact }}">{{ mailer_contact }}</a></p>
+                  <p class="white"><i class="fa fa-home"></i> Paris, France</p>
 
                 </div> <!-- end contact-info -->
               
@@ -398,7 +398,7 @@ C'est une évidence, mais l'équipe Igneet travaille avec Igneet ! Le nombre d'e
 
           <div class="sixteen columns">
               <div class="copyright">
-                  <p>© 2013 <a href="http://igneet.com/">igneet</a> | codé avec <i class="icon-heart-empty"></i> par <a href="http://github.com/tchapi">tchap</a> | <a href="/terms">conditions générales</a></p>
+                  <p>© 2013 <a href="http://igneet.com/">igneet</a> | codé avec <i class="fa fa-heart-o"></i> par <a href="http://github.com/tchapi">tchap</a> | <a href="/terms">conditions générales</a></p>
               </div>
           </div>
           

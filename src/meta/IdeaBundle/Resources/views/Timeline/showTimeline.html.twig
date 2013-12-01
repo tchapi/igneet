@@ -12,13 +12,13 @@
 
 {% block content %}
 <section>
-{% render(controller("metaIdeaBundle:Default:addIdeaComment", { 'uid' : base.idea.id|to_uid })) %}
+{% render(controller("metaIdeaBundle:Idea:addIdeaComment", { 'uid' : base.idea.id|to_uid })) %}
 </section>
 <section>
-{% render(controller("metaIdeaBundle:Default:history", { 'uid' : base.idea.id|to_uid, 'page' : 1 })) %}
+{% render(controller("metaIdeaBundle:Idea:history", { 'uid' : base.idea.id|to_uid, 'page' : 1 })) %}
 </section>
 {% endblock %}
 
 {% block navbar %}
-{% render(controller("metaIdeaBundle:Default:navbar", { 'activeMenu' : 'timeline', 'uid' : base.idea.id|to_uid })) %}
+{% render(controller("metaIdeaBundle:Idea:navbar", { 'activeMenu' : 'timeline', 'uid' : base.idea.id|to_uid })) %}
 {% endblock %}

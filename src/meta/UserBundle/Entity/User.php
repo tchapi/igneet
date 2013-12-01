@@ -586,6 +586,11 @@ class User implements AdvancedUserInterface
 
     }
 
+    public function isAvatarGravatar()
+    {
+        return ($this->avatar === null);
+    }
+
     public function getAbsoluteAvatarPath()
     {
         return null === $this->avatar
@@ -1220,22 +1225,6 @@ class User implements AdvancedUserInterface
     public function getComments()
     {
         return $this->comments;
-    }
-
-    /**
-     * Count public comments
-     *
-     * @return integer
-     */
-    public function countPublicComments()
-    {
-        $count = 0;
-
-        foreach ($this->comments as $comment) {
-            if ($comment->isPublic()) $count++;
-        }
-
-        return $count;
     }
 
     /**

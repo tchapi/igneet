@@ -26,10 +26,10 @@ class SecurityController extends Controller
 
             $this->get('session')->getFlashBag()->add(
                 'warning',
-                $this->get('translator')->trans('user.already.logged.short', array( '%user%' => $authenticatedUser->getUsername()))
+                $this->get('translator')->trans('user.already.logged.short', array('%user%' => $authenticatedUser->getUsername()))
             );
 
-            return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $authenticatedUser->getUsername())));
+            return $this->redirect($this->generateUrl('g_home_community'));
         } 
 
         $request = $this->getRequest();
@@ -59,12 +59,19 @@ class SecurityController extends Controller
         $community = $authenticatedUser->getCurrentCommunity();
 
         if (!is_null($community)){
-            $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true));
+            $userCommunityManager = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'manager' => true, 'deleted_at' => null));
         } else {
-            $userCommunityGuest = null;
+
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $this->get('translator')->trans('user.invitation.privatespace')
+            );
+
+            return $this->redirect($this->generateUrl('g_home_community'));
+        
         }
         
-        if ( !is_null($community) && !$userCommunityGuest ) {
+        if ( !is_null($community) && $userCommunityManager ) {
 
             if ($request->isMethod('POST')) {
             
@@ -87,9 +94,9 @@ class SecurityController extends Controller
                     $mailOrUsername = $user->getEmail();
                     $token = null;
 
-                    $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $user->getId(), 'community' => $community->getId(), 'guest' => false));
+                    $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $user->getId(), 'community' => $community->getId(), 'guest' => false, 'deleted_at' => null));
 
-                    $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $user->getId(), 'community' => $community->getId(), 'guest' => true));
+                    $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $user->getId(), 'community' => $community->getId(), 'guest' => true, 'deleted_at' => null));
 
                     // If the user is already in the community
                     if ($userCommunity){
@@ -171,7 +178,7 @@ class SecurityController extends Controller
                     );
                 $this->get('mailer')->send($message);
 
-                return $this->redirect($this->generateUrl('u_me'));
+                return $this->redirect($this->generateUrl('g_home_community'));
 
             } else {
 
@@ -274,7 +281,7 @@ class SecurityController extends Controller
 
                 $this->get('session')->getFlashBag()->add(
                     'error',
-                    $this->get('translator')->trans('user.cannot.recover')
+                    $this->get('translator')->trans('user.cannot.' . $flavour)
                 );
 
                 return $this->redirect($this->generateUrl('u_me'));
@@ -346,12 +353,13 @@ class SecurityController extends Controller
 
                 // Changes password
                 $user->setSalt(md5(uniqid(null, true)));
-                $user->setToken(null);
-
+                
                 $errors = $this->get('validator')->validate($user);
-            
-                if( count($errors) === 0){
 
+                $em = $this->getDoctrine()->getManager();
+
+                if( count($errors) === 0){
+                    
                     if ($flavour === 'reactivate'){
 
                         $this->get('session')->getFlashBag()->add(
@@ -363,11 +371,12 @@ class SecurityController extends Controller
 
                     }
 
+                    $user->setToken(null);
+
                     // Now that it is validated, let's crypt the whole thing
                     $factory = $this->get('security.encoder_factory');
                     $encoder = $factory->getEncoder($user);
                     $user->setPassword($encoder->encodePassword($user->getPassword(), $user->getSalt()));
-                    $em = $this->getDoctrine()->getManager();
                     $em->flush();
 
                     $this->get('session')->getFlashBag()->add(
@@ -381,8 +390,11 @@ class SecurityController extends Controller
 
                     $this->get('session')->getFlashBag()->add(
                         'error',
-                        $errors[0]->getMessage()
+                        $this->get('translator')->trans($errors[0]->getMessage())
                     );
+
+                    // We need this otherwise the null token / password / etc might be flushed !
+                    $em->refresh($user);
 
                     return $this->render('metaUserBundle:Security:changePassword.html.twig', array('passwordToken' => $passwordToken, 'flavour' => $flavour));
         
@@ -428,14 +440,14 @@ class SecurityController extends Controller
 
             if (is_null($community)){
                 // Private space, you're not a guest
-                $userCommunityGuest = null;
+                $userCommunity = null;
             } else {
-                $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true));
+                $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'deleted_at' => null));
             }
             
             return $this->render(
                 'metaUserBundle:Security:_authenticated.html.twig',
-                array('user' => $authenticatedUser, 'isGuest' => ($userCommunityGuest != null) )
+                array('user' => $authenticatedUser, 'currentUserCommunity' => $userCommunity )
             );
 
         } else {

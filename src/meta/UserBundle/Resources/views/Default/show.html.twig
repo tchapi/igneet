@@ -27,7 +27,7 @@
 {% block header %}
 
   <div class="headerAvatarAndActions">
-    {% if isMe %}<div class="changeAvatar"><a href="{{ path('u_edit_user_profile_reset_avatar', {'username': user.username, 'token': csrf_token('resetAvatar') }) }}" title="{{ "picture.resetHelp"|trans }}"><i class="icon-trash"></i></a> | <a href="{{ path('g_choose_file', {'targetAsBase64': targetAvatarAsBase64, 'token': csrf_token('edit') }) }}"><i class="icon-pencil"></i> {{ "picture.change"|trans }}</a></div>{% endif %}
+    {% if isMe %}<div class="changeAvatar"><a href="{{ path('u_edit_user_profile_reset_avatar', {'username': user.username, 'token': csrf_token('resetAvatar') }) }}" title="{{ "picture.resetHelp"|trans }}"><i class="fa fa-trash-o"></i></a> | <a href="{{ path('g_choose_file', {'targetAsBase64': targetAvatarAsBase64, 'token': csrf_token('edit') }) }}"><i class="fa fa-pencil"></i> {{ "picture.change"|trans }}</a></div>{% endif %}
     <img src="{{ asset(user.getAvatar()) }}" width="150" height="150" class="avatar"/>
 {% if alreadyFollowing %}
     <a href="{{ path('u_unfollow_user', {'username': user.username, 'token': csrf_token('unfollowUser') }) }}" class="btn btn-info followAction">{{ "user.unfollow"|trans }} {{ user.firstName }}</a>
@@ -47,15 +47,15 @@
     </h4>
 
     <div>
-      <i class="icon-map-marker"></i> <span data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" data-name="city" data-title="{{ "user.city.help"|trans }}" data-emptytext="{{ "user.city.emptyText"|trans }}" class="editable">{{ user.city }}</span>
+      <i class="fa fa-map-marker"></i> <span data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" data-name="city" data-title="{{ "user.city.help"|trans }}" data-emptytext="{{ "user.city.emptyText"|trans }}" class="editable">{{ user.city }}</span>
     </div>
 
     <div>
-      <i class="icon-calendar"></i> {{ "user.list.member.since"|trans({ '%date%': user.createdAt|date("date.format"|trans)}) }}
+      <i class="fa fa-calendar"></i> {{ "user.list.member.since"|trans({ '%date%': user.createdAt|date("date.format"|trans)}) }}
     </div>
 
     <div>
-      <i class="icon-trophy"></i> 
+      <i class="fa fa-trophy"></i> 
 
       {% if user.skills|length > 0 %}
       {{ "user.skills.title"|trans }} : 
@@ -65,12 +65,12 @@
 
       <ul data-toggle="manual" data-title="{{ "user.skills.help"|trans }}" data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" data-emptytext="{{ "user.skills.emptyText"|trans }}" data-type="checklist" data-source="{{ path('u_list_all_skills') }}" data-name="skills" class="skills skills-target editable-li">
       {% for skill in user.skills %}
-          <li class="label" style="background-color: #{{ skill.color }}" rel="{{ skill.slug }}">{{ (skill.slug ~ ".name")|trans({}, 'skills') }}</li>
+          <li class="label label-default" style="background-color: #{{ skill.color }}" rel="{{ skill.slug }}">{{ (skill.slug ~ ".name")|trans({}, 'skills') }}</li>
       {% endfor %}
       </ul>
 
       {% if isMe %}
-        <a class="editable-trigger" data-target="skills">&hellip;<i class="icon-pencil"></i></a>
+        <a class="editable-trigger" data-target="skills">&hellip;<i class="fa fa-pencil"></i></a>
       {% endif %}
 
     </div>
@@ -79,12 +79,12 @@
 
 {% block content %}
 <section>
-  <div class="wmd-heading"><i class="icon-bullhorn"></i> {{ "user.about"|trans({ '%user%': user.getFullName}) }}{% if isMe %}<a class="pull-right markdown-trigger">&hellip;<i class="icon-pencil"></i></a>{% endif %}</div>
+  <div class="wmd-heading"><i class="fa fa-bullhorn"></i> {{ "user.about"|trans({ '%user%': user.getFullName}) }}{% if isMe %}<a class="pull-right markdown-trigger">&hellip;<i class="fa fa-pencil"></i></a>{% endif %}</div>
   <div>
 
     {% if isMe %}
-      <div class="wmd-message-top hide alert"><i class="icon-warning-sign"></i> {{ "unsaved.changes"|trans }}</div>
-      <div class="wmd-wrapper well well-small hide" >
+      <div class="wmd-message-top alert alert-warning" style="display: none;"><i class="fa fa-warning"></i> {{ "unsaved.changes"|trans }}</div>
+      <div class="wmd-wrapper well well-small" style="display: none;">
         <div class="wmd-panel">
             <div id="wmd-button-bar"></div>
             <textarea unsaved='no' data-name="about" data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" class="wmd-input" id="wmd-input">{{ user.about }}</textarea>
@@ -245,16 +245,10 @@
 </section>
 {% endif %}
 
-<section class="colored">
-  <div class="sectionTitle">{{ "user.activity"|trans }} :</div>
-  <div class="projects sectionContent">
-    {{ "user.dashboard.comments"|transchoice(user.comments|length, { '%count%': user.comments|length, '%public%': user.countPublicComments }) }}
-  </div>
-</section>
 {% if isMe %}
 <section class="colored warning">
   <div class="sectionTitle">{{ "user.delete"|trans }} : </div>
-  <div class="sectionContent"><a class="btn btn-danger" data-confirm="{{ "user.deleteHelp"|trans }}" href="{{ path('u_delete_user_profile', { 'username': user.username, 'token': csrf_token('delete') }) }}">{{ "delete"|trans }}</a> <span class="muted">( <i class="icon-warning-sign"></i> {{ "deleteHelp"|trans }} )</span></div>
+  <div class="sectionContent"><a class="btn btn-danger" data-confirm="{{ "user.deleteHelp"|trans }}" href="{{ path('u_delete_user_profile', { 'username': user.username, 'token': csrf_token('delete') }) }}">{{ "delete"|trans }}</a> <span class="muted">( <i class="fa fa-warning"></i> {{ "deleteHelp"|trans }} )</span></div>
 </section>
 {% endif %}
 {% endblock %}
