@@ -72,6 +72,9 @@ class ProjectController extends BaseController
 
                     }
                     break;
+                case 'file': // In this case, no file was passed to upload, so we just pass our way
+                    $needsRedirect = true;
+                    break;
                 case 'picture':
                     $preparedFilename = trim(__DIR__.'/../../../../web'.$request->request->get('value'));
                     
