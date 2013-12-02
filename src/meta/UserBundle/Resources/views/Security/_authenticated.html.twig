@@ -22,6 +22,7 @@
     </ul>
   </li>
 
+  <li><a href="{{ path('g_home_community') }}"><i class="fa fa-home fa-lg"></i></a></li>
   {% if (currentUserCommunity and not currentUserCommunity.guest) or currentUserCommunity is null %}
   <li><a href="{{ path('i_list_ideas') }}">{{ "idea.allIdeas.menu"|trans }}</a></li>
   {% endif %}
