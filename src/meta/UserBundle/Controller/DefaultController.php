@@ -432,7 +432,7 @@ class DefaultController extends Controller
 
                 } else {
 
-                    return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $user->getUsername())));
+                    return $this->redirect($this->generateUrl('g_home_community'));
                 }
 
             } else {
