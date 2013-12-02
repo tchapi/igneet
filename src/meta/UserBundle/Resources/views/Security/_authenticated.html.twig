@@ -5,6 +5,10 @@
       {% if app.user.currentCommunity is not null %}<img src="{{ asset(app.user.currentCommunity.getPicture()) }}" width="20px" height="20px" class="smallHeaderAvatar"/> {% endif %}{% if user.currentCommunity is null %}{{ "private.space"|trans }}{% else %}{{ user.currentCommunity.name }}{% if currentUserCommunity and currentUserCommunity.guest %} <i class="fa fa-fw fa-lock"></i>{% endif %}{% endif %} <b class="caret"></b>
     </a>
     <ul class="dropdown-menu">
+
+        <li><a href="{{ path('g_switch_private_space', {'token': csrf_token('switchCommunity') }) }}">{% if user.currentCommunity is null %}<i class="fa fa-check"></i> {% endif %}{{ "private.space"|trans }}</a></li>
+
+        <li class="divider"></li>
       {% for userCommunity in user.userCommunities if not userCommunity.isDeleted %}
         <li><a href="{{ path('g_switch_community', { 'uid': userCommunity.community.id|to_uid, 'token': csrf_token('switchCommunity') } ) }}">{% if user.currentCommunity == userCommunity.community %}<i class="fa fa-check"></i> {% endif %}{{ userCommunity.community.name }}{% if userCommunity.guest %} <i class="fa fa-lock"></i>{% else %} <span class="label label-{{ userCommunity.community.type }}">{{ userCommunity.community.type }}</span>{% endif %}</a></li>
       {% endfor %}
@@ -37,10 +41,6 @@
     <ul class="dropdown-menu">
         <li><a href="{{ path('u_me') }}"><i class="fa fa-fw fa-user"></i> {{ "user.menu"|trans }}</a></li>
         <li><a href="{{ path('u_show_user_settings') }}"><i class="fa fa-fw fa-wrench"></i> {{ "user.settings.menu"|trans }}</a></li>
-        
-        </li><li class="divider"></li>
-        
-        <li><a href="{{ path('g_switch_private_space', {'token': csrf_token('switchCommunity') }) }}">{% if user.currentCommunity is null %}<i class="fa fa-check"></i> {% endif %}{{ "private.space"|trans }}</a></li>
         
         <li class="divider"></li>
         <li><a href="{{ path('logout') }}"><i class="fa fa-fw fa-power-off"></i> {{ "logout"|trans }}</a></li>
