@@ -18,10 +18,10 @@
     </ul>
   </li>
 
-  <li><a href="{{ path('p_list_projects') }}">{{ "project.allProjects.menu"|trans }}</a></li>
   {% if (currentUserCommunity and not currentUserCommunity.guest) or currentUserCommunity is null %}
   <li><a href="{{ path('i_list_ideas') }}">{{ "idea.allIdeas.menu"|trans }}</a></li>
   {% endif %}
+  <li><a href="{{ path('p_list_projects') }}">{{ "project.allProjects.menu"|trans }}</a></li>
   {% if user.currentCommunity is not null %}
   <li><a href="{{ path('u_list_users') }}">{{ "user.allUsers.menu"|trans }}</a></li>
   {% endif %}
