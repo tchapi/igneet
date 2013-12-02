@@ -11,6 +11,7 @@ $(document).ready(function(){
         handles: true,
         minHeight: 150,
         minWidth: 150,
+        persistent: true,
         imageHeight: nH,
         imageWidth: nW,
         persistent: true,

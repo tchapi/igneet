@@ -24,9 +24,9 @@
 }
 
 .imgareaselect-outer {
-    background-color: #000;
     filter: alpha(opacity=40);
     opacity: 0.4;
+    box-sizing: content-box;
 }
 
 .imgareaselect-selection {
