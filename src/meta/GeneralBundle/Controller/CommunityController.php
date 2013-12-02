@@ -84,7 +84,7 @@ class CommunityController extends Controller
 
         $authenticatedUser = $this->getUser();
 
-        $community = new Community();
+        $community = new Community($this->container->getParameter('community.demo_validity'));
         $form = $this->createForm(new CommunityType(), $community);
 
         if ($request->isMethod('POST')) {

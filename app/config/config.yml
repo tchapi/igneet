@@ -131,3 +131,5 @@ parameters:
             name: "English"
     digest.day: "monday"
     digest.frequency: "weekly"
+    # Communities
+    community.demo_validity: '6 months' # Format : as in new \DateTime(now + $validity);

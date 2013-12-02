@@ -104,7 +104,7 @@ class Community
     /**
      * Constructor
      */
-    public function __construct()
+    public function __construct($valid_until = '1 month')
     {
         $this->created_at = new \DateTime('now');
 
@@ -114,7 +114,7 @@ class Community
 
         // BILLING
         $this->type = "demo"; // By default, all communities are not _yet_ paid for
-        $this->valid_until = new \DateTime('now + 1 month'); // Default validity for a demo
+        $this->valid_until = new \DateTime('now + ' . $valid_until); // Default validity for a demo
 
     }
     
