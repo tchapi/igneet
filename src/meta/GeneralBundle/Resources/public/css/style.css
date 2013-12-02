@@ -193,12 +193,13 @@ div.smallObjectInfos span{
 
 .imageCropWrapper{
   margin: auto;
-  width: 400px;
+  width: 600px;
   background: #DDD;
   border: 2px solid #AAA;
 }
-.imageCropWrapper div{
+.imageCropWrapper img{
   margin: auto;
+  width: 596px;
 }
 
 .pagination-centered {
