@@ -104,7 +104,7 @@ class Community
     /**
      * Constructor
      */
-    public function __construct($valid_until = '1 month')
+    public function __construct($span = '1 month')
     {
         $this->created_at = new \DateTime('now');
 
@@ -114,7 +114,7 @@ class Community
 
         // BILLING
         $this->type = "demo"; // By default, all communities are not _yet_ paid for
-        $this->valid_until = new \DateTime('now + ' . $valid_until); // Default validity for a demo
+        $this->valid_until = new \DateTime('now + ' . $span); // Default validity for a demo
 
     }
     
@@ -435,7 +435,7 @@ class Community
      */
     public function setValidUntil($validUntil)
     {
-        $this->valid_until = $validUntil;
+        $this->valid_until = clone $validUntil;
     
         return $this;
     }
@@ -455,7 +455,19 @@ class Community
      */
     public function getValidUntil()
     {
-        return $this->valid_until;
+        return clone $this->valid_until;
+    }
+
+    /**
+     * Extend valid_until
+     *
+     * @param string
+     * @return Community
+     */
+    public function extendValidityBy($span)
+    {
+        $this->setValidUntil($this->valid_until->modify('+ ' . $span));
+        return $this;
     }
 
     /**

@@ -385,6 +385,11 @@ class DefaultController extends Controller
                         $userCommunity->setCommunity($inviteTokenObject->getCommunity());
                         $userCommunity->setGuest( !($inviteTokenObject->getCommunityType() === 'user') );
 
+                        // In case the user is not a guest, push the validity of the community by 'community.viral_extension'
+                        if ($inviteTokenObject->getCommunityType() === 'user') {
+                            $inviteTokenObject->getCommunity()->extendValidityBy($this->container->getParameter('community.viral_extension'));
+                        }
+
                         $em->persist($userCommunity);
                         
                         $user->setCurrentCommunity($inviteTokenObject->getCommunity());
