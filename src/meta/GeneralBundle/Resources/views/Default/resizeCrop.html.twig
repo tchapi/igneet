@@ -32,23 +32,29 @@
 {% block content %}
 <form action="{{ path('g_choose_file', { 'targetAsBase64' : targetAsBase64, 'token': token  }) }}" method="post" enctype="multipart/form-data">
   <section>
-      <div class="control-group ">
-        <label class="control-label"><label for="file" class="required">{{ "image.resizeAndCrop"|trans }} : </label></label>
-        <div class="controls">
-          <input type="hidden" name="name" id="name" value="picture" />
-          <input type="hidden" name="value" id="value" value="{{ image }}" />
-          <div class="imageCropWrapper">
-            <img id="target" src="{{ image }}"/>
+      <div class="form-group ">
+        <label class="control-label col-sm-4">{{ "image.resizeAndCrop"|trans }} : </label>
+        <div class="row">
+          <div class="col-sm-12">
+            <input type="hidden" name="name" id="name" value="picture" />
+            <input type="hidden" name="value" id="value" value="{{ image }}" />
+            <div class="imageCropWrapper">
+              <img id="target" src="{{ image }}"/>
+            </div>
+            <input type="hidden" id="x" name="x" value="0"/>
+            <input type="hidden" id="y" name="y" value="0" />
+            <input type="hidden" id="w" name="w" value="150" />
+            <input type="hidden" id="h" name="h" value="150" />
           </div>
-          <input type="hidden" id="x" name="x" value="0"/>
-          <input type="hidden" id="y" name="y" value="0" />
-          <input type="hidden" id="w" name="w" value="150" />
-          <input type="hidden" id="h" name="h" value="150" />
         </div>
       </div>
-      <div class="form-actions">
-        <a class="btn" href="javascript:history.back()">{{ "cancel"|trans }}</a>
-        <input type="submit" value="{{ "image.continue"|trans }}" class="btn btn-success" />
+      <div class="form-group">
+        <div class="row">
+          <div class="col-sm-offset-4 col-sm-8">
+            <a class="btn" href="javascript:history.back()">{{ "cancel"|trans }}</a>
+            <input type="submit" value="{{ "image.continue"|trans }}" class="btn btn-success" />
+          </div>
+        </div>
       </div>
   </section>
 </form>

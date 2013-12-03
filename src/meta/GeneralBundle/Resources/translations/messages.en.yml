@@ -41,6 +41,9 @@ community:
     no.projects: "No new project in the community ..."
     no.ideas: "No new idea in the community ..."
     no.people: "No connected fellow members ..."
+  picture:
+    reset: "The picture for this community has successfully been reset."
+    cannot.reset: "You cannot reset the picture for this community."
   invite: "Invite someone"
   invite.short: "Invite"
   create: "Create a community"

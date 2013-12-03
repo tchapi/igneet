@@ -37,7 +37,8 @@ logs:
   user_made_user_participant_idea: "%user% a promu %other_user% en participant de l'idée %idea%."
   user_watch_idea: "%user% s'est abonné à l'idée %idea%."
   user_create_community: "%user% a créé la communauté %community%."
-  
+  user_update_community_info: "La communauté %community% a été mise à jour."
+
 groups: 
   projects: Projets
   ideas: Idées

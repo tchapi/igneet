@@ -47,6 +47,7 @@ class DefaultController extends Controller
 
                 $this->getRequest()->request->set('token', $request->get('token'));
                 // A crop was performed
+                
                 return $this->forward($target['slug'], $target['params']);
 
             }

@@ -37,6 +37,7 @@ logs:
   user_made_user_participant_idea: "%user% made %other_user% a participant in the idea %idea%."
   user_watch_idea: "%user% has started watching the idea %idea%."
   user_create_community: "%user% has created the %community% community."
+  user_update_community_info: "Community %community% has been updated."
 
 groups: 
   projects: Projects

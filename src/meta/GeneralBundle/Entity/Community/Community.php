@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection,
  * Community
  * @ORM\Table(name="Community")
  * @ORM\Entity()
- *
+ * @ORM\HasLifecycleCallbacks
  */
 class Community
 {
@@ -75,6 +75,15 @@ class Community
     private $created_at;
 
     /**
+     * @var \DateTime $updated_at
+     *
+     * @ORM\Column(name="updated_at", type="datetime")
+     * @Assert\NotBlank()
+     * @Assert\DateTime()
+     */
+    private $updated_at;
+
+    /**
      * @var \DateTime $valid_until
      *
      * @ORM\Column(name="valid_until", type="datetime")
@@ -104,7 +113,7 @@ class Community
     /**
      * Constructor
      */
-    public function __construct()
+    public function __construct($span = '1 month')
     {
         $this->created_at = new \DateTime('now');
 
@@ -114,7 +123,7 @@ class Community
 
         // BILLING
         $this->type = "demo"; // By default, all communities are not _yet_ paid for
-        $this->valid_until = new \DateTime('now + 1 month'); // Default validity for a demo
+        $this->valid_until = new \DateTime('now + ' . $span); // Default validity for a demo
 
     }
     
@@ -305,7 +314,7 @@ class Community
     {
         // the absolute directory path where uploaded
         // documents should be saved
-        return __DIR__.'/../../../../web/'.$this->getUploadDir();
+        return __DIR__.'/../../../../../web/'.$this->getUploadDir();
     }
 
     private function getUploadDir()
@@ -428,6 +437,36 @@ class Community
     }
 
     /**
+     * Set updated_at
+     *
+     * @param \DateTime $updatedAt
+     * @return Community
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updated_at = $updatedAt;
+        return $this;
+    }
+
+    /**
+     * Get updated_at
+     *
+     * @return \DateTime 
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updated_at;
+    }
+
+    /**
+     * @ORM\PreUpdate()
+     */
+    public function update()
+    {
+        $this->updated_at = new \DateTime('now');
+    }
+
+    /**
      * Set valid_until
      *
      * @param \DateTime $validUntil
@@ -435,7 +474,7 @@ class Community
      */
     public function setValidUntil($validUntil)
     {
-        $this->valid_until = $validUntil;
+        $this->valid_until = clone $validUntil;
     
         return $this;
     }
@@ -455,7 +494,19 @@ class Community
      */
     public function getValidUntil()
     {
-        return $this->valid_until;
+        return clone $this->valid_until;
+    }
+
+    /**
+     * Extend valid_until
+     *
+     * @param string
+     * @return Community
+     */
+    public function extendValidityBy($span)
+    {
+        $this->setValidUntil($this->valid_until->modify('+ ' . $span));
+        return $this;
     }
 
     /**

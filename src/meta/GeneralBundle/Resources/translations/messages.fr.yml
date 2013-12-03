@@ -41,6 +41,9 @@ community:
     no.projects: "Aucun nouveau projet dans la communauté ..."
     no.ideas: "Aucune nouvelle idée dans la communauté ..."
     no.people: "Aucun membre connecté ..."
+  picture:
+    reset: "L'image de cette communauté a été réinitialisée avec succès."
+    cannot.reset: "Vous n'avez pas les droits pour réinitialiser l'image de cette communauté."
   invite: "Inviter quelqu'un"
   invite.short: "Inviter"
   create: "Créer une communauté"

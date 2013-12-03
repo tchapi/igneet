@@ -72,6 +72,9 @@ class ProjectController extends BaseController
 
                     }
                     break;
+                case 'file': // In this case, no file was passed to upload, so we just pass our way
+                    $needsRedirect = true;
+                    break;
                 case 'picture':
                     $preparedFilename = trim(__DIR__.'/../../../../web'.$request->request->get('value'));
                     
@@ -91,7 +94,7 @@ class ProjectController extends BaseController
                      * Otherwise, as file is not part of the mapping,
                      * @ORM\PreUpdate will not be called and the file will not be persisted
                      */
-                    $this->base['project']->setUpdatedAt(new \DateTime('now')); 
+                    $this->base['project']->update(); 
                     $this->base['project']->setFile(new File($preparedFilename.".cropped"));
 
                     $objectHasBeenModified = true;
