@@ -191,6 +191,14 @@ $(document).ready(function(){
       });
     });
 
+    $('span[data-name=frequency').on('save', function(e, params) {
+      if(params.newValue != 1){ // NOT daily
+        $(".specificDay").show();
+      } else {
+        $(".specificDay").hide();
+      }
+    });
+
     $('#specificEmails').change(function(){
       $('.specificEmailsChoice').toggle();
       $.post($(this).attr('data-url'), {

@@ -3,7 +3,7 @@ user:
   allUsers: "Tous les utilisateurs"
   allUsers.menu: "Utilisateurs"
   menu: "Mon profil"
-  welcome: "Bienvenue! Vous êtes sur votre page de profil, où vous pouvez éditer directement vos informations en cliquant dessus."
+  welcome: "Bienvenue dans Igneet. Vous trouverez dans votre espace privé un didacticiel pour vous guider dans la découverte de l'outil."
   not.found: "Cet utilisateur n'existe pas."
   already.taken: "Ce nom d'utilisateur est déjà utilisé."
   listHelp: "Tous les utilisateurs de la communauté %community% sont listés ici."

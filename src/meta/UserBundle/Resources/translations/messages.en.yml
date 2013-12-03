@@ -3,7 +3,7 @@ user:
   allUsers: "All Users"
   allUsers.menu: "Users"
   menu: "My profile"
-  welcome: "Welcome! This is your profile page, where you can directly edit your information by clicking on the underlined text."
+  welcome: "Welcome to Igneet. You will find in your private space a tutorial project to help you find your way around !"
   not.found: "This user does not exist."
   already.taken: "This username is already taken."
   listHelp: "All the users in the community %community% are listed in this page."

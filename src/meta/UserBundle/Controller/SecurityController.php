@@ -121,6 +121,8 @@ class SecurityController extends Controller
                             $this->get('translator')->trans('user.belonging.community', array( '%user%' => $user->getFullName(), '%community%' => $community->getName() ))
                         );
 
+                        $community->extendValidityBy($this->container->getParameter('community.viral_extension'));
+
                     // The user has no link with the current community
                     } else {
 
@@ -139,6 +141,9 @@ class SecurityController extends Controller
                             'success',
                             $this->get('translator')->trans('user.belonging.community', array( '%user%' => $user->getFullName(), '%community%' => $community->getName() ))
                         );
+
+                        $community->extendValidityBy($this->container->getParameter('community.viral_extension'));
+                        
                     }
 
                 } elseif ($isEmail) {
