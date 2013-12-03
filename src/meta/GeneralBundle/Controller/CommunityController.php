@@ -4,6 +4,7 @@ namespace meta\GeneralBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller,
     Symfony\Component\HttpFoundation\Request,
+    Symfony\Component\HttpFoundation\File\File,
     Symfony\Component\HttpFoundation\Response;
 
 use meta\GeneralBundle\Entity\Community\Community,
@@ -61,9 +62,12 @@ class CommunityController extends Controller
             $userRepository = $this->getDoctrine()->getRepository('metaUserBundle:User');
             $recentlyOnlineUsers = $userRepository->findAllRecentlyOnlineUsersInCommunity(array('community' => $community, 'time' => new \DateTime('now - 5 minutes')));
 
+            $targetPictureAsBase64 = array('slug' => 'metaGeneralBundle:Community:edit', 'params' => array(), 'crop' => true);
+
             return $this->render('metaGeneralBundle:Community:home.html.twig', array(
                         'isManager' => ($userCommunity && $userCommunity->isManager()),
                         'isGuest' => ($userCommunity && $userCommunity->isGuest()),
+                        'targetPictureAsBase64' => base64_encode(json_encode($targetPictureAsBase64)),
                         'lastProjects' => $lastProjects,
                         'lastIdeas' => $lastIdeas,
                         'recentlyOnlineUsers' => $recentlyOnlineUsers));
@@ -132,10 +136,172 @@ class CommunityController extends Controller
     public function upgradeAction()
     {
 
+        // TODO !!
         return $this->render('metaGeneralBundle:Community:upgrade.html.twig');
 
     }
 
+    public function editAction(Request $request)
+    {
+
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('edit', $request->get('token')))
+            return new Response($this->get('translator')->trans('invalid.token', array(), 'errors'), 400);
+
+        $error = null;
+        $response = null;
+
+        $authenticatedUser = $this->getUser();
+        $community = $authenticatedUser->getCurrentCommunity();
+
+        if ( !is_null($community) && $community){
+
+            // Is the user manager ?
+            $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'deleted_at' => null, 'manager' => true));
+
+            if ($userCommunity){
+        
+                $objectHasBeenModified = false;
+
+                switch ($request->request->get('name')) {
+                    /*case 'name':
+                        $this->base['idea']->setName($request->request->get('value'));
+                        $objectHasBeenModified = true;
+                        break;
+                    case 'headline':
+                        $this->base['idea']->setHeadline($request->request->get('value'));
+                        $objectHasBeenModified = true;
+                        break;
+                    case 'about':
+                        $this->base['idea']->setAbout($request->request->get('value'));
+                        $deepLinkingService = $this->container->get('deep_linking_extension');
+                        $response = $deepLinkingService->convertDeepLinks(
+                          $this->container->get('markdown.parser')->transformMarkdown($request->request->get('value'))
+                        );
+                        $objectHasBeenModified = true;
+                        break;
+                        */
+                    case 'file': // In this case, no file was passed to upload, so we just pass our way
+                        $needsRedirect = true;
+                        break;
+                    case 'picture':
+                        $preparedFilename = trim(__DIR__.'/../../../../web'.$request->request->get('value'));
+                        
+                        $targ_w = $targ_h = 300;
+                        $img_r = imagecreatefromstring(file_get_contents($preparedFilename));
+                        $dst_r = ImageCreateTrueColor($targ_w, $targ_h);
+
+                        imagecopyresampled($dst_r,$img_r,0,0,
+                            intval($request->request->get('x')),
+                            intval($request->request->get('y')),
+                            $targ_w, $targ_h, 
+                            intval($request->request->get('w')),
+                            intval($request->request->get('h')));
+                        imagepng($dst_r, $preparedFilename.".cropped");
+
+                        /* We need to update the date manually.
+                         * Otherwise, as file is not part of the mapping,
+                         * @ORM\PreUpdate will not be called and the file will not be persisted
+                         */
+                        $community->update();
+                        $community->setFile(new File($preparedFilename.".cropped"));
+
+                        $objectHasBeenModified = true;
+                        $needsRedirect = true;
+                        break;
+                }
+
+                $validator = $this->get('validator');
+                $errors = $validator->validate($community);
+
+                if ($objectHasBeenModified === true && count($errors) == 0){
+
+                    $logService = $this->container->get('logService');
+                    $logService->log($this->getUser(), 'user_update_community_info', $community, array());
+
+                    $em = $this->getDoctrine()->getManager();
+                    $em->flush();
+
+                } elseif (count($errors) > 0) {
+
+                    $error = $this->get('translator')->trans($errors[0]->getMessage());
+                }
+
+            } else {
+
+                $error = $this->get('translator')->trans('invalid.request', array(), 'errors');
+
+            }
+
+        } else {
+
+            $error = $this->get('translator')->trans('invalid.request', array(), 'errors');
+
+        }
+
+        // Wraps up and either return a response or redirect
+        if (isset($needsRedirect) && $needsRedirect) {
+
+            if (!is_null($error)) {
+                $this->get('session')->getFlashBag()->add(
+                    'error',
+                    $error
+                );
+            }
+
+            return $this->redirect($this->generateUrl('g_home_community'));
+
+        } else {
+        
+            if (!is_null($error)) {
+                return new Response($error, 406);
+            }
+
+            return new Response($response);
+        }
+
+    }
+
+    /*
+     * Reset picture of community
+     */
+    public function resetPictureAction(Request $request)
+    {
+
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('resetPicture', $request->get('token')))
+            return $this->redirect($this->generateUrl('g_home_community'));
+
+        $authenticatedUser = $this->getUser();
+        $community = $authenticatedUser->getCurrentCommunity();
+
+        if ( !is_null($community) && $community){
+
+            // Is the user manager ?
+            $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'deleted_at' => null, 'manager' => true));
+
+            if ($userCommunity){
+
+                $community->setPicture(null);
+                $em = $this->getDoctrine()->getManager();
+                $em->flush();
+
+                $this->get('session')->getFlashBag()->add(
+                    'success',
+                    $this->get('translator')->trans('community.picture.reset')
+                );
+
+            } else {
+        
+                $this->get('session')->getFlashBag()->add(
+                    'error',
+                    $this->get('translator')->trans('community.picture.cannot.reset')
+                );
+            }
+
+        }
+
+        return $this->redirect($this->generateUrl('g_home_community'));
+
+    }
     public function manageAction()
     {
 
