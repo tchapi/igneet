@@ -67,8 +67,8 @@
 </div>
 {% macro tree(wikipages, wikiPage, base, homePage) %}
     {% for page in wikipages %}
-        <li class="{% if page.id == wikiPage.id %}active {% endif %}{% if base.canEdit %}dd-item{% endif %}" id="{{ page.id|to_uid }}" data-name="parent" data-url="{{ path('p_show_project_wiki_edit_page', {'uid': base.project.id|to_uid, 'page_uid': page.id|to_uid, 'token': csrf_token('editWikiPage') }) }}">
-          {% if base.canEdit %}<div class="dd-handle"><i class="fa fa-reorder"></i></div>{% endif %}
+        <li class="{% if page.id == wikiPage.id %}active {% endif %}dd-item" id="{{ page.id|to_uid }}" data-name="parent" data-url="{{ path('p_show_project_wiki_edit_page', {'uid': base.project.id|to_uid, 'page_uid': page.id|to_uid, 'token': csrf_token('editWikiPage') }) }}">
+          {% if base.canEdit %}<div class="dd-handle"><i class="fa fa-bars"></i></div>{% endif %}
           {% if base.canEdit %}<a title="{{ "project.wiki.make.home"|trans }}" href="{{ path('p_show_project_wiki_make_home_page', {'uid': base.project.id|to_uid, 'page_uid': page.id|to_uid, 'token': csrf_token('makeHomeWikiPage') }) }}">{% endif %}<i class="fa {% if page == homePage %}fa-home{% else %}fa-file-text{% endif %}"></i>{% if base.canEdit %}</a>{% endif %}{% if base.canEdit %}<a title="{{ "delete"|trans }}" data-confirm="{{ "project.wiki.deleteHelp"|trans }}" href="{{ path('p_show_project_wiki_delete_page', {'uid': base.project.id|to_uid, 'page_uid': page.id|to_uid, 'token': csrf_token('deleteWikiPage') }) }}"><i class="fa fa-times"></i></a>{% endif %} 
           <a href="{{ path('p_show_project_wiki_show_page', {'uid': base.project.id|to_uid, 'page_uid': page.id|to_uid }) }}" title="{{ page.title }}" class="page_title">{{ page.title }}</a>
           {% if page.children|length > 0 %}
