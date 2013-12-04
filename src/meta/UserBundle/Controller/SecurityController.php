@@ -457,7 +457,7 @@ class SecurityController extends Controller
 
         } else {
 
-            return $this->render('metaUserBundle:Security:_anonymous.html.twig');
+            return null;
 
         }
 
