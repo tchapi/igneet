@@ -1,27 +1,26 @@
-<ul class="nav navbar-nav">
+<div class="communities">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+    {% if app.user.currentCommunity is not null %}<img src="{{ asset(app.user.currentCommunity.getPicture()) }}" width="20px" height="20px" class="smallHeaderAvatar"/> {% endif %}{% if user.currentCommunity is null %}{{ "private.space"|trans }}{% else %}{{ user.currentCommunity.name }}{% if currentUserCommunity and currentUserCommunity.guest %} <i class="fa fa-fw fa-lock"></i>{% endif %}{% endif %} <b class="caret"></b>
+  </a>
+<!--     <ul class="dropdown-menu">
 
-  <li class="dropdown">
-    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-      {% if app.user.currentCommunity is not null %}<img src="{{ asset(app.user.currentCommunity.getPicture()) }}" width="20px" height="20px" class="smallHeaderAvatar"/> {% endif %}{% if user.currentCommunity is null %}{{ "private.space"|trans }}{% else %}{{ user.currentCommunity.name }}{% if currentUserCommunity and currentUserCommunity.guest %} <i class="fa fa-fw fa-lock"></i>{% endif %}{% endif %} <b class="caret"></b>
-    </a>
-    <ul class="dropdown-menu">
+      <li><a href="{{ path('g_switch_private_space', {'token': csrf_token('switchCommunity') }) }}">{% if user.currentCommunity is null %}<i class="fa fa-check"></i> {% endif %}{{ "private.space"|trans }}</a></li>
 
-        <li><a href="{{ path('g_switch_private_space', {'token': csrf_token('switchCommunity') }) }}">{% if user.currentCommunity is null %}<i class="fa fa-check"></i> {% endif %}{{ "private.space"|trans }}</a></li>
-
-        <li class="divider"></li>
-      {% for userCommunity in user.userCommunities if not userCommunity.isDeleted %}
-        <li><a href="{{ path('g_switch_community', { 'uid': userCommunity.community.id|to_uid, 'token': csrf_token('switchCommunity') } ) }}">{% if user.currentCommunity == userCommunity.community %}<i class="fa fa-check"></i> {% endif %}{{ userCommunity.community.name }}{% if userCommunity.guest %} <i class="fa fa-lock"></i>{% else %} <span class="label label-{{ userCommunity.community.type }}">{{ userCommunity.community.type }}</span>{% endif %}</a></li>
-      {% endfor %}
-
-      {% if user.currentCommunity is not null and currentUserCommunity and currentUserCommunity.manager %}
       <li class="divider"></li>
-      <li><a href="{{ path('g_manage_community') }}"><i class="fa fa-fw fa-cogs"></i> {{ "community.manage"|trans }}</a></li>
-      {% endif %}
-      <li class="divider"></li>
-      <li><a href="{{ path('g_create_community') }}"><i class="fa fa-fw fa-plus-circle"></i> {{ "community.create"|trans }}</a></li>
-    </ul>
-  </li>
+    {% for userCommunity in user.userCommunities if not userCommunity.isDeleted %}
+      <li><a href="{{ path('g_switch_community', { 'uid': userCommunity.community.id|to_uid, 'token': csrf_token('switchCommunity') } ) }}">{% if user.currentCommunity == userCommunity.community %}<i class="fa fa-check"></i> {% endif %}{{ userCommunity.community.name }}{% if userCommunity.guest %} <i class="fa fa-lock"></i>{% else %} <span class="label label-{{ userCommunity.community.type }}">{{ userCommunity.community.type }}</span>{% endif %}</a></li>
+    {% endfor %}
 
+    {% if user.currentCommunity is not null and currentUserCommunity and currentUserCommunity.manager %}
+    <li class="divider"></li>
+    <li><a href="{{ path('g_manage_community') }}"><i class="fa fa-fw fa-cogs"></i> {{ "community.manage"|trans }}</a></li>
+    {% endif %}
+    <li class="divider"></li>
+    <li><a href="{{ path('g_create_community') }}"><i class="fa fa-fw fa-plus-circle"></i> {{ "community.create"|trans }}</a></li>
+  </ul> -->
+</div>
+
+<ul class="shortcuts">
   {% if (currentUserCommunity and not currentUserCommunity.guest) or currentUserCommunity is null %}
   <li><a href="{{ path('i_list_ideas') }}">{{ "idea.allIdeas.menu"|trans }}</a></li>
   {% endif %}
@@ -30,29 +29,28 @@
   <li><a href="{{ path('u_list_users') }}">{{ "user.allUsers.menu"|trans }}</a></li>
   {% endif %}
 </ul>
-{{ include('metaGeneralBundle:Default:_languageSwitch.html.twig') }}
 
-<ul class="nav navbar-nav navbar-right">
+<ul class="user">
 
-  <li class="dropdown">
-    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-      <img src="{{ asset(user.getAvatar()) }}" width="20px" height="20px" class="smallHeaderAvatar"/> {{ user.getFullName() }} <b class="caret"></b>
-    </a>
-    <ul class="dropdown-menu">
+  <li>
+    <a href="{{ path('u_me') }}"><img src="{{ asset(user.getAvatar()) }}" height="100%"/></a>
+    <a href="#" data-toggle="dropdown"><span class="username">{{ user.getFullName() }}</span></a>
+<!--     <ul class="dropdown-menu">
         <li><a href="{{ path('u_me') }}"><i class="fa fa-fw fa-user"></i> {{ "user.menu"|trans }}</a></li>
         <li><a href="{{ path('u_show_user_settings') }}"><i class="fa fa-fw fa-wrench"></i> {{ "user.settings.menu"|trans }}</a></li>
         
         <li class="divider"></li>
         <li><a href="{{ path('logout') }}"><i class="fa fa-fw fa-power-off"></i> {{ "logout"|trans }}</a></li>
-    </ul>
+    </ul> -->
   </li>
   
   <li>
     <a href="{{ path('u_show_user_notifications') }}" title="{{ "user.notifications.help"|trans }}">
-      <i class="fa fa-fw fa-comments fa-lg"></i> 
-        <span id="notificationsCount" class="badge badge-info" data-update-path="{{ path('u_count_user_notifications') }}">
-          <i class="fa fa-fw fa-spinner fa-spin"></i>
-        </span>
+      <i role="loading" class="fa fa-fw fa-spinner fa-spin"></i>
+      <div class="notifications" style="display: none;">
+        <i class="fa fa-fw fa-bell"></i> 
+        <div id="notificationsCount" data-update-path="{{ path('u_count_user_notifications') }}"></div>
+      </div>
     </a>
   </li>
   

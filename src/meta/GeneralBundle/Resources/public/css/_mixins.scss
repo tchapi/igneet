@@ -2,9 +2,35 @@
 /*                             CUSTOM MIXINS                            */
 /* ******************************************************************** */
 
-@mixin logo-font(){
-  letter-spacing: -0.05em;
-  font-family: 'gotham_medium', 'Arial', sans-serif;
+@mixin logo($size){
+  // find power of 2 closest
+  $ratio: 0.75;
+  //$img-size: pow(2, ceil(logarithm($size)/logarithm(2)));
+  $img-size: em($size*$ratio);
+  font-size: 1em;
+  & > img {
+    vertical-align: top;
+    width: #{$img-size};
+    height: #{$img-size};
+    display: inline-block;
+    margin-right: #{$img-size*(1 - $ratio)};
+  }
+  & > span {
+    font-size: em($size);
+    line-height: $ratio*1em;
+    letter-spacing: -0.05em;
+    color: $_text;
+    font-family: 'gotham_medium', 'Arial', sans-serif;
+  }
+}
+
+@mixin ellipsis($size){
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+  -moz-binding: url(<q>assets/xml/ellipsis.xml#ellipsis</q>);
+  max-width: $size;
 }
 
 @mixin up-triangle($size, $color){

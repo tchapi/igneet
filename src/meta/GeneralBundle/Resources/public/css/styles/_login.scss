@@ -1,0 +1,101 @@
+/* ******************************************************************** */
+/*                                LOGIN                                 */
+/* ******************************************************************** */
+
+.content-container {
+  & > *.login {
+    @include span-columns(8);
+    @include shift(2);
+    @include media($tablet, $mobile) {
+      @include fill-parent();
+      @include shift(0);
+    }
+  }
+  header.login {
+    margin-top: 130px;
+    margin-bottom: 80px;
+    @include media($tablet, $mobile) {
+      margin-top: 30px;
+      margin-bottom: 20px;
+    }
+    & > h1 {
+      @include span-columns(5 of 8);
+      @include media($tablet, $mobile) {
+        @include fill-parent();
+      }
+      @include logo(70);
+    }
+    & > span {
+      @include span-columns(3 of 8);
+      @include omega;
+      @include media($tablet, $mobile) {
+        display: none;
+      }
+      text-align: right;
+      padding-top: 40px;
+      color: $_link;
+    }
+  }
+  form.login {
+    position: relative;
+    & > *:not(.openid) {
+      padding: 20px 10px;
+      margin-bottom: 2px;
+    }
+    input[type=text], input[type=password] {
+      @include fill-parent();
+      background: $_input-background;
+      color: $_input-foreground;
+      
+      &:focus{ background: $_input-background-focus; outline: 0; }
+      &:hover:not(:focus){ background: $_input-hover; }
+
+      @include placeholder { color: $_input-placeholder; }
+    }
+    .openid {
+      position: absolute;
+      right: 6px;
+      top: 8px;
+      z-index: 2;
+    }
+    aside {
+      @include span-columns(4 of 8);
+      @include media($tablet) {
+        @include span-columns(2 of 4);
+      }
+      @include media($mobile) {
+        display: none;
+      }
+    }
+    a.signup{
+      @include span-columns(2 of 8);
+      @include media($tablet) {
+        @include span-columns(1 of 4);
+      }
+      @include media($mobile) {
+        display: none;
+      }
+      color: $_text;
+      text-align: center;
+      &:hover{
+        color: $_primary;
+      }
+    }
+    input[type=submit]{
+      @include span-columns(2 of 8);
+      @include omega;
+      @include media($tablet) {
+        @include span-columns(1 of 4);
+        @include omega;
+      }
+      @include media($mobile) {
+        @include fill-parent();
+      }
+      background: $_submit-background;
+      color: $_text;
+      &:hover{
+        background: $_primary;
+      }
+    }
+  }
+}

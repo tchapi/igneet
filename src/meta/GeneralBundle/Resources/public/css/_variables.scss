@@ -23,8 +23,12 @@ $_input-hover: $_submit-background;
 $_input-foreground: $_text;
 
 // Navbar
-$navbar-height: 40px;
+$navbar-height: 60px;
+$navbar-padding: 10px;
 $_navbar-background: #282828;
+$_navbar-border: black;
+$_navbar-gradient_first: #484848;
+$_navbar-gradient_last: #424242;
 
 // The main width of the container
 $main-width: 980px;

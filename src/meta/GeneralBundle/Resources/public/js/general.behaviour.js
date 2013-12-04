@@ -20,6 +20,8 @@ $(document).ready(function(){
   // Count notifications
   $.post($("#notificationsCount").attr('data-update-path'), function(data) {
 
+    $("i[role=loading]").remove();
+    $(".notifications").show();
     $("#notificationsCount").html(data);
 
   });
