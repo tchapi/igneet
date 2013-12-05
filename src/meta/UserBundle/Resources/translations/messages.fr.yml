@@ -98,6 +98,7 @@ user:
     create: "Créer"
     skills: "Vos compétences"
     skillsPlaceholder: "Indiquez vos compétences"
+  me.help: "Aller directement sur votre profil"
   notifications:
     title: "Notifications"
     none: "Vous n'avez pas de nouvelles notifications !"

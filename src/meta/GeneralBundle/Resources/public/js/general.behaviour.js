@@ -21,8 +21,8 @@ $(document).ready(function(){
   $.post($("#notificationsCount").attr('data-update-path'), function(data) {
 
     $("i[role=loading]").remove();
-    $(".notifications").show();
-    $("#notificationsCount").html(data);
+    $("i[role=loaded]").show();
+    $("#notificationsCount").html(data).show();
 
   });
 

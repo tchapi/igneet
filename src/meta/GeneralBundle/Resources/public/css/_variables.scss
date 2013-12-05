@@ -9,7 +9,8 @@ $_secondary: #e37000;
 $_error: #9c3535;
 
 $_text: #FFFFFF;
-$_link: #646464;
+$_muted: #646464;
+$_link: $_primary;
 
 
 /* ******************************************************************** */
@@ -25,10 +26,13 @@ $_input-foreground: $_text;
 // Navbar
 $navbar-height: 60px;
 $navbar-padding: 10px;
+$navbar-item-border-radius: 3px;
 $_navbar-background: #282828;
 $_navbar-border: black;
 $_navbar-gradient_first: #484848;
 $_navbar-gradient_last: #424242;
+$_navbar-shadow_top: #5B5B5B;
+$_navbar-shadow_bottom: #343434;
 
 // The main width of the container
 $main-width: 980px;

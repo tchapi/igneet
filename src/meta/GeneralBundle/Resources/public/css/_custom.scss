@@ -63,23 +63,42 @@ input { border: none; }
 @import "styles/login";
 @import "styles/navbar";
 
+
 @mixin nav-button() {
   border: 1px solid $_navbar_border;
-  border-radius:  3px;
+  border-left: none;
+  border-right: none;
   @include linear-gradient($_navbar-gradient_first, $_navbar-gradient_last);
-  box-shadow: 0px 1px 0px #5B5B5B inset, 0px 1px 0px #343434;
+  @include emboss-box($_navbar-shadow_top, $_navbar-shadow_bottom);
+  &:hover{
+    @include linear-gradient(darken($_navbar-gradient_first, 2%), darken($_navbar-gradient_last, 2%));
+  }
+  &:active{
+    @include linear-gradient(darken($_navbar-gradient_first, 2%), darken($_navbar-gradient_last, 6%));
+  }
+  &:first-child{
+    border-radius: $navbar-item-border-radius 0 0 $navbar-item-border-radius;
+    border-right: none;
+  }
+  &:last-child{
+    border-radius: 0 $navbar-item-border-radius $navbar-item-border-radius 0;
+    border-left: none;
+  }
 }
 
+$navbar-inner-height: ($navbar-height - $navbar-padding*2);
 nav {
 
-  background-color: $_navbar-background;
   height: $navbar-height;
   position: fixed;
-  width: 100%;
-  border-bottom: 1px solid $_navbar_border;
   top: 0px;
-  box-shadow: 0 0 3px $_navbar-background;
+  width: 100%;
   padding: $navbar-padding;
+  background-color: $_navbar-background;
+  border-bottom: 1px solid $_navbar_border;
+  box-shadow: 0 0 3px $_navbar-background;
+  
+  & a { color: $_text; } // All links are in color $_text in the navbar
 
   /* inline list */
   & > ul {
@@ -89,7 +108,7 @@ nav {
     padding: 0;
     & > li {
       display: inline-block;
-      height: 100%;
+      height: $navbar-inner-height;
     }
   }
 
@@ -105,27 +124,68 @@ nav {
 
   & > ul.user {
     float: right;
-    @include nav-button;
-    height: 100%;
-    & > li > a > img{
-      border-radius: 3px 0 0 3px;
-    }
-    & > li > a > span.username {
-      @include ellipsis(150px);
-      color: $_text;
-      display: inline-block;
-      line-height: ($navbar-height - $navbar-padding*2 - 3); // why 3 ? because = border*2 + box-shadow
-      padding-left: $navbar-padding/2;
-      &:after {
-        content: "";
+
+    & > li { 
+
+      @include nav-button;
+
+      & > a {
+
         display: inline-block;
-        @include triangle(8px, $_text, down);
-        margin-left: $navbar-padding;
+        position: relative; // For the absolute #notificationsCount
+
+        & > img{
+          border-radius: $navbar-item-border-radius 0 0 $navbar-item-border-radius;
+          border-right: 1px solid $_navbar_border;
+          height: ($navbar-inner-height - 2); // accountfs for border : 1px
+        }
+        & > div.notifications {
+          overflow: hidden; // Drops the pseudo margin on top of the list li element
+          position: relative;
+          line-height: ($navbar-inner-height - 2); //see above
+          color: $_navbar-background;
+          border-left: 1px solid $_navbar-background;
+          min-width: $navbar-inner-height;
+          padding-right: 3px;
+          text-align: center;
+          @include emboss-text($_navbar-background);
+        }
+        & > #notificationsCount{
+          $size_notificationsCount : 18px;
+          position: absolute;
+          right: 3px;
+          top: 3px;
+          width: $size_notificationsCount;
+          height: $size_notificationsCount;
+          border-radius: $size_notificationsCount;
+          font-size: 0.65em;
+          line-height: 1.7em;
+          text-align: center;
+          text-shadow: none;
+          text-shadow: none;
+          background-color: $_primary;
+        }
+
       }
+
+      &.username > a {
+        & > span {
+          @include ellipsis(150px);
+          @include emboss-text($_text);
+          display: inline-block;
+          line-height: ($navbar-inner-height - 2); //see above
+          padding-left: $navbar-padding;
+        }
+        &:after {
+          content: "";
+          display: inline;
+          @include triangle(8px, $_text, down);
+          margin: 0 $navbar-padding;
+        }
+      }
+
     }
-    & > li {
-      color: #2E2E2E;
-    }
+
   }
 
 }

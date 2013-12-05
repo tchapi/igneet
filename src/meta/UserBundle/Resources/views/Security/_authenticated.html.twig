@@ -31,10 +31,13 @@
 </ul>
 
 <ul class="user">
-
+{% spaceless %}
   <li>
-    <a href="{{ path('u_me') }}"><img src="{{ asset(user.getAvatar()) }}" height="100%"/></a>
-    <a href="#" data-toggle="dropdown"><span class="username">{{ user.getFullName() }}</span></a>
+    <a href="{{ path('u_me') }}" title="{{ "user.me.help"|trans }}"><img src="{{ asset(user.getAvatar()) }}" height="37px"/></a>
+  </li>
+
+  <li class="username">
+    <a href="#" ><span>{{ user.getFullName() }}</span></a>
 <!--     <ul class="dropdown-menu">
         <li><a href="{{ path('u_me') }}"><i class="fa fa-fw fa-user"></i> {{ "user.menu"|trans }}</a></li>
         <li><a href="{{ path('u_show_user_settings') }}"><i class="fa fa-fw fa-wrench"></i> {{ "user.settings.menu"|trans }}</a></li>
@@ -43,15 +46,15 @@
         <li><a href="{{ path('logout') }}"><i class="fa fa-fw fa-power-off"></i> {{ "logout"|trans }}</a></li>
     </ul> -->
   </li>
-  
+ 
   <li>
     <a href="{{ path('u_show_user_notifications') }}" title="{{ "user.notifications.help"|trans }}">
-      <i role="loading" class="fa fa-fw fa-spinner fa-spin"></i>
-      <div class="notifications" style="display: none;">
-        <i class="fa fa-fw fa-bell"></i> 
-        <div id="notificationsCount" data-update-path="{{ path('u_count_user_notifications') }}"></div>
+      <div class="notifications">
+        <i role="loading" class="fa fa-fw fa-spinner fa-spin"></i>
+        <i role="loaded" class="fa fa-fw fa-bell" style="display: none;"></i>
       </div>
+      <div id="notificationsCount" data-update-path="{{ path('u_count_user_notifications') }}" style="display: none;"></div>
     </a>
   </li>
-  
+{% endspaceless %}
 </ul>
