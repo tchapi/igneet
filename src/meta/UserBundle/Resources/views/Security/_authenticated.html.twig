@@ -1,27 +1,35 @@
-<div class="communities">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-    {% if app.user.currentCommunity is not null %}<img src="{{ asset(app.user.currentCommunity.getPicture()) }}" width="20px" height="20px" class="smallHeaderAvatar"/> {% endif %}{% if user.currentCommunity is null %}{{ "private.space"|trans }}{% else %}{{ user.currentCommunity.name }}{% if currentUserCommunity and currentUserCommunity.guest %} <i class="fa fa-fw fa-lock"></i>{% endif %}{% endif %} <b class="caret"></b>
-  </a>
-<!--     <ul class="dropdown-menu">
+<ul class="communities">
+{% spaceless %}
+  {% if app.user.currentCommunity is not null %}
+    <li><a href="{{ path('g_home_community') }}"><img src="{{ asset(app.user.currentCommunity.getPicture()) }}" height="37px"/></a></li>
+  {% endif %}
+  <li class="home"><a href="{{ path('g_home_community') }}"><span><i class="fa fa-home fa-lg"></i></span></a></li>
+
+  <li class="dropdown">
+    <a href="#" ><span>{% if user.currentCommunity is null %}{{ "private.space"|trans }}{% else %}{{ user.currentCommunity.name }}{% if currentUserCommunity and currentUserCommunity.guest %} <i class="fa fa-fw fa-lock"></i>{% endif %}{% endif %}</span></a>
+    <ul role="menu" style="display: none;">
 
       <li><a href="{{ path('g_switch_private_space', {'token': csrf_token('switchCommunity') }) }}">{% if user.currentCommunity is null %}<i class="fa fa-check"></i> {% endif %}{{ "private.space"|trans }}</a></li>
 
       <li class="divider"></li>
-    {% for userCommunity in user.userCommunities if not userCommunity.isDeleted %}
+      {% for userCommunity in user.userCommunities if not userCommunity.isDeleted %}
       <li><a href="{{ path('g_switch_community', { 'uid': userCommunity.community.id|to_uid, 'token': csrf_token('switchCommunity') } ) }}">{% if user.currentCommunity == userCommunity.community %}<i class="fa fa-check"></i> {% endif %}{{ userCommunity.community.name }}{% if userCommunity.guest %} <i class="fa fa-lock"></i>{% else %} <span class="label label-{{ userCommunity.community.type }}">{{ userCommunity.community.type }}</span>{% endif %}</a></li>
-    {% endfor %}
+      {% endfor %}
 
-    {% if user.currentCommunity is not null and currentUserCommunity and currentUserCommunity.manager %}
-    <li class="divider"></li>
-    <li><a href="{{ path('g_manage_community') }}"><i class="fa fa-fw fa-cogs"></i> {{ "community.manage"|trans }}</a></li>
-    {% endif %}
-    <li class="divider"></li>
-    <li><a href="{{ path('g_create_community') }}"><i class="fa fa-fw fa-plus-circle"></i> {{ "community.create"|trans }}</a></li>
-  </ul> -->
-</div>
+      {% if user.currentCommunity is not null and currentUserCommunity and currentUserCommunity.manager %}
+      <li class="divider"></li>
+      <li><a href="{{ path('g_manage_community') }}"><i class="fa fa-fw fa-cogs"></i> {{ "community.manage"|trans }}</a></li>
+      {% endif %}
+      <li class="divider"></li>
+      <li><a href="{{ path('g_create_community') }}"><i class="fa fa-fw fa-plus-circle"></i> {{ "community.create"|trans }}</a></li>
+    </ul>
+  </li>
+
+{% endspaceless %}
+</ul>
 
 <ul class="shortcuts">
-  <li><a href="{{ path('g_home_community') }}"><i class="fa fa-home fa-lg"></i></a></li>
+{% spaceless %}
   {% if (currentUserCommunity and not currentUserCommunity.guest) or currentUserCommunity is null %}
   <li><a href="{{ path('i_list_ideas') }}">{{ "idea.allIdeas.menu"|trans }}</a></li>
   {% endif %}
@@ -29,6 +37,7 @@
   {% if user.currentCommunity is not null %}
   <li><a href="{{ path('u_list_users') }}">{{ "user.allUsers.menu"|trans }}</a></li>
   {% endif %}
+{% endspaceless %}
 </ul>
 
 <ul class="user">
@@ -37,15 +46,14 @@
     <a href="{{ path('u_me') }}" title="{{ "user.me.help"|trans }}"><img src="{{ asset(user.getAvatar()) }}" height="37px"/></a>
   </li>
 
-  <li class="username">
+  <li class="dropdown">
     <a href="#" ><span>{{ user.getFullName() }}</span></a>
-<!--     <ul class="dropdown-menu">
+    <ul role="menu" style="display: none;">
         <li><a href="{{ path('u_me') }}"><i class="fa fa-fw fa-user"></i> {{ "user.menu"|trans }}</a></li>
         <li><a href="{{ path('u_show_user_settings') }}"><i class="fa fa-fw fa-wrench"></i> {{ "user.settings.menu"|trans }}</a></li>
-        
         <li class="divider"></li>
         <li><a href="{{ path('logout') }}"><i class="fa fa-fw fa-power-off"></i> {{ "logout"|trans }}</a></li>
-    </ul> -->
+    </ul>
   </li>
  
   <li>

@@ -33,13 +33,13 @@
   max-width: $size;
 }
 
-@mixin up-triangle($size, $color){
+@mixin up-triangle($size, $color, $side){
   &:before {
     content: "";
     display: block;
     position: absolute;
     top: -$size;
-    left: 15px;
+    #{$side}: 15px;
     @include triangle($size, $color, up); // Thanks to the Bourbon Add-on
   }
   position: relative;

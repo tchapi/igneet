@@ -55,7 +55,7 @@ input { border: none; }
 
 /* ERRORS AND ALERTS */
 .error {
-  @include up-triangle(20px, $_error);
+  @include up-triangle(20px, $_error, left);
   color: $_text;
   background-color: $_error;
 }
@@ -78,11 +78,11 @@ input { border: none; }
   }
   &:first-child{
     border-radius: $navbar-item-border-radius 0 0 $navbar-item-border-radius;
-    border-right: none;
+    border-left: 1px solid $_navbar_border;
   }
   &:last-child{
     border-radius: 0 $navbar-item-border-radius $navbar-item-border-radius 0;
-    border-left: none;
+    border-right: 1px solid $_navbar_border;
   }
 }
 
@@ -98,18 +98,53 @@ nav {
   border-bottom: 1px solid $_navbar_border;
   box-shadow: 0 0 3px $_navbar-background;
   
-  & a { color: $_text; } // All links are in color $_text in the navbar
+  & a { color: $_text; vertical-align: top; } // All links are in color $_text in the navbar
 
   /* inline list */
   & > ul {
+
     list-style-type: none;
     display: inline-block;
     margin: 0;
     padding: 0;
+
     & > li {
       display: inline-block;
       height: $navbar-inner-height;
+      position: relative;
+    
+      /* Sub menu */
+      & > li.dropdown > ul {
+
+        @include up-triangle(20px, $_navbar-gradient_last, right);
+        border: 1px solid $_navbar_border;
+        background: $_navbar-gradient_last;
+        list-style: none;
+        float: left;
+        right: 0;
+        margin: 2px 0 0;
+        min-width: 200px;
+        padding: 5px 0;
+        position: absolute;
+        top: 100%;
+        z-index: 1000;
+        border-radius: $navbar-item-border-radius;
+
+        & > li {
+          padding: 5px 10px;
+        }
+        & > li.divider {
+          background-color: $_navbar_border;
+          height: 1px;
+          padding: 0;
+          margin: 9px 0;
+          overflow: hidden;
+        }
+
+      }
+
     }
+
   }
 
   & > a {
@@ -118,72 +153,71 @@ nav {
     padding: 8px;
   }
 
-  & > div.communities {
-    display: inline-block;
-  }
-
   & > ul.user {
     float: right;
+  }
 
-    & > li { 
+  & > ul > li { 
 
-      @include nav-button;
+    @include nav-button;
 
-      & > a {
+    & > a {
 
+      display: inline-block;
+
+      & > img{
+        border-radius: $navbar-item-border-radius 0 0 $navbar-item-border-radius;
+        border-right: 1px solid $_navbar_border;
+        height: ($navbar-inner-height - 2); // accountfs for border : 1px
+      }
+      & > div.notifications {
+        overflow: hidden; // Drops the pseudo margin on top of the list li element
+        position: relative;
+        line-height: ($navbar-inner-height - 2); //see above
+        color: $_navbar-background;
+        border-left: 1px solid $_navbar-background;
+        min-width: $navbar-inner-height;
+        padding-right: 3px;
+        text-align: center;
+        @include emboss-text($_navbar-background);
+      }
+      & > #notificationsCount{
+        $size_notificationsCount : 18px;
+        position: absolute;
+        right: 3px;
+        top: 3px;
+        width: $size_notificationsCount;
+        height: $size_notificationsCount;
+        border-radius: $size_notificationsCount;
+        font-size: 0.65em;
+        line-height: 1.7em;
+        text-align: center;
+        text-shadow: none;
+        text-shadow: none;
+        background-color: $_primary;
+      }
+
+    }
+
+    & > a {
+      & > span {
+        @include ellipsis(150px);
+        @include emboss-text($_text);
         display: inline-block;
-        position: relative; // For the absolute #notificationsCount
-
-        & > img{
-          border-radius: $navbar-item-border-radius 0 0 $navbar-item-border-radius;
-          border-right: 1px solid $_navbar_border;
-          height: ($navbar-inner-height - 2); // accountfs for border : 1px
-        }
-        & > div.notifications {
-          overflow: hidden; // Drops the pseudo margin on top of the list li element
-          position: relative;
-          line-height: ($navbar-inner-height - 2); //see above
-          color: $_navbar-background;
-          border-left: 1px solid $_navbar-background;
-          min-width: $navbar-inner-height;
-          padding-right: 3px;
-          text-align: center;
-          @include emboss-text($_navbar-background);
-        }
-        & > #notificationsCount{
-          $size_notificationsCount : 18px;
-          position: absolute;
-          right: 3px;
-          top: 3px;
-          width: $size_notificationsCount;
-          height: $size_notificationsCount;
-          border-radius: $size_notificationsCount;
-          font-size: 0.65em;
-          line-height: 1.7em;
-          text-align: center;
-          text-shadow: none;
-          text-shadow: none;
-          background-color: $_primary;
-        }
-
+        line-height: ($navbar-inner-height - 2); //see above
+        padding: 0 $navbar-padding;
       }
-
-      &.username > a {
-        & > span {
-          @include ellipsis(150px);
-          @include emboss-text($_text);
-          display: inline-block;
-          line-height: ($navbar-inner-height - 2); //see above
-          padding-left: $navbar-padding;
-        }
-        &:after {
-          content: "";
-          display: inline;
-          @include triangle(8px, $_text, down);
-          margin: 0 $navbar-padding;
-        }
+    }
+    &.dropdown > a {
+      &:after {
+        content: "";
+        display: inline;
+        @include triangle(8px, $_text, down);
+        margin-right: $navbar-padding;
       }
-
+    }
+    &.home {
+      border-right: 1px solid $_navbar-background;
     }
 
   }
