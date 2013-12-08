@@ -245,10 +245,4 @@
 </section>
 {% endif %}
 
-{% if isMe %}
-<section class="colored warning">
-  <div class="sectionTitle">{{ "user.delete"|trans }} : </div>
-  <div class="sectionContent"><a class="btn btn-danger" data-confirm="{{ "user.deleteHelp"|trans }}" href="{{ path('u_delete_user_profile', { 'username': user.username, 'token': csrf_token('delete') }) }}">{{ "delete"|trans }}</a> <span class="muted">( <i class="fa fa-warning"></i> {{ "deleteHelp"|trans }} )</span></div>
-</section>
-{% endif %}
 {% endblock %}
