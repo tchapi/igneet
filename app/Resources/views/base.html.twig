@@ -1,30 +1,27 @@
 {% extends '::_base.html.twig' %}
 
 {% block body %}
-<div class="push-wrapper">
 
-  <nav role="navigation">
+<menu role="navigation">
 
-    <a href="{{ path('g_home_community') }}"><img src="{{ asset('/bundles/metageneral/img/logo/logo-64.png') }}" /><span>Igneet</span></a>
+  <a href="{{ path('g_home_community') }}" class="logo"><img src="{{ asset('/bundles/metageneral/img/logo/logo-64.png') }}" /><span>Igneet</span></a>
 
-    {% render(controller("metaUserBundle:Security:currentUserMenu")) %}
+  {% render(controller("metaUserBundle:Security:currentUserMenu")) %}
 
-    {% if shortcode is defined %}
-      <ul>
-        <li class="dropdown">
-          <a id="shortcode-trigger" href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <i class="fa fa-link fa-lg"></i> 
-          </a>
-        </li>
-      </ul>
-      <form class="navbar-form navbar-right" role="shortcode">
-        <div class="form-group">
-          <input type="text" class="form-control" onfocus="this.select()" value="{{ shortcode }}" />
-        </div>
+  {% if shortcode is defined %}
+    <div class="shortcode">
+      <a id="shortcode-trigger" href="#">
+        <i class="fa fa-link fa-lg"></i> 
+      </a>
+      <form role="shortcode">
+        <input type="text" onfocus="this.select()" value="{{ shortcode }}" />
       </form>
-    {% endif %}
+    </div>
+  {% endif %}
 
-  </nav>
+</menu>
+
+<div class="push-wrapper">
 
   <div id="flashes">
 

@@ -3,7 +3,8 @@
 /* ******************************************************************** */
 /*                                Colors                                */
 /* ******************************************************************** */
-$_background: #1e1e1e;
+$_background-dark: #1e1e1e;
+$_background: #f4f4f4;
 $_primary: #e37000;
 $_secondary: #e37000;
 $_error: #9c3535;
@@ -23,16 +24,16 @@ $_input-placeholder: #4c4c4c;
 $_input-hover: $_submit-background;
 $_input-foreground: $_text;
 
-// Navbar
-$navbar-height: 60px;
-$navbar-padding: 10px;
-$navbar-item-border-radius: 3px;
-$_navbar-background: #282828;
-$_navbar-border: black;
-$_navbar-gradient_first: #484848;
-$_navbar-gradient_last: #424242;
-$_navbar-shadow_top: #5B5B5B;
-$_navbar-shadow_bottom: #343434;
+// Menu
+$menu-height: 60px;
+$menu-padding: 10px;
+$menu-item-border-radius: 3px;
+$_menu-background: #282828;
+$_menu-border: black;
+$_menu-gradient_first: #484848;
+$_menu-gradient_last: #424242;
+$_menu-shadow_top: #5B5B5B;
+$_menu-shadow_bottom: #343434;
 
 // The main width of the container
 $main-width: 980px;
@@ -49,7 +50,7 @@ $max-width: $main-width;
 
 // DEBUG
 $visual-grid: true;
-$visual-grid-opacity: 0.2;
+$visual-grid-opacity: 1;
 
 // Define your breakpoints
 $tablet: new-breakpoint(max-width $main-width 4);

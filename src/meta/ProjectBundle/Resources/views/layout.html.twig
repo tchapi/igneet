@@ -2,15 +2,16 @@
 
 {% block title %}{{ parent() }} > {{ "project.title"|trans }}{% endblock %}
 
-{% block body %}
+{% block container %}
+
 <header class="project">
 {% block header %}{% endblock %}
 </header>
+
 {% block navbar %}{% endblock %}
-<div class="content project clearfix">
+
+<div class="project">
 {% block content %}{% endblock %}
 </div>
-<footer>
-{% block footer %}{% endblock %}
-</footer>
+
 {% endblock %}

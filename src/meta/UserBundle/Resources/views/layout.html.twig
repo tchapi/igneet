@@ -2,14 +2,14 @@
 
 {% block title %}{{ parent() }} > {{ "user.title"|trans }}{% endblock %}
 
-{% block body %}
+{% block container %}
+
 <header class="user">
 {% block header %}{% endblock %}
 </header>
-<div class="content user">
+
+<div class="user">
 {% block content %}{% endblock %}
 </div>
-<footer>
-{% block footer %}{% endblock %}
-</footer>
+
 {% endblock %}

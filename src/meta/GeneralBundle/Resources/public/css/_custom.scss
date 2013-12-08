@@ -8,12 +8,15 @@
 @import "neat/_neat";
 
 body {
-  background-color: $_background; 
+  background-color: $_background; // $_background-dark 
   font-family: 'gotham_book', 'Arial', sans-serif;
 }
 
-/* Helper to account for pages that contain no navbar, and thus don't need a top margin for the body */
-body div.push-wrapper{ margin-top: $navbar-height; }
+/* Helper to account for pages that contain no menu, and thus don't need a top margin for the body */
+body div.push-wrapper{ 
+  margin-top: $menu-height; 
+  //background-color: $_background;
+}
 
 footer {
   text-align: center;
@@ -61,47 +64,74 @@ input { border: none; }
 }
 
 @import "styles/login";
-@import "styles/navbar";
+@import "styles/menubar";
 
 
-@mixin nav-button() {
-  border: 1px solid $_navbar_border;
-  border-left: none;
-  border-right: none;
-  @include linear-gradient($_navbar-gradient_first, $_navbar-gradient_last);
-  @include emboss-box($_navbar-shadow_top, $_navbar-shadow_bottom);
-  &:hover{
-    @include linear-gradient(darken($_navbar-gradient_first, 2%), darken($_navbar-gradient_last, 2%));
+@mixin menu-button($clickable: true, $single: false) {
+  border: 1px solid $_menu_border;
+  @include linear-gradient($_menu-gradient_first, $_menu-gradient_last);
+  @include emboss-box($_menu-shadow_top, $_menu-shadow_bottom);
+  @if $clickable {
+    &:hover{
+      @include linear-gradient(darken($_menu-gradient_first, 2%), darken($_menu-gradient_last, 2%));
+    }
+    &:active{
+      @include linear-gradient(darken($_menu-gradient_first, 2%), darken($_menu-gradient_last, 6%));
+    }
   }
-  &:active{
-    @include linear-gradient(darken($_navbar-gradient_first, 2%), darken($_navbar-gradient_last, 6%));
-  }
-  &:first-child{
-    border-radius: $navbar-item-border-radius 0 0 $navbar-item-border-radius;
-    border-left: 1px solid $_navbar_border;
-  }
-  &:last-child{
-    border-radius: 0 $navbar-item-border-radius $navbar-item-border-radius 0;
-    border-right: 1px solid $_navbar_border;
+  @if $single {
+    border-radius: $menu-item-border-radius;
+  } @else {
+    border-left: none;
+    border-right: none;
+    &:first-child{
+      border-radius: $menu-item-border-radius 0 0 $menu-item-border-radius;
+      border-left: 1px solid $_menu_border;
+    }
+    &:last-child{
+      border-radius: 0 $menu-item-border-radius $menu-item-border-radius 0;
+      border-right: 1px solid $_menu_border;
+    }
   }
 }
 
-$navbar-inner-height: ($navbar-height - $navbar-padding*2);
-nav {
+$menu-inner-height: ($menu-height - $menu-padding*2);
+menu {
 
-  height: $navbar-height;
+  height: $menu-height;
   position: fixed;
   top: 0px;
   width: 100%;
-  padding: $navbar-padding;
-  background-color: $_navbar-background;
-  border-bottom: 1px solid $_navbar_border;
-  box-shadow: 0 0 3px $_navbar-background;
+  margin: 0;
+  padding: $menu-padding;
+  background-color: $_menu-background;
+  border-bottom: 1px solid $_menu_border;
+  box-shadow: 0 0 3px $_menu-background;
   
-  & a { color: $_text; vertical-align: top; } // All links are in color $_text in the navbar
+  & a { color: $_text; vertical-align: top; } // All links are in color $_text in the menu
+
+  & > a.logo {
+    @include logo(30);
+    display: inline-block;
+    padding: 8px;
+  }
+
+  /* Short code */
+  div.shortcode{
+    display: inline-block;
+    line-height: ($menu-inner-height - 2); //see above
+    vertical-align: top;
+    padding: 0 $menu-padding;
+    @include menu-button(false, true);
+    & form { display: inline; }
+    & input { outline: 0; }
+    & a { margin-right: $menu_padding/2; }
+  }
 
   /* inline list */
   & > ul {
+
+    &.user { float: right; }
 
     list-style-type: none;
     display: inline-block;
@@ -109,16 +139,79 @@ nav {
     padding: 0;
 
     & > li {
-      display: inline-block;
-      height: $navbar-inner-height;
-      position: relative;
-    
-      /* Sub menu */
-      & > li.dropdown > ul {
 
-        @include up-triangle(20px, $_navbar-gradient_last, right);
-        border: 1px solid $_navbar_border;
-        background: $_navbar-gradient_last;
+      display: inline-block;
+      height: $menu-inner-height;
+      position: relative;
+      padding: 0 $menu-padding;
+      @include menu-button;
+    
+      &.notifications { padding: 0; }
+      &.home { border-right: 1px solid $_menu-background; }
+
+      &.avatar{ 
+        padding: 0; 
+        border-right: 1px solid $_menu-background;
+        & img{
+          border-radius: $menu-item-border-radius 0 0 $menu-item-border-radius;
+          height: ($menu-inner-height - 2); // accounts for border : 1px * 2
+        }
+      }
+
+      & > a {
+
+        display: inline-block;
+        @include ellipsis(150px);
+        @include emboss-text($_text);
+        line-height: ($menu-inner-height - 2); //see above
+
+        
+        & > span {
+          overflow: hidden; // Drops the pseudo margin on top of the list li element
+          position: relative;
+          display: inline-block;
+          line-height: ($menu-inner-height - 2); //see above
+          color: $_menu-background;
+          border-left: 1px solid $_menu-background;
+          min-width: $menu-inner-height;
+          padding-right: 3px;
+          text-align: center;
+          @include emboss-text($_menu-background);
+        }
+        & > #notificationsCount{
+          $size_notificationsCount : 18px;
+          position: absolute;
+          right: 3px;
+          top: 3px;
+          width: $size_notificationsCount;
+          height: $size_notificationsCount;
+          border-radius: $size_notificationsCount;
+          font-size: 0.65em;
+          line-height: 1.7em;
+          text-align: center;
+          text-shadow: none;
+          text-shadow: none;
+          background-color: $_primary;
+        }
+
+      }
+
+      /* Dropdown menu & Caret */
+      &.dropdown > a {
+        &:after {
+          content: "";
+          display: inline-block;
+          @include triangle(8px, $_text, down);
+          margin-left: $menu-padding;
+        }
+      }
+
+      /* Sub menu */
+      &.dropdown > ul {
+
+        @include up-triangle(20px, $_menu-gradient_last, right);
+        border: 1px solid $_menu_border;
+        background: $_menu-gradient_last;
         list-style: none;
         float: left;
         right: 0;
@@ -128,13 +221,13 @@ nav {
         position: absolute;
         top: 100%;
         z-index: 1000;
-        border-radius: $navbar-item-border-radius;
+        border-radius: $menu-item-border-radius;
 
         & > li {
           padding: 5px 10px;
         }
         & > li.divider {
-          background-color: $_navbar_border;
+          background-color: $_menu_border;
           height: 1px;
           padding: 0;
           margin: 9px 0;
@@ -147,82 +240,4 @@ nav {
 
   }
 
-  & > a {
-    @include logo(30);
-    display: inline-block;
-    padding: 8px;
-  }
-
-  & > ul.user {
-    float: right;
-  }
-
-  & > ul > li { 
-
-    @include nav-button;
-
-    & > a {
-
-      display: inline-block;
-
-      & > img{
-        border-radius: $navbar-item-border-radius 0 0 $navbar-item-border-radius;
-        border-right: 1px solid $_navbar_border;
-        height: ($navbar-inner-height - 2); // accountfs for border : 1px
-      }
-      & > div.notifications {
-        overflow: hidden; // Drops the pseudo margin on top of the list li element
-        position: relative;
-        line-height: ($navbar-inner-height - 2); //see above
-        color: $_navbar-background;
-        border-left: 1px solid $_navbar-background;
-        min-width: $navbar-inner-height;
-        padding-right: 3px;
-        text-align: center;
-        @include emboss-text($_navbar-background);
-      }
-      & > #notificationsCount{
-        $size_notificationsCount : 18px;
-        position: absolute;
-        right: 3px;
-        top: 3px;
-        width: $size_notificationsCount;
-        height: $size_notificationsCount;
-        border-radius: $size_notificationsCount;
-        font-size: 0.65em;
-        line-height: 1.7em;
-        text-align: center;
-        text-shadow: none;
-        text-shadow: none;
-        background-color: $_primary;
-      }
-
-    }
-
-    & > a {
-      & > span {
-        @include ellipsis(150px);
-        @include emboss-text($_text);
-        display: inline-block;
-        line-height: ($navbar-inner-height - 2); //see above
-        padding: 0 $navbar-padding;
-      }
-    }
-    &.dropdown > a {
-      &:after {
-        content: "";
-        display: inline;
-        @include triangle(8px, $_text, down);
-        margin-right: $navbar-padding;
-      }
-    }
-    &.home {
-      border-right: 1px solid $_navbar-background;
-    }
-
-  }
-
 }
-
-
-
