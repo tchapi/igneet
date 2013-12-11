@@ -75,7 +75,7 @@
       @include media($mobile) {
         display: none;
       }
-      color: $_text;
+      color: $_text-dark;
       text-align: center;
       &:hover{
         color: $_primary;
@@ -92,7 +92,7 @@
         @include fill-parent();
       }
       background: $_submit-background;
-      color: $_text;
+      color: $_text-dark;
       &:hover{
         background: $_primary;
       }

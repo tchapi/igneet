@@ -8,27 +8,106 @@
 @import "neat/_neat";
 
 body {
-  background-color: $_background; // $_background-dark 
+  background-color: $_background;
   font-family: 'gotham_book', 'Arial', sans-serif;
-}
 
-/* Helper to account for pages that contain no menu, and thus don't need a top margin for the body */
-body div.push-wrapper{ 
-  margin-top: $menu-height; 
-  //background-color: $_background;
-}
+  footer {
+    text-align: center;
+    padding: $gutter/2;
+    margin-top: $content-margin;
+    margin-bottom: $content-margin/2;
+    font-size: 0.8em;
+    color: $_text;
+    @include media($tablet, $mobile) { 
+      display: none; /* Beurk, but no other solution found yet */
+    }
+  }
 
-footer {
-  text-align: center;
-  padding: $gutter/2;
-  margin-top: $gutter*2;
-  font-size: 0.8em;
+  &.no-menu {
+    background-color: $_background-dark;
+    footer {
+      color: $_text-dark;
+    }
+  }
+
+  /* Where content is inside a "card" when in desktop resolution */
+  &.card, &.no-menu {
+    /* CONTENT CONTAINER */
+    & > .content-container {
+      margin: 0 auto;
+      width: $main-width;
+      @include media($tablet, $mobile) { 
+        width: 100%;
+        & > *:not(nav) {
+          padding: 0px $gutter/2;
+        }
+      }
+      @include outer-container(); /* The grid is associated to content-container */
+
+      &.menu-push {
+        margin-top: $menu-height + $content-margin; 
+        @include media($tablet, $mobile) { 
+          margin-top: 0;
+        }
+        background-color: $_container;
+      }
+    }
+  }
+
+  /* Where content spans the full width of the window */
+  &.full {
+    .content-container {
+      background-color: $_container; /* Default, but should be overriden with specific selectors such as "user-list" later */
+      &.menu-push { 
+        margin-top: $menu-height;
+        @include media($tablet, $mobile) { 
+          margin-top: 0;
+        }
+      }
+      & > *:not(nav) { /* The grid is associated to the children elements instead of content-container */
+        margin: 0 auto;
+        width: $main-width;
+        @include media($tablet, $mobile) { 
+          width: 100%;
+          padding: 0px $gutter/2;
+        }
+        @include outer-container();
+      }
+    }
+  }
+
+  @include media($tablet, $mobile) {
+
+    .content-container{
+      @include transition (left 300ms ease-in-out);
+      position: fixed;
+      overflow-y: scroll;
+      top: 0px;
+      left: 0px;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Responsive */
+    &.menu-active menu { 
+      left: 0px;
+      & > ul { 
+        opacity: 1;
+      }
+    }
+
+    &.menu-active .content-container { left: $menu-mobile-width; }
+
+  }
+
 }
 
 a {
   color: $_primary;
   text-decoration: none;
 }
+*:focus { outline: none; }
+
 
 input { border: none; }
 
@@ -45,21 +124,16 @@ input { border: none; }
   }
 }
 
-/* CONTENT CONTAINER */
-.content-container {
-  margin: 0 auto;
-  width: $main-width;
-  @include media($tablet, $mobile) { 
-    width: 100%;
-    padding: 0px 15px;
-  }
-  @include outer-container();
-}
+/* Communities color */
+.community-demo { color: hsl( 30, saturation($_primary)/2, lightness($_primary))}
+.community-association { color: hsl( 220, saturation($_primary)/2, lightness($_primary))}
+.community-entreprise { color: hsl( 120, saturation($_primary)/2, lightness($_primary))}
+
 
 /* ERRORS AND ALERTS */
 .error {
   @include up-triangle(20px, $_error, left);
-  color: $_text;
+  color: $_text-dark;
   background-color: $_error;
 }
 
@@ -85,30 +159,43 @@ input { border: none; }
     border-left: none;
     border-right: none;
     &:first-child{
-      border-radius: $menu-item-border-radius 0 0 $menu-item-border-radius;
+      border-top-left-radius: $menu-item-border-radius;
+      border-bottom-left-radius: $menu-item-border-radius;
       border-left: 1px solid $_menu_border;
     }
     &:last-child{
-      border-radius: 0 $menu-item-border-radius $menu-item-border-radius 0;
+      border-top-right-radius: $menu-item-border-radius;
+      border-bottom-right-radius: $menu-item-border-radius;
       border-right: 1px solid $_menu_border;
     }
   }
 }
 
+/* Inner height of menu */
 $menu-inner-height: ($menu-height - $menu-padding*2);
-menu {
+$menu-dropdown-line-height: 50px;
+nav[role=mobile]{
 
   height: $menu-height;
-  position: fixed;
-  top: 0px;
   width: 100%;
   margin: 0;
   padding: $menu-padding;
   background-color: $_menu-background;
   border-bottom: 1px solid $_menu_border;
   box-shadow: 0 0 3px $_menu-background;
-  
-  & a { color: $_text; vertical-align: top; } // All links are in color $_text in the menu
+
+  display: none;
+  @include media($tablet, $mobile) {
+    display: block;
+  }
+
+  & a { color: $_text-dark; vertical-align: top; } // All links are in color $_text-dark in the menu
+
+  & > a.menu-trigger {
+    padding: $menu-padding;
+    display: inline-block;
+    @include menu-button(true, true);
+  }
 
   & > a.logo {
     @include logo(30);
@@ -116,128 +203,232 @@ menu {
     padding: 8px;
   }
 
-  /* Short code */
-  div.shortcode{
-    display: inline-block;
-    line-height: ($menu-inner-height - 2); //see above
-    vertical-align: top;
-    padding: 0 $menu-padding;
-    @include menu-button(false, true);
-    & form { display: inline; }
-    & input { outline: 0; }
-    & a { margin-right: $menu_padding/2; }
-  }
+}
 
-  /* inline list */
-  & > ul {
+@include media($desktop) {
+  menu {
 
-    &.user { float: right; }
-
-    list-style-type: none;
-    display: inline-block;
+    height: $menu-height;
+    position: fixed;
+    top: 0px;
+    width: 100%;
     margin: 0;
-    padding: 0;
+    padding: $menu-padding;
+    background-color: $_menu-background;
+    border-bottom: 1px solid $_menu_border;
+    box-shadow: 0 0 3px $_menu-background;
 
-    & > li {
+    & a { color: $_text-dark; vertical-align: top; } // All links are in color $_text-dark in the menu
 
+    & > a.logo {
+      @include logo(30);
       display: inline-block;
-      height: $menu-inner-height;
-      position: relative;
+      padding: 8px;
+    }
+
+    /* Short code */
+    div.shortcode{
+      display: inline-block;
+      line-height: ($menu-inner-height - 2); //see above
+      vertical-align: top;
       padding: 0 $menu-padding;
-      @include menu-button;
-    
-      &.notifications { padding: 0; }
-      &.home { border-right: 1px solid $_menu-background; }
+      @include menu-button(false, true);
+      & form { display: inline; }
+      & input { outline: 0; }
+      & a { margin-right: $menu_padding/2; }
+    }
 
-      &.avatar{ 
-        padding: 0; 
-        border-right: 1px solid $_menu-background;
-        & img{
-          border-radius: $menu-item-border-radius 0 0 $menu-item-border-radius;
-          height: ($menu-inner-height - 2); // accounts for border : 1px * 2
-        }
-      }
+    /* inline list */
+    & > ul {
 
-      & > a {
+      &.user { float: right; }
+
+      list-style-type: none;
+      display: inline-block;
+      margin: 0;
+      padding: 0;
+
+      & > li {
 
         display: inline-block;
-        @include ellipsis(150px);
-        @include emboss-text($_text);
-        line-height: ($menu-inner-height - 2); //see above
+        height: $menu-inner-height;
+        position: relative;
+        padding: 0 $menu-padding;
+        @include menu-button;
+      
+        &.notifications { padding: 0; }
+        &.home { border-right: 1px solid $_menu-background; }
 
-        
-        & > span {
-          overflow: hidden; // Drops the pseudo margin on top of the list li element
-          position: relative;
+        &.avatar{ 
+          padding: 0; 
+          border-right: 1px solid $_menu-background;
+          & img{
+            border-radius: $menu-item-border-radius 0 0 $menu-item-border-radius;
+            height: ($menu-inner-height - 2); // accounts for border : 1px * 2
+          }
+        }
+
+        & > a {
+
           display: inline-block;
+          @include emboss-text($_text-dark);
           line-height: ($menu-inner-height - 2); //see above
-          color: $_menu-background;
-          border-left: 1px solid $_menu-background;
-          min-width: $menu-inner-height;
-          padding-right: 3px;
-          text-align: center;
-          @include emboss-text($_menu-background);
+
+          
+          & > span {
+            @include ellipsis(150px);
+            display: inline-block;
+          }
+
+          & > div {
+            overflow: hidden; // Drops the pseudo margin on top of the list li element
+            position: relative;
+            display: inline-block;
+            line-height: ($menu-inner-height - 2); //see above
+            color: $_menu-background;
+            border-left: 1px solid $_menu-background;
+            min-width: $menu-inner-height;
+            padding-right: 3px;
+            text-align: center;
+            @include emboss-text($_menu-background);
+          }
+          & > #notificationsCount{
+            $size_notificationsCount : 18px;
+            position: absolute;
+            right: 3px;
+            top: 3px;
+            padding: 0;
+            width: $size_notificationsCount;
+            height: $size_notificationsCount;
+            border-radius: $size_notificationsCount;
+            font-size: 0.65em;
+            line-height: 1.7em;
+            text-align: center;
+            text-shadow: none;
+            text-shadow: none;
+            background-color: $_primary;
+            color: $_text-dark;
+            min-width: 0;
+          }
+
         }
-        & > #notificationsCount{
-          $size_notificationsCount : 18px;
-          position: absolute;
-          right: 3px;
-          top: 3px;
-          width: $size_notificationsCount;
-          height: $size_notificationsCount;
-          border-radius: $size_notificationsCount;
-          font-size: 0.65em;
-          line-height: 1.7em;
-          text-align: center;
-          text-shadow: none;
-          text-shadow: none;
-          background-color: $_primary;
+
+        /* Dropdown menu & Caret */
+        &.dropdown > a {
+          &:after {
+            content: "";
+            @include triangle(8px, $_text-dark, down);
+            margin-left: $menu-padding;
+          }
+        }
+        &.dropdown.active {
+          background: red;
         }
 
-      }
+        /* Sub menu */
+        &.dropdown > ul {
 
-      /* Dropdown menu & Caret */
-      &.dropdown > a {
-        &:after {
-          content: "";
-          display: inline-block;
-          @include triangle(8px, $_text, down);
-          margin-left: $menu-padding;
-        }
-      }
-
-      /* Sub menu */
-      &.dropdown > ul {
-
-        @include up-triangle(20px, $_menu-gradient_last, right);
-        border: 1px solid $_menu_border;
-        background: $_menu-gradient_last;
-        list-style: none;
-        float: left;
-        right: 0;
-        margin: 2px 0 0;
-        min-width: 200px;
-        padding: 5px 0;
-        position: absolute;
-        top: 100%;
-        z-index: 1000;
-        border-radius: $menu-item-border-radius;
-
-        & > li {
-          padding: 5px 10px;
-        }
-        & > li.divider {
-          background-color: $_menu_border;
-          height: 1px;
+          @include up-triangle(20px, $_menu-dropdown, right);
+          background: $_menu-dropdown;
+          color: $_menu-dropdown-text;
+          list-style: none;
+          float: left;
+          right: 0;
+          margin: 0;
+          min-width: 163px;
           padding: 0;
-          margin: 9px 0;
-          overflow: hidden;
+          position: absolute;
+          top: 45px;
+          z-index: 1000;
+          border-radius: $menu-item-border-radius;
+          box-shadow: 0 0 3px $_menu-background;
+
+          & > li {
+
+            padding: $menu-padding/2 $menu-padding;
+            height: $menu-dropdown-line-height;
+            line-height: ($menu-dropdown-line-height - $menu-padding);
+            &:first-child{ border-radius: 3px 3px 0 0; }
+            &:last-child{ border-radius: 0 0 3px 3px; }
+
+            & > a { 
+              display: inline-block;
+              @include ellipsis(270px);
+              width: 100%;
+              color: $_menu-dropdown-text; 
+              vertical-align: top;
+              & > i.fa{
+                color: $_menu-dropdown-highlight;
+              }
+            } 
+
+            &:hover {
+              background: $_menu-dropdown-hover;
+              & a {
+                color: $_menu-dropdown-highlight;
+              }
+            }
+            & strong {
+              color: $_menu-dropdown-highlight;
+            }
+
+          }
+
+          & > li.divider {
+            background-color: lighten($_menu-dropdown-text, 20%);
+            height: 1px;
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+          }
+
         }
 
       }
 
     }
 
+  }
+}
+
+/* Responsive */
+@include media($tablet, $mobile) {
+
+  menu {
+    position: fixed;
+    @include transition (left 300ms ease-in-out);
+    left: -$menu-mobile-width;
+    max-width: $menu-mobile-width;
+    bottom: 0;
+    padding: $gutter/2;
+    margin: 0;
+    display: block;
+    float: left;
+    width: 100%;
+    height: 100%;
+    background: $_menu-gradient_last;
+    box-shadow: -6px 0 5px -5px black inset;
+
+    & > a.logo, & > div.shortcode { display: none; }
+
+    & > ul {
+
+      opacity: 0;
+      list-style-type: none;
+      @include transition (opacity 300ms ease-in-out);
+
+      &:not(.user) {
+        border-bottom: 1px solid $_menu-background;
+      }
+
+      & > li.avatar { display: none; }
+      & > li {
+        padding: $gutter/2 0;
+        & > a:hover {
+          color: $_text-dark;
+        }
+      }
+    }
   }
 
 }

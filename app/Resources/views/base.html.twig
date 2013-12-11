@@ -2,7 +2,13 @@
 
 {% block body %}
 
-<menu role="navigation">
+{% if template is defined and template == "full" %}
+<body class="full">
+{% else %}
+<body class="card">
+{% endif %}
+
+<menu role="menu">
 
   <a href="{{ path('g_home_community') }}" class="logo"><img src="{{ asset('/bundles/metageneral/img/logo/logo-64.png') }}" /><span>Igneet</span></a>
 
@@ -21,8 +27,8 @@
 
 </menu>
 
-<div class="push-wrapper">
-
+<div class="content-container menu-push">
+  <!-- TODO -->
   <div id="flashes">
 
   {% for flashMessage in app.session.flashbag.get('success') %}
@@ -52,9 +58,12 @@
 
   </div>
 
-  <div class="content-container">
-  {% block container %}{% endblock %}
-  </div>
+  <nav role="mobile">
+    <a href="#" class="menu-trigger"><i class="fa fa-bars fa-lg"></i></a>
+    <a href="{{ path('g_home_community') }}" class="logo"><img src="{{ asset('/bundles/metageneral/img/logo/logo-64.png') }}" /><span>Igneet</span></a>
+  </nav>
 
+{% block container %}{% endblock %}
 </div>
+
 {% endblock %}

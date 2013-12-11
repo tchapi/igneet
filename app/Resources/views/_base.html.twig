@@ -2,6 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
     <title>{% block title %}igneet{% endblock %}</title>
 
 {% block stylesheets %}
@@ -15,9 +16,8 @@ filter='?yui_css,cssrewrite' output='css/min/base.css' %}
 
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
   </head>
-  <body>
-
-{% block body %}{% endblock %}
+{# NOTE THAT THE OPENING BODY TAG IS DEPORTED IN THE BODY BLOCK #}
+{% block body %}<body>{% endblock %}
 
 {% block javascripts %}
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>

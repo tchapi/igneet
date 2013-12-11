@@ -13,9 +13,38 @@ var setFlash = function(type, message){
 
 $(document).ready(function(){
 
+  /*
+    Responsive slide menu
+  */
+  var $menu_trigger = $(".menu-trigger");
+  if ( typeof $menu_trigger !== 'undefined' ) {
+    $menu_trigger.on('click', function() {
+        if ($("body").hasClass('menu-active') ){
+          $("body").removeClass('menu-active');
+        } else {
+          $("body").addClass('menu-active');
+        }
+    });
+  }
+
+  /* 
+    Sub menu / Dropdowns 
+  */
+  $("li.dropdown > a").on('click', function(){
+    $(this).parent().toggleClass("active").find("ul").toggle().focus();
+  });
+
+  $("li.dropdown > ul").focusout(function(){
+    setTimeout(function () {
+      if ($(document.activeElement).parents('.active').length === 0) {
+        $("li.dropdown").removeClass("active").find("ul").hide();
+      }
+    }, 1);
+  });
+
   // Focus the first field of the first form found on the page
   // (Useful for login / invite /etc )
-  $('form').find('input').first().focus();
+  //$('form').find('input').first().focus();
 
   // Count notifications
   $.post($("#notificationsCount").attr('data-update-path'), function(data) {

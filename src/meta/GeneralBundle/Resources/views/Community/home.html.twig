@@ -1,16 +1,17 @@
 {% extends '::base.html.twig' %}
+{% set template = "card" %}
 
 {% block title %}{{ parent() }} > {{ app.user.currentCommunity.name }} | {{ "community.home.title"|trans }}{% endblock %}
 
 {% block javascripts %}
   {{ parent() }}
-    {% if isManager %}
+<!--     {% if isManager %}
     {% javascripts '@metaGeneralBundle/Resources/public/js-edit/bootstrap-editable.js' 
                    '@metaGeneralBundle/Resources/public/js-edit/editable.behaviour.js' 
             filter='?yui_js' %}
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
-    {% endif %}
+    {% endif %} -->
 {% endblock %}
 
 {% block container %}

@@ -19,7 +19,7 @@
     font-size: em($size);
     line-height: $ratio*1em;
     letter-spacing: -0.05em;
-    color: $_text;
+    color: $_text-dark;
     font-family: 'gotham_medium', 'Arial', sans-serif;
   }
 }
@@ -39,7 +39,12 @@
     display: block;
     position: absolute;
     top: -$size;
-    #{$side}: 15px;
+    @if $side == center {
+      left: 50%;
+    } @else {
+      #{$side}: 15px;
+    }
+
     @include triangle($size, $color, up); // Thanks to the Bourbon Add-on
   }
   position: relative;

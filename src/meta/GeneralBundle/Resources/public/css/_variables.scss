@@ -5,11 +5,13 @@
 /* ******************************************************************** */
 $_background-dark: #1e1e1e;
 $_background: #f4f4f4;
+$_container: white;
 $_primary: #e37000;
 $_secondary: #e37000;
 $_error: #9c3535;
 
-$_text: #FFFFFF;
+$_text-dark: white;
+$_text: black;
 $_muted: #646464;
 $_link: $_primary;
 
@@ -28,16 +30,24 @@ $_input-foreground: $_text;
 $menu-height: 60px;
 $menu-padding: 10px;
 $menu-item-border-radius: 3px;
+$menu-mobile-width: 284px;
 $_menu-background: #282828;
 $_menu-border: black;
 $_menu-gradient_first: #484848;
 $_menu-gradient_last: #424242;
 $_menu-shadow_top: #5B5B5B;
 $_menu-shadow_bottom: #343434;
+$_menu-dropdown: white;
+$_menu-dropdown-highlight: #3e88b7;
+$_menu-dropdown-hover: #e6f2fa;
+$_menu-dropdown-text: #b2b2b2;
 
 // The main width of the container
 $main-width: 980px;
 $mobile-width: 480px;
+
+// Content
+$content-margin: 50px;
 
 /* ******************************************************************** */
 /*                             NEAT SETTINGS                            */
@@ -50,9 +60,12 @@ $max-width: $main-width;
 
 // DEBUG
 $visual-grid: true;
-$visual-grid-opacity: 1;
+$visual-grid-color: salmon;
+$visual-grid-opacity: 0.1;
+$visual-grid-index: front;
 
 // Define your breakpoints
+$desktop: new-breakpoint(min-width $main-width $grids-columns);
 $tablet: new-breakpoint(max-width $main-width 4);
 $mobile: new-breakpoint(max-width $mobile-width 1);
 
