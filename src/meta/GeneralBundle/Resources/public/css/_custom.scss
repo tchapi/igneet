@@ -90,6 +90,7 @@ body {
 
     /* Responsive */
     &.menu-active menu { 
+      position: inherit;
       left: 0px;
       & > ul { 
         opacity: 1;
@@ -128,6 +129,7 @@ input { border: none; }
 .community-demo { color: hsl( 30, saturation($_primary)/2, lightness($_primary))}
 .community-association { color: hsl( 220, saturation($_primary)/2, lightness($_primary))}
 .community-entreprise { color: hsl( 120, saturation($_primary)/2, lightness($_primary))}
+.community-expired { color: hsl( 0, saturation($_primary)/2, lightness($_primary))}
 
 
 /* ERRORS AND ALERTS */
@@ -143,14 +145,15 @@ input { border: none; }
 
 @mixin menu-button($clickable: true, $single: false) {
   border: 1px solid $_menu_border;
-  @include linear-gradient($_menu-gradient_first, $_menu-gradient_last);
-  @include emboss-box($_menu-shadow_top, $_menu-shadow_bottom);
+  @include linear-gradient(lighten($_menu-gradient_base,3%),$_menu-gradient_base);
+  @include emboss-box(lighten($_menu-gradient_base,10%), $_menu-shadow_bottom);
   @if $clickable {
     &:hover{
-      @include linear-gradient(darken($_menu-gradient_first, 2%), darken($_menu-gradient_last, 2%));
+      @include linear-gradient(lighten($_menu-gradient_base, 3%), darken($_menu-gradient_base, 2%));
     }
     &:active{
-      @include linear-gradient(darken($_menu-gradient_first, 2%), darken($_menu-gradient_last, 6%));
+      @include emboss-box(lighten($_menu-dropdown-highlight, 25%), $_menu-shadow_bottom);
+      @include linear-gradient(lighten($_menu-dropdown-highlight, 10%), $_menu-dropdown-highlight);
     }
   }
   @if $single {
@@ -225,6 +228,8 @@ nav[role=mobile]{
       display: inline-block;
       padding: 8px;
     }
+
+    span.help { display: none; }
 
     /* Short code */
     div.shortcode{
@@ -322,12 +327,14 @@ nav[role=mobile]{
           }
         }
         &.dropdown.active {
-          background: red;
+          @include emboss-box(lighten($_menu-dropdown-highlight, 25%), $_menu-shadow_bottom);
+          @include linear-gradient(lighten($_menu-dropdown-highlight, 10%), $_menu-dropdown-highlight);
         }
 
         /* Sub menu */
         &.dropdown > ul {
 
+          display: none;
           @include up-triangle(20px, $_menu-dropdown, right);
           background: $_menu-dropdown;
           color: $_menu-dropdown-text;
@@ -400,34 +407,98 @@ nav[role=mobile]{
     left: -$menu-mobile-width;
     max-width: $menu-mobile-width;
     bottom: 0;
-    padding: $gutter/2;
     margin: 0;
+    padding: 0 2px 0 0;
     display: block;
     float: left;
     width: 100%;
     height: 100%;
-    background: $_menu-gradient_last;
+
+    background: lighten($_menu-background, 10%);
+    color: $_text-dark;
     box-shadow: -6px 0 5px -5px black inset;
 
+    & a { 
+      color: $_text-dark; 
+      vertical-align: top;
+      display: inline-block;
+      @include ellipsis($menu-mobile-width);
+    }
+
+    & li:not(.dropdown):hover a { color: $_menu-dropdown-highlight; }
+
     & > a.logo, & > div.shortcode { display: none; }
+    span.help { display: inline; }
 
     & > ul {
 
       opacity: 0;
+      margin: 0;
+      padding: 0;
       list-style-type: none;
       @include transition (opacity 300ms ease-in-out);
 
-      &:not(.user) {
-        border-bottom: 1px solid $_menu-background;
+      & i.fa {
+        vertical-align: 0;
+        color: $_menu-dropdown-highlight;
       }
 
-      & > li.avatar { display: none; }
+      & > li.avatar, & li.divider { display: none; }
+
       & > li {
-        padding: $gutter/2 0;
-        & > a:hover {
-          color: $_text-dark;
+
+        border-bottom: 1px solid lighten($_menu-background, 15%);
+        height: $menu-dropdown-line-height;
+        line-height: ($menu-dropdown-line-height - $menu-padding);
+
+        & > a { 
+          padding: $menu-padding/2 $menu-padding;
+          
+          & > div {
+            display: inline;
+          }
+          & > #notificationsCount {
+            display: inline-block;
+            padding-left: $menu-padding;
+            position: relative;
+            color: $_menu-dropdown-highlight;
+            &:before { content: "("; }
+            &:after { content: ")"; }
+          }
+        } 
+
+        & strong {
+          color: $_menu-dropdown-highlight;
         }
+
+        /* Sub menu */
+        &.dropdown { 
+          height: inherit;
+          & > ul {
+            position: relative;
+            margin-left: $menu-padding*2;
+            margin-bottom: $menu-padding*2;
+            list-style: none;
+            border-left: 1px solid lighten($_menu-background, 15%);
+            padding: 0;
+            & > li > a {
+              padding: $menu-padding/2 $menu-padding*2;
+            }
+          }
+        }
+        &.dropdown > a {
+          color: darken($_text-dark, 30%);
+          &:after {
+            content: "";
+            display: inline-block;
+            @include triangle(8px, $_text-dark, down);
+            border-top-color: darken($_text-dark, 30%);
+            margin-left: $menu-padding;
+          }
+        }
+
       }
+
     }
   }
 

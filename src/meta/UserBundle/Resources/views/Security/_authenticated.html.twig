@@ -5,18 +5,18 @@
     <li class="avatar"><a href="{{ path('g_home_community') }}"><img src="{{ asset(user.currentCommunity.getPicture()) }}" height="37px"/></a></li>
   {% endif %}
 
-  <li class="home"><a href="{{ path('g_home_community') }}"><i class="fa fa-home fa-lg"></i></a></li>
+  <li class="home"><a href="{{ path('g_home_community') }}"><i class="fa fa-{% if user.currentCommunity is null %}desktop{% else %}home{% endif %} fa-lg"></i><span class="help"> {{ "community.home.title"|trans }}</span></a></li>
 
   <li class="dropdown">
     <a href="#" ><span>{% if user.currentCommunity is null %}{{ "private.space"|trans }}{% else %}{{ user.currentCommunity.name }}{% if currentUserCommunity and currentUserCommunity.guest %} <i class="fa fa-fw fa-lock"></i>{% endif %}{% endif %}</span></a>
-    <ul role="menu" tabindex="1" style="display: none;">
+    <ul role="menu" tabindex="1">
 
-      <li><a href="{{ path('g_switch_private_space', {'token': csrf_token('switchCommunity') }) }}">{% if user.currentCommunity is null %}<i class="fa fa-check"></i> {% endif %}{{ "private.space"|trans }}</a></li>
+      <li><a href="{{ path('g_switch_private_space', {'token': csrf_token('switchCommunity') }) }}">{% if user.currentCommunity is null %}<i class="fa fa-check"></i>&nbsp;{% endif %}<i class="fa fa-fw fa-desktop"></i> {{ "private.space"|trans }}</a></li>
 
       <li class="divider"></li>
 
       {% for userCommunity in user.userCommunities if not userCommunity.isDeleted %}
-      <li><a href="{{ path('g_switch_community', { 'uid': userCommunity.community.id|to_uid, 'token': csrf_token('switchCommunity') } ) }}" title="{{ userCommunity.community.type }}">{% if user.currentCommunity == userCommunity.community %}<i class="fa fa-check"></i> {% endif %}{{ userCommunity.community.name }}{% if userCommunity.guest %} <i class="fa fa-lock"></i>{% else %} <span class="community-{{ userCommunity.community.type }}">&#9679;</span>{% endif %}</a></li>
+      <li><a href="{{ path('g_switch_community', { 'uid': userCommunity.community.id|to_uid, 'token': csrf_token('switchCommunity') } ) }}" title="{{ userCommunity.community.type }}">{% if user.currentCommunity == userCommunity.community %}<i class="fa fa-check"></i> {% endif %}{{ userCommunity.community.name }}{% if userCommunity.guest %} <i class="fa fa-lock"></i>{% else %} <span class="community-{% if userCommunity.community.isValid() %}{{ userCommunity.community.type }}{% else %}expired{% endif %}">&#9679;</span>{% endif %}</a></li>
       {% endfor %}
 
       {% if user.currentCommunity is not null and currentUserCommunity and currentUserCommunity.manager %}
@@ -51,7 +51,7 @@
 
   <li class="dropdown">
     <a href="#"><span>{{ user.getFullName() }}</span></a>
-    <ul role="menu" tabindex="1" style="display: none;">
+    <ul role="menu" tabindex="1">
         <li><a href="{{ path('u_me') }}"><i class="fa fa-fw fa-user"></i> {{ "user.menu"|trans }}</a></li>
         <li><a href="{{ path('u_show_user_settings') }}"><i class="fa fa-fw fa-wrench"></i> {{ "user.settings.menu"|trans }}</a></li>
         <li class="divider"></li>
@@ -63,7 +63,7 @@
     <a href="{{ path('u_show_user_notifications') }}" title="{{ "user.notifications.help"|trans }}">
       <div>
         <i role="loading" class="fa fa-fw fa-spinner fa-spin"></i>
-        <i role="loaded" class="fa fa-fw fa-bell" style="display: none;"></i>
+        <i role="loaded" class="fa fa-fw fa-bell" style="display: none;"></i><span class="help"> {{ "user.notifications.title"|trans }}</span>
       </div>
       <div id="notificationsCount" data-update-path="{{ path('u_count_user_notifications') }}" style="display: none;"></div>
     </a>

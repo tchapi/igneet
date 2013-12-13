@@ -6,8 +6,8 @@
 $_background-dark: #1e1e1e;
 $_background: #f4f4f4;
 $_container: white;
-$_primary: #e37000;
-$_secondary: #e37000;
+$_primary: hsla(30, 100%, 45%, 1);
+$_secondary: hsla(203, 50%, 50%, 1);
 $_error: #9c3535;
 
 $_text-dark: white;
@@ -33,13 +33,12 @@ $menu-item-border-radius: 3px;
 $menu-mobile-width: 284px;
 $_menu-background: #282828;
 $_menu-border: black;
-$_menu-gradient_first: #484848;
-$_menu-gradient_last: #424242;
+$_menu-gradient_base: #424242; //48
 $_menu-shadow_top: #5B5B5B;
 $_menu-shadow_bottom: #343434;
 $_menu-dropdown: white;
-$_menu-dropdown-highlight: #3e88b7;
-$_menu-dropdown-hover: #e6f2fa;
+$_menu-dropdown-highlight: $_secondary;
+$_menu-dropdown-hover: desaturate(lighten($_secondary, 45%),15%);
 $_menu-dropdown-text: #b2b2b2;
 
 // The main width of the container
