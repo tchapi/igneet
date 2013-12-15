@@ -7,74 +7,76 @@
 {% block javascripts %}
   {{ parent() }}
   {% if isMe %}
-    {% javascripts '@metaGeneralBundle/Resources/public/js-edit/bootstrap-editable.js' 
-                   '@metaGeneralBundle/Resources/public/js-edit/editable.behaviour.js'
-                   '@metaGeneralBundle/Resources/public/js-edit/markdown-editor/*' 
+    {% javascripts '@metaGeneralBundle/Resources/public/js-edit/editable.behaviour.js'
             filter='?yui_js' %}
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
   {% endif %}
 {% endblock %}
 
-{% block stylesheets %}
-  {{ parent() }}
-  {% stylesheets  'bundles/metageneral/css-edit/bootstrap-editable.css' 
-    filter='?yui_css,cssrewrite' %}
-          <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}" />
-  {% endstylesheets %}
-{% endblock %}
-
 {% block header %}
 
-  <div class="headerAvatarAndActions">
-    {% if isMe %}<div class="changeAvatar"><a href="{{ path('u_edit_user_profile_reset_avatar', {'username': user.username, 'token': csrf_token('resetAvatar') }) }}" title="{{ "picture.resetHelp"|trans }}"><i class="fa fa-trash-o"></i></a> | <a href="{{ path('g_choose_file', {'targetAsBase64': targetAvatarAsBase64, 'token': csrf_token('edit') }) }}"><i class="fa fa-pencil"></i> {{ "picture.change"|trans }}</a></div>{% endif %}
-    <img src="{{ asset(user.getAvatar()) }}" width="150" height="150" class="avatar"/>
-{% if alreadyFollowing %}
-    <a href="{{ path('u_unfollow_user', {'username': user.username, 'token': csrf_token('unfollowUser') }) }}" class="btn btn-info followAction">{{ "user.unfollow"|trans }} {{ user.firstName }}</a>
-{% elseif not isMe %}
-    <a href="{{ path('u_follow_user', {'username': user.username, 'token': csrf_token('followUser') }) }}" class="btn btn-success followAction">{{ "user.follow"|trans }} {{ user.firstName }}</a>
-{% endif %}
+  <div class="avatar">
+
+    <img src="{{ asset(user.getAvatar()) }}" />
+    {% if isMe %}
+      <a href="{{ path('u_edit_user_profile_reset_avatar', {'username': user.username, 'token': csrf_token('resetAvatar') }) }}" title="{{ "picture.resetHelp"|trans }}"><i class="fa fa-trash-o fa-2x"></i></a>
+      <a href="{{ path('g_choose_file', {'targetAsBase64': targetAvatarAsBase64, 'token': csrf_token('edit') }) }}" title="{{ "picture.changeHelp"|trans }}"><i class="fa fa-pencil fa-2x"></i></a>
+    {% endif %}
+
   </div>
 
-  <div class="userInfo">
+  <div class="info">
 
-    <h2 class="ellipsis">
-      <span data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" data-name="first_name" data-title="{{ "user.name.first.help"|trans }}" class="editable">{{ user.firstName }}</span> <span data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" data-name="last_name" data-title="{{ "user.name.last.help"|trans }}" class="editable">{{ user.lastName }}</span>
+    <h2>
+      <span{% if isMe %} data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" data-name="first_name" data-last="{{ user.firstName }}" contenteditable="true"{% endif %}>{{ user.firstName }}</span> <span{% if isMe %} data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" data-name="last_name" data-last="{{ user.lastName }}" contenteditable="true"{% endif %}>{{ user.lastName }}</span>
     </h2>
 
-    <h4 class="ellipsis">
-      <span data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" data-name="headline" data-emptytext="{{ "user.headline.emptyText"|trans }}" data-type="text" data-title="{{ "user.headline.help"|trans }}" class="editable" title="{{ user.headline }}">{{ user.headline }}</span>
+    <h3>
+      <span{% if isMe %} data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" data-name="headline" placeholder="{{ "user.headline.emptyText"|trans }}" data-type="text" data-last="{{ user.headline }}" contenteditable="true"{% endif %} title="{{ user.headline }}">{{ user.headline }}</span>
+    </h3>
+
+    <div class="skills">
+      {% if user.skills|length > 0 or isMe %}
+        {% spaceless %}
+        <ul{% if isMe %} data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" data-emptytext="{{ "user.skills.emptyText"|trans }}" data-name="skills"{% endif %}>
+        {% for skill in user.skills %}
+          <li style="border: 1px solid #{{ skill.color }}" rel="{{ skill.slug }}">
+          {% if isMe %}
+            <a href=""><i class="fa fa-times"></i></a>  
+          {% endif %}
+          {{ (skill.slug ~ ".name")|trans({}, 'skills') }}</li>
+        {% endfor %}
+          {% if isMe %}
+          <li><a href=""><i class="fa fa-plus"></i></a></li>
+          {% endif %}
+        </ul>
+        {% endspaceless %}
+      {% else %}
+        {{ "user.skills.none"|trans }}
+      {% endif %}
+    </div>
+
+    <h4>
+      <div>
+        <i class="fa fa-map-marker"></i> <span{% if isMe %} data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" data-name="city" data-title="{{ "user.city.help"|trans }}" data-last="{{ user.city }}" placeholder="{{ "user.city.emptyText"|trans }}" contenteditable="true"{% endif %}>{{ user.city }}</span>
+      </div>
+
+      <div>
+        <i class="fa fa-calendar"></i> {{ "user.list.member.since"|trans({ '%date%': user.createdAt|date("date.format"|trans)}) }}
+      </div>
     </h4>
 
     <div>
-      <i class="fa fa-map-marker"></i> <span data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" data-name="city" data-title="{{ "user.city.help"|trans }}" data-emptytext="{{ "user.city.emptyText"|trans }}" class="editable">{{ user.city }}</span>
+    {% if alreadyFollowing %}
+        <i class="fa fa-rss"></i> {{ "user.following"|trans({'%user%': user.firstName}) }} <a href="{{ path('u_unfollow_user', {'username': user.username, 'token': csrf_token('unfollowUser') }) }}">{{ "user.unfollow"|trans }}</a>
+    {% elseif not isMe %}
+        <i class="fa fa-rss"></i> {{ "user.not.following"|trans({'%user%': user.firstName}) }} <a href="{{ path('u_follow_user', {'username': user.username, 'token': csrf_token('followUser') }) }}">{{ "user.follow"|trans }}</a>
+    {% endif %}
     </div>
 
-    <div>
-      <i class="fa fa-calendar"></i> {{ "user.list.member.since"|trans({ '%date%': user.createdAt|date("date.format"|trans)}) }}
-    </div>
-
-    <div>
-      <i class="fa fa-trophy"></i> 
-
-      {% if user.skills|length > 0 %}
-      {{ "user.skills.title"|trans }} : 
-      {% elseif not isMe %}
-      {{ "user.skills.none"|trans }}
-      {% endif %}
-
-      <ul data-toggle="manual" data-title="{{ "user.skills.help"|trans }}" data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" data-emptytext="{{ "user.skills.emptyText"|trans }}" data-type="checklist" data-source="{{ path('u_list_all_skills') }}" data-name="skills" class="skills skills-target editable-li">
-      {% for skill in user.skills %}
-          <li class="label label-default" style="background-color: #{{ skill.color }}" rel="{{ skill.slug }}">{{ (skill.slug ~ ".name")|trans({}, 'skills') }}</li>
-      {% endfor %}
-      </ul>
-
-      {% if isMe %}
-        <a class="editable-trigger" data-target="skills">&hellip;<i class="fa fa-pencil"></i></a>
-      {% endif %}
-
-    </div>
   </div>
+
 {% endblock %}
 
 {% block content %}

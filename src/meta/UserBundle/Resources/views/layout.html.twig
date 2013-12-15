@@ -1,16 +1,16 @@
 {% extends '::base.html.twig' %}
-{% set template = "full" %}
+{% set template = "card" %}
 
 {% block title %}{{ parent() }} > {{ "user.title"|trans }}{% endblock %}
 
 {% block container %}
 
-<header class="user">
+<header>
 {% block header %}{% endblock %}
 </header>
 
-<div class="user">
+<section>
 {% block content %}{% endblock %}
-</div>
+</section>
 
 {% endblock %}

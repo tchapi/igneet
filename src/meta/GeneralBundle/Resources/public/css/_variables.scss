@@ -10,9 +10,12 @@ $_primary: hsla(30, 100%, 45%, 1);
 $_secondary: hsla(203, 50%, 50%, 1);
 $_error: #9c3535;
 
-$_text-dark: white;
 $_text: black;
-$_muted: #646464;
+$_text-dark: white;
+$_text-secondary: #464646;
+$_discrete: #848484;
+$_muted: #c4c4c4;
+$_muted-dark: #646464;
 $_link: $_primary;
 
 

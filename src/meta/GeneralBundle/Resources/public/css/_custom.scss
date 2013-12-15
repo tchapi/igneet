@@ -86,6 +86,9 @@ body {
       left: 0px;
       width: 100%;
       height: 100%;
+      & > *:not(nav) {
+        margin: 0 20px;
+      }
     }
 
     /* Responsive */
@@ -108,9 +111,8 @@ a {
   text-decoration: none;
 }
 *:focus { outline: none; }
-
-
 input { border: none; }
+h1, h2, h3, h4, h5, h6, p { font-weight : normal;  }
 
 /* STANDARD LOGOS & SIZES */
 @for $i from 4 through 9 {
@@ -141,365 +143,133 @@ input { border: none; }
 
 @import "styles/login";
 @import "styles/menubar";
+@import "styles/editable";
+//@import "styles/card";
 
+body.card > .content-container > header {
 
-@mixin menu-button($clickable: true, $single: false) {
-  border: 1px solid $_menu_border;
-  @include linear-gradient(lighten($_menu-gradient_base,3%),$_menu-gradient_base);
-  @include emboss-box(lighten($_menu-gradient_base,10%), $_menu-shadow_bottom);
-  @if $clickable {
-    &:hover{
-      @include linear-gradient(lighten($_menu-gradient_base, 3%), darken($_menu-gradient_base, 2%));
-    }
-    &:active{
-      @include emboss-box(lighten($_menu-dropdown-highlight, 25%), $_menu-shadow_bottom);
-      @include linear-gradient(lighten($_menu-dropdown-highlight, 10%), $_menu-dropdown-highlight);
-    }
-  }
-  @if $single {
-    border-radius: $menu-item-border-radius;
-  } @else {
-    border-left: none;
-    border-right: none;
-    &:first-child{
-      border-top-left-radius: $menu-item-border-radius;
-      border-bottom-left-radius: $menu-item-border-radius;
-      border-left: 1px solid $_menu_border;
-    }
-    &:last-child{
-      border-top-right-radius: $menu-item-border-radius;
-      border-bottom-right-radius: $menu-item-border-radius;
-      border-right: 1px solid $_menu_border;
-    }
-  }
-}
-
-/* Inner height of menu */
-$menu-inner-height: ($menu-height - $menu-padding*2);
-$menu-dropdown-line-height: 50px;
-nav[role=mobile]{
-
-  height: $menu-height;
-  width: 100%;
-  margin: 0;
-  padding: $menu-padding;
-  background-color: $_menu-background;
-  border-bottom: 1px solid $_menu_border;
-  box-shadow: 0 0 3px $_menu-background;
-
-  display: none;
+  @include row();
+  padding: 70px 0 50px 0;
   @include media($tablet, $mobile) {
-    display: block;
+    padding: 30px 0 10px 0;
   }
 
-  & a { color: $_text-dark; vertical-align: top; } // All links are in color $_text-dark in the menu
-
-  & > a.menu-trigger {
-    padding: $menu-padding;
-    display: inline-block;
-    @include menu-button(true, true);
-  }
-
-  & > a.logo {
-    @include logo(30);
-    display: inline-block;
-    padding: 8px;
-  }
-
-}
-
-@include media($desktop) {
-  menu {
-
-    height: $menu-height;
-    position: fixed;
-    top: 0px;
-    width: 100%;
-    margin: 0;
-    padding: $menu-padding;
-    background-color: $_menu-background;
-    border-bottom: 1px solid $_menu_border;
-    box-shadow: 0 0 3px $_menu-background;
-
-    & a { color: $_text-dark; vertical-align: top; } // All links are in color $_text-dark in the menu
-
-    & > a.logo {
-      @include logo(30);
-      display: inline-block;
-      padding: 8px;
+  & > .avatar {
+    @include span-columns(2);
+    @include shift(1);
+    position: relative;
+    @include media($tablet, $mobile) {
+      @include span-columns(1);
+      @include shift(0);
     }
 
-    span.help { display: none; }
+    & > img {
+      @include fill-parent;
+      border-radius: 50%;
+    }
+    & > a {
+      position: absolute;
+      display: none;
+      top: 58px;
+      left: 87px;
+      text-shadow: 0 0 5px black;
+      &:first-of-type {margin: 0 0 0 -50px;}
+      &:hover {
+        color: $_text-dark;
+      }
+    }
+    &:hover {
+      & > a { display: block; }
+      //& > img { box-shadow: 0 0 0 4px $_primary; opacity: 0.7; }
+    }
+  }
 
-    /* Short code */
-    div.shortcode{
-      display: inline-block;
-      line-height: ($menu-inner-height - 2); //see above
-      vertical-align: top;
-      padding: 0 $menu-padding;
-      @include menu-button(false, true);
-      & form { display: inline; }
-      & input { outline: 0; }
-      & a { margin-right: $menu_padding/2; }
+  & > .info {
+    @include span-columns(7);
+    @include shift(1);
+    @include media($tablet, $mobile) {
+      @include span-columns(3);
+      @include shift(0);
     }
 
-    /* inline list */
-    & > ul {
-
-      &.user { float: right; }
-
-      list-style-type: none;
-      display: inline-block;
-      margin: 0;
-      padding: 0;
-
-      & > li {
-
+    & > h2 {
+      color: $_primary;
+      font-size: 2.5em;
+      margin: 0 0 10px 0;
+      span {
         display: inline-block;
-        height: $menu-inner-height;
-        position: relative;
-        padding: 0 $menu-padding;
-        @include menu-button;
-      
-        &.notifications { padding: 0; }
-        &.home { border-right: 1px solid $_menu-background; }
-
-        &.avatar{ 
-          padding: 0; 
-          border-right: 1px solid $_menu-background;
-          & img{
-            border-radius: $menu-item-border-radius 0 0 $menu-item-border-radius;
-            height: ($menu-inner-height - 2); // accounts for border : 1px * 2
-          }
-        }
-
-        & > a {
-
-          display: inline-block;
-          @include emboss-text($_text-dark);
-          line-height: ($menu-inner-height - 2); //see above
-
-          
-          & > span {
-            @include ellipsis(150px);
-            display: inline-block;
-          }
-
-          & > div {
-            overflow: hidden; // Drops the pseudo margin on top of the list li element
-            position: relative;
-            display: inline-block;
-            line-height: ($menu-inner-height - 2); //see above
-            color: $_menu-background;
-            border-left: 1px solid $_menu-background;
-            min-width: $menu-inner-height;
-            padding-right: 3px;
-            text-align: center;
-            @include emboss-text($_menu-background);
-          }
-          & > #notificationsCount{
-            $size_notificationsCount : 18px;
-            position: absolute;
-            right: 3px;
-            top: 3px;
-            padding: 0;
-            width: $size_notificationsCount;
-            height: $size_notificationsCount;
-            border-radius: $size_notificationsCount;
-            font-size: 0.65em;
-            line-height: 1.7em;
-            text-align: center;
-            text-shadow: none;
-            text-shadow: none;
-            background-color: $_primary;
-            color: $_text-dark;
-            min-width: 0;
-          }
-
-        }
-
-        /* Dropdown menu & Caret */
-        &.dropdown > a {
-          &:after {
-            content: "";
-            @include triangle(8px, $_text-dark, down);
-            margin-left: $menu-padding;
-          }
-        }
-        &.dropdown.active {
-          @include emboss-box(lighten($_menu-dropdown-highlight, 25%), $_menu-shadow_bottom);
-          @include linear-gradient(lighten($_menu-dropdown-highlight, 10%), $_menu-dropdown-highlight);
-        }
-
-        /* Sub menu */
-        &.dropdown > ul {
-
-          display: none;
-          @include up-triangle(20px, $_menu-dropdown, right);
-          background: $_menu-dropdown;
-          color: $_menu-dropdown-text;
-          list-style: none;
-          float: left;
-          right: 0;
-          margin: 0;
-          min-width: 163px;
-          padding: 0;
-          position: absolute;
-          top: 45px;
-          z-index: 1000;
-          border-radius: $menu-item-border-radius;
-          box-shadow: 0 0 3px $_menu-background;
-
-          & > li {
-
-            padding: $menu-padding/2 $menu-padding;
-            height: $menu-dropdown-line-height;
-            line-height: ($menu-dropdown-line-height - $menu-padding);
-            &:first-child{ border-radius: 3px 3px 0 0; }
-            &:last-child{ border-radius: 0 0 3px 3px; }
-
-            & > a { 
-              display: inline-block;
-              @include ellipsis(270px);
-              width: 100%;
-              color: $_menu-dropdown-text; 
-              vertical-align: top;
-              & > i.fa{
-                color: $_menu-dropdown-highlight;
-              }
-            } 
-
-            &:hover {
-              background: $_menu-dropdown-hover;
-              & a {
-                color: $_menu-dropdown-highlight;
-              }
-            }
-            & strong {
-              color: $_menu-dropdown-highlight;
-            }
-
-          }
-
-          & > li.divider {
-            background-color: lighten($_menu-dropdown-text, 20%);
-            height: 1px;
-            padding: 0;
-            margin: 0;
-            overflow: hidden;
-          }
-
-        }
-
+        @include ellipsis($column*7);
       }
-
+    }
+    & > h3 {
+      color: $_discrete;
+      font-size: 1.5em;
+      margin: 5px 0 10px 0;
+    }
+    & > h4 {
+      color: $_muted;
+      margin: 5px 0 10px 0;
+      div:first-child {
+        @include span-columns(3 of 7);
+        //display: inline-block;
+        @include ellipsis($column*3);
+      }
+      div:last-child {
+        @include span-columns(4 of 7);
+      }
+      @include clearfix;
     }
 
+    & > div {
+      margin: 0 0 20px 0;
+      color: $_muted;
+    }
+
+    & .skills {
+
+      span {
+        display: inline-block;
+      }
+
+      ul {
+        list-style: none;
+        margin: 0; 
+        padding: 0;
+        font-size: 0.9em;
+        display: block;
+        color: $_text;
+
+        & > li {
+          display: inline-block;
+          padding: 3px 4px;
+          margin: 2px;
+          border-radius: 3px;
+          border: 1px solid $_muted;
+          & a {
+            color: $_muted;
+            &:hover { color: $_text; }
+          }
+        }
+      }
+    }
   }
+
 }
 
-/* Responsive */
-@include media($tablet, $mobile) {
+body.card > .content-container > section {
 
-  menu {
-    position: fixed;
-    @include transition (left 300ms ease-in-out);
-    left: -$menu-mobile-width;
-    max-width: $menu-mobile-width;
-    bottom: 0;
-    margin: 0;
-    padding: 0 2px 0 0;
-    display: block;
-    float: left;
-    width: 100%;
-    height: 100%;
+  @include row();   
+  @include span-columns(10);
+  @include shift(1);
+  @include clearfix;
+  @include media($tablet, $mobile) {
+    @include span-columns(4);
+    @include shift(0);
+  }
 
-    background: lighten($_menu-background, 10%);
-    color: $_text-dark;
-    box-shadow: -6px 0 5px -5px black inset;
-
-    & a { 
-      color: $_text-dark; 
-      vertical-align: top;
-      display: inline-block;
-      @include ellipsis($menu-mobile-width);
-    }
-
-    & li:not(.dropdown):hover a { color: $_menu-dropdown-highlight; }
-
-    & > a.logo, & > div.shortcode { display: none; }
-    span.help { display: inline; }
-
-    & > ul {
-
-      opacity: 0;
-      margin: 0;
-      padding: 0;
-      list-style-type: none;
-      @include transition (opacity 300ms ease-in-out);
-
-      & i.fa {
-        vertical-align: 0;
-        color: $_menu-dropdown-highlight;
-      }
-
-      & > li.avatar, & li.divider { display: none; }
-
-      & > li {
-
-        border-bottom: 1px solid lighten($_menu-background, 15%);
-        height: $menu-dropdown-line-height;
-        line-height: ($menu-dropdown-line-height - $menu-padding);
-
-        & > a { 
-          padding: $menu-padding/2 $menu-padding;
-          
-          & > div {
-            display: inline;
-          }
-          & > #notificationsCount {
-            display: inline-block;
-            padding-left: $menu-padding;
-            position: relative;
-            color: $_menu-dropdown-highlight;
-            &:before { content: "("; }
-            &:after { content: ")"; }
-          }
-        } 
-
-        & strong {
-          color: $_menu-dropdown-highlight;
-        }
-
-        /* Sub menu */
-        &.dropdown { 
-          height: inherit;
-          & > ul {
-            position: relative;
-            margin-left: $menu-padding*2;
-            margin-bottom: $menu-padding*2;
-            list-style: none;
-            border-left: 1px solid lighten($_menu-background, 15%);
-            padding: 0;
-            & > li > a {
-              padding: $menu-padding/2 $menu-padding*2;
-            }
-          }
-        }
-        &.dropdown > a {
-          color: darken($_text-dark, 30%);
-          &:after {
-            content: "";
-            display: inline-block;
-            @include triangle(8px, $_text-dark, down);
-            border-top-color: darken($_text-dark, 30%);
-            margin-left: $menu-padding;
-          }
-        }
-
-      }
-
-    }
+  & > * {
+    border-top: 1px solid $_background;
+    padding: 40px 0;
   }
 
 }

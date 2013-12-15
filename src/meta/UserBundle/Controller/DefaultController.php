@@ -822,7 +822,7 @@ class DefaultController extends Controller
 
                     $this->get('session')->getFlashBag()->add(
                         'success',
-                        $this->get('translator')->trans('user.following', array( '%user%' => $user->getFullName() ))
+                        $this->get('translator')->trans('user.now.following', array( '%user%' => $user->getFullName() ))
                     );
 
                 } else {

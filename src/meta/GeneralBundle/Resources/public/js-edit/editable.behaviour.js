@@ -1,136 +1,59 @@
 $(document).ready(function(){
-  
-    /* Editable elements : basics 
+
+    /*
+     * Editables
      */
-    $('.editable').editable({
-        pk: 1,
-        placement: 'bottom'
-    });
+    timers = {};
+    saveDelay = 1000; // milliseconds
 
-    /* Editable lists of ul/li 
-     * (for skills for instance)
-     */
-    $('.editable-li').each(function(){
-      $(this).attr('data-value', $.map( $(this).find('li'), function (element) { return $(element).attr('rel') }).join(',') );
-    });
+    var saveData = function(dataArray) {
+      console.log('saving data "' + dataArray["value"] + '" for name "' + dataArray["name"] + '"!');
 
-    $('.editable-li').editable({
-        pk: 1,
-        placement: 'bottom',
-        display:  function(value, sourceData) {
-            
-                    $(this).empty();
-                    if (sourceData) {
-                      var selected = $.grep(sourceData,function(e,i){
-                        return (value.indexOf(e.value) != -1);
-                      });
-                      $(this).empty();
-                      var len = selected.length;
-                      for(var i=0; i<len; i++){
-                        $(this).append('<li class="label label-default" rel="' + selected[i].value + '">' + selected[i].text + '</li>');
-                      }
-                    } else {
-                      if (value){
-                        var len = value.length;
-                        for(var i=0; i<len; i++){
-                          $(this).append('<li class="label label-default">' + value[i] + '</li>');
-                        }
-                      }
-                    }
-                  },
-        select2: {
-          tags:[],
-          tokenSeparators: [","]
-        }
-    });
-
-    /* Overriding display function for editable-server-response items (such as list items)
-     */
-    $('.editable-server-response').editable('option', 'display', 
-      function(value, response){
-          if (response.length > 0){
-            console.log(response);
-            $(this).html(response);
-          }
-        }
-    );
-
-    /* For manual toggles */
-    $('.editable-trigger').click(function(e) {
-      e.stopPropagation();
-      if (e.target.tagName == 'I') // icon ...
-        target = e.target.parentNode.getAttribute('data-target');
-      else // a or span
-        target = e.target.getAttribute('data-target');
-      $('.' + target + '-target').editable('toggle');
-    });
-
-    /*  Markdown fields
-     *  (for about)
-     */ 
-    if ($('#wmd-input').length != 0) {
-      var converter = Markdown.getSanitizingConverter();
-      var editor = new Markdown.Editor(converter);
-      editor.run();
-    }
-
-    if ($('#wmd-input-second').length != 0) {
-      // In case there is a second one
-      var converter2 = new Markdown.Converter();
-      var editor2 = new Markdown.Editor(converter2, "-second");
-      editor2.run();
-    }
-
-    // Save function with states
-    $('.wmd-input[unsaved="no"]').keyup(function(){
-      $(this).parent().parent().find(".wmd-message").html('<span class="alert alert-warning">' + Translator.get('alert.unsaved.changes') + '</span>');
-      $(this).attr('unsaved', 'yes');
-    });
-
-    $('#wmd-save, #wmd-save-second').click(function() {
-
-      var containerBox = $(this).parent().parent();
-      var messagesBox = containerBox.find('.wmd-message');
-      var inputBox = containerBox.find('.wmd-input');
-      var contentBox = containerBox.parent().parent().find('.content');
-
-      messagesBox.html('<span class="alert alert-info">' + Translator.get('alert.saving.server') + '</span>');
-
-      $.post(inputBox.attr('data-url'), {
-        name: inputBox.attr('data-name'),
-        value: inputBox.val()
+      clearInterval(timers[dataArray["name"]]); // Clearing before sending the post request
+      $.post(dataArray["url"], {
+        name: dataArray["name"],
+        value: dataArray["value"]
       })
       .success(function(data, config) {
-         messagesBox.html('<span class="alert alert-success">' + Translator.get('alert.changes.saved.at', { 'date' : (new Date()).toTimeString() }) + '</span>');
-         window.setTimeout(function(){ if (inputBox.attr('unsaved') == 'no') { messagesBox.html(Translator.get('alert.click.save.changes')); } }, 3000);
-         inputBox.attr('unsaved', 'no');
-         contentBox.html(data);             
+        $("[data-name=" + dataArray["name"] + "]").attr("data-last", dataArray["value"]);
+        setFlash("success", "yeah");           
       })
       .error(function(errors) {
-         messagesBox.html('<span class="alert alert-danger">' + Translator.get('alert.error.saving.changes') + '</span>');
+        $("[data-name=" + dataArray["name"] + "]").html($("[data-name=" + dataArray["name"] + "]").attr("data-last"));
+        setFlash("error", "hoho");
       });
 
+    };
+
+    var createInterval = function(f, parameters, interval) {
+      return setInterval(function() { f(parameters); }, interval);
+    }
+
+    $('[contenteditable=true]').on("keypress", function(e) {
+      if (e.which == '13'){ e.preventDefault(); }
     });
 
-    // Editable triggers for markdown
-    $('.markdown-trigger').click(function(){
-
-      var containerBox = $(this).parent().parent();
-      var markdownBox = containerBox.find('.wmd-wrapper');
-      var messageBoxTop = containerBox.find('.wmd-message-top');
-      var inputBox = containerBox.find('.wmd-input');
-      var contentBox = markdownBox.parent().find('.content');
-
-      if (inputBox.is(":visible") && inputBox.attr('unsaved') == 'yes'){
-        messageBoxTop.show();
-      } else {
-        messageBoxTop.hide();
+    $('[contenteditable=true]').on("keyup", function(e) {
+      name = $(this).attr("data-name");
+      url = $(this).attr("data-url");
+      last = $(this).attr("data-last");
+      value = $.trim($(this).text());
+      if (last !== value) {
+        clearInterval(timers[name]);
+        timers[name] = createInterval(saveData, {url: url, name: name, value: value}, saveDelay);
       }
-
-      markdownBox.toggle();
-      contentBox.toggle();
-
     });
+
+
+
+
+
+
+
+
+
+
+/* ------------- OLD ---------------- */
 
     /* Delete behaviours
      * to catch and two-stepize deletion

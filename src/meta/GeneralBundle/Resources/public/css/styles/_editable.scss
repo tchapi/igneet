@@ -1,0 +1,15 @@
+/* ******************************************************************** */
+/*                              EDITABLES                               */
+/* ******************************************************************** */
+
+// General rules
+*[contenteditable=true] {
+
+  &:hover { background: rgba($_text, 0.05); }
+  &:focus { background: rgba($_primary, 0.1); }
+  &:empty:before{
+    content: attr(placeholder);
+    font-style: italic;
+    color: $_muted;
+  }
+}
