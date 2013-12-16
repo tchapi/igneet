@@ -182,7 +182,7 @@ nav[role=mobile]{
         }
 
         /* Dropdown menu & Caret */
-        &.dropdown > a {
+        &.dropdown > a:not(.main-menu) {
           &:after {
             content: "";
             @include triangle(8px, $_text-dark, down);

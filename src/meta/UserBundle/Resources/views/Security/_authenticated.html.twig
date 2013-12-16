@@ -32,15 +32,20 @@
 </ul>
 
 <ul>
-{% spaceless %}
-  {% if (currentUserCommunity and not currentUserCommunity.guest) or currentUserCommunity is null %}
-  <li><a href="{{ path('i_list_ideas') }}">{{ "idea.allIdeas.menu"|trans }}</a></li>
-  {% endif %}
-  <li><a href="{{ path('p_list_projects') }}">{{ "project.allProjects.menu"|trans }}</a></li>
-  {% if user.currentCommunity is not null %}
-  <li><a href="{{ path('u_list_users') }}">{{ "user.allUsers.menu"|trans }}</a></li>
-  {% endif %}
-{% endspaceless %}
+  <li class="dropdown">
+    <a href="#" class="main-menu"><i class="fa fa-bars fa-lg"></i></a>
+    <ul role="menu" tabindex="2">
+    {% spaceless %}
+      {% if (currentUserCommunity and not currentUserCommunity.guest) or currentUserCommunity is null %}
+      <li><a href="{{ path('i_list_ideas') }}"><i class="fa fa-fw fa-lightbulb-o"></i> {{ "idea.allIdeas.menu"|trans }}</a></li>
+      {% endif %}
+      <li><a href="{{ path('p_list_projects') }}"><i class="fa fa-fw fa-paperclip"></i> {{ "project.allProjects.menu"|trans }}</a></li>
+      {% if user.currentCommunity is not null %}
+      <li><a href="{{ path('u_list_users') }}"><i class="fa fa-fw fa-group"></i> {{ "user.allUsers.menu"|trans }}</a></li>
+      {% endif %}
+    {% endspaceless %}
+    </ul>
+  </li>
 </ul>
 
 <ul class="user">
@@ -51,7 +56,7 @@
 
   <li class="dropdown">
     <a href="#"><span>{{ user.getFullName() }}</span></a>
-    <ul role="menu" tabindex="1">
+    <ul role="menu" tabindex="3">
         <li><a href="{{ path('u_me') }}"><i class="fa fa-fw fa-user"></i> {{ "user.menu"|trans }}</a></li>
         <li><a href="{{ path('u_show_user_settings') }}"><i class="fa fa-fw fa-wrench"></i> {{ "user.settings.menu"|trans }}</a></li>
         <li class="divider"></li>
