@@ -18,6 +18,7 @@ $_muted: #c4c4c4;
 $_muted-dark: #646464;
 $_link: $_primary;
 
+$border-radius: 5px;
 
 /* ******************************************************************** */
 
@@ -32,7 +33,7 @@ $_input-foreground: $_text;
 // Menu
 $menu-height: 60px;
 $menu-padding: 10px;
-$menu-item-border-radius: 3px;
+$menu-item-border-radius: $border-radius;
 $menu-mobile-width: 284px;
 $_menu-background: #282828;
 $_menu-border: black;
