@@ -158,9 +158,12 @@ body.card > .content-container > header {
     @include span-columns(2);
     @include shift(1);
     position: relative;
-    @include media($tablet, $mobile) {
+    @include media($tablet) {
       @include span-columns(1);
       @include shift(0);
+    }
+    @include media($mobile) {
+      display: none;
     }
 
     & > img {
@@ -170,10 +173,11 @@ body.card > .content-container > header {
     & > a {
       position: absolute;
       display: none;
-      top: 58px;
-      left: 87px;
+      top: 50%;
+      left: 50%;
       text-shadow: 0 0 5px black;
-      &:first-of-type {margin: 0 0 0 -50px;}
+      margin: -1em 0 0 0.5em;
+      &:first-of-type {margin: -1em 0 0 -2em;}
       &:hover {
         color: $_text-dark;
       }
@@ -187,9 +191,12 @@ body.card > .content-container > header {
   & > .info {
     @include span-columns(7);
     @include shift(1);
-    @include media($tablet, $mobile) {
+    @include media($tablet) {
       @include span-columns(3);
       @include shift(0);
+    }
+    @include media($mobile) {
+      @include fill-parent();
     }
 
     & > h2 {
@@ -198,7 +205,7 @@ body.card > .content-container > header {
       margin: 0 0 10px 0;
       span {
         display: inline-block;
-        @include ellipsis($column*7);
+        @include ellipsis(100%);
       }
     }
     & > h3 {
@@ -211,11 +218,16 @@ body.card > .content-container > header {
       margin: 5px 0 10px 0;
       div:first-child {
         @include span-columns(3 of 7);
-        //display: inline-block;
         @include ellipsis($column*3);
+        @include media($mobile) {
+          @include fill-parent();
+        }
       }
       div:last-child {
         @include span-columns(4 of 7);
+        @include media($mobile) {
+          @include fill-parent();
+        }
       }
       @include clearfix;
     }
