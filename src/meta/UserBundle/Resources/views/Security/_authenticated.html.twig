@@ -3,9 +3,9 @@
 
   {% if user.currentCommunity is not null %}
     <li class="avatar"><a href="{{ path('g_home_community') }}"><img src="{{ asset(user.currentCommunity.getPicture()) }}" height="37px"/></a></li>
+  {% else %}
+    <li class="home"><a href="{{ path('g_home_community') }}"><i class="fa fa-desktop fa-lg"></i><span class="help"> {{ "community.home.title"|trans }}</span></a></li>
   {% endif %}
-
-  <li class="home"><a href="{{ path('g_home_community') }}"><i class="fa fa-{% if user.currentCommunity is null %}desktop{% else %}home{% endif %} fa-lg"></i><span class="help"> {{ "community.home.title"|trans }}</span></a></li>
 
   <li class="dropdown">
     <a href="#" ><span>{% if user.currentCommunity is null %}{{ "private.space"|trans }}{% else %}{{ user.currentCommunity.name }}{% if currentUserCommunity and currentUserCommunity.guest %} <i class="fa fa-fw fa-lock"></i>{% endif %}{% endif %}</span></a>
