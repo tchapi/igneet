@@ -7,7 +7,6 @@ $(document).ready(function(){
     saveDelay = 1000; // milliseconds
 
     var saveData = function(dataArray) {
-      //console.log('saving data "' + dataArray["value"] + '" for name "' + dataArray["name"] + '"!');
 
       clearInterval(timers[dataArray["name"]]); // Clearing before sending the post request
       $.post(dataArray["url"], {
@@ -27,7 +26,7 @@ $(document).ready(function(){
 
     var createInterval = function(f, parameters, interval) {
       return setInterval(function() { f(parameters); }, interval);
-    }
+    } 
 
     var catchChange = function(dataArray) {
       if (dataArray["last"] !== dataArray["value"]) {
@@ -36,38 +35,41 @@ $(document).ready(function(){
       }
     };
 
-    $('[contenteditable=true]').on("keypress", function(e) {
-      if (e.which == '13'){ e.preventDefault(); }
-    });
-
-    $('[contenteditable=true]').on("keyup", function() {
-      name = $(this).attr("data-name");
-      url = $(this).attr("data-url");
-      last = $(this).attr("data-last");
-      value = $.trim($(this).text());
-      catchChange({url: url, name: name, last: last, value: value});
-    });
+    $('[contenteditable=true][rich=false]')
+      .on("keypress", function(e) {
+        if (e.which == '13'){ e.preventDefault(); }
+      })
+      .on("keyup", function() {
+        name = $(this).attr("data-name");
+        url = $(this).attr("data-url");
+        last = $(this).attr("data-last");
+        value = $.trim($(this).text());
+        catchChange({url: url, name: name, last: last, value: value});
+      })
+      .on('paste', function (e) {
+        e.preventDefault(); // Prevents insertion of markup
+        document.execCommand('inserttext', false, prompt('Paste something.')); // TODO : to translate !
+      });
 
     /* 
      * Text area editables
      */
-    var textareaCallback = function(data) {
-      target = $(data.$el[0]); // The textarea
+    var richareaCallback = function(data) {
+      target = data.$editor; // The textarea
       name = target.attr("data-name");
       url = target.attr("data-url");
       last = target.attr("data-last");
       value = data.getCode();
       catchChange({url: url, name: name, last: last, value: value});
     }
-    var test = $('textarea[contenteditable=true]').redactor({
+    $('[contenteditable=true][rich=true]').redactor({
       air:true,
+      minHeight: 100, // To allow PASTE event - ARGHHHH I hate you Chrome
       airButtons: ['formatting', '|', 'bold', 'italic', 'deleted', '|', 'unorderedlist', 'orderedlist', 'outdent', 'indent', '|',
                                         'image', 'video', 'file', 'table', 'link'],
-      keyupCallback: textareaCallback,
-      execCommandCallback: textareaCallback
+      keyupCallback: richareaCallback,
+      execCommandCallback: richareaCallback
     });
-
-
 
 
 /* ------------- OLD ---------------- */

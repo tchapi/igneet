@@ -38,11 +38,11 @@
   <div class="info">
 
     <h2>
-      <span{% if isMe %} data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" data-name="first_name" data-last="{{ user.firstName }}" contenteditable="true"{% endif %}>{{ user.firstName }}</span> <span{% if isMe %} data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" data-name="last_name" data-last="{{ user.lastName }}" contenteditable="true"{% endif %}>{{ user.lastName }}</span>
+      <span{% if isMe %} data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" data-name="first_name" data-last="{{ user.firstName }}" contenteditable="true" rich="false"{% endif %}>{{ user.firstName }}</span> <span{% if isMe %} data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" data-name="last_name" data-last="{{ user.lastName }}" contenteditable="true" rich="false"{% endif %}>{{ user.lastName }}</span>
     </h2>
 
     <h3>
-      <span{% if isMe %} data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" data-name="headline" placeholder="{{ "user.headline.emptyText"|trans }}" data-type="text" data-last="{{ user.headline }}" contenteditable="true"{% endif %} title="{{ user.headline }}">{{ user.headline }}</span>
+      <span{% if isMe %} data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" data-name="headline" placeholder="{{ "user.headline.emptyText"|trans }}" data-type="text" data-last="{{ user.headline }}" contenteditable="true" rich="false"{% endif %} title="{{ user.headline }}">{{ user.headline }}</span>
     </h3>
 
     <div class="skills">
@@ -68,7 +68,7 @@
 
     <h4>
       <div>
-        <i class="fa fa-map-marker"></i> <span{% if isMe %} data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" data-name="city" data-title="{{ "user.city.help"|trans }}" data-last="{{ user.city }}" placeholder="{{ "user.city.emptyText"|trans }}" contenteditable="true"{% endif %}>{{ user.city }}</span>
+        <i class="fa fa-map-marker"></i> <span{% if isMe %} data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" data-name="city" data-title="{{ "user.city.help"|trans }}" data-last="{{ user.city }}" placeholder="{{ "user.city.emptyText"|trans }}" contenteditable="true" rich="false"{% endif %}>{{ user.city }}</span>
       </div>
 
       <div>
@@ -91,25 +91,9 @@
 {% block content %}
 <section>
   <div><i class="fa fa-bullhorn"></i> {{ "user.about"|trans({ '%user%': user.getFullName}) }}</div>
-  <div>
 
-    {% if isMe %}
-<!--       <div class="wmd-message-top alert alert-warning" style="display: none;"><i class="fa fa-warning"></i> {{ "unsaved.changes"|trans }}</div>
-      <div class="wmd-wrapper well well-small" style="display: none;">
-        <div class="wmd-panel">
-            <div id="wmd-button-bar"></div>
-            <textarea unsaved='no' data-name="about" data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" class="wmd-input" id="wmd-input">{{ user.about }}</textarea>
-        </div>
-        <div>
-          <button id="wmd-save" class="btn btn-primary">{{ "save"|trans }}</button> <span class="muted wmd-message">{{ "saveHelp"|trans }}</span>
-        </div>
-        <div id="wmd-preview" class="preview">{{ user.about }}</div>
-      </div> -->
-    {% endif %}
+  <div{% if isMe %} data-name="about" data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" contenteditable="true" rich="true"{% endif %}>{{ user.about|deeplinks|raw }}</div>
 
-    <textarea{% if isMe %} data-name="about" data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" contenteditable="true"{% endif %}>{{ user.about|deeplinks|markdown }}</textarea>
-
-  </div>
 </section>
 
 {% if following|length > 0 %}
