@@ -7,7 +7,7 @@ $(document).ready(function(){
     saveDelay = 1000; // milliseconds
 
     var saveData = function(dataArray) {
-      console.log('saving data "' + dataArray["value"] + '" for name "' + dataArray["name"] + '"!');
+      //console.log('saving data "' + dataArray["value"] + '" for name "' + dataArray["name"] + '"!');
 
       clearInterval(timers[dataArray["name"]]); // Clearing before sending the post request
       $.post(dataArray["url"], {
@@ -29,26 +29,43 @@ $(document).ready(function(){
       return setInterval(function() { f(parameters); }, interval);
     }
 
+    var catchChange = function(dataArray) {
+      if (dataArray["last"] !== dataArray["value"]) {
+        clearInterval(timers[dataArray["name"]]);
+        timers[dataArray["name"]] = createInterval(saveData, dataArray, saveDelay);
+      }
+    };
+
     $('[contenteditable=true]').on("keypress", function(e) {
       if (e.which == '13'){ e.preventDefault(); }
     });
 
-    $('[contenteditable=true]').on("keyup", function(e) {
+    $('[contenteditable=true]').on("keyup", function() {
       name = $(this).attr("data-name");
       url = $(this).attr("data-url");
       last = $(this).attr("data-last");
       value = $.trim($(this).text());
-      if (last !== value) {
-        clearInterval(timers[name]);
-        timers[name] = createInterval(saveData, {url: url, name: name, value: value}, saveDelay);
-      }
+      catchChange({url: url, name: name, last: last, value: value});
     });
 
-
-
-
-
-
+    /* 
+     * Text area editables
+     */
+    var textareaCallback = function(data) {
+      target = $(data.$el[0]); // The textarea
+      name = target.attr("data-name");
+      url = target.attr("data-url");
+      last = target.attr("data-last");
+      value = data.getCode();
+      catchChange({url: url, name: name, last: last, value: value});
+    }
+    var test = $('textarea[contenteditable=true]').redactor({
+      air:true,
+      airButtons: ['formatting', '|', 'bold', 'italic', 'deleted', '|', 'unorderedlist', 'orderedlist', 'outdent', 'indent', '|',
+                                        'image', 'video', 'file', 'table', 'link'],
+      keyupCallback: textareaCallback,
+      execCommandCallback: textareaCallback
+    });
 
 
 

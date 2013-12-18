@@ -13,3 +13,5 @@
     color: $_muted;
   }
 }
+
+textarea[contenteditable=true]{ visibility: hidden; } // Prevents from displaying while redactor is loading
