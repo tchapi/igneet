@@ -46,9 +46,14 @@ $(document).ready(function(){
         value = $.trim($(this).text());
         catchChange({url: url, name: name, last: last, value: value});
       })
-      .on('paste', function (e) {
-        e.preventDefault(); // Prevents insertion of markup
-        document.execCommand('inserttext', false, prompt('Paste something.')); // TODO : to translate !
+      .on('paste', function (e) { // Prevents insertion of markup
+        if (document.queryCommandEnabled('inserttext')) {
+          e.preventDefault();
+          var pastedText = prompt('Paste something.'); // TODO : to translate !
+          if (pastedText !== null){
+            document.execCommand('inserttext', false, pastedText);
+          }
+        }
       });
 
     /* 
