@@ -1,4 +1,21 @@
 <ul>
+  <li class="dropdown">
+    <a href="#" class="main-menu"><i class="fa fa-bars fa-lg"></i> <span class="help"> {{ "menu.browse"|trans }}</span></a>
+    <ul role="menu" tabindex="2">
+    {% spaceless %}
+      {% if (currentUserCommunity and not currentUserCommunity.guest) or currentUserCommunity is null %}
+      <li><a href="{{ path('i_list_ideas') }}"><i class="fa fa-fw fa-lightbulb-o"></i> {{ "idea.allIdeas.menu"|trans }}</a></li>
+      {% endif %}
+      <li><a href="{{ path('p_list_projects') }}"><i class="fa fa-fw fa-paperclip"></i> {{ "project.allProjects.menu"|trans }}</a></li>
+      {% if user.currentCommunity is not null %}
+      <li><a href="{{ path('u_list_users') }}"><i class="fa fa-fw fa-group"></i> {{ "user.allUsers.menu"|trans }}</a></li>
+      {% endif %}
+    {% endspaceless %}
+    </ul>
+  </li>
+</ul>
+
+<ul>
 {% spaceless %}
 
   {% if user.currentCommunity is not null %}
@@ -31,23 +48,6 @@
 {% endspaceless %}
 </ul>
 
-<ul>
-  <li class="dropdown">
-    <a href="#" class="main-menu"><i class="fa fa-bars fa-lg"></i></a>
-    <ul role="menu" tabindex="2">
-    {% spaceless %}
-      {% if (currentUserCommunity and not currentUserCommunity.guest) or currentUserCommunity is null %}
-      <li><a href="{{ path('i_list_ideas') }}"><i class="fa fa-fw fa-lightbulb-o"></i> {{ "idea.allIdeas.menu"|trans }}</a></li>
-      {% endif %}
-      <li><a href="{{ path('p_list_projects') }}"><i class="fa fa-fw fa-paperclip"></i> {{ "project.allProjects.menu"|trans }}</a></li>
-      {% if user.currentCommunity is not null %}
-      <li><a href="{{ path('u_list_users') }}"><i class="fa fa-fw fa-group"></i> {{ "user.allUsers.menu"|trans }}</a></li>
-      {% endif %}
-    {% endspaceless %}
-    </ul>
-  </li>
-</ul>
-
 <ul class="user">
 {% spaceless %}
   <li class="avatar">
@@ -70,7 +70,7 @@
         <i role="loading" class="fa fa-fw fa-spinner fa-spin"></i>
         <i role="loaded" class="fa fa-fw fa-bell" style="display: none;"></i><span class="help"> {{ "user.notifications.title"|trans }}</span>
       </div>
-      <div id="notificationsCount" data-update-path="{{ path('u_count_user_notifications') }}" style="display: none;"></div>
+      <div class="notificationsCount" id="notificationsCount" data-update-path="{{ path('u_count_user_notifications') }}" style="display: none;"></div>
     </a>
   </li>
 {% endspaceless %}

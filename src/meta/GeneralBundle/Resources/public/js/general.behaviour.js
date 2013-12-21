@@ -30,16 +30,20 @@ $(document).ready(function(){
   /* 
     Sub menu / Dropdowns 
   */
-  $("li.dropdown > a").on('click', function(){
-    $(this).parent().toggleClass("active").find("ul").toggle().focus();
+  $("li.dropdown > a").on('click', function(e){
+    if (!($("nav[role=mobile]").is(':visible')))
+      $(this).parent().toggleClass("active").find("ul").toggle().focus();
+    else
+      e.preventDefault();
   });
 
   $("li.dropdown > ul").focusout(function(){
-    setTimeout(function () {
-      if ($(document.activeElement).parents('.active').length === 0) {
-        $("li.dropdown").removeClass("active").find("ul").hide();
-      }
-    }, 1);
+    if (!($("nav[role=mobile]").is(':visible')))
+      setTimeout(function () {
+        if ($(document.activeElement).parents('.active').length === 0) {
+          $("li.dropdown").removeClass("active").find("ul").hide();
+        }
+      }, 1);
   });
 
   // Focus the first field of the first form found on the page
@@ -51,7 +55,7 @@ $(document).ready(function(){
 
     $("i[role=loading]").remove();
     $("i[role=loaded]").show();
-    $("#notificationsCount").html(data).show();
+    $(".notificationsCount").html(data).show();
 
   });
 

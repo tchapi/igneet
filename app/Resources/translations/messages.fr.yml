@@ -45,6 +45,7 @@ deleteHelp: "Attention : la suppression est définitive"
 continue: "Continuer"
 unsaved.changes: "Modifications non sauvegardées"
 required: "Obligatoire"
+menu.browse: "Accès rapide"
 browse.all: "Voir tous"
 # Header
 home: "Accueil"

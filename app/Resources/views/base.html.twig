@@ -61,6 +61,13 @@
   <nav role="mobile">
     <a href="#" class="menu-trigger"><i class="fa fa-bars fa-lg"></i></a>
     <a href="{{ path('g_home_community') }}" class="logo"><img src="{{ asset('/bundles/metageneral/img/logo/logo-64.png') }}" /><span>Igneet</span></a>
+    <a href="{{ path('u_show_user_notifications') }}" class="notifications" title="{{ "user.notifications.help"|trans }}">
+      <div>
+        <i role="loading" class="fa fa-fw fa-spinner fa-spin"></i>
+        <i role="loaded" class="fa fa-fw fa-bell" style="display: none;"></i><span class="help"> {{ "user.notifications.title"|trans }}</span>
+      </div>
+      <div class="notificationsCount" data-update-path="{{ path('u_count_user_notifications') }}" style="display: none;"></div>
+    </a>
   </nav>
 
 {% block container %}{% endblock %}

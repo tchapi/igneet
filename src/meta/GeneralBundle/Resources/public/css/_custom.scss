@@ -94,10 +94,8 @@ body {
     /* Responsive */
     &.menu-active menu { 
       position: inherit;
+      opacity: 1;
       left: 0px;
-      & > ul { 
-        opacity: 1;
-      }
     }
 
     &.menu-active .content-container { left: $menu-mobile-width; }
