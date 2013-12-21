@@ -113,7 +113,7 @@ class DefaultController extends Controller
         return $this->render('metaUserBundle:Default:show.html.twig', 
             array('user' => $user,
                   'alreadyFollowing' => $alreadyFollowing,
-                  'isMe' => $isMe,
+                  'canEdit' => $isMe,
                   'targetAvatarAsBase64' => base64_encode(json_encode($targetAvatarAsBase64)),
                   'projectsOwned' => $projectsOwned,
                   'projectsParticipatedIn' => $projectsParticipatedIn,

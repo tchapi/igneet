@@ -10,18 +10,10 @@
   {% endjavascripts %}
 {% endblock %}
 
-{% block stylesheets %}
-  {{ parent() }}
-  {% stylesheets  'bundles/metageneral/css-edit/bootstrap-editable.css' 
-    filter='?yui_css,cssrewrite' %}
-          <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}" />
-  {% endstylesheets %}
-{% endblock %}
-
 {% block header %}
 <div class="title">
-<h2>{{ "user.settings.title"|trans }}</h2>
-<h3> {{ "user.settings.help"|trans }}</h3>
+  <h2>{{ "user.settings.title"|trans }}</h2>
+  <h3> {{ "user.settings.help"|trans }}</h3>
 </div>
 {% endblock %}
 

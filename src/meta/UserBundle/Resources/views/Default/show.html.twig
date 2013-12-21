@@ -14,7 +14,7 @@
 
 {% block javascripts %}
   {{ parent() }}
-  {% if isMe %}
+  {% if canEdit %}
     {% javascripts '@metaGeneralBundle/Resources/public/js-edit/redactor.js'
                    '@metaGeneralBundle/Resources/public/js-edit/editable.behaviour.js'
             filter='?yui_js' %}
@@ -28,7 +28,7 @@
   <div class="avatar">
 
     <img src="{{ asset(user.getAvatar()) }}" />
-    {% if isMe %}
+    {% if canEdit %}
       <a href="{{ path('u_edit_user_profile_reset_avatar', {'username': user.username, 'token': csrf_token('resetAvatar') }) }}" title="{{ "picture.resetHelp"|trans }}"><i class="fa fa-trash-o fa-2x"></i></a>
       <a href="{{ path('g_choose_file', {'targetAsBase64': targetAvatarAsBase64, 'token': csrf_token('edit') }) }}" title="{{ "picture.changeHelp"|trans }}"><i class="fa fa-pencil fa-2x"></i></a>
     {% endif %}
@@ -38,25 +38,25 @@
   <div class="info">
 
     <h2>
-      <span{% if isMe %} data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" data-name="first_name" data-last="{{ user.firstName }}" contenteditable="true" rich="false"{% endif %}>{{ user.firstName }}</span> <span{% if isMe %} data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" data-name="last_name" data-last="{{ user.lastName }}" contenteditable="true" rich="false"{% endif %}>{{ user.lastName }}</span>
+      <span{% if canEdit %} data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" data-name="first_name" data-last="{{ user.firstName }}" contenteditable="true" rich="false"{% endif %}>{{ user.firstName }}</span> <span{% if canEdit %} data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" data-name="last_name" data-last="{{ user.lastName }}" contenteditable="true" rich="false"{% endif %}>{{ user.lastName }}</span>
     </h2>
 
     <h3>
-      <span{% if isMe %} data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" data-name="headline" placeholder="{{ "user.headline.emptyText"|trans }}" data-type="text" data-last="{{ user.headline }}" contenteditable="true" rich="false"{% endif %} title="{{ user.headline }}">{{ user.headline }}</span>
+      <span{% if canEdit %} data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" data-name="headline" placeholder="{{ "user.headline.emptyText"|trans }}" data-type="text" data-last="{{ user.headline }}" contenteditable="true" rich="false"{% endif %} title="{{ user.headline }}">{{ user.headline }}</span>
     </h3>
 
     <div class="skills">
-      {% if user.skills|length > 0 or isMe %}
+      {% if user.skills|length > 0 or canEdit %}
         {% spaceless %}
-        <ul{% if isMe %} data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" data-emptytext="{{ "user.skills.emptyText"|trans }}" data-name="skills"{% endif %}>
+        <ul{% if canEdit %} data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" data-emptytext="{{ "user.skills.emptyText"|trans }}" data-name="skills"{% endif %}>
         {% for skill in user.skills %}
           <li style="border: 1px solid #{{ skill.color }}" rel="{{ skill.slug }}">
-          {% if isMe %}
+          {% if canEdit %}
             <a href=""><i class="fa fa-times"></i></a>  
           {% endif %}
           {{ (skill.slug ~ ".name")|trans({}, 'skills') }}</li>
         {% endfor %}
-          {% if isMe %}
+          {% if canEdit %}
           <li><a href=""><i class="fa fa-plus"></i></a></li>
           {% endif %}
         </ul>
@@ -68,7 +68,7 @@
 
     <h4>
       <div>
-        <i class="fa fa-map-marker"></i> <span{% if isMe %} data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" data-name="city" data-title="{{ "user.city.help"|trans }}" data-last="{{ user.city }}" placeholder="{{ "user.city.emptyText"|trans }}" contenteditable="true" rich="false"{% endif %}>{{ user.city }}</span>
+        <i class="fa fa-map-marker"></i> <span{% if canEdit %} data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" data-name="city" data-title="{{ "user.city.help"|trans }}" data-last="{{ user.city }}" placeholder="{{ "user.city.emptyText"|trans }}" contenteditable="true" rich="false"{% endif %}>{{ user.city }}</span>
       </div>
 
       <div>
@@ -79,7 +79,7 @@
     <div>
     {% if alreadyFollowing %}
         <i class="fa fa-rss"></i> {{ "user.following"|trans({'%user%': user.firstName}) }} <a href="{{ path('u_unfollow_user', {'username': user.username, 'token': csrf_token('unfollowUser') }) }}">{{ "user.unfollow"|trans }}</a>
-    {% elseif not isMe %}
+    {% elseif not canEdit %}
         <i class="fa fa-rss"></i> {{ "user.not.following"|trans({'%user%': user.firstName}) }} <a href="{{ path('u_follow_user', {'username': user.username, 'token': csrf_token('followUser') }) }}">{{ "user.follow"|trans }}</a>
     {% endif %}
     </div>
@@ -92,7 +92,7 @@
 <section>
   <div><i class="fa fa-bullhorn"></i> {{ "user.about"|trans({ '%user%': user.getFullName}) }}</div>
 
-  <div{% if isMe %} data-name="about" data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" contenteditable="true" rich="true"{% endif %}>{{ user.about|deeplinks|raw }}</div>
+  <div{% if canEdit %} data-name="about" data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" contenteditable="true" rich="true"{% endif %}>{{ user.about|deeplinks|raw }}</div>
 
 </section>
 
@@ -114,7 +114,7 @@
 </section>
 {% endif %}
 
-{% if isMe and followers|length > 0 %}
+{% if canEdit and followers|length > 0 %}
 <section class="colored">
 <div class="sectionTitle">{{ "user.followers"|trans }} : </div>
 <ul class="users sectionContent">
@@ -132,7 +132,7 @@
 </section>
 {% endif %}
 
-{% if isMe and projectsWatched|length > 0 %}
+{% if canEdit and projectsWatched|length > 0 %}
 <section class="colored">
 <div class="sectionTitle">{{ "user.projects.watched"|trans }} :</div>
 <ul class="projects sectionContent">
@@ -186,7 +186,7 @@
 </section>
 {% endif %}
 
-{% if isMe and ideasWatched|length > 0 %}
+{% if canEdit and ideasWatched|length > 0 %}
 <section class="colored">
 <div class="sectionTitle">{{ "user.ideas.watched"|trans }} :</div>
 <ul class="projects sectionContent">
