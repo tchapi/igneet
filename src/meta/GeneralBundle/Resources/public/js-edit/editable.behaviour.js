@@ -15,11 +15,11 @@ $(document).ready(function(){
       })
       .success(function(data, config) {
         $("[data-name=" + dataArray["name"] + "]").attr("data-last", dataArray["value"]);
-        alertify.success( "success" );           
+        alertify.success( "[TR [CHANGES SAVED] /TR]" );           
       })
       .error(function(errors) {
         $("[data-name=" + dataArray["name"] + "]").html($("[data-name=" + dataArray["name"] + "]").attr("data-last"));
-        alertify.error( "error" );
+        alertify.error( "[TR [ERROR SAVING CHANGES] /TR]" );
       });
 
     };

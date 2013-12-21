@@ -289,9 +289,16 @@ body.card > .content-container > section {
     @include shift(0);
   }
 
-  & > * {
-    border-top: 1px solid $_background;
-    padding: 40px 0;
-  }
+  border-top: 1px solid $_background;
+  padding: 40px 0;
 
+  & > .label {
+    @include span-columns(3 of 10);
+    color: $_discrete;
+  }
+  & > .content {
+    @include span-columns(7 of 10);
+    @include clearfix;
+    color: $_text-secondary;
+  }
 }
