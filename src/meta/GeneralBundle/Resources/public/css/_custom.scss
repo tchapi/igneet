@@ -6,6 +6,7 @@
 @import "_variables";
 @import "_mixins";
 @import "neat/_neat";
+@import "alertify/_alertify";
 
 body {
   background-color: $_background;

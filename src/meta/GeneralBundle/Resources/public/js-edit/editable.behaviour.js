@@ -15,11 +15,11 @@ $(document).ready(function(){
       })
       .success(function(data, config) {
         $("[data-name=" + dataArray["name"] + "]").attr("data-last", dataArray["value"]);
-        setFlash("success", "yeah");           
+        alertify.success( "success" );           
       })
       .error(function(errors) {
         $("[data-name=" + dataArray["name"] + "]").html($("[data-name=" + dataArray["name"] + "]").attr("data-last"));
-        setFlash("error", "hoho");
+        alertify.error( "error" );
       });
 
     };

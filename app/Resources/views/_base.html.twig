@@ -22,7 +22,9 @@ filter='?yui_css,cssrewrite' output='css/min/base.css' %}
 {% block javascripts %}
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 {% javascripts '@BazingaExposeTranslationBundle/Resources/public/js/translator.min.js'
-           '@metaGeneralBundle/Resources/public/js/general.behaviour.js' filter='?yui_js' %}
+               '@metaGeneralBundle/Resources/public/js/alertify.js'
+               '@metaGeneralBundle/Resources/public/js/general.behaviour.js' 
+               filter='?yui_js' %}
     <script src="{{ asset_url }}"></script>
 {% endjavascripts %}
     {% import '_locale.html.twig' as locale %}
