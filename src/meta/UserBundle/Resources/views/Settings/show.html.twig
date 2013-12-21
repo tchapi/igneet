@@ -19,15 +19,10 @@
 {% endblock %}
 
 {% block header %}
-  <div class="headerAvatarAndActions">
-    <div class="textAvatar"><i class="fa fa-wrench"></i></div>
-  </div>
-  <div class="objectHeader">
-    <h2>{{ "user.settings.title"|trans }}</h2>
-    <h4>
-      {{ "user.settings.help"|trans }}
-    </h4>
-  </div>
+<div class="title">
+<h2>{{ "user.settings.title"|trans }}</h2>
+<h3> {{ "user.settings.help"|trans }}</h3>
+</div>
 {% endblock %}
 
 {% block content %}

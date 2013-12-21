@@ -47,7 +47,7 @@
 </div>
 {% endblock form_row %}
 
-{% block content %}
+{% block container %}
 <div class="formContent">
   <form action="{{ path('g_create_community') }}" method="post" {{ form_enctype(form) }} class="form-horizontal">
       {{ form_widget(form) }}

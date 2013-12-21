@@ -1,8 +1,8 @@
-{% extends '::base.html.twig' %}
+{% extends 'metaGeneralBundle:Community:layout.html.twig' %}
 
 {% block title %}{{ parent() }} > {{ "community.upgrade"|trans }}{% endblock %}
 
-{% block body %}
+{% block header %}
 <header class="home">
   <div class="headerAvatarAndActions">
     <div class="textAvatar"><i class="fa fa-arrow-circle-up"></i></div>
@@ -13,10 +13,8 @@
     <h5>...</h5>
   </div>
 </header>
-<div class="content home clearfix">
+{% endblock %}
 
-</div>
-<footer>
-{% block footer %}{% endblock %}
-</footer>
+{% block content %}
+
 {% endblock %}

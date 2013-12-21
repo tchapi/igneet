@@ -1,5 +1,4 @@
-{% extends '::base.html.twig' %}
-{% set template = "card" %}
+{% extends 'metaGeneralBundle:Community:layout.html.twig' %}
 
 {% block title %}{{ parent() }} > {{ app.user.currentCommunity.name }} | {{ "community.home.title"|trans }}{% endblock %}
 
@@ -13,7 +12,7 @@
     {% endif %} -->
 {% endblock %}
 
-{% block container %}
+{% block header %}
 <header class="home">
 
   <div class="headerAvatarAndActions">
@@ -37,7 +36,9 @@
   {% endif %}
 
 </header>
+{% endblock %}
 
+{% block content %}
 <div class="content home clearfix">
 
   {% if not isGuest %}

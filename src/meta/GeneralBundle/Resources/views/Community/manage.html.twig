@@ -1,18 +1,16 @@
-{% extends '::base.html.twig' %}
+{% extends 'metaGeneralBundle:Community:layout.html.twig' %}
 
 {% block title %}{{ parent() }} > {{ "community.manage"|trans }}{% endblock %}
 
-{% block body %}
-<header class="home">
-  <div class="headerAvatarAndActions">
-    <div class="textAvatar"><i class="fa fa-cogs"></i></div>
-  </div>
-  <div class="objectHeader">
-    <h2>{{ "community.manage"|trans }}</h2>
-    <h4>{{ "community.manageHelp"|trans }}</h4>
-    <h5>{{ "community.validUntil"|trans({'%date%': app.user.currentCommunity.validUntil|date("date.fullFormat"|trans) }) }}</h5>
-  </div>
-</header>
+{% block header %}
+<i class="fa fa-cogs"></i>
+
+<h2>{{ "community.manage"|trans }}</h2>
+<h4>{{ "community.manageHelp"|trans }}</h4>
+<h5>{{ "community.validUntil"|trans({'%date%': app.user.currentCommunity.validUntil|date("date.fullFormat"|trans) }) }}</h5>
+{% endblock %}
+
+{% block content %}
 <div class="content home clearfix">
 
   <section>
@@ -49,7 +47,4 @@
   </section>
 
 </div>
-<footer>
-{% block footer %}{% endblock %}
-</footer>
 {% endblock %}

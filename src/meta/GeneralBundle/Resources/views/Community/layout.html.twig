@@ -1,16 +1,16 @@
 {% extends '::base.html.twig' %}
+{% set template = "card" %}
 
 {% block title %}{{ parent() }} > {{ "community.title"|trans }}{% endblock %}
 
-{% block body %}
-<header class="community">
+{% block container %}
+
+<header>
 {% block header %}{% endblock %}
 </header>
-{% block navbar %}{% endblock %}
-<div class="content community clearfix">
+
+<section>
 {% block content %}{% endblock %}
-</div>
-<footer>
-{% block footer %}{% endblock %}
-</footer>
+</section>
+
 {% endblock %}
