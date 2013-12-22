@@ -53,7 +53,7 @@
         </select>
       </div>
       
-      <div class="specificDay">
+      <div class="specificDay"{% if app.user.digestFrequency == "daily" %} style="display: none;"{% endif %}>
         <form>
           <input type="checkbox" id="specificDay" {% if app.user.enableSpecificDay %}checked="checked"{% endif %} data-name="specificDayToggle" data-url="{{ path('u_edit_user_settings', {'token': csrf_token('editSettings') }) }}"><label for="specificDay">{{ "user.digest.specificDay"|trans }} : </label>
 

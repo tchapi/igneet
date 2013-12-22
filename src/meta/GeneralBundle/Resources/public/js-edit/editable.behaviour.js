@@ -62,7 +62,7 @@ $(document).ready(function(){
           e.preventDefault();
           var pastedText = prompt(' /TR Paste something. /TR '); // TODO : to translate !
           if (pastedText !== null){
-            document.execCommand('inserttext', false, pastedText);
+            document.execCommand('inserttext', false, $.trim(pastedText));
           }
         }
       });
@@ -157,6 +157,13 @@ $(document).ready(function(){
      * Settings page : trigger display
      */
     $('#enableDigest').change(function(){ $('.digest').toggle(); });
+    $('select[data-name="frequency"]').change(function(){
+      if ($(this).val() == '1') { // daily
+        $('.specificDay').hide();
+      } else {
+        $('.specificDay').show();
+      }
+    });
     $('#specificDay').change(function(){ $('.specificDayChoice').toggle(); });
     $('#specificEmails').change(function(){ $('.specificEmailsChoice').toggle(); });
 
