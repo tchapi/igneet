@@ -689,7 +689,7 @@ class DefaultController extends Controller
                     $this->get('translator')->trans('user.cannot.delete', array( '%projects%' => substr($projects, 0, -1), '%communities%' => substr($communities, 0, -1)))
                 );
 
-                return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $username)));
+                return $this->redirect($this->generateUrl('u_show_user_settings'));
             }
 
         } else {
@@ -699,7 +699,7 @@ class DefaultController extends Controller
                 $this->get('translator')->trans('user.cannot.delete.other')
             );
 
-            return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $authenticatedUser->getUsername())));
+            return $this->redirect($this->generateUrl('u_show_user_settings'));
         }
 
     }
