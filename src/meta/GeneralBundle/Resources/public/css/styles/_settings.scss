@@ -1,0 +1,18 @@
+/* ******************************************************************** */
+/*                             SETTINGS PAGE                            */
+/* ******************************************************************** */
+
+.specificDay, .specificEmail {
+  margin-top: 20px;
+}
+
+ul.specificEmailsChoice {
+  list-style-type: none;
+
+  & > li {
+    font-weight: bold;
+    & > span {
+      font-weight: normal;
+    }
+  }
+}

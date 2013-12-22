@@ -105,10 +105,7 @@ body {
 a {
   color: $_primary;
   text-decoration: none;
-  
 }
-*:focus { outline: none; }
-input { border: none; }
 h1, h2, h3, h4, h5, h6, p { font-weight : normal;  }
 em { color: $_muted; }
 form > em { padding: 10px 0; display: block; font-size: 0.85em; }
@@ -133,7 +130,7 @@ form > em { padding: 10px 0; display: block; font-size: 0.85em; }
 .community-expired { color: hsl( 0, saturation($_primary)/2, lightness($_primary))}
 
 /* Buttons */
-a.button {
+a.button, input[type=submit].button {
   background-color: $_primary;
   color: $_text-dark;
   padding: 10px;
@@ -149,8 +146,11 @@ a.button {
   background-color: $_error;
 }
 
+@import "styles/inputs";
 @import "styles/login";
 @import "styles/menubar";
+
+@import "../css-edit/redactor.scss";
 @import "styles/editable";
 //@import "styles/card";
 
@@ -202,7 +202,7 @@ body.card > .content-container > header {
     @include span-columns(7);
     @include shift(1);
     @include media($tablet) {
-      @include span-columns(3);
+      @include span-columns(3 of 4);
       @include shift(0);
     }
     @include media($mobile) {
@@ -333,40 +333,19 @@ body.card > .content-container > section {
   }
 }
 
-// @import "style/settings"
+// Page-specific :
 
-.specificDay, .specificEmail {
-  margin-top: 20px;
-}
+@import "styles/settings";
+//@import "styles/user";
 
-ul.specificEmailsChoice {
+ul.content {
+  margin: 0;
+  padding: 0;
   list-style-type: none;
-
+  display: inline;
   & > li {
-    font-weight: bold;
-    & > span {
-      font-weight: normal;
-    }
+    display: inline-block;
   }
 }
 
-// @import "style/inputs"
 
-input[type="checkbox"] {
-    display:none;
-}
-input[type="checkbox"] + label {
-  cursor: pointer;
-}
-input[type="checkbox"] + label:before {
-    content: "☐";
-    font-size: 1.5em;
-    cursor: pointer;
-    margin-right: 8px;
-    color: $_muted;
-    line-height: 0;
-}
-input[type="checkbox"]:checked + label:before{
-    content: "☑";
-    color: $_primary;
-}

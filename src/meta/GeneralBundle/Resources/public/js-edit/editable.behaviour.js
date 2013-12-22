@@ -38,7 +38,16 @@ $(document).ready(function(){
 
     $('[contenteditable=true][rich=false]')
       .on("keypress", function(e) {
-        if (e.which == '13'){ e.preventDefault(); }
+        if (e.which == '13'){  // Trigger a save with the Return key
+          e.preventDefault(); 
+          name = $(this).attr("data-name");
+          key = $(this).attr("data-key");
+          url = $(this).attr("data-url");
+          last = $(this).attr("data-last");
+          value = $.trim($(this).text());
+          clearInterval(timers[name]);
+          saveData({url: url, name: name, key: key, last: last, value: value});
+        }
       })
       .on("keyup", function() {
         name = $(this).attr("data-name");
@@ -51,13 +60,16 @@ $(document).ready(function(){
       .on('paste', function (e) { // Prevents insertion of markup
         if (document.queryCommandEnabled('inserttext')) {
           e.preventDefault();
-          var pastedText = prompt('Paste something.'); // TODO : to translate !
+          var pastedText = prompt(' /TR Paste something. /TR '); // TODO : to translate !
           if (pastedText !== null){
             document.execCommand('inserttext', false, pastedText);
           }
         }
       });
 
+    /* 
+     * Select box editables
+     */
     $('select').change(function(){
       name = $(this).attr("data-name");
       key = $(this).attr("data-key");
@@ -68,9 +80,21 @@ $(document).ready(function(){
     });
 
     /* 
+     * Checkbox editables
+     */
+    $('input[type="checkbox"]').change(function(){
+      name = $(this).attr("data-name");
+      key = $(this).attr("data-key");
+      url = $(this).attr("data-url");
+      last = $(this).attr("data-last");
+      value = $(this).is(':checked')?1:0
+      catchChange({url: url, name: name, key: key, last: last, value: value});
+    });
+
+    /* 
      * Text area editables
      */
-     if ($('[contenteditable=true][rich=true]').length > 0) {
+    if ($('[contenteditable=true][rich=true]').length > 0) {
       var richareaCallback = function(data) {
         target = data.$editor; // The textarea
         name = target.attr("data-name");
@@ -132,34 +156,8 @@ $(document).ready(function(){
     /*
      * Settings page : trigger display
      */
-    $('#enableDigest').change(function(){
-      $('.digest').toggle();
-      name = $(this).attr("data-name");
-      key = $(this).attr("data-key");
-      url = $(this).attr("data-url");
-      last = $(this).attr("data-last");
-      value = $(this).is(':checked')?1:0
-      catchChange({url: url, name: name, key: key, last: last, value: value});
-    });
-
-    $('#specificDay').change(function(){
-      $('.specificDayChoice').toggle();
-      name = $(this).attr("data-name");
-      key = $(this).attr("data-key");
-      url = $(this).attr("data-url");
-      last = $(this).attr("data-last");
-      value = $(this).is(':checked')?1:0
-      catchChange({url: url, name: name, key: key, last: last, value: value});
-    });
-
-    $('#specificEmails').change(function(){
-      $('.specificEmailsChoice').toggle();
-      name = $(this).attr("data-name");
-      key = $(this).attr("data-key");
-      url = $(this).attr("data-url");
-      last = $(this).attr("data-last");
-      value = $(this).is(':checked')?1:0
-      catchChange({url: url, name: name, key: key, last: last, value: value});
-    });
+    $('#enableDigest').change(function(){ $('.digest').toggle(); });
+    $('#specificDay').change(function(){ $('.specificDayChoice').toggle(); });
+    $('#specificEmails').change(function(){ $('.specificEmailsChoice').toggle(); });
 
 });

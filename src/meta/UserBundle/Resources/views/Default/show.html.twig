@@ -4,14 +4,6 @@
 
 {% set shortcode %}[[user:{{ user.username }}]]{% endset %}
 
-{% block stylesheets %}
-  {{ parent() }}
-  {% stylesheets  'bundles/metageneral/css-edit/redactor.scss' 
-    filter='?yui_css,cssrewrite' %}
-          <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}" />
-  {% endstylesheets %}
-{% endblock %}
-
 {% block javascripts %}
   {{ parent() }}
   {% if canEdit %}
@@ -89,16 +81,16 @@
 
 {% block content %}
 <section>
-  <div><i class="fa fa-bullhorn"></i> {{ "user.about"|trans({ '%user%': user.getFullName}) }}</div>
-
-  <div{% if canEdit %} data-name="about" data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" contenteditable="true" rich="true"{% endif %}>{{ user.about|deeplinks|raw }}</div>
-
+  <div class="label">{{ "user.about"|trans }} :</div>
+  <div class="content">
+    <div{% if canEdit %} data-name="about" data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" contenteditable="true" rich="true"{% else %} class="redactor_editor"{% endif %}>{{ user.about|deeplinks|raw }}</div>
+  </div>
 </section>
 
 {% if following|length > 0 %}
-<section class="colored first">
-<div class="sectionTitle">{{ "user.followings"|trans({'%user%': user.firstName }) }} : </div>
-<ul class="users sectionContent">
+<section>
+<div class="label">{{ "user.followings"|trans({'%user%': user.firstName }) }} :</div>
+<ul class="content">
 {% for followingUser in following %}
   <li>
     <a href="{{ path('u_show_user_profile', {'username': followingUser.username}) }}">
@@ -114,9 +106,9 @@
 {% endif %}
 
 {% if canEdit and followers|length > 0 %}
-<section class="colored">
-<div class="sectionTitle">{{ "user.followers"|trans }} : </div>
-<ul class="users sectionContent">
+<section>
+<div class="label">{{ "user.followers"|trans }} :</div>
+<ul class="content">
 {% for followerUser in followers %}
   <li>
     <a href="{{ path('u_show_user_profile', {'username': followerUser.username}) }}">
@@ -132,9 +124,9 @@
 {% endif %}
 
 {% if canEdit and projectsWatched|length > 0 %}
-<section class="colored">
-<div class="sectionTitle">{{ "user.projects.watched"|trans }} :</div>
-<ul class="projects sectionContent">
+<section>
+<div class="label">{{ "user.projects.watched"|trans }} :</div>
+<ul class="content">
 {% for watchedProject in projectsWatched %}
   <li>
     <a href="{{ path('p_show_project', {'uid': watchedProject.id|to_uid }) }}">
@@ -150,9 +142,9 @@
 {% endif %}
 
 {% if projectsOwned|length > 0 %}
-<section class="colored">
-<div class="sectionTitle">{{ "user.projects.owned"|trans }} :</div>
-<ul class="projects sectionContent">
+<section>
+<div class="label">{{ "user.projects.owned"|trans }} :</div>
+<ul class="content">
 {% for ownedProject in projectsOwned %}
   <li>
     <a href="{{ path('p_show_project', {'uid': ownedProject.id|to_uid }) }}">
@@ -168,9 +160,9 @@
 {% endif %}
 
 {% if projectsParticipatedIn|length > 0 %}
-<section class="colored">
-<div class="sectionTitle">{{ "user.projects.participated"|trans }} :</div>
-<ul class="projects sectionContent">
+<section>
+<div class="label">{{ "user.projects.participated"|trans }} :</div>
+<ul class="content">
 {% for participatedInProject in projectsParticipatedIn %}
   <li>
     <a href="{{ path('p_show_project', {'uid': participatedInProject.id|to_uid }) }}">
@@ -186,9 +178,9 @@
 {% endif %}
 
 {% if canEdit and ideasWatched|length > 0 %}
-<section class="colored">
-<div class="sectionTitle">{{ "user.ideas.watched"|trans }} :</div>
-<ul class="projects sectionContent">
+<section>
+<div class="label">{{ "user.ideas.watched"|trans }} :</div>
+<ul class="content">
 {% for idea in ideasWatched %}
   <li>
     <a href="{{ path('i_show_idea', {'uid': idea.id|to_uid }) }}">
@@ -204,9 +196,9 @@
 {% endif %}
 
 {% if ideasCreated|length > 0 %}
-<section class="colored">
-<div class="sectionTitle">{{ "user.ideas.initiated"|trans }} :</div>
-<ul class="projects sectionContent">
+<section>
+<div class="label">{{ "user.ideas.initiated"|trans }} :</div>
+<ul class="content">
 {% for idea in ideasCreated %}
   <li>
     <a href="{{ path('i_show_idea', {'uid': idea.id|to_uid }) }}">
@@ -222,9 +214,9 @@
 {% endif %}
 
 {% if ideasParticipatedIn|length > 0 %}
-<section class="colored">
-<div class="sectionTitle">{{ "user.ideas.participated"|trans }} :</div>
-<ul class="projects sectionContent">
+<section>
+<div class="label">{{ "user.ideas.participated"|trans }} :</div>
+<ul class="content">
 {% for idea in ideasParticipatedIn %}
   <li>
     <a href="{{ path('i_show_idea', {'uid': idea.id|to_uid }) }}">

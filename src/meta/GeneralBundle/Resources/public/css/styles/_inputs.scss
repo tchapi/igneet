@@ -1,0 +1,27 @@
+/* ******************************************************************** */
+/*                   INPUTS : Focus, checkboxes, etc                    */
+/* ******************************************************************** */
+
+// General rules
+*:focus { outline: none; }
+input { border: none; }
+
+// Checkboxes
+input[type="checkbox"] {
+    display:none;
+}
+input[type="checkbox"] + label {
+  cursor: pointer;
+}
+input[type="checkbox"] + label:before {
+    content: "☐";
+    font-size: 1.5em;
+    cursor: pointer;
+    margin-right: 8px;
+    color: $_muted;
+    line-height: 0;
+}
+input[type="checkbox"]:checked + label:before{
+    content: "☑";
+    color: $_primary;
+}

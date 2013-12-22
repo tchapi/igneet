@@ -52,7 +52,7 @@ user:
     help: "Où habitez-vous ?"
     emptyText: "Ajoutez votre ville"
   password: "Mot de passe"
-  about: "À propos de l'utilisateur %user%"
+  about: "À propos de l'utilisateur"
   activity: "Activité"
   login:
     signup: "S'enregistrer"
