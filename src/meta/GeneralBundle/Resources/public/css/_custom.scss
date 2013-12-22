@@ -87,9 +87,6 @@ body {
       left: 0px;
       width: 100%;
       height: 100%;
-      & > *:not(nav) {
-        margin: 0 20px;
-      }
     }
 
     /* Responsive */
@@ -108,10 +105,13 @@ body {
 a {
   color: $_primary;
   text-decoration: none;
+  
 }
 *:focus { outline: none; }
 input { border: none; }
 h1, h2, h3, h4, h5, h6, p { font-weight : normal;  }
+em { color: $_muted; }
+form > em { padding: 10px 0; display: block; font-size: 0.85em; }
 
 /* STANDARD LOGOS & SIZES */
 @for $i from 4 through 9 {
@@ -132,6 +132,15 @@ h1, h2, h3, h4, h5, h6, p { font-weight : normal;  }
 .community-entreprise { color: hsl( 120, saturation($_primary)/2, lightness($_primary))}
 .community-expired { color: hsl( 0, saturation($_primary)/2, lightness($_primary))}
 
+/* Buttons */
+a.button {
+  background-color: $_primary;
+  color: $_text-dark;
+  padding: 10px;
+  line-height: em(2*10px) + 1em;
+  &.button-danger { background-color: hsl( 0, saturation($_primary)/2, lightness($_primary)); }
+  &.button-success { background-color: hsl( 120, saturation($_primary)/2, lightness($_primary)); }
+}
 
 /* ERRORS AND ALERTS */
 .error {
@@ -148,9 +157,11 @@ h1, h2, h3, h4, h5, h6, p { font-weight : normal;  }
 body.card > .content-container > header {
 
   @include row();
-  padding: 70px 0 50px 0;
+  padding-top: 70px;
+  padding-bottom: 50px;
   @include media($tablet, $mobile) {
-    padding: 30px 0 10px 0;
+    padding-top: 30px;
+    padding-bottom: 10px;
   }
 
   & > .avatar {
@@ -231,6 +242,7 @@ body.card > .content-container > header {
     @include span-columns(10);
     @include shift(1);
     @include media($tablet, $mobile) {
+      @include shift(0);
       @include fill-parent();
     }
   }
@@ -284,21 +296,77 @@ body.card > .content-container > section {
   @include span-columns(10);
   @include shift(1);
   @include clearfix;
-  @include media($tablet, $mobile) {
-    @include span-columns(4);
-    @include shift(0);
-  }
 
-  border-top: 1px solid $_background;
-  padding: 40px 0;
+  border-top: 1px solid lighten($_background,2%);
+  &:first-of-type { border-top: 1px solid $_background; }
+  padding-top: $gutter*2;
+  padding-bottom: $gutter*2;
+
+  @include media($tablet, $mobile) {
+    @include fill-parent();
+    @include shift(0);
+    padding-top: $gutter;
+    padding-bottom: $gutter;
+  }
 
   & > .label {
     @include span-columns(3 of 10);
     color: $_discrete;
+    @include media($tablet) {
+      @include span-columns(1 of 4);
+    }
+    @include media($mobile) {
+      @include fill-parent();
+      margin-bottom: 5px;
+    }
   }
   & > .content {
     @include span-columns(7 of 10);
     @include clearfix;
     color: $_text-secondary;
+    @include media($tablet) {
+      @include span-columns(3 of 4);
+    }
+    @include media($mobile) {
+      @include fill-parent();
+    }
   }
+}
+
+// @import "style/settings"
+
+.specificDay, .specificEmail {
+  margin-top: 20px;
+}
+
+ul.specificEmailsChoice {
+  list-style-type: none;
+
+  & > li {
+    font-weight: bold;
+    & > span {
+      font-weight: normal;
+    }
+  }
+}
+
+// @import "style/inputs"
+
+input[type="checkbox"] {
+    display:none;
+}
+input[type="checkbox"] + label {
+  cursor: pointer;
+}
+input[type="checkbox"] + label:before {
+    content: "☐";
+    font-size: 1.5em;
+    cursor: pointer;
+    margin-right: 8px;
+    color: $_muted;
+    line-height: 0;
+}
+input[type="checkbox"]:checked + label:before{
+    content: "☑";
+    color: $_primary;
 }

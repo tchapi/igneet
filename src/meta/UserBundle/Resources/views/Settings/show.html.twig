@@ -28,63 +28,74 @@
 <section>
   <div class="label">{{ "user.password"|trans }} :</div>
   <div class="content">
-    <a href="{{ path('change_password', {'token': csrf_token('changePassword')} ) }}">{{ "user.passwordChange.title"|trans }}</a>
+    <a class="button" href="{{ path('change_password', {'token': csrf_token('changePassword')} ) }}">{{ "user.passwordChange.title"|trans }}</a>
   </div>
 </section>
+
 {% if app.user.userCommunities|length > 0 %}
 <section>
   <div class="label">{{ "user.digest.settings"|trans }} :</div>
   <div class="content">
     <div>
-      <em>{{ "user.digest.info"|trans }}</em>
-    </div>
-    <div>
-      <form class="form-horizontal">
-        <label class="checkbox">
-          <input type="checkbox" id="enableDigest" {% if app.user.enableDigest %}checked="checked"{% endif %} data-name="digestToggle" data-url="{{ path('u_edit_user_settings', {'token': csrf_token('editSettings') }) }}">
-          {{ "user.digest.enable"|trans }}
-        </label>
+      <form>
+        <input type="checkbox" id="enableDigest" {% if app.user.enableDigest %}checked="checked"{% endif %} data-name="digestToggle" data-url="{{ path('u_edit_user_settings', {'token': csrf_token('editSettings') }) }}"><label for="enableDigest">{{ "user.digest.enable"|trans }}</label>
+        <em>{{ "user.digest.info"|trans }}</em>
       </form>
     </div>
+
     <div class="digest" {% if not app.user.enableDigest %}style="display: none;"{% endif %}>
-      <div>{{ "user.digest.frequency"|trans }} : <span class="editable" data-title="{{ "user.digest.frequencyHelp"|trans }}" data-name="frequency" data-type="select" data-url="{{ path('u_edit_user_settings', {'token': csrf_token('editSettings') }) }}" data-source="[{value: 1, text: '{{ "daily"|trans }}'}, {value: 2, text: '{{ "weekly"|trans }}'}, {value: 3, text: '{{ "bimonthly"|trans }}'}]">{% if app.user.digestFrequency %}{{ app.user.digestFrequency|trans }}{% else %}{{ "weekly"|trans }}{% endif %}</span></div>
+      
+      <div>{{ "user.digest.frequency"|trans }} : 
+        <select data-name="frequency" data-url="{{ path('u_edit_user_settings', {'token': csrf_token('editSettings') }) }}">
+          <option value="1" {% if app.user.digestFrequency == "daily" %}selected="selected"{% endif %}>{{ "daily"|trans }}</option>
+          <option value="2" {% if app.user.digestFrequency == "weekly" %}selected="selected"{% endif %}>{{ "weekly"|trans }}</option>
+          <option value="3" {% if app.user.digestFrequency == "bimonthly" %}selected="selected"{% endif %}>{{ "bimonthly"|trans }}</option>
+        </select>
+      </div>
+      
       <div class="specificDay">
-        <form class="form-horizontal">
-          <label class="checkbox">
-            <input type="checkbox" id="specificDay" {% if app.user.enableSpecificDay %}checked="checked"{% endif %} data-name="specificDayToggle" data-url="{{ path('u_edit_user_settings', {'token': csrf_token('editSettings') }) }}">
-            {{ "user.digest.specificDay"|trans }} : 
-          </label>
-          <ul class="specificDayChoice" {% if not app.user.enableSpecificDay %}style="display: none;"{% endif %}><li><span class="editable" data-title="{{ "user.digest.specificDayHelp"|trans }}" data-name="day" data-type="select" data-url="{{ path('u_edit_user_settings', {'token': csrf_token('editSettings') }) }}" data-source="[{value: 1, text: '{{ "date.monday.long"|trans }}'},{value: 2, text: '{{ "date.tuesday.long"|trans }}'},{value: 3, text: '{{ "date.wednesday.long"|trans }}'},{value: 4, text: '{{ "date.thursday.long"|trans }}'},{value: 5, text: '{{ "date.friday.long"|trans }}'},{value: 6, text: '{{ "date.saturday.long"|trans }}'},{value: 7, text: '{{ "date.sunday.long"|trans }}'}]">{% if app.user.digestDay %}{{ ("date." ~ app.user.digestDay ~ ".long")|trans }}{% else %}{{ "date.monday.long"|trans }}{% endif %}</span></li></ul>
+        <form>
+          <input type="checkbox" id="specificDay" {% if app.user.enableSpecificDay %}checked="checked"{% endif %} data-name="specificDayToggle" data-url="{{ path('u_edit_user_settings', {'token': csrf_token('editSettings') }) }}"><label for="specificDay">{{ "user.digest.specificDay"|trans }} : </label>
+
+          <select data-name="day" data-url="{{ path('u_edit_user_settings', {'token': csrf_token('editSettings') }) }}">
+            <option value="1" {% if app.user.digestDay == "monday" %}selected="selected"{% endif %}>{{ "date.monday.long"|trans }}</option>
+            <option value="2" {% if app.user.digestDay == "tuesday" %}selected="selected"{% endif %}>{{ "date.tuesday.long"|trans }}</option>
+            <option value="3" {% if app.user.digestDay == "wednesday" %}selected="selected"{% endif %}>{{ "date.wednesday.long"|trans }}</option>
+            <option value="4" {% if app.user.digestDay == "thursday" %}selected="selected"{% endif %}>{{ "date.thursday.long"|trans }}</option>
+            <option value="5" {% if app.user.digestDay == "friday" %}selected="selected"{% endif %}>{{ "date.friday.long"|trans }}</option>
+            <option value="6" {% if app.user.digestDay == "saturday" %}selected="selected"{% endif %}>{{ "date.saturday.long"|trans }}</option>
+            <option value="7" {% if app.user.digestDay == "sunday" %}selected="selected"{% endif %}>{{ "date.sunday.long"|trans }}</option>
+          </select>
+
         </form>
       </div>
-      <div>
-        <form class="form-horizontal">
-          <label class="checkbox">
-            <input type="checkbox" id="specificEmails" {% if app.user.enableSpecificEmails %}checked="checked"{% endif %} data-name="specificEmailsToggle" data-url="{{ path('u_edit_user_settings', {'token': csrf_token('editSettings') }) }}">
-            {{ "user.digest.specificEmails"|trans }} :
-          </label>
+
+      <div class="specificEmail">
+        <form>
+          <input type="checkbox" id="specificEmails" {% if app.user.enableSpecificEmails %}checked="checked"{% endif %} data-name="specificEmailsToggle" data-url="{{ path('u_edit_user_settings', {'token': csrf_token('editSettings') }) }}"><label for="specificEmails">{{ "user.digest.specificEmails"|trans }} :</label>
         </form>
       </div>
       <ul class="specificEmailsChoice" {% if not app.user.enableSpecificEmails %}style="display: none;"{% endif %}>
         {% for userCommunity in app.user.userCommunities %}
-        <li>{{ userCommunity.community.name }} : <span class="editable" data-url="{{ path('u_edit_user_settings', {'token': csrf_token('editSettings') }) }}" data-name="community" data-pk="{{ userCommunity.community.id|to_uid }}" data-type="text" data-title="{{ "user.digest.specificEmailsHelp"|trans }}">{% if userCommunity.email is not null %}{{ userCommunity.email }}{% else %}{{ app.user.email }}{% endif %}</span></li>
+        <li><span class="community-{% if userCommunity.community.isValid() %}{{ userCommunity.community.type }}{% else %}expired{% endif %}">&#9679;</span> {{ userCommunity.community.name }} : <span contenteditable="true" rich="false" data-url="{{ path('u_edit_user_settings', {'token': csrf_token('editSettings') }) }}" data-name="community" data-key="{{ userCommunity.community.id|to_uid }}" title="{{ "user.digest.specificEmailsHelp"|trans }}">{% if userCommunity.email is not null %}{{ userCommunity.email }}{% else %}{{ app.user.email }}{% endif %}</span></li>
         {% endfor %}
       </ul>
     </div>
   </div>
 </section>
 
-<section class="colored warning">
-  <div class="sectionTitle">{{ "user.delete"|trans }} : </div>
-  <div class="sectionContent"><a class="btn btn-danger" data-confirm="{{ "user.deleteHelp"|trans }}" href="{{ path('u_delete_user_profile', { 'username': app.user.username, 'token': csrf_token('delete') }) }}">{{ "delete"|trans }}</a> <span class="muted">( <i class="fa fa-warning"></i> {{ "deleteHelp"|trans }} )</span></div>
+<section>
+  <div class="label">{{ "user.delete"|trans }} : </div>
+  <div class="content">
+    <a class="button button-danger" data-confirm="{{ "user.deleteHelp"|trans }}" href="{{ path('u_delete_user_profile', { 'username': app.user.username, 'token': csrf_token('delete') }) }}">{{ "delete"|trans }}</a>
+    <em><i class="fa fa-warning"></i> {{ "deleteHelp"|trans }}</em>
+  </div>
 </section>
 
 {% else %}
 <section>
-  <div class="sectionTitle colored">{{ "user.digest.settings"|trans }} : </div>
-  <div class="users sectionContent">
-    {{ "user.digest.noCommunity"|trans }}
-  </div>
+  <div class="label">{{ "user.digest.settings"|trans }} :</div>
+  <div class="content">{{ "user.digest.noCommunity"|trans }}</div>
 </section>
 {% endif %}
 {% endblock %}

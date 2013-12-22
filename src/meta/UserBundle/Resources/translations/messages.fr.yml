@@ -170,6 +170,7 @@ user:
     title: "Paramètres"
     help: "Tous les paramètres de votre compte"
     saved: "Vos paramètres ont bien été sauvegardés."
+    problem.saving: "Il y a eu un problème lors de l'enregistrement de vos paramètres."
   digest:
     settings: "Résumés par mail"
     enable: "Activer l'envoi de résumés par mail"

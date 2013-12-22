@@ -11,6 +11,7 @@ $(document).ready(function(){
       clearInterval(timers[dataArray["name"]]); // Clearing before sending the post request
       $.post(dataArray["url"], {
         name: dataArray["name"],
+        key: dataArray["key"],
         value: dataArray["value"]
       })
       .success(function(data, config) {
@@ -41,10 +42,11 @@ $(document).ready(function(){
       })
       .on("keyup", function() {
         name = $(this).attr("data-name");
+        key = $(this).attr("data-key");
         url = $(this).attr("data-url");
         last = $(this).attr("data-last");
         value = $.trim($(this).text());
-        catchChange({url: url, name: name, last: last, value: value});
+        catchChange({url: url, name: name, key: key, last: last, value: value});
       })
       .on('paste', function (e) { // Prevents insertion of markup
         if (document.queryCommandEnabled('inserttext')) {
@@ -56,25 +58,37 @@ $(document).ready(function(){
         }
       });
 
+    $('select').change(function(){
+      name = $(this).attr("data-name");
+      key = $(this).attr("data-key");
+      url = $(this).attr("data-url");
+      last = $(this).attr("data-last");
+      value = $.trim($(this).val());
+      catchChange({url: url, name: name, key: key, last: last, value: value});
+    });
+
     /* 
      * Text area editables
      */
-    var richareaCallback = function(data) {
-      target = data.$editor; // The textarea
-      name = target.attr("data-name");
-      url = target.attr("data-url");
-      last = target.attr("data-last");
-      value = data.getCode();
-      catchChange({url: url, name: name, last: last, value: value});
+     if ($('[contenteditable=true][rich=true]').length > 0) {
+      var richareaCallback = function(data) {
+        target = data.$editor; // The textarea
+        name = target.attr("data-name");
+        key = target.attr("data-key");
+        url = target.attr("data-url");
+        last = target.attr("data-last");
+        value = data.getCode();
+        catchChange({url: url, name: name, key: key, last: last, value: value});
+      }
+      $('[contenteditable=true][rich=true]').redactor({
+        air:true,
+        minHeight: 100, // To allow PASTE event - ARGHHHH I hate you Chrome
+        airButtons: ['formatting', '|', 'bold', 'italic', 'deleted', '|', 'unorderedlist', 'orderedlist', 'outdent', 'indent', '|',
+                                          'image', 'video', 'file', 'table', 'link'],
+        keyupCallback: richareaCallback,
+        execCommandCallback: richareaCallback
+      });
     }
-    $('[contenteditable=true][rich=true]').redactor({
-      air:true,
-      minHeight: 100, // To allow PASTE event - ARGHHHH I hate you Chrome
-      airButtons: ['formatting', '|', 'bold', 'italic', 'deleted', '|', 'unorderedlist', 'orderedlist', 'outdent', 'indent', '|',
-                                        'image', 'video', 'file', 'table', 'link'],
-      keyupCallback: richareaCallback,
-      execCommandCallback: richareaCallback
-    });
 
 
 /* ------------- OLD ---------------- */
@@ -120,40 +134,32 @@ $(document).ready(function(){
      */
     $('#enableDigest').change(function(){
       $('.digest').toggle();
-      $.post($(this).attr('data-url'), {
-        name: $(this).attr('data-name'),
-        value: $(this).is(':checked')?1:0
-      }, function(){
-        setFlash('success', Translator.get('user.settings.saved'));
-      });
+      name = $(this).attr("data-name");
+      key = $(this).attr("data-key");
+      url = $(this).attr("data-url");
+      last = $(this).attr("data-last");
+      value = $(this).is(':checked')?1:0
+      catchChange({url: url, name: name, key: key, last: last, value: value});
     });
 
     $('#specificDay').change(function(){
       $('.specificDayChoice').toggle();
-      $.post($(this).attr('data-url'), {
-        name: $(this).attr('data-name'),
-        value: $(this).is(':checked')?1:0
-      }, function(){
-        setFlash('success', Translator.get('user.settings.saved'));
-      });
-    });
-
-    $('span[data-name=frequency').on('save', function(e, params) {
-      if(params.newValue != 1){ // NOT daily
-        $(".specificDay").show();
-      } else {
-        $(".specificDay").hide();
-      }
+      name = $(this).attr("data-name");
+      key = $(this).attr("data-key");
+      url = $(this).attr("data-url");
+      last = $(this).attr("data-last");
+      value = $(this).is(':checked')?1:0
+      catchChange({url: url, name: name, key: key, last: last, value: value});
     });
 
     $('#specificEmails').change(function(){
       $('.specificEmailsChoice').toggle();
-      $.post($(this).attr('data-url'), {
-        name: $(this).attr('data-name'),
-        value: $(this).is(':checked')?1:0
-      }, function(){
-        setFlash('success', Translator.get('user.settings.saved'));
-      });
+      name = $(this).attr("data-name");
+      key = $(this).attr("data-key");
+      url = $(this).attr("data-url");
+      last = $(this).attr("data-last");
+      value = $(this).is(':checked')?1:0
+      catchChange({url: url, name: name, key: key, last: last, value: value});
     });
 
 });

@@ -170,6 +170,7 @@ user:
     title: "Settings"
     help: "All your account settings"
     saved: "Your settings have successfully been saved."
+    problem.saving: "There was a problem while saving your settings."
   digest:
     settings: "Digest settings"
     enable: "Enable email digests"
