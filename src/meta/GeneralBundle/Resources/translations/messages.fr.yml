@@ -126,14 +126,17 @@ tags:
 language:
   preferred: "Vous consultez maintenant igneet en français. Votre préférence de langue a été sauvegardée."
   not.supported: "Ce langage n'est pas encore supporté."
-# Confirmation box
+# Alerts
 alert:
   please.confirm: "Veuillez confirmer"
   error.saving.changes: "Erreur à la sauvegarde des modifications"
   click.save.changes: "Cliquez pour enregistrer vos modifications"
   saving.server: "Enregistrement ..."
   unsaved.changes: "Modifications non sauvegardées"
+  changes.saved: "Modifications sauvegardées avec succès."
   changes.saved.at: "Modifications sauvegardées à %date%"
+# Shortcode
+shortcode.help: "Afficher/Masquer le code court de cette page"
 # Markdown editor
 markdown:
   optional.title: "titre optionnel"

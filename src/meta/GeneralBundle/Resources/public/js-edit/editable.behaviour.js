@@ -16,11 +16,11 @@ $(document).ready(function(){
     })
     .success(function(data, config) {
       $("[data-name=" + dataArray["name"] + "]").attr("data-last", dataArray["value"]);
-      alertify.success( "[TR [CHANGES SAVED] /TR]" );           
+      alertify.success(Translator.get('alert.changes.saved'));           
     })
     .error(function(errors) {
       $("[data-name=" + dataArray["name"] + "]").html($("[data-name=" + dataArray["name"] + "]").attr("data-last"));
-      alertify.error( "[TR [ERROR SAVING CHANGES] /TR]" );
+      alertify.error(Translator.get('alert.error.saving.changes'));
     });
 
   };
@@ -60,7 +60,7 @@ $(document).ready(function(){
     .on('paste', function (e) { // Prevents insertion of markup
       if (document.queryCommandEnabled('inserttext')) {
         e.preventDefault();
-        var pastedText = prompt(' /TR Paste something. /TR '); // TODO : to translate !
+        var pastedText = prompt(Translator.get('paste.something'));
         if (pastedText !== null){
           document.execCommand('inserttext', false, $.trim(pastedText));
         }

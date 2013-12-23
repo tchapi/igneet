@@ -61,3 +61,17 @@
     text-shadow: 0 1px 0 lighten($color, 20%);
   }
 }
+
+@mixin button() {
+  background-color: $_primary;
+  color: $_text-dark;
+  padding: 0.5em;
+  min-width: 100px;
+  line-height: 2em;
+  border: none;
+  &:hover { box-shadow: 0 0 0px 3px rgba(0,0,0,0.15) inset; }
+  &:active { box-shadow: 0 0 0px 3px rgba(0,0,0,0.30) inset; }
+  &:focus { box-shadow: 0 0 0px 3px rgba(0,0,0,0.30) inset; }
+  &.button-danger { background-color: $_red; }
+  &.button-success { background-color: $_green; }
+}

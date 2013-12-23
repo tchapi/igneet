@@ -329,7 +329,14 @@ class SecurityController extends Controller
             $flavour = $token_parts[0];
 
             if (!$user || $user == false){
-                throw $this->createNotFoundException($this->get('translator')->trans('user.not.found'));
+
+                $this->get('session')->getFlashBag()->add(
+                    'error',
+                    $this->get('translator')->trans('invalid.token', array(), 'errors')
+                );
+
+                return $this->redirect($this->generateUrl('u_show_user_settings'));
+        
             }
 
         } else {

@@ -126,14 +126,17 @@ tags:
 language:
   preferred: "English has been saved as your preferred language."
   not.supported: "This language is not yet supported."
-# Confirmation box
+# Alerts
 alert:
   please.confirm: "Please confirm"
   error.saving.changes: "Error saving changes"
   click.save.changes: "Click to save your changes"
   saving.server: "Saving to server ..."
   unsaved.changes: "Unsaved changes"
+  changes.saved: "Changes saved successfully."
   changes.saved.at: "Changes saved at %date%"
+# Shortcode
+shortcode.help: "Toggle the embed link of this page"
 # Markdown editor
 markdown:
   optional.title: "optional title"

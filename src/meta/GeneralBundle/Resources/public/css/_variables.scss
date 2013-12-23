@@ -20,6 +20,11 @@ $_link: $_primary;
 
 $border-radius: 5px;
 
+$_red: hsl( 0, saturation($_primary)/2, lightness($_primary));
+$_orange: hsl( 30, saturation($_primary)/2, lightness($_primary));
+$_green: hsl( 120, saturation($_primary)/2, lightness($_primary));
+$_blue: hsl( 220, saturation($_primary)/2, lightness($_primary));
+
 /* ******************************************************************** */
 
 // Inputs :: DARK

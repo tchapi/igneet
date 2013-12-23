@@ -47,6 +47,7 @@ unsaved.changes: "Unsaved changes"
 required: "Required"
 menu.browse: "Browse"
 browse.all: "Browse all"
+paste.something: "Paste your text below"
 # Header
 home: "Home"
 login: "Login"

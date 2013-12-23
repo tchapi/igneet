@@ -5,8 +5,7 @@
 /* ******************************************************************** */
 
 // General rules
-*:focus { outline: none; }
-input { border: none; }
+*:focus { outline: 0 none; }
 
 // Checkboxes
 input[type="checkbox"] {

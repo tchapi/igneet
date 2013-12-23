@@ -126,20 +126,16 @@ form > em { padding: 10px 0; display: block; font-size: 0.85em; }
 }
 
 /* Communities color */
-.community-demo { color: hsl( 30, saturation($_primary)/2, lightness($_primary))}
-.community-association { color: hsl( 220, saturation($_primary)/2, lightness($_primary))}
-.community-entreprise { color: hsl( 120, saturation($_primary)/2, lightness($_primary))}
-.community-expired { color: hsl( 0, saturation($_primary)/2, lightness($_primary))}
+.community-demo { color: $_orange; }
+.community-association { color: $_blue; }
+.community-entreprise { color: $_green; }
+.community-expired { color: $_red; }
 
 /* Buttons */
-a.button, input[type=submit].button {
-  background-color: $_primary;
-  color: $_text-dark;
-  padding: 10px;
-  line-height: em(2*10px) + 1em;
-  &.button-danger { background-color: hsl( 0, saturation($_primary)/2, lightness($_primary)); }
-  &.button-success { background-color: hsl( 120, saturation($_primary)/2, lightness($_primary)); }
+a.button, input[type=submit].button, button {
+  @include button();
 }
+
 
 /* ERRORS AND ALERTS */
 .error {
@@ -156,11 +152,13 @@ a.button, input[type=submit].button {
 @import "styles/editable";
 //@import "styles/card";
 
+$horizontal-padding: 70px;
+
 body.card > .content-container > header {
 
   @include row();
-  padding-top: 70px;
-  padding-bottom: 50px;
+  padding-top: $horizontal-padding;
+  padding-bottom: ($horizontal-padding - $gutter);
   @include media($tablet, $mobile) {
     padding-top: 30px;
     padding-bottom: 10px;
@@ -194,10 +192,7 @@ body.card > .content-container > header {
         color: $_text-dark;
       }
     }
-    &:hover {
-      & > a { display: block; }
-      //& > img { box-shadow: 0 0 0 4px $_primary; opacity: 0.7; }
-    }
+    &:hover > a { display: block; }
   }
 
   & > .info {
@@ -292,7 +287,8 @@ body.card > .content-container > header {
 
 }
 
-body.card > .content-container > section {
+/* When sections are directly under the container, and wrapped in another tag */
+body.card > .content-container section {
 
   @include row();   
   @include span-columns(10);
@@ -300,9 +296,11 @@ body.card > .content-container > section {
   @include clearfix;
 
   border-top: 1px solid lighten($_background,2%);
-  &:first-of-type { border-top: 1px solid $_background; }
   padding-top: $gutter*2;
   padding-bottom: $gutter*2;
+  
+  &:first-of-type { border-top: 1px solid $_background; }
+  &:last-of-type { padding-bottom: $horizontal-padding; }
 
   @include media($tablet, $mobile) {
     @include fill-parent();
@@ -335,6 +333,23 @@ body.card > .content-container > section {
   }
 }
 
+/* When sections are wrapped in a FORM container */
+body.card > .content-container > form > section {
+
+  padding-top: $gutter/2;
+  padding-bottom: $gutter/2;
+  border-top: none;
+
+  &:first-of-type {
+    border-top: 1px solid $_background;
+    padding-top: $gutter*2;
+  }
+  &:last-of-type {
+    padding-bottom: $horizontal-padding;
+  }
+
+}
+
 // Page-specific :
 
 @import "styles/settings";
@@ -349,5 +364,3 @@ ul.content {
     display: inline-block;
   }
 }
-
-

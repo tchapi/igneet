@@ -48,7 +48,7 @@ $(document).ready(function(){
 
   // Select all of shortcode when visible
   $("#shortcode-trigger").click(function(){
-    $("#shortcode").toggle(200, function(){
+    $("#shortcode").fadeToggle(200, function(){
 
       if ($("#shortcode").is(":visible")){
         $("#shortcode input").focus();

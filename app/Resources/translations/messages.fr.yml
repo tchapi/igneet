@@ -47,6 +47,7 @@ unsaved.changes: "Modifications non sauvegardées"
 required: "Obligatoire"
 menu.browse: "Accès rapide"
 browse.all: "Voir tous"
+paste.something: "Collez votre texte ci-dessous"
 # Header
 home: "Accueil"
 login: "Se connecter"
