@@ -136,14 +136,6 @@ a.button, input[type=submit].button, button {
   @include button();
 }
 
-
-/* ERRORS AND ALERTS */
-.error {
-  @include up-triangle(20px, $_error, left);
-  color: $_text-dark;
-  background-color: $_error;
-}
-
 @import "styles/inputs";
 @import "styles/non-auth";
 @import "styles/menubar";

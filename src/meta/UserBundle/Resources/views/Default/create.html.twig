@@ -1,75 +1,47 @@
-{% extends 'metaUserBundle::layout.html.twig' %}
+{% extends '::base-no-menu.html.twig' %}
 
 {% block title %}{{ parent() }} > {{ "user.createForm.title"|trans }}{% endblock %}
 
-{% block javascripts %}
-  {{ parent() }}
-    {% javascripts '@metaGeneralBundle/Resources/public/js/select2.behaviour.js' 
-            filter='?yui_js' %}
-    <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
-{% endblock %}
-
-{% block header %}
-  <div class="headerAvatarAndActions">
-    <div class="textAvatar"><i class="fa fa-magic"></i></div>
-  </div>
-  <div class="objectHeader">
-    <h2>{{ "user.createForm.title"|trans }}</h2>
-    <h4>{{ "user.createForm.help"|trans }}</h4>
-    <p>{{ "user.createForm.text"|trans }}</p>
-  </div>
-{% endblock %}
-
 {% form_theme form _self %}
 
-{% use 'form_div_layout.html.twig' with form_widget_simple as base_form_widget_simple %}
-
-{% block form_widget_simple %}
-    {{ block('base_form_widget_simple') }}
-    {% if required or attr.help is defined %}
-        <span class="help-block">{% if required %}<span class="muted">* {{ "required"|trans }}.</span>{% endif %} {% if attr.help is defined %}{{ attr.help|trans }}{% endif %}</span>
-    {% endif %}
-{% endblock %}
+{% use 'form_div_layout.html.twig' %}
 
 {% block form_row %}
-<div class="form-group {% if errors %}error{% endif %}">
-  <label class="control-label col-sm-4" for="inputEmail">{{ form_label(form) }}</label>
-  <div class="controls col-sm-8">
-    {{ form_widget(form) }}
+    
+    {{ form_widget(form, { 'attr': { 'placeholder': label }}) }}
+    
     {% if errors %}
-    <span class="help-block error-block">{{ form_errors(form) }}</span>
+    <div class="error"><i class="fa fa-exclamation-triangle"></i> {{ errors[0].message|trans }}</div>
     {% endif %}
-  </div>
-</div>
+
+    {% if required or attr.help is defined %}
+        <em class="help">{% if required %}* {{ "required"|trans }}.{% endif %} {% if attr.help is defined %}{{ attr.help|trans }}{% endif %}</em>
+    {% endif %}
+
 {% endblock form_row %}
 
-{% block form_errors %}
-    {% spaceless %}
-        {% if errors|length > 0 %}
-        <ul class="error_list">
-            {% for error in errors %}
-                <li><i class="fa fa-warning"></i> {{ error.message|trans }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-    {% endspaceless %}
-{% endblock form_errors %}
+{% block container %}
 
-{% block content %}
+  <header class="non-auth">
+    <h1><img src="{{ asset('/bundles/metageneral/img/logo/logo-128.png') }}" /><span>Igneet</span></h1>
+    <span>{{ app.request.host }}</span>
+  </header>
+
+  <div class="non-auth">
+    <h2>{{ "user.createForm.title"|trans }}</h2>
+    <h3>{{ "user.createForm.help"|trans }}</h3>
+    <h4>{{ "user.createForm.fillIn"|trans }}</h4>
+  </div>
+
 {% if openid %}
 <section>
-  <div class="sectionContent">{{ "user.createForm.usernameChoose"|trans }}</div>
+  <div class="label">{{ "user.createForm.usernameChoose"|trans }}</div>
 </section>
 {% endif %}
-<div class="formContent">
-  <form action="{% if openid %}{{ path('u_signup_finish', { 'inviteToken': inviteToken }) }}{% else %}{{ path('u_signup', { 'inviteToken': inviteToken }) }}{% endif %}" method="post" {{ form_enctype(form) }} class="form-horizontal">
-      {{ form_widget(form) }}
-      <div class="form-group">
-        <div class="col-sm-offset-4 col-sm-8">
-          <input type="submit" value="{{ "user.createForm.create"|trans }}" class="btn btn-success" />
-        </div>
-      </div>
+
+  <form action="{% if openid %}{{ path('u_signup_finish', { 'inviteToken': inviteToken }) }}{% else %}{{ path('u_signup', { 'inviteToken': inviteToken }) }}{% endif %}" method="post" {{ form_enctype(form) }} class="non-auth">
+    {{ form_rest(form) }} {# Trick to avoid the <div> wrap by Twig #}
+    <input type="submit" value="{{ "user.createForm.create"|trans }}" class="button button-success" />
   </form>
-</div>
+
 {% endblock %}

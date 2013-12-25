@@ -60,7 +60,7 @@
       padding: 20px 10px;
       margin-bottom: 2px;
     }
-    input[type=text], input[type=password] {
+    input[type=text], input[type=email], input[type=password] {
       @include fill-parent();
       background: $_input-background;
       color: $_input-foreground;
@@ -77,6 +77,11 @@
       top: 8px;
       z-index: 2;
     }
+    .help {
+      color: $_discrete;
+      padding: 0 0 15px;
+      text-align: right;
+    }
     aside {
       @include span-columns(4 of 8);
       @include media($tablet) {
@@ -85,6 +90,11 @@
       @include media($mobile) {
         display: none;
       }
+    }
+    div.error {
+      @include up-triangle(20px, $_error, left);
+      color: $_text-dark;
+      background-color: $_error;
     }
     a.signup{
       @include span-columns(2 of 8);
@@ -115,7 +125,7 @@
         background: $_primary;
       }
     }
-    input[type=text] + input[type=submit]{
+    input[type=text] + input[type=submit], input[type=email] + input[type=submit], input[type=hidden] + input[type=submit]{
       @include shift(6 of 8);
       @include media($tablet) {
         @include shift(3 of 4);
