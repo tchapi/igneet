@@ -6,6 +6,7 @@
 
 // General rules
 *:focus { outline: 0 none; }
+input { border: none; }
 
 // Checkboxes
 input[type="checkbox"] {

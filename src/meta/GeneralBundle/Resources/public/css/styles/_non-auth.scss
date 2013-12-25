@@ -1,9 +1,10 @@
 /* ******************************************************************** */
-/*                                LOGIN                                 */
+/*                       NON AUTHENTICATED STYLES                       */
 /* ******************************************************************** */
 
 .content-container {
-  & > *.login {
+  & > *.non-auth {
+    @include row();
     @include span-columns(8);
     @include shift(2);
     @include media($tablet, $mobile) {
@@ -11,7 +12,7 @@
       @include shift(0);
     }
   }
-  header.login {
+  header.non-auth {
     margin-top: 130px;
     margin-bottom: 80px;
     @include media($tablet, $mobile) {
@@ -36,7 +37,16 @@
       color: $_muted-dark;
     }
   }
-  form.login {
+  & > div.non-auth {
+    color: $_text-dark;
+    & > h2 {
+      color: $_primary;
+    }
+    & > h4 {
+      color: $_discrete;
+    }
+  }
+  form.non-auth {
     position: relative;
     & > *:not(.openid) {
       padding: 20px 10px;
@@ -46,7 +56,8 @@
       @include fill-parent();
       background: $_input-background;
       color: $_input-foreground;
-      
+      border: none;
+
       &:focus{ background: $_input-background-focus; outline: 0; }
       &:hover:not(:focus){ background: $_input-hover; }
 
@@ -96,6 +107,9 @@
       &:hover{
         background: $_primary;
       }
+    }
+    input[type=text] + input[type=submit]{
+      @include shift(6 of 8);
     }
   }
 }

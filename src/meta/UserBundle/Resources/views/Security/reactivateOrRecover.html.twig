@@ -1,37 +1,29 @@
-{% extends 'metaUserBundle::layout.html.twig' %}
+{% extends '::base-no-menu.html.twig' %}
 
 {% block title %}{{ parent() }} > {% if flavour == 'reactivate' %}{{ "user.reactivation.title.reactivate"|trans }}{% else %}{{ "user.reactivation.title.recover"|trans }}{% endif %}{% endblock %}
 
-{% block header %}
-  <div class="headerAvatarAndActions">
-    <div class="textAvatar"><i class="fa fa-refresh"></i></div>
-  </div>
-  <div class="objectHeader">
-  {% if flavour == 'reactivate' %}
-    <h2>{{ "user.reactivation.title.reactivate"|trans }}</h2>
-    <h4>{{ "user.reactivation.help.reactivate"|trans }}</h4>
-    <p>{{ "user.reactivation.text.reactivate"|trans }}</p>
-  {% else %}
-    <h2>{{ "user.reactivation.title.recover"|trans }}</h.recover>
-    <h4>{{ "user.reactivation.help.recover"|trans }}</h4>
-    <p>{{ "user.reactivation.text.recover"|trans }}</p>
-  {% endif %}
-  </div>
-{% endblock %}
+{% block container %}
 
-{% block content %}
-<form action="{{ path(flavour) }}" method="POST">
-  <section>
-    <div class="sectionTitle"><label for="mail">{{ "user.reactivation.email"|trans }} :</label></div>
-    <div class="sectionContent">
-      <input type="text" id="mail" name="mail" value=""/>
-    </div>
-  </section>
-  <section>
-    <div class="sectionTitle"></div>
-    <div class="sectionContent">
-      <input type="submit" value="{{ "continue"|trans }}" class="btn btn-info"/>
-    </div>
-  </section>
-</form>
+  <header class="non-auth">
+    <h1><img src="{{ asset('/bundles/metageneral/img/logo/logo-128.png') }}" /><span>Igneet</span></h1>
+    <span>{{ app.request.host }}</span>
+  </header>
+
+  <div class="non-auth">
+    {% if flavour == 'reactivate' %}
+      <h2>{{ "user.reactivation.title.reactivate"|trans }}</h2>
+      <h4>{{ "user.reactivation.text.reactivate"|trans }}</h4>
+    {% else %}
+      <h2>{{ "user.reactivation.title.recover"|trans }}</h2>
+      <h4>{{ "user.reactivation.text.recover"|trans }}</h4>
+    {% endif %}
+  </div>
+
+  <form action="{{ path(flavour) }}" method="POST" class="non-auth">
+    
+    <input id="mail" type="text" name="mail" value="" placeholder="{{ "user.reactivation.email"|trans }}"/>
+    <input type="submit" value="{{ "continue"|trans }}" class="button"/>
+
+  </form>
+
 {% endblock %}

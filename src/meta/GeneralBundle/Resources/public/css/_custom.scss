@@ -145,7 +145,7 @@ a.button, input[type=submit].button, button {
 }
 
 @import "styles/inputs";
-@import "styles/login";
+@import "styles/non-auth";
 @import "styles/menubar";
 
 @import "../css-edit/redactor.scss";
@@ -153,7 +153,7 @@ a.button, input[type=submit].button, button {
 //@import "styles/card";
 
 $horizontal-padding: 70px;
-
+body.card input { border: 1px solid $_muted; }
 body.card > .content-container > header {
 
   @include row();
@@ -298,7 +298,7 @@ body.card > .content-container section {
   border-top: 1px solid lighten($_background,2%);
   padding-top: $gutter*2;
   padding-bottom: $gutter*2;
-  
+
   &:first-of-type { border-top: 1px solid $_background; }
   &:last-of-type { padding-bottom: $horizontal-padding; }
 
@@ -322,6 +322,7 @@ body.card > .content-container section {
   }
   & > .content {
     @include span-columns(7 of 10);
+    @include shift(3);
     @include clearfix;
     color: $_text-secondary;
     @include media($tablet) {
@@ -330,6 +331,9 @@ body.card > .content-container section {
     @include media($mobile) {
       @include fill-parent();
     }
+  }
+  & > .label + .content {
+    @include shift(0);
   }
 }
 

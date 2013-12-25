@@ -4,12 +4,12 @@
 
 {% block container %}
   
-  <header class="login">
+  <header class="non-auth">
     <h1><img src="{{ asset('/bundles/metageneral/img/logo/logo-128.png') }}" /><span>Igneet</span></h1>
     <span>{{ app.request.host }}</span>
   </header>
   
-  <form action="{{ path('login_check') }}" method="POST" class="login">
+  <form action="{{ path('login_check') }}" method="POST" class="non-auth">
 
     <input id="username" type="text" name="_username" value="{{ last_username }}" placeholder="{{ "user.login.login"|trans }}"/>
       
@@ -40,7 +40,7 @@
     </aside>
 
     <a class="signup" href="{{ path('u_signup_choice') }}" /> {{ "user.login.signup"|trans }}</a>
-    <input type="submit" value="{{ "user.login.signin"|trans }}"/>
+    <input type="submit" value="{{ "user.login.signin"|trans }}" class="button"/>
 
   </form>
 
