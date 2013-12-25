@@ -85,6 +85,7 @@ user:
     title: "Sign up"
     help: "Sign up now to join the adventure and create great communities of projects involving makers and doers from around you."
     text: "It's free and easy, choose a provider below and you'll be ready to go, share and participate in projects :"
+    fillIn: "Fill in the fields below."
     username: "Username"
     usernameHelp: "Only alphanumeric values are allowed. ex : johndoe44"
     usernameChoose: "To finish your setup, you must choose a username :"

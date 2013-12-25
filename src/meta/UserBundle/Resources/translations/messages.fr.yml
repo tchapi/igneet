@@ -120,6 +120,7 @@ user:
     community: "L'utilisateur sera invité à rejoindre la communauté %community%."
     help: "Vous devez indiquer une adresse email ou un nom d'utilisateur valide."
     text: "Si l'utilisateur n'a pas de compte sur igneet, un lien d'inscription lui sera envoyé pour qu'il puisse créer son profil rapidement. S'il est déjà membre d'igneet, il sera ajouté automatiquement à la communauté, et sera notifié par mail."
+    fillIn: "Remplissez les champs ci-dessous."
     field: "Indiquez un nom d'utilisateur ou un mail valide"
     button: "Inviter cet utilisateur"
     sent: "Une invitation a été envoyée à %mail% en votre nom."
