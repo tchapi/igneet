@@ -15,22 +15,12 @@ Todo - Priorités :
  ☐ Sur les notifs, quand on clique et qu'elles sont a 0 affichées mettre directement une page présentant les anciennes
 
  ☐ Administration des communautés
-     ✔ Créer un role d'administrateur => ok dans user_Community @done (13-10-19 17:34)
      ☐ Créer une page d'édition du nom, description
 
    ☐ + Deep linking : verifier a l'affichage que l'utilisateur a le droit de voir l'objet deep linké !
    Sinon mettre en gras mais ne pas linker avec une icone oeil barré (?)
  
- ✘ faire une page des projets 'archivés' @cancelled (13-08-02 22:50)
-   \__ + un bouton 'archiver' par projet
-   \__ + demander si archiver une idée apres projectize
-   \__ abandonner un projet ? faire un bouton pour ca
-
- 
  ☐ [Eric] Tri des resources dans la vue / resources
-
- ✔ Faire un filtre pour les projets non actifs ou lancés @done (13-09-26 19:16)
- ✔ delete user => il faut deleter les userCommunity associés @done (13-10-23 20:07)
 
 Travail de fond :
  
@@ -42,8 +32,8 @@ Todo - Post-Passe-Créa :
  ☐ Faire une passe sur les titles/alt des liens d'éditions (les icon-pencils)
 
  ☐ Remettre les flashs sur la page de login (au cas ou deloggué avec msg d'erreur)
- ☐ Passer suppression du compte en settings
  ☐ Passer choix de la langue en settings  
+ ☐ changePassword : doit pouvoir etre GETtable sans authentification
 
 Todo - Entity "Community" :
 
@@ -59,187 +49,14 @@ Home de community (penser au private space !!)
 Managers qui peuvent éditer la communauté et inviter
 "Request a manager to invite XXXX" => le manager a un tableau de validation
 
-IDEES gestion des users dans le private space : ne pas avoir d'user !
- ✔ - idées / créateurs @done (13-03-25 22:41)
- ✔ - ajouter un owner/ participant : non @done (13-03-25 23:02)
- ✔ - création d'une idée : ne pas pouvoir définir d'autres createurs @done (13-03-25 22:42)
-PROJECT gestion des users dans le private space : ne pas avoir d'user !
- ✔ - ajouter un owner/ participant : non @done (13-03-25 23:14)
- ✔ statut d'invité dans une communauté ok @done (13-03-25 23:15)
- ✔ marquer le nom de la communauté dans les listes (accessible in "meta" ..) @done (13-03-26 22:09)
- invites / choose people
- ✔ private = private || (public && user->isGuest()) sauf. user->isParticipatingIn() ou user->isOwner() @done (13-03-26 22:09)
- ✔ inviter par email a un projet @done (13-03-27 21:09)
-  ✔ - gerer les cas ou le mec est deja sur igneet / est deja guest @done (13-03-27 21:09)
-  ✔ - input : username if you know it or email @done (13-03-27 21:09)
-  ✔ str_contains('@') => email @done (13-03-27 21:09)
- ✔ Attention : pour une idée ne pas permettre d'inviter en dehors de la communauté @done (13-03-27 21:16)
- ✔ dans l'action project => addParticipant, il faut qu'on puisse accepter des username qui ne sont pas dans la communauté, ou des emails @done (13-03-27 21:16)
- ✔ mon profil : contextuel a ma communauté / privacy / guesticity (au niveau des infos en dessous : mes projets mes idées tout ca) @done (13-03-28 19:03)
-   ✔ followers following @done (13-03-28 19:03)
-   ✔ projects @done (13-03-28 19:03)
-     ✔ watchés @done (13-03-28 19:03)
-     ✔ owners @done (13-03-27 22:17)
-     ✔ participants @done (13-03-27 22:18)
-   ✔ idées -> plus simples car les guests n'ont pas le droit de voir les idées @done (13-03-28 19:03)
-     ✔ watchés @done (13-03-28 19:02)
-     ✔ creators @done (13-03-28 19:02)
-     ✔ participants @done (13-03-28 19:02)
- ✔ Attention dans la liste des users, il y a des projets listés !!!! enlever si guest ?? @done (13-03-27 22:16)
- ✔ users normaux et guests d'une communauté doivent pouvoir voir les guests de leur communauté (liste : marquer guest a coté) @done (13-03-27 21:53)
- ✔ signup : mettre alphanumérique dans la création du nom d'utilisateur @done (13-03-27 21:18)
- ✔ follow de gens pas dans ma communauté : impossible @done (13-03-27 13:43)
- ✔ voir les profils users dans le private space : non ! @done (13-03-26 22:09)
- ✔ projet / idées dans mon private space : je suis seul créateur / owner (??) @done (13-03-25 22:41)
- ✔ Community notifications @done (13-04-01 21:31) 
- ✔ USerCommunities : prendre en compte le deleted_at .... @done (13-09-23 14:48)
-
-Todo - General / Users :
-
- ✔ Page de réactivation de compte quand il a été supprimé @done (13-04-01 10:21)
-   - rentre son adresse email
-   - recoit un mail avec un token
-   - lien?login=login&token=token
-   - page de choix nouveau mot de passe
-   - flush et login
- ✔ Page de renvoi de mot de passe // lost password @done (13-04-01 10:21)
-   - idem 
- ✔ possibilité de changer email dans le profil pour les users @done (13-04-02 21:22)
- ✔ Dashboard rajouter 3 derniers idees, 3 derniers projets dans la communauté @done (13-04-01 10:21)
- ✔ Mettre maxUsersInListings en parameters de l'appli a récupérer dans Twig @done (13-03-28 00:54)
- ✔ login et signup : focus sur le champ lors du chargement de la page @done (13-03-27 16:37)
- ✔ Clustering des activityLogs : vérifier que l'object correspond en récupérant le findOneBY, et pas faire le test dans le if après @done (13-03-27 16:29)
- ✔ envoyer des responses() avec des codes corrects @done (13-03-12 22:05)
- ✔ Liste des users : pour chaque, rajouter 'last active on' et 'last updated on' @done (13-03-07 00:13)
- ✔ logger les updates correctements avec $this->base['standardProject']->update(); dans toutes les actions @done (13-03-04 21:02)
- ✔ replace setFlashes if same @done (13-03-03 20:30)
- ✔ Pagination générale sur les objets @done (13-03-02 12:52)
- ✔ Faire une set_flash en javascript @done (13-03-01 19:57)
- ✔ Google Analytics @done (13-03-01 16:55)
- ✔ GA : mettre un switch si ga_ = 0 @done (13-03-01 20:13)
- ✔ Faire le skin de la page 'Area restricted' @done (13-02-16 16:12)
- ✔ Signup : non public, faire une invitation par mail avec un token ? @done (13-02-27 21:22)
- ✔ ajouter la possibilité de supprimer une image de profile @done (13-02-10 23:09)
- ✔ remplacer le templating twig dans deeplink par du sprintf @done (13-02-12 23:15)
- ✔ refaire la gestion des constantes pour les types de resources @done (13-02-18 00:13)
- ✔ cluttering des activity logs @done (13-01-25 00:29)
- ✔ Delete des uers : cascade des log entries @done (13-02-05 20:42)
- ✔ User ->lastactivity et maj le timestamp à chaque requete http ? @done (13-01-24 22:46)
- ✔ Rajouter l'avatar du user dans la barre de menu en haut à droite @done (13-02-10 23:09)
- ✔ Mettre à jour les popin de choix des skills avec la partie 'tags' de X-editable @done (13-01-28 23:17)
- ✔ signup : avatar @done (13-02-04 20:12)
- ✔ chgt d'avatar -----> Mais pas simple @done (13-02-04 20:17)
-    \-- nécessite un composant full ajax j'imagine
- ✔ Noms des labels dans signup et new project (labels du form je parle) @done (13-01-19 15:10)
- ✔ Help pour les champs @done (13-01-19 15:10)
- ✔ Required ne s'affiche pas pour password email et textarea ? @done (13-01-21 23:46)
- ✔ Boutons bootstrap pour markdown editor : ceux qui manquent @done (13-01-22 00:10)
- ✔ Add a participant : faire le 'user chooser' @done (13-01-21 23:46)
- ✔ images dans assetic : ok apparemment @done (13-01-20 19:41)
- ✔ Date de dernier push en prod dans le header @done (13-01-24 23:31)
- ✔ dashboard @done (13-02-23 22:52)
-   ✔ 1. overview mon activité : @done (13-02-23 22:52)
-     ✔ - * from logentries where user = me limit X @done (13-02-23 22:52)
-     ✔ - dans le header sur une semaine !! @done (13-02-23 22:52)
-   ✔ 2. overview commenting @done (13-02-23 22:52)
-     ✔ - * from comments where user = me lmit XC @done (13-02-23 22:52)
-   ✔ 3. Top 3 projets/idées @done (13-02-23 22:52)
-     ✔ - 1 ligne avec 3 colonnes + bouton 'nouvelle idée/projet' en dessous @done (13-02-19 00:59)
-     titre au dessus du graphe
-     ✔ - select count(item) from log entries group by date where project = XYZ @done (13-02-23 22:52)
-       \--> graphe
-     ✔ - LAST 3 contributors on this project (liste en dessous du projet) @done (13-02-23 22:52)
-   ✔ (idem ideas) @done (13-02-23 22:52)
- ✔ Switch de langue @done (13-05-25 23:57)
- ✔ help sur les form field de type checkbox a mettre @done (13-05-26 18:31)
- ✔ "Please confirm" des notifs de confirmation  : a traduire !! @done (13-05-26 17:56)
- ✔ Supprimer les removeLogEntrie (trucs finissant par ie dans User) - vérifier qu'ils sont pas appelés @done (13-05-26 12:56)
- ✔ Flashbags a remplacer PARTOUT @done (13-05-05 21:54)
- ✔ Enlever les logs dont je suis l'initiateur @done (13-05-09 21:24)
- ✔ liste des skills a la creation d'un user : a traduire @done (13-05-05 20:14)
- ✔ translation : placeholders pour le select2 ? a gerer dans le DOM si possible @done (13-05-05 21:27)
- ✔ traduire les noms des fields de form et les helps - normalement |trans est fait par défaut dans les templates @done (13-04-15 22:48)
- ✔ translate popins de validation de suppression @done (13-05-26 22:34)
- ✔ Refaire le système de GUID (sic) @done (13-06-30 21:25)
-   ✔ CommunityId ??? @done (13-08-11 18:32)
- ✔ logs avec seulement le name et "identifier" dans "objects" @done (13-06-30 21:25)
- ✔ Translate logs (tous les logs, juste le fichier a traduire) @done (13-08-25 16:25)
- ✔ OpenID @done (13-08-02 22:51)
- ✔ Mettre un quick link pour obtenir le deep link de l'élément sur lequel on se trouve @done (13-09-15 18:21)
-
- ✘ Rajouter un badge 'YOU' quand l'utilisateur courant est affiché @cancelled (13-02-13 14:08)
- ✘ watch / unwatch quand tu es owner ou participant ou createur --> a degager @cancelled (13-01-26 11:25)
-   \__ si, ça a un intérêt
- ✘ watch ou participant sur unde idée : a voir ? @cancelled (13-01-26 11:25)
-   \__ si, ça a un intérêt
- ✘ Base.canEdit --> C'est très très con pour les wiki, les listes, car c'est que les éditeurs qui peuvent le voir anyway => transformer en un <span> qui permet d'avoir une preference "voir l'édition" ou pas @cancelled (13-03-01 16:56)
- ✘ Ne pas passer le nom complet de l'action en base64 lors d'un chooseFile ou User mais mettre seulement qqs parametres puis reconstruire après ? @cancelled (13-03-07 00:13)
-
 Todo - entité "CommonList":
 
  ☐ Ajax pour new item, new list avec input a la place du 'New item' ?
  ☐ Faire un routing pour les listItems qui 'hightlight' le bon list item
 
- ✔ deeplinks dans les items de liste @done (13-04-04 23:30)
- ✔ Highlight la page en cours dans la liste de gauche @done (13-01-22 00:00)
-
 Todo - entité "Wiki":
 
  ☐ Ajax pour new wiki page ?
-
- ✔ tagging des pages wiki et des listes @done (13-01-28 21:58)
- ✔ make homepage du wiki @done (13-01-31 22:56)
- ✔ Wiki - parenting @done (13-02-12 22:33)
- ✔ Highlight la page en cours dans la liste de gauche @done (13-01-22 00:00)
-
-Todo - entité "Project":
-
- ✔ Pouvoir quitter un projet quand on est pas seul owner ou quand on est participant @done (13-07-30 19:34)
- ✔ Listing : mettre X participants and Y owners ... @done (13-01-24 00:02)
- ✔ Créer un nouveau projet @done (13-01-16 20:51)
- ✔ infos d'un projet : quand pas de skills ne pas afficher le vase ? ou All skills welcome OK @done (13-01-16 21:13)
- ✔ log des modifs sur les projets @done (13-01-17 23:08)
- ✔ projects dont je ne suis pas participant : je vois les trucs ou pas ??? @done (13-05-05 19:51)
- ✔ création d'un projet dans private space : disable la case private (et la cocher) @done (13-05-23 23:37)
-
- ✘ Background image pour les projets ? BOF BOF @cancelled (13-01-21 23:49)
-
-Todo - entité "Comment":
-
- ✔ upvotes des commentaires a la StackOverflow avec les noms des gens qui ont upvoté @done (13-02-27 23:03)
- ✔ Comments @done (13-01-16 20:51)
-   \_ WikiPageComment
-   \_ ListComment
- ✔ Commentaires en tant que LOG  ?? Comment faire @done (13-02-13 16:25)
- ✔ VARCHAR 255 -> a changer dans le modele pour les CommonListItem @done (13-01-23 23:42)
- 
- ✘ Commentaires @cancelled (13-02-13 16:25)
-   \_ ResourceComment
- ✘ Commenter un listItem en plus d'une liste ? @cancelled (13-01-23 23:43)
-
-Todo - entité "Idea":
-
- ✔ Transform into project : tout les commentaires de l'idée sont réassociés avec une marque (log) dans la timeline pour séparer quand c'est devenu un projet @done (13-03-01 17:41)
- ✔ log des modifs sur les ideas : reste l'affichage sur une timeline ? @done (13-02-13 18:49)
- ✔ Description / Info @done (13-01-16 21:18)
-  \_ description textuelle principale OK OK
-  \_ deux champs : Concept et Connaissance OK OK
- ✔ Séparer Background / Concept @done (13-01-16 20:50)
- ✔ delete user --> attention : vérifier qu'il y a bien des owners etc .. @done (13-01-16 20:50)
- ✔ login nécessaire pour tout @done (13-01-16 20:48)
- ✔ un projet est privé au participants / owners @done (13-01-16 20:48)
- ✔ events : a dégager @done (13-01-16 20:48)
- ✔ timeline : tu peux pas filtrer @done (13-01-16 20:48)
- ✔ idée peut etre modifiée que par son createur OK OK @done (13-01-16 20:51)
- ✔ mettre des participants --> mettre 'from idea' @done (13-01-16 20:51)
- ✔ http://d.pr/i/Ldg6 @done (13-01-24 00:02)
- ✔ project : décliner d'une idée 'spin off' @done (13-02-24 17:39)
-  \__ transform n'archive pas l'idée mais propose de le faire
- ✔ projectise : slug pas unique !!! ARGH !!! @done (13-02-24 23:13)
-
- ✘ tagguer dans le fil de discussion Concept ou Knowledge @cancelled (13-03-01 20:14)
- ✘ pouvoir tagguer un commentaire en 'valuable' @cancelled (13-03-01 20:15)
-   \ --> passer automatiquement ce commentaire dans le champ HTML correspondant ("insert as a comment into concept")
 
 Todo - Home :
 
@@ -253,16 +70,6 @@ Todo - Community:
  ☐ Commentaires
    \_ CommunityComment = shoutbox-like
 
- ✔ une idée est publique dans la communauté @done (13-03-02 12:52)
-   ✘ - discussion @cancelled (13-03-02 12:52)
-      tagger 'concept' ou 'connaissance' dans le fil de discussion
- ✘ au niveau meta, la timeline ne ressort que les trucs publics des projets en dessous @cancelled (13-03-02 12:53)
- ✔ notifs mails @done (13-08-11 20:27)
- ✔ texte présentant le jour par défaut dans settings @done (13-08-24 15:31)
-
- ✔ Langage dans les mails envoyés via une commande digest:send ? prendre la LANG de l'user en cours @done (13-08-25 16:25)
- ✔ Locale dans les logs ??? Pourquoi ca marche pas @done (13-08-25 16:56)
-   
 Todo - Search:
 
  ☐ Recherche
@@ -272,37 +79,3 @@ Site statique:
 
  ☐ Page credits avec les attributions des icones, librairies JS, etc
  ☐ Page Licence CC avec explication que tous les contenus sont soumis au copyright etc ...
-
- ✔ Copie du README.md @done (13-02-12 22:53)
-
-Routing:
-
- ✔ PROJECT @done (13-01-16 20:47)
-project/{slug}/todolist/new --> POST new TodoList or form
-project/{slug}/todolist/{id}/{slug} --> todolist by Id
-   \--  id numérique
-project/{slug}/todolists --> home, first alpha
-
- ✔ TIMELINE @done (13-01-16 20:47)
-project/{slug}/timeline/{page}
-    \-- defaults : page:1 id numérique
-
- ✔ LISTS @done (13-01-17 19:01)
-
- ☐ EVENTS
-project/{slug}/events  ---> vue calendrier
-project/{slug}/events/{year}    --> All events of the year (aaaa)
-project/{slug}/events/{year}/{month}    --> All events of the month (aaaa/mm)
-project/{slug}/events/{year}/{month}/{day}    --> All events of the day (aaaa/mm/dd)
-project/{slug}/event/{id} --> specific event (ID)
-
- ✔ RESSOURCES @done (13-02-26 19:39)
-project/{slug}/resources --> liste de toutes les ressources
-project/{slug}/resource/{id}/{slug} --> page de la ressource (page simple)
-project/{slug}/resource/tag/{tag} --> page listing toutes les ressources avec le tag
- 
- ✔ WIKI @done (13-01-16 20:47)
-# --> Markdown parser ???
-project/{slug}/wiki --> home du wiki
-project/{slug}/wiki/{pageSlug} --> page du wiki  # PAS DE PAGE POUR LES DOSSIERS
- \-- le pageSlug est choisi par l‘utilisateur
