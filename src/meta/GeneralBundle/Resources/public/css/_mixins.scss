@@ -31,6 +31,7 @@
   -o-text-overflow: ellipsis;
   -moz-binding: url(<q>assets/xml/ellipsis.xml#ellipsis</q>);
   max-width: $size;
+  &:focus { text-overflow: initial;}
 }
 
 @mixin up-triangle($size, $color, $side){
@@ -67,7 +68,7 @@
   color: $_text-dark;
   padding: 0.5em;
   min-width: 100px;
-  line-height: 2em;
+  display: inline-block;
   border: none;
   &:hover { box-shadow: 0 0 0px 3px rgba(0,0,0,0.15) inset; }
   &:active { box-shadow: 0 0 0px 3px rgba(0,0,0,0.30) inset; }

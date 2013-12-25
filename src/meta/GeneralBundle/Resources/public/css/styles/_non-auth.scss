@@ -13,8 +13,8 @@
     }
   }
   header.non-auth {
-    margin-top: 130px;
-    margin-bottom: 80px;
+    margin-top: 110px;
+    margin-bottom: 60px;
     @include media($tablet, $mobile) {
       margin-top: 30px;
       margin-bottom: 20px;
@@ -37,13 +37,21 @@
       color: $_muted-dark;
     }
   }
-  & > div.non-auth {
+  div.non-auth {
     color: $_text-dark;
     & > h2 {
       color: $_primary;
     }
     & > h4 {
       color: $_discrete;
+    }
+  }
+  section.non-auth {
+    & > .content { 
+      text-align: center; 
+      @include media($mobile) {
+        & > a { display: block; }
+      }
     }
   }
   form.non-auth {
@@ -97,7 +105,6 @@
       @include omega;
       @include media($tablet) {
         @include span-columns(1 of 4);
-        @include omega;
       }
       @include media($mobile) {
         @include fill-parent();
@@ -110,6 +117,13 @@
     }
     input[type=text] + input[type=submit]{
       @include shift(6 of 8);
+      @include media($tablet) {
+        @include shift(3 of 4);
+      }
+      @include media($mobile) {
+        @include fill-parent();
+        @include shift(0);
+      }
     }
   }
 }

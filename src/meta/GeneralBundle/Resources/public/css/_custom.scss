@@ -154,6 +154,7 @@ a.button, input[type=submit].button, button {
 
 $horizontal-padding: 70px;
 body.card input { border: 1px solid $_muted; }
+
 body.card > .content-container > header {
 
   @include row();
@@ -314,26 +315,26 @@ body.card > .content-container section {
     color: $_discrete;
     @include media($tablet) {
       @include span-columns(1 of 4);
+      @include shift(0);
     }
     @include media($mobile) {
       @include fill-parent();
+      @include shift(0);
       margin-bottom: 5px;
     }
   }
   & > .content {
     @include span-columns(7 of 10);
-    @include shift(3);
     @include clearfix;
     color: $_text-secondary;
     @include media($tablet) {
       @include span-columns(3 of 4);
+      @include shift(0);
     }
     @include media($mobile) {
       @include fill-parent();
+      @include shift(0);
     }
-  }
-  & > .label + .content {
-    @include shift(0);
   }
 }
 
@@ -352,6 +353,35 @@ body.card > .content-container > form > section {
     padding-bottom: $horizontal-padding;
   }
 
+  & > .label {
+    @include shift(2 of 10);
+    text-align: right;
+    @include media($tablet) {
+      @include span-columns(2 of 4);
+      @include shift(0);
+      text-align: left;
+    }
+    @include media($mobile) {
+      @include fill-parent();
+      @include shift(0);
+      text-align: left;    
+    }
+  }
+  & > .content {
+    @include span-columns(3 of 10);
+    @include shift(5);
+    @include media($tablet) {
+      @include span-columns(2 of 4);
+      @include shift(2);
+    }
+    @include media($mobile) {
+      @include fill-parent();
+      @include shift(0); 
+    }
+  }
+  & > .label + .content {
+    @include shift(0);
+  }
 }
 
 // Page-specific :

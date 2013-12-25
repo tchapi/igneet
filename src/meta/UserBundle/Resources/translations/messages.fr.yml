@@ -80,11 +80,11 @@ user:
   cancelled.signup: "Vous avez annulé le processus d'enregistrement d'un nouveau compte."
   createForm:
     chooseProvider: "Choisissez un de ces site tiers proposant une authentification via OpenId pour vous créer un compte sur igneet :"
-    orSignup: "Ou crééz un compte directement sur igneet en cliquant %link%"
+    orSignup: "Votre email"
     here: "ici"
     title: "Créer un compte"
     help: "Créez un compte pour rejoindre igneet et créer des communautés de projets regroupant les acteurs de l'entrepreneuriat autour de vous."
-    text: "C'est simple et gratuit, renseignez ces quelques informations et commencez à partager et participer au sein d'igneet. Ces informations sont modifiables ultérieurement."
+    text: "C'est simple et gratuit, choisissez votre méthode de connexion et commencez à partager et participer au sein d'igneet en quelques secondes :"
     username: "Nom d'utilisateur"
     usernameHelp: "Caractères alphanumériques seulement. ex : patrick75"
     usernameChoose: "Pour finir votre inscription, vous devez choisir un nom d'utilisateur :"

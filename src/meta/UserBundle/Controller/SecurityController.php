@@ -289,7 +289,7 @@ class SecurityController extends Controller
                     $this->get('translator')->trans('user.cannot.' . $flavour)
                 );
 
-                return $this->redirect($this->generateUrl('u_me'));
+                return $this->redirect($this->generateUrl($flavour));
 
             }
             
