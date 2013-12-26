@@ -1,23 +1,20 @@
-{% extends 'metaUserBundle::layout.html.twig' %}
+{% extends 'metaGeneralBundle:Community:layout.html.twig' %}
 
 {% block title %}{{ "community.choose"|trans }}{% endblock %}
 
 {% block header %}
-  <div class="headerAvatarAndActions">
-    <div class="textAvatar"><i class="fa fa-search"></i></div>
-  </div>
-  <div class="objectHeader">
-    <h2>{% trans %}community.choose{% endtrans %}</h2>
-    <h4>{% trans %}community.chooseHelp{% endtrans %}</h4>
+  <div class="title">
+    <h2>{{ "community.choose"|trans }}</h2>
+    <h4>{{ "community.chooseHelp"|trans }}</h4>
   </div>
 {% endblock %}
 
 {% block content %}
-<div class="formContent">
-  <form action="{{ path('g_choose_community', { 'targetAsBase64' : targetAsBase64, 'token': token }) }}" method="post" class="form-horizontal" enctype="multipart/form-data">
-      <div class="control-group ">
-        <label class="control-label"><label for="community" class="required">{{ "community.choose"|trans }} : </label></label>
-        <div class="controls">
+  <form action="{{ path('g_choose_community', { 'targetAsBase64' : targetAsBase64, 'token': token }) }}" method="post" enctype="multipart/form-data">
+
+      <section>
+        <div class="label">{{ "community.choose"|trans }} :</div>
+        <div class="content">
           <input type="hidden" name="name" id="name" value="community"/>
           <select id="value" name="value" required="required">
             {% for userCommunity in userCommunities %}
@@ -25,11 +22,13 @@
             {% endfor %}
           </select>
         </div>
-      </div>
-      <div class="form-actions">
-        <a class="btn" href="javascript:history.back()">{{ "cancel"|trans }}</a>
-        <input type="submit" value="{{ "choose"|trans }}" class="btn btn-success" />
-      </div>
+      </section>
+
+      <section>
+        <div class="content">
+          <input type="submit" value="{{ "choose"|trans }}" class="button" />
+        </div>
+      </section>
+  
   </form>
-</div>
 {% endblock %}
