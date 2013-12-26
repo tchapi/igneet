@@ -85,6 +85,7 @@ user:
     title: "Créer un compte"
     help: "Créez un compte pour rejoindre igneet et créer des communautés de projets regroupant les acteurs de l'entrepreneuriat autour de vous."
     text: "C'est simple et gratuit, choisissez votre méthode de connexion et commencez à partager et participer au sein d'igneet en quelques secondes :"
+    fillIn: "Remplissez les champs ci-dessous."
     username: "Nom d'utilisateur"
     usernameHelp: "Caractères alphanumériques seulement. ex : patrick75"
     usernameChoose: "Pour finir votre inscription, vous devez choisir un nom d'utilisateur :"
@@ -120,7 +121,6 @@ user:
     community: "L'utilisateur sera invité à rejoindre la communauté %community%."
     help: "Vous devez indiquer une adresse email ou un nom d'utilisateur valide."
     text: "Si l'utilisateur n'a pas de compte sur igneet, un lien d'inscription lui sera envoyé pour qu'il puisse créer son profil rapidement. S'il est déjà membre d'igneet, il sera ajouté automatiquement à la communauté, et sera notifié par mail."
-    fillIn: "Remplissez les champs ci-dessous."
     field: "Indiquez un nom d'utilisateur ou un mail valide"
     button: "Inviter cet utilisateur"
     sent: "Une invitation a été envoyée à %mail% en votre nom."
@@ -166,6 +166,11 @@ user:
       subject: "Changement de mot de passe"
       body: "Cliquez sur le lien suivant pour changer votre mot de passe"
   changedPassword: "Votre mot de passe a été changé avec succès."
+  language:
+    title: "Langue de l'interface"
+    switch: "Passer en"
+    preferred: "Vous consultez maintenant igneet en français. Votre préférence de langue a été sauvegardée."
+    not.supported: "Ce langage n'est pas encore supporté."
   settings:
     menu: "Paramètres"
     title: "Paramètres"

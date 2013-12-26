@@ -16,3 +16,8 @@ ul.specificEmailsChoice {
     }
   }
 }
+
+div.language {
+  line-height: 24px;
+  & > img { vertical-align: bottom; }
+}

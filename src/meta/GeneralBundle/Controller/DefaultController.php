@@ -265,10 +265,10 @@ class DefaultController extends Controller
 
     }
 
-    public function switchLanguageAction($locale)
+    public function switchLanguageAction(Request $request)
     {
      
-        $locale = strtolower(substr($locale, 0, 2));
+        $locale = strtolower(substr($request->get('value'), 0, 2));
 
         // Get available languages
         $available_languages  = $this->container->getParameter('available.languages');
@@ -280,33 +280,24 @@ class DefaultController extends Controller
 
             // If user is logged, set preferred language
             if ($this->getUser()){
+
                 $em = $this->getDoctrine()->getManager();
                 $this->getUser()->setPreferredLanguage($available_languages[$locale]['code']);
                 $em->flush();
 
                 $this->get('session')->getFlashBag()->add(
                     'success',
-                    $this->get('translator')->trans('language.preferred', array(), 'messages', $available_languages[$locale]['code'])
+                    $this->get('translator')->trans('user.language.preferred', array(), 'messages', $available_languages[$locale]['code'])
                 );
-            } else {
-                $this->getRequest()->setLocale($available_languages[$locale]['code']);
+                
+                return new Response(json_encode(array("redirect" => $this->generateUrl('u_show_user_settings'))));
+
             }
             
         } else {
 
-            $this->get('session')->getFlashBag()->add(
-                'warning',
-                $this->get('translator')->trans('language.not.supported')
-            );
+            return new Response(json_encode(array("message" => $this->get('translator')->trans('user.language.not.supported'))));
 
-        }
-
-        $referer = $this->getRequest()->headers->get('referer');
-
-        if (is_null($referer)){
-            return $this->redirect($this->generateUrl('g_home_community'));
-        } else {
-            return new RedirectResponse($referer);
         }
 
     }

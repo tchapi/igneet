@@ -122,10 +122,6 @@ tags:
   help: "Indicate tags separated by a comma"
   emptyText: "Add tags"
   none: "No tags yet."
-# Languages
-language:
-  preferred: "English has been saved as your preferred language."
-  not.supported: "This language is not yet supported."
 # Alerts
 alert:
   please.confirm: "Please confirm"

@@ -16,11 +16,29 @@ $(document).ready(function(){
     })
     .success(function(data, config) {
       $("[data-name=" + dataArray["name"] + "]").attr("data-last", dataArray["value"]);
-      alertify.success(Translator.get('alert.changes.saved'));           
+      if (data) {
+        data = JSON.parse(data);
+        if (data.redirect) {
+          window.location.replace(data.redirect);
+        } else {
+          alertify.success(data.message);
+        }
+      } else {
+        alertify.success(Translator.get('alert.changes.saved'));
+      }
     })
     .error(function(errors) {
       $("[data-name=" + dataArray["name"] + "]").html($("[data-name=" + dataArray["name"] + "]").attr("data-last"));
-      alertify.error(Translator.get('alert.error.saving.changes'));
+      if (data) {
+        data = JSON.parse(data);
+        if (data.redirect) {
+          window.location.replace(data.redirect);
+        } else {
+          alertify.success(data.message);
+        }
+      } else {
+        alertify.error(Translator.get('alert.error.saving.changes'));
+      }
     });
 
   };
@@ -105,7 +123,8 @@ $(document).ready(function(){
       catchChange({url: url, name: name, key: key, last: last, value: value});
     }
     $('[contenteditable=true][rich=true]').redactor({
-      air:true,
+      air: true,
+      emptyHtml: '<p><em>...</em><br /></p>',
       minHeight: 100, // To allow PASTE event - ARGHHHH I hate you Chrome
       airButtons: ['formatting', '|', 'bold', 'italic', 'deleted', '|', 'unorderedlist', 'orderedlist', 'outdent', 'indent', '|',
                                         'image', 'video', 'file', 'table', 'link'],

@@ -166,6 +166,11 @@ user:
       subject: "Renew your password"
       body: "Please click on the following link to change your password"
   changedPassword: "Your password was changed successfully."
+  language:
+    title: "Preferred language"
+    switch: "Switch to"
+    preferred: "English has been saved as your preferred language."
+    not.supported: "This language is not yet supported."
   settings:
     menu: "Settings"
     title: "Settings"

@@ -32,6 +32,23 @@
   </div>
 </section>
 
+<section>
+  <div class="label">{{ "user.language.title"|trans }} :</div>
+  <div class="content language">
+    
+    {% import '_locale.html.twig' as locale %}
+    {% set actualCode = locale.echoLocaleCode()|lower %}
+    <img src="{{ asset('bundles/metageneral/img/langs/' ~ actualCode ~ '.png') }}" width="24px" height="24px"/>
+    {{ available_languages[actualCode].name }}
+    — {{ "user.language.switch"|trans }} <select data-name="locale" data-url="{{ path('g_switch_language') }}">
+      {% for code, language in available_languages %}
+        <option value="{{ code }}" {% if code == actualCode %}selected="selected"{% endif %}><img src="{{ asset('bundles/metageneral/img/langs/' ~ code ~ '.png') }}" width="24px" height="24px"/> {{ language.name }}</option>
+      {% endfor %}
+    </select>
+ 
+  </div>
+</section>
+
 {% if app.user.userCommunities|length > 0 %}
 <section>
   <div class="label">{{ "user.digest.settings"|trans }} :</div>
@@ -84,6 +101,13 @@
   </div>
 </section>
 
+{% else %}
+<section>
+  <div class="label">{{ "user.digest.settings"|trans }} :</div>
+  <div class="content">{{ "user.digest.noCommunity"|trans }}</div>
+</section>
+{% endif %}
+
 <section>
   <div class="label">{{ "user.delete"|trans }} : </div>
   <div class="content">
@@ -92,10 +116,4 @@
   </div>
 </section>
 
-{% else %}
-<section>
-  <div class="label">{{ "user.digest.settings"|trans }} :</div>
-  <div class="content">{{ "user.digest.noCommunity"|trans }}</div>
-</section>
-{% endif %}
 {% endblock %}

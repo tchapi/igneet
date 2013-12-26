@@ -37,7 +37,7 @@
     </h3>
 
     <div class="skills">
-      {% if user.skills|length > 0 or canEdit %}
+      {% if user.skills|length > 0 %}
         {% spaceless %}
         <ul{% if canEdit %} data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" data-emptytext="{{ "user.skills.emptyText"|trans }}" data-name="skills"{% endif %}>
         {% for skill in user.skills %}
@@ -47,13 +47,16 @@
           {% endif %}
           {{ (skill.slug ~ ".name")|trans({}, 'skills') }}</li>
         {% endfor %}
-          {% if canEdit %}
+        {% if canEdit %}
           <li><a href=""><i class="fa fa-plus"></i></a></li>
-          {% endif %}
+        {% endif %}
         </ul>
         {% endspaceless %}
       {% else %}
-        {{ "user.skills.none"|trans }}
+        <span>{{ "user.skills.none"|trans }}</span>
+        {% if canEdit %}
+          <ul><li><a href=""><i class="fa fa-plus"></i></a></li></ul>
+        {% endif %}
       {% endif %}
     </div>
 

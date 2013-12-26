@@ -47,8 +47,10 @@ g_remove_manager_community:
 # Language
 
 g_switch_language:
-  pattern: /language/{locale}
-  defaults: { _controller: metaGeneralBundle:Default:switchLanguage}
+    pattern: /language
+    defaults: { _controller: metaGeneralBundle:Default:switchLanguage}
+    requirements:
+      _method: POST
 
 # General
 

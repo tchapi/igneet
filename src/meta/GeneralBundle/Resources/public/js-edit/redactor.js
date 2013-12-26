@@ -212,7 +212,7 @@ var RLANG = {
 				'#7f7f7f', '#0c0c0c', '#1d1b10', '#0f243e', '#244061', '#632423', '#4f6128', '#3f3151', '#31859b', '#974806', '#7f6000'],
 
 			// private
-			emptyHtml: '<p><br /></p>',
+			emptyHtml: '<p><em>...</em><br /></p>',
 			buffer: false,
 			visual: true,
 

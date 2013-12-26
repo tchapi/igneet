@@ -122,10 +122,6 @@ tags:
   help: "Indiquez des tags, séparés par des virgules"
   emptyText: "Ajouter des tags"
   none: "Aucun tag."
-# Languages
-language:
-  preferred: "Vous consultez maintenant igneet en français. Votre préférence de langue a été sauvegardée."
-  not.supported: "Ce langage n'est pas encore supporté."
 # Alerts
 alert:
   please.confirm: "Veuillez confirmer"
