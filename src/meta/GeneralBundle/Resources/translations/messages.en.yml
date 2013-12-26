@@ -81,7 +81,7 @@ file:
 # Image
 image:
   resizeAndCrop: "Resize and crop an image"
-  resizeAndCropHelp: ""
+  resizeAndCropHelp: "Drag the handles to reposition and scale the image"
   continue: "Continue with this image"
 picture:
   change: "change"

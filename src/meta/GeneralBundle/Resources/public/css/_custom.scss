@@ -10,6 +10,7 @@
 @import "neat/_neat";
 @import "alertify/_alertify";
 @import "redactor/_redactor";
+@import "imgareaselect/jquery.imgareaselect";
 
 body {
   background-color: $_background;
@@ -327,6 +328,10 @@ body.card > .content-container section {
       @include shift(0);
     }
   }
+  & > .content-full {
+    @include fill-parent();
+    @include shift(0);
+  }
 }
 
 /* When sections are wrapped in a FORM container */
@@ -345,10 +350,10 @@ body.card > .content-container > form > section {
   }
 
   & > .label {
-    @include shift(2 of 10);
+    @include shift(1 of 10);
     text-align: right;
     @include media($tablet) {
-      @include span-columns(2 of 4);
+      @include span-columns(1 of 4);
       @include shift(0);
       text-align: left;
     }
@@ -360,10 +365,10 @@ body.card > .content-container > form > section {
   }
   & > .content {
     @include span-columns(3 of 10);
-    @include shift(5);
+    @include shift(4);
     @include media($tablet) {
-      @include span-columns(2 of 4);
-      @include shift(2);
+      @include span-columns(3 of 4);
+      @include shift(1);
     }
     @include media($mobile) {
       @include fill-parent();

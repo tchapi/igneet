@@ -12,6 +12,9 @@ input[type=text],input[type=email],input[type=password] {
         @include stripped-background(lighten($_muted,10%));
     }
 }
+input[type=file]{
+    width: 100%;
+}
 
 // Checkboxes
 input[type="checkbox"] {

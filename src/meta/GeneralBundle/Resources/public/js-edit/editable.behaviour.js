@@ -8,6 +8,23 @@ $(document).ready(function(){
 
   var saveData = function(dataArray) {
 
+    var process = function(data, defaultMessage) {
+      if (data) {
+        try { 
+          data = JSON.parse(data); 
+          if (data.redirect) {
+            window.location.replace(data.redirect);
+          } else {
+            alertify.success(data.message);
+          }
+        } catch(err) { // In case the data is not JSON, we pass
+          alertify.success(defaultMessage);
+        }
+      } else {
+        alertify.success(defaultMessage);
+      }
+    };
+
     clearInterval(timers[dataArray["name"]]); // Clearing before sending the post request
     $.post(dataArray["url"], {
       name: dataArray["name"],
@@ -16,29 +33,11 @@ $(document).ready(function(){
     })
     .success(function(data, config) {
       $("[data-name=" + dataArray["name"] + "]").attr("data-last", dataArray["value"]);
-      if (data) {
-        data = JSON.parse(data);
-        if (data.redirect) {
-          window.location.replace(data.redirect);
-        } else {
-          alertify.success(data.message);
-        }
-      } else {
-        alertify.success(Translator.get('alert.changes.saved'));
-      }
+      process(data, Translator.get('alert.changes.saved'));
     })
     .error(function(errors) {
       $("[data-name=" + dataArray["name"] + "]").html($("[data-name=" + dataArray["name"] + "]").attr("data-last"));
-      if (data) {
-        data = JSON.parse(data);
-        if (data.redirect) {
-          window.location.replace(data.redirect);
-        } else {
-          alertify.success(data.message);
-        }
-      } else {
-        alertify.error(Translator.get('alert.error.saving.changes'));
-      }
+      process(data, Translator.get('alert.error.saving.changes'));
     });
 
   };

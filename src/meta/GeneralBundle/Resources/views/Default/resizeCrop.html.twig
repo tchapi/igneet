@@ -1,4 +1,4 @@
-{% extends 'metaUserBundle::layout.html.twig' %}
+{% extends 'metaGeneralBundle:Community:layout.html.twig' %}
 
 {% block title %}{{ "image.resizeAndCrop"|trans }}{% endblock %}
 
@@ -11,51 +11,32 @@
     {% endjavascripts %}
 {% endblock %}
 
-{% block stylesheets %}
-  {{ parent() }}
-  {% stylesheets  'bundles/metageneral/css-edit/jquery.imgareaselect.css' 
-    filter='?yui_css,cssrewrite' %}
-          <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}" />
-  {% endstylesheets %}
-{% endblock %}
-
 {% block header %}
-  <div class="headerAvatarAndActions">
-    <div class="textAvatar"><i class="fa fa-picture-o"></i></div>
-  </div>
-  <div class="objectHeader">
-    <h2>{% trans %}image.resizeAndCrop{% endtrans %}</h2>
-    <h4>{% trans %}image.resizeAndCropHelp{% endtrans %}</h4>
+  <div class="title">
+    <h2>{{ "image.resizeAndCrop"|trans }}</h2>
+    <h4>{{ "image.resizeAndCropHelp"|trans }}</h4>
   </div>
 {% endblock %}
 
 {% block content %}
 <form action="{{ path('g_choose_file', { 'targetAsBase64' : targetAsBase64, 'token': token  }) }}" method="post" enctype="multipart/form-data">
   <section>
-      <div class="form-group ">
-        <label class="control-label col-sm-4">{{ "image.resizeAndCrop"|trans }} : </label>
-        <div class="row">
-          <div class="col-sm-12">
-            <input type="hidden" name="name" id="name" value="picture" />
-            <input type="hidden" name="value" id="value" value="{{ image }}" />
-            <div class="imageCropWrapper">
-              <img id="target" src="{{ image }}"/>
-            </div>
-            <input type="hidden" id="x" name="x" value="0"/>
-            <input type="hidden" id="y" name="y" value="0" />
-            <input type="hidden" id="w" name="w" value="150" />
-            <input type="hidden" id="h" name="h" value="150" />
-          </div>
-        </div>
+    <div class="content-full">
+      <input type="hidden" name="name" id="name" value="picture" />
+      <input type="hidden" name="value" id="value" value="{{ image }}" />
+      <div class="imageCropWrapper">
+        <img id="target" src="{{ image }}"/>
       </div>
-      <div class="form-group">
-        <div class="row">
-          <div class="col-sm-offset-4 col-sm-8">
-            <a class="btn" href="javascript:history.back()">{{ "cancel"|trans }}</a>
-            <input type="submit" value="{{ "image.continue"|trans }}" class="btn btn-success" />
-          </div>
-        </div>
-      </div>
+      <input type="hidden" id="x" name="x" value="0"/>
+      <input type="hidden" id="y" name="y" value="0" />
+      <input type="hidden" id="w" name="w" value="150" />
+      <input type="hidden" id="h" name="h" value="150" />
+    </div>
+  </section>
+  <section>
+    <div class="content">
+      <input type="submit" value="{{ "image.continue"|trans }}" class="button" />
+    </div>
   </section>
 </form>
 {% endblock %}

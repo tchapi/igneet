@@ -775,7 +775,7 @@ class DefaultController extends Controller
 
             if (count($users) > 0 || $target['external'] == true){
 
-                return $this->render('metaUserBundle:Default:choose.html.twig', array('users' => $users, 'external' => $target['external'], 'targetAsBase64' => $targetAsBase64, 'backLink' => $target['backLink'], 'token' => $request->get('token')));
+                return $this->render('metaUserBundle:Default:choose.html.twig', array('users' => $users, 'external' => $target['external'], 'targetAsBase64' => $targetAsBase64, 'backLink' => $target['backLink']?$target['backLink']:null, 'token' => $request->get('token')));
 
             } else {
 

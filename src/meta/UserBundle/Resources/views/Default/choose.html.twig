@@ -19,7 +19,7 @@
       <div class="label"><label for="communityUsername" {% if users|length == 0 %}disabled="disabled"{% endif %}>{{ "user.choose.field"|trans }} : </label></div>
       <div class="content">
         <select id="communityUsername" name="username" {% if users|length == 0 %}disabled="disabled"{% endif %}>
-          <option value="-1"> -- </option>
+          {% if external %}<option value="-1"> -- </option>{% endif %}
           {% for user in users %}
           <option value="{{ user.username }}">{{ user.getFullName() }}</option>
           {% endfor %}

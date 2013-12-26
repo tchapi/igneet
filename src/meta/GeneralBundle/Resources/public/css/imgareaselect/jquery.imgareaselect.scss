@@ -1,6 +1,6 @@
-/*
- * imgAreaSelect style
- */
+/* ******************************************************************** */
+/*                           IMG AREA SELECT                            */
+/* ******************************************************************** */
 
 .imgareaselect-border1, .imgareaselect-border2,
 .imgareaselect-border3, .imgareaselect-border4 {
@@ -26,11 +26,21 @@
 .imgareaselect-outer {
     filter: alpha(opacity=40);
     opacity: 0.4;
-    box-sizing: content-box;
+    @include box-sizing(content-box); // Important ! For Firefox notably
 }
 
 .imgareaselect-selection {
     background-color: #fff;
     filter: alpha(opacity=0);
     opacity: 0;
+}
+
+// Image crop and resize
+div.imageCropWrapper {
+  margin: auto;
+  & > img {
+    margin: auto;
+    width: 100%;
+    border: 1px solid $_muted;
+  }
 }

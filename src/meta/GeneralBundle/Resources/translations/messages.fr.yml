@@ -81,7 +81,7 @@ file:
 # Image
 image:
   resizeAndCrop: "Redimmensionner et Rogner une image"
-  resizeAndCropHelp: ""
+  resizeAndCropHelp: "Utilisez les poignées pour repositionner et mettre l'image à l'échelle voulue"
   continue: "Continuer avec cette image"
 picture:
   change: "changer"

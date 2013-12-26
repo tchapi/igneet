@@ -1,33 +1,30 @@
-{% extends 'metaUserBundle::layout.html.twig' %}
+{% extends 'metaGeneralBundle:Community:layout.html.twig' %}
 
 {% block title %}{{ "file.choose"|trans }}{% endblock %}
 
 {% block header %}
-  <div class="headerAvatarAndActions">
-    <div class="textAvatar"><i class="fa fa-search"></i></div>
-  </div>
-  <div class="objectHeader">
-    <h2>{% trans %}file.choose{% endtrans %}</h2>
-    <h4>{% trans %}file.chooseHelp{% endtrans %}</h4>
+  <div class="title">
+    <h2>{{ "file.choose"|trans }}</h2>
+    <h3>{{ "file.chooseHelp"|trans }}</h3>
+    {% if backLink %}
+      <p><a href="{{ backLink }}">&laquo; {{ "back"|trans }}</a></p>
+    {% endif %}
   </div>
 {% endblock %}
 
 {% block content %}
-<div class="formContent">
-  <form action="{{ path('g_choose_file', { 'targetAsBase64' : targetAsBase64, 'token': token }) }}" method="post" class="form-horizontal" enctype="multipart/form-data">
-      <div class="form-group ">
-        <label class="control-label col-sm-4"><label for="file" class="required">{{ "file.choose"|trans }} : </label></label>
-        <div class="col-sm-offset4 col-sm-8">
+  <form action="{{ path('g_choose_file', { 'targetAsBase64' : targetAsBase64, 'token': token }) }}" method="post" enctype="multipart/form-data">
+      <section>
+        <div class="label">{{ "file.choose"|trans }} :</div>
+        <div class="content">
           <input type="hidden" name="name" id="name" value="file"/>
           <input type="file" name="file" id="file" />
         </div>
-      </div>
-      <div class="form-group">
-        <div class="col-sm-offset-4 col-sm-8">
-          <a class="btn" href="javascript:history.back()">{{ "cancel"|trans }}</a>
-          <input type="submit" value="{{ "file.upload"|trans }}" class="btn btn-success" />
+      </section>
+      <section>
+        <div class="content">
+          <input type="submit" value="{{ "file.upload"|trans }}" class="button" />
         </div>
-      </div>
+      </section>
   </form>
-</div>
 {% endblock %}

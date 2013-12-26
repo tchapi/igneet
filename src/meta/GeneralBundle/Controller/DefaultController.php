@@ -34,7 +34,7 @@ class DefaultController extends Controller
                     $uploadedFile->move(__DIR__.'/../../../../web/uploads/tmp', $picture);
                     unset($uploadedFile);
 
-                    return $this->render('metaGeneralBundle:Default:resizeCrop.html.twig', array('targetAsBase64' => $targetAsBase64, 'image' => '/uploads/tmp/'.$picture, 'token' => $request->get('token')));
+                    return $this->render('metaGeneralBundle:Default:resizeCrop.html.twig', array('targetAsBase64' => $targetAsBase64, 'image' => '/uploads/tmp/'.$picture, 'backLink' => $target['backLink']?$target['backLink']:null, 'token' => $request->get('token')));
 
                 } else {
 
@@ -54,7 +54,7 @@ class DefaultController extends Controller
 
         } 
 
-        return $this->render('metaGeneralBundle:Default:chooseFile.html.twig', array('targetAsBase64' => $targetAsBase64, 'token' => $request->get('token')));
+        return $this->render('metaGeneralBundle:Default:chooseFile.html.twig', array('targetAsBase64' => $targetAsBase64, 'backLink' => $target['backLink']?$target['backLink']:null, 'token' => $request->get('token')));
 
     }
 

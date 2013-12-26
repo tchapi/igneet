@@ -33,14 +33,13 @@ $(document).ready(function(){
       }, 1);
   });
 
-  // Choose a user - select box
+  // Choose a user - select box that allows for a choice not in the community
   $("select#communityUsername").change(function(){
     if ($(this).val() == -1 ){
       $("input#mailOrUsername").prop('disabled', false);
     } else {
       $("input#mailOrUsername").prop('disabled', true);
     }
-    
   });
 
   // Count notifications
