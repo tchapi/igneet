@@ -44,6 +44,15 @@ filter='?yui_css,cssrewrite' output='css/min/base.css' %}
 
     </script>
 {% endif %}
+
+     <script type="text/javascript">
+    {% for type in ['success', 'warning', 'error', 'info'] %}
+      {% for flashMessage in app.session.flashbag.get(type) %}
+        alertify.log("{{ flashMessage }}", "{{ type }}", 0);
+      {% endfor %}
+    {% endfor %}
+    </script>
+
 {% endblock %}
 
     <footer>

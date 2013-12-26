@@ -34,6 +34,7 @@ Todo - Post-Passe-Créa :
  ☐ Remettre les flashs sur la page de login (au cas ou deloggué avec msg d'erreur)
  ☐ Passer choix de la langue en settings  
  ☐ changePassword : doit pouvoir etre GETtable sans authentification
+ ☐  lien sur le igneet logo en mode non-auth
 
 Todo - Entity "Community" :
 

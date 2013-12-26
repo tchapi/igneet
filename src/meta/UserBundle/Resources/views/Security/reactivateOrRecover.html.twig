@@ -12,9 +12,11 @@
   <div class="non-auth">
     {% if flavour == 'reactivate' %}
       <h2>{{ "user.reactivation.title.reactivate"|trans }}</h2>
+      <h3><a href="{{ path("login") }}">&laquo; {{ "back"|trans }}</a></h3>
       <h4>{{ "user.reactivation.text.reactivate"|trans }}</h4>
     {% else %}
       <h2>{{ "user.reactivation.title.recover"|trans }}</h2>
+      <h3><a href="{{ path("login") }}">&laquo; {{ "back"|trans }}</a></h3>
       <h4>{{ "user.reactivation.text.recover"|trans }}</h4>
     {% endif %}
   </div>

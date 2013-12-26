@@ -63,6 +63,14 @@
   }
 }
 
+@mixin stripped-background($color) {
+  background-size: 10px 10px;
+  @include linear-gradient(135deg, rgba(255, 255, 255, .2) 25%, transparent 25%,
+            transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%,
+            transparent 75%, transparent);
+  background-color: $color;
+}
+
 @mixin button() {
   background-color: $_primary;
   color: $_text-dark;

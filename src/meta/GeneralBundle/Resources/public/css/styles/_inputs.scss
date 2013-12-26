@@ -7,6 +7,11 @@
 // General rules
 *:focus { outline: 0 none; }
 input { border: none; }
+input[type=text],input[type=email],input[type=password] {
+    &:disabled { 
+        @include stripped-background(lighten($_muted,10%));
+    }
+}
 
 // Checkboxes
 input[type="checkbox"] {
@@ -26,4 +31,8 @@ input[type="checkbox"] + label:before {
 input[type="checkbox"]:checked + label:before{
     content: "☑";
     color: $_primary;
+}
+
+body.card, body.full {
+    & input { border: 1px solid $_muted; }
 }

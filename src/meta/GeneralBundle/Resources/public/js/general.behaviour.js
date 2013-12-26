@@ -33,9 +33,15 @@ $(document).ready(function(){
       }, 1);
   });
 
-  // Focus the first field of the first form found on the page
-  // (Useful for login / invite /etc )
-  //$('form').find('input').first().focus();
+  // Choose a user - select box
+  $("select#communityUsername").change(function(){
+    if ($(this).val() == -1 ){
+      $("input#mailOrUsername").prop('disabled', false);
+    } else {
+      $("input#mailOrUsername").prop('disabled', true);
+    }
+    
+  });
 
   // Count notifications
   $.post($("#notificationsCount").attr('data-update-path'), function(data) {

@@ -3,23 +3,23 @@
 {% block title %}{{ parent() }} > {{ "user.choose.title"|trans }}{% endblock %}
 
 {% block header %}
-  <div class="headerAvatarAndActions">
-    <div class="textAvatar"><i class="fa fa-search"></i></div>
-  </div>
-  <div class="objectHeader">
+  <div class="title">
     <h2>{{ "user.choose.title"|trans }}</h2>
-    <h4>{{ "user.choose.help"|trans }}</h4>
+    <h3>{{ "user.choose.help"|trans }}</h3>
+    {% if backLink %}
+      <p><a href="{{ backLink }}">&laquo; {{ "back"|trans }}</a></p>
+    {% endif %}
   </div>
 {% endblock %}
 
-
 {% block content %}
-<form action="{{ path('u_choose_user', { 'targetAsBase64' : targetAsBase64, 'token': token }) }}" method="post" class="form-horizontal">
+<form action="{{ path('u_choose_user', { 'targetAsBase64' : targetAsBase64, 'token': token }) }}" method="post">
    
     <section>
-      <div class="sectionTitle"><label for="username" class="required {% if users|length == 0 %}muted{% endif %}">{{ "user.choose.field"|trans }} : </label></div>
-      <div class="sectionContent">
-        <select id="username" name="username" {% if users|length == 0 %}disabled="disabled"{% endif %}>
+      <div class="label"><label for="communityUsername" {% if users|length == 0 %}disabled="disabled"{% endif %}>{{ "user.choose.field"|trans }} : </label></div>
+      <div class="content">
+        <select id="communityUsername" name="username" {% if users|length == 0 %}disabled="disabled"{% endif %}>
+          <option value="-1"> -- </option>
           {% for user in users %}
           <option value="{{ user.username }}">{{ user.getFullName() }}</option>
           {% endfor %}
@@ -29,15 +29,14 @@
     
     {% if external %}
     <section>
-      <div class="sectionTitle"><label for="mailOrUsername" class="required">{{ "user.choose.alternate"|trans }} : </label></div>
-      <div class="sectionContent"><input type="text" id="mailOrUsername" name="mailOrUsername"></div>
+      <div class="label"><label for="mailOrUsername">{{ "user.choose.alternate"|trans }} : </label></div>
+      <div class="content"><input type="text" id="mailOrUsername" name="mailOrUsername"></div>
     </section>
     {% endif %}
 
     <section>
-      <div class="sectionTitle"></div>
-      <div class="sectionContent"><a class="btn" href="javascript:history.back()">{{ "cancel"|trans }}</a>
-        <input type="submit" value="{{ "user.choose.button"|trans }}" class="btn btn-success" /></div>
+      <div class="content">
+        <input type="submit" value="{{ "user.choose.button"|trans }}" class="button" /></div>
     </section>
 </form>
 {% endblock %}

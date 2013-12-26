@@ -28,7 +28,7 @@
 <section>
   <div class="label">{{ "user.password"|trans }} :</div>
   <div class="content">
-    <a class="button" href="{{ path('change_password', {'token': csrf_token('changePassword')} ) }}">{{ "user.passwordChange.title"|trans }}</a>
+    <a href="{{ path('change_password', {'token': csrf_token('changePassword')} ) }}">{{ "user.passwordChange.title"|trans }}</a>
   </div>
 </section>
 
@@ -39,8 +39,8 @@
     {% import '_locale.html.twig' as locale %}
     {% set actualCode = locale.echoLocaleCode()|lower %}
     <img src="{{ asset('bundles/metageneral/img/langs/' ~ actualCode ~ '.png') }}" width="24px" height="24px"/>
-    {{ available_languages[actualCode].name }}
-    — {{ "user.language.switch"|trans }} <select data-name="locale" data-url="{{ path('g_switch_language') }}">
+    {{ available_languages[actualCode].name }} — {{ "user.language.switch"|trans }} 
+    <select data-name="locale" data-url="{{ path('g_switch_language') }}">
       {% for code, language in available_languages %}
         <option value="{{ code }}" {% if code == actualCode %}selected="selected"{% endif %}><img src="{{ asset('bundles/metageneral/img/langs/' ~ code ~ '.png') }}" width="24px" height="24px"/> {{ language.name }}</option>
       {% endfor %}
@@ -104,7 +104,10 @@
 {% else %}
 <section>
   <div class="label">{{ "user.digest.settings"|trans }} :</div>
-  <div class="content">{{ "user.digest.noCommunity"|trans }}</div>
+  <div class="content">
+    {{ "user.digest.noCommunity"|trans }}
+    <p><a href="{{ path("g_create_community") }}" class="button button-success">{{ "community.create"|trans }}</a></p>
+  </div>
 </section>
 {% endif %}
 

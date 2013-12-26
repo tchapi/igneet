@@ -66,8 +66,8 @@ user:
   choose:
     title: "Choose a user"
     help: "You need to indicate a specific user to continue with your request."
-    field: "Choose a user from the community"
-    alternate: "Or indicate a valid e-mail or username"
+    field: "From the community"
+    alternate: "Or by e-mail or username"
     button: "Choose this user"
   ideas:
     participated: "Ideas I participate in"

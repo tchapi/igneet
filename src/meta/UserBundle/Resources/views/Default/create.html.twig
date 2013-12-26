@@ -29,16 +29,15 @@
 
   <div class="non-auth">
     <h2>{{ "user.createForm.title"|trans }}</h2>
+    <h3><a href="{{ path("login") }}">&laquo; {{ "back"|trans }}</a></h3>
     <h3>{{ "user.createForm.help"|trans }}</h3>
+    {% if openid %}
+    <h4>{{ "user.createForm.usernameChoose"|trans }}</h4>
+    {% else %}
     <h4>{{ "user.createForm.fillIn"|trans }}</h4>
+    {% endif %}
   </div>
-
-{% if openid %}
-<section>
-  <div class="label">{{ "user.createForm.usernameChoose"|trans }}</div>
-</section>
-{% endif %}
-
+  
   <form action="{% if openid %}{{ path('u_signup_finish', { 'inviteToken': inviteToken }) }}{% else %}{{ path('u_signup', { 'inviteToken': inviteToken }) }}{% endif %}" method="post" {{ form_enctype(form) }} class="non-auth">
     {{ form_rest(form) }} {# Trick to avoid the <div> wrap by Twig #}
     <input type="submit" value="{{ "user.createForm.create"|trans }}" class="button button-success" />

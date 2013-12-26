@@ -56,24 +56,23 @@ $(document).ready(function(){
 
   $('[contenteditable=true][rich=false]')
     .on("keypress", function(e) {
-      if (e.which == '13'){  // Trigger a save with the Return key
-        e.preventDefault(); 
-        name = $(this).attr("data-name");
-        key = $(this).attr("data-key");
-        url = $(this).attr("data-url");
-        last = $(this).attr("data-last");
-        value = $.trim($(this).text());
-        clearInterval(timers[name]);
-        saveData({url: url, name: name, key: key, last: last, value: value});
+      if (e.which == '13'){  // Prevents the Return to be inserted
+        e.preventDefault();
       }
     })
-    .on("keyup", function() {
+    .on("keyup", function(e) {
       name = $(this).attr("data-name");
       key = $(this).attr("data-key");
       url = $(this).attr("data-url");
       last = $(this).attr("data-last");
       value = $.trim($(this).text());
-      catchChange({url: url, name: name, key: key, last: last, value: value});
+      if (e.which == '13'){ // Trigger a save with the Return key
+        e.preventDefault(); 
+        clearInterval(timers[name]);
+        if (last !== value) { saveData({url: url, name: name, key: key, last: last, value: value}); }
+      } else {
+        catchChange({url: url, name: name, key: key, last: last, value: value});
+      }
     })
     .on('paste', function (e) { // Prevents insertion of markup
       if (document.queryCommandEnabled('inserttext')) {
