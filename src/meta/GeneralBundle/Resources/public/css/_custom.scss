@@ -109,6 +109,7 @@ body {
 a {
   color: $_primary;
   text-decoration: none;
+  &:hover { color: darken($_primary, 10%); }
 }
 h1, h2, h3, h4, h5, h6, p { font-weight : normal;  }
 em { color: $_muted; }
@@ -235,6 +236,14 @@ body.card > .content-container > header {
       @include shift(0);
       @include fill-parent();
     }
+    & ul { 
+      list-style-type: none; 
+      & > li a {
+        $image-size: 20px;
+        line-height: $image-size;
+        & > img { vertical-align: top; width: $image-size; height: $image-size; display: inline-block; }
+      }
+    }
   }
 
   & > .info, & > .title {
@@ -331,13 +340,33 @@ body.card > .content-container section {
     & > .actions {
       a:first-child {
         @include span-columns(3 of 7);
+        @include media($tablet) {
+          @include span-columns(1 of 3);
+        }
+        @include media($mobile) {
+          @include fill-parent();
+        }
       }
       a:last-child {
         @include shift(4 of 7);
         @include span-columns(3 of 7);
+        @include media($tablet) {
+          @include span-columns(1 of 3);
+          @include shift(2 of 3);
+        }
+        @include media($mobile) {
+          @include fill-parent();
+          @include shift(0);
+        }
       }
       a + a:last-child {
         @include shift(1 of 7);
+        @include media($tablet) {
+          @include shift(1 of 3);
+        }
+        @include media($mobile) {
+          @include shift(0);
+        }
       }
     }
   }
