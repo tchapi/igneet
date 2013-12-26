@@ -3,23 +3,26 @@
 {% block title %}{{ parent() }} > {{ "community.manage"|trans }}{% endblock %}
 
 {% block header %}
-<i class="fa fa-cogs"></i>
-
-<h2>{{ "community.manage"|trans }}</h2>
-<h4>{{ "community.manageHelp"|trans }}</h4>
-<h5>{{ "community.validUntil"|trans({'%date%': app.user.currentCommunity.validUntil|date("date.fullFormat"|trans) }) }}</h5>
+<div class="title">
+  <h2>{{ "community.manage"|trans }}</h2>
+  <h3>{{ "community.manageHelp"|trans }}</h3>
+  <h4>{{ "community.validUntil"|trans({'%date%': app.user.currentCommunity.validUntil|date("date.fullFormat"|trans) }) }}</h4>
+</div>
 {% endblock %}
 
 {% block content %}
-<div class="content home clearfix">
 
   <section>
-    <a href="{{ path('invite') }}" class="btn btn-success"><i class="fa fa-user"></i> {{ "community.invite"|trans }}</a>
+    <div class="label">{{ "community.users"|trans }} :</div>
+    <div class="content">
+      {{ "community.usersCount"|trans({'%users%': usersCount }) }}
+      <p><a href="{{ path('invite') }}" class="button button-info"><i class="fa fa-user"></i> {{ "community.invite"|trans }}</a></p>
+    </div>
   </section>
 
-  <section class="colored">
-    <div class="sectionTitle">{{ "community.managers"|trans }} : </div>
-    <ul class="users sectionContent">
+  <section>
+    <div class="label">{{ "community.managers"|trans }} :</div>
+    <ul class="content">
     {% for managerCommunity in userCommunityManagers %}
      
         <li>
@@ -29,7 +32,7 @@
               <span><div>{{ managerCommunity.user.firstName }}</div><div>{{ managerCommunity.user.lastName }}</div></span>
             </div>
           </a>
-          <a class="removeUserIcon" href="{{ path('g_remove_manager_community', { 'uid': managerCommunity.community.id|to_uid, 'username' : managerCommunity.user.username, 'token': csrf_token('removeManager') }) }}"><i class="fa fa-trash-o fa-lg"></i></a>
+          <a class="removeUserIcon" href="{{ path('g_remove_manager_community', { 'uid': managerCommunity.community.id|to_uid, 'username' : managerCommunity.user.username, 'token': csrf_token('removeManager') }) }}"><i class="fa fa-times fa-lg"></i></a>
         </li>
 
     {% endfor %}
@@ -46,5 +49,4 @@
     </ul>
   </section>
 
-</div>
 {% endblock %}

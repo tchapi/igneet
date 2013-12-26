@@ -120,6 +120,7 @@ class CommunityController extends Controller
            
             } else {
                
+               var_dump($form->getErrors()); die;
                $this->get('session')->getFlashBag()->add(
                     'error',
                     $this->get('translator')->trans('information.not.valid', array(), 'errors')
@@ -318,10 +319,13 @@ class CommunityController extends Controller
                 // Retrieve all the actual managers from the community
                 $userCommunityManagers = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('community' => $community->getId(), 'deleted_at' => null, 'manager' => true));
 
+                // Counts the actual users in the community
+                $userCommunityUsers = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('community' => $community->getId(), 'deleted_at' => null));
+
                 $targetManagerAsBase64 = array('slug' => 'metaGeneralBundle:Community:addManager', 'external' => false, 'params' => array('guest' => false));
                 $targetManagerAsBase64 = base64_encode(json_encode($targetManagerAsBase64));
 
-                return $this->render('metaGeneralBundle:Community:manage.html.twig', array('userCommunityManagers' => $userCommunityManagers, 'targetManagerAsBase64' => $targetManagerAsBase64));
+                return $this->render('metaGeneralBundle:Community:manage.html.twig', array('userCommunityManagers' => $userCommunityManagers, 'usersCount' => count($userCommunityUsers), 'targetManagerAsBase64' => $targetManagerAsBase64));
 
             } else {
 

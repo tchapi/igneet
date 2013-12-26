@@ -3,11 +3,7 @@
 {% block title %}{{ parent() }} > {{ "private.space"|trans }} | {{ "community.home.title"|trans }}{% endblock %}
 
 {% block header %}
-<header class="home">
-  <div class="headerAvatarAndActions">
-    <div class="textAvatar"><i class="fa fa-home"></i></div>
-  </div>
-  <div class="objectHeader">
+  <div class="title">
     <h2>{{ "private.space"|trans }}</h2>
     {% if shared_projects %}
     <div class="alert alert-info">
@@ -21,42 +17,42 @@
     </div>
     {% endif %}
   </div>
-</header>
 {% endblock %}
 
 {% block content %}
-<div class="content home clearfix">
   <section>
-    <div class="headerAvatarAndActions">
-      <div class="textAvatar"><i class="fa fa-list"></i></div>
-    </div>
-    <div class="objectHeader">
+    <div class="label">
       <h2>{{ "private.space.project.title"|trans }}</h2>
+    </div>
+    <div class="content">
       <p>{{ "private.space.project.text"|trans }}</p>
-      <p><a href="{{ path('p_list_projects') }}" >{{ "browse.all"|trans }}</a></p>
-      <p><a href="{{ path('p_new_project') }}" class="btn btn-primary">{{ "private.space.project.create"|trans }}</a></p>
+      <div class="actions">
+        <a href="{{ path('p_list_projects') }}" class="button button-neutral">{{ "browse.all"|trans }}</a>
+        <a href="{{ path('p_new_project') }}" class="button button-success">{{ "private.space.project.create"|trans }}</a>
+      </div>
     </div>
   </section>
   <section>
-    <div class="headerAvatarAndActions">
-      <div class="textAvatar"><i class="fa fa-paperclip"></i></div>
-    </div>
-    <div class="objectHeader">
+    <div class="label">
       <h2>{{ "private.space.idea.title"|trans }}</h2>
+    </div>
+    <div class="content">
       <p>{{ "private.space.idea.text"|trans }}</p>
-      <p><a href="{{ path('i_list_ideas') }}" >{{ "browse.all"|trans }}</a></p>
-      <p><a href="{{ path('i_new_idea') }}" class="btn btn-primary">{{ "private.space.idea.create"|trans }}</a></p>
+      <div class="actions">
+        <a href="{{ path('i_list_ideas') }}" class="button button-neutral">{{ "browse.all"|trans }}</a>
+        <a href="{{ path('i_new_idea') }}" class="button button-success">{{ "private.space.idea.create"|trans }}</a>
+      </div>
     </div>
   </section>
   <section>
-    <div class="headerAvatarAndActions">
-      <div class="textAvatar"><i class="fa fa-group"></i></div>
-    </div>
-    <div class="objectHeader">
+    <div class="label">
       <h2>{{ "private.space.community.title"|trans }}</h2>
+    </div>
+    <div class="content">
       <p>{{ "private.space.community.text"|trans }}</p>
-      <p><a href="{{ path('g_create_community') }}" class="btn btn-success">{{ "private.space.community.create"|trans }}</a></p>
+      <div class="actions">
+        <a href="{{ path('g_create_community') }}" class="button button-success">{{ "private.space.community.create"|trans }}</a>
+      </div>
     </div>
   </section>
-</div>
 {% endblock %}

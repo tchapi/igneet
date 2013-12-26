@@ -5,15 +5,15 @@ private.space.new: "New to igneet ? You can browse these shared projects to lear
 private.space.project:
   title: "Projects"
   text: "In projects you can store information as lists, wiki, or just plain text, and add documents."
-  create: "Create a new project now"
+  create: "Create a new project"
 private.space.idea:
   title: "Ideas"
   text: "Ideas are meant to gather your thoughts on new products, services, or keep track of anything you like."
-  create: "Create a new idea now"
+  create: "Create a new idea"
 private.space.community:
   title: "Communities"
   text: "Communities are groups of user that can interact on common projects and ideas, and work together."
-  create: "Create a new community now"
+  create: "Create a new community"
 member.have.no.community: "You do not belong to any community at this time."
 guest: "Guest"
 guest.community.cannot:
@@ -57,6 +57,8 @@ community:
   new: "New community"
   createHelp: "Create a new community so you can work on ideas and projects in a team."
   managers: "Managers"
+  users: "Users"
+  usersCount: "There are currently %users% users in this community."
   add.manager: "Add a manager"
   manager:
     added: "%user% is now a manager of the community %community%."

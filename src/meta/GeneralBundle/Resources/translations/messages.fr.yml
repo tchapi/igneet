@@ -57,6 +57,8 @@ community:
   new: "Nouvelle communauté"
   createHelp: "Créez une nouvelle communauté pour travailler autour de projets et d'idées communes."
   managers: "Managers"
+  users: "Utilisateurs"
+  usersCount: "Il y a actuellement %users% utilisateurs dans cette communauté."
   add.manager: "Ajouter un manager"
   manager:
     added: "%user% est maintenant manager de la communauté %community%."

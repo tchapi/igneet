@@ -6,8 +6,14 @@
 
 // General rules
 *:focus { outline: 0 none; }
-input { border: none; }
+input { 
+    border: none;
+    @include placeholder {
+        color: $_muted;
+      }
+}
 input[type=text],input[type=email],input[type=password] {
+    width: 100%;
     &:disabled { 
         @include stripped-background(lighten($_muted,10%));
     }

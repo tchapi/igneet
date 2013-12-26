@@ -112,7 +112,7 @@ a {
 }
 h1, h2, h3, h4, h5, h6, p { font-weight : normal;  }
 em { color: $_muted; }
-form > em { padding: 10px 0; display: block; font-size: 0.85em; }
+form em { padding: 10px 0; display: block; font-size: 0.85em; }
 
 /* STANDARD LOGOS & SIZES */
 @for $i from 4 through 9 {
@@ -314,6 +314,7 @@ body.card > .content-container section {
       @include shift(0);
       margin-bottom: 5px;
     }
+    & > h2 { color: $_text-secondary; }
   }
   & > .content {
     @include span-columns(7 of 10);
@@ -326,6 +327,18 @@ body.card > .content-container section {
     @include media($mobile) {
       @include fill-parent();
       @include shift(0);
+    }
+    & > .actions {
+      a:first-child {
+        @include span-columns(3 of 7);
+      }
+      a:last-child {
+        @include shift(4 of 7);
+        @include span-columns(3 of 7);
+      }
+      a + a:last-child {
+        @include shift(1 of 7);
+      }
     }
   }
   & > .content-full {

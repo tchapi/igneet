@@ -82,6 +82,8 @@
   &:hover { box-shadow: 0 0 0px 3px rgba(0,0,0,0.15) inset; }
   &:active { box-shadow: 0 0 0px 3px rgba(0,0,0,0.30) inset; }
   &:focus { box-shadow: 0 0 0px 3px rgba(0,0,0,0.30) inset; }
+  &.button-neutral { background-color: $_muted !important; }
   &.button-danger { background-color: $_red !important; }
+  &.button-info { background-color: $_blue !important; }
   &.button-success { background-color: $_green !important; }
 }
