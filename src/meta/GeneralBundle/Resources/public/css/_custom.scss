@@ -111,9 +111,11 @@ a {
   text-decoration: none;
   &:hover { color: darken($_primary, 10%); }
 }
+menu, nav {
+  a:hover { color: $_muted; }
+}
 h1, h2, h3, h4, h5, h6, p { font-weight : normal;  }
 em { color: $_muted; }
-form em { padding: 10px 0; display: block; font-size: 0.85em; }
 
 /* STANDARD LOGOS & SIZES */
 @for $i from 4 through 9 {
@@ -236,14 +238,6 @@ body.card > .content-container > header {
       @include shift(0);
       @include fill-parent();
     }
-    & ul { 
-      list-style-type: none; 
-      & > li a {
-        $image-size: 20px;
-        line-height: $image-size;
-        & > img { vertical-align: top; width: $image-size; height: $image-size; display: inline-block; }
-      }
-    }
   }
 
   & > .info, & > .title {
@@ -301,7 +295,9 @@ body.card > .content-container section {
   padding-top: $gutter*2;
   padding-bottom: $gutter*2;
 
-  &:first-of-type { border-top: 1px solid $_background; }
+  &:first-of-type { 
+    border-top: 1px solid $_background;
+  }
   &:last-of-type { padding-bottom: $horizontal-padding; }
 
   @include media($tablet, $mobile) {
@@ -310,7 +306,7 @@ body.card > .content-container section {
     padding-top: $gutter;
     padding-bottom: $gutter;
   }
-
+  
   & > .label {
     @include span-columns(3 of 10);
     color: $_discrete;
@@ -369,12 +365,17 @@ body.card > .content-container section {
         }
       }
     }
+    & em { padding: 10px 0; display: block; font-size: 0.85em; }
   }
   & > .content-full {
     @include fill-parent();
     @include shift(0);
   }
 }
+
+/* Remove the border when an <aside> is present before the <section> */
+body.card > .content-container aside + section,
+body.card > .content-container aside + section:first-of-type { border: none; }
 
 /* When sections are wrapped in a FORM container */
 body.card > .content-container > form > section {
@@ -419,6 +420,41 @@ body.card > .content-container > form > section {
   }
   & > .label + .content {
     @include shift(0);
+  }
+}
+
+/* Aside spans the full width of the card container */
+body.card > .content-container aside {
+
+  @include row();   
+  @include fill-parent();
+  @include clearfix;
+  @include pad($column);
+
+  padding-top: $gutter*2;
+  padding-bottom: $gutter*2;
+
+  background: lighten($_background, 2%);
+  position: relative;
+
+  & .close {
+    position: absolute;
+    top: $gutter/2;
+    right: $gutter;
+    color: $_muted;
+    font-size: 2em;
+    cursor: pointer;
+    &:hover { color: $_secondary; }
+  }
+  & > .content-full {
+    & ul { 
+      list-style-type: none; 
+      & > li a {
+        $image-size: 20px;
+        line-height: $image-size;
+        & > img { vertical-align: top; width: $image-size; height: $image-size; display: inline-block; }
+      }
+    }
   }
 }
 

@@ -112,6 +112,14 @@
 {% endif %}
 
 <section>
+  <div class="label">{{ "user.alerts.title"|trans }} :</div>
+  <div class="content">
+    <a href="#" dismiss-reset="all">{{ "user.alerts.reinit"|trans }}</a>
+    <em>{{ "user.alerts.reinitHelp"|trans }}</em>
+  </div>
+</section>
+
+<section>
   <div class="label">{{ "user.delete"|trans }} : </div>
   <div class="content">
     <a class="button button-danger" data-confirm="{{ "user.deleteHelp"|trans }}" href="{{ path('u_delete_user_profile', { 'username': app.user.username, 'token': csrf_token('delete') }) }}">{{ "delete"|trans }}</a>

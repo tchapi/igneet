@@ -177,6 +177,10 @@ user:
     help: "All your account settings"
     saved: "Your settings have successfully been saved."
     problem.saving: "There was a problem while saving your settings."
+  alerts:
+    title: "Alerts & Warnings"
+    reinit: "Resets all displays"
+    reinitHelp: "Includes the list of welcome projects in your private space"
   digest:
     settings: "Digest settings"
     enable: "Enable email digests"

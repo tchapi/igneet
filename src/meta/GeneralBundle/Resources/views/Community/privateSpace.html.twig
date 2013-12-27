@@ -5,21 +5,26 @@
 {% block header %}
   <div class="title">
     <h2>{{ "private.space"|trans }}</h2>
-    {% if shared_projects %}
-    <div class="alert alert-info">
-      <p>{{ "private.space.new"|trans }}
-        <ul>
-        {% for project in shared_projects %}
-          <li><a href="{{ path('p_show_project', {uid: project.id|to_uid}) }}"><img src="{{ asset(project.getPicture()) }}" width="20px" height="20px"/> {{ project.name }}</a></li>
-        {% endfor %}
-        </ul>
-      </p>
-    </div>
-    {% endif %}
+    <h3>{{ "private.spaceHelp"|trans }}</h3>
   </div>
 {% endblock %}
 
 {% block content %}
+
+  {% if shared_projects %}
+  <aside id="shared_projects">
+    <span class="close" title="{{ "dismiss"|trans }}" dismiss="shared_projects">&times;</span>
+    <div class="content-full">
+      <p>{{ "private.space.new"|trans }}</p>
+      <ul>
+      {% for project in shared_projects %}
+        <li><a href="{{ path('p_show_project', {uid: project.id|to_uid}) }}"><img src="{{ asset(project.getPicture()) }}" width="20px" height="20px"/> {{ project.name }}</a></li>
+      {% endfor %}
+      </ul>
+    </div>
+  </aside>
+  {% endif %}
+
   <section>
     <div class="label">
       <h2>{{ "private.space.project.title"|trans }}</h2>

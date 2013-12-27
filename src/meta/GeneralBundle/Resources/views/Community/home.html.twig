@@ -4,29 +4,40 @@
 
 {% block javascripts %}
   {{ parent() }}
-<!--     {% if isManager %}
+  {% if isManager %}
     {% javascripts '@metaGeneralBundle/Resources/public/js-edit/editable.behaviour.js' 
             filter='?yui_js' %}
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
-    {% endif %} -->
+    {% endif %}
 {% endblock %}
 
 {% block header %}
-<header class="home">
 
-  <div class="headerAvatarAndActions">
-    {% if isManager %}<div class="changeAvatar"><a href="{{ path('g_edit_community_reset_picture', {'uid': app.user.currentCommunity.id|to_uid, 'token': csrf_token('resetPicture')  }) }}" title="{{ "picture.resetHelp"|trans }}"><i class="fa fa-trash-o"></i></a> | <a href="{{ path('g_choose_file', {'targetAsBase64': targetPictureAsBase64, 'token': csrf_token('edit') }) }}"><i class="fa fa-pencil"></i> {{ "picture.change"|trans }}</a></div>{% endif %}
-    <img src="{{ asset(app.user.currentCommunity.getPicture()) }}" width="150" height="150" class="avatar"/>
+  <div class="avatar">
+
+    <img src="{{ asset(app.user.currentCommunity.getPicture()) }}" />
+    {% if isManager %}
+      <a href="{{ path('g_edit_community_reset_picture', {'uid': app.user.currentCommunity.id|to_uid, 'token': csrf_token('resetPicture')  }) }}" title="{{ "picture.resetHelp"|trans }}"><i class="fa fa-trash-o fa-2x"></i></a>
+      <a href="{{ path('g_choose_file', {'targetAsBase64': targetPictureAsBase64, 'token': csrf_token('edit') }) }}" title="{{ "picture.changeHelp"|trans }}"><i class="fa fa-pencil fa-2x"></i></a>
+    {% endif %}
+
   </div>
 
-  <div class="communityInfo">
+  <div class="info">
 
-    <h2 class="ellipsis">{{ app.user.currentCommunity.name }}</h2>
-    <h4 class="ellipsis">{{ app.user.currentCommunity.headline }}</h4>
+    <h2>
+      <span{% if isManager %} data-url="{{ path('g_edit_community', {'token': csrf_token('edit') }) }}" data-name="name" data-last="{{ app.user.currentCommunity.name }}" contenteditable="true" rich="false"{% endif %}>{{ app.user.currentCommunity.name }}</span>
+    </h2>
+
+    <h3>
+      <span{% if isManager %} data-url="{{ path('g_edit_community', {'token': csrf_token('edit') }) }}" data-name="headline" placeholder="{{ "community.createForm.headlinePlaceholder"|trans }}" data-type="text" data-last="{{ app.user.currentCommunity.headline }}" contenteditable="true" rich="false"{% endif %} title="{{ app.user.currentCommunity.headline }}">{{ app.user.currentCommunity.headline }}</span>
+    </h3>
+
     <p>{{ app.user.currentCommunity.about }}</p>
 
   </div>
+
 
   {% if isManager %}
   <div class="communityActions">
@@ -35,11 +46,9 @@
   </div>
   {% endif %}
 
-</header>
 {% endblock %}
 
 {% block content %}
-<div class="content home clearfix">
 
   {% if not isGuest %}
   <section>
@@ -93,5 +102,4 @@
   </section>
   {% endif %}
 
-</div>
 {% endblock %}

@@ -24,6 +24,10 @@ g_upgrade_community:
     requirements:
       uid: "[0-9a-zA-Z]*"
 
+g_edit_community:
+    pattern:  /community/edit
+    defaults: { _controller: metaGeneralBundle:Community:edit }
+
 g_edit_community_reset_picture:
     pattern:  /community/reset/picture
     defaults: { _controller: metaGeneralBundle:Community:resetPicture }

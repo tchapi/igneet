@@ -72,11 +72,22 @@ class CommunityController extends Controller
                         'lastIdeas' => $lastIdeas,
                         'recentlyOnlineUsers' => $recentlyOnlineUsers));
 
-        } else {
+        } else { // Or in your private space ?
 
-            // Or in your private space ?
-            $projectRepository = $this->getDoctrine()->getRepository('metaProjectBundle:StandardProject');
-            $shared_projects = $projectRepository->findById($this->container->getParameter('shared.projects'));
+            $cookies = $request->cookies;
+            $shared_projects = true;
+
+            if ($cookies->has('igneet_dismiss'))
+            {   
+                $cookie = $cookies->get('igneet_dismiss');
+                $shared_projects = !($cookie['shared_projects'] == "true");
+            }
+
+            if ($shared_projects == true){
+                $projectRepository = $this->getDoctrine()->getRepository('metaProjectBundle:StandardProject');
+                $shared_projects = $projectRepository->findById($this->container->getParameter('shared.projects'));
+            }
+
             return $this->render('metaGeneralBundle:Community:privateSpace.html.twig', array( 'shared_projects' => $shared_projects));
         }
        
@@ -164,14 +175,15 @@ class CommunityController extends Controller
                 $objectHasBeenModified = false;
 
                 switch ($request->request->get('name')) {
-                    /*case 'name':
-                        $this->base['idea']->setName($request->request->get('value'));
+                    case 'name':
+                        $community->setName($request->request->get('value'));
                         $objectHasBeenModified = true;
                         break;
                     case 'headline':
-                        $this->base['idea']->setHeadline($request->request->get('value'));
+                        $community->setHeadline($request->request->get('value'));
                         $objectHasBeenModified = true;
                         break;
+                        /*
                     case 'about':
                         $this->base['idea']->setAbout($request->request->get('value'));
                         $deepLinkingService = $this->container->get('deep_linking_extension');

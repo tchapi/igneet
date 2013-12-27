@@ -33,6 +33,19 @@ $(document).ready(function(){
       }, 1);
   });
 
+  /*
+   * Dismiss & cookies
+   */
+  $("[dismiss]").on('click', function(){
+    targetId = $(this).attr('dismiss');
+    $("#"+targetId).slideUp();
+    document.cookie = "igneet_dismiss[" +  targetId + "]=true; path=/; expires=Wed, 1 Jan 2020 00:42:42 UTC;";
+  });
+  $("[dismiss-reset=all]").on('click', function(){
+    document.cookie = "igneet_dismiss[shared_projects]=false; expires=; path=/;"
+    // ** Others ? **
+  });
+
   // Choose a user - select box that allows for a choice not in the community
   $("select#communityUsername").change(function(){
     if ($(this).val() == -1 ){

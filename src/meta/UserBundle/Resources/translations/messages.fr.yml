@@ -177,6 +177,10 @@ user:
     help: "Tous les paramètres de votre compte"
     saved: "Vos paramètres ont bien été sauvegardés."
     problem.saving: "Il y a eu un problème lors de l'enregistrement de vos paramètres."
+  alerts:
+    title: "Messages informatifs"
+    reinit: "Réinitialiser l'affichage"
+    reinitHelp: "Inclus par exemple la liste des projets de bienvenue dans votre espace privé"
   digest:
     settings: "Résumés par mail"
     enable: "Activer l'envoi de résumés par mail"
