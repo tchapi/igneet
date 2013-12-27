@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "c728df997418a030c52d54d78c9a3dc8",
+    "hash": "a2ee16e7d847a388a0ac2ce426470145",
     "packages": [
         {
             "name": "dflydev/markdown",
@@ -1119,12 +1119,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "a66d0ed837cc3544c2ff500d11cd24c659b70b22"
+                "reference": "e92cb54c24e990c505be1b4af82e962d55d092df"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/a66d0ed837cc3544c2ff500d11cd24c659b70b22",
-                "reference": "a66d0ed837cc3544c2ff500d11cd24c659b70b22",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/e92cb54c24e990c505be1b4af82e962d55d092df",
+                "reference": "e92cb54c24e990c505be1b4af82e962d55d092df",
                 "shasum": ""
             },
             "require": {
@@ -1178,7 +1178,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2013-12-25 11:36:24"
+            "time": "2013-12-26 13:24:17"
         },
         {
             "name": "psr/log",
@@ -1268,61 +1268,6 @@
                 "distribution"
             ],
             "time": "2013-12-16 06:18:38"
-        },
-        {
-            "name": "sensio/framework-extra-bundle",
-            "version": "dev-master",
-            "target-dir": "Sensio/Bundle/FrameworkExtraBundle",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/sensiolabs/SensioFrameworkExtraBundle.git",
-                "reference": "27bd32449a198fc2be934ffd68300c107f71a6f2"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/27bd32449a198fc2be934ffd68300c107f71a6f2",
-                "reference": "27bd32449a198fc2be934ffd68300c107f71a6f2",
-                "shasum": ""
-            },
-            "require": {
-                "doctrine/common": "~2.2",
-                "symfony/framework-bundle": "~2.4"
-            },
-            "require-dev": {
-                "symfony/expression-language": "~2.4",
-                "symfony/security-bundle": "~2.4"
-            },
-            "suggest": {
-                "symfony/expression-language": "",
-                "symfony/security-bundle": ""
-            },
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Sensio\\Bundle\\FrameworkExtraBundle": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
-                }
-            ],
-            "description": "This bundle provides a way to configure your controllers with annotations",
-            "keywords": [
-                "annotations",
-                "controllers"
-            ],
-            "time": "2013-12-20 13:04:34"
         },
         {
             "name": "sensio/generator-bundle",
@@ -1653,12 +1598,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "6c0ec38a9b5e7266b6337120518d7d2c6f052f26"
+                "reference": "ef3ae9cf45679da5eb3dc71cae6bc2a08d8072ff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/6c0ec38a9b5e7266b6337120518d7d2c6f052f26",
-                "reference": "6c0ec38a9b5e7266b6337120518d7d2c6f052f26",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/ef3ae9cf45679da5eb3dc71cae6bc2a08d8072ff",
+                "reference": "ef3ae9cf45679da5eb3dc71cae6bc2a08d8072ff",
                 "shasum": ""
             },
             "require": {
@@ -1758,7 +1703,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2013-12-24 14:17:37"
+            "time": "2013-12-26 07:59:03"
         },
         {
             "name": "twig/extensions",
@@ -1813,12 +1758,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fabpot/Twig.git",
-                "reference": "6387fc457792f38189bdd5729b500772bbddfa4d"
+                "reference": "27f3e0fc1efd1dbaf6d10598d148d7ec3070b51d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fabpot/Twig/zipball/6387fc457792f38189bdd5729b500772bbddfa4d",
-                "reference": "6387fc457792f38189bdd5729b500772bbddfa4d",
+                "url": "https://api.github.com/repos/fabpot/Twig/zipball/27f3e0fc1efd1dbaf6d10598d148d7ec3070b51d",
+                "reference": "27f3e0fc1efd1dbaf6d10598d148d7ec3070b51d",
                 "shasum": ""
             },
             "require": {
@@ -1854,7 +1799,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2013-12-10 10:23:00"
+            "time": "2013-12-27 14:37:02"
         },
         {
             "name": "willdurand/expose-translation-bundle",
@@ -1863,22 +1808,22 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/willdurand/BazingaExposeTranslationBundle.git",
-                "reference": "a026f52db130f310d542154e9473105fa35c6e86"
+                "reference": "61fa1a3ada45fa42e22b960f128877127c3c6875"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/willdurand/BazingaExposeTranslationBundle/zipball/a026f52db130f310d542154e9473105fa35c6e86",
-                "reference": "a026f52db130f310d542154e9473105fa35c6e86",
+                "url": "https://api.github.com/repos/willdurand/BazingaExposeTranslationBundle/zipball/61fa1a3ada45fa42e22b960f128877127c3c6875",
+                "reference": "61fa1a3ada45fa42e22b960f128877127c3c6875",
                 "shasum": ""
             },
             "require": {
-                "symfony/console": "~2.0",
-                "symfony/finder": "~2.0",
-                "symfony/framework-bundle": "~2.0"
+                "symfony/console": "~2.1",
+                "symfony/finder": "~2.1",
+                "symfony/framework-bundle": "~2.1"
             },
             "require-dev": {
-                "symfony/browser-kit": "~2.0",
-                "symfony/yaml": "~2.0"
+                "symfony/browser-kit": "~2.1",
+                "symfony/yaml": "~2.1"
             },
             "type": "symfony-bundle",
             "extra": {
@@ -1905,9 +1850,10 @@
             "description": "A pretty nice way to expose your translation messages to your JavaScript.",
             "keywords": [
                 "javascript",
+                "symfony",
                 "translation"
             ],
-            "time": "2013-12-12 15:04:38"
+            "time": "2013-12-27 02:17:05"
         }
     ],
     "packages-dev": [
