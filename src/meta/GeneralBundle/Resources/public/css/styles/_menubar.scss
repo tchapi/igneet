@@ -134,7 +134,7 @@ nav[role=mobile]{
       padding: 0 $menu-padding;
       @include menu-button(false, true);
       & form { display: inline; }
-      & input { outline: 0; margin-left: $menu_padding/2;  }
+      & input { outline: 0; margin-left: $menu_padding/2; width: initial; }
     }
 
     /* inline list */
