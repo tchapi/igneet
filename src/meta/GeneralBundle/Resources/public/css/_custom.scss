@@ -12,100 +12,6 @@
 @import "redactor/_redactor";
 @import "imgareaselect/jquery.imgareaselect";
 
-body {
-  background-color: $_background;
-  font-family: 'gotham_book', 'Arial', sans-serif;
-
-  footer {
-    text-align: center;
-    padding: $gutter/2;
-    margin-top: $content-margin;
-    margin-bottom: $content-margin/2;
-    font-size: 0.8em;
-    color: $_text;
-    @include media($tablet, $mobile) { 
-      display: none; /* Beurk, but no other solution found yet */
-    }
-  }
-
-  &.no-menu {
-    background-color: $_background-dark;
-    footer {
-      color: $_text-dark;
-    }
-  }
-
-  /* Where content is inside a "card" when in desktop resolution */
-  &.card, &.no-menu {
-    /* CONTENT CONTAINER */
-    & > .content-container {
-      margin: 0 auto;
-      width: $main-width;
-      @include media($tablet, $mobile) { 
-        width: 100%;
-        & > *:not(nav) {
-          padding: 0px $gutter/2;
-        }
-      }
-      @include outer-container(); /* The grid is associated to content-container */
-
-      &.menu-push {
-        margin-top: $menu-height + $content-margin; 
-        @include media($tablet, $mobile) { 
-          margin-top: 0;
-        }
-        background-color: $_container;
-      }
-    }
-  }
-
-  /* Where content spans the full width of the window */
-  &.full {
-    .content-container {
-      background-color: $_container; /* Default, but should be overriden with specific selectors such as "user-list" later */
-      &.menu-push { 
-        margin-top: $menu-height;
-        @include media($tablet, $mobile) { 
-          margin-top: 0;
-        }
-      }
-      & > *:not(nav) { /* The grid is associated to the children elements instead of content-container */
-        margin: 0 auto;
-        width: $main-width;
-        @include media($tablet, $mobile) { 
-          width: 100%;
-          padding: 0px $gutter/2;
-        }
-        @include outer-container();
-      }
-    }
-  }
-
-  @include media($tablet, $mobile) {
-
-    .content-container{
-      @include transition (left 300ms ease-in-out);
-      position: fixed;
-      overflow-y: scroll;
-      top: 0px;
-      left: 0px;
-      width: 100%;
-      height: 100%;
-    }
-
-    /* Responsive */
-    &.menu-active menu { 
-      position: inherit;
-      opacity: 1;
-      left: 0px;
-    }
-
-    &.menu-active .content-container { left: $menu-mobile-width; }
-
-  }
-
-}
-
 a {
   color: $_primary;
   text-decoration: none;
@@ -141,16 +47,19 @@ a.button, input[type=submit].button, button {
   @include button();
 }
 
+@import "styles/structure";
+
 @import "styles/inputs";
 @import "styles/non-auth";
 @import "styles/menubar";
 
 @import "styles/editable";
-//@import "styles/card";
+
+
+// IN STRUCTURE
 
 $horizontal-padding: 70px;
-
-body.card > .content-container > header {
+body > .content-container header {
 
   @include row();
   padding-top: $horizontal-padding;
@@ -161,16 +70,7 @@ body.card > .content-container > header {
   }
 
   & > .avatar {
-    @include span-columns(2);
-    @include shift(1);
     position: relative;
-    @include media($tablet) {
-      @include span-columns(1);
-      @include shift(0);
-    }
-    @include media($mobile) {
-      display: none;
-    }
 
     & > img {
       @include fill-parent;
@@ -192,15 +92,6 @@ body.card > .content-container > header {
   }
 
   & > .info {
-    @include span-columns(7);
-    @include shift(1);
-    @include media($tablet) {
-      @include span-columns(3 of 4);
-      @include shift(0);
-    }
-    @include media($mobile) {
-      @include fill-parent();
-    }
 
     & .skills {
 
@@ -253,15 +144,6 @@ body.card > .content-container > header {
     }
   }
 
-  & > .title {
-    @include span-columns(10);
-    @include shift(1);
-    @include media($tablet, $mobile) {
-      @include shift(0);
-      @include fill-parent();
-    }
-  }
-
   & > .info, & > .title {
     & > h2 {
       color: $_primary;
@@ -306,21 +188,7 @@ body.card > .content-container > header {
 }
 
 /* When sections are directly under the container, and wrapped in another tag */
-body.card > .content-container section {
-
-  @include row();   
-  @include span-columns(10);
-  @include shift(1);
-  @include clearfix;
-
-  border-top: 1px solid lighten($_background,2%);
-  padding-top: $gutter*2;
-  padding-bottom: $gutter*2;
-
-  &:first-of-type { 
-    border-top: 1px solid $_background;
-  }
-  &:last-of-type { padding-bottom: $horizontal-padding; }
+body > .content-container section {
 
   @include media($tablet, $mobile) {
     @include fill-parent();
@@ -328,6 +196,13 @@ body.card > .content-container section {
     padding-top: $gutter;
     padding-bottom: $gutter;
   }
+  
+  border-top: 1px solid lighten($_background,2%);
+  padding-top: $gutter*2;
+  padding-bottom: $gutter*2;
+
+  &:first-of-type { border-top: 1px solid $_background; }
+  &:last-of-type { padding-bottom: $horizontal-padding; }
   
   & > .label {
     @include span-columns(3 of 10);
@@ -396,11 +271,11 @@ body.card > .content-container section {
 }
 
 /* Remove the border when an <aside> is present before the <section> */
-body.card > .content-container aside + section,
-body.card > .content-container aside + section:first-of-type { border: none; }
+body > .content-container aside + section,
+body > .content-container aside + section:first-of-type { border: none; }
 
 /* When sections are wrapped in a FORM container */
-body.card > .content-container > form > section {
+body > .content-container form > section {
 
   padding-top: $gutter/2;
   padding-bottom: $gutter/2;
@@ -446,7 +321,7 @@ body.card > .content-container > form > section {
 }
 
 /* Aside spans the full width of the card container */
-body.card > .content-container aside {
+body > .content-container aside {
 
   @include row();   
   @include fill-parent();
@@ -479,6 +354,99 @@ body.card > .content-container aside {
     }
   }
 }
+
+/* 
+ * Structure specific
+ */
+
+//@import "styles/card";
+body.card > .content-container header {
+
+  & > .avatar {
+    @include span-columns(2);
+    @include shift(1);
+    position: relative;
+    @include media($tablet) {
+      @include span-columns(1);
+      @include shift(0);
+    }
+    @include media($mobile) {
+      display: none;
+    }
+  }
+
+  & > .info {
+    @include span-columns(7);
+    @include shift(1);
+    @include media($tablet) {
+      @include span-columns(3 of 4);
+      @include shift(0);
+    }
+    @include media($mobile) {
+      @include fill-parent();
+    }
+  }
+
+  & > .title {
+    @include span-columns(10);
+    @include shift(1);
+    @include media($tablet, $mobile) {
+      @include shift(0);
+      @include fill-parent();
+    }
+  }
+
+}
+
+//@import "styles/full";
+body.full > .content-container header {
+
+  & > .avatar {
+    @include span-columns(2);
+    @include media($tablet) {
+      @include span-columns(1);
+    }
+    @include media($mobile) {
+      display: none;
+    }
+  }
+
+  & > .info {
+    @include span-columns(10);
+    @include shift(0);
+    @include media($tablet) {
+      @include span-columns(3 of 4);
+    }
+    @include media($mobile) {
+      @include fill-parent();
+    }
+  }
+
+  & > .title {
+    @include span-columns(12);
+    @include media($tablet, $mobile) {
+      @include fill-parent();
+    }
+  }
+
+}
+
+body.card > .content-container section {
+
+  @include row();   
+  @include span-columns(10);
+  @include shift(1);
+  @include clearfix;
+
+}
+
+body.full > .content-container section {
+
+  @include row();
+  border-top: none;
+  
+}
+
 
 // Page-specific :
 @import "styles/settings";

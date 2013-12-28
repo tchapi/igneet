@@ -12,20 +12,12 @@
     {% endjavascripts %}
     {% if base.canEdit %}
     {% javascripts '@metaGeneralBundle/Resources/public/js-edit/editable.behaviour.js'
-                   '@metaGeneralBundle/Resources/public/js-edit/markdown-editor/*' 
             filter='?yui_js' %}
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
     {% endif %}
 {% endblock %}
 
-{% block stylesheets %}
-  {{ parent() }}
-  {% stylesheets  'bundles/metageneral/css-edit/bootstrap-editable.css' 
-    filter='?yui_css,cssrewrite' %}
-          <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}" />
-  {% endstylesheets %}
-{% endblock %}
 
 {% block header %}
   <div class="headerAvatarAndActions">

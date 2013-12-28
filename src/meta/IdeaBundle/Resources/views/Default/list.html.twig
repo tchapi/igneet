@@ -3,11 +3,18 @@
 {% block title %}{{ parent() }} > {{ "idea.allIdeas"|trans }}{% endblock %}
 
 {% block header %}
-  <div class="headerAvatarAndActions">
-    <div class="textAvatar"><i class="fa fa-paperclip"></i></div>
+  
+  {% if app.user.currentCommunity is not null %}
+  <div class="avatar">
+    <img src="{{ asset(app.user.currentCommunity.getPicture()) }}" />
   </div>
-  <div class="objectHeader">
+  <div class="info">
+  {% else %}
+  <div class="title">
+  {% endif %}
+
     <h2>{% if archived %}{{ "idea.titleArchived"|trans }}{% else %}{{ "idea.title"|trans }}{% endif %}</h2>
+    
     <h4>
       {% if app.user.currentCommunity is not null %}
         {{ "idea.listHelp.community"|trans({ '%community%': app.user.currentCommunity.name}) }}
@@ -15,26 +22,33 @@
         {{ "idea.listHelp.privateSpace"|trans }}
       {% endif %}
     </h4>
-    <p>{{ "filters.sort"|trans }} :
-      <a href="{{ path(archived?'i_list_archived_ideas':'i_list_ideas', {'sort': 'newest', 'page' : pagination.page}) }}"><i class="fa fa-star"></i> {{ "filters.newest"|trans }}</a> - 
-      <a href="{{ path(archived?'i_list_archived_ideas':'i_list_ideas', {'sort': 'update', 'page' : pagination.page}) }}"><i class="fa fa-clock-o"></i> {{ "filters.recent"|trans }}</a> - 
-      <a href="{{ path(archived?'i_list_archived_ideas':'i_list_ideas', {'sort': 'alpha', 'page' : pagination.page}) }}"><i class="fa fa-font"></i> {{ "filters.alpha"|trans }}</a>
-    </p>
+
     <p>
     {% if not archived %}
-      <a href="{{ path('i_new_idea') }}" class="btn btn-success">{{ "idea.new"|trans }}</a>
-      <a href="{{ path('i_list_archived_ideas') }}" class="btn btn-warning">{{ "idea.view.archived"|trans }}</a>
+      <a href="{{ path('i_new_idea') }}" class="button"><i class="fa fa-pencil"></i> {{ "idea.new"|trans }}</a>
+      <a href="{{ path('i_list_archived_ideas') }}" class="button button-info"><i class="fa fa-archive"></i> {{ "idea.view.archived"|trans }}</a>
     {% else %}
-      <a href="{{ path('i_list_ideas') }}" class="btn btn-primary">{{ "idea.view.all"|trans }}</a>
+      <a href="{{ path('i_list_ideas') }}" class="button button-success">{{ "idea.view.all"|trans }}</a>
     {% endif %}
     </p>
+
   </div>
 {% endblock %}
 
 {% block content %}
+<div class="wrapper list">
+
 {% if ideas %}
+
+    <section>
+      {{ "filters.sort"|trans }}
+      <a href="{{ path(archived?'i_list_archived_ideas':'i_list_ideas', {'sort': 'newest', 'page' : pagination.page}) }}"><i class="fa fa-star"></i> {{ "filters.newest"|trans }}</a> /
+      <a href="{{ path(archived?'i_list_archived_ideas':'i_list_ideas', {'sort': 'update', 'page' : pagination.page}) }}"><i class="fa fa-clock-o"></i> {{ "filters.recent"|trans }}</a> /
+      <a href="{{ path(archived?'i_list_archived_ideas':'i_list_ideas', {'sort': 'alpha', 'page' : pagination.page}) }}"><i class="fa fa-font"></i> {{ "filters.alpha"|trans }}</a>
+    </section>
+
   {% for idea in ideas %}
-  <section class="listing">
+  <section>
 
     <a href="{{ path('i_show_idea', {'uid': idea.id|to_uid }) }}">
       <img src="{{ asset(idea.getPicture()) }}" width="100" height="100"/>
@@ -87,4 +101,6 @@
   {{ "idea.none"|trans }}
   </section>
 {% endif %}
+
+</div>
 {% endblock %}

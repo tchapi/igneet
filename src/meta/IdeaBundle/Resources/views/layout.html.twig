@@ -1,17 +1,16 @@
 {% extends '::base.html.twig' %}
+{% set template = 'full' %}
 
 {% block title %}{{ parent() }} > {{ "idea.title"|trans }}{% endblock %}
 
 {% block container %}
 
-<header class="idea">
-{% block header %}{% endblock %}
-</header>
-
-{% block navbar %}{% endblock %}
-
-<div class="idea">
-{% block content %}{% endblock %}
+<div class="wrapper">
+  <header>
+  {% block header %}{% endblock %}
+  </header>
 </div>
+
+{% block content %}{% endblock %}
 
 {% endblock %}

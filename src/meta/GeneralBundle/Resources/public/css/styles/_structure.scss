@@ -1,0 +1,102 @@
+/* ******************************************************************** */
+/*                             MAIN STRUCTURE                           */
+/* ******************************************************************** */
+
+body {
+  background-color: $_background;
+  font-family: 'gotham_book', 'Arial', sans-serif;
+
+  footer {
+    text-align: center;
+    padding: $gutter/2;
+    margin-top: $content-margin;
+    margin-bottom: $content-margin/2;
+    font-size: 0.8em;
+    color: $_text;
+    @include media($tablet, $mobile) { 
+      display: none; /* Beurk, but no other solution found yet */
+    }
+  }
+
+  &.no-menu {
+    background-color: $_background-dark;
+    footer {
+      color: $_text-dark;
+    }
+  }
+
+  /* Where content is inside a "card" when in desktop resolution */
+  &.card, &.no-menu {
+    /* CONTENT CONTAINER */
+    & > .content-container {
+      margin: 0 auto;
+      width: $main-width;
+      @include media($tablet, $mobile) { 
+        width: 100%;
+        & > *:not(nav) {
+          padding-left: $gutter/2;
+          padding-right: $gutter/2;
+        }
+      }
+      @include outer-container(); /* The grid is associated to content-container */
+
+      &.menu-push {
+        margin-top: $menu-height + $content-margin; 
+        @include media($tablet, $mobile) { 
+          margin-top: 0;
+        }
+        background: $_container;
+      }
+    }
+  }
+
+  /* Where content spans the full width of the window */
+  &.full {
+    .content-container {
+      background: $_container; 
+      &.menu-push { 
+        margin-top: $menu-height;
+        @include media($tablet, $mobile) { 
+          margin-top: 0;
+        }
+      }
+      & > .wrapper { /* The grid is associated to the children elements instead of content-container */
+        width: 100%;
+        @include media($tablet, $mobile) { 
+          padding: 0px $gutter/2;
+        }
+        &.list {
+          background: $_background;
+        }
+        & > * {
+          @include outer-container();
+        }
+
+      }
+    }
+  }
+
+  @include media($tablet, $mobile) {
+
+    .content-container{
+      @include transition (left 300ms ease-in-out);
+      position: fixed;
+      overflow-y: scroll;
+      top: 0px;
+      left: 0px;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Responsive */
+    &.menu-active menu { 
+      position: inherit;
+      opacity: 1;
+      left: 0px;
+    }
+
+    &.menu-active .content-container { left: $menu-mobile-width; }
+
+  }
+
+}
