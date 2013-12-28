@@ -189,13 +189,6 @@ body > .content-container header {
 
 /* When sections are directly under the container, and wrapped in another tag */
 body > .content-container section {
-
-  @include media($tablet, $mobile) {
-    @include fill-parent();
-    @include shift(0);
-    padding-top: $gutter;
-    padding-bottom: $gutter;
-  }
   
   border-top: 1px solid lighten($_background,2%);
   padding-top: $gutter*2;
@@ -262,7 +255,16 @@ body > .content-container section {
         }
       }
     }
-    & em { padding: 10px 0; display: block; font-size: 0.85em; }
+    & em { 
+      padding: 10px 0 5px 0;
+      display: block;
+      font-size: 0.85em;
+      &.error { color: $_red; }
+      &.help { color: $_muted; }
+      & + em {
+        padding-top: 0;
+      }
+    }
   }
   & > .content-full {
     @include fill-parent();
@@ -314,6 +316,7 @@ body > .content-container form > section {
       @include fill-parent();
       @include shift(0); 
     }
+    & input.error { border-color: $_red; }
   }
   & > .label + .content {
     @include shift(0);
@@ -437,6 +440,13 @@ body.card > .content-container section {
   @include span-columns(10);
   @include shift(1);
   @include clearfix;
+  
+  @include media($tablet, $mobile) {
+    @include fill-parent();
+    @include shift(0);
+    padding-top: $gutter;
+    padding-bottom: $gutter;
+  }
 
 }
 
@@ -444,7 +454,7 @@ body.full > .content-container section {
 
   @include row();
   border-top: none;
-  
+
 }
 
 

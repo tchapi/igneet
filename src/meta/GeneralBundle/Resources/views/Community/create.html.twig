@@ -11,15 +11,15 @@
     <section>
       <div class="label">{{ label|trans }} :</div>
       <div class="content">
-        {{ form_widget(form) }}
+        {{ form_widget(form, { 'attr' : { 'class': errors?'error':'' }}) }}
+        {% if errors %}
+          <em class="error"><i class="fa fa-exclamation-triangle"></i> {{ errors[0].message|trans }}</em>
+        {% endif %}
         {% if required or attr.help is defined %}
-            <em class="help">{% if required %}* {{ "required"|trans }}.{% endif %} {% if attr.help is defined %}{{ attr.help|trans }}{% endif %}</em>
+          <em class="help">{% if required %}* {{ "required"|trans }}.{% endif %} {% if attr.help is defined %}{{ attr.help|trans }}{% endif %}</em>
         {% endif %}
       </div>
     </section>
-    {% if errors %}
-    <div class="error"><i class="fa fa-exclamation-triangle"></i> {{ errors[0].message|trans }}</div>
-    {% endif %}
 
 {% endblock form_row %}
 
@@ -31,7 +31,6 @@
 {% endblock %}
 
 {% block content %}
-
   <form action="{{ path('g_create_community') }}" method="post" {{ form_enctype(form) }}>
       {{ form_rest(form) }}
     <section>

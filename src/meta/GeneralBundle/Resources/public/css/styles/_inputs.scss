@@ -12,14 +12,13 @@ input {
         color: $_muted;
       }
 }
-input[type=text],input[type=email],input[type=password] {
-    width: 100%;
-    &:disabled { 
-        @include stripped-background(lighten($_muted,10%));
+form {
+    input[type=text], input[type=email],input[type=password], input[type=file], select {
+        width: 100%;
+        &:disabled { 
+            @include stripped-background(lighten($_muted,10%));
+        }
     }
-}
-input[type=file]{
-    width: 100%;
 }
 
 // Checkboxes
