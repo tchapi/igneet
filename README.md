@@ -15,29 +15,6 @@ Copyright (c) 2008-2013 Michal Wojciechowski (odyniec.net)
 
 Dual licensed under the MIT and GPL licenses.
 
-- - - 
-
-### X-editable - https://github.com/vitalets/x-editable
-
-Copyright (c) 2012 Vitaliy Potapov
-
-Licensed under the MIT licenses.
-
-- - - 
-
-### Bootstrap - http://twitter.github.com/bootstrap/
-
-Designed and built with all the love in the world by @mdo and @fat.
-
-Code licensed under Apache License v2.0, documentation under CC BY 3.0.
-
-- - - 
-
-### Select2 - http://ivaynberg.github.com/select2/
-
-Select2 is licensed under the Apache Software Foundation License Version 2.0 and GPL Version 2.0.
-
-Coded by Igor Vaynberg.
 
 - - - 
 
@@ -68,7 +45,9 @@ The Font Awesome pictograms are licensed under the CC BY 3.0 License - http://cr
 ### Nestable jQuery Plugin - https://github.com/dbushell/Nestable
 
 Copyright (c) 2013 David Bushell - http://dbushell.com/
+
 Contributions by tchapi (https://github.com/tchapi) - https://github.com/tchapi/Nestable
+
 Dual-licensed under the BSD or MIT licenses
 
 - - -
@@ -112,13 +91,28 @@ by http://knplabs.com/
 
 - - -
 
-### Zen Grids - next.zengrids.com
+### Bourbon & Neat
 
-This code is under the GPL license. 
+Bourbon and NEAT are maintained and funded by thoughtbot, inc.
 
-Built by @JohnAlbin
+Bourbon and NEAT are Copyright © 2011-2013 thoughtbot under the MIT License. It is free software, and may be redistributed under the terms specified in the LICENSE file.
 
 - - -
+
+### Alertify
+
+alertify.js is licensed under MIT, copyright © Fabien Doiron
+
+- - -
+
+### Redactor.js
+
+Redactor below version 7.6.2 is under the MIT License.
+
+See : https://github.com/html5cat/redactor-js
+
+- - -
+
 
 For the static site only :
 
