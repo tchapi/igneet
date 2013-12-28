@@ -49,22 +49,13 @@ Todo - entité "CommonList":
 
  ☐ Ajax pour new item, new list avec input a la place du 'New item' ?
  ☐ Faire un routing pour les listItems qui 'hightlight' le bon list item
-
-Todo - entité "Wiki":
-
- ☐ Ajax pour new wiki page ?
-
-Todo - Home :
-
- ☐ Home : doit driver l'utilisateur en avant
  ☐ listes : reconnaitre les urls en mettre un lien pour y aller directement a coté ;)
  ☐ lien vers des droplr avec apercu auto
    \_ tout ca doit se faire en JS a priori
 
-Todo - Community:
+Todo - entité "Wiki":
 
- ☐ Commentaires
-   \_ CommunityComment = shoutbox-like
+ ☐ Ajax pour new wiki page ?
 
 Todo - Search:
 
