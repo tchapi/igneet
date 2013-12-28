@@ -440,7 +440,7 @@ body.card > .content-container section {
   @include span-columns(10);
   @include shift(1);
   @include clearfix;
-  
+
   @include media($tablet, $mobile) {
     @include fill-parent();
     @include shift(0);
@@ -455,6 +455,10 @@ body.full > .content-container section {
   @include row();
   border-top: none;
 
+  @include media($tablet, $mobile) {
+    padding-top: $gutter;
+    padding-bottom: $gutter;
+  }
 }
 
 

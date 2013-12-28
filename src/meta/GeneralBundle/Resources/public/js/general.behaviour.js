@@ -20,10 +20,8 @@ $(document).ready(function(){
   $("li.dropdown > a").on('click', function(e){
     if (!($("nav[role=mobile]").is(':visible'))) {
       $(this).parent().toggleClass("active").find("ul").toggle().focus();
-      e.preventDefault();
-    } else {
-      e.preventDefault();
     }
+    e.preventDefault();
   });
 
   $("li.dropdown > ul").focusout(function(){
@@ -67,7 +65,7 @@ $(document).ready(function(){
   });
 
   // Select all of shortcode when visible
-  $("#shortcode-trigger").click(function(){
+  $("#shortcode-trigger").click(function(e){
     $("#shortcode").fadeToggle(200, function(){
 
       if ($("#shortcode").is(":visible")){
@@ -78,6 +76,7 @@ $(document).ready(function(){
       }
 
     });
+    e.preventDefault();
   });
 
 });
