@@ -193,18 +193,19 @@ $(document).ready(function(){
         displayResults(results, target.parent().parent());
       }
     });
-    $(document).on('click', "ul#results li", function(){
-      target = $(this).parent('ul').parents('ul');
-      name = target.attr("data-name");
-      key = $(this).attr("rel");
-      url = target.attr("data-url");
-      value = "add";
-      saveData({url: url, name: name, key: key, value: value}, function(){
-        var result = $.grep(editableListsData[name], function(n){ return n.value == key; });
-        target.children().last().before("<li rel='" + key + "' style='border: 1px solid #" + result[0].color + ";'><a href='#' class='remove'><i class='fa fa-times'></i></a>" + result[0].text + "</li>");
-        display(target.find('li > span > a'),false);
-      });
+  // We bind to document because we don't have the element yet
+  $(document).on('click', "ul#results li", function(){
+    target = $(this).parent('ul').parents('ul');
+    name = target.attr("data-name");
+    key = $(this).attr("rel");
+    url = target.attr("data-url");
+    value = "add";
+    saveData({url: url, name: name, key: key, value: value}, function(){
+      var result = $.grep(editableListsData[name], function(n){ return n.value == key; });
+      target.children().last().before("<li rel='" + key + "' style='border: 1px solid #" + result[0].color + ";'><a href='#' class='remove'><i class='fa fa-times'></i></a>" + result[0].text + "</li>");
+      display(target.find('li > span > a'),false);
     });
+  });
 
   /* Delete behaviours
    * to catch and two-stepize deletion

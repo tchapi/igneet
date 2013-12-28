@@ -18,10 +18,12 @@ $(document).ready(function(){
     Sub menu / Dropdowns 
   */
   $("li.dropdown > a").on('click', function(e){
-    if (!($("nav[role=mobile]").is(':visible')))
+    if (!($("nav[role=mobile]").is(':visible'))) {
       $(this).parent().toggleClass("active").find("ul").toggle().focus();
-    else
       e.preventDefault();
+    } else {
+      e.preventDefault();
+    }
   });
 
   $("li.dropdown > ul").focusout(function(){
