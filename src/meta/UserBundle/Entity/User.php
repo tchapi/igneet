@@ -789,16 +789,13 @@ class User implements AdvancedUserInterface
     }
 
     /**
-     * Clear all skills
+     * Has the user got this skill ?
      *
-     * @return User 
+     * @return boolean 
      */
-    public function clearSkills()
+    public function hasSkill(\meta\UserBundle\Entity\Skill $skill)
     {
-        foreach ($this->skills as $skill) {
-            $this->removeSkill($skill);
-        }
-        return $this;
+        return $this->skills->contains($skill);
     }
 
     /**

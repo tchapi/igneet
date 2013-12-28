@@ -36,7 +36,7 @@ user:
     title: "Compétences"
     none: "Aucune compétence declarée."
     help: "Ajoutez vos compétences"
-    emptyText: "Ajouter des compétences"
+    placeholder: "Écrivez ..."
   email: 
     title: "Votre mail"
     registered: "Cet email est déjà utilisé."

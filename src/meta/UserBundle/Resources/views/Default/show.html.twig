@@ -39,16 +39,21 @@
     <div class="skills">
       {% if user.skills|length > 0 %}
         {% spaceless %}
-        <ul{% if canEdit %} data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" data-emptytext="{{ "user.skills.emptyText"|trans }}" data-name="skills"{% endif %}>
+        <ul{% if canEdit %} data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" data-emptytext="{{ "user.skills.emptyText"|trans }}" contenteditable="list" data-name="skills"{% endif %}>
         {% for skill in user.skills %}
           <li style="border: 1px solid #{{ skill.color }}" rel="{{ skill.slug }}">
           {% if canEdit %}
-            <a href=""><i class="fa fa-times"></i></a>  
+            <a href="#" class="remove"><i class="fa fa-times"></i></a>  
           {% endif %}
           {{ (skill.slug ~ ".name")|trans({}, 'skills') }}</li>
         {% endfor %}
         {% if canEdit %}
-          <li><a href=""><i class="fa fa-plus"></i></a></li>
+          <li><a href="#" class="add" data-url="{{ path('u_list_all_skills')}}"><i class="fa fa-plus"></i></a>
+            <span style="display: none;">
+              <a href="#"><i class="fa fa-times"></i></a>
+              <input type="text" id="skill" placeholder="{{ "user.skills.placeholder"|trans }}"/>
+            </span>
+          </li>
         {% endif %}
         </ul>
         {% endspaceless %}

@@ -222,9 +222,31 @@ body.card > .content-container > header {
           margin: 2px;
           border-radius: $border-radius;
           border: 1px solid $_muted;
+          position: relative;
           & a {
             color: $_muted;
+            display: inline-block;
             &:hover { color: $_text; }
+          }
+          & > span > input { 
+            width: initial; 
+            border: none;
+            padding: 0; 
+            margin-left: 4px;
+            &.valid { color: $_green; }
+          }
+          & > ul#results {
+            background: white;
+            border-radius: $border-radius;
+            display: block;
+            position: absolute;
+            top: 21px;
+            left: 15px;
+            & > li { 
+              display: block; 
+              cursor: pointer;
+              &:hover { background: $_muted;}
+            }
           }
         }
       }

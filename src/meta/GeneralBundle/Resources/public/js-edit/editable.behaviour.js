@@ -6,22 +6,22 @@ $(document).ready(function(){
   timers = {};
   saveDelay = 1000; // milliseconds
 
-  var saveData = function(dataArray) {
+  var saveData = function(dataArray, callback) {
 
-    var process = function(data, defaultMessage) {
+    var process = function(data, type, defaultMessage) {
       if (data) {
         try { 
           data = JSON.parse(data); 
           if (data.redirect) {
             window.location.replace(data.redirect);
           } else {
-            alertify.success(data.message);
+            alertify.log(data.message, type);
           }
         } catch(err) { // In case the data is not JSON, we pass
-          alertify.success(defaultMessage);
+          alertify.log(defaultMessage, type);
         }
       } else {
-        alertify.success(defaultMessage);
+        alertify.log(defaultMessage, type);
       }
     };
 
@@ -33,11 +33,12 @@ $(document).ready(function(){
     })
     .success(function(data, config) {
       $("[data-name=" + dataArray["name"] + "]").attr("data-last", dataArray["value"]);
-      process(data, Translator.get('alert.changes.saved'));
+      process(data, "success", Translator.get('alert.changes.saved'));
+      if (callback) callback();
     })
-    .error(function(errors) {
+    .error(function(data) {
       $("[data-name=" + dataArray["name"] + "]").html($("[data-name=" + dataArray["name"] + "]").attr("data-last"));
-      process(data, Translator.get('alert.error.saving.changes'));
+      process(data, "error", Translator.get('alert.error.saving.changes'));
     });
 
   };
@@ -68,7 +69,7 @@ $(document).ready(function(){
       if (e.which == '13'){ // Trigger a save with the Return key
         e.preventDefault(); 
         clearInterval(timers[name]);
-        if (last !== value) { saveData({url: url, name: name, key: key, last: last, value: value}); }
+        if (last !== value) { saveData({url: url, name: name, key: key, value: value}); }
       } else {
         catchChange({url: url, name: name, key: key, last: last, value: value});
       }
@@ -131,6 +132,79 @@ $(document).ready(function(){
     });
   }
 
+  /*
+   * ul / li editables : skills
+   */
+  var displayResults = function(results, element) {
+    element.find('ul').remove();
+    element.append('<ul id="results"></ul>');
+    for (i = 0; i < Math.min(10,results.length); i++) {
+      $("#results").append("<li rel='" + results[i].value + "' style='border: 1px solid #" + results[i].color + ";'>" + results[i].text+"</li>");
+    }
+  }
+  var display = function(triggerElement, boolean){
+    if (boolean){
+      // Shows the input
+      triggerElement.next('span').show().find('input').val("").focus();
+      triggerElement.hide();
+    } else {
+      // Hides the input
+      triggerElement.parent().hide();
+      triggerElement.parent().parent().find('a.add').show();
+      // Removes the list
+      $("ul#results").remove();
+    }
+  }
+  // Remove an element
+  $("ul[contenteditable=list] > li > a.remove").on('click', function(){
+    target = $(this).parent();
+    name = target.parent().attr("data-name");
+    key = target.attr("rel");
+    url = target.parent().attr("data-url");
+    value = "remove";
+    saveData({url: url, name: name, key: key, value: value}, function(){
+      target.remove();
+    });
+  });
+  // Add an element
+  editableListsData = {};
+  $("ul[contenteditable=list] > li > a.add").on('click', function(){
+    display($(this),true);
+    // Gets the list
+    name = $(this).parents('ul').attr("data-name");
+    $.getJSON($(this).attr("data-url"), function(data) {
+      editableListsData[name] = data;
+    });
+  });
+  $("ul[contenteditable=list] > li > span > a").on('click', function(){
+    display($(this),false);
+  });
+  $("ul[contenteditable=list] > li > span > input")
+    .on("keyup", function(e) {
+      if (e.which == '13'){ // Trigger a save with the Return key
+        e.preventDefault();
+      } else {
+        target = $(this);
+        name = target.parents('ul').attr("data-name");
+        search = target.val().toLowerCase();
+        results = $.grep(editableListsData[name], function(n) {
+          return (n.text.toLowerCase().indexOf(search) >= 0 && target.parents('ul').find('li[rel=' + n.value + ']').length == 0);
+        })
+        displayResults(results, target.parent().parent());
+      }
+    });
+    $(document).on('click', "ul#results li", function(){
+      target = $(this).parent('ul').parents('ul');
+      name = target.attr("data-name");
+      key = $(this).attr("rel");
+      url = target.attr("data-url");
+      value = "add";
+      saveData({url: url, name: name, key: key, value: value}, function(){
+        var result = $.grep(editableListsData[name], function(n){ return n.value == key; });
+        target.children().last().before("<li rel='" + key + "' style='border: 1px solid #" + result[0].color + ";'><a href='#' class='remove'><i class='fa fa-times'></i></a>" + result[0].text + "</li>");
+        display(target.find('li > span > a'),false);
+      });
+    });
 
   /* Delete behaviours
    * to catch and two-stepize deletion

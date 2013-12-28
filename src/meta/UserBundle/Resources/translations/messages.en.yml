@@ -36,7 +36,7 @@ user:
     title: "Skills"
     none: "No skills added yet."
     help: "List your skills"
-    emptyText: "Add skills"
+    placeholder: "Start typing ..."
   email: 
     title: "Your email"
     registered: "This email is already registered."

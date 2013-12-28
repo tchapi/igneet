@@ -525,16 +525,17 @@ class DefaultController extends Controller
                     $needsRedirect = true;
                     break;
                 case 'skills':
-                    $skillSlugsAsArray = $request->request->get('value');
-                    
                     $repository = $this->getDoctrine()->getRepository('metaUserBundle:Skill');
-                    $skills = $repository->findSkillsByArrayOfSlugs($skillSlugsAsArray);
+                    $skill = $repository->findOneBySlug($request->request->get('key'));
                     
-                    $authenticatedUser->clearSkills();
-                    foreach($skills as $skill){
+                    if ($request->request->get('value') == 'remove' && $authenticatedUser->hasSkill($skill)) {
+                        $authenticatedUser->removeSkill($skill);
+                        $objectHasBeenModified = true;
+                    } else if ($request->request->get('value') == 'add' && !$authenticatedUser->hasSkill($skill)) {
                         $authenticatedUser->addSkill($skill);
+                        $objectHasBeenModified = true;
                     }
-                    $objectHasBeenModified = true;
+
                     break;
             }
 
@@ -705,7 +706,7 @@ class DefaultController extends Controller
     }
 
     /*
-     * List all skills (for X-editable)
+     * List all skills (for autocompletion in javascript)
      */
     public function listSkillsAction(Request $request)
     {
@@ -718,7 +719,7 @@ class DefaultController extends Controller
             $skillsAsArray = array();
 
             foreach($skills as $skill){
-                $skillsAsArray[] = array('value' => $skill->getSlug(), 'text' => $this->get('translator')->trans($skill->getSlug() . '.name', array(), 'skills'));
+                $skillsAsArray[] = array('value' => $skill->getSlug(), 'text' => $this->get('translator')->trans($skill->getSlug() . '.name', array(), 'skills'), 'color' => $skill->getColor());
             }
 
             return new Response(json_encode($skillsAsArray));
