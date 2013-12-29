@@ -97,8 +97,9 @@
   {% render(controller("metaGeneralBundle:Default:pagination",{ 'route': archived?'i_list_archived_ideas':'i_list_ideas', 'page' : pagination.page, 'total' : pagination.totalIdeas, 'params' : {'sort': sort } })) %}
   </section>
 {% else %}
-  <section>
+  <section class="none">
   {{ "idea.none"|trans }}
+  <a href="{{ path('i_new_idea') }}">{{ "idea.none.create"|trans }}</a>
   </section>
 {% endif %}
 

@@ -1,8 +1,8 @@
 $(document).ready(function(){
 
   /*
-    Responsive slide menu
-  */
+   * Responsive slide menu
+   */
   var $menu_trigger = $(".menu-trigger");
   if ( typeof $menu_trigger !== 'undefined' ) {
     $menu_trigger.on('click', function() {
@@ -15,8 +15,8 @@ $(document).ready(function(){
   }
 
   /* 
-    Sub menu / Dropdowns 
-  */
+   * Sub menu / Dropdowns 
+   */
   $("li.dropdown > a").on('click', function(e){
     if (!($("nav[role=mobile]").is(':visible'))) {
       $(this).parent().toggleClass("active").find("ul").toggle().focus();

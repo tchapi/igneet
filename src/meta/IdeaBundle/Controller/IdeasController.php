@@ -78,7 +78,7 @@ class IdeasController extends Controller
         $ideas = $repository->findIdeasInCommunityForUser(array( 'community' => $community, 'user' => $authenticatedUser, 'archived' => $archived, 'page' => $page, 'maxPerPage' => $maxPerPage, 'sort' => $sort));
 
         $pagination = array( 'page' => $page, 'totalIdeas' => $totalIdeas);
-        return $this->render('metaIdeaBundle:Default:list.html.twig', array('ideas' => $ideas, 'archived' => $archived, 'pagination' => $pagination, 'sort' => $sort));
+        return $this->render('metaIdeaBundle:Ideas:list.html.twig', array('ideas' => $ideas, 'archived' => $archived, 'pagination' => $pagination, 'sort' => $sort));
 
     }
 
@@ -134,7 +134,7 @@ class IdeasController extends Controller
 
         }
 
-        return $this->render('metaIdeaBundle:Default:create.html.twig', array('form' => $form->createView()));
+        return $this->render('metaIdeaBundle:Ideas:create.html.twig', array('form' => $form->createView()));
 
     }
 

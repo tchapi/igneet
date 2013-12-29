@@ -48,6 +48,10 @@ g_remove_manager_community:
     requirements:
       uid: "[0-9a-zA-Z]*"
 
+g_invite:
+    pattern: /community/invite
+    defaults: { _controller: metaGeneralBundle:Community:invite }
+
 # Language
 
 g_switch_language:

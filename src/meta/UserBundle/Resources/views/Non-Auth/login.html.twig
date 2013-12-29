@@ -34,10 +34,10 @@
     <div class="error"><i class="fa fa-exclamation-triangle"></i> {{ error.message|trans({},'errors') }}</div>
     {% endif %}
 
-    <aside>
+    <div class="recover">
       <a href="{{ path('recover') }}" /> {{ "user.login.recover"|trans }} </a>
       <!-- <a href="{{ path('reactivate') }}" /> {{ "user.login.reactivate"|trans }} </a> -->
-    </aside>
+    </div>
 
     <a class="signup" href="{{ path('u_signup_choice') }}" /> {{ "user.login.signup"|trans }}</a>
     <input type="submit" value="{{ "user.login.signin"|trans }}" class="button"/>

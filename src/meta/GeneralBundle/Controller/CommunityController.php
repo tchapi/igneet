@@ -315,6 +315,10 @@ class CommunityController extends Controller
         return $this->redirect($this->generateUrl('g_home_community'));
 
     }
+
+    /*
+     * Manages the community
+     */
     public function manageAction()
     {
 
@@ -358,6 +362,161 @@ class CommunityController extends Controller
                 );
 
                 return $this->redirect($this->generateUrl('g_home_community'));
+        }
+
+    }
+
+    /*
+     * Display invite page or invite a user in a community by username or email
+     */
+    public function inviteAction(Request $request)
+    {
+
+        $authenticatedUser = $this->getUser();
+        $community = $authenticatedUser->getCurrentCommunity();
+
+        if (!is_null($community)){
+            $userCommunityManager = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'manager' => true, 'deleted_at' => null));
+        } else {
+
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $this->get('translator')->trans('user.invitation.privatespace')
+            );
+
+            return $this->redirect($this->generateUrl('g_home_community'));
+        
+        }
+        
+        if ( !is_null($community) && $userCommunityManager ) {
+
+            if ($request->isMethod('POST')) {
+            
+                // Gets mail or username
+                $mailOrUsername = $request->request->get('mailOrUsername');
+                $isEmail = filter_var($mailOrUsername, FILTER_VALIDATE_EMAIL);
+
+                // It might be a user already
+                $repository = $this->getDoctrine()->getRepository('metaUserBundle:User');
+                $em = $this->getDoctrine()->getManager();
+
+                if($isEmail){
+                    $user = $repository->findOneByEmail($mailOrUsername);
+                } else {
+                    $user = $repository->findOneByUsername($mailOrUsername);
+                }
+
+                if ($user && !$user->isDeleted()) {
+
+                    $mailOrUsername = $user->getEmail();
+                    $token = null;
+
+                    $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $user->getId(), 'community' => $community->getId(), 'guest' => false, 'deleted_at' => null));
+
+                    $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $user->getId(), 'community' => $community->getId(), 'guest' => true, 'deleted_at' => null));
+
+                    // If the user is already in the community
+                    if ($userCommunity){
+
+                        $this->get('session')->getFlashBag()->add(
+                            'warning',
+                            $this->get('translator')->trans('user.already.in.community', array( '%user%' => $user->getFullName(), '%community%' => $community->getName() ))
+                        );
+
+                        return $this->redirect($this->generateUrl('g_invite'));
+
+                    // If the user is already a guest in the community
+                    } elseif ($userCommunityGuest) {
+
+                        // User is not guest anymore, we already have a userCommunity object
+                        $userCommunityGuest->setGuest(false);
+                        $logService = $this->container->get('logService');
+                        $logService->log($this->getUser(), 'user_enters_community', $user, array( 'community' => array( 'logName' => $community->getLogName(), 'identifier' => $community->getId()) ) );
+                            
+                        $this->get('session')->getFlashBag()->add(
+                            'success',
+                            $this->get('translator')->trans('user.belonging.community', array( '%user%' => $user->getFullName(), '%community%' => $community->getName() ))
+                        );
+
+                        $community->extendValidityBy($this->container->getParameter('community.viral_extension'));
+
+                    // The user has no link with the current community
+                    } else {
+
+                        // Creates the userCommunity
+                        $userCommunity = new UserCommunity();
+                        $userCommunity->setUser($user);
+                        $userCommunity->setCommunity($community);
+                        $userCommunity->setGuest(false);
+
+                        $em->persist($userCommunity);
+
+                        $logService = $this->container->get('logService');
+                        $logService->log($this->getUser(), 'user_enters_community', $user, array( 'community' => array( 'logName' => $community->getLogName(), 'identifier' => $community->getId()) ) );
+                            
+                        $this->get('session')->getFlashBag()->add(
+                            'success',
+                            $this->get('translator')->trans('user.belonging.community', array( '%user%' => $user->getFullName(), '%community%' => $community->getName() ))
+                        );
+
+                        $community->extendValidityBy($this->container->getParameter('community.viral_extension'));
+                        
+                    }
+
+                } elseif ($isEmail) {
+
+                    // Create token linked to email
+                    $token = new UserInviteToken($authenticatedUser, $mailOrUsername, $community, 'user', null, null);
+                    $em->persist($token);
+                
+                    $this->get('session')->getFlashBag()->add(
+                        'success',
+                        $this->get('translator')->trans('user.invitation.sent', array('%mail%' => $mailOrUsername))
+                    );
+
+                } else {
+
+                    $this->get('session')->getFlashBag()->add(
+                        'error',
+                        $this->get('translator')->trans('user.email.invalid')
+                    );
+
+                    return $this->redirect($this->generateUrl('g_invite'));
+                }
+
+                $em->flush();
+
+                // Sends mail to invitee
+                $message = \Swift_Message::newInstance()
+                    ->setSubject($this->get('translator')->trans('user.invitation.mail.subject'))
+                    ->setFrom($this->container->getParameter('mailer_from'))
+                    ->setReplyTo($authenticatedUser->getEmail())
+                    ->setTo($mailOrUsername)
+                    ->setBody(
+                        $this->renderView(
+                            'metaUserBundle:Mail:invite.mail.html.twig',
+                            array('user' => $authenticatedUser, 'inviteToken' => $token?$token->getToken():null, 'invitee' => ($user && !$user->isDeleted()), 'community' => $community, 'project' => null )
+                        ), 'text/html'
+                    );
+                $this->get('mailer')->send($message);
+
+                return $this->redirect($this->generateUrl('g_home_community'));
+
+            } else {
+
+                return $this->render('metaGeneralBundle:Community:invite.html.twig', array('community' => $community) );
+
+            }
+
+        } else {
+
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $this->get('translator')->trans('user.invitation.impossible')
+            );
+
+            return $this->redirect($this->generateUrl('g_home_community'));
+
         }
 
     }

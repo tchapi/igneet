@@ -15,6 +15,7 @@ idea:
   new: "Nouvelle idée"
   not.found: "Cette idée n'existe pas."
   none: "Aucune idée pour l'instant."
+  none.create: "En créer une"
   create: "Créer"
   createHelp: "Vous pourrez renseigner plus d'informations sur cette idée une fois celle-ci créée."
   createForm:

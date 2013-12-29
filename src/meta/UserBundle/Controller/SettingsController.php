@@ -5,16 +5,12 @@ namespace meta\UserBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller,
     Symfony\Component\Security\Core\SecurityContext,
     Symfony\Component\HttpFoundation\Request,
-    Symfony\Component\HttpFoundation\Response,
-    Symfony\Component\EventDispatcher\EventDispatcher,
-    Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken,
-    Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
+    Symfony\Component\HttpFoundation\Response;
 
 /*
  * Importing Class definitions
  */
-use meta\UserBundle\Entity\User,
-    meta\UserBundle\Form\Type\UserType;
+use meta\UserBundle\Entity\User;
 
 class SettingsController extends Controller
 {
@@ -25,7 +21,7 @@ class SettingsController extends Controller
     public function showSettingsAction()
     {
 
-        return $this->render('metaUserBundle:Settings:show.html.twig');
+        return $this->render('metaUserBundle:User:showSettings.html.twig');
     }
 
     /*

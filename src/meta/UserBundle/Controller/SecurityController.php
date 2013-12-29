@@ -4,13 +4,23 @@ namespace meta\UserBundle\Controller;
  
 use Symfony\Bundle\FrameworkBundle\Controller\Controller,
     Symfony\Component\HttpFoundation\Request,
-    Symfony\Component\Security\Core\SecurityContext;
+    Symfony\Component\Security\Core\SecurityContext,
+    Symfony\Component\EventDispatcher\EventDispatcher,
+    Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken,
+    Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
-use meta\UserBundle\Entity\UserInviteToken,
-    meta\UserBundle\Entity\UserCommunity;
+use Fp\OpenIdBundle\RelyingParty\Exception\OpenIdAuthenticationCanceledException;
+use Fp\OpenIdBundle\RelyingParty\RecoveredFailureRelyingParty;
+use Fp\OpenIdBundle\Security\Core\Authentication\Token\OpenIdToken;
+use meta\UserBundle\Entity\OpenIdIdentity;
+
 /*
  * Importing Class definitions
  */
+use meta\UserBundle\Entity\User,
+    meta\UserBundle\Form\Type\UserType,
+    meta\UserBundle\Entity\UserCommunity,
+    meta\UserBundle\Entity\UserInviteToken;
  
 class SecurityController extends Controller
 {
@@ -42,7 +52,7 @@ class SecurityController extends Controller
             $error = $session->get(SecurityContext::AUTHENTICATION_ERROR);
         }
  
-        return $this->render('metaUserBundle:Security:login.html.twig', array(
+        return $this->render('metaUserBundle:Non-Auth:login.html.twig', array(
             // last username entered by the user
             'last_username' => $session->get(SecurityContext::LAST_USERNAME),
             'error'         => $error,
@@ -50,157 +60,261 @@ class SecurityController extends Controller
     }
 
     /*
-     * Display invite page or invite a user in a community by username or email
+     * Shows the user the different signin methods available
      */
-    public function inviteAction(Request $request)
+    public function chooseSignupProviderAction($inviteToken)
     {
-
+    
         $authenticatedUser = $this->getUser();
-        $community = $authenticatedUser->getCurrentCommunity();
 
-        if (!is_null($community)){
-            $userCommunityManager = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'manager' => true, 'deleted_at' => null));
-        } else {
+        if ($authenticatedUser) {
 
             $this->get('session')->getFlashBag()->add(
-                'error',
-                $this->get('translator')->trans('user.invitation.privatespace')
+                'warning',
+                $this->get('translator')->trans('user.already.logged.long', array( '%user%' => $authenticatedUser->getUsername()))
             );
 
-            return $this->redirect($this->generateUrl('g_home_community'));
-        
+            return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $authenticatedUser->getUsername())));
         }
+
+        return $this->render('metaUserBundle:Non-Auth:chooseProvider.html.twig', array('inviteToken' => $inviteToken));
+
+    }
+
+    /*
+     * Create a form for a new user to signin AND process the result when POSTed
+     */
+    public function createAction(Request $request, $inviteToken, $openid)
+    {
         
-        if ( !is_null($community) && $userCommunityManager ) {
+        $authenticatedUser = $this->getUser();
+        $em = $this->getDoctrine()->getManager();
 
-            if ($request->isMethod('POST')) {
-            
-                // Gets mail or username
-                $mailOrUsername = $request->request->get('mailOrUsername');
-                $isEmail = filter_var($mailOrUsername, FILTER_VALIDATE_EMAIL);
+        if ($authenticatedUser) {
 
-                // It might be a user already
-                $repository = $this->getDoctrine()->getRepository('metaUserBundle:User');
-                $em = $this->getDoctrine()->getManager();
+            $this->get('session')->getFlashBag()->add(
+                'warning',
+                $this->get('translator')->trans('user.already.logged.long', array( '%user%' => $authenticatedUser->getUsername()))
+            );
 
-                if($isEmail){
-                    $user = $repository->findOneByEmail($mailOrUsername);
-                } else {
-                    $user = $repository->findOneByUsername($mailOrUsername);
-                }
+            return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $authenticatedUser->getUsername())));
+        }
 
-                if ($user && !$user->isDeleted()) {
+        // Checks the inviteToken
+        if ( !is_null($inviteToken) ) {
 
-                    $mailOrUsername = $user->getEmail();
-                    $token = null;
+            $tokenRepository = $this->getDoctrine()->getRepository('metaUserBundle:UserInviteToken');
+            $inviteTokenObject = $tokenRepository->findOneByToken($inviteToken);
 
-                    $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $user->getId(), 'community' => $community->getId(), 'guest' => false, 'deleted_at' => null));
+            if ( $inviteTokenObject && $inviteTokenObject->isUsed() ){
 
-                    $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $user->getId(), 'community' => $community->getId(), 'guest' => true, 'deleted_at' => null));
+                $this->get('session')->getFlashBag()->add(
+                    'error',
+                    $this->get('translator')->trans('user.signup.link.already.used')
+                );
 
-                    // If the user is already in the community
-                    if ($userCommunity){
-
-                        $this->get('session')->getFlashBag()->add(
-                            'warning',
-                            $this->get('translator')->trans('user.already.in.community', array( '%user%' => $user->getFullName(), '%community%' => $community->getName() ))
-                        );
-
-                        return $this->redirect($this->generateUrl('invite'));
-
-                    // If the user is already a guest in the community
-                    } elseif ($userCommunityGuest) {
-
-                        // User is not guest anymore, we already have a userCommunity object
-                        $userCommunityGuest->setGuest(false);
-                        $logService = $this->container->get('logService');
-                        $logService->log($this->getUser(), 'user_enters_community', $user, array( 'community' => array( 'logName' => $community->getLogName(), 'identifier' => $community->getId()) ) );
-                            
-                        $this->get('session')->getFlashBag()->add(
-                            'success',
-                            $this->get('translator')->trans('user.belonging.community', array( '%user%' => $user->getFullName(), '%community%' => $community->getName() ))
-                        );
-
-                        $community->extendValidityBy($this->container->getParameter('community.viral_extension'));
-
-                    // The user has no link with the current community
-                    } else {
-
-                        // Creates the userCommunity
-                        $userCommunity = new UserCommunity();
-                        $userCommunity->setUser($user);
-                        $userCommunity->setCommunity($community);
-                        $userCommunity->setGuest(false);
-
-                        $em->persist($userCommunity);
-
-                        $logService = $this->container->get('logService');
-                        $logService->log($this->getUser(), 'user_enters_community', $user, array( 'community' => array( 'logName' => $community->getLogName(), 'identifier' => $community->getId()) ) );
-                            
-                        $this->get('session')->getFlashBag()->add(
-                            'success',
-                            $this->get('translator')->trans('user.belonging.community', array( '%user%' => $user->getFullName(), '%community%' => $community->getName() ))
-                        );
-
-                        $community->extendValidityBy($this->container->getParameter('community.viral_extension'));
-                        
-                    }
-
-                } elseif ($isEmail) {
-
-                    // Create token linked to email
-                    $token = new UserInviteToken($authenticatedUser, $mailOrUsername, $community, 'user', null, null);
-                    $em->persist($token);
-                
-                    $this->get('session')->getFlashBag()->add(
-                        'success',
-                        $this->get('translator')->trans('user.invitation.sent', array('%mail%' => $mailOrUsername))
-                    );
-
-                } else {
-
-                    $this->get('session')->getFlashBag()->add(
-                        'error',
-                        $this->get('translator')->trans('user.email.invalid')
-                    );
-
-                    return $this->redirect($this->generateUrl('invite'));
-                }
-
-                $em->flush();
-
-                // Sends mail to invitee
-                $message = \Swift_Message::newInstance()
-                    ->setSubject($this->get('translator')->trans('user.invitation.mail.subject'))
-                    ->setFrom($this->container->getParameter('mailer_from'))
-                    ->setReplyTo($authenticatedUser->getEmail())
-                    ->setTo($mailOrUsername)
-                    ->setBody(
-                        $this->renderView(
-                            'metaUserBundle:Mail:invite.mail.html.twig',
-                            array('user' => $authenticatedUser, 'inviteToken' => $token?$token->getToken():null, 'invitee' => ($user && !$user->isDeleted()), 'community' => $community, 'project' => null )
-                        ), 'text/html'
-                    );
-                $this->get('mailer')->send($message);
-
-                return $this->redirect($this->generateUrl('g_home_community'));
-
-            } else {
-
-                return $this->render('metaUserBundle:Security:invite.html.twig', array('community' => $community) );
-
+                $inviteTokenObject = null;
             }
 
         } else {
 
-            $this->get('session')->getFlashBag()->add(
-                'error',
-                $this->get('translator')->trans('user.invitation.impossible')
-            );
+            $inviteTokenObject = null;
+        
+        }
 
-            return $this->redirect($this->generateUrl('g_home_community'));
+        // In case it's open id, we need to check some basics
+        if ($openid == true) {
+
+             $failure = $request->getSession()->get(SecurityContext::AUTHENTICATION_ERROR);
+
+            if (false == $failure) {
+                $this->get('session')->getFlashBag()->add(
+                    'error',
+                    $this->get('translator')->trans('openid.error', array(), 'errors')
+                );
+                return $this->redirect($this->generateUrl('login'));
+            }
+
+            if ($failure instanceof OpenIdAuthenticationCanceledException) {
+                
+                // User cancelled
+                $this->get('session')->getFlashBag()->add(
+                    'warning',
+                    $this->get('translator')->trans('user.cancelled.signup')
+                );
+                return $this->redirect($this->generateUrl('login'));
+            }
+
+            $token = $failure->getToken();
+
+            if (false == $token instanceof OpenIdToken) {
+
+                $this->get('session')->getFlashBag()->add(
+                    'error',
+                    $this->get('translator')->trans('openid.error', array(), 'errors')
+                );
+                return $this->redirect($this->generateUrl('login'));
+
+            }
+
+            // Merges
+            $attributes = array_merge(array(
+                'contact/email' => '',
+                'namePerson/first' => '',
+                'namePerson/last' => '',
+                ), $token->getAttributes())
+            ;
+
+            // Already in ?
+            $alreadyUser = $em->getRepository('metaUserBundle:User')->findOneBy(array(
+                'email' => $attributes['contact/email']
+            ));
+
+            if ($alreadyUser){
+
+                if ($alreadyUser->isDeleted()){
+                    // Error will be screened automatically
+                    return $this->redirect($this->generateUrl('login'));
+                }
+            }
 
         }
+
+        $user = new User();
+
+        if ($openid == true){
+            // We already know some stuff
+            $user->setEmail($attributes['contact/email']);
+            $user->setFirstname($attributes['namePerson/first']);
+            $user->setLastname($attributes['namePerson/last']);
+
+            // Create a dummy password
+            $factory = $this->get('security.encoder_factory');
+            $encoder = $factory->getEncoder($user);
+            $user->setPassword($encoder->encodePassword($user->getSalt(), $user->getSalt()));
+        }
+
+        $form = $this->createForm(new UserType(), $user, array( 'translator' => $this->get('translator'), 'openid' => $openid));
+
+        if ($request->isMethod('POST')) {
+
+            $form->bind($request);
+
+            if ($form->isValid()) {
+
+                if ($openid === true){
+
+                    // We have to create an OpenId and persist it
+                    $openIdIdentity = new OpenIdIdentity();
+                    $openIdIdentity->setIdentity($token->getIdentity());
+                    $openIdIdentity->setAttributes($attributes);
+                    $openIdIdentity->setUser($user);
+
+                    $em->persist($openIdIdentity);
+
+                } else {
+
+                    // Not open id, we just set the password :
+                    $factory = $this->get('security.encoder_factory');
+                    $encoder = $factory->getEncoder($user);
+                    $user->setPassword($encoder->encodePassword($user->getPassword(), $user->getSalt()));
+                    
+                }
+
+                $em->persist($user); // doing it now cause log() flushes the $em
+                $em->flush(); // We do a first flush here so that next logs will behave correctly
+
+                /* Tries to login the user now */
+                // Here, "main" is the name of the firewall in security.yml
+                $token = new UsernamePasswordToken($user, $user->getPassword(), "main", $user->getRoles());
+                $this->get("security.context")->setToken($token);
+
+                // Fire the login event
+                $event = new InteractiveLoginEvent($request, $token);
+                $this->get("event_dispatcher")->dispatch("security.interactive_login", $event);
+
+                // Use inviteToken
+                if (!is_null($inviteTokenObject)){
+
+                    $inviteTokenObject->setResultingUser($user);
+
+                    if (!is_null($inviteTokenObject->getCommunity())){
+
+                        if ($inviteTokenObject->getCommunityType() === 'user'){
+
+                            $logService = $this->container->get('logService');
+                            $logService->log($this->getUser(), 'user_enters_community', $user, array( 'community' => array( 'logName' => $inviteTokenObject->getCommunity()->getLogName() ) ) );
+                        
+                        }
+
+                        // Creates the userCommunity
+                        $userCommunity = new UserCommunity();
+                        $userCommunity->setUser($user);
+                        $userCommunity->setCommunity($inviteTokenObject->getCommunity());
+                        $userCommunity->setGuest( !($inviteTokenObject->getCommunityType() === 'user') );
+
+                        // In case the user is not a guest, push the validity of the community by 'community.viral_extension'
+                        if ($inviteTokenObject->getCommunityType() === 'user') {
+                            $inviteTokenObject->getCommunity()->extendValidityBy($this->container->getParameter('community.viral_extension'));
+                        }
+
+                        $em->persist($userCommunity);
+                        
+                        $user->setCurrentCommunity($inviteTokenObject->getCommunity());
+
+                    }
+
+                    if (!is_null($inviteTokenObject->getProject())){
+
+                        if ($inviteTokenObject->getProjectType() === 'owner'){
+                            $user->addProjectsOwned($inviteTokenObject->getProject());
+                            $logService = $this->container->get('logService');
+                            $logService->log($inviteTokenObject->getReferalUser(), 'user_made_user_owner_project', $inviteTokenObject->getProject(), array( 'other_user' => array( 'logName' => $user->getLogName(), 'identifier' => $user->getUsername()) ));
+
+                        } else {
+                            $user->addProjectsParticipatedIn($inviteTokenObject->getProject());
+                            $logService = $this->container->get('logService');
+                            $logService->log($inviteTokenObject->getReferalUser(), 'user_made_user_participant_project', $inviteTokenObject->getProject(), array( 'other_user' => array( 'logName' => $user->getLogName(), 'identifier' => $user->getUsername()) ));
+
+                        }
+
+                    }
+                }
+
+                $em->flush();
+
+                $logService = $this->container->get('logService');
+                $logService->log($user, 'user_created', $user, array());
+
+                $this->get('session')->getFlashBag()->add(
+                    'success',
+                    $this->get('translator')->trans('user.welcome')
+                );
+
+                // Returns and redirects
+                if ($openid === true ) {
+
+                    return $this->redirect($this->generateUrl('fp_openid_security_check', array(
+                        RecoveredFailureRelyingParty::RECOVERED_QUERY_PARAMETER => 1
+                    )));
+
+                } else {
+
+                    return $this->redirect($this->generateUrl('g_home_community'));
+                }
+
+            } else {
+               
+               $this->get('session')->getFlashBag()->add(
+                    'error',
+                    $this->get('translator')->trans('information.not.valid', array(), 'errors')
+                );
+
+            }
+
+        }
+
+        return $this->render('metaUserBundle:Non-Auth:create.html.twig', array('form' => $form->createView(), 'inviteToken' => $inviteToken, 'openid' => $openid));
 
     }
 
@@ -295,7 +409,7 @@ class SecurityController extends Controller
             
         } else {
 
-            return $this->render('metaUserBundle:Security:reactivateOrRecover.html.twig', array( 'flavour' => $flavour));
+            return $this->render('metaUserBundle:Non-Auth:reactivateOrRecover.html.twig', array( 'flavour' => $flavour));
         
         }
     
@@ -357,7 +471,7 @@ class SecurityController extends Controller
                     $this->get('translator')->trans('invalid.password.match', array(), 'errors')
                 );
 
-                return $this->render('metaUserBundle:Security:changePassword.html.twig', array('passwordToken' => $passwordToken, 'flavour' => $flavour));
+                return $this->render('metaUserBundle:User:changePassword.html.twig', array('passwordToken' => $passwordToken, 'flavour' => $flavour));
         
             } else {
 
@@ -408,7 +522,7 @@ class SecurityController extends Controller
                     // We need this otherwise the null token / password / etc might be flushed !
                     $em->refresh($user);
 
-                    return $this->render('metaUserBundle:Security:changePassword.html.twig', array('passwordToken' => $passwordToken, 'flavour' => $flavour));
+                    return $this->render('metaUserBundle:User:changePassword.html.twig', array('passwordToken' => $passwordToken, 'flavour' => $flavour));
         
                 }
 
@@ -416,7 +530,7 @@ class SecurityController extends Controller
 
         } else {
             
-            return $this->render('metaUserBundle:Security:changePassword.html.twig', array('passwordToken' => $passwordToken, 'flavour' => $flavour));
+            return $this->render('metaUserBundle:User:changePassword.html.twig', array('passwordToken' => $passwordToken, 'flavour' => $flavour));
         
         }
 
@@ -458,7 +572,7 @@ class SecurityController extends Controller
             }
             
             return $this->render(
-                'metaUserBundle:Security:_authenticated.html.twig',
+                'metaUserBundle:Partials:_authenticated.html.twig',
                 array('user' => $authenticatedUser, 'currentUserCommunity' => $userCommunity )
             );
 

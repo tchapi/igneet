@@ -161,7 +161,7 @@ class IdeaController extends Controller
 
             $targetParticipantAsBase64 = array('slug' => 'metaIdeaBundle:Idea:addParticipant', 'external' => false, 'params' => array('uid' => $uid, 'owner' => false, 'guest' => false));
 
-            return $this->render('metaIdeaBundle:Info:showInfo.html.twig', 
+            return $this->render('metaIdeaBundle:Idea:showInfo.html.twig', 
                 array('base' => $this->base,
                     'targetParticipantAsBase64' => base64_encode(json_encode($targetParticipantAsBase64)) ));
 
@@ -186,7 +186,7 @@ class IdeaController extends Controller
 
         if ($this->access != false) {
 
-            return $this->render('metaIdeaBundle:Timeline:showTimeline.html.twig', 
+            return $this->render('metaIdeaBundle:Idea:showTimeline.html.twig', 
                 array('base' => $this->base));
 
         } else {
@@ -211,7 +211,7 @@ class IdeaController extends Controller
         
         if ($this->access != false) {
 
-            return $this->render('metaIdeaBundle:Info:show' . ucfirst($type) . '.html.twig', 
+            return $this->render('metaIdeaBundle:Idea:show' . ucfirst($type) . '.html.twig', 
                 array('base' => $this->base));
 
         } else {
@@ -862,7 +862,7 @@ class IdeaController extends Controller
     {
         $menu = $this->container->getParameter('idea.menu');
 
-        return $this->render('metaIdeaBundle:Default:navbar.html.twig', array('menu' => $menu, 'activeMenu' => $activeMenu, 'uid' => $uid));
+        return $this->render('metaIdeaBundle:Partials:navbar.html.twig', array('menu' => $menu, 'activeMenu' => $activeMenu, 'uid' => $uid));
     }
 
     /*

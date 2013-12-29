@@ -41,7 +41,7 @@
 
   {% if isManager %}
   <div class="communityActions">
-    <p><a href="{{ path('invite') }}" class="btn btn-success"><i class="fa fa-user"></i> {{ "community.invite.short"|trans }}</a></p>
+    <p><a href="{{ path('g_invite') }}" class="btn btn-success"><i class="fa fa-user"></i> {{ "community.invite.short"|trans }}</a></p>
     <p><a href="{{ path('g_manage_community') }}" class="btn btn-primary"><i class="fa fa-cogs"></i> {{ "community.manage.short"|trans }}</a></p>
   </div>
   {% endif %}

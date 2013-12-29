@@ -48,7 +48,9 @@
     }
   }
   section.non-auth {
+    &, &:first-of-type { border-top: none; }
     & > .content { 
+      width: 100%;
       text-align: center; 
       @include media($mobile) {
         & > a { display: block; }
@@ -82,8 +84,10 @@
       color: $_discrete;
       padding: 0 0 15px;
       text-align: right;
+      display: block;
+      font-size: 0.85em;
     }
-    aside {
+    div.recover {
       @include span-columns(4 of 8);
       @include media($tablet) {
         @include span-columns(2 of 4);

@@ -8,10 +8,6 @@ login_check:
 logout:
     pattern: /logout
 
-invite:
-    pattern: /invite
-    defaults: { _controller: metaUserBundle:Security:invite }
-
 reactivate:
     pattern: /reactivate
     defaults: { _controller: metaUserBundle:Security:reactivateOrRecover, flavour: reactivate }
@@ -26,23 +22,23 @@ change_password:
 
 u_signup:
     pattern:  /signup/{inviteToken}
-    defaults: { _controller: metaUserBundle:Default:create, inviteToken: null, openid: false }
+    defaults: { _controller: metaUserBundle:Security:create, inviteToken: null, openid: false }
 
 u_signup_choice:
     pattern:  /signup_choice/{inviteToken}
-    defaults: { _controller: metaUserBundle:Default:chooseSignupProvider, inviteToken: null }
+    defaults: { _controller: metaUserBundle:Security:chooseSignupProvider, inviteToken: null }
 
 u_signup_finish:
     pattern:  /signup_finish/{inviteToken}
-    defaults: { _controller: metaUserBundle:Default:create, inviteToken: null, openid: true }
+    defaults: { _controller: metaUserBundle:Security:create, inviteToken: null, openid: true }
 
 u_me:
     pattern:  /me
-    defaults: { _controller: metaUserBundle:Default:showMe }
+    defaults: { _controller: metaUserBundle:User:showMe }
 
 u_show_user_profile:
     pattern:  /who/{username}
-    defaults: { _controller: metaUserBundle:Default:show }
+    defaults: { _controller: metaUserBundle:User:show }
     requirements:
         _method:  GET
 
@@ -54,20 +50,20 @@ u_show_user_settings:
 
 u_show_user_notifications:
     pattern:  /notifications/{date}
-    defaults: { _controller: metaUserBundle:Default:showNotifications, date: null }
+    defaults: { _controller: metaUserBundle:User:showNotifications, date: null }
     requirements:
         _method:  GET
         date:  "[0-9]{4}\-[0-9]{2}\-[0-9]{2}"
 
 u_count_user_notifications:
     pattern:  /notifications/count
-    defaults: { _controller: metaUserBundle:Default:countNotifications}
+    defaults: { _controller: metaUserBundle:User:countNotifications}
     requirements:
         _method:  POST
 
 u_edit_user_profile:
     pattern:  /who/{username}
-    defaults: { _controller: metaUserBundle:Default:edit }
+    defaults: { _controller: metaUserBundle:User:edit }
     requirements:
         _method:  POST
 
@@ -79,34 +75,34 @@ u_edit_user_settings:
 
 u_edit_user_profile_reset_avatar:
     pattern:  /who/{username}/resetavatar
-    defaults: { _controller: metaUserBundle:Default:resetAvatar }
+    defaults: { _controller: metaUserBundle:User:resetAvatar }
 
 u_delete_user_profile:
     pattern:  /byebye/{username}
-    defaults: { _controller: metaUserBundle:Default:delete }
+    defaults: { _controller: metaUserBundle:User:delete }
     requirements:
         _method:  GET
 
 u_list_users:
     pattern:  /people/{page}/{sort}
-    defaults: { _controller: metaUserBundle:Default:list, page: 1, sort: newest }
+    defaults: { _controller: metaUserBundle:Users:list, page: 1, sort: newest }
     requirements:
         page: \d+
         sort: newest|update|active|alpha
 
 u_choose_user:
     pattern:  /people/choose/{targetAsBase64}
-    defaults: { _controller: metaUserBundle:Default:choose }
+    defaults: { _controller: metaUserBundle:Users:choose }
 
 u_follow_user:
     pattern:  /follow/{username}
-    defaults: { _controller: metaUserBundle:Default:followUser }
+    defaults: { _controller: metaUserBundle:User:followUser }
 
 u_unfollow_user:
     pattern:  /unfollow/{username}
-    defaults: { _controller: metaUserBundle:Default:unfollowUser }
+    defaults: { _controller: metaUserBundle:User:unfollowUser }
 
 
 u_list_all_skills:
     pattern:  /skills
-    defaults: { _controller: metaUserBundle:Default:listSkills }
+    defaults: { _controller: metaUserBundle:Users:listSkills }

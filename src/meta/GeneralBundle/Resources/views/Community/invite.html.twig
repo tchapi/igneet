@@ -1,4 +1,4 @@
-{% extends 'metaUserBundle::layout.html.twig' %}
+{% extends 'metaGeneralBundle:Community:layout.html.twig' %}
 
 {% block title %}{{ parent() }} > {{ "user.invitation.title"|trans }}{% endblock %}
 
@@ -11,7 +11,7 @@
 {% endblock %}
 
 {% block content %}
-<form action="{{ path('invite') }}" method="post">
+<form action="{{ path('g_invite') }}" method="post">
   <section>
     <div class="label"><label for="mailOrUsername" class="required">{{ "user.invitation.field"|trans }} : </label></div>
     <div class="content"><input type="text" id="mailOrUsername" name="mailOrUsername" required="required"></div>

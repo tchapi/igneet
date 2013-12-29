@@ -18,11 +18,26 @@
     {% endif %}
 {% endblock %}
 
-
 {% block header %}
-  <div class="headerAvatarAndActions">
-    {% if base.canEdit %}<div class="changeAvatar"><a href="{{ path('i_edit_idea_reset_picture', {'uid': base.idea.id|to_uid, 'token': csrf_token('resetPicture')  }) }}" title="{{ "picture.resetHelp"|trans }}"><i class="fa fa-trash-o"></i></a> | <a href="{{ path('g_choose_file', {'targetAsBase64': base.targetPictureAsBase64, 'token': csrf_token('edit') }) }}"><i class="fa fa-pencil"></i> {{ "picture.change"|trans }}</a></div>{% endif %}
-    <img src="{{ asset(base.idea.getPicture()) }}" width="150" height="150" class="avatar"/>
+
+  <div class="avatar">
+    <img src="{{ asset(base.idea.getPicture()) }}" />
+    {% if base.canEdit %}
+      <a href="{{ path('i_edit_idea_reset_picture', {'uid': base.idea.id|to_uid, 'token': csrf_token('resetPicture')  }) }}" title="{{ "picture.resetHelp"|trans }}"><i class="fa fa-trash-o fa-2x"></i></a>
+      <a href="{{ path('g_choose_file', {'targetAsBase64': base.targetPictureAsBase64, 'token': csrf_token('edit') }) }}" title="{{ "picture.changeHelp"|trans }}"><i class="fa fa-pencil fa-2x"></i></a>
+    {% endif %}
+  </div>
+  <div class="info">
+    <h2>
+      {% if base.idea.archived %}<i class="fa fa-archive"></i> {% endif %}<span{% if base.canEdit %} data-url="{{ path('i_edit_idea', {'uid': base.idea.id|to_uid, 'token': csrf_token('edit') }) }}" data-name="name" data-last="{{ base.idea.name }}" contenteditable="true" rich="false"{% endif %}>{{ base.idea.name }}</span>
+    </h2>
+
+    <h3>
+      <span{% if base.canEdit %} data-url="{{ path('i_edit_idea', {'uid': base.idea.id|to_uid, 'token': csrf_token('edit') }) }}" data-name="headline" placeholder="{{ "idea.headlineEmptyText"|trans }}" data-type="text" data-last="{{ base.idea.headline }}" contenteditable="true" rich="false"{% endif %} title="{{ "idea.headlineHelp"|trans }}">{{ base.idea.headline }}</span>
+    </h3>
+  </div>
+
+/////////////////////
 {% if base.isAlreadyWatching %}
     <a href="{{ path('i_unwatch_idea', {'uid': base.idea.id|to_uid, 'token': csrf_token('unwatch') }) }}" class="btn btn-info watchAction">{{ "idea.unwatch"|trans }}</a>
 {% else %}
@@ -32,12 +47,6 @@
 
   <div class="ideaInfo">
 
-    <h2 class="ellipsis">
-      {% if base.idea.archived %}<i class="fa fa-folder"></i> {% endif %}<span class="editable" data-title="{{ "idea.titleHelp"|trans }}" data-name="name" data-url="{{ path('i_edit_idea', {'uid': base.idea.id|to_uid, 'token': csrf_token('edit') }) }}">{{ base.idea.name }}</span>
-    </h2>
-    <h4 class="ellipsis">
-      <span class="editable" data-title="{{ "idea.headlineHelp"|trans }}" data-name="headline" data-emptytext="{{ "idea.headlineEmptyText"|trans }}" data-url="{{ path('i_edit_idea', {'uid': base.idea.id|to_uid, 'token': csrf_token('edit') }) }}" data-type="textarea" title="{{ base.idea.headline }}">{{ base.idea.headline }}</span>
-    </h4>
     <div>
       <i class="fa fa-calendar"></i> {{ "idea.info.created.short"|trans({'%date%': base.idea.createdAt|date("date.fullFormat"|trans)}) }}
     </div>

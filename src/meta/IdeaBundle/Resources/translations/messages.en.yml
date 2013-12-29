@@ -15,6 +15,7 @@ idea:
   new: "New idea"
   not.found: "This idea was not found."
   none: "No ideas yet."
+  none.create: "Create one now"
   create: "Create"
   createHelp: "You can add more information once the idea is created."
   createForm:

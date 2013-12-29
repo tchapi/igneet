@@ -16,9 +16,6 @@ $(document).ready(function(){
     $(this).animate({height:'60px'});
   });
 
-  // Tooltips
-  $('.tooltip-trigger').tooltip({html: true});
-
   // Validates in AJAX
   $('.validate-trigger').click(function(){
 

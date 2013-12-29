@@ -459,6 +459,11 @@ body.full > .content-container section {
     padding-top: $gutter;
     padding-bottom: $gutter;
   }
+
+  &.none {
+    padding: 100px;
+    text-align: center;
+  }
 }
 
 
