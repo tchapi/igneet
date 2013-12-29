@@ -56,9 +56,10 @@ idea:
   watchers: "{0}No users watching|{1}One user watching|]1,Inf]%count% users watching"
   watch: "Watch idea"
   unwatch: "Unwatch idea"
-  watching: "You are now watching the idea %idea%."
+  watching: "You are watching this idea."
+  now.watching: "You are now watching the idea %idea%."
   unwatching: "You are not watching the idea %idea% anymore."
-  not.watching: "You are not watching the idea %idea%."
+  not.watching: "You are not watching this idea."
   already.watching: "You are already watching the idea %idea%."
   timeline:
     title: "Timeline"

@@ -35,26 +35,29 @@
     <h3>
       <span{% if base.canEdit %} data-url="{{ path('i_edit_idea', {'uid': base.idea.id|to_uid, 'token': csrf_token('edit') }) }}" data-name="headline" placeholder="{{ "idea.headlineEmptyText"|trans }}" data-type="text" data-last="{{ base.idea.headline }}" contenteditable="true" rich="false"{% endif %} title="{{ "idea.headlineHelp"|trans }}">{{ base.idea.headline }}</span>
     </h3>
-  </div>
 
-/////////////////////
-{% if base.isAlreadyWatching %}
-    <a href="{{ path('i_unwatch_idea', {'uid': base.idea.id|to_uid, 'token': csrf_token('unwatch') }) }}" class="btn btn-info watchAction">{{ "idea.unwatch"|trans }}</a>
-{% else %}
-    <a href="{{ path('i_watch_idea', {'uid': base.idea.id|to_uid, 'token': csrf_token('watch') }) }}" class="btn btn-success watchAction">{{ "idea.watch"|trans }}</a>
-{% endif %}
-  </div>
-
-  <div class="ideaInfo">
+    <h4>
+      {% if base.idea.archivedAt %}
+      <div>
+        <i class="fa fa-save"></i> {{ "idea.info.archived.short"|trans({'%date%': base.idea.archivedAt|date("date.fullFormat"|trans)}) }}
+      </div>
+      {% endif %}
+      <div>
+        <i class="fa fa-calendar"></i> {{ "idea.info.created.short"|trans({'%date%': base.idea.createdAt|date("date.fullFormat"|trans)}) }}
+      </div>
+    </h4>
 
     <div>
-      <i class="fa fa-calendar"></i> {{ "idea.info.created.short"|trans({'%date%': base.idea.createdAt|date("date.fullFormat"|trans)}) }}
-    </div>
-    {% if base.idea.archivedAt %}
-    <div>
-      <i class="fa fa-save"></i> {{ "idea.info.archived.short"|trans({'%date%': base.idea.archivedAt|date("date.fullFormat"|trans)}) }}
-    </div>
+    {% if base.isAlreadyWatching %}
+        <i class="fa fa-rss"></i> {{ "idea.watching"|trans }} <a href="{{ path('i_unwatch_idea', {'uid': base.idea.id|to_uid, 'token': csrf_token('unwatch') }) }}">{{ "idea.unwatch"|trans }}</a>
+    {% else %}
+        <i class="fa fa-rss"></i> {{ "idea.not.watching"|trans }} <a href="{{ path('i_watch_idea', {'uid': base.idea.id|to_uid, 'token': csrf_token('watch') }) }}">{{ "idea.watch"|trans }}</a>
     {% endif %}
+    </div>
+
+  </div>
+
+    
     {% if base.isCreator %}
     <div>
       {% if not base.idea.archived %}
@@ -71,7 +74,7 @@
       <i class="fa fa-group"></i> <a href="{{ path('g_choose_community', {'targetAsBase64': base.targetProposeToCommunityAsBase64 , 'token': csrf_token('edit') }) }}">{{ "idea.propose"|trans }}</a>
     </div>
     {% endif %}
-  </div>
+
 
   <div class="ideaAbout">
     <div>{{ "idea.watchers"|transchoice(base.idea.countWatchers, { '%count': base.idea.countWatchers}) }}</div>

@@ -777,7 +777,7 @@ class IdeaController extends Controller
 
                 $this->get('session')->getFlashBag()->add(
                     'success',
-                    $this->get('translator')->trans('idea.watching', array('%idea%' => $this->base['idea']->getName()))
+                    $this->get('translator')->trans('idea.now.watching', array('%idea%' => $this->base['idea']->getName()))
                 );
 
             } else {

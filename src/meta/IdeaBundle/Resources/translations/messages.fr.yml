@@ -56,9 +56,10 @@ idea:
   watchers: "{0}Aucun utilisateur abonné|{1}Un utilisateur abonné|]1,Inf]%count% utilisateurs abonnés"
   watch: "S'abonner"
   unwatch: "Se désabonner"
-  watching: "Vous êtes maintenant abonné à l'idée %idea%."
+  watching: "Vous êtes abonné à cette idée."
+  now.watching: "Vous êtes maintenant abonné à l'idée %idea%."
   unwatching: "Vous n'êtes plus abonné à l'idée %idea%."
-  not.watching: "Vous n'êtes pas abonné à l'idée %idea%."
+  not.watching: "Vous n'êtes pas abonné à cette idée."
   already.watching: "Vous êtes déjà abonné à l'idée %idea%."
   timeline:
     title: "Historique"
