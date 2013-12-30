@@ -77,7 +77,7 @@ class IdeasController extends Controller
             return $this->redirect($this->generateUrl('i_list_ideas', array('sort' => $sort)));
         }
 
-        if ($request->request->get('full') == true){
+        if ($request->request->get('full') == "true"){
             // We need to load all the ideas from page 2 to page "$page" (the first page is already outputted in PHP)
             $ideas = $repository->findIdeasInCommunityForUser(array( 'community' => $community, 'user' => $authenticatedUser, 'archived' => $archived, 'page' => 1, 'maxPerPage' => $maxPerPage*$page, 'sort' => $sort));
             array_splice($ideas, 0, $maxPerPage);
