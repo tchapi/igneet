@@ -107,9 +107,15 @@ $(document).ready(function(){
             }
             // We need to push a state in history for the browsers to behave correctly on 'back' buttons
             history.pushState(null,"", window.location.href.replace(/#page=([^&]*)/,'') + "#page=" + page);
+            if (page * objects_per_page > total_objects) {
+              $('#more').hide();
+              $('#no-more').show();
+              canLoad = false;
+            } else {
+              $('#more').show();
+              canLoad = true;
+            }
             $('#loading').hide();
-            $('#more').show();
-            canLoad = true;
           }
         });
       
