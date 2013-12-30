@@ -80,22 +80,7 @@ nav[role=mobile]{
       }
     }
     & > .notificationsCount{
-      $size_notificationsCount : 18px;
-      position: absolute;
-      right: 3px;
-      top: 3px;
-      padding: 0;
-      width: $size_notificationsCount;
-      height: $size_notificationsCount;
-      border-radius: $size_notificationsCount;
-      font-size: 0.65em;
-      line-height: 1.7em;
-      text-align: center;
-      text-shadow: none;
-      text-shadow: none;
-      background-color: $_primary;
-      color: $_text-dark;
-      min-width: 0;
+      @include count-badge(18px, "right", 3px, 3px);
     }
   }
 
@@ -190,22 +175,7 @@ nav[role=mobile]{
             @include emboss-text($_menu-background);
           }
           & > .notificationsCount{
-            $size_notificationsCount : 18px;
-            position: absolute;
-            right: 3px;
-            top: 3px;
-            padding: 0;
-            width: $size_notificationsCount;
-            height: $size_notificationsCount;
-            border-radius: $size_notificationsCount;
-            font-size: 0.65em;
-            line-height: 1.7em;
-            text-align: center;
-            text-shadow: none;
-            text-shadow: none;
-            background-color: $_primary;
-            color: $_text-dark;
-            min-width: 0;
+            @include count-badge(18px, "right", 3px, 3px);
           }
 
         }

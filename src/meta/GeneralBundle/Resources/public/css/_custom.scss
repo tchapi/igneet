@@ -12,6 +12,10 @@
 @import "redactor/_redactor";
 @import "imgareaselect/jquery.imgareaselect";
 
+body {
+  font-weight: 300;
+}
+
 a {
   color: $_primary;
   text-decoration: none;
@@ -93,6 +97,7 @@ body > .content-container header {
 
   & > .info {
 
+    & > div { position: relative; }
     & .skills {
 
       span {
@@ -470,3 +475,96 @@ body.full > .content-container section {
 // Page-specific :
 @import "styles/settings";
 @import "styles/user";
+
+// @import "styles/tables"
+$images_size: 80px;
+table {
+  text-align: left;
+  font-family: 'gotham_light';
+  width: 100%;
+  thead {
+    font-family: 'gotham_book';
+    border-top: 1px solid $_sensible;
+    border-bottom: 1px solid $_sensible;
+    text-transform: uppercase;
+    color: $_text-secondary;
+    font-size: 0.75em;
+    font-weight: 200;
+    & tr {
+      height: $gutter*2;
+    }
+    & th {
+      padding: 0 $gutter;
+      &:first-of-type { padding: 0; }
+    }
+  }
+  tbody tr {
+    height: 140px;
+    border-bottom: 1px solid $_sensible;
+    &:hover { background: $_container; }
+    & td {
+      min-width: ($column*2 - $gutter);
+      @include media(tablet) {
+        width: $column;
+      }
+      padding: 0 $gutter;
+      color: $_discrete;
+      font-size: 0.9em;
+      &:first-of-type { 
+        padding-right: 0;
+        min-width: $images_size;
+      }
+      &.main {
+        color: $_text;
+        font-family: 'gotham_medium';
+        font-size: 1.1em;
+        min-width: ($column*5 - $gutter); // prevention ...
+      }
+      & > a {
+        height: $images_size;
+        color: $_text;
+        & > div {
+          display: table-cell;
+          height: $images_size;
+          vertical-align: middle;
+          & > span {
+            @include ellipsis($column*5 - $gutter*2.5); // prevention ...
+            display: block;
+          }
+          & > span.headline {
+            color: $_discrete;
+            font-family: 'gotham_book';
+            font-weight: 400;
+            font-size: 0.8em;
+          }
+        }
+      }
+    }
+
+    & img {
+      height: simages_size;
+      width: simages_size;
+      vertical-align: top;
+      display: inline-block;
+      border-radius: $border-radius/2;
+    }
+  }
+}
+
+// @import "styles/pages"
+
+.pagination {
+  @include row();
+  @include fill-parent();
+  background: $_container;
+  text-align: center;
+  color: $_muted;
+  padding: 15px;
+  margin-top: $gutter*1.5;
+}
+
+// @import "styles/idea"
+.watchers,
+.followers {
+  @include count-badge(18px, "left", -10px, -7px);
+}

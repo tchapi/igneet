@@ -12,6 +12,11 @@ idea:
   view:
     archived: "Voir les idées archivées"
     all: "« Revenir aux idées"
+  list:
+    name: "Nom"
+    created: "Créé le"
+    updated: "Mis à jour le"
+    members: "Membres"
   new: "Nouvelle idée"
   not.found: "Cette idée n'existe pas."
   none: "Aucune idée pour l'instant."
@@ -53,6 +58,7 @@ idea:
     reset: "L'image de cette idée a été réinitialisée avec succès."
     cannot.reset: "Vous n'avez pas les droits pour réinitialiser l'image de cette idée."
   participants: "{0}Aucun participant|{1}Un participant|]1,Inf]%count% participants"
+  creators: "{1}Un créateur|]1,Inf]%count% créateurs"
   watchers: "{0}Aucun utilisateur abonné|{1}Un utilisateur abonné|]1,Inf]%count% utilisateurs abonnés"
   watch: "S'abonner"
   unwatch: "Se désabonner"

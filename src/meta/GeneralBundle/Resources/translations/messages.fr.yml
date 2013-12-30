@@ -115,6 +115,11 @@ filters:
   alpha: "Alphabétique"
   recent: "Récemment mis à jour"
   active: "Récemment actifs"
+# Pagination
+pagination:
+  more: "Scrollez pour plus de résultats ..."
+  loading: "Chargement ..."
+  no-more: "%total% résultats"
 # Restricted access
 restricted:
   title: "Accès restreint"

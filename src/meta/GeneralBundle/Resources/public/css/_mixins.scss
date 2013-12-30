@@ -34,6 +34,24 @@
   &:focus { text-overflow: initial;}
 }
 
+@mixin count-badge($size, $side, $side-offset, $top-offset) {
+  position: absolute;
+  #{$side}: $side-offset;
+  top: $top-offset;
+  padding: 0;
+  width: $size;
+  height: $size;
+  border-radius: $size;
+  font-size: 0.65em;
+  line-height: 1.7em;
+  text-align: center;
+  text-shadow: none;
+  text-shadow: none;
+  background-color: $_primary;
+  color: $_text-dark;
+  min-width: 0;
+}
+
 @mixin up-triangle($size, $color, $side){
   &:before {
     content: "";

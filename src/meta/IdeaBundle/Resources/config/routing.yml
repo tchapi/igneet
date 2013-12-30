@@ -4,17 +4,15 @@
 # ---------------
 
 i_list_ideas:
-    pattern:  /ideas/{page}/{sort}
+    pattern:  /ideas/{sort}
     defaults: { _controller: metaIdeaBundle:Ideas:list, page: 1, archived: false, sort: update }
     requirements:
-        page: \d+
         sort: update|newest|alpha
 
 i_list_archived_ideas:
-    pattern:  /ideas/archived/{page}/{sort}
+    pattern:  /ideas/archived/{sort}
     defaults: { _controller: metaIdeaBundle:Ideas:list, page: 1, archived: true, sort: update }
     requirements:
-        page: \d+
         sort: update|newest|alpha
 
 i_new_idea:

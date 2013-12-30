@@ -12,6 +12,11 @@ idea:
   view:
     archived: "View archived ideas"
     all: "« View ideas"
+  list:
+    name: "Name & headline"
+    created: "Created"
+    updated: "Updated"
+    members: "Members"
   new: "New idea"
   not.found: "This idea was not found."
   none: "No ideas yet."
@@ -53,6 +58,7 @@ idea:
     reset: "The picture for this idea has successfully been reset."
     cannot.reset: "You cannot reset the picture for this idea."
   participants: "{0}No participants|{1}One participant|]1,Inf]%count% participants"
+  creators: "{1}One creator|]1,Inf]%count% creator"
   watchers: "{0}No users watching|{1}One user watching|]1,Inf]%count% users watching"
   watch: "Watch idea"
   unwatch: "Unwatch idea"

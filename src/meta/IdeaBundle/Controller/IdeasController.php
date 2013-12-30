@@ -60,8 +60,10 @@ class IdeasController extends Controller
     /*
      * List all the ideas in the community
      */
-    public function listAction($page, $archived, $sort)
+    public function listAction(Request $request, $archived, $sort)
     {
+
+        $page = max(1, $request->request->get('page'));
 
         $authenticatedUser = $this->getUser();
         $community = $authenticatedUser->getCurrentCommunity();
@@ -75,11 +77,38 @@ class IdeasController extends Controller
             return $this->redirect($this->generateUrl('i_list_ideas', array('sort' => $sort)));
         }
 
-        $ideas = $repository->findIdeasInCommunityForUser(array( 'community' => $community, 'user' => $authenticatedUser, 'archived' => $archived, 'page' => $page, 'maxPerPage' => $maxPerPage, 'sort' => $sort));
+        if ($request->request->get('full') == true){
+            // We need to load all the ideas from page 2 to page "$page" (the first page is already outputted in PHP)
+            $ideas = $repository->findIdeasInCommunityForUser(array( 'community' => $community, 'user' => $authenticatedUser, 'archived' => $archived, 'page' => 1, 'maxPerPage' => $maxPerPage*$page, 'sort' => $sort));
+            array_splice($ideas, 0, $maxPerPage);
+        } else {
+            // We only load the requested page
+            $ideas = $repository->findIdeasInCommunityForUser(array( 'community' => $community, 'user' => $authenticatedUser, 'archived' => $archived, 'page' => $page, 'maxPerPage' => $maxPerPage, 'sort' => $sort));
+        }
 
-        $pagination = array( 'page' => $page, 'totalIdeas' => $totalIdeas);
-        return $this->render('metaIdeaBundle:Ideas:list.html.twig', array('ideas' => $ideas, 'archived' => $archived, 'pagination' => $pagination, 'sort' => $sort));
-
+        
+        if ($request->isXmlHttpRequest()){
+        
+            $ideasAsArray = array();
+            foreach($ideas as $idea){
+                $ideasAsArray[] = array(
+                    'url' => $this->generateUrl('i_show_idea', array('uid' => $this->container->get('uid')->toUId($idea->getId()))), 
+                    'picture' => $idea->getPicture(), 
+                    'name' => $idea->getName(), 
+                    'headline' => $idea->getHeadline(), 
+                    'createdAt' => $idea->getCreatedAt()->format($this->get('translator')->trans("date.fullFormat")), 
+                    'updatedAt' => $idea->getUpdatedAt()->format($this->get('translator')->trans("date.fullFormat")), 
+                    'creators' => $this->get('translator')->transchoice('idea.creators', $idea->countCreators(), array('%count%' => $idea->countCreators())), 
+                    'participants' => $this->get('translator')->transchoice('idea.participants', $idea->countParticipants(), array('%count%' => $idea->countParticipants()))
+                );
+            }
+            return new Response(json_encode($ideasAsArray), 200, array('Content-Type'=>'application/json'));
+        
+        } else {
+        
+            return $this->render('metaIdeaBundle:Ideas:list.html.twig', array('ideas' => $ideas, 'archived' => $archived, 'totalIdeas' => $totalIdeas, 'sort' => $sort));
+        
+        }
     }
 
     /*

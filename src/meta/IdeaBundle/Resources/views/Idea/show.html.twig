@@ -29,7 +29,7 @@
   </div>
   <div class="info">
     <h2>
-      {% if base.idea.archived %}<i class="fa fa-archive"></i> {% endif %}<span{% if base.canEdit %} data-url="{{ path('i_edit_idea', {'uid': base.idea.id|to_uid, 'token': csrf_token('edit') }) }}" data-name="name" data-last="{{ base.idea.name }}" contenteditable="true" rich="false"{% endif %}>{{ base.idea.name }}</span>
+      <span{% if base.canEdit %} data-url="{{ path('i_edit_idea', {'uid': base.idea.id|to_uid, 'token': csrf_token('edit') }) }}" data-name="name" data-last="{{ base.idea.name }}" contenteditable="true" rich="false"{% endif %}>{{ base.idea.name }}</span>
     </h2>
 
     <h3>
@@ -37,47 +37,54 @@
     </h3>
 
     <h4>
-      {% if base.idea.archivedAt %}
-      <div>
-        <i class="fa fa-save"></i> {{ "idea.info.archived.short"|trans({'%date%': base.idea.archivedAt|date("date.fullFormat"|trans)}) }}
-      </div>
-      {% endif %}
       <div>
         <i class="fa fa-calendar"></i> {{ "idea.info.created.short"|trans({'%date%': base.idea.createdAt|date("date.fullFormat"|trans)}) }}
       </div>
+      {% if base.idea.archivedAt %}
+      <div>
+        <i class="fa fa-archive"></i> {{ "idea.info.archived.short"|trans({'%date%': base.idea.archivedAt|date("date.fullFormat"|trans)}) }}
+      </div>
+      {% endif %}
+    </h4>
+
+    <h4>
+      {% if base.isCreator %}
+        <div>
+          {% if not base.idea.archived %}
+            <i class="fa fa-archive"></i> <a data-confirm="{{ "idea.archiveHelp"|trans }}" href="{{ path('i_archive_idea', {'uid': base.idea.id|to_uid, 'token': csrf_token('archiveOrRecycle') }) }}">{{ "idea.archive"|trans }}</a>
+          {% else %}
+            <i class="fa fa-refresh"></i> <a data-confirm="{{ "idea.recycleHelp"|trans }}" href="{{ path('i_recycle_idea', {'uid': base.idea.id|to_uid, 'token': csrf_token('archiveOrRecycle') }) }}">{{ "idea.recycle"|trans }}</a>
+          {% endif %}
+        </div>
+        {% if not base.idea.archived %}
+        <div>
+            <i class="fa fa-external-link"></i> <a data-confirm="{{ "idea.projectizeHelp"|trans }}" href="{{ path('i_turn_idea_into_project', {'uid': base.idea.id|to_uid, 'token': csrf_token('projectize')  }) }}">{{ "idea.projectize"|trans }}</a>
+        </div>
+        {% endif %}
+      {% endif %}
+
+      {% if base.idea.community is null %}
+      <div>
+        <i class="fa fa-group"></i> <a href="{{ path('g_choose_community', {'targetAsBase64': base.targetProposeToCommunityAsBase64 , 'token': csrf_token('edit') }) }}">{{ "idea.propose"|trans }}</a>
+      </div>
+      {% endif %}
+
+      <div class="ideaAbout">
+        
+      </div>
+
     </h4>
 
     <div>
+        <i class="fa fa-rss"></i> 
+        <div class="watchers">{{ base.idea.countWatchers }}</div>
     {% if base.isAlreadyWatching %}
-        <i class="fa fa-rss"></i> {{ "idea.watching"|trans }} <a href="{{ path('i_unwatch_idea', {'uid': base.idea.id|to_uid, 'token': csrf_token('unwatch') }) }}">{{ "idea.unwatch"|trans }}</a>
+        {{ "idea.watching"|trans }} <a href="{{ path('i_unwatch_idea', {'uid': base.idea.id|to_uid, 'token': csrf_token('unwatch') }) }}">{{ "idea.unwatch"|trans }}</a>
     {% else %}
-        <i class="fa fa-rss"></i> {{ "idea.not.watching"|trans }} <a href="{{ path('i_watch_idea', {'uid': base.idea.id|to_uid, 'token': csrf_token('watch') }) }}">{{ "idea.watch"|trans }}</a>
+        {{ "idea.not.watching"|trans }} <a href="{{ path('i_watch_idea', {'uid': base.idea.id|to_uid, 'token': csrf_token('watch') }) }}">{{ "idea.watch"|trans }}</a>
     {% endif %}
     </div>
 
-  </div>
-
-    
-    {% if base.isCreator %}
-    <div>
-      {% if not base.idea.archived %}
-        <i class="fa fa-external-link"></i> <a data-confirm="{{ "idea.projectizeHelp"|trans }}" href="{{ path('i_turn_idea_into_project', {'uid': base.idea.id|to_uid, 'token': csrf_token('projectize')  }) }}">{{ "idea.projectize"|trans }}</a> -
-        <a data-confirm="{{ "idea.archiveHelp"|trans }}" href="{{ path('i_archive_idea', {'uid': base.idea.id|to_uid, 'token': csrf_token('archiveOrRecycle') }) }}">{{ "idea.archive"|trans }}</a>
-      {% else %}
-        <i class="fa fa-refresh"></i> <a data-confirm="{{ "idea.recycleHelp"|trans }}" href="{{ path('i_recycle_idea', {'uid': base.idea.id|to_uid, 'token': csrf_token('archiveOrRecycle') }) }}">{{ "idea.recycle"|trans }}</a>
-      {% endif %}
-    </div>
-    {% endif %}
-
-    {% if base.idea.community is null %}
-    <div>
-      <i class="fa fa-group"></i> <a href="{{ path('g_choose_community', {'targetAsBase64': base.targetProposeToCommunityAsBase64 , 'token': csrf_token('edit') }) }}">{{ "idea.propose"|trans }}</a>
-    </div>
-    {% endif %}
-
-
-  <div class="ideaAbout">
-    <div>{{ "idea.watchers"|transchoice(base.idea.countWatchers, { '%count': base.idea.countWatchers}) }}</div>
   </div>
 {% endblock %}
 
