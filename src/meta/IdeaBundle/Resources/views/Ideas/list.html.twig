@@ -124,7 +124,7 @@
   </table>
 
   {# PAGINATION #}
-  {% render(controller("metaGeneralBundle:Default:pagination",{ 'route': archived?'i_list_archived_ideas':'i_list_ideas', 'total_objects' : totalIdeas, 'params' : {'sort': sort } })) %}
+  {{ include('metaGeneralBundle:Default:pagination.html.twig', { 'route': archived?'i_list_archived_ideas':'i_list_ideas', 'total_objects' : totalIdeas, 'params' : {'sort': sort } }, with_context = false) }}
 
 {% else %}
   <section class="none">

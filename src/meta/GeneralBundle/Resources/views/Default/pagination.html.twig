@@ -1,11 +1,11 @@
-<script type="text/javascript">
-  total_objects = {{ total_objects }};
-  objects_per_page = {{ objects_per_page }};
-  url = "{{ path(route, params) }}";
-</script>
-
 <nav class="pagination">
   <div id='more' ><i class="fa fa-chevron-down"></i> {{ "pagination.more"|trans }}</div>
   <div id='loading' ><i class="fa fa-spinner fa-spin"></i> {{ "pagination.loading"|trans }}</div>
   <div id='no-more'>{{ "pagination.no-more"|trans({"%total%": total_objects}) }}</div>
 </nav>
+
+<script type="text/javascript">
+  total_objects = {{ total_objects }};
+  objects_per_page = {{ objects_per_page }};
+  url = "{{ path(route, params) }}";
+</script>

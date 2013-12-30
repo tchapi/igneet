@@ -118,25 +118,6 @@ class DefaultController extends Controller
 
     }
 
-    /*
-     * Renders pagination
-     */
-    public function paginationAction($route, $total_objects, $params = array())
-    {
-        
-        // $objects_per_page  = $this->container->getParameter('listings.number_of_items_per_page');
-        // $last_page         = ceil($total / $objects_per_page);
-        // $previous_page     = $page > 1 ? $page - 1 : 1;
-        // $next_page         = $page < $last_page ? $page + 1 : $last_page;
-
-        // return $this->render('metaGeneralBundle:Default:pagination.html.twig', array('route' => $route, 'params' => $params, 'current_page' => $page, 'total' => $total, 'objects_per_page' => $objects_per_page, 'last_page' => $last_page, 'previous_page' => $previous_page, 'next_page' => $next_page));
-     
-        $objects_per_page  = $this->container->getParameter('listings.number_of_items_per_page');
-
-        return $this->render('metaGeneralBundle:Default:pagination.html.twig', array('route' => $route, 'params' => $params, 'total_objects' => $total_objects, 'objects_per_page' => $objects_per_page ));
-
-    }
-
     public function chooseCommunityAction(Request $request, $targetAsBase64)
     {
 

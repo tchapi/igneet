@@ -58,6 +58,7 @@ twig:
         enable_static_site: "%enable_static_site%"
         available_languages: "%available.languages%"
         project_statuses: "%project_statuses%"
+        objects_per_page: "%listings.number_of_items_per_page%"
         base_path: "%base_path%"
         uservoice_enabled: "%uservoice_enabled%"
         uservoice_id: "%uservoice_id%"
