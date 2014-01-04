@@ -68,13 +68,15 @@ $(document).ready(function(){
   gotoPage = gotoPage?gotoPage[1]:1;
 
   // If we have a hash that tells us to go to a certain page, we need to request the missing elements
-  if (gotoPage !== 1 && (gotoPage-1)*objects_per_page < total_objects) {
+  if (gotoPage != 1 && (gotoPage-1)*objects_per_page < total_objects) {
 
     // Load intermediary pages (full = true)
-    retrieveResults(gotoPage,true, null, function(){
+    retrieveResults(gotoPage,true, function(){
       // Finally, update the page parameter for the next calls
       page = gotoPage;
-      // Scroll to  ? FIX ME /!\
+      // Scroll to the first element of page 
+      offset = $("table tr:nth-child(" + ((gotoPage-1)*objects_per_page+1) + ")").offset();
+      $("body").animate({ scrollTop: offset.top }, "slow");
     });
 
   }
@@ -87,7 +89,7 @@ $(document).ready(function(){
       page++;
 
       retrieveResults(page,false, function(){
-        history.pushState(null,"", window.location.href.replace(/#page=([^&]*)/,"#page=" + page));
+        history.replaceState(null, document.title + " - Page " + page, window.location.href.replace(/#page=([^&]*)/,"") + "#page=" + page);
       });
       
     }
