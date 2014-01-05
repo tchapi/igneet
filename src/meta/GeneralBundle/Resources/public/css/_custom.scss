@@ -247,7 +247,7 @@ body > .content-container section {
   & > .content-full {
     @include fill-parent();
     @include shift(0);
-    & .redactor_editor { min-height: 400px !important; }
+    & .redactor_editor { min-height: 300px !important; }
   }
 }
 
@@ -547,10 +547,19 @@ body.full > .content-container section {
       padding: $pad;
       margin-bottom: $pad;
       position: relative;
-      @include span-columns($width of 12);
-      &:nth-child(#{12/$width}n) { @include omega; }
       height: $inner_size;
       background: $_sensible-dark;
+
+      @include span-columns($width of 12);
+      &:nth-child(#{12/$width}n) { @include omega; }
+      @include media($tablet) {
+        @include span-columns(2 of 4);
+        &:nth-child(2n) { @include omega; }
+      }
+      @include media($mobile) {
+        @include fill-parent();
+      }
+      
       & > a {
         color: $_text-dark;
         display: block;
@@ -575,6 +584,15 @@ body.full > .content-container section {
           padding-left: $pad;
           & * {
             @include ellipsis($inner_size + $pad*2);
+            @include media($tablet, $mobile) {
+              width: auto;
+              max-width: none;
+              padding-left: 10px;
+            }
+          }
+          @include media($tablet, $mobile) {
+            display: block;
+            padding-top: 8px;
           }
         }
         &.remove {
