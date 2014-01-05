@@ -15,4 +15,4 @@ parameters:
     settings:
       icon: fa fa-wrench
       route: i_show_idea_settings
-      private: false
+      private: true

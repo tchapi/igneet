@@ -868,11 +868,11 @@ class IdeaController extends Controller
     /*
      * Output the navbar for the idea
      */
-    public function navbarAction($activeMenu, $uid)
+    public function navbarAction($activeMenu, $uid, $canEdit)
     {
         $menu = $this->container->getParameter('idea.menu');
 
-        return $this->render('metaIdeaBundle:Partials:navbar.html.twig', array('menu' => $menu, 'activeMenu' => $activeMenu, 'uid' => $uid));
+        return $this->render('metaIdeaBundle:Partials:navbar.html.twig', array('menu' => $menu, 'activeMenu' => $activeMenu, 'uid' => $uid, 'canEdit' => $canEdit));
     }
 
     /*
