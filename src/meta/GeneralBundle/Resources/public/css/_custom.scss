@@ -534,6 +534,33 @@ body.full > .content-container section {
   }
 
   & > .label {
+    @include span-columns(3 of 12);
+    @include shift(2);
+    @include media($tablet) {
+      @include span-columns(1 of 4);
+      @include shift(0);
+    }
+    @include media($mobile) {
+      @include fill-parent();
+      @include shift(0);
+      margin-bottom: 5px;
+    }
+  }
+
+  & > .content {
+    @include span-columns(5 of 12);
+    @include clearfix;
+    @include media($tablet) {
+      @include span-columns(3 of 4);
+      @include shift(0);
+    }
+    @include media($mobile) {
+      @include fill-parent();
+      @include shift(0);
+    }
+  }
+
+  & > .label-full {
     @include fill-parent();
     margin: 20px 0;
     padding-bottom: 20px;
@@ -595,6 +622,9 @@ body.full > .content-container section {
               max-width: none;
               padding-left: 10px;
             }
+          }
+          div:only-child {
+            white-space: normal;
           }
           @include media($tablet, $mobile) {
             display: block;

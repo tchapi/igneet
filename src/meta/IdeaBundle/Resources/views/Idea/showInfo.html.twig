@@ -17,7 +17,7 @@
 
   <section>
     
-    <div class="label">{{ "idea.info.about"|trans }}</div>
+    <div class="label-full">{{ "idea.info.about"|trans }}</div>
 
     <div class="content-full">
       <div{% if base.canEdit %} data-name="about" data-url="{{ path('i_edit_idea', {'uid': base.idea.id|to_uid, 'token': csrf_token('edit') }) }}" contenteditable="true" rich="true"{% else %} class="redactor_editor"{% endif %}>{{ base.idea.about|deeplinks|raw }}</div>
@@ -28,7 +28,7 @@
 
 <div class="wrapper team">
   <section>
-    <div class="label">{% transchoice base.idea.countCreators %}idea.info.creators{% endtranschoice %} :</div>
+    <div class="label-full">{% transchoice base.idea.countCreators %}idea.info.creators{% endtranschoice %} :</div>
     <ul class="content-full">
     {% for creatorUser in base.idea.creators %}
       {% if not creatorUser.isDeleted %}
@@ -47,7 +47,7 @@
   </section>
   {% if base.idea.community is not null and base.idea.participants|length > 0 %}
   <section>
-    <div class="label">{% transchoice base.idea.countParticipants %}idea.info.participants{% endtranschoice %} :</div>
+    <div class="label-full">{% transchoice base.idea.countParticipants %}idea.info.participants{% endtranschoice %} :</div>
     <ul class="content-full">
     {% for participatingUser in base.idea.participants %}
       {% if not participatingUser.isDeleted %}

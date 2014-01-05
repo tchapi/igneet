@@ -16,7 +16,7 @@
 <div class="wrapper info">
   <section>
 
-     <div class="label">{{ "idea.content.title"|trans }}</div>
+     <div class="label-full">{{ "idea.content.title"|trans }}</div>
 
       <div class="content-full">
         <div{% if base.canEdit %} data-name="content" data-url="{{ path('i_edit_idea', {'uid': base.idea.id|to_uid, 'token': csrf_token('edit') }) }}" contenteditable="true" rich="true"{% else %} class="redactor_editor"{% endif %}>{{ base.idea.content|deeplinks|raw }}</div>

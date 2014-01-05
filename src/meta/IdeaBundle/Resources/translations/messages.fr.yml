@@ -86,6 +86,7 @@ idea:
     title: "Contenu"
   settings:
     title: ""
+    actions: "Actions disponibles"
   add.participant: "L'utilisateur %user% est maintenant participant de l'idée '%idea%'."
   remove.participant: "L'utilisateur '%user%' ne participe plus à l'idée '%idea%'."
   user.already.participant: "Cet utilisateur n'existe pas ou participe déjà à cette idée."
