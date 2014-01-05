@@ -28,7 +28,7 @@
 
 <div class="wrapper team">
   <section>
-    <div class="label">{{ "idea.info.creators"|trans }} : </div>
+    <div class="label">{% transchoice base.idea.countCreators %}idea.info.creators{% endtranschoice %} :</div>
     <ul class="content-full">
     {% for creatorUser in base.idea.creators %}
       {% if not creatorUser.isDeleted %}
@@ -47,7 +47,7 @@
   </section>
   {% if base.idea.community is not null %}
   <section>
-    <div class="label">{% transchoice base.idea.countParticipants %}idea.info.participants{% endtranschoice %} </div>
+    <div class="label">{% transchoice base.idea.countParticipants %}idea.info.participants{% endtranschoice %} :</div>
     <ul class="content-full">
     {% for participatingUser in base.idea.participants %}
       {% if not participatingUser.isDeleted %}
@@ -59,17 +59,15 @@
               <div>{{ participatingUser.lastName }}</div>
             </div>
           </a>
-          {% if base.isCreator %}<a class="removeUserIcon" href="{{ path('i_remove_participant_to_idea', { 'uid': base.idea.id|to_uid, 'username' : participatingUser.username, 'token': csrf_token('removeParticipant') }) }}"><i class="fa fa-times fa-lg"></i></a>{% endif %}
+          {% if base.isCreator %}<a class="remove" href="{{ path('i_remove_participant_to_idea', { 'uid': base.idea.id|to_uid, 'username' : participatingUser.username, 'token': csrf_token('removeParticipant') }) }}">&times;</a>{% endif %}
         </li>
       {% endif %}
     {% endfor %}
     {% if base.canEdit %}
         <li>
           <a href="{{ path('u_choose_user', {'targetAsBase64': targetParticipantAsBase64, 'token': csrf_token('addParticipant')  }) }}">
-            <div class="smallTextAvatar"><i class="fa fa-plus-circle"></i></div>
-            <div class="smallObjectInfos ellipsis-multiline">
-              <span>{{ "idea.info.add.participant"|trans }}</span>
-            </div>
+            <i class="fa fa-plus-circle"></i>
+            <div>{{ "idea.info.add.participant"|trans }}</div>
           </a>
         </li>
     {% endif %}

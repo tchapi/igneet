@@ -544,7 +544,10 @@ body.full > .content-container section {
     & > li {
       display: inline-block;
       padding: $pad;
+      margin-bottom: $pad;
+      position: relative;
       @include span-columns($width of 12);
+      &:nth-child(#{12/$width}n) { @include omega; }
       height: $inner_size;
       background: $_sensible-dark;
       & > a {
@@ -557,6 +560,12 @@ body.full > .content-container section {
           vertical-align: top;
           float: left;
         }
+        & > i {
+          display: inline-block;
+          float: left;
+          font-size: 1.375em*$width;
+          color: $_muted;
+        }
         & > div {
           display: table-cell;
           height: ($inner_size - $pad*2);
@@ -566,6 +575,14 @@ body.full > .content-container section {
           & * {
             @include ellipsis($inner_size + $pad*2);
           }
+        }
+        &.remove {
+          position: absolute;
+          right: 10px;
+          top: 0;
+          font-size: 2em;
+          line-height: $inner_size;
+          &:hover { color: $_secondary; }
         }
       }
       &:hover{
