@@ -4,6 +4,7 @@
 /*                                Colors                                */
 /* ******************************************************************** */
 $_background-dark: #1e1e1e;
+$_background-strong: #2e2e2e;
 $_background: #f4f4f4;
 $_container: white;
 $_primary: hsla(30, 100%, 45%, 1);
@@ -16,6 +17,7 @@ $_discrete: #848484;
 $_muted: #c4c4c4;
 $_sensible: #e4e4e4;
 $_muted-dark: #646464;
+$_sensible-dark: #3d3d3d;
 $_link: $_primary;
 
 $border-radius: 5px;
@@ -29,7 +31,7 @@ $_error: #9c3535;
 /* ******************************************************************** */
 
 // Inputs :: DARK
-$_submit-background: #313131;
+$_submit-background: $_sensible-dark;
 $_input-background: #252525;
 $_input-background-focus: $_primary;
 $_input-placeholder: #4c4c4c;
