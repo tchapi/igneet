@@ -81,16 +81,9 @@ class Idea extends Taggable
     /**
      * @var string
      *
-     * @ORM\Column(name="concept_text", type="text", nullable=true)
+     * @ORM\Column(name="content", type="text", nullable=true)
      */
-    private $concept_text;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="knowledge_text", type="text", nullable=true)
-     */
-    private $knowledge_text;
+    private $content;
 
     /** Project that resulted
      * @ORM\OneToMany(targetEntity="meta\ProjectBundle\Entity\StandardProject", mappedBy="originalIdea")
@@ -282,47 +275,25 @@ class Idea extends Taggable
     }
 
     /**
-     * Set concept_text
+     * Set content
      *
-     * @param string $conceptText
+     * @param string $content
      * @return Idea
      */
-    public function setConceptText($conceptText)
+    public function setContent($content)
     {
-        $this->concept_text = $conceptText;
+        $this->content = $content;
         return $this;
     }
 
     /**
-     * Get concept_text
+     * Get content
      *
      * @return string 
      */
-    public function getConceptText()
+    public function getContent()
     {
-        return $this->concept_text;
-    }
-
-    /**
-     * Set knowledge_text
-     *
-     * @param string $knowledgeText
-     * @return Idea
-     */
-    public function setKnowledgeText($knowledgeText)
-    {
-        $this->knowledge_text = $knowledgeText;
-        return $this;
-    }
-
-    /**
-     * Get knowledge_text
-     *
-     * @return string 
-     */
-    public function getKnowledgeText()
-    {
-        return $this->knowledge_text;
+        return $this->content;
     }
 
     /**

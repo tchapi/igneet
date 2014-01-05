@@ -118,16 +118,9 @@ i_show_idea_timeline:
         uid: "[0-9a-zA-Z]*"
         page: \d+
 
-## CONCEPT
-i_show_idea_concept:
-    pattern:  /idea/0{uid}/concept
-    defaults: { _controller: metaIdeaBundle:Idea:showConceptOrKnowledge, type: 'concept' }
-    requirements:
-        uid: "[0-9a-zA-Z]*"
-
-## KNOWLEDGE
-i_show_idea_knowledge:
-    pattern:  /idea/0{uid}/knowledge
-    defaults: { _controller: metaIdeaBundle:Idea:showConceptOrKnowledge, type: 'knowledge' }
+## CONTENT
+i_show_idea_content:
+    pattern:  /idea/0{uid}/content
+    defaults: { _controller: metaIdeaBundle:Idea:showContent }
     requirements:
         uid: "[0-9a-zA-Z]*"

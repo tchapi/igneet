@@ -204,14 +204,14 @@ class IdeaController extends Controller
     /*
      * Show an idea's concept or knowledge
      */
-    public function showConceptOrKnowledgeAction($uid, $type)
+    public function showContentAction($uid)
     {
 
         $this->preComputeRights(array('mustBeCreator' => false, 'mustParticipate' => false));
         
         if ($this->access != false) {
 
-            return $this->render('metaIdeaBundle:Idea:show' . ucfirst($type) . '.html.twig', 
+            return $this->render('metaIdeaBundle:Idea:showContent.html.twig', 
                 array('base' => $this->base));
 
         } else {
@@ -310,16 +310,8 @@ class IdeaController extends Controller
                     $objectHasBeenModified = true;
                     $needsRedirect = true;
                     break;
-                case 'concept_text':
-                    $this->base['idea']->setConceptText($request->request->get('value'));
-                    $deepLinkingService = $this->container->get('deep_linking_extension');
-                    $response = $deepLinkingService->convertDeepLinks(
-                      $this->container->get('markdown.parser')->transformMarkdown($request->request->get('value'))
-                    );
-                    $objectHasBeenModified = true;
-                    break;
-                case 'knowledge_text':
-                    $this->base['idea']->setKnowledgeText($request->request->get('value'));
+                case 'content':
+                    $this->base['idea']->setContent($request->request->get('value'));
                     $deepLinkingService = $this->container->get('deep_linking_extension');
                     $response = $deepLinkingService->convertDeepLinks(
                       $this->container->get('markdown.parser')->transformMarkdown($request->request->get('value'))
@@ -539,20 +531,14 @@ class IdeaController extends Controller
             $wiki = new Wiki();
 
                 $project->setWiki($wiki);
-                $wikiPageConcept = new WikiPage();
-                    $wikiPageConcept->setTitle($this->get('translator')->trans('idea.concept.title'));
-                    $wikiPageConcept->setContent($this->base['idea']->getConceptText());
+                $wikiPage = new WikiPage();
+                    $wikiPage->setTitle($this->get('translator')->trans('idea.content.title'));
+                    $wikiPage->setContent($this->base['idea']->getContent());
 
-                $wikiPageKnowledge = new WikiPage();
-                    $wikiPageKnowledge->setTitle($this->get('translator')->trans('idea.knowledge.title'));
-                    $wikiPageKnowledge->setContent($this->base['idea']->getKnowledgeText());
-
-                $wiki->addPage($wikiPageConcept);
-                $wiki->addPage($wikiPageKnowledge);
+                $wiki->addPage($wikiPage);
 
             $em->persist($wiki);
-            $em->persist($wikiPageConcept);
-            $em->persist($wikiPageKnowledge);
+            $em->persist($wikiPage);
 
             $em->flush();
 

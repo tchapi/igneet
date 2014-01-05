@@ -8,11 +8,11 @@ parameters:
       icon: fa fa-info-circle
       route: i_show_idea
       private: false
-    concept:
-      icon: fa fa-cogs
-      route: i_show_idea_concept
-      private: false
-    knowledge:
+    content:
       icon: fa fa-book
-      route: i_show_idea_knowledge
+      route: i_show_idea_content
+      private: false
+    settings:
+      icon: fa fa-wrench
+      route: i_show_idea_settings
       private: false

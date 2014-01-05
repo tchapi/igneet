@@ -82,8 +82,10 @@ idea:
     add.participant: "Ajouter un participant"
   knowledge:
     title: "Connaissance"
-  concept:
-    title: "Concept"
+  content:
+    title: "Contenu"
+  settings:
+    title: ""
   add.participant: "L'utilisateur %user% est maintenant participant de l'idée '%idea%'."
   remove.participant: "L'utilisateur '%user%' ne participe plus à l'idée '%idea%'."
   user.already.participant: "Cet utilisateur n'existe pas ou participe déjà à cette idée."
