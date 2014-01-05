@@ -45,33 +45,16 @@
         <i class="fa fa-archive"></i> {{ "idea.info.archived.short"|trans({'%date%': base.idea.archivedAt|date("date.fullFormat"|trans)}) }}
       </div>
       {% endif %}
-    </h4>
 
-    <h4>
       {% if base.isCreator %}
-        <div>
-          {% if not base.idea.archived %}
-            <i class="fa fa-archive"></i> <a data-confirm="{{ "idea.archiveHelp"|trans }}" href="{{ path('i_archive_idea', {'uid': base.idea.id|to_uid, 'token': csrf_token('archiveOrRecycle') }) }}">{{ "idea.archive"|trans }}</a>
-          {% else %}
-            <i class="fa fa-refresh"></i> <a data-confirm="{{ "idea.recycleHelp"|trans }}" href="{{ path('i_recycle_idea', {'uid': base.idea.id|to_uid, 'token': csrf_token('archiveOrRecycle') }) }}">{{ "idea.recycle"|trans }}</a>
-          {% endif %}
-        </div>
-        {% if not base.idea.archived %}
-        <div>
-            <i class="fa fa-external-link"></i> <a data-confirm="{{ "idea.projectizeHelp"|trans }}" href="{{ path('i_turn_idea_into_project', {'uid': base.idea.id|to_uid, 'token': csrf_token('projectize')  }) }}">{{ "idea.projectize"|trans }}</a>
-        </div>
-        {% endif %}
-      {% endif %}
-
-      {% if base.idea.community is null %}
       <div>
-        <i class="fa fa-group"></i> <a href="{{ path('g_choose_community', {'targetAsBase64': base.targetProposeToCommunityAsBase64 , 'token': csrf_token('edit') }) }}">{{ "idea.propose"|trans }}</a>
+        {% if not base.idea.archived %}
+          <i class="fa fa-archive"></i> <a data-confirm="{{ "idea.archiveHelp"|trans }}" href="{{ path('i_archive_idea', {'uid': base.idea.id|to_uid, 'token': csrf_token('archiveOrRecycle') }) }}">{{ "idea.archive"|trans }}</a>
+        {% else %}
+          <i class="fa fa-refresh"></i> <a data-confirm="{{ "idea.recycleHelp"|trans }}" href="{{ path('i_recycle_idea', {'uid': base.idea.id|to_uid, 'token': csrf_token('archiveOrRecycle') }) }}">{{ "idea.recycle"|trans }}</a>
+        {% endif %}
       </div>
       {% endif %}
-
-      <div class="ideaAbout">
-        
-      </div>
 
     </h4>
 

@@ -167,19 +167,6 @@ body > .content-container header {
     & > h4 {
       color: $_muted;
       margin: 5px 0 10px 0;
-      div:first-child {
-        @include span-columns(3 of 7);
-        @include ellipsis($column*3);
-        @include media($mobile) {
-          @include fill-parent();
-        }
-      }
-      div:last-child {
-        @include span-columns(4 of 7);
-        @include media($mobile) {
-          @include fill-parent();
-        }
-      }
       @include clearfix;
     }
 
@@ -202,24 +189,10 @@ body > .content-container section {
   &:first-of-type { border-top: 1px solid $_background; }
   &:last-of-type { padding-bottom: $horizontal-padding; }
   
-  & > .label {
-    @include span-columns(3 of 10);
-    color: $_discrete;
-    @include media($tablet) {
-      @include span-columns(1 of 4);
-      @include shift(0);
-    }
-    @include media($mobile) {
-      @include fill-parent();
-      @include shift(0);
-      margin-bottom: 5px;
-    }
-    & > h2 { color: $_text-secondary; }
-  }
   & > .content {
+    color: $_text-secondary;
     @include span-columns(7 of 10);
     @include clearfix;
-    color: $_text-secondary;
     @include media($tablet) {
       @include span-columns(3 of 4);
       @include shift(0);
@@ -281,52 +254,6 @@ body > .content-container section {
 body > .content-container aside + section,
 body > .content-container aside + section:first-of-type { border: none; }
 
-/* When sections are wrapped in a FORM container */
-body > .content-container form > section {
-
-  padding-top: $gutter/2;
-  padding-bottom: $gutter/2;
-  border-top: none;
-
-  &:first-of-type {
-    border-top: 1px solid $_background;
-    padding-top: $gutter*2;
-  }
-  &:last-of-type {
-    padding-bottom: $horizontal-padding;
-  }
-
-  & > .label {
-    @include shift(1 of 10);
-    text-align: right;
-    @include media($tablet) {
-      @include span-columns(1 of 4);
-      @include shift(0);
-      text-align: left;
-    }
-    @include media($mobile) {
-      @include fill-parent();
-      @include shift(0);
-      text-align: left;    
-    }
-  }
-  & > .content {
-    @include span-columns(3 of 10);
-    @include shift(4);
-    @include media($tablet) {
-      @include span-columns(3 of 4);
-      @include shift(1);
-    }
-    @include media($mobile) {
-      @include fill-parent();
-      @include shift(0); 
-    }
-    & input.error { border-color: $_red; }
-  }
-  & > .label + .content {
-    @include shift(0);
-  }
-}
 
 /* Aside spans the full width of the card container */
 body > .content-container aside {
@@ -388,6 +315,7 @@ body.card > .content-container header {
     @include shift(1);
     @include media($tablet) {
       @include span-columns(3 of 4);
+      @include omega;
       @include shift(0);
     }
     @include media($mobile) {
@@ -404,36 +332,21 @@ body.card > .content-container header {
     }
   }
 
-}
-
-//@import "styles/full";
-body.full > .content-container header {
-
-  & > .avatar {
-    @include span-columns(2);
-    @include media($tablet) {
-      @include span-columns(1);
-    }
-    @include media($mobile) {
-      display: none;
-    }
-  }
-
-  & > .info {
-    @include span-columns(10);
-    @include shift(0);
-    @include media($tablet) {
-      @include span-columns(3 of 4);
-    }
-    @include media($mobile) {
-      @include fill-parent();
-    }
-  }
-
-  & > .title {
-    @include span-columns(12);
-    @include media($tablet, $mobile) {
-      @include fill-parent();
+  & > .info, & > .title {
+    & > h4 {
+      div:first-child {
+        @include span-columns(3 of 7);
+        @include ellipsis($column*3);
+        @include media($mobile) {
+          @include fill-parent();
+        }
+      }
+      div:last-child {
+        @include span-columns(4 of 7);
+        @include media($mobile) {
+          @include fill-parent();
+        }
+      }
     }
   }
 
@@ -453,6 +366,149 @@ body.card > .content-container section {
     padding-bottom: $gutter;
   }
 
+  & > .label {
+    @include span-columns(3 of 10);
+    @include media($tablet) {
+      @include span-columns(1 of 4);
+      @include shift(0);
+    }
+    @include media($mobile) {
+      @include fill-parent();
+      @include shift(0);
+      margin-bottom: 5px;
+    }
+    & > .label {
+      color: $_discrete;
+      & > h2 { color: $_text-secondary; }
+    }
+  }
+
+}
+
+/* When sections are wrapped in a FORM container */
+body.card > .content-container form > section {
+
+  padding-top: $gutter/2;
+  padding-bottom: $gutter/2;
+  border-top: none;
+
+  &:first-of-type {
+    border-top: 1px solid $_background;
+    padding-top: $gutter*2;
+  }
+  &:last-of-type {
+    padding-bottom: $horizontal-padding;
+  }
+
+  & > .label {
+    @include shift(1 of 10);
+    text-align: right;
+    @include media($tablet) {
+      @include span-columns(1 of 4);
+      @include shift(0);
+      text-align: left;
+    }
+    @include media($mobile) {
+      @include fill-parent();
+      @include shift(0);
+      text-align: left;    
+    }
+  }
+  & > .content {
+    @include span-columns(3 of 10);
+    @include shift(4);
+    @include media($tablet) {
+      @include span-columns(3 of 4);
+      @include shift(1);
+    }
+    @include media($mobile) {
+      @include fill-parent();
+      @include shift(0); 
+    }
+    & input.error { border-color: $_red; }
+  }
+  & > .label + .content {
+    @include shift(0);
+  }
+}
+
+//@import "styles/full";
+body.full > .content-container header {
+
+  & > .avatar {
+    @include span-columns(2);
+    @include media($tablet) {
+      @include span-columns(1);
+    }
+    @include media($mobile) {
+      display: none;
+    }
+  }
+
+  & > .info {
+    @include span-columns(10);
+    @include omega;
+    @include shift(0);
+    @include media($tablet) {
+      @include span-columns(3 of 4);
+      @include omega;
+    }
+    @include media($mobile) {
+      @include fill-parent();
+    }
+  }
+
+  & > .title {
+    @include fill-parent();
+    @include media($tablet, $mobile) {
+      @include fill-parent();
+    }
+  }
+
+  & > .info, & > .title {
+    & > h4 {
+      div:first-child {
+        @include span-columns(5 of 10);
+        @include ellipsis($column*5);
+        @include media($mobile) {
+          @include fill-parent();
+        }
+      }
+      div:last-child {
+        @include span-columns(5 of 10);
+        @include media($mobile) {
+          @include fill-parent();
+        }
+      }
+    }
+  }
+
+}
+
+body.full > .content-container nav {
+  @include clearfix;
+  @include fill-parent();
+  & > ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    text-transform: uppercase;
+    font-family: 'gotham_bold';
+    & > li {
+      padding: $gutter;
+      display: inline-block;
+      & > a {
+        color: $_discrete;
+      }
+      &.active {
+        background: $_background;
+      }
+      &:hover:not(.active) {
+        background: $_sensible;
+      }
+    }
+  }
+
 }
 
 body.full > .content-container section {
@@ -468,6 +524,54 @@ body.full > .content-container section {
   &.none {
     padding: 100px;
     text-align: center;
+  }
+
+  & > .label {
+    @include fill-parent();
+    margin: 20px 0;
+    padding-bottom: 20px;
+    font-size: 1.7em;
+    border-bottom: 1px solid $_muted;
+  }
+
+  & > ul.content-full {
+    $width: 3; // in nb of columns
+      $pad: $gutter*$width/4;
+      $inner_size: ($column*$width/2 - $pad*2);
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    & > li {
+      display: inline-block;
+      padding: $pad;
+      @include span-columns($width of 12);
+      height: $inner_size;
+      background: $_sensible-dark;
+      & > a {
+        color: $_text-dark;
+        display: block;
+        & > img {
+          border-radius: 50%;
+          height: ($inner_size - $pad*2);
+          width: ($inner_size - $pad*2);
+          vertical-align: top;
+          float: left;
+        }
+        & > div {
+          display: table-cell;
+          height: ($inner_size - $pad*2);
+          vertical-align: middle;
+          font-size: 1.2em;
+          padding-left: $pad;
+          & * {
+            @include ellipsis($inner_size + $pad*2);
+          }
+        }
+      }
+      &:hover{
+        background: $_text-secondary;
+      }
+    }
   }
 }
 

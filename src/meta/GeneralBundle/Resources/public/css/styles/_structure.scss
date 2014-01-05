@@ -65,8 +65,16 @@ body {
         @include media($tablet, $mobile) { 
           padding: 0px $gutter/2;
         }
-        &.list {
+        &.list, &.info {
           background: $_background;
+          color: $_text-secondary;
+        }
+        &.team {
+          background: $_background-strong;
+          color: $_text-dark;
+          & > section > .label {
+            border-bottom: 1px solid $_text-secondary;
+          }
         }
         & > * {
           @include outer-container();
