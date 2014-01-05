@@ -60,7 +60,14 @@
       {% else %}
         <span>{{ "user.skills.none"|trans }}</span>
         {% if canEdit %}
-          <ul><li><a href=""><i class="fa fa-plus"></i></a></li></ul>
+          <ul{% if canEdit %} data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" data-emptytext="{{ "user.skills.emptyText"|trans }}" contenteditable="list" data-name="skills"{% endif %}>
+            <li><a href="#" class="add" data-url="{{ path('u_list_all_skills')}}"><i class="fa fa-plus"></i></a>
+              <span style="display: none;">
+                <a href="#"><i class="fa fa-times"></i></a>
+                <input type="text" id="skill" placeholder="{{ "user.skills.placeholder"|trans }}"/>
+              </span>
+            </li>
+          </ul>
         {% endif %}
       {% endif %}
     </div>
