@@ -247,6 +247,7 @@ body > .content-container section {
   & > .content-full {
     @include fill-parent();
     @include shift(0);
+    & .redactor_editor { min-height: 400px !important; }
   }
 }
 

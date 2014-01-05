@@ -2,14 +2,28 @@
 
 {% block title %}{{ parent() }} | {{ "idea.content.title"|trans }}{% endblock %}
 
+{% block javascripts %}
+  {{ parent() }}
+  {% if base.canEdit %}
+    {% javascripts '@metaGeneralBundle/Resources/public/js-edit/redactor.js'
+            filter='?yui_js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+  {% endif %}
+{% endblock %}
+
 {% block content %}
-<section>
+<div class="wrapper info">
+  <section>
 
-  {{ "idea.content.title"|trans }}
+     <div class="label">{{ "idea.content.title"|trans }}</div>
 
-  <textarea unsaved='no' data-name="content" data-url="{{ path('i_edit_idea', {'uid': base.idea.id|to_uid, 'token': csrf_token('edit') }) }}" class="wmd-input" id="wmd-input">{{ base.idea.content|deeplinks|raw }}</textarea>
+      <div class="content-full">
+        <div{% if base.canEdit %} data-name="content" data-url="{{ path('i_edit_idea', {'uid': base.idea.id|to_uid, 'token': csrf_token('edit') }) }}" contenteditable="true" rich="true"{% else %} class="redactor_editor"{% endif %}>{{ base.idea.content|deeplinks|raw }}</div>
+      </div>
 
-</section>
+  </section>
+</div>
 {% endblock %}
 
 {% block navbar %}
