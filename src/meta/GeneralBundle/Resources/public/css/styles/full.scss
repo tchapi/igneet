@@ -1,0 +1,216 @@
+/* ******************************************************************** */
+/*                             FULL STRUCTURE                           */
+/* ******************************************************************** */
+
+body.full > .content-container header {
+
+  & > .avatar {
+    @include span-columns(2);
+    @include media($tablet) {
+      @include span-columns(1);
+    }
+    @include media($mobile) {
+      display: none;
+    }
+  }
+
+  & > .info {
+    @include span-columns(10);
+    @include omega;
+    @include shift(0);
+    @include media($tablet) {
+      @include span-columns(3 of 4);
+      @include omega;
+    }
+    @include media($mobile) {
+      @include fill-parent();
+    }
+  }
+
+  & > .title {
+    @include fill-parent();
+    @include media($tablet, $mobile) {
+      @include fill-parent();
+    }
+  }
+
+  & > .info, & > .title {
+    & > h4 {
+      div:first-child {
+        @include span-columns(5 of 10);
+        @include ellipsis($column*5);
+        @include media($mobile) {
+          @include fill-parent();
+        }
+      }
+      div:last-child {
+        @include span-columns(5 of 10);
+        @include media($mobile) {
+          @include fill-parent();
+        }
+      }
+    }
+  }
+
+}
+
+body.full > .content-container nav {
+  @include clearfix;
+  @include fill-parent();
+  & > ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    text-transform: uppercase;
+    font-family: 'gotham_bold';
+    & > li {
+      padding: $gutter;
+      display: inline-block;
+      & > a {
+        color: $_discrete;
+        @include media ($tablet, $mobile) {
+          display: inline-block;
+          height: 18px;
+          width: 16px;
+          overflow: hidden;
+        }
+      }
+      &.active {
+        background: $_background;
+      }
+      &:hover:not(.active) {
+        background: $_sensible;
+      }
+    }
+  }
+
+}
+
+body.full > .content-container section {
+
+  @include row();
+  border-top: none;
+
+  @include media($tablet, $mobile) {
+    padding-top: $gutter;
+    padding-bottom: $gutter;
+  }
+
+  &.none {
+    padding: 100px;
+    text-align: center;
+  }
+
+  & > .label {
+    @include span-columns(3 of 12);
+    @include shift(2);
+    @include media($tablet) {
+      @include span-columns(1 of 4);
+      @include shift(0);
+    }
+    @include media($mobile) {
+      @include fill-parent();
+      @include shift(0);
+      margin-bottom: 5px;
+    }
+  }
+
+  & > .content {
+    @include span-columns(5 of 12);
+    @include clearfix;
+    @include media($tablet) {
+      @include span-columns(3 of 4);
+      @include shift(0);
+    }
+    @include media($mobile) {
+      @include fill-parent();
+      @include shift(0);
+    }
+  }
+
+  & > .label-full {
+    @include fill-parent();
+    margin: 20px 0;
+    padding-bottom: 20px;
+    font-size: 1.7em;
+    border-bottom: 1px solid $_sensible;
+  }
+
+  & > ul.content-full {
+    $width: 3; // in nb of columns
+      $pad: $gutter*$width/4;
+      $inner_size: ($column*$width/2 - $pad*2);
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    & > li {
+      display: inline-block;
+      padding: $pad;
+      margin-bottom: $pad;
+      position: relative;
+      height: $inner_size;
+      background: $_sensible-dark;
+
+      @include span-columns($width of 12);
+      &:nth-child(#{12/$width}n) { @include omega; }
+      @include media($tablet) {
+        @include span-columns(2 of 4);
+        &:nth-child(2n) { @include omega; }
+      }
+      @include media($mobile) {
+        @include fill-parent();
+      }
+      
+      & > a {
+        color: $_text-dark;
+        display: block;
+        & > img {
+          border-radius: 50%;
+          height: ($inner_size - $pad*2);
+          width: ($inner_size - $pad*2);
+          vertical-align: top;
+          float: left;
+        }
+        & > i {
+          display: inline-block;
+          float: left;
+          font-size: 1.375em*$width;
+          color: $_muted;
+        }
+        & > div {
+          display: table-cell;
+          height: ($inner_size - $pad*2);
+          vertical-align: middle;
+          font-size: 1.2em;
+          padding-left: $pad;
+          & * {
+            @include ellipsis($inner_size + $pad*2);
+            @include media($tablet, $mobile) {
+              width: auto;
+              max-width: none;
+              padding-left: 10px;
+            }
+          }
+          div:only-child {
+            white-space: normal;
+          }
+          @include media($tablet, $mobile) {
+            display: block;
+            padding-top: 8px;
+          }
+        }
+        &.remove {
+          position: absolute;
+          right: 10px;
+          top: 0;
+          font-size: 2em;
+          line-height: $inner_size;
+          &:hover { color: $_secondary; }
+        }
+      }
+      &:hover{
+        background: $_text-secondary;
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+/* ******************************************************************** */
+/*                              Pagination                              */
+/* ******************************************************************** */
+
+.pagination {
+  @include row();
+  @include fill-parent();
+  background: $_container;
+  text-align: center;
+  color: $_muted;
+  padding: 15px;
+  margin-top: $gutter*1.5;
+}

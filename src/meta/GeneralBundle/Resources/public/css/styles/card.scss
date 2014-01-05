@@ -1,0 +1,140 @@
+/* ******************************************************************** */
+/*                             CARD STRUCTURE                           */
+/* ******************************************************************** */
+
+body.card > .content-container header {
+
+  & > .avatar {
+    @include span-columns(2);
+    @include shift(1);
+    position: relative;
+    @include media($tablet) {
+      @include span-columns(1);
+      @include shift(0);
+    }
+    @include media($mobile) {
+      display: none;
+    }
+  }
+
+  & > .info {
+    @include span-columns(7);
+    @include shift(1);
+    @include media($tablet) {
+      @include span-columns(3 of 4);
+      @include omega;
+      @include shift(0);
+    }
+    @include media($mobile) {
+      @include fill-parent();
+    }
+  }
+
+  & > .title {
+    @include span-columns(10);
+    @include shift(1);
+    @include media($tablet, $mobile) {
+      @include shift(0);
+      @include fill-parent();
+    }
+  }
+
+  & > .info, & > .title {
+    & > h4 {
+      div:first-child {
+        @include span-columns(3 of 7);
+        @include ellipsis($column*3);
+        @include media($mobile) {
+          @include fill-parent();
+        }
+      }
+      div:last-child {
+        @include span-columns(4 of 7);
+        @include media($mobile) {
+          @include fill-parent();
+        }
+      }
+    }
+  }
+
+}
+
+body.card > .content-container section {
+
+  @include row();   
+  @include span-columns(10);
+  @include shift(1);
+  @include clearfix;
+
+  @include media($tablet, $mobile) {
+    @include fill-parent();
+    @include shift(0);
+    padding-top: $gutter;
+    padding-bottom: $gutter;
+  }
+
+  & > .label {
+    @include span-columns(3 of 10);
+    @include media($tablet) {
+      @include span-columns(1 of 4);
+      @include shift(0);
+    }
+    @include media($mobile) {
+      @include fill-parent();
+      @include shift(0);
+      margin-bottom: 5px;
+    }
+    & > .label {
+      color: $_discrete;
+      & > h2 { color: $_text-secondary; }
+    }
+  }
+
+}
+
+/* When sections are wrapped in a FORM container */
+body.card > .content-container form > section {
+
+  padding-top: $gutter/2;
+  padding-bottom: $gutter/2;
+  border-top: none;
+
+  &:first-of-type {
+    border-top: 1px solid $_background;
+    padding-top: $gutter*2;
+  }
+  &:last-of-type {
+    padding-bottom: $horizontal-padding;
+  }
+
+  & > .label {
+    @include shift(1 of 10);
+    text-align: right;
+    @include media($tablet) {
+      @include span-columns(1 of 4);
+      @include shift(0);
+      text-align: left;
+    }
+    @include media($mobile) {
+      @include fill-parent();
+      @include shift(0);
+      text-align: left;    
+    }
+  }
+  & > .content {
+    @include span-columns(3 of 10);
+    @include shift(4);
+    @include media($tablet) {
+      @include span-columns(3 of 4);
+      @include shift(1);
+    }
+    @include media($mobile) {
+      @include fill-parent();
+      @include shift(0); 
+    }
+    & input.error { border-color: $_red; }
+  }
+  & > .label + .content {
+    @include shift(0);
+  }
+}
