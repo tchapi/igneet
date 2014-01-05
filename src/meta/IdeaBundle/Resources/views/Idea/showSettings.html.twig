@@ -1,0 +1,33 @@
+{% extends 'metaIdeaBundle:Idea:show.html.twig' %}
+
+{% block title %}{{ parent() }} | {{ "idea.settings.title"|trans }}{% endblock %}
+
+{% block content %}
+<section>
+
+  {% if base.idea.community is null %}
+    <div>
+      <i class="fa fa-group"></i> <a href="{{ path('g_choose_community', {'targetAsBase64': base.targetProposeToCommunityAsBase64 , 'token': csrf_token('edit') }) }}">{{ "idea.propose"|trans }}</a>
+    </div>
+  {% endif %}
+  
+  {% if not base.idea.archived %}
+    <div>
+        <i class="fa fa-external-link"></i> <a data-confirm="{{ "idea.projectizeHelp"|trans }}" href="{{ path('i_turn_idea_into_project', {'uid': base.idea.id|to_uid, 'token': csrf_token('projectize')  }) }}">{{ "idea.projectize"|trans }}</a>
+    </div>
+  {% endif %}
+
+</section>
+
+{% if base.isCreator %}
+  <section>
+    <div class="sectionTitle">{{ "idea.delete"|trans }} : </div>
+    <div class="sectionContent"><a class="btn btn-danger" data-confirm="{{ "idea.deleteHelp"|trans }}" href="{{ path('i_delete_idea', { 'uid': base.idea.id|to_uid, 'token': csrf_token('delete') }) }}">{{ "delete"|trans }}</a> <span class="muted">( <i class="fa fa-warning"></i> {{ "deleteHelp"|trans }} )</span></div>
+  </section>
+{% endif %}
+
+{% endblock %}
+
+{% block navbar %}
+{% render(controller("metaIdeaBundle:Idea:navbar",{ 'activeMenu' : 'settings', 'uid' : base.idea.id|to_uid })) %}
+{% endblock %}

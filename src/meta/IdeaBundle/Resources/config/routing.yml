@@ -110,6 +110,13 @@ i_unwatch_idea:
 # /IDEA/{SUB-ITEM}
 # ---------------
 
+## SETTINGS
+i_show_idea_settings:
+    pattern:  /idea/0{uid}/settings
+    defaults: { _controller: metaIdeaBundle:Idea:showSettings}
+    requirements:
+        uid: "[0-9a-zA-Z]*"
+
 ## TIMELINE
 i_show_idea_timeline:
     pattern:  /idea/0{uid}/timeline/{page}

@@ -202,7 +202,7 @@ class IdeaController extends Controller
 
 
     /*
-     * Show an idea's concept or knowledge
+     * Show an idea's content
      */
     public function showContentAction($uid)
     {
@@ -212,6 +212,30 @@ class IdeaController extends Controller
         if ($this->access != false) {
 
             return $this->render('metaIdeaBundle:Idea:showContent.html.twig', 
+                array('base' => $this->base));
+
+        } else {
+
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $this->get('translator')->trans('idea.access')
+            );
+            
+            return $this->redirect($this->generateUrl('i_list_ideas'));
+        }
+    }
+
+    /*
+     * Show the settings page
+     */
+    public function showSettingsAction($uid)
+    {
+
+        $this->preComputeRights(array('mustBeCreator' => false, 'mustParticipate' => true));
+        
+        if ($this->access != false) {
+
+            return $this->render('metaIdeaBundle:Idea:showSettings.html.twig', 
                 array('base' => $this->base));
 
         } else {
