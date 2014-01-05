@@ -500,6 +500,12 @@ body.full > .content-container nav {
       display: inline-block;
       & > a {
         color: $_discrete;
+        @include media ($tablet, $mobile) {
+          display: inline-block;
+          height: 18px;
+          width: 16px;
+          overflow: hidden;
+        }
       }
       &.active {
         background: $_background;
