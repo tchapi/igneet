@@ -61,6 +61,12 @@ $(document).ready(function(){
 
   canLoad = true; // Infinite scrolling is enabled
   
+  if (total_objects <= objects_per_page) {
+    $('#no-more').show();
+    $('#more').hide();
+    canLoad = false;
+  }
+
   var template = $('#list tr.template').html(); // We get the template for the infinite scrolling
 
   // Handle urls like this : /[objects]#page=N
@@ -68,7 +74,7 @@ $(document).ready(function(){
   gotoPage = gotoPage?gotoPage[1]:1;
 
   // If we have a hash that tells us to go to a certain page, we need to request the missing elements
-  if (gotoPage != 1 && (gotoPage-1)*objects_per_page < total_objects) {
+  if (canLoad && gotoPage != 1 && (gotoPage-1)*objects_per_page < total_objects) {
 
     // Load intermediary pages (full = true)
     retrieveResults(gotoPage,true, function(){
