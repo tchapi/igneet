@@ -5,17 +5,18 @@ $(document).ready(function(){
 
     var nW = parseInt(document.getElementById("target").naturalWidth);
     var nH = parseInt(document.getElementById("target").naturalHeight);
-
+    min = Math.min(150 + 1, nW, nH) - 1 ;
+    
     target.imgAreaSelect({
         aspectRatio: '1:1',
         handles: true,
-        minHeight: 150,
-        minWidth: 150,
+        minHeight: min,
+        minWidth: min,
         persistent: true,
         imageHeight: nH,
         imageWidth: nW,
         persistent: true,
-        x1: 0, y1: 0, x2: 150, y2: 150,
+        x1: 0, y1: 0, x2: min, y2: min,
         onSelectEnd: function (img, selection) {
                     $('#x').val(selection.x1);
                     $('#y').val(selection.y1);
