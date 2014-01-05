@@ -247,7 +247,7 @@ body > .content-container section {
   & > .content-full {
     @include fill-parent();
     @include shift(0);
-    & .redactor_editor { min-height: 300px !important; }
+    & .redactor_box > .redactor_editor { min-height: 300px !important; }
   }
 }
 
@@ -641,7 +641,7 @@ table {
     }
     & th {
       padding: 0 $gutter;
-      &:first-of-type { padding: 0; }
+      &:first-of-type { padding: 0; white-space: nowrap; }
     }
   }
   tbody tr {
@@ -650,8 +650,8 @@ table {
     &:hover { background: $_container; }
     & td {
       min-width: ($column*2 - $gutter);
-      @include media(tablet) {
-        width: $column;
+      @include media($tablet, $mobile) {
+        overflow: hidden;
       }
       padding: 0 $gutter;
       color: $_discrete;
@@ -676,6 +676,14 @@ table {
           & > span {
             @include ellipsis($column*5 - $gutter*2.5); // prevention ...
             display: block;
+            @include media ($tablet) {
+              max-height: 40px;
+              white-space: normal;
+            }
+            @include media ($mobile) {
+              max-height: none;
+              white-space: nowrap;
+            }
           }
           & > span.headline {
             color: $_discrete;
@@ -686,7 +694,6 @@ table {
         }
       }
     }
-
     & img {
       height: simages_size;
       width: simages_size;
@@ -695,6 +702,18 @@ table {
       border-radius: $border-radius/2;
     }
   }
+  @include media($tablet) {
+    table-layout: fixed;
+  }
+  @include media($mobile) {
+    th:not(.main), td:not(.main) {
+      display: none;
+    }
+    tbody tr {
+      height: 82px;
+    }
+  }
+  
 }
 
 // @import "styles/pages"
