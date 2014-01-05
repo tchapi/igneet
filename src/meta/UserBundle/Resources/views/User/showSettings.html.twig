@@ -71,7 +71,7 @@
       </div>
       
       <div class="specificDay"{% if app.user.digestFrequency == "daily" %} style="display: none;"{% endif %}>
-        <form>
+        
           <input type="checkbox" id="specificDay" {% if app.user.enableSpecificDay %}checked="checked"{% endif %} data-name="specificDayToggle" data-url="{{ path('u_edit_user_settings', {'token': csrf_token('editSettings') }) }}"><label for="specificDay">{{ "user.digest.specificDay"|trans }} : </label>
 
           <select data-name="day" data-url="{{ path('u_edit_user_settings', {'token': csrf_token('editSettings') }) }}">
@@ -84,13 +84,12 @@
             <option value="7" {% if app.user.digestDay == "sunday" %}selected="selected"{% endif %}>{{ "date.sunday.long"|trans }}</option>
           </select>
 
-        </form>
       </div>
 
       <div class="specificEmail">
-        <form>
+
           <input type="checkbox" id="specificEmails" {% if app.user.enableSpecificEmails %}checked="checked"{% endif %} data-name="specificEmailsToggle" data-url="{{ path('u_edit_user_settings', {'token': csrf_token('editSettings') }) }}"><label for="specificEmails">{{ "user.digest.specificEmails"|trans }} :</label>
-        </form>
+
       </div>
       <ul class="specificEmailsChoice" {% if not app.user.enableSpecificEmails %}style="display: none;"{% endif %}>
         {% for userCommunity in app.user.userCommunities %}
