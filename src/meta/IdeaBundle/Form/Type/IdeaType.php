@@ -34,7 +34,7 @@ class IdeaType extends AbstractType
                               ->orderBy("u.username", "ASC");
                 },
                 'label' => 'idea.createForm.creators',
-                'attr' => array('class' => 'select2-trigger', 'data-placeholder' => $options['translator']->trans('idea.createForm.creatorsPlaceholder'))
+                'attr' => array('class' => 'select2-trigger', 'help' => 'idea.createForm.creatorsPlaceholder', 'data-placeholder' => $options['translator']->trans('idea.createForm.creatorsPlaceholder'))
                 ));
         }
     }

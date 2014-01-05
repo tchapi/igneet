@@ -29,7 +29,7 @@ idea:
     headline: "Headline"
     headlinePlaceholder: "Give your idea some nice catchline"
     creators: "Creators"
-    creatorsPlaceholder: "Indicate the creators"
+    creatorsPlaceholder: "You can indicate several creators — you won't we able to change this afterwards."
   created: "The idea %idea% has successfully been created."
   archive: "Archive this idea"
   archiveHelp: "Are you sure you want to archive this idea ?"
