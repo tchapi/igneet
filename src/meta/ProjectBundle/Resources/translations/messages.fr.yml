@@ -163,8 +163,8 @@ project:
   add.owner: "L'utilisateur %user% est maintenant propriétaire du projet '%project%'."
   remove.participant: "L'utilisateur '%user%' ne participe plus au projet '%project%'."
   remove.owner: "L'utilisateur '%user%' n'est maintenant plus propriétaire du projet '%project%'."
-  user.already.participant: "Cet utilisateur n'existe pas ou participe déjà à cette idée."
-  user.not.participant: "Cet utilisateur n'existe pas au rôle spécifié dans cette idée."
+  user.already.participant: "Cet utilisateur n'existe pas ou participe déjà à ce projet."
+  user.not.participant: "Cet utilisateur n'existe pas au rôle spécifié dans ce projet."
   invitation:
     mail:
       sent: "Un mail de notification a été envoyé à %mail% en votre nom. Il/elle sera ajouté(e) au projet lors de sa prochaine connexion."
