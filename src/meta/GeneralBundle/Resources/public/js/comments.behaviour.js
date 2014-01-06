@@ -20,15 +20,16 @@ $(document).ready(function(){
   $('.validate-trigger').click(function(){
 
     var countBox = $(this).siblings('span');
-    var validationBox = $(this).closest('.validations');
+    var validationBox = $(this).closest('.validation');
 
     $.post($(this).attr('data-url'))
       .success(function(data, config) {
         countBox.html(data);
         validationBox.toggleClass('validated');
+        alertify.success(Translator.get('comment.validated'));
       })
       .error(function(errors) {
-        setFlash('error', Translator.get('comment.cannot.validate'));
+        alertify.error(Translator.get('comment.cannot.validate'));
       });
 
   });
@@ -37,16 +38,16 @@ $(document).ready(function(){
   $('.delete-trigger').click(function(){
 
     var actionBox = $(this).closest('.actions');
-    var commentBox = actionBox.siblings('.comment').find('div');
+    var commentBox = actionBox.siblings('.text');
 
     $.post($(this).attr('data-url'))
       .success(function(data, config) {
-        commentBox.html('<p class="muted"><em>' + Translator.get('comment.deleted') + '</em></p>');
+        commentBox.html('<em>' + Translator.get('comment.deleted') + '</em>');
         actionBox.fadeOut();
-        setFlash('success', Translator.get('comment.been.deleted'));
+        alertify.success(Translator.get('comment.been.deleted'));
       })
       .error(function(errors) {
-        setFlash('error', Translator.get('comment.cannot.delete'));
+        alertify.error(Translator.get('comment.cannot.delete'));
       });
 
   });

@@ -878,16 +878,16 @@ class IdeaController extends Controller
     /*
      * Output the timeline history
      */
-    public function historyAction($uid, $page){
+    public function historyAction($uid, $page)
+    {
 
-        $format = $this->get('translator')->trans('date.timeline');
         $this->timeframe = array( 'today' => array( 'name' => $this->get('translator')->trans('date.today'), 'data' => array()),
-                            'd-1'   => array( 'name' => date($format, strtotime("-1 day")), 'data' => array() ),
-                            'd-2'   => array( 'name' => date($format, strtotime("-2 day")), 'data' => array() ),
-                            'd-3'   => array( 'name' => date($format, strtotime("-3 day")), 'data' => array() ),
-                            'd-4'   => array( 'name' => date($format, strtotime("-4 day")), 'data' => array() ),
-                            'd-5'   => array( 'name' => date($format, strtotime("-5 day")), 'data' => array() ),
-                            'd-6'   => array( 'name' => date($format, strtotime("-6 day")), 'data' => array() ),
+                            'd-1'   => array( 'name' => $this->get('translator')->trans('date.yesterday'), 'data' => array() ),
+                            'd-2'   => array( 'name' => $this->get('translator')->trans('date.timeline', array( "%days%" => 2)), 'data' => array() ),
+                            'd-3'   => array( 'name' => $this->get('translator')->trans('date.timeline', array( "%days%" => 3)), 'data' => array() ),
+                            'd-4'   => array( 'name' => $this->get('translator')->trans('date.timeline', array( "%days%" => 4)), 'data' => array() ),
+                            'd-5'   => array( 'name' => $this->get('translator')->trans('date.timeline', array( "%days%" => 5)), 'data' => array() ),
+                            'd-6'   => array( 'name' => $this->get('translator')->trans('date.timeline', array( "%days%" => 6)), 'data' => array() ),
                             'before'=> array( 'name' => $this->get('translator')->trans('date.past.week'), 'data' => array() )
                             );
 

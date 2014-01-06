@@ -1,37 +1,35 @@
 {% if locale is not defined %}{% set locale = app.user.getPreferredLanguage() %}{% endif %}
+{% spaceless %}
+
 <div class="avatar">
   {% if not user.isDeleted %}
-  <img src="{% if user.isAvatarGravatar %}{{ user.avatar }}{% else %}{{ base_path ~ user.avatar }}{% endif %}" width="30" height="30" class="avatar"/>
+  <a href="{{url('u_show_user_profile', {'username': user.username}) }}" title="{{ user.getFullName }}">
+    <img src="{% if user.isAvatarGravatar %}{{ user.avatar }}{% else %}{{ base_path ~ user.avatar }}{% endif %}" width="50px" height="50px"/>
+  </a>
   {% else %}
-  <img src="{{ base_path ~ "/bundles/metageneral/img/defaults/user.png" }}" width="30" height="30" class="avatar"/>
+  <img src="{{ base_path ~ "/bundles/metageneral/img/defaults/user.png" }}" width="50px" height="50px" title="{{ user.getFullName }}"/>
   {% endif %}
 </div>
-<div class="comment">
-  <header>
-    {% if not user.isDeleted %}
-      <a href="{{url('u_show_user_profile', {'username': user.username}) }}">{{ user.getFullName }}</a>
-    {% else %}
-      <span>{{ user.getFullName }}</span>
-    {% endif %}
-     — <span>{{ comment.createdAt|date("date.fullFormat"|trans({}, 'messages', locale)) }}</span>
-  </header>
-  <div>
-    {% if comment.isDeleted %}
-    <p class="muted"><em>{{ "comment.deleted"|trans({}, 'messages', locale) }}</em></p>
-    {% else %}
-    {{ comment.text|deeplinks|markdown }}
-    {% endif %}
-  </div>
-</div>
+
+{# No icon for comments #}
+
+<span class="date">{{ comment.createdAt|date("date.fullFormat"|trans({}, 'messages', locale)) }}</span>
+
+<span class="text">{% if comment.isDeleted %}<em>{{ "comment.deleted"|trans({}, 'messages', locale) }}</em>{% else %}{{ comment.text|deeplinks|markdown }}{% endif %}</span>
+
 {% if not comment.isDeleted %}
 <div class="actions">
-  <div class="validations tooltip-trigger{% if app.user in comment.validators %} validated{% endif %}" data-toggle="tooltip" title="{% for user in comment.validators %}{{ user.getFullName() }}<br />{% endfor %}" data-placement="bottom">
-    <strong><a title="{{ "comment.vote"|trans({}, 'messages', locale) }}" class="validate-trigger" data-url="{{ path('g_validate_comment', {'id': comment.id, 'token': csrf_token('validateComment')} ) }}"><i class="fa fa-thumbs-o-up"></i></a> <span>{{ comment.validators|length }}</span></strong>
-  </div>
+
+  <span class="validation{% if app.user in comment.validators %} validated{% endif %}" title="{% for user in comment.validators %}{{ user.getFullName() }}<br />{% endfor %}">
+    <a title="{{ "comment.vote"|trans({}, 'messages', locale) }}" class="validate-trigger" data-url="{{ path('g_validate_comment', {'id': comment.id, 'token': csrf_token('validateComment')} ) }}"><i class="fa fa-thumbs-up"></i></a>
+    <span>{{ comment.validators|length }}</span>
+  </span>
+
   {% if comment.user == app.user %}
-  <div class="delete">
-    <a class="delete-trigger" data-url="{{ path('g_delete_comment', {'id': comment.id, 'token': csrf_token('deleteComment')} ) }}" title="{{ "comment.delete"|trans({}, 'messages', locale) }}"><i class="fa fa-trash-o"></i></a>
-  </div>
+  <a class="delete-trigger" data-url="{{ path('g_delete_comment', {'id': comment.id, 'token': csrf_token('deleteComment')} ) }}" title="{{ "comment.delete"|trans({}, 'messages', locale) }}"><i class="fa fa-trash-o"></i></a>
   {% endif %}
+
 </div>
 {% endif %}
+
+{% endspaceless %}

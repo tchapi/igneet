@@ -1,8 +1,9 @@
 date:
   format: "Y-m-d"
   fullFormat: "Y-m-d h:i A"
-  timeline: "M j"
+  timeline: "%days% days ago ..."
   today: "Today"
+  yesterday: "Yesterday"
   past.week: "A week ago"
   monday:
     short: "Mon"

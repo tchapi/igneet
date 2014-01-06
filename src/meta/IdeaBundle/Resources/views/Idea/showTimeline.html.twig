@@ -2,21 +2,18 @@
 
 {% block title %}{{ parent() }} | {{ "idea.timeline.title"|trans }}{% endblock %}
 
-{% block javascripts %}
-  {{ parent() }}
-    {% javascripts '@metaGeneralBundle/Resources/public/js/select2.behaviour.js' 
-            filter='?yui_js' %}
-    <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
-{% endblock %}
-
 {% block content %}
-<section>
-{% render(controller("metaIdeaBundle:Idea:addIdeaComment", { 'uid' : base.idea.id|to_uid })) %}
-</section>
-<section>
-{% render(controller("metaIdeaBundle:Idea:history", { 'uid' : base.idea.id|to_uid, 'page' : 1 })) %}
-</section>
+<div class="wrapper info">
+
+  <section>
+  {% render(controller("metaIdeaBundle:Idea:addIdeaComment", { 'uid' : base.idea.id|to_uid })) %}
+  </section>
+
+  <section>
+  {% render(controller("metaIdeaBundle:Idea:history", { 'uid' : base.idea.id|to_uid, 'page' : 1 })) %}
+  </section>
+
+</div>
 {% endblock %}
 
 {% block navbar %}

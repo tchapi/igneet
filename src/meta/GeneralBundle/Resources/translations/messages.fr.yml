@@ -94,6 +94,7 @@ comments:
   count: "{0}Aucun commentaire|{1}Un commentaire|]1,Inf[%count% commentaires"
 comment:
   added: "Votre commentaire a été ajouté avec succès."
+  validated: "Votre vote a été pris en compte."
   deleted: "Commentaire supprimé"
   delete: "Supprimer mon commentaire"
   vote: "Voter pour ce commentaire"

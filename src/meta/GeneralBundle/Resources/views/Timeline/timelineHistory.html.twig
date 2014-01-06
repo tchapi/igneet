@@ -1,22 +1,29 @@
-<div class="timeline_filters">
+<!-- <div class="timeline_filters">
   <select id="timeline_filters" class="select2-trigger" multiple="multiple" data-placeholder="{{ "timeline.placeholder"|trans }}">
     {% for group in filter_groups %}
     <option value="{{ group }}">{{ ("groups." ~ group)|trans({}, "logs") }}</option>
     {% endfor %}
   </select>
   <button class="btn" id="timeline_reset">{{ "timeline.reset.filters"|trans }}</button>
-</div>
+</div> -->
+
+{# Actual timeline #}
 <ul class="timeline">
+{% spaceless %}
 {% for step in timeframe %}
+
   {% if step.data|length > 0 %}
-  <li class="dateWrapper date"><div class="date-wrapper"><div class="date">{{ step.name }}</div></div></li>
 
-  {% for item in step.data %}
-    <li class="logWrapper{% if loop.parent.loop.last %} full{% endif %}" {{ item.groups|join(' ') }}><div class="log">{{ item.text|raw }}</div></li>
-  {% endfor %}
+    <li class="step">{{ step.name }}</li>
 
-  {% else %}
-  <li class="dateWrapper pass"></li>
+    {% for item in step.data %}
+      <li class="log" {{ item.groups|join(' ') }}>
+        {{ item.text|raw }}
+      </li>
+    {% endfor %}
+
   {% endif %}
+
 {% endfor %}
+{% endspaceless %}
 </ul>

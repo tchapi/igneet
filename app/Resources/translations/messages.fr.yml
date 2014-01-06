@@ -1,8 +1,9 @@
 date:
   format: "d/m/Y"
   fullFormat: "d/m/Y H:i"
-  timeline: "j/m"
+  timeline: "Il y a %days% jours ..."
   today: "Aujourd'hui"
+  yesterday: "Hier"
   past.week: "Il y a plus d'une semaine"
   monday:
     short: "Lun"
