@@ -1,0 +1,23 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}{{ parent() }} > {{ "error.404.title"|trans }}{% endblock %}
+
+{% block body %}
+<header class="home">
+  <div class="headerAvatarAndActions">
+    <div class="textAvatar"><i class="fa fa-bug"></i></div>
+  </div>
+  <div class="objectHeader">
+    <h2>{{ "error.404.title"|trans }}</h2>
+  </div>
+</header>
+<div class="content home clearfix">
+  <section>
+  <h4>{{ "error.404.text"|trans }}</h4>
+  <p>{{ "error.help"|trans }}</p>
+</section>
+</div>
+<footer>
+{% block footer %}{% endblock %}
+</footer>
+{% endblock %}
