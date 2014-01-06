@@ -2,10 +2,22 @@
 
 {% block title %}{{ parent() }} > {{ app.user.currentCommunity.name }} | {{ "community.home"|trans }}{% endblock %}
 
+{% block javascripts %}
+  {{ parent() }}
+    {% if isManager %}
+    {% javascripts '@metaGeneralBundle/Resources/public/js-edit/bootstrap-editable.js' 
+                   '@metaGeneralBundle/Resources/public/js-edit/editable.behaviour.js' 
+            filter='?yui_js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    {% endif %}
+{% endblock %}
+
 {% block body %}
 <header class="home">
 
   <div class="headerAvatarAndActions">
+    {% if isManager %}<div class="changeAvatar"><a href="{{ path('g_edit_community_reset_picture', {'uid': app.user.currentCommunity.id|to_uid, 'token': csrf_token('resetPicture')  }) }}" title="{{ "picture.resetHelp"|trans }}"><i class="fa fa-trash-o"></i></a> | <a href="{{ path('g_choose_file', {'targetAsBase64': targetPictureAsBase64, 'token': csrf_token('edit') }) }}"><i class="fa fa-pencil"></i> {{ "picture.change"|trans }}</a></div>{% endif %}
     <img src="{{ asset(app.user.currentCommunity.getPicture()) }}" width="150" height="150" class="avatar"/>
   </div>
 
@@ -34,7 +46,7 @@
     <div class="row">
 
       <span class="col-md-4">
-        <h4>{{ "community.home.last.ideas"|trans }}</h4>
+        <h4><a href="{{path('i_list_ideas', {'sort': 'newest', 'page' : '1'}) }}">{{ "community.home.last.ideas"|trans }}</a></h4>
         {% if lastIdeas|length > 0 %}
           <ul>
           {% for idea in lastIdeas %}
@@ -47,7 +59,7 @@
       </span>
 
       <span class="col-md-4">
-        <h4>{{ "community.home.last.projects"|trans }}</h4>
+        <h4><a href="{{ path('p_list_projects', {'sort': 'newest', 'page' : '1'}) }}">{{ "community.home.last.projects"|trans }}</a></h4>
         {% if lastProjects|length > 0 %}
           <ul>
           {% for project in lastProjects %}

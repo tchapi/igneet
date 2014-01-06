@@ -52,10 +52,16 @@ login: "Se connecter"
 signup: "Créer un compte"
 logout: "Déconnexion"
 # Footer
-report.bug: "Signaler un bug"
 terms: "Conditions générales"
 # Team
 team: "L'équipe d'igneet"
+# Error
+error:
+  title: "Oups..."
+  404:
+    title: "Erreur 404 : page non trouvée"
+    text: "La page demandée n'existe pas."
+  help: "Vous pouvez retourner à l'accueil du site. Si vous pensez que c'est un bug, n'hésitez pas à nous contacter (via le widget Uservoice en bas à droite de l'écran), nous regarderons tout ça rapidement !"
 # Mails
 mail:
   hello: "Bonjour,"

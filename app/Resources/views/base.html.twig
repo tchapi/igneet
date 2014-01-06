@@ -123,8 +123,33 @@
 {% endblock %}
 
         <footer>
-        &copy; copyright <a href="https://about.me/tchap">tchap</a> 2012-{{ "now"|date('Y') }} | <a href="http://igneet.com/terms">{{ "terms"|trans }}</a> | <a href="http://mantis.tchap.me" target="_blank">{{ "report.bug"|trans }}</a>
+        &copy; copyright <a href="https://about.me/tchap">tchap</a> 2012-{{ "now"|date('Y') }} | <a href="http://igneet.com/terms">{{ "terms"|trans }}</a>
         </footer>
+
+{% if uservoice_enabled %}
+    <script>
+    UserVoice=window.UserVoice||[];(function(){var uv=document.createElement('script');uv.type='text/javascript';uv.async=true;uv.src='//widget.uservoice.com/{{ uservoice_id }}.js';var s=document.getElementsByTagName('script')[0];s.parentNode.insertBefore(uv,s)})();
+
+    UserVoice.push(['set', {
+      accent_color: '#408EBF',
+      trigger_color: 'white',
+      trigger_background_color: '#408EBF'
+    }]);
+
+    {% if app.user %}
+    UserVoice.push(['identify', {
+      email:      '{{ app.user.email }}',
+      name:       '{{ app.user.getFullName() }}',
+      created_at: {{ app.user.createdAt|date('U') }},
+      id:         {{ app.user.id }},
+      type:       {% if is_granted('ROLE_ADMIN') %}'Admin'{% else %}'User'{% endif %}
+    }]);
+    {% endif %}
+
+    UserVoice.push(['addTrigger', { mode: 'smartvote', trigger_position: 'bottom-right' }]);
+    UserVoice.push(['autoprompt', {}]);
+    </script>
+{% endif %}
 
     </body>
 </html>

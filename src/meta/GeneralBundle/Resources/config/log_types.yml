@@ -41,6 +41,12 @@ parameters:
       filter_groups: [creations, community, social]
       type: community
       icon: group
+    user_update_community_info:
+      combinable: false
+      displayable: true
+      filter_groups: [community, social, general]
+      type: community
+      icon: edit
 # User acting for his profile or on another user
     user_created: # DONE
       combinable: false

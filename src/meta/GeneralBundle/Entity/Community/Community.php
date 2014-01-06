@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection,
  * Community
  * @ORM\Table(name="Community")
  * @ORM\Entity()
- *
+ * @ORM\HasLifecycleCallbacks
  */
 class Community
 {
@@ -73,6 +73,15 @@ class Community
      * @Assert\DateTime()
      */
     private $created_at;
+
+    /**
+     * @var \DateTime $updated_at
+     *
+     * @ORM\Column(name="updated_at", type="datetime")
+     * @Assert\NotBlank()
+     * @Assert\DateTime()
+     */
+    private $updated_at;
 
     /**
      * @var \DateTime $valid_until
@@ -305,7 +314,7 @@ class Community
     {
         // the absolute directory path where uploaded
         // documents should be saved
-        return __DIR__.'/../../../../web/'.$this->getUploadDir();
+        return __DIR__.'/../../../../../web/'.$this->getUploadDir();
     }
 
     private function getUploadDir()
@@ -425,6 +434,36 @@ class Community
     public function getCreatedAt()
     {
         return $this->created_at;
+    }
+
+    /**
+     * Set updated_at
+     *
+     * @param \DateTime $updatedAt
+     * @return Community
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updated_at = $updatedAt;
+        return $this;
+    }
+
+    /**
+     * Get updated_at
+     *
+     * @return \DateTime 
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updated_at;
+    }
+
+    /**
+     * @ORM\PreUpdate()
+     */
+    public function update()
+    {
+        $this->updated_at = new \DateTime('now');
     }
 
     /**

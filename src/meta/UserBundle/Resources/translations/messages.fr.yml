@@ -70,6 +70,7 @@ user:
     help: "Vous devez indiquer un utilisateur pour continuer avec votre requête."
     field: "Choisissez un utilisateur de la communauté"
     alternate: "Ou indiquer un nom d'utilisateur ou email valide"
+    guestWarning: "Dans ce dernier cas, l'utilisateur sera uniquement invité du projet, mais ne prendra pas part au reste des activités de la communauté."
     button: "Choisir cet utilisateur"
   ideas:
     participated: "Idées dans lesquelles j'ai pris part"

@@ -52,10 +52,16 @@ login: "Login"
 signup: "Sign up"
 logout: "Logout"
 # Footer
-report.bug: "Report a bug"
 terms: "Terms of use"
 # Team
 team: "The igneet team"
+# Error
+error:
+  title: "Woops..."
+  404:
+    title: "Error 404 : page not found"
+    text: "The requested page does not exist."
+  help: "You can still come back to the home page of the site. If you believe this error should not happen, send us a message (via Uservoice, below on the right), we'll be happy to hear from you and fix it !"
 # Mails
 mail:
   hello: "Hello,"

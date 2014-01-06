@@ -94,9 +94,9 @@ class SecurityController extends Controller
                     $mailOrUsername = $user->getEmail();
                     $token = null;
 
-                    $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $user->getId(), 'community' => $community->getId(), 'guest' => false, 'deleted_at' => null));
+                    $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('user' => $user->getId(), 'community' => $community->getId(), 'guest' => false, 'deleted_at' => null));
 
-                    $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $user->getId(), 'community' => $community->getId(), 'guest' => true, 'deleted_at' => null));
+                    $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('user' => $user->getId(), 'community' => $community->getId(), 'guest' => true, 'deleted_at' => null));
 
                     // If the user is already in the community
                     if ($userCommunity){
@@ -111,6 +111,7 @@ class SecurityController extends Controller
                     // If the user is already a guest in the community
                     } elseif ($userCommunityGuest) {
 
+//var_dump($userCommunityGuest);
                         // User is not guest anymore, we already have a userCommunity object
                         $userCommunityGuest->setGuest(false);
                         $logService = $this->container->get('logService');
