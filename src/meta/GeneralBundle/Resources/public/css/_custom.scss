@@ -77,6 +77,8 @@ a.button, input[type=submit].button, button {
 // @import "styles/_timeline";
 
 .comment {
+  @include row();
+  @include clearfix;
   & > .avatar {
     @include span-columns(1 of 12);
     & > img {

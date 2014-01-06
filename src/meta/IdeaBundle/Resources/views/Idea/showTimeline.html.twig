@@ -7,9 +7,6 @@
 
   <section>
   {% render(controller("metaIdeaBundle:Idea:addIdeaComment", { 'uid' : base.idea.id|to_uid })) %}
-  </section>
-
-  <section>
   {% render(controller("metaIdeaBundle:Idea:history", { 'uid' : base.idea.id|to_uid, 'page' : 1 })) %}
   </section>
 
