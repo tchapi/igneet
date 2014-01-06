@@ -275,7 +275,7 @@ class StandardProject extends Taggable
     public function getPicture()
     {
         if ($this->picture === null)
-            return "/bundles/metageneral/img/defaults/standardProject.png";
+            return "/bundles/metageneral/img/defaults/project.png";
         else
             return $this->getPictureWebPath();
     }
