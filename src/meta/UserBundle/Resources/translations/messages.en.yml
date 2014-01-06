@@ -70,6 +70,7 @@ user:
     help: "You need to indicate a specific user to continue with your request."
     field: "Choose a user from the community"
     alternate: "Or indicate a valid e-mail or username"
+    guestWarning: "Caution : when inviting someone from outside the community, the user will only be guest and will only take part to this specific project."
     button: "Choose this user"
   ideas:
     participated: "Ideas I participate in"
