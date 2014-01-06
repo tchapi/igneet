@@ -192,9 +192,12 @@ class ResourceController extends BaseController
                         if (null !== $uploadedFile) {
                             $resource->setFile($uploadedFile);
                             $resource->setLatestVersionUploadedAt(new \DateTime('now'));
-                        } else {
+                        } else if ($request->request->get('resource[url]', null, true) != "" ) {
                             $resource->setUrl($request->request->get('resource[url]', null, true));
                             $resource->setOriginalFilename(null);
+                        } else {
+                            $needsRedirect = true;
+                            break;
                         }
 
                         // Guess resource type and provider
