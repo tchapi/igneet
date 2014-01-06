@@ -120,7 +120,7 @@ filters:
 pagination:
   more: "Scroll down for more results ..."
   loading: "Loading ..."
-  no-more: "%total% results"
+  no-more: "{1}One single result|]1,Inf]%total% results"
 # Restricted access
 restricted:
   title: "Restricted Area"

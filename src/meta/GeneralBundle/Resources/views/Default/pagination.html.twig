@@ -1,7 +1,7 @@
 <nav class="pagination">
   <div id='more' ><i class="fa fa-chevron-down"></i> {{ "pagination.more"|trans }}</div>
   <div id='loading' ><i class="fa fa-spinner fa-spin"></i> {{ "pagination.loading"|trans }}</div>
-  <div id='no-more'>{{ "pagination.no-more"|trans({"%total%": total_objects}) }}</div>
+  <div id='no-more'>{{ "pagination.no-more"|transchoice(total_objects, {"%total%": total_objects}) }}</div>
 </nav>
 
 <script type="text/javascript">
