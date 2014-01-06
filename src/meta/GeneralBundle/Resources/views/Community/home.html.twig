@@ -46,7 +46,7 @@
     <div class="row">
 
       <span class="col-md-4">
-        <h4>{{ "community.home.last.ideas"|trans }}</h4>
+        <h4><a href="{{path('i_list_ideas', {'sort': 'newest', 'page' : '1'}) }}">{{ "community.home.last.ideas"|trans }}</a></h4>
         {% if lastIdeas|length > 0 %}
           <ul>
           {% for idea in lastIdeas %}
@@ -59,7 +59,7 @@
       </span>
 
       <span class="col-md-4">
-        <h4>{{ "community.home.last.projects"|trans }}</h4>
+        <h4><a href="{{ path('p_list_projects', {'sort': 'newest', 'page' : '1'}) }}">{{ "community.home.last.projects"|trans }}</a></h4>
         {% if lastProjects|length > 0 %}
           <ul>
           {% for project in lastProjects %}
