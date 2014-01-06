@@ -9,12 +9,21 @@
     <div class="label">{{ "idea.settings.actions"|trans }} : </div>
     <div class="content">
       {% if not base.idea.archived %}
-      <a class="button" data-confirm="{{ "idea.projectizeHelp"|trans }}" href="{{ path('i_turn_idea_into_project', {'uid': base.idea.id|to_uid, 'token': csrf_token('projectize')  }) }}"><i class="fa fa-external-link"></i> {{ "idea.projectize"|trans }}</a>
+      <a class="button button-success" data-confirm="{{ "idea.projectizeHelp"|trans }}" href="{{ path('i_turn_idea_into_project', {'uid': base.idea.id|to_uid, 'token': csrf_token('projectize')  }) }}"><i class="fa fa-external-link"></i> {{ "idea.projectize"|trans }}</a>
       {% endif %}
       {% if base.idea.community is null %}
       <a class="button" href="{{ path('g_choose_community', {'targetAsBase64': base.targetProposeToCommunityAsBase64 , 'token': csrf_token('edit') }) }}"><i class="fa fa-group"></i> {{ "idea.propose"|trans }}</a>
       {% endif %}
+      {% if base.isCreator %}
+        {% if not base.idea.archived %}
+          <a class="button" data-confirm="{{ "idea.archiveHelp"|trans }}" href="{{ path('i_archive_idea', {'uid': base.idea.id|to_uid, 'token': csrf_token('archiveOrRecycle') }) }}"><i class="fa fa-archive"></i> {{ "idea.archive"|trans }}</a>
+        {% else %}
+          <a class="button" data-confirm="{{ "idea.recycleHelp"|trans }}" href="{{ path('i_recycle_idea', {'uid': base.idea.id|to_uid, 'token': csrf_token('archiveOrRecycle') }) }}"><i class="fa fa-refresh"></i> {{ "idea.recycle"|trans }}</a>
+        {% endif %}
+      {% endif %}
+    
     </div>
+
   </section>
 
 {% if base.isCreator %}

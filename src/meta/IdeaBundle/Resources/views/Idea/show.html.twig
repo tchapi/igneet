@@ -46,16 +46,6 @@
       </div>
       {% endif %}
 
-      {% if base.isCreator %}
-      <div>
-        {% if not base.idea.archived %}
-          <i class="fa fa-archive"></i> <a data-confirm="{{ "idea.archiveHelp"|trans }}" href="{{ path('i_archive_idea', {'uid': base.idea.id|to_uid, 'token': csrf_token('archiveOrRecycle') }) }}">{{ "idea.archive"|trans }}</a>
-        {% else %}
-          <i class="fa fa-refresh"></i> <a data-confirm="{{ "idea.recycleHelp"|trans }}" href="{{ path('i_recycle_idea', {'uid': base.idea.id|to_uid, 'token': csrf_token('archiveOrRecycle') }) }}">{{ "idea.recycle"|trans }}</a>
-        {% endif %}
-      </div>
-      {% endif %}
-
     </h4>
 
     <div>

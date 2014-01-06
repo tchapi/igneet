@@ -76,6 +76,39 @@ a.button, input[type=submit].button, button {
 
 // @import "styles/_timeline";
 
+.comment {
+  & > .avatar {
+    @include span-columns(1 of 12);
+    & > img {
+      border-radius: 50%;
+      height: $column - $gutter;
+      width: $column - $gutter;
+    }
+  }
+  & > form {
+    @include span-columns(11 of 12);
+    & > textarea {
+      margin-top: 14px;
+      margin-bottom: 14px;
+      @include span-columns(10 of 12);
+      border: none;
+      background: white;
+      height: 34px;
+      @include transition (height 300ms ease-in-out, margin 300ms ease-in-out);
+      resize: none; 
+      &.open {
+        height: $column - $gutter;
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+    }    
+    & > input[type=submit] {
+      margin: 14px 0;
+      @include span-columns(2 of 12);
+    }
+  }
+}
+
 ul.timeline {
   $image_size : 70px;
   margin: 0;
