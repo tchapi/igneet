@@ -45,7 +45,7 @@
     {% endfor %}
     </ul>
   </section>
-  {% if base.idea.community is not null and base.idea.participants|length > 0 %}
+  {% if base.idea.community is not null and (base.idea.participants|length > 0 or base.canEdit) %}
   <section>
     <div class="label-full">{% transchoice base.idea.countParticipants %}idea.info.participants{% endtranschoice %} :</div>
     <ul class="content-full">
