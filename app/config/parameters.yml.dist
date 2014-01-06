@@ -19,3 +19,5 @@ parameters:
     host: igneet.com
     scheme: http
     shared_projects: []
+    uservoice_enabled: false
+    uservoice_id: null

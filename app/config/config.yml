@@ -59,6 +59,8 @@ twig:
         available_languages: "%available.languages%"
         project_statuses: "%project_statuses%"
         base_path: "%base_path%"
+        uservoice_enabled: "%uservoice_enabled%"
+        uservoice_id: "%uservoice_id%"
 
 # Assetic Configuration
 assetic:
