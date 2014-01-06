@@ -60,9 +60,9 @@ All rights reserved.
 
 - - - 
 
-### Farm Fresh Icons by Fatcow Web Hosting - http://www.fatcow.com/free-icons
+### Linecons UI icons - http://designmodo.com/linecons-free
 
-Licensed under the CC Attribution 3.0 (http://creativecommons.org/licenses/by/3.0/)
+Polaris UI and Linecons is licensed under a Creative Commons Attribution 3.0 Unported (CC BY 3.0)  (http://creativecommons.org/licenses/by/3.0/)
 
 
 - - -
