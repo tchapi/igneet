@@ -64,9 +64,10 @@ body.full > .content-container nav {
     text-transform: uppercase;
     font-family: 'gotham_bold';
     & > li {
-      padding: $gutter;
       display: inline-block;
       & > a {
+        padding: $gutter;
+        display: block;
         color: $_discrete;
         @include media ($tablet, $mobile) {
           display: inline-block;
