@@ -144,6 +144,7 @@ nav[role=mobile]{
         &.avatar{ 
           padding: 0; 
           border-right: 1px solid $_menu-background;
+          background: white;
           & img{
             border-radius: $border-radius 0 0 $border-radius;
             height: ($menu-inner-height - 2); // accounts for border : 1px * 2
