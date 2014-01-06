@@ -216,12 +216,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/collections.git",
-                "reference": "819871759a4d41dab244d358507bd27d0e8b1e33"
+                "reference": "e6d8f1240e10f268c8e8c30e9e88a12853f84695"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/collections/zipball/819871759a4d41dab244d358507bd27d0e8b1e33",
-                "reference": "819871759a4d41dab244d358507bd27d0e8b1e33",
+                "url": "https://api.github.com/repos/doctrine/collections/zipball/e6d8f1240e10f268c8e8c30e9e88a12853f84695",
+                "reference": "e6d8f1240e10f268c8e8c30e9e88a12853f84695",
                 "shasum": ""
             },
             "require": {
@@ -263,7 +263,7 @@
                     "email": "kontakt@beberlei.de"
                 },
                 {
-                    "name": "Johannes M. Schmitt",
+                    "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
                     "homepage": "http://jmsyst.com",
                     "role": "Developer of wrapped JMSSerializerBundle"
@@ -276,7 +276,7 @@
                 "collections",
                 "iterator"
             ],
-            "time": "2013-12-21 19:19:27"
+            "time": "2014-01-01 23:58:38"
         },
         {
             "name": "doctrine/common",
@@ -403,12 +403,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "7195d201b86daf071fc50f7c47450265afc7e310"
+                "reference": "1b90a2eb0868292a1f56eb49f7f1b0421e925123"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/7195d201b86daf071fc50f7c47450265afc7e310",
-                "reference": "7195d201b86daf071fc50f7c47450265afc7e310",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/1b90a2eb0868292a1f56eb49f7f1b0421e925123",
+                "reference": "1b90a2eb0868292a1f56eb49f7f1b0421e925123",
                 "shasum": ""
             },
             "require": {
@@ -434,7 +434,7 @@
             ],
             "authors": [
                 {
-                    "name": "Jonathan H. Wage",
+                    "name": "Jonathan Wage",
                     "email": "jonwage@gmail.com",
                     "homepage": "http://www.jwage.com/",
                     "role": "Creator"
@@ -461,7 +461,7 @@
                 "persistence",
                 "queryobject"
             ],
-            "time": "2013-12-22 10:50:36"
+            "time": "2014-01-05 09:00:29"
         },
         {
             "name": "doctrine/doctrine-bundle",
@@ -540,12 +540,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/DoctrineFixturesBundle.git",
-                "reference": "3caec4826e58fe47520b591f965b4adcdfc8a6c8"
+                "reference": "42ac886c2c669d793dc9d6258a7296edb0d5e933"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/DoctrineFixturesBundle/zipball/3caec4826e58fe47520b591f965b4adcdfc8a6c8",
-                "reference": "3caec4826e58fe47520b591f965b4adcdfc8a6c8",
+                "url": "https://api.github.com/repos/doctrine/DoctrineFixturesBundle/zipball/42ac886c2c669d793dc9d6258a7296edb0d5e933",
+                "reference": "42ac886c2c669d793dc9d6258a7296edb0d5e933",
                 "shasum": ""
             },
             "require": {
@@ -589,7 +589,7 @@
                 "Fixture",
                 "persistence"
             ],
-            "time": "2013-09-16 10:15:05"
+            "time": "2013-12-31 08:56:10"
         },
         {
             "name": "doctrine/inflector",
@@ -723,12 +723,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/doctrine2.git",
-                "reference": "948686727982cc94d180b5f65b2c8641a818efd2"
+                "reference": "7b8f09ee4afb2b0f73f0a5de265153a40cb1dede"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/doctrine2/zipball/948686727982cc94d180b5f65b2c8641a818efd2",
-                "reference": "948686727982cc94d180b5f65b2c8641a818efd2",
+                "url": "https://api.github.com/repos/doctrine/doctrine2/zipball/7b8f09ee4afb2b0f73f0a5de265153a40cb1dede",
+                "reference": "7b8f09ee4afb2b0f73f0a5de265153a40cb1dede",
                 "shasum": ""
             },
             "require": {
@@ -791,7 +791,7 @@
                 "database",
                 "orm"
             ],
-            "time": "2013-12-15 22:34:57"
+            "time": "2014-01-02 22:51:07"
         },
         {
             "name": "fp/openid-bundle",
@@ -1119,12 +1119,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "e92cb54c24e990c505be1b4af82e962d55d092df"
+                "reference": "a1e98f4e1da5b0235a74d11dcf7cdb2692b28ffc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/e92cb54c24e990c505be1b4af82e962d55d092df",
-                "reference": "e92cb54c24e990c505be1b4af82e962d55d092df",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/a1e98f4e1da5b0235a74d11dcf7cdb2692b28ffc",
+                "reference": "a1e98f4e1da5b0235a74d11dcf7cdb2692b28ffc",
                 "shasum": ""
             },
             "require": {
@@ -1178,7 +1178,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2013-12-26 13:24:17"
+            "time": "2014-01-01 18:24:16"
         },
         {
             "name": "psr/log",
@@ -1598,12 +1598,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "ef3ae9cf45679da5eb3dc71cae6bc2a08d8072ff"
+                "reference": "73edae9a7929adc1b61f917ac2822d6c7f9f8f15"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/ef3ae9cf45679da5eb3dc71cae6bc2a08d8072ff",
-                "reference": "ef3ae9cf45679da5eb3dc71cae6bc2a08d8072ff",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/73edae9a7929adc1b61f917ac2822d6c7f9f8f15",
+                "reference": "73edae9a7929adc1b61f917ac2822d6c7f9f8f15",
                 "shasum": ""
             },
             "require": {
@@ -1703,7 +1703,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2013-12-26 07:59:03"
+            "time": "2014-01-06 16:19:55"
         },
         {
             "name": "twig/extensions",
@@ -1758,12 +1758,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fabpot/Twig.git",
-                "reference": "27f3e0fc1efd1dbaf6d10598d148d7ec3070b51d"
+                "reference": "4983af78f7b62a52866e60909768d4bb7d944a9b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fabpot/Twig/zipball/27f3e0fc1efd1dbaf6d10598d148d7ec3070b51d",
-                "reference": "27f3e0fc1efd1dbaf6d10598d148d7ec3070b51d",
+                "url": "https://api.github.com/repos/fabpot/Twig/zipball/4983af78f7b62a52866e60909768d4bb7d944a9b",
+                "reference": "4983af78f7b62a52866e60909768d4bb7d944a9b",
                 "shasum": ""
             },
             "require": {
@@ -1799,41 +1799,42 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2013-12-27 14:37:02"
+            "time": "2014-01-05 16:48:49"
         },
         {
             "name": "willdurand/expose-translation-bundle",
             "version": "dev-master",
-            "target-dir": "Bazinga/ExposeTranslationBundle",
+            "target-dir": "Bazinga/Bundle/JsTranslationBundle",
             "source": {
                 "type": "git",
-                "url": "https://github.com/willdurand/BazingaExposeTranslationBundle.git",
-                "reference": "61fa1a3ada45fa42e22b960f128877127c3c6875"
+                "url": "https://github.com/willdurand/BazingaJsTranslationBundle.git",
+                "reference": "a1c9c2632bb66a2b4db69ab3e30445a67f16d1ff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/willdurand/BazingaExposeTranslationBundle/zipball/61fa1a3ada45fa42e22b960f128877127c3c6875",
-                "reference": "61fa1a3ada45fa42e22b960f128877127c3c6875",
+                "url": "https://api.github.com/repos/willdurand/BazingaJsTranslationBundle/zipball/a1c9c2632bb66a2b4db69ab3e30445a67f16d1ff",
+                "reference": "a1c9c2632bb66a2b4db69ab3e30445a67f16d1ff",
                 "shasum": ""
             },
             "require": {
-                "symfony/console": "~2.1",
-                "symfony/finder": "~2.1",
-                "symfony/framework-bundle": "~2.1"
+                "symfony/console": "~2.3",
+                "symfony/finder": "~2.3",
+                "symfony/framework-bundle": "~2.3"
             },
             "require-dev": {
-                "symfony/browser-kit": "~2.1",
-                "symfony/yaml": "~2.1"
+                "symfony/browser-kit": "~2.3",
+                "symfony/twig-bundle": "~2.3",
+                "symfony/yaml": "~2.3"
             },
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0.x-dev"
+                    "dev-master": "2.0-dev"
                 }
             },
             "autoload": {
                 "psr-0": {
-                    "Bazinga\\ExposeTranslationBundle": ""
+                    "Bazinga\\Bundle\\JsTranslationBundle": ""
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1853,7 +1854,7 @@
                 "symfony",
                 "translation"
             ],
-            "time": "2013-12-27 02:17:05"
+            "time": "2014-01-03 15:19:34"
         }
     ],
     "packages-dev": [

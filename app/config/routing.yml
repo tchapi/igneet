@@ -26,8 +26,8 @@ user:
     prefix:   /app/
 
 # Third party
-_bazinga_exposetranslation:
-    resource: "@BazingaExposeTranslationBundle/Resources/config/routing/routing.yml"
+_bazinga_jstranslation:
+    resource: "@BazingaJsTranslationBundle/Resources/config/routing/routing.yml"
 
 fp_openid_security:
     resource: "@FpOpenIdBundle/Resources/config/routing/security.xml"

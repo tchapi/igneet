@@ -26,10 +26,10 @@ $(document).ready(function(){
       .success(function(data, config) {
         countBox.html(data);
         validationBox.toggleClass('validated');
-        alertify.success(Translator.get('comment.validated'));
+        alertify.success(Translator.trans('comment.validated'));
       })
       .error(function(errors) {
-        alertify.error(Translator.get('comment.cannot.validate'));
+        alertify.error(Translator.trans('comment.cannot.validate'));
       });
 
   });
@@ -42,12 +42,12 @@ $(document).ready(function(){
 
     $.post($(this).attr('data-url'))
       .success(function(data, config) {
-        commentBox.html('<em>' + Translator.get('comment.deleted') + '</em>');
+        commentBox.html('<em>' + Translator.trans('comment.deleted') + '</em>');
         actionBox.fadeOut();
-        alertify.success(Translator.get('comment.been.deleted'));
+        alertify.success(Translator.trans('comment.been.deleted'));
       })
       .error(function(errors) {
-        alertify.error(Translator.get('comment.cannot.delete'));
+        alertify.error(Translator.trans('comment.cannot.delete'));
       });
 
   });

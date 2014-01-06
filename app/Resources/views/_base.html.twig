@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html>
+{% import '_locale.html.twig' as locale %}
+<html lang="{{ locale.echoLocaleCode() }}">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -21,14 +22,13 @@ filter='?yui_css,cssrewrite' output='css/min/base.css' %}
 
 {% block javascripts %}
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-{% javascripts '@BazingaExposeTranslationBundle/Resources/public/js/translator.min.js'
+{% javascripts '@BazingaJsTranslationBundle/Resources/public/js/translator.min.js'
                '@metaGeneralBundle/Resources/public/js/alertify.js'
                '@metaGeneralBundle/Resources/public/js/general.behaviour.js' 
                filter='?yui_js' %}
     <script src="{{ asset_url }}"></script>
 {% endjavascripts %}
-    {% import '_locale.html.twig' as locale %}
-    <script src="{{ url('bazinga_exposetranslation_js', { '_locale' : locale.echoLocaleCode() }) }}"></script>
+    <script src="{{ url('bazinga_jstranslation_js') }}?locales={{ locale.echoLocaleCode() }}"></script>
 {% if ga_tracker_id != "0" %}
     <script type="text/javascript">
 

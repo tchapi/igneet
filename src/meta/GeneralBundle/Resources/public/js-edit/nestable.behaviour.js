@@ -18,7 +18,7 @@ $(document).ready(function(){
         ranks: ranks
       })
       .error(function(errors) {
-        setFlash('error', Translator.get('alert.error.saving.changes'));
+        setFlash('error', Translator.trans('alert.error.saving.changes'));
       });
 
       // Update parenting
@@ -27,7 +27,7 @@ $(document).ready(function(){
         value: item.parent().parent().attr('id') || 0
       })
       .error(function(errors) {
-        setFlash('error', Translator.get('alert.error.saving.changes'));
+        setFlash('error', Translator.trans('alert.error.saving.changes'));
       });
 
   };

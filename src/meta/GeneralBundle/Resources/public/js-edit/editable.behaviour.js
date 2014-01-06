@@ -33,12 +33,12 @@ $(document).ready(function(){
     })
     .success(function(data, config) {
       $("[data-name=" + dataArray["name"] + "]").attr("data-last", dataArray["value"]);
-      process(data, "success", Translator.get('alert.changes.saved'));
+      process(data, "success", Translator.trans('alert.changes.saved'));
       if (callback) callback();
     })
     .error(function(data) {
       $("[data-name=" + dataArray["name"] + "]").html($("[data-name=" + dataArray["name"] + "]").attr("data-last"));
-      process(data, "error", Translator.get('alert.error.saving.changes'));
+      process(data, "error", Translator.trans('alert.error.saving.changes'));
     });
 
   };
@@ -77,7 +77,7 @@ $(document).ready(function(){
     .on('paste', function (e) { // Prevents insertion of markup
       if (document.queryCommandEnabled('inserttext')) {
         e.preventDefault();
-        var pastedText = prompt(Translator.get('paste.something'));
+        var pastedText = prompt(Translator.trans('paste.something'));
         if (pastedText !== null){
           document.execCommand('inserttext', false, $.trim(pastedText));
         }
@@ -213,10 +213,10 @@ $(document).ready(function(){
   $('a[data-confirm]').click(function(ev) {
 
     var href = $(this).attr('href');
-    var text = $(this).attr('data-confirm') || Translator.get('alert.please.confirm');
+    var text = $(this).attr('data-confirm') || Translator.trans('alert.please.confirm');
 
     // Custom alert box 
-    alertify.set({ labels: { ok: Translator.get('ok'), cancel: Translator.get('cancel') } });
+    alertify.set({ labels: { ok: Translator.trans('ok'), cancel: Translator.trans('cancel') } });
     alertify.set({ buttonFocus: "cancel" });
 
     alertify.confirm(text, function (e) {
