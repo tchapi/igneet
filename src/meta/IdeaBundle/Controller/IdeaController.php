@@ -907,7 +907,7 @@ class IdeaController extends Controller
           $text = $logService->getHTML($entry);
           $createdAt = date_create($entry->getCreatedAt()->format('Y-m-d H:i:s')); // Not for display
 
-          $history[] = array( 'createdAt' => $createdAt , 'text' => $text, 'groups' => $log_types[$entry->getType()]['filter_groups']);
+          $history[] = array( 'createdAt' => $createdAt , 'text' => $text, 'deleted' => false, 'groups' => $log_types[$entry->getType()]['filter_groups']);
         
         }
 
@@ -917,7 +917,7 @@ class IdeaController extends Controller
           $text = $logService->getHTML($comment);
           $createdAt = date_create($comment->getCreatedAt()->format('Y-m-d H:i:s')); // not for display
 
-          $history[] = array( 'createdAt' => $createdAt , 'text' => $text, 'groups' => array('comments') );
+          $history[] = array( 'createdAt' => $createdAt , 'text' => $text, 'deleted' => $comment->isDeleted(), 'groups' => array('comments') );
 
         }
 
@@ -941,19 +941,19 @@ class IdeaController extends Controller
           if ( $historyEntry['createdAt'] > $startOfToday ) {
             
             // Today
-            array_unshift($this->timeframe['today']['data'], array( 'text' => $historyEntry['text'], 'groups' => $historyEntry['groups']) );
+            array_unshift($this->timeframe['today']['data'], array( 'text' => $historyEntry['text'], 'deleted' => $historyEntry['deleted'], 'groups' => $historyEntry['groups']) );
 
           } else if ( $historyEntry['createdAt'] < $before ) {
 
             // Before
-            array_unshift($this->timeframe['before']['data'], array( 'text' => $historyEntry['text'], 'groups' => $historyEntry['groups']) );
+            array_unshift($this->timeframe['before']['data'], array( 'text' => $historyEntry['text'], 'deleted' => $historyEntry['deleted'], 'groups' => $historyEntry['groups']) );
 
           } else {
 
             // Last seven days, by day
             $days = date_diff($historyEntry['createdAt'], $startOfToday)->days + 1;
 
-            array_unshift($this->timeframe['d-'.$days]['data'], array( 'text' => $historyEntry['text'], 'groups' => $historyEntry['groups']) );
+            array_unshift($this->timeframe['d-'.$days]['data'], array( 'text' => $historyEntry['text'], 'deleted' => $historyEntry['deleted'], 'groups' => $historyEntry['groups']) );
 
           }
 

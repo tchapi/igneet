@@ -17,7 +17,7 @@
     <li class="step">{{ step.name }}</li>
 
     {% for item in step.data %}
-      <li class="log" {{ item.groups|join(' ') }}>
+      <li class="log{% if item.deleted %} deleted{% endif %}" {{ item.groups|join(' ') }}>
         {{ item.text|raw }}
       </li>
     {% endfor %}

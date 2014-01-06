@@ -86,13 +86,28 @@ a.button, input[type=submit].button, button {
       height: $column - $gutter;
       width: $column - $gutter;
     }
+    @include media ($tablet, $mobile) {
+      display: none;
+    }
   }
   & > form {
     @include span-columns(11 of 12);
+    @include media ($tablet, $mobile) {
+      @include fill-parent();
+    }
     & > textarea {
       margin-top: 14px;
       margin-bottom: 14px;
       @include span-columns(10 of 12);
+      @include media ($tablet) {
+        @include span-columns(3 of 4);
+      }
+      @include media ($mobile) {
+        @include fill-parent();
+        height: $column - $gutter;
+        margin-top: 0;
+        margin-bottom: 0;
+      }
       border: none;
       background: white;
       height: 34px;
@@ -107,6 +122,12 @@ a.button, input[type=submit].button, button {
     & > input[type=submit] {
       margin: 14px 0;
       @include span-columns(2 of 12);
+      @include media ($tablet) {
+        @include span-columns(1 of 4);
+      }
+      @include media ($mobile) {
+        @include fill-parent();
+      }
     }
   }
 }
@@ -178,6 +199,10 @@ ul.timeline {
     & > .count {
       padding-left: 5px;
     }
-
+    &.deleted {
+      @include media($tablet, $mobile) {
+        display: none;
+      }
+    }
   }
 }

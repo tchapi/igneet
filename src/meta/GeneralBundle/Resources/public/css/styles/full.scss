@@ -71,8 +71,8 @@ body.full > .content-container nav {
         color: $_discrete;
         @include media ($tablet, $mobile) {
           display: inline-block;
-          height: 18px;
-          width: 16px;
+          height: 40px;
+          width: 56px;
           overflow: hidden;
         }
       }
