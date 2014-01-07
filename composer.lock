@@ -11,12 +11,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/dflydev/dflydev-markdown.git",
-                "reference": "6baed9b50f29c980795b6656d43722aadb126f7e"
+                "reference": "dee1f7a6b60776a94c10efa8340ccd486ec834b7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dflydev/dflydev-markdown/zipball/6baed9b50f29c980795b6656d43722aadb126f7e",
-                "reference": "6baed9b50f29c980795b6656d43722aadb126f7e",
+                "url": "https://api.github.com/repos/dflydev/dflydev-markdown/zipball/dee1f7a6b60776a94c10efa8340ccd486ec834b7",
+                "reference": "dee1f7a6b60776a94c10efa8340ccd486ec834b7",
                 "shasum": ""
             },
             "require": {
@@ -57,12 +57,12 @@
                     "homepage": "http://daringfireball.net"
                 }
             ],
-            "description": "PHP Markdown & Extra",
+            "description": "PHP Markdown & Extra - DEPRECATED",
             "homepage": "http://github.com/dflydev/dflydev-markdown",
             "keywords": [
                 "markdown"
             ],
-            "time": "2013-09-23 12:00:18"
+            "time": "2014-01-06 23:32:02"
         },
         {
             "name": "doctrine/annotations",
@@ -1598,12 +1598,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "73edae9a7929adc1b61f917ac2822d6c7f9f8f15"
+                "reference": "795599911e37d6646d22eba1270cee2e71d57306"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/73edae9a7929adc1b61f917ac2822d6c7f9f8f15",
-                "reference": "73edae9a7929adc1b61f917ac2822d6c7f9f8f15",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/795599911e37d6646d22eba1270cee2e71d57306",
+                "reference": "795599911e37d6646d22eba1270cee2e71d57306",
                 "shasum": ""
             },
             "require": {
@@ -1703,7 +1703,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2014-01-06 16:19:55"
+            "time": "2014-01-07 13:29:32"
         },
         {
             "name": "twig/extensions",
