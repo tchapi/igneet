@@ -205,9 +205,16 @@ ul.timeline {
       }
     }
   }
-  &.notifications > li:not(.step) { border: 1px solid rgba($_sensible,0.5); }
-  &.notifications > li.unseen { 
-    background: rgba($_secondary,0.1);
-    border: 1px solid $_secondary;
+  &.notifications {
+    @include clearfix;
+    & > li:not(.step) { border: 1px solid rgba($_sensible,0.5); }
+    & > li.unseen { 
+      background: rgba($_secondary,0.1);
+      border: 1px solid $_secondary;
+    }
   }
+}
+
+section.notifications.none {
+  text-align: center;
 }

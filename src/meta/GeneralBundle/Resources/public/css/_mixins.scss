@@ -39,7 +39,7 @@
   #{$side}: $side-offset;
   top: $top-offset;
   padding: 0;
-  width: $size;
+  min-width: $size;
   height: $size;
   border-radius: $size;
   font-size: 0.65em;
@@ -49,7 +49,6 @@
   text-shadow: none;
   background-color: $_primary;
   color: $_text-dark;
-  min-width: 0;
 }
 
 @mixin up-triangle($size, $color, $side){

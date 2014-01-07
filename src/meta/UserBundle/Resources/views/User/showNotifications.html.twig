@@ -5,7 +5,7 @@
 {% block header %}
   <div class="title">
     <h2>{{ "user.notifications.title"|trans }}</h2>
-    <h4>{{ "user.notifications.info"|trans({ '%count%': notifications|length, '%date%': lastNotified|date('date.readable'|trans) }) }}</h4>
+    <h4>{{ "user.notifications.info"|transchoice(notifications|length, { '%count%': notifications|length, '%date%': lastNotified|date('date.readable'|trans) }) }}</h4>
   </div>
 {% endblock %}
 
@@ -27,12 +27,13 @@
     </ul>
   </section>
 {% else %}
-  <section class="centered">
-    <i class="muted fa fa-check fa-4x"></i>
-    <br />{{ "user.notifications.none"|trans }}
+  <section class="notifications none">
+    <i class="muted fa fa-check fa-3x"></i> {{ "user.notifications.none"|trans }}
   </section>
 {% endif %}
-<section class="centered">
-<a href="{{ path('u_show_user_notifications', { 'date' : from|date_modify("-7 days")|date("Y-m-d") }) }}">{{ "user.notifications.see.more"|trans({ '%date%': from|date_modify("-7 days")|date("date.format"|trans)} ) }}</a>
-</section>
+
+<nav class="pagination">
+  <a href="{{ path('u_show_user_notifications', { 'date' : from|date_modify("-7 days")|date("Y-m-d") }) }}">{{ "user.notifications.see.more"|trans({ '%date%': from|date_modify("-7 days")|date("date.format"|trans)} ) }}</a>
+</nav>
+
 {% endblock %}

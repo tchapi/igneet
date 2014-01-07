@@ -229,7 +229,7 @@ body > .content-container header {
 
 /* When sections are directly under the container, and wrapped in another tag */
 body > .content-container section {
-  
+
   border-top: 1px solid lighten($_background,2%);
   padding-top: $gutter*2;
   padding-bottom: $gutter*2;
