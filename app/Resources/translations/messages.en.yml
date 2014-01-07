@@ -1,6 +1,7 @@
 date:
   format: "Y-m-d"
   fullFormat: "Y-m-d h:i A"
+  readable: "l, jS \of F"
   timeline: "%days% days ago ..."
   today: "Today"
   yesterday: "Yesterday"

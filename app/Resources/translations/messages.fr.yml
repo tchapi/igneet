@@ -1,6 +1,7 @@
 date:
   format: "d/m/Y"
   fullFormat: "d/m/Y H:i"
+  readable: "d/m"
   timeline: "Il y a %days% jours ..."
   today: "Aujourd'hui"
   yesterday: "Hier"

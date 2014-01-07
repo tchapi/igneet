@@ -205,4 +205,9 @@ ul.timeline {
       }
     }
   }
+  &.notifications > li:not(.step) { border: 1px solid rgba($_sensible,0.5); }
+  &.notifications > li.unseen { 
+    background: rgba($_secondary,0.1);
+    border: 1px solid $_secondary;
+  }
 }

@@ -102,6 +102,7 @@ user:
   me.help: "Aller directement sur votre profil"
   notifications:
     title: "Notifications"
+    info: "Vous avez %count% nouvelles notifications depuis le %date%."
     none: "Vous n'avez pas de nouvelles notifications !"
     see.more: "Voir toutes les notifications à compter du %date% ..."
     help: "Voir toutes les notifications"
