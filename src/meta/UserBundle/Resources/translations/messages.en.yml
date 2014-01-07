@@ -166,6 +166,7 @@ user:
     mail:
       subject: "Renew your password"
       body: "Please click on the following link to change your password"
+      tip: "Once done, you will be able to login again using your username : %username%."
   changedPassword: "Your password was changed successfully."
   language:
     title: "Preferred language"

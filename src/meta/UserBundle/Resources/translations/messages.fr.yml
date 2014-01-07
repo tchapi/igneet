@@ -166,6 +166,7 @@ user:
     mail:
       subject: "Changement de mot de passe"
       body: "Cliquez sur le lien suivant pour changer votre mot de passe"
+      tip: "Une fois ceci fait, vous pourrez de nouveau vous connecter avec votre identifiant : %username%."
   changedPassword: "Votre mot de passe a été changé avec succès."
   language:
     title: "Langue de l'interface"

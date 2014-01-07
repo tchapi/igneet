@@ -8,5 +8,7 @@
 
   <p><a href="{{ url('change_password', { 'passwordToken': passwordToken } ) }}">{{ url('change_password', { 'passwordToken': passwordToken } ) }}</a></p>
 
+<p>{{ "user.passwordChange.mail.tip"|trans({ '%username%' : user.username }) }}</p> 
+
 <p><em>{{ "mail.automated"|trans }}</em></p>
 <p><strong>{{ "team"|trans }}</strong></p>
