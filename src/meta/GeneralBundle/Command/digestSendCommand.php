@@ -6,7 +6,8 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;  
 use Symfony\Component\Console\Input\InputOption;  
 use Symfony\Component\Console\Output\OutputInterface;  
-  
+use Symfony\Component\Console\Formatter\OutputFormatterStyle;
+
 class digestSendCommand extends ContainerAwareCommand
 {
     protected function configure()
@@ -16,6 +17,10 @@ class digestSendCommand extends ContainerAwareCommand
 
         // By default, no mails are sent, the output is just printed out (number of mails sent)
         $this->addOption('force', null,  InputOption::VALUE_NONE, 'Sends the mail FOR REAL');
+
+        // New style for <important>
+        $this->importantStyle = new OutputFormatterStyle('red', null, array('bold'));
+        
     }
   
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -25,10 +30,15 @@ class digestSendCommand extends ContainerAwareCommand
       $sendMails = $input->getOption('force');
       $verbose = (OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity());
  
+      // Additional styling
+      $output->getFormatter()->setStyle('important', $this->importantStyle);
+
       $today = $this->getActualDay();
       $sendBiMonthlyEmails = $this->isEvenWeek();
       $sendDefaultDayEmails = $this->isDefaultDay();
 
+      $output->writeln('');
+      $output->writeln('Sending digests at <comment>' . date("D M d, Y G:i") .'.</comment>');
       $output->writeln('Today is : <info>' . $today.'.</info>');
 
       if ($sendBiMonthlyEmails){
@@ -46,6 +56,8 @@ class digestSendCommand extends ContainerAwareCommand
       // Do we have users to notify ?
       if ($usersToSendDigestsTo){
 
+        $mailer = $this->getContainer()->get('mailer');
+            
         $nbUsers = count($usersToSendDigestsTo);
 
         $output->writeln(' # We have to notify <comment>' . $nbUsers . ' user(s)</comment> today');
@@ -71,7 +83,7 @@ class digestSendCommand extends ContainerAwareCommand
 
           if (!($user->getEnableDigest())) {
 
-            if ($verbose) $output->writeln('     --> <error>DOES NOT</error> want digests');
+            if ($verbose) $output->writeln('     --> <important>DOES NOT</important> want digests');
             continue;
           
           }
@@ -108,51 +120,71 @@ class digestSendCommand extends ContainerAwareCommand
              * For each community, a separate mail
              */
 
+            $nbNotifications = 0;
+
             foreach ($userCommunities as $userCommunity) {
               
               if ($userCommunity->isGuest()) continue;
 
-              $nbNotifications = $this->getContainer()->get('logService')->countNotifications($user, $userCommunity->getCommunity());
-              if ($verbose) $output->writeln('     * ' . $userCommunity->getCommunity()->getName() . " : " . $nbNotifications . " notification(s) to send to " . $userCommunity->getEmail());
+              $nbNotificationsCommunity = $this->getContainer()->get('logService')->countNotifications($user, $userCommunity->getCommunity());
+              $nbNotifications += $nbNotificationsCommunity;
 
-              $notificationsArray = $this->getContainer()->get('logService')->getNotifications($user, null, $userCommunity->getCommunity(), $locale);
-              
-              $messages[] = \Swift_Message::newInstance()
-                ->setSubject($this->getContainer()->get('translator')->trans('user.digest.mail.subject', array(), null, $locale))
-                ->setFrom($this->getContainer()->getParameter('mailer_from'))
-                ->setTo($user->getEmail())
-                ->setBody(
-                    $this->getContainer()->get('templating')->render(
-                        'metaGeneralBundle:Digest:digest.mail.html.twig',
-                        array('notifications' => $notificationsArray['notifications'], 'lastNotified' => $notificationsArray['lastNotified'], 'from' => $notificationsArray['from'], 'community' => $userCommunity->getCommunity(), 'locale' => $locale)
-                    ), 'text/html'
-                );
+              if ($verbose) $output->writeln('     * ' . $userCommunity->getCommunity()->getName() . " : " . $nbNotificationsCommunity . " notification(s) to send to " . $userCommunity->getEmail());
+
+              // When we're sending one mail per community, we're only sending if the number of notifs is not 0 to avoid spamming.
+              if ($nbNotificationsCommunity > 0) {
+
+                $notificationsArray = $this->getContainer()->get('logService')->getNotifications($user, null, $userCommunity->getCommunity(), $locale);
+                
+                $messages[] = \Swift_Message::newInstance()
+                  ->setSubject($this->getContainer()->get('translator')->trans('user.digest.mail.subject', array(), null, $locale))
+                  ->setFrom($this->getContainer()->getParameter('mailer_from'))
+                  ->setTo($user->getEmail())
+                  ->setBody(
+                      $this->getContainer()->get('templating')->render(
+                          'metaGeneralBundle:Digest:digest.mail.html.twig',
+                          array('notifications' => $notificationsArray['notifications'], 'lastNotified' => $notificationsArray['lastNotified'], 'from' => $notificationsArray['from'], 'community' => $userCommunity->getCommunity(), 'locale' => $locale)
+                      ), 'text/html'
+                  );
+              }
 
             }
 
           }
 
           // We have the notifications, send the mail (or not)
-          if ($sendMails && $nbNotifications > 0){
+          if ($sendMails){
 
-            $mailer = $container = $this->getContainer()->get('mailer');
-            $spool = $mailer->getTransport()->getSpool();
-            $transport = $this->getContainer()->get('swiftmailer.transport.real');
+            $countActualMails = 0;
 
             foreach ($messages as $message) {
-              $this->getContainer()->get('mailer')->send($message);
+              $mailer->send($message);
+              $countActualMails++;
             }
-
-            // Sends for real... maybe put that at the very end of the script ?
-            $spool->flushQueue($transport);
-
-            if ($verbose) $output->writeln('     --> Mail sent');
+            
+            if ($verbose) $output->writeln('     --> Mail queued');
 
           } else {
             
-            if ($verbose) $output->writeln('     --> Mail NOT sent');
+            if ($verbose) $output->writeln('     --> Mail <important>NOT</important> queued');
 
           }
+
+        }
+
+        if ($sendMails) {
+
+          $spool = $mailer->getTransport()->getSpool();
+          $transport = $this->getContainer()->get('swiftmailer.transport.real');
+
+          // Sends for real
+          $spool->flushQueue($transport);
+
+          if ($verbose) $output->writeln('Spool <info>FLUSHED</info> : <comment>' . $countActualMails . '</comment> mail(s) were sent.');
+
+        } else {
+
+          if ($verbose) $output->writeln('Spool <important>NOT FLUSHED</important> : no mails were sent.');
 
         }
 
@@ -164,6 +196,7 @@ class digestSendCommand extends ContainerAwareCommand
 
       }
 
+      $output->writeln('');
 
     }
 
