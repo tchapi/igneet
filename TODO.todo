@@ -13,8 +13,9 @@ Todo - Priorités :
  ☐ [Eric] Tri des resources dans la vue / resources
  ☐ Erreurs dans les formulaires de création : ils sont affichés n'importe comment a priori
 
-
  ☐ Faire des special announcements modifiables en backoffice pour annoncer des trucs a tous les utilisateurs : récupérer le % de vues etc
+
+ ☐ 404 en mode non-auth ?
 
 Travail de fond :
  
@@ -24,7 +25,6 @@ Todo - Post-Passe-Créa :
 
  ☐ Faire une passe sur les titles/alt des liens d'éditions (les icon-pencils)
 
- ☐ changePassword : doit pouvoir etre GETtable sans authentification
  ☐ Vérifier les inviteToken lors d'une inscription avec OpenId
 
  ☐ lien sur le igneet logo en mode non-auth
