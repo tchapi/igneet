@@ -174,14 +174,40 @@ class digestSendCommand extends ContainerAwareCommand
 
         if ($sendMails) {
 
-          $spool = $mailer->getTransport()->getSpool();
-          $transport = $this->getContainer()->get('swiftmailer.transport.real');
+          $transport = $mailer->getTransport();
 
-          // Sends for real
-          $spool->flushQueue($transport);
+          if ($transport instanceof \Swift_Transport_SpoolTransport) {
 
-          if ($verbose) $output->writeln('Spool <info>FLUSHED</info> : <comment>' . $countActualMails . '</comment> mail(s) were sent.');
+              $spool = $transport->getSpool();
 
+              if ($spool instanceof \Swift_ConfigurableSpool) {
+
+                  $spool->setMessageLimit($input->getOption('message-limit'));
+                  $spool->setTimeLimit($input->getOption('time-limit'));
+
+              }
+
+              if ($spool instanceof \Swift_FileSpool) {
+
+                  if (null !== $input->getOption('recover-timeout')) {
+                      $spool->recover($input->getOption('recover-timeout'));
+                  } else {
+                      $spool->recover();
+                  }
+
+              }
+
+              $sentMails = $spool->flushQueue($this->getContainer()->get('swiftmailer.transport.real'));
+
+              if ($verbose) $output->writeln('Spool <info>FLUSHED</info> : <comment>' . $countActualMails . '</comment> mail(s) in queue, <comment>' . $sentMails . '</comment> were sent.');
+
+          } else {
+
+            if ($verbose) $output->writeln('Spool <important>NOT FLUSHED</important> : Error getting transport.');
+
+          }
+
+          
         } else {
 
           if ($verbose) $output->writeln('Spool <important>NOT FLUSHED</important> : no mails were sent.');
