@@ -2,14 +2,75 @@
 
 namespace meta\UserBundle\Entity;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\EntityRepository,
+    Symfony\Component\Security\Core\User\UserProviderInterface ,
+    Symfony\Component\Security\Core\User\UserInterface,
+    Symfony\Component\Security\Core\Exception\UsernameNotFoundException,
+    Symfony\Component\Security\Core\Exception\DisabledException,
+    Symfony\Component\Security\Core\Exception\BadCredentialsException;
 
 /**
  * UserRepository
  *
  */
-class UserRepository extends EntityRepository
+class UserRepository extends EntityRepository implements UserProviderInterface 
 {
+
+  /* This is because we want to be able to login with username OR email */
+  function loadUserByUsername($username)
+  {
+
+      $qb = $this->createQueryBuilder('u') ;
+
+      try {
+
+        $user = $qb->select('u')
+        ->where(
+            $qb->expr()->orx(
+                $qb->expr()->like('u.username' ,':username') ,
+                $qb->expr()->like('u.email' ,':username')
+            )
+        )
+        ->setParameters(array('username' =>$username ) )        
+        ->getQuery()
+        ->getSingleResult(); 
+
+      } catch (\Doctrine\Orm\NoResultException $e) {
+
+        throw new UsernameNotFoundException();
+
+      }
+
+      /* Bad credentials */
+      if (is_null($user)){
+        throw new BadCredentialsException();
+      }
+
+      if ($user->isDeleted()) {
+        throw new UsernameNotFoundException(); // DisabledException if we want to be perfectly clear, but the message is cryptic
+      } else {
+        return $user;  
+      }              
+  }
+
+  function refreshUser(UserInterface $user)
+  {
+      return $this->loadUserByUsername($user->getUsername() );
+  }
+
+  function supportsClass($class)
+  {
+      return $class === 'meta\UserBundle\Entity\User';
+  }
+
+  public function findOneByEmail($email)
+  {
+    if ($email != "") {
+      return parent::findOneByEmail($email);
+    } else {
+      return null;
+    }
+  }
 
   /*
    * Count all users in a given community

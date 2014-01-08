@@ -21,8 +21,7 @@ user:
     followSelf: "Vous ne pouvez pas vous abonner à vous-même."
     unfollow: "Vous ne pouvez pas vous désabonner de cet utilisateur."
     unfollowSelf: "Vous ne pouvez pas vous désabonner de vous-même."
-    recover: "Vous ne pouvez pas récupérer votre mot de passe : assurez-vous d'avoir tapé la bonne adresse email, ou essayez de réactiver votre compte si vous l'avez préalablement supprimé."
-    reactivate: "Vous ne pouvez pas réactiver votre compte : celui-ci n'a jamais existé, ou est encore actif. Si vous avez perdu votre mot de passe, réinitialisez-le au préalable."
+    recover: "Vous ne pouvez pas récupérer votre mot de passe : assurez-vous d'avoir tapé la bonne adresse email, et que ce compte n'a pas été préalablement supprimé."
   picture:
     reset: "Votre photo de profil a été réinitialisée avec succès."
     cannot.reset: "Vous ne pouvez pas réinitialiser la photo de profil de cet utilisateur."
@@ -57,9 +56,8 @@ user:
   login:
     signup: "S'enregistrer"
     signin: "Connexion"
-    reactivate: "Compte supprimé ?"
     recover: "Mot de passe perdu ?"
-    login: "Votre nom d'utilisateur"
+    login: "Votre nom d'utilisateur ou email"
     password: "Votre mot de passe"
     gplus.title: "Se connecter avec votre compte Google"
     stacke.title: "Se connecter avec votre compte Stack Exchange"
@@ -139,23 +137,11 @@ user:
           community: "%user% vous a fait membre de la communauté %community% sur igneet !"
           project: "%user% vous a fait membre du projet %project% sur igneet !"
   email.invalid: "L'email que vous avez indiqué n'est pas valide, et ce n'est pas un nom d'utilisateur valide non plus."
-  reactivation:
-    title:
-      reactivate: "Réactiver votre compte"
-      recover: "Réinitialiser votre mot de passe"
-    help: 
-      reactivate: "Votre compte a été supprimé"
-      recover: "Vous avez perdu votre mot de passe"
-    text: 
-      reactivate: "Si vous désirez récupérer l'accès à votre compte, indiquez l'adresse email associée à votre compte. Un mail vous sera envoyé avec un lien de réactivation."
-      recover: "Si vous désirez réinitialiser le mot de passe votre compte, indiquez l'adresse email associée à votre compte. Un mail vous sera envoyé avec un lien de changement de mot de passe."
-    button: "Réactiver mon compte"
+  recover:
+    title: "Réinitialiser votre mot de passe"
+    help: "Vous avez perdu votre mot de passe"
+    text: "Si vous désirez réinitialiser le mot de passe votre compte, indiquez l'adresse email associée à votre compte. Un mail vous sera envoyé avec un lien de changement de mot de passe."
     email: "Email"
-    sent: "Un mail a été envoyé à %mail% avec un lien de réactivation."
-    mail:
-      subject: "Réactiver votre compte"
-      body: "Pour réactiver votre compte, cliquez sur le lien suivant. Un changement de mot de passe est requis"
-  reactivated: "Votre compte a été réactivé."
   passwordChange:
     title: "Changez votre mot de passe"
     help: "Indiquez un nouveau mot de passe"

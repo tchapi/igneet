@@ -21,7 +21,7 @@
 <section>
   <div class="label">{{ "user.email.title"|trans }} :</div>
   <div class="content">
-    <span data-url="{{ path('u_edit_user_settings', {'token': csrf_token('editSettings') }) }}" data-name="email" placeholder="{{ "user.email.emptyText"|trans }}" contenteditable="true" rich="false" title="{{ "user.email.help"|trans }}">{{ app.user.email }}</span>
+    <span data-url="{{ path('u_edit_user_settings', {'token': csrf_token('editSettings') }) }}" data-name="email" placeholder="{{ "user.email.emptyText"|trans }}" contenteditable="true" rich="false" data-last="{{ app.user.email }}" title="{{ "user.email.help"|trans }}">{{ app.user.email }}</span>
   </div>
 </section>
 

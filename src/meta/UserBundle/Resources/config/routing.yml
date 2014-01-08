@@ -8,13 +8,9 @@ login_check:
 logout:
     pattern: /logout
 
-reactivate:
-    pattern: /reactivate
-    defaults: { _controller: metaUserBundle:Security:reactivateOrRecover, flavour: reactivate }
-
 recover:
     pattern: /recover
-    defaults: { _controller: metaUserBundle:Security:reactivateOrRecover, flavour: recover }
+    defaults: { _controller: metaUserBundle:Security:recover }
 
 change_password:
     pattern: /change/password/{passwordToken}

@@ -13,7 +13,7 @@ security:
         openid_user_manager:
             id: meta.user.openid_user_manager # the name of the service
         user_db:
-            entity: { class: meta\UserBundle\Entity\User, property: username }
+            entity: { class: meta\UserBundle\Entity\User }
 
     firewalls:
         assets_and_dev:

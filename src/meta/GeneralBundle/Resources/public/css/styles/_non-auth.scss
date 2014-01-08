@@ -130,7 +130,7 @@
         background: $_primary;
       }
     }
-    input[type=text] + input[type=submit], input[type=email] + input[type=submit], input[type=hidden] + input[type=submit]{
+    input[type=text] + input[type=submit], input[type=email] + input[type=submit], input[type=password] + input[type=submit], input[type=hidden] + input[type=submit]{
       @include shift(6 of 8);
       @include media($tablet) {
         @include shift(3 of 4);

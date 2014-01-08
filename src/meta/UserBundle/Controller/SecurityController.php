@@ -319,9 +319,9 @@ class SecurityController extends Controller
     }
 
     /*
-     * Reactivate a user account by sending a mail with an invite
+     * Recover a user account
      */
-    public function reactivateOrRecoverAction(Request $request, $flavour)
+    public function recoverAction(Request $request)
     {
 
         // You should not be logged
@@ -337,40 +337,14 @@ class SecurityController extends Controller
 
         if ($request->isMethod('POST')) {
 
-            $mail = $request->request->get('mail');
+            $mail = trim($request->request->get('mail'));
 
             $repository = $this->getDoctrine()->getRepository('metaUserBundle:User');
             $em = $this->getDoctrine()->getManager();
             
             $user = $repository->findOneByEmail($mail);
 
-            if ( $user && $flavour === 'reactivate' && $user->isDeleted() ){
-
-                $user->createNewReactivateToken();
-                $em->flush();
-
-                $this->get('session')->getFlashBag()->add(
-                    'success',
-                    $this->get('translator')->trans('user.reactivation.sent', array( '%mail%' => $mail))
-                );
-
-                // Sends mail to invitee
-                $message = \Swift_Message::newInstance()
-                    ->setSubject($this->get('translator')->trans('user.reactivation.mail.subject'))
-                    ->setFrom($this->container->getParameter('mailer_from'))
-                    ->setTo($mail)
-                    ->setBody(
-                        $this->renderView(
-                            'metaUserBundle:Mail:reactivateOrRecover.mail.html.twig',
-                            array('user' => $user, 'passwordToken' => $user->getToken(), 'flavour' => $flavour )
-                        ), 'text/html'
-                    );
-
-                $this->get('mailer')->send($message);
-
-                return $this->redirect($this->generateUrl('login'));
-
-            } elseif ( $user && $flavour === 'recover' && !$user->isDeleted() ){
+            if ( $user && !$user->isDeleted() ){
 
                 $user->createNewRecoverToken();
                 $em->flush();
@@ -387,8 +361,8 @@ class SecurityController extends Controller
                     ->setTo($mail)
                     ->setBody(
                         $this->renderView(
-                            'metaUserBundle:Mail:reactivateOrRecover.mail.html.twig',
-                            array('user' => $user, 'passwordToken' => $user->getToken(), 'flavour' => $flavour )
+                            'metaUserBundle:Mail:recover.mail.html.twig',
+                            array('user' => $user, 'passwordToken' => $user->getToken())
                         ), 'text/html'
                     );
 
@@ -400,16 +374,16 @@ class SecurityController extends Controller
 
                 $this->get('session')->getFlashBag()->add(
                     'error',
-                    $this->get('translator')->trans('user.cannot.' . $flavour)
+                    $this->get('translator')->trans('user.cannot.recover')
                 );
 
-                return $this->redirect($this->generateUrl($flavour));
+                return $this->redirect($this->generateUrl('recover'));
 
             }
             
         } else {
 
-            return $this->render('metaUserBundle:Non-Auth:reactivateOrRecover.html.twig', array( 'flavour' => $flavour));
+            return $this->render('metaUserBundle:Non-Auth:recover.html.twig');
         
         }
     
@@ -422,7 +396,7 @@ class SecurityController extends Controller
     {
 
         // It may be an internal request
-        if(is_null($passwordToken) && $this->getUser()){
+        if (is_null($passwordToken) && $this->getUser()){
             
             if (!$this->get('form.csrf_provider')->isCsrfTokenValid('changePassword', $request->get('token'))){
                 throw $this->createNotFoundException($this->get('translator')->trans('invalid.token', array(), 'errors'));
@@ -438,9 +412,6 @@ class SecurityController extends Controller
 
             $repository = $this->getDoctrine()->getRepository('metaUserBundle:User');
             $user = $repository->findOneByToken($passwordToken);
-
-            $token_parts = explode(':',base64_decode($passwordToken));
-            $flavour = $token_parts[0];
 
             if (!$user || $user == false){
 
@@ -471,7 +442,7 @@ class SecurityController extends Controller
                     $this->get('translator')->trans('invalid.password.match', array(), 'errors')
                 );
 
-                return $this->render('metaUserBundle:User:changePassword.html.twig', array('passwordToken' => $passwordToken, 'flavour' => $flavour));
+                return $this->render('metaUserBundle:User:changePassword.html.twig', array('passwordToken' => $passwordToken));
         
             } else {
 
@@ -485,17 +456,6 @@ class SecurityController extends Controller
                 $em = $this->getDoctrine()->getManager();
 
                 if( count($errors) === 0){
-                    
-                    if ($flavour === 'reactivate'){
-
-                        $this->get('session')->getFlashBag()->add(
-                            'info',
-                            $this->get('translator')->trans('user.reactivated')
-                        );
-
-                        $user->setDeletedAt(null);
-
-                    }
 
                     $user->setToken(null);
 
@@ -522,7 +482,7 @@ class SecurityController extends Controller
                     // We need this otherwise the null token / password / etc might be flushed !
                     $em->refresh($user);
 
-                    return $this->render('metaUserBundle:User:changePassword.html.twig', array('passwordToken' => $passwordToken, 'flavour' => $flavour));
+                    return $this->render('metaUserBundle:User:changePassword.html.twig', array('passwordToken' => $passwordToken));
         
                 }
 
@@ -530,8 +490,13 @@ class SecurityController extends Controller
 
         } else {
             
-            return $this->render('metaUserBundle:User:changePassword.html.twig', array('passwordToken' => $passwordToken, 'flavour' => $flavour));
-        
+            if ($this->getUser()){
+                // For users accessing via settings
+                return $this->render('metaUserBundle:User:changePassword.html.twig', array('passwordToken' => $passwordToken));
+            } else {
+                // For user in recovery mode
+                return $this->render('metaUserBundle:Non-Auth:changePassword.html.twig', array('passwordToken' => $passwordToken));
+            }     
         }
 
     }

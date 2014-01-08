@@ -21,8 +21,7 @@ user:
     followSelf: "You cannot follow yourself."
     unfollow: "You cannot unfollow this user."
     unfollowSelf: "You cannot unfollow yourself."
-    recover: "You cannot recover your password : make sure the email is correct, or try reactivating your account first if you have deleted it."
-    reactivate: "You cannot reactivate your account : either this account never existed, or is still active. If you have lost your password, try to recover it first."
+    recover: "You cannot recover your password : make sure the email is correct, and that it hasn't been deleted yet."
   picture:
     reset: "Your avatar has successfully been reset."
     cannot.reset: "You cannot reset the avatar for this user."
@@ -57,9 +56,8 @@ user:
   login:
     signup: "Sign up"
     signin: "Log in"
-    reactivate: "Account deleted ?"
     recover: "Lost your password ?"
-    login: "Your username"
+    login: "Your username or email"
     password: "Your password"
     gplus.title: "Connect with your Google account"
     stacke.title: "Connect with your Stack Exchange account"
@@ -139,23 +137,11 @@ user:
           community: "%user% has made you a member of the community %community% on igneet !"
           project: "%user% has made you a member of the project %project% on igneet !"
   email.invalid: "Neither the email you have indicated is valid, nor it is a valid username."
-  reactivation:
-    title:
-      reactivate: "Reactivate your account"
-      recover: "Recover your lost password"
-    help: 
-      reactivate: "Your account has been deleted"
-      recover: "You have lost your password"
-    text: 
-      reactivate: "If you wish to regain access to it, please provide the email address used for signup. A mail will be sent with a link to reactivate it."
-      recover: "If you wish to regain access to your account by changing your password, please provide the email address used for signup. A mail will be sent with a link to change it."
-    button: "Reactivate my account"
+  recover:
+    title: "Recover your lost password"
+    help: "You have lost your password"
+    text: "If you wish to regain access to your account by changing your password, please provide the email address used for signup. A mail will be sent with a link to change it."
     email: "Email"
-    sent: "An email was sent to %mail% so you can reactivate your account."
-    mail:
-      subject: "Reactivate your account"
-      body: "In order to reactivate your account, click on the link below. A password change will be required"
-  reactivated: "Your account has been reactivated."
   passwordChange:
     title: "Change your password"
     help: "Please provide your new password"

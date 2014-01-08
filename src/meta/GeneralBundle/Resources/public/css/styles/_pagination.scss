@@ -10,6 +10,5 @@
   color: $_muted;
   padding: 15px;
   margin-top: $gutter*1.5;
-  a { color: $_muted; }
   &:before { clear: both; content: ""; display: table; }
 }

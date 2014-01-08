@@ -69,7 +69,7 @@ class User implements AdvancedUserInterface
     /**
      * @var string $first_name
      *
-     * @ORM\Column(name="first_name", type="string", length=255)
+     * @ORM\Column(name="first_name", type="string", length=255, nullable=true)
      * @Assert\NotBlank()
      * @Assert\Length(max = 255)
      */
@@ -1560,15 +1560,7 @@ class User implements AdvancedUserInterface
      */
     public function createNewRecoverToken()
     {
-        $this->token = base64_encode("recover:" . md5(uniqid(null, true)));
-    }
-    /**
-     * Create a token for reactivation
-     *
-     */
-    public function createNewReactivateToken()
-    {
-        $this->token = base64_encode("reactivate:" . md5(uniqid(null, true)));
+        $this->token = base64_encode(md5(uniqid(null, true)));
     }
 
     /**
@@ -1612,6 +1604,7 @@ class User implements AdvancedUserInterface
     public function delete()
     {
         $this->deleted_at = new \DateTime('now');
+        $this->email = null;
         return $this;
     }
 

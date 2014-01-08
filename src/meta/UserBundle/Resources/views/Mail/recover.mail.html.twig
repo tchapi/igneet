@@ -1,10 +1,6 @@
 <h3>{{ "mail.hello"|trans }}</h3>
 
-{% if flavour == 'reactivate' %}
-  <p>{{ "user.reactivation.mail.body"|trans }} :</p> 
-{% else %}
-  <p>{{ "user.passwordChange.mail.body"|trans }} :</p> 
-{% endif %}
+<p>{{ "user.passwordChange.mail.body"|trans }} :</p> 
 
   <p><a href="{{ url('change_password', { 'passwordToken': passwordToken } ) }}">{{ url('change_password', { 'passwordToken': passwordToken } ) }}</a></p>
 
