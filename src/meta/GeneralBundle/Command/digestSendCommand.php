@@ -42,12 +42,14 @@ class digestSendCommand extends ContainerAwareCommand
       $output->writeln('Today is : <info>' . $today.'.</info>');
 
       if ($sendBiMonthlyEmails){
-        $output->writeln(' # This week we are sending <info>bi-monthly emails</info>.');
+        $output->writeln('This week we are sending <info>bi-monthly emails</info>.');
       }
 
       if ($sendDefaultDayEmails){
-        $output->writeln(" # It's the <info>default</info> day");
+        $output->writeln("It's the <info>default</info> day");
       }
+
+      $output->writeln("");
 
       // List all users to whom we need to send a digest today
       $userRepository = $this->getContainer()->get('doctrine')->getRepository('metaUserBundle:User');
@@ -114,6 +116,8 @@ class digestSendCommand extends ContainerAwareCommand
                     ), 'text/html'
                 );
 
+            if ($verbose) $output->writeln('     --> Mail created');
+
           } else {
             
             /*
@@ -146,33 +150,28 @@ class digestSendCommand extends ContainerAwareCommand
                           array('notifications' => $notificationsArray['notifications'], 'lastNotified' => $notificationsArray['lastNotified'], 'from' => $notificationsArray['from'], 'community' => $userCommunity->getCommunity(), 'locale' => $locale)
                       ), 'text/html'
                   );
+
+                if ($verbose) $output->writeln('     --> Mail created');
+
               }
 
             }
 
           }
 
-          // We have the notifications, send the mail (or not)
-          if ($sendMails){
-
-            $countActualMails = 0;
-
-            foreach ($messages as $message) {
-              $mailer->send($message);
-              $countActualMails++;
-            }
-            
-            if ($verbose) $output->writeln('     --> Mail queued');
-
-          } else {
-            
-            if ($verbose) $output->writeln('     --> Mail <important>NOT</important> queued');
-
-          }
-
         }
 
-        if ($sendMails) {
+        // We have the notifications, send the mail (or not)
+        if ($sendMails){
+
+          $countActualMails = 0;
+          $failedRecipients = array();
+
+          foreach ($messages as $message) {
+            $countActualMails += $mailer->send($message, $failedRecipients);
+          }
+          
+          if ($verbose) $output->writeln("\n" . $countActualMails . ' mail(s) queued in the spool, ready to send');
 
           $transport = $mailer->getTransport();
 
@@ -199,17 +198,17 @@ class digestSendCommand extends ContainerAwareCommand
 
               $sentMails = $spool->flushQueue($this->getContainer()->get('swiftmailer.transport.real'));
 
-              if ($verbose) $output->writeln('Spool <info>FLUSHED</info> : <comment>' . $countActualMails . '</comment> mail(s) in queue, <comment>' . $sentMails . '</comment> were sent.');
+              if ($verbose) $output->writeln('Spool <info>FLUSHED</info> : <comment>' . $sentMails . '</comment> mail(s) were sent.');
 
           } else {
 
             if ($verbose) $output->writeln('Spool <important>NOT FLUSHED</important> : Error getting transport.');
 
           }
-
           
         } else {
 
+          if ($verbose) $output->writeln("\n" . '<important>NO</important> mail(s) queued in the spool. Use <comment>--force</comment> to override.');
           if ($verbose) $output->writeln('Spool <important>NOT FLUSHED</important> : no mails were sent.');
 
         }
