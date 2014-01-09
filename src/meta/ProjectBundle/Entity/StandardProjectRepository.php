@@ -6,12 +6,17 @@ use Doctrine\ORM\EntityRepository;
 
 /**
  * StandardProjectRepository
- *
  */
 class StandardProjectRepository extends EntityRepository
 {
 
-  private function getGuestCriteria($community, $user)
+  /*
+   * Helper function to know if a $user is guest in a $community
+    * Options :
+    * - 'community'
+    * - 'user'
+   */
+  private function getGuestCriteria($options)
   {
 
     $guestCriteria = '';
@@ -20,10 +25,10 @@ class StandardProjectRepository extends EntityRepository
     $query = $qb->select('uc')
                     ->from('metaUserBundle:UserCommunity', 'uc')
                     ->where('uc.user = :user')
-                    ->setParameter('user', $user)
+                    ->setParameter('user', $options['user'])
                     ->andWhere('uc.community = :community')
                     ->andWhere('uc.deleted_at IS NULL')
-                    ->setParameter('community', $community)
+                    ->setParameter('community', $options['community'])
                     ->getQuery(); 
 
     try {
@@ -44,10 +49,17 @@ class StandardProjectRepository extends EntityRepository
 
   }
 
-  private function getQuery($community, $user, $statuses = null)
+  /*
+   * Get the standard query for all functions of the repo
+    * Options :
+    * - 'community'
+    * - 'user'
+    * - 'statuses'
+   */
+  private function getQuery($options)
   {
 
-    $guestCriteria = $this->getGuestCriteria($community, $user);
+    $guestCriteria = $this->getGuestCriteria($options);
 
     $qb = $this->getEntityManager()->createQueryBuilder();
     $query = $qb->select('sp')
@@ -56,18 +68,18 @@ class StandardProjectRepository extends EntityRepository
             ->leftJoin('sp.participants', 'u2')
             ->where('sp.deleted_at IS NULL')
             ->andWhere( $guestCriteria .'u = :user OR u2 = :user')
-            ->setParameter('user', $user);
+            ->setParameter('user', $options['user']);
 
-    if ( !is_null($statuses) ) { // We have to filter status
+    if ( !is_null($options['statuses']) ) { // We have to filter status
       $query->andWhere('sp.status IN (:statuses)')
-            ->setParameter('statuses', $statuses);
+            ->setParameter('statuses', $options['statuses']);
     }
 
-    if ($community === null){
+    if ($options['community'] === null){
       $query->andWhere('sp.community IS NULL');
     } else {
       $query->andWhere('sp.community = :community')
-            ->setParameter('community', $community);
+            ->setParameter('community', $options['community']);
     }
 
     return $query;
@@ -76,11 +88,15 @@ class StandardProjectRepository extends EntityRepository
 
   /* 
    * Count projects in community for user (taking in account guest, privacy and community)
+    * Options :
+    * - 'community'
+    * - 'user'
+    * - 'statuses'
    */
-  public function countProjectsInCommunityForUser($community, $user, $statuses = null)
+  public function countProjectsInCommunityForUser($options)
   {
     
-    $guestCriteria = $this->getGuestCriteria($community, $user);
+    $guestCriteria = $this->getGuestCriteria($options);
 
     $qb = $this->getEntityManager()->createQueryBuilder();
     $query = $qb->select('COUNT(DISTINCT sp)')
@@ -89,18 +105,18 @@ class StandardProjectRepository extends EntityRepository
             ->leftJoin('sp.participants', 'u2')
             ->where('sp.deleted_at IS NULL')
             ->andWhere( $guestCriteria .'u = :user OR u2 = :user')
-            ->setParameter('user', $user);
+            ->setParameter('user', $options['user']);
 
-    if ( !is_null($statuses) ) { // We have to filter status
+    if ( !is_null($options['statuses']) ) { // We have to filter status
       $query->andWhere('sp.status IN (:statuses)')
-            ->setParameter('statuses', $statuses);
+            ->setParameter('statuses', $options['statuses']);
     }
 
-    if ($community === null){
+    if ($options['community'] === null){
       $query->andWhere('sp.community IS NULL');
     } else {
       $query->andWhere('sp.community = :community')
-            ->setParameter('community', $community);
+            ->setParameter('community', $options['community']);
     }
 
     return $query->getQuery()
@@ -110,13 +126,21 @@ class StandardProjectRepository extends EntityRepository
 
   /* 
    * Fetch projects in community for user (taking in account guest, privacy and community)
+    * Options :
+    * - 'community'
+    * - 'user'
+    * - 'statuses'
+    * v Pagination
+    * - 'page'
+    * - 'maxPerPage'
+    * - 'sort'
    */
-  public function findProjectsInCommunityForUser($community, $user, $page, $maxPerPage, $sort, $statuses)
+  public function findProjectsInCommunityForUser($options)
   {
 
-    $query = $this->getQuery($community, $user, $statuses);
+    $query = $this->getQuery($options);
 
-    switch ($sort) {
+    switch ($options['sort']) {
       case 'newest':
         $query->orderBy('sp.created_at', 'DESC');
         break;
@@ -129,8 +153,8 @@ class StandardProjectRepository extends EntityRepository
         break;
     }
 
-    return $query->setFirstResult(($page-1)*$maxPerPage)
-            ->setMaxResults($maxPerPage)
+    return $query->setFirstResult(($options['page']-1)*$options['maxPerPage'])
+            ->setMaxResults($options['maxPerPage'])
             ->groupBy('sp.id')
             ->getQuery()
             ->getResult();

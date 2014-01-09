@@ -1,18 +1,13 @@
 {% extends '::base.html.twig' %}
-{% set template = 'full' %}
+{% set template = 'card' %}
 
 {% block title %}{{ parent() }} > {{ "project.title"|trans }}{% endblock %}
 
 {% block container %}
 
-<div class="wrapper">
-  <header>
-  {% block header %}{% endblock %}
-  </header>
-  <nav role="navigation">
-  {% block navbar %}{% endblock %}
-  </nav>
-</div>
+<header>
+{% block header %}{% endblock %}
+</header>
 
 {% block content %}{% endblock %}
 

@@ -64,10 +64,6 @@ a.button, input[type=submit].button, button {
 
 @import "styles/editable";
 
-// Page-specific
-@import "styles/settings";
-@import "styles/user";
-
 // Tables used in lists of objects
 @import "styles/tables";
 
@@ -218,3 +214,8 @@ ul.timeline {
 section.notifications.none {
   text-align: center;
 }
+
+// Page-specific
+@import "styles/settings";
+@import "styles/user";
+@import "styles/projects";

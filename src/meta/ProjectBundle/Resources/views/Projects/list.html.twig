@@ -1,0 +1,144 @@
+{% extends 'metaProjectBundle::layout.html.twig' %}
+
+{% block title %}{{ parent() }} > {{ "project.allProjects"|trans }}{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+    {% javascripts '@metaGeneralBundle/Resources/public/js/infinite.scroll.behaviour.js' 
+            filter='?yui_js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block header %}
+
+  {% if app.user.currentCommunity is not null %}
+  <div class="avatar">
+    <img src="{{ asset(app.user.currentCommunity.getPicture()) }}" />
+  </div>
+  <div class="info">
+  {% else %}
+  <div class="title">
+  {% endif %}
+
+    <h2>{{ "project.title"|trans }}</h2>
+    
+    <h4>
+      {% if app.user.currentCommunity is not null %}
+        {{ "project.listHelp.community"|trans({ '%community%': app.user.currentCommunity.name}) }}
+      {% else %}
+        {{ "project.listHelp.privateSpace"|trans }}
+      {% endif %}
+    </h4>
+
+    {% if statuses|length < 4 %}
+      <em>{{ "project.listHelp.statuses"|trans({'%statuses%': statuses|join(', ') }) }}</em>
+    {% endif %}
+
+    <p>
+    {% if not userIsGuest %}<a href="{{ path('p_new_project') }}" class="button"><i class="fa fa-pencil"></i> {{ "project.new"|trans }}</a>{% endif %}
+    {% if statuses|length == 4 %}
+      <a href="{{ path('p_list_sleeping_projects') }}" class="button button-neutral">{{ "project.list.sleeping"|trans }}</a>
+      <a href="{{ path('p_list_closed_projects') }}" class="button button-neutral"><i class="fa fa-archive"></i> {{ "project.list.closed"|trans }}</a>
+    {% else %}
+      <a href="{{ path('p_list_projects') }}" class="button button-success">{{ "project.list.all"|trans }}</a>
+    {% endif %}
+    </p>
+
+  </div>
+
+{% endblock %}
+
+{% block content %}
+<div class="wrapper list">
+
+{% if projects|length > 0 %}
+  
+  {# FILTERS #}
+  <section class="filters">
+    {{ "filters.sort"|trans }}
+    <a href="{{ path('p_list_projects', {'sort': 'newest'}) }}"><i class="fa fa-star"></i> {{ "filters.newest"|trans }}</a> /
+    <a href="{{ path('p_list_projects', {'sort': 'update'}) }}"><i class="fa fa-clock-o"></i> {{ "filters.recent"|trans }}</a> /
+    <a href="{{ path('p_list_projects', {'sort': 'alpha'}) }}"><i class="fa fa-font"></i> {{ "filters.alpha"|trans }}</a>
+  </section>
+
+  <table id="list" summary="ideas">
+    <thead>
+      <tr>
+        <th class="main">{{ "idea.list.name"|trans }}</th>
+        <th></th>
+        <th><i class="fa fa-calendar"></i> {{ "idea.list.created"|trans }}</th>
+        <th><i class="fa fa-clock-o"></i> {{ "idea.list.updated"|trans }}</th>
+        <th>{{ "idea.list.members"|trans }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {# TEMPLATE FOR INFINITE SCROLLING #}
+      <tr class="template" style="display: none !important;">
+        <td>
+          <a data-href="%url%">
+            <img data-src="%picture%" width="80px" height="80px"/>
+          </a>
+        </td>
+        <td class="main">
+          <a data-href="%url%">
+            <div>
+              <span data-private="%isPrivate%"><i class="fa fa-lock"></i> %name%</span>
+              <span class="headline">%headline%</span>
+            </div>
+          </a>
+        </td>
+        <td>
+           %createdAt%
+        </td>
+        <td>
+          %updatedAt%
+        </td>
+        <td>
+          <div>%creators%</div>
+          <div>%participants%</div>
+        </td>
+      </tr>
+      {# END OF TEMPLATE #}
+      {% for project in projects %}
+        <tr>
+          <td>
+            <a href="{{ path('p_show_project', {'uid': project.id|to_uid }) }}">
+              <img src="{{ asset(project.getPicture()) }}" width="80px" height="80px"/>
+            </a>
+          </td>
+          <td class="main">
+            <a href="{{ path('p_show_project', {'uid': project.id|to_uid }) }}">
+              <div>
+                <span private="{{ project.isPrivate?"true":"false" }}"><i class="fa fa-lock"></i>  {{ project.name }}</span>
+                <span class="headline">{{ project.headline }}</span>
+              </div>
+            </a>
+          </td>
+          <td>
+             {{ project.createdAt|date("date.fullFormat"|trans) }}
+          </td>
+          <td>
+            {{ project.updatedAt|date("date.fullFormat"|trans) }}
+          </td>
+          <td>
+            <div>{{ "project.owners"|transchoice(project.countOwners, {"%count%": project.countOwners }) }}</div>
+            <div>{{ "project.participants"|transchoice(project.countParticipants, {"%count%": project.countParticipants }) }}</div>
+          </td>
+        </tr>
+
+      {% endfor %}
+    </tbody>
+  </table>
+
+  {# PAGINATION #}
+  {{ include('metaGeneralBundle:Default:pagination.html.twig', { 'route': 'p_list_projects', 'total_objects' : totalProjects, 'params' : {'sort': sort } }, with_context = false) }}
+
+{% else %}
+  <section class="none">
+  {{ "project.none"|trans }} <a href="{{ path('p_new_project') }}">{{ "project.none.create"|trans }}</a>
+  </section>
+{% endif %}
+
+</div>
+{% endblock %}

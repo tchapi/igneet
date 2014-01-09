@@ -53,42 +53,73 @@ class ProjectsController extends Controller
     /*
      * List all projects in the given community, for the user
      */
-    public function listAction($page, $sort, $statuses)
+    public function listAction(Request $request, $sort, $statuses)
     {
 
-        $repository = $this->getDoctrine()->getRepository('metaProjectBundle:StandardProject');
+        $page = max(1, $request->request->get('page'));
 
         $authenticatedUser = $this->getUser();
         $community = $authenticatedUser->getCurrentCommunity();
 
-        $totalProjects = $repository->countProjectsInCommunityForUser($community, $authenticatedUser, $statuses);
+        $repository = $this->getDoctrine()->getRepository('metaProjectBundle:StandardProject');
+
+        $totalProjects = $repository->countProjectsInCommunityForUser(array( 'community' => $community, 'user' => $authenticatedUser, 'statuses' => $statuses));
         $maxPerPage = $this->container->getParameter('listings.number_of_items_per_page');
 
         if ( ($page-1) * $maxPerPage > $totalProjects) {
             return $this->redirect($this->generateUrl('p_list_projects', array('sort' => $sort)));
         }
         
-        if (!is_null($community)){
-            
-            $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true, 'deleted_at' => null));
-        
+        if ($request->request->get('full') == "true"){
+            // We need to load all the projects from page 2 to page "$page" (the first page is already outputted in PHP)
+            $projects = $repository->findProjectsInCommunityForUser(array( 'community' => $community, 'user' => $authenticatedUser, 'page' => 1, 'maxPerPage' => $maxPerPage*$page, 'sort' => $sort, 'statuses' => $statuses));
+            array_splice($projects, 0, $maxPerPage);
         } else {
-            
-            $userCommunityGuest = null; // You're not guest in your private space
+            // We only load the requested page
+            $projects = $repository->findProjectsInCommunityForUser(array( 'community' => $community, 'user' => $authenticatedUser, 'page' => $page, 'maxPerPage' => $maxPerPage, 'sort' => $sort, 'statuses' => $statuses));
         }
 
-        $projects = $repository->findProjectsInCommunityForUser($community, $authenticatedUser, $page, $maxPerPage, $sort, $statuses);
+        // Let's determine if user is guest in the community
+        if (!is_null($community)){
+            $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true, 'deleted_at' => null));
+            $userIsGuest = ($userCommunityGuest != null);
+        } else {
+            $userCommunityGuest = null; // You're not guest in your private space
+            $userIsGuest = false;
+        }
 
-        $map_status = $this->container->getParameter('project_statuses');
-        $translator = $this->get('translator');
-        $statuses_names = array_map( 
+        if ($request->isXmlHttpRequest()){
+        
+            $projectsAsArray = array();
+            foreach($projects as $project){
+                $projectsAsArray[] = array(
+                    'url' => $this->generateUrl('p_show_project', array('uid' => $this->container->get('uid')->toUId($project->getId()))), 
+                    'picture' => $project->getPicture(), 
+                    'name' => $project->getName(), 
+                    'isPrivate' => ($project->isPrivate()?"true":"false"), 
+                    'headline' => $project->getHeadline(), 
+                    'createdAt' => $project->getCreatedAt()->format($this->get('translator')->trans("date.fullFormat")), 
+                    'updatedAt' => $project->getUpdatedAt()->format($this->get('translator')->trans("date.fullFormat")), 
+                    'owners' => $this->get('translator')->transchoice('project.owners', $project->countOwners(), array('%count%' => $project->countOwners())), 
+                    'participants' => $this->get('translator')->transchoice('project.participants', $project->countParticipants(), array('%count%' => $project->countParticipants()))
+                );
+            }
+            return new Response(json_encode($projectsAsArray), 200, array('Content-Type'=>'application/json'));
+        
+        } else {
+        
+            // Get statuses names
+            $map_status = $this->container->getParameter('project_statuses');
+            $translator = $this->get('translator');
+            $statuses_names = array_map( 
                 function($status_code) use ($map_status, $translator) { return $translator->trans("project.info.status." . $map_status[$status_code]); }, 
                 $statuses
-        ); 
+            );
 
-        $pagination = array( 'page' => $page, 'totalProjects' => $totalProjects);
-        return $this->render('metaProjectBundle:Default:list.html.twig', array('projects' => $projects, 'pagination' => $pagination, 'sort' => $sort, 'userIsGuest' => ($userCommunityGuest != null), 'statuses' => $statuses_names ));
-
+            return $this->render('metaProjectBundle:Projects:list.html.twig', array('projects' => $projects, 'totalProjects' => $totalProjects, 'sort' => $sort, 'userIsGuest' => $userIsGuest, 'statuses' => $statuses_names ));
+        
+        }
+   
     }
 
     /*
