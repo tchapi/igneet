@@ -18,11 +18,10 @@ idea:
     updated: "Updated"
     members: "Members"
   new: "New idea"
+  newHelp: "You can add more information once the idea is created."
   not.found: "This idea was not found."
   none: "No ideas yet."
   none.create: "Create one now"
-  create: "Create"
-  createHelp: "You can add more information once the idea is created."
   createForm:
     name: "Name this idea"
     namePlaceholder: "My new idea"

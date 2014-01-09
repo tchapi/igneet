@@ -6,7 +6,6 @@ use Doctrine\ORM\EntityRepository;
 
 /**
  * IdeaRepository
- *
  */
 class IdeaRepository extends EntityRepository
 {

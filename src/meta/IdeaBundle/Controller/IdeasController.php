@@ -86,7 +86,6 @@ class IdeasController extends Controller
             $ideas = $repository->findIdeasInCommunityForUser(array( 'community' => $community, 'user' => $authenticatedUser, 'archived' => $archived, 'page' => $page, 'maxPerPage' => $maxPerPage, 'sort' => $sort));
         }
 
-        
         if ($request->isXmlHttpRequest()){
         
             $ideasAsArray = array();
@@ -109,6 +108,7 @@ class IdeasController extends Controller
             return $this->render('metaIdeaBundle:Ideas:list.html.twig', array('ideas' => $ideas, 'archived' => $archived, 'totalIdeas' => $totalIdeas, 'sort' => $sort));
         
         }
+        
     }
 
     /*

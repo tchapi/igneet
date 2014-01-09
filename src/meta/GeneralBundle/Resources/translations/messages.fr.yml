@@ -56,7 +56,7 @@ community:
   switch: "Vous avez été automatiquement basculé dans la communauté %community%."
   title: "Communautés"
   new: "Nouvelle communauté"
-  createHelp: "Créez une nouvelle communauté pour travailler autour de projets et d'idées communes."
+  newHelp: "Créez une nouvelle communauté pour travailler autour de projets et d'idées communes."
   managers: "Administrateurs"
   users: "Utilisateurs"
   usersCount: "Il y a actuellement %users% utilisateurs dans cette communauté."
