@@ -29,6 +29,8 @@ Todo - Post-Passe-Créa :
 
  ☐ lien sur le igneet logo en mode non-auth
 
+ ☐  restreindre l'acces des fichiers uploadés si non loggé ?
+
 Todo - Entity "Community" :
 
 Home de community (penser au private space !!)

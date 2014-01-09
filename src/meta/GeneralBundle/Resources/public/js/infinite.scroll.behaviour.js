@@ -82,7 +82,7 @@ $(document).ready(function(){
       page = gotoPage;
       // Scroll to the first element of page 
       offset = $("table tr:nth-child(" + ((gotoPage-1)*objects_per_page+1) + ")").offset();
-      $("body").animate({ scrollTop: offset.top }, "slow");
+      $("html, body").animate({ scrollTop: offset.top }, "slow");
     });
 
   }
