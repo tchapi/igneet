@@ -167,7 +167,7 @@ class StandardProjectRepository extends EntityRepository
   public function findAllProjectsInCommunityForUserOwnedBy($community, $user, $owner)
   {
 
-    $query = $this->getQuery($community, $user);
+    $query = $this->getQuery(array('community' => $community, 'user' => $user));
 
     $query->join('sp.owners', 'u3')
           ->andWhere('u3 = :owner')
@@ -186,7 +186,7 @@ class StandardProjectRepository extends EntityRepository
   public function findAllProjectsInCommunityForUserParticipatedInBy($community, $user, $participant)
   {
 
-    $query = $this->getQuery($community, $user);
+    $query = $this->getQuery(array('community' => $community, 'user' =>  $user));
 
     $query->join('sp.participants', 'u3')
           ->andWhere('u3 = :participant')
@@ -204,7 +204,7 @@ class StandardProjectRepository extends EntityRepository
   public function findAllProjectsWatchedInCommunityForUser($community, $user)
   {
 
-    $query = $this->getQuery($community, $user);
+    $query = $this->getQuery(array('community' => $community, 'user' =>  $user));
 
     $query->join('sp.watchers', 'u3')
           ->andWhere('u3 = :user')
@@ -265,7 +265,7 @@ class StandardProjectRepository extends EntityRepository
 
     $max = $options['max']?$options['max']:3;
  
-    $query = $this->getQuery($options['community'], $options['user']);
+    $query = $this->getQuery(array('community' => $community, 'user' =>  $user));
 
     return $query->groupBy('sp.id')
             ->orderBy('sp.created_at', 'DESC')

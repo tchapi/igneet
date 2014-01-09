@@ -187,7 +187,7 @@ class ProjectsController extends Controller
 
         }
 
-        return $this->render('metaProjectBundle:Default:create.html.twig', array('form' => $form->createView()));
+        return $this->render('metaProjectBundle:Projects:create.html.twig', array('form' => $form->createView()));
 
     }
 
