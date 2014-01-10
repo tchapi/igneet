@@ -115,7 +115,7 @@ class Community
      */
     public function __construct($span = '1 month')
     {
-        $this->created_at = new \DateTime('now');
+        $this->created_at = $this->updated_at = new \DateTime('now');
 
         $this->projects = new ArrayCollection();
         $this->ideas = new ArrayCollection();
