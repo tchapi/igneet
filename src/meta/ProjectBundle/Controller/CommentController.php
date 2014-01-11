@@ -20,7 +20,7 @@ class CommentController extends BaseController
     /*
      * Output the comment form for an project or add a comment to an project when POST
      */
-    public function addStandardProjectCommentAction(Request $request, $uid){
+    public function addProjectCommentAction(Request $request, $uid){
 
         $menu = $this->container->getParameter('project.menu');
         $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => $menu['timeline']['private']));
