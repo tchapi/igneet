@@ -26,7 +26,7 @@ class InfoController extends BaseController
         $targetOwnerAsBase64 = array('slug' => 'metaProjectBundle:Info:addParticipantOrOwner', 'external' => true, 'params' => array('uid' => $uid,'owner' => true, 'guest' => true));
         $targetParticipantAsBase64 = array('slug' => 'metaProjectBundle:Info:addParticipantOrOwner', 'external' => true, 'params' => array('uid' => $uid,'owner' => false, 'guest' => true));
 
-        return $this->render('metaProjectBundle:Info:showInfo.html.twig', 
+        return $this->render('metaProjectBundle:Project:showInfo.html.twig', 
             array('base' => $this->base, 
                   'targetOwnerAsBase64' => base64_encode(json_encode($targetOwnerAsBase64)), 
                   'targetParticipantAsBase64' => base64_encode(json_encode($targetParticipantAsBase64)) ));

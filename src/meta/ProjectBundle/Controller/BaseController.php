@@ -184,7 +184,7 @@ class BaseController extends Controller
     {
         $menu = $this->container->getParameter('project.menu');
 
-        return $this->render('metaProjectBundle:Base:navbar.html.twig', array('menu' => $menu, 'activeMenu' => $activeMenu, 'uid' => $uid));
+        return $this->render('metaProjectBundle:Partials:navbar.html.twig', array('menu' => $menu, 'activeMenu' => $activeMenu, 'uid' => $uid));
     }
 
     /*

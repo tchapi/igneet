@@ -9,6 +9,7 @@ project:
   allProjects: "Tous les projets"
   allProjects.menu: "Projets"
   none: "Pas encore de projets !"
+  none.create: "En créer un"
   not.found: "Ce projet n'existe pas."
   picture:
     reset: "L'image de ce projet a été réinitialisée avec succès."
