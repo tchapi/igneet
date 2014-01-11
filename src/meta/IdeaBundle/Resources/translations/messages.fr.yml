@@ -85,6 +85,7 @@ idea:
     title: "Contenu"
   settings:
     title: ""
+    title.alt: "Paramètres"
     actions: "Actions disponibles"
   add.participant: "L'utilisateur %user% est maintenant participant de l'idée '%idea%'."
   remove.participant: "L'utilisateur '%user%' ne participe plus à l'idée '%idea%'."
