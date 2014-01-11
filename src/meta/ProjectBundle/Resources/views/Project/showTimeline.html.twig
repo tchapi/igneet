@@ -4,23 +4,17 @@
 
 {% set shortcode %}[[project:{{ base.project.id|to_uid }}]]{% endset %}
 
-{% block javascripts %}
-  {{ parent() }}
-    {% javascripts '@metaGeneralBundle/Resources/public/js/select2.behaviour.js' 
-            filter='?yui_js' %}
-    <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
+{% block content %}
+<div class="wrapper info">
+
+  <section>
+  {% render(controller("metaProjectBundle:Comment:addProjectComment", { 'uid' : base.project.id|to_uid })) %}
+  {% render(controller("metaProjectBundle:Timeline:history", { 'uid' : base.project.id|to_uid, 'page' : 1 })) %}
+  </section>
+
+</div>
 {% endblock %}
 
 {% block navbar %}
-{% render(controller("metaProjectBundle:Base:navbar", { 'activeMenu' : 'timeline', 'uid' : base.project.id|to_uid })) %}
-{% endblock %}
-
-{% block content %}
-<section>
-{% render(controller("metaProjectBundle:Comment:addStandardProjectComment", { 'uid' : base.project.id|to_uid })) %}
-</section>
-<section>
-{% render(controller("metaProjectBundle:Timeline:history", { 'uid' : base.project.id|to_uid, 'page' : 1 })) %}
-</section>
+{% render(controller("metaProjectBundle:Base:navbar", { 'activeMenu' : 'timeline', 'uid' : base.project.id|to_uid, 'canEdit' : base.canEdit })) %}
 {% endblock %}
