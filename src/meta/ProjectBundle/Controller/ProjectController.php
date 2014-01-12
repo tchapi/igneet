@@ -329,7 +329,7 @@ class ProjectController extends BaseController
 
                 $this->get('session')->getFlashBag()->add(
                     'success',
-                    $this->get('translator')->trans('project.watching', array('%project%' => $this->base['project']->getName() ))
+                    $this->get('translator')->trans('project.now.watching', array('%project%' => $this->base['project']->getName() ))
                 );
 
             } else {

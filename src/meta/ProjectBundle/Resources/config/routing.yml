@@ -325,3 +325,10 @@ p_show_project_wikipage_comment:
     requirements:
       uid: "[0-9a-zA-Z]*"
       page_uid: "[0-9a-zA-Z]*"
+
+## SETTINGS
+p_show_project_settings:
+    pattern:  /project/0{uid}/settings
+    defaults: { _controller: metaProjectBundle:Settings:showSettings}
+    requirements:
+        uid: "[0-9a-zA-Z]*"

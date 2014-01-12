@@ -1,0 +1,38 @@
+{% extends 'metaProjectBundle:Project:show.html.twig' %}
+
+{% block title %}{{ parent() }} | {{ "project.settings.title.alt"|trans }}{% endblock %}
+
+{% block content %}
+<div class="wrapper info">
+
+  <section>
+    <div class="label">{{ "project.settings.actions"|trans }} : </div>
+    <div class="content">
+
+      {% if base.project.community is null %}
+      <a class="button" href="{{ path('g_choose_community', {'targetAsBase64': base.targetProposeToCommunityAsBase64 , 'token': csrf_token('edit') }) }}"><i class="fa fa-group"></i> {{ "project.propose"|trans }}</a>
+      {% endif %}
+    
+      {% if base.project.private and base.project.community is not null %}
+        <a class="button button-success" data-confirm="{{ "project.privateHelp"|trans }}" href="{{ path('p_make_public', {'uid': base.project.id|to_uid, 'token': csrf_token('makePublic') }) }}"><i class="fa fa-globe"></i> {{ "project.make.public"|trans }}</a>
+      {% else %}
+        <a class="button button-warning" data-confirm="{{ "project.publicHelp"|trans }}" href="{{ path('p_make_private', {'uid': base.project.id|to_uid, 'token': csrf_token('makePrivate') }) }}"><i class="fa fa-minus-circle"></i> {{ "project.make.private"|trans }}</a>
+      {% endif %}
+
+    </div>
+
+  </section>
+
+{% if base.canEdit %}
+  <section>
+    <div class="label">{{ "project.delete"|trans }} : </div>
+    <div class="content"><a class="button button-danger" data-confirm="{{ "project.deleteHelp"|trans }}" href="{{ path('p_delete_project', { 'uid': base.project.id|to_uid, 'token': csrf_token('delete') }) }}">{{ "delete"|trans }}</a><em><i class="fa fa-warning"></i> {{ "deleteHelp"|trans }}</em></div>
+  </section>
+{% endif %}
+
+</div>
+{% endblock %}
+
+{% block navbar %}
+{% render(controller("metaProjectBundle:Base:navbar",{ 'activeMenu' : 'settings', 'uid' : base.project.id|to_uid, 'canEdit' : base.canEdit })) %}
+{% endblock %}

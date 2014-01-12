@@ -20,3 +20,7 @@ parameters:
       icon: fa fa-font
       route: p_show_project_wiki
       private: false
+    settings:
+      icon: fa fa-wrench
+      route: p_show_project_settings
+      private: true

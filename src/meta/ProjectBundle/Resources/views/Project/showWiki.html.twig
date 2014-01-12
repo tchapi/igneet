@@ -9,7 +9,7 @@
 {% endif %}
 
 {% block navbar %}
-{% render(controller("metaProjectBundle:Base:navbar", { 'activeMenu' : 'wiki', 'uid' : base.project.id|to_uid })) %}
+{% render(controller("metaProjectBundle:Base:navbar", { 'activeMenu' : 'wiki', 'uid' : base.project.id|to_uid, 'canEdit' : base.canEdit })) %}
 {% endblock %}
 
 {% block javascripts %}

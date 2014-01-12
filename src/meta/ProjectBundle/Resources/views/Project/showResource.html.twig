@@ -5,7 +5,7 @@
 {% set shortcode %}[[resource:{{ resource.id|to_uid }}]]{% endset %}
 
 {% block navbar %}
-{% render(controller("metaProjectBundle:Base:navbar", { 'activeMenu' : 'resources', 'uid' : base.project.id|to_uid })) %}
+{% render(controller("metaProjectBundle:Base:navbar", { 'activeMenu' : 'resources', 'uid' : base.project.id|to_uid, 'canEdit' : base.canEdit })) %}
 {% endblock %}
 
 {% form_theme form _self %}
