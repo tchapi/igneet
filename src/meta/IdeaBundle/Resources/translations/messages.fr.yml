@@ -71,10 +71,8 @@ idea:
   info:
     title: "Info"
     last.updated: "Dernière mise à jour le %date%"
-    archived.short: "Archivé le %date%"
-    created:
-      short: "Créée le %date%"
-      long: "{1}Créée le %date% par %name%|]1,Inf]Créée le %date% par %count% personnes"
+    archived: "Archivé le %date%"
+    created: "Créée le %date%"
     about: "À propos de cette idée"
     creators: "{1}Créateur|]1,Inf]Créateurs"
     participants: "{0}Aucun participant|{1}Participant|]1,Inf]Participants"

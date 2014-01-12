@@ -38,11 +38,11 @@
 
     <h4>
       <div>
-        <i class="fa fa-calendar"></i> {{ "idea.info.created.short"|trans({'%date%': base.idea.createdAt|date("date.fullFormat"|trans)}) }}
+        <i class="fa fa-calendar"></i> {{ "idea.info.created"|trans({'%date%': base.idea.createdAt|date("date.fullFormat"|trans)}) }}
       </div>
       {% if base.idea.archivedAt %}
       <div>
-        <i class="fa fa-archive"></i> {{ "idea.info.archived.short"|trans({'%date%': base.idea.archivedAt|date("date.fullFormat"|trans)}) }}
+        <i class="fa fa-archive"></i> {{ "idea.info.archived"|trans({'%date%': base.idea.archivedAt|date("date.fullFormat"|trans)}) }}
       </div>
       {% endif %}
 
