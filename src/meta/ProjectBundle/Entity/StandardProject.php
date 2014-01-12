@@ -470,17 +470,15 @@ class StandardProject extends Taggable
     }
 
     /**
-     * Clear neededSkills
+     * Has the project got this needed skill ?
      *
-     * @return StandardProject
+     * @return boolean 
      */
-    public function clearNeededSkills()
+    public function hasNeededSkill(\meta\UserBundle\Entity\Skill $skill)
     {
-        foreach($this->neededSkills as $skill){
-            $this->removeNeededSkill($skill);
-        }
-        return $this;
+        return $this->neededSkills->contains($skill);
     }
+
 
     /**
      * Add owners

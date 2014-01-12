@@ -101,16 +101,17 @@ class ProjectController extends BaseController
                     $needsRedirect = true;
                     break;
                 case 'skills':
-                    $skillSlugsAsArray = $request->request->get('value');
-                    
                     $repository = $this->getDoctrine()->getRepository('metaUserBundle:Skill');
-                    $skills = $repository->findSkillsByArrayOfSlugs($skillSlugsAsArray);
+                    $skill = $repository->findOneBySlug($request->request->get('key'));
                     
-                    $this->base['project']->clearNeededSkills();
-                    foreach($skills as $skill){
+                    if ($request->request->get('value') == 'remove' && $this->base['project']->hasNeededSkill($skill)) {
+                        $this->base['project']->removeNeededSkill($skill);
+                        $objectHasBeenModified = true;
+                    } else if ($request->request->get('value') == 'add' && !$this->base['project']->hasNeededSkill($skill)) {
                         $this->base['project']->addNeededSkill($skill);
+                        $objectHasBeenModified = true;
                     }
-                    $objectHasBeenModified = true;
+
                     break;
             }
 
@@ -263,7 +264,7 @@ class ProjectController extends BaseController
             );
         }
 
-        return $this->redirect($this->generateUrl('p_show_project', array('uid' => $uid)));
+        return $this->redirect($this->generateUrl('p_show_project_settings', array('uid' => $uid)));
 
     }
 
@@ -297,7 +298,7 @@ class ProjectController extends BaseController
             );
         }
 
-        return $this->redirect($this->generateUrl('p_show_project', array('uid' => $uid)));
+        return $this->redirect($this->generateUrl('p_show_project_settings', array('uid' => $uid)));
 
     }  
 

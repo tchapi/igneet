@@ -27,7 +27,7 @@
   </div>
   <div class="info">
     <h2>
-      <span{% if base.canEdit %} data-url="{{ path('p_edit_project', {'uid': base.project.id|to_uid, 'token': csrf_token('edit') }) }}" data-name="name" data-last="{{ base.project.name }}" contenteditable="true" rich="false"{% endif %}>{{ base.project.name }}</span>
+      {% if base.project.private %}<i class="fa fa-lock"></i> {% endif %}<span{% if base.canEdit %} data-url="{{ path('p_edit_project', {'uid': base.project.id|to_uid, 'token': csrf_token('edit') }) }}" data-name="name" data-last="{{ base.project.name }}" contenteditable="true" rich="false"{% endif %}>{{ base.project.name }}</span>
     </h2>
 
     <h3>
@@ -56,37 +56,51 @@
     {% endif %}
     </div>
 
-  </div>
-
-OLD <<<<<<<<<<<<<<<
-
-    <div>
-      <i class="fa fa-flask"></i> 
-
+    <div class="skills">
       {% if base.project.neededSkills|length > 0 %}
-      {{ "project.skills.needed"|trans }} :
-      {% elseif not base.canEdit %}
-      {{ "project.skills.needed.none"|trans }}
-      {% endif %}
-      <ul data-toggle="manual" data-title="{{ "project.skills.neededHelp"|trans }}" data-emptytext="{{ "project.skills.needed.emptyText"|trans }}" data-url="{{ path('p_edit_project', {'uid': base.project.id|to_uid, 'token': csrf_token('edit') }) }}" data-type="checklist" data-source="{{ path('u_list_all_skills') }}" data-name="skills" class="skills skills-target editable-li">
-        {% for skill in base.project.neededSkills %}<li class="label label-default" style="background-color: #{{ skill.color }}" rel="{{ skill.slug }}">{{ (skill.slug ~ ".name")|trans({}, 'skills') }}</li>{% endfor %}
-      </ul>
-      {% if base.canEdit %} <a class="editable-trigger" data-target="skills">&hellip;<i class="fa fa-pencil"></i></a>{% endif %}
-
-    </div>
-
-    {% if base.project.neededSkills|length > 0 %}
-    <div>
-      {% if base.vacantSkills|length > 0 %}
-      <i class="fa fa-exclamation-circle"></i> {{ "project.skills.vacant"|trans }} :
-      <ul class="skills">
-        {% for skill in base.vacantSkills %}<li class="label label-default" style="background-color: #{{ skill.color }}" rel="{{ skill.slug }}">{{ (skill.slug ~ ".name")|trans({}, 'skills') }}</li>{% endfor %}
-      </ul>
+        {% spaceless %}
+        <ul{% if base.canEdit %} data-url="{{ path('p_edit_project', {'uid': base.project.id|to_uid, 'token': csrf_token('edit') }) }}" data-emptytext="{{ "project.skills.needed.emptyText"|trans }}" contenteditable="list" data-name="skills"{% endif %}>
+        {% for skill in base.vacantSkills %}
+          <li style="border: 1px solid #{{ skill.color }}" rel="{{ skill.slug }}">
+          {% if base.canEdit %}
+            <a href="#" class="remove"><i class="fa fa-times"></i></a>  
+          {% endif %}
+          {{ (skill.slug ~ ".name")|trans({}, 'skills') }}</li>
+        {% endfor %}
+        {% for skill in base.endowedSkills %}
+          <li rel="{{ skill.slug }}"> 
+          {% if base.canEdit %}
+            <a href="#" class="remove"><i class="fa fa-times"></i> </a>  
+          {% endif %}
+           <em class="fa fa-users"></em> 
+          {{ (skill.slug ~ ".name")|trans({}, 'skills') }}</li>
+        {% endfor %}
+        {% if base.canEdit %}
+          <li><a href="#" class="add" data-url="{{ path('u_list_all_skills')}}"><i class="fa fa-plus"></i></a>
+            <span style="display: none;">
+              <a href="#"><i class="fa fa-times"></i></a>
+              <input type="text" id="skill" placeholder="{{ "project.skills.placeholder"|trans }}"/>
+            </span>
+          </li>
+        {% endif %}
+        </ul>
+        {% endspaceless %}
       {% else %}
-      <i class="fa fa-check-circle"></i> {{ "project.skills.endowed"|trans }}
+        <span>{{ "project.skills.needed.none"|trans }}</span>
+        {% if base.canEdit %}
+          <ul data-url="{{ path('p_edit_project', {'uid': base.project.id|to_uid, 'token': csrf_token('edit') }) }}" data-emptytext="{ "project.skills.needed.emptyText"|trans }}" contenteditable="list" data-name="skills">
+            <li><a href="#" class="add" data-url="{{ path('u_list_all_skills')}}"><i class="fa fa-plus"></i></a>
+              <span style="display: none;">
+                <a href="#"><i class="fa fa-times"></i></a>
+                <input type="text" id="skill" placeholder="{{ "project.skills.placeholder"|trans }}"/>
+              </span>
+            </li>
+          </ul>
+        {% endif %}
       {% endif %}
     </div>
-    {% endif %}
+
+  </div>
 
 {% endblock %}
 

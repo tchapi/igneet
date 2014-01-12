@@ -18,7 +18,9 @@ Todo - Priorités :
  ☐ 404 en mode non-auth ?
 
  ☐  Admin !!
-   
+ 
+ ☐ Fichier trop grand a l'upload
+
 Travail de fond :
  
  ☐ Passer les arguments en array() au lieu de liste ...

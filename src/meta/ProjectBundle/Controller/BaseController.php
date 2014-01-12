@@ -112,7 +112,7 @@ class BaseController extends Controller
         }
         
         // Compute endowed/vacant skills
-        $vacantSkills = array();
+        $vacantSkills = $endowedSkills = array();
         foreach ($project->getNeededSkills() as $skill) {
           $found = false;
           foreach ($project->getOwners() as $owner) {
@@ -129,7 +129,11 @@ class BaseController extends Controller
               }
             }
           }
-          if (!$found) $vacantSkills[] = $skill;
+          if (!$found) {
+            $vacantSkills[] = $skill;
+          } else {
+            $endowedSkills[] = $skill;
+          }
         }
 
         // Base objects
@@ -139,6 +143,7 @@ class BaseController extends Controller
                             'isOwning' => $isOwning,
                             'canEdit' =>  $isOwning || $isParticipatingIn,
                             'vacantSkills' => $vacantSkills,
+                            'endowedSkills' => $endowedSkills,
                             'shared' => $shared
                            );
 

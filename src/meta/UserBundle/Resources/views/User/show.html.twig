@@ -60,7 +60,7 @@
       {% else %}
         <span>{{ "user.skills.none"|trans }}</span>
         {% if canEdit %}
-          <ul{% if canEdit %} data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" data-emptytext="{{ "user.skills.emptyText"|trans }}" contenteditable="list" data-name="skills"{% endif %}>
+          <ul data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" data-emptytext="{{ "user.skills.emptyText"|trans }}" contenteditable="list" data-name="skills">
             <li><a href="#" class="add" data-url="{{ path('u_list_all_skills')}}"><i class="fa fa-plus"></i></a>
               <span style="display: none;">
                 <a href="#"><i class="fa fa-times"></i></a>

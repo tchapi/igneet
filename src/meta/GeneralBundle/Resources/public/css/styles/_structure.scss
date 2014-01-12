@@ -172,6 +172,10 @@ body > .content-container header {
             display: inline-block;
             &:hover { color: $_text; }
           }
+          & em {
+            display: inline-block;
+            padding-left: 4px;
+          }
           & > span > input { 
             width: initial; 
             border: none;
@@ -205,6 +209,10 @@ body > .content-container header {
       span {
         display: inline-block;
         @include ellipsis(100%);
+      }
+      i {
+        line-height: 1.25em;
+        vertical-align: top;
       }
     }
     & > h3 {
