@@ -197,8 +197,7 @@ class BaseController extends Controller
      */ 
     public function showRestrictedAction($uid)
     {
-        return $this->render('metaProjectBundle:Security:restricted.html.twig', 
-            array('base' => $this->base)); // We need to pass $base because the restricted template is a child of a template that needs it
+        return $this->render('metaProjectBundle:Security:showRestricted.html.twig');
     }
 
 
