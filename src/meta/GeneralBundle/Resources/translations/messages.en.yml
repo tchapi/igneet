@@ -1,6 +1,6 @@
 # Community
 private.space: "My private space"
-private.spaceHelp: "In your private space, you can organize your personal projets and ideas, iterate on them and build your knowledge base easily."
+private.spaceHelp: "In your private space, you can organize your personal projets and ideas. You can transfer them to a community whenever you want."
 private.space.back: "You have automatically been switched to your private space."
 private.space.new: "New to igneet ? You can browse these shared projects to learn a bit more :"
 private.space.project:
@@ -24,7 +24,7 @@ member.in:
   community: "You are now browsing the %community% community space."
   private.space: "You are now back in your private space."
 community:
-  invalid: "Oops, your community %community% is no longer valid. Please upgrade it now to re-enable it."
+  invalid: "Oops, your community %community% is no longer valid. Please contact us now to re-enable it."
   validUntil: "For information, your community is valid until %date%."
   upgrade: "Upgrade your community"
   manage: "Manage your community"
@@ -47,7 +47,7 @@ community:
     cannot.reset: "You cannot reset the picture for this community."
   invite: "Invite someone"
   invite.short: "Invite"
-  create: "Create a community"
+  create: "Create your community"
   homeHelp: "Home of %projects% projects and %ideas% ideas."
   homeHelpUsers: "{1} One user contributes to this community.|]1,Inf] %users% people contribute to this community."
   not.found: "This community does not exist."
@@ -75,7 +75,7 @@ community:
     namePlaceholder: "My new community"
     headline: "Headline"
     headlinePlaceholder: "Give your community some nice catchline"
-  created: "The community %community% has been created successfully."
+  created: "The community %community% has been created successfully. Start inviting your first teammates !"
 # File uploads
 file:
   choose: "Choose a file"

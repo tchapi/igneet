@@ -1,6 +1,6 @@
 # Community
 private.space: "Mon espace privé"
-private.spaceHelp: "Dans votre espace privé, vous pouvez organiser vos projets et idées personnels, itérer et construire votre base de connaissance de manière très simple."
+private.spaceHelp: "Dans votre espace privé, vous pouvez organiser vos projets et idées personnels. Vous pourrez les envoyer dans une communauté quand vous voudrez."
 private.space.back: "Vous avez été automatiquement basculé dans votre espace privé."
 private.space.new: "Nouveau sur igneet ? Vous pouvez parcourir ces projets partagés pour en apprendre un peu plus :"
 private.space.project:
@@ -24,7 +24,7 @@ member.in:
   community: "Bienvenue dans l'espace de travail de la communauté %community%."
   private.space: "Bienvenue dans votre espace de travail personnel."
 community:
-  invalid: "Oups, votre communauté %community% est arrivée à expiration. Veuillez consulter les différents tarifs proposés pour continuer à y collaborer."
+  invalid: "Oups, votre communauté %community% est arrivée à expiration. Veuillez nous contacter pour continuer à en bénéficier."
   validUntil: "Pour information, votre communauté est valable jusqu'au %date%."
   upgrade: "Choisissez un package pour votre communauté"
   manage: "Administrez votre communauté"
@@ -47,7 +47,7 @@ community:
     cannot.reset: "Vous n'avez pas les droits pour réinitialiser l'image de cette communauté."
   invite: "Inviter quelqu'un"
   invite.short: "Inviter"
-  create: "Créer une communauté"
+  create: "Créer votre communauté"
   homeHelp: "Retrouvez vos %projects% projets et %ideas% idées."
   homeHelpUsers: "{1} Une personne contribue à cette communauté.|]1,Inf] %users% personnes contribuent à cette communauté."
   not.found: "Cette communauté n'existe pas."
@@ -75,7 +75,7 @@ community:
     namePlaceholder: "Ma nouvelle communauté"
     headline: "Slogan"
     headlinePlaceholder: "Donnez un slogan accrocheur à votre communauté"
-  created: "La communauté %community% a été créée avec succès"
+  created: "La communauté %community% a été créée avec succès. Commencez par ajouter vos premiers membres !"
 # File uploads
 file:
   choose: "Choisir un fichier"
