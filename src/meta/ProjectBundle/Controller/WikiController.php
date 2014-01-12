@@ -54,7 +54,7 @@ class WikiController extends BaseController
 
         $wikiPage = ($homePage!=null)?$homePage:$repository->findFirstInWiki($wiki->getId());
 
-        return $this->render('metaProjectBundle:Wiki:showWiki.html.twig', 
+        return $this->render('metaProjectBundle:Project:showWiki.html.twig', 
             array('base' => $this->base, 
                   'homePage' => $homePage,
                   'wikiPages' => $wikiPages,
@@ -88,7 +88,7 @@ class WikiController extends BaseController
           throw $this->createNotFoundException($this->get('translator')->trans('project.wiki.not.found'));
         }
 
-        return $this->render('metaProjectBundle:Wiki:showWiki.html.twig', 
+        return $this->render('metaProjectBundle:Project:showWiki.html.twig', 
             array('base' => $this->base,
                   'homePage' => $wiki->getHomePage(),
                   'wikiPages' => $wikiPages,
@@ -151,7 +151,7 @@ class WikiController extends BaseController
 
         }
 
-        return $this->render('metaProjectBundle:Wiki:newWikiPage.html.twig', 
+        return $this->render('metaProjectBundle:Project:newWikiPage.html.twig', 
             array('base' => $this->base, 'form' => $form->createView()));
 
     }
