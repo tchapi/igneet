@@ -23,6 +23,17 @@
 
   </section>
 
+  <section>
+    <div class="label"><i class="fa fa-location-arrow"></i> {{ "project.info.status.title"|trans }} : </div>
+    <div class="content">
+      <select data-name="status" data-url="{{ path('p_edit_project', {'uid': base.project.id|to_uid, 'token': csrf_token('edit') }) }}">
+        {% for key, value in project_statuses %}
+        <option value="{{key}}" {% if value == project_statuses[base.project.status]%}selected="selected"{% endif %}>{{ ("project.info.status." ~ value)|trans }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </section>
+
 {% if base.canEdit %}
   <section>
     <div class="label">{{ "project.delete"|trans }} : </div>

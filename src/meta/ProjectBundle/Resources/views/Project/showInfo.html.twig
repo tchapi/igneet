@@ -4,103 +4,91 @@
 
 {% set shortcode %}[[project:{{ base.project.id|to_uid }}]]{% endset %}
 
+{% block javascripts %}
+  {{ parent() }}
+  {% if base.canEdit %}
+    {% javascripts '@metaGeneralBundle/Resources/public/js-edit/redactor.js'
+            filter='?yui_js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+  {% endif %}
+{% endblock %}
+
 {% block navbar %}
 {% render(controller("metaProjectBundle:Base:navbar", { 'activeMenu' : 'info', 'uid' : base.project.id|to_uid, 'canEdit' : base.canEdit })) %}
 {% endblock %}
 
 {% block content %}
-<section>
-  <div class="wmd-heading"><i class="fa fa-bullhorn"></i> {{ "project.info.about"|trans }} : {% if base.canEdit %}<a class="pull-right markdown-trigger">&hellip;<i class="fa fa-pencil"></i></a>{% endif %}</div>
-  <div>
-    {% if base.canEdit %}
-      <div class="wmd-message-top alert alert-warning" style="display: none;"><i class="fa fa-warning"></i> {{ "unsaved.changes"|trans }}</div>
-      <div class="wmd-wrapper well well-small" style="display: none;">
-        <div class="wmd-panel">
-            <div id="wmd-button-bar"></div>
-            <textarea unsaved='no' data-name="about" data-url="{{ path('p_edit_project', {'uid': base.project.id|to_uid, 'token': csrf_token('edit')}) }}" class="wmd-input" id="wmd-input">{{ base.project.about }}</textarea>
-        </div>
-        <div>
-          <button id="wmd-save" class="btn btn-primary">{{ "save"|trans }}</button> <span class="muted wmd-message">{{ "saveHelp"|trans }}</span>
-        </div>
-        <div id="wmd-preview" class="preview">{{ base.project.about }}</div>
-      </div>
-    {% endif %}
-    
-    <div class="content">{{ base.project.about|deeplinks|markdown }}</div>
+<div class="wrapper info">
 
-  </div>
-</section>
-<section class="colored first">
-  <div class="sectionTitle"><i class="fa fa-location-arrow"></i> {{ "project.info.status.title"|trans }} : </div>
-  <div class="sectionContent">
-    <span class="editable" data-title="{{ "project.info.statusHelp"|trans }}" data-name="status" data-type="select" data-url="{{ path('p_edit_project', {'uid': base.project.id|to_uid, 'token': csrf_token('edit') }) }}" data-source="[{% for key, value in project_statuses %} {value: {{key}}, text: '{{ ("project.info.status." ~ value)|trans }}'}, {% endfor %}]">{{ ("project.info.status." ~ project_statuses[base.project.status])|trans }}</span>
-  </div>
-</section>
-{% if not base.shared %}
-  <section class="colored">
-    <div class="sectionTitle">{{ "project.info.owners"|trans }} : </div>
-    <ul class="users sectionContent">
-    {% for owningUser in base.project.owners %}
-      {% if not owningUser.isDeleted %}
+  <section>
+    
+    <div class="label-full">{{ "project.info.about"|trans }}</div>
+
+    <div class="content-full">
+      <div{% if base.canEdit %} data-name="about" data-url="{{ path('p_edit_project', {'uid': base.project.id|to_uid, 'token': csrf_token('edit') }) }}" contenteditable="true" rich="true"{% else %} class="redactor_editor"{% endif %}>{{ base.project.about|deeplinks|raw }}</div>
+    </div>
+
+  </section>
+     
+</div>
+
+{% if not base.shared %} {# Shared projects like the "Welcome to igneet" project : we don't need to see owners #}
+<div class="wrapper team">
+  <section>
+    <div class="label-full">{{ "project.info.owners"|transchoice(base.project.countOwners) }} :</div>
+    <ul class="content-full">
+    {% for owner in base.project.owners %}
+      {% if not owner.isDeleted %}
         <li>
-          <a href="{{ path('u_show_user_profile', {'username': owningUser.username}) }}">
-            <img src="{{ owningUser.avatar }}" width="70" height="70" class="smallAvatar"/>
-            <div class="smallObjectInfos ellipsis-multiline">
-              <span><div>{{ owningUser.firstName }}</div><div>{{ owningUser.lastName }}</div></span>
+          <a href="{{ path('u_show_user_profile', {'username': owner.username}) }}">
+            <img src="{{ owner.avatar }}" width="100px" height="100px"/>
+            <div>
+              <div>{{ owner.firstName }}</div>
+              <div>{{ owner.lastName }}</div>
             </div>
           </a>
-          {% if base.isOwning %}<a class="removeUserIcon" href="{{ path('p_remove_owner_to_project', { 'uid': base.project.id|to_uid, 'username' : owningUser.username, 'token': csrf_token('removeParticipantOrOwner') }) }}"><i class="fa fa-times fa-lg"></i></a>{% endif %}
+          {% if base.isOwning %}<a class="remove" href="{{ path('p_remove_owner_to_project', { 'uid': base.project.id|to_uid, 'username' : owner.username, 'token': csrf_token('removeOwner') }) }}">&times;</a>{% endif %}
         </li>
       {% endif %}
     {% endfor %}
-    {% if base.isOwning and base.project.community is not null %}
-        <li>
-          <a href="{{ path('u_choose_user', {'targetAsBase64': targetOwnerAsBase64, 'token': csrf_token('addParticipantOrOwner') }) }}">
-            <div class="smallTextAvatar"><i class="fa fa-plus-circle"></i></div>
-            <div class="smallObjectInfos ellipsis-multiline">
-              <span>{{ "project.info.add.owner"|trans }}</span>
-            </div>
-          </a>
-        </li>
-    {% endif %}
     </ul>
   </section>
-  {% if (base.project.countParticipants > 0 or base.isOwning) and base.project.community is not null %}
-  <section class="colored">
-    <div class="sectionTitle">{{ "project.info.participants"|trans }} : </div>
-    <ul class="users sectionContent">
-    {% for participatingUser in base.project.participants %}
-      {% if not participatingUser.isDeleted %}
+  {% if base.project.community is not null and (base.project.participants|length > 0 or base.canEdit) %}
+  <section>
+    <div class="label-full">{{ "project.info.participants"|transchoice(base.project.countParticipants) }} :</div>
+    <ul class="content-full">
+    {% for participant in base.project.participants %}
+      {% if not participant.isDeleted %}
         <li>
-          <a href="{{ path('u_show_user_profile', {'username': participatingUser.username}) }}">
-            <img src="{{ participatingUser.avatar }}" width="70" height="70" class="smallAvatar"/>
-            <div class="smallObjectInfos ellipsis-multiline">
-              <span><div>{{ participatingUser.firstName }}</div><div>{{ participatingUser.lastName }}</div></span>
+          <a href="{{ path('u_show_user_profile', {'username': participant.username}) }}">
+            <img src="{{ participant.avatar }}" width="100px" height="100px"/>
+            <div>
+              <div>{{ participant.firstName }}</div>
+              <div>{{ participant.lastName }}</div>
             </div>
           </a>
-          {% if base.isOwning %}<a class="removeUserIcon" href="{{ path('p_remove_participant_to_project', { 'uid': base.project.id|to_uid, 'username' : participatingUser.username, 'token': csrf_token('removeParticipantOrOwner') }) }}"><i class="fa fa-times fa-lg"></i></a>{% endif %}
-          {% if app.user == participatingUser %}<a class="removeUserIcon" href="{{ path('p_remove_participant_to_project_self', { 'uid': base.project.id|to_uid, 'username' : participatingUser.username, 'token': csrf_token('removeMySelfParticipant') }) }}"><i class="fa fa-times fa-lg"></i></a>{% endif %}
+          {% if app.user == participant %}
+            <a class="remove" href="{{ path('p_remove_participant_to_project_self', { 'uid': base.project.id|to_uid, 'username' : participant.username, 'token': csrf_token('removeMySelfParticipant') }) }}">&times;</a>
+          {% elseif base.isOwning %}
+            <a class="remove" href="{{ path('p_remove_participant_to_project', { 'uid': base.project.id|to_uid, 'username' : participant.username, 'token': csrf_token('removeParticipant') }) }}">&times;</a>
+          {% endif %}
         </li>
       {% endif %}
     {% endfor %}
-    {% if base.isOwning and base.project.community is not null %}
+    {% if base.canEdit %}
         <li>
-          <a href="{{ path('u_choose_user', {'targetAsBase64': targetParticipantAsBase64, 'token': csrf_token('addParticipantOrOwner') }) }}">
-            <div class="smallTextAvatar"><i class="fa fa-plus-circle"></i></div>
-            <div class="smallObjectInfos ellipsis-multiline">
-              <span>{{ "project.info.add.participant"|trans }}</span>
-            </div>
+          <a href="{{ path('u_choose_user', {'targetAsBase64': targetParticipantAsBase64, 'token': csrf_token('addParticipant')  }) }}">
+            <i class="fa fa-plus-circle"></i>
+            <div><div>{{ "project.info.add.participant"|trans }}</div></div>
           </a>
         </li>
     {% endif %}
     </ul>
   </section>
   {% endif %}
-  {% if base.isOwning %}
-  <section class="colored warning">
-    <div class="sectionTitle">{{ "project.delete"|trans }} : </div>
-    <div class="sectionContent"><a class="btn btn-danger" data-confirm="{{ "project.deleteHelp"|trans }}" href="{{ path('p_delete_project', { 'uid': base.project.id|to_uid, 'token': csrf_token('delete') }) }}">{{ "delete"|trans }}</a> <span class="muted">( <i class="fa fa-warning"></i> {{ "deleteHelp"|trans }} )</span></div>
-  </section>
+
+</div>
 {% endif %}
-{% endif %}
+
 {% endblock %}
