@@ -28,7 +28,7 @@
 
 <div class="wrapper team">
   <section>
-    <div class="label-full">{% transchoice base.idea.countCreators %}idea.info.creators{% endtranschoice %} :</div>
+    <div class="label-full">{{ "idea.info.creators"|transchoice(base.idea.countCreators) }} :</div>
     <ul class="content-full">
     {% for creatorUser in base.idea.creators %}
       {% if not creatorUser.isDeleted %}
@@ -47,7 +47,7 @@
   </section>
   {% if base.idea.community is not null and (base.idea.participants|length > 0 or base.canEdit) %}
   <section>
-    <div class="label-full">{% transchoice base.idea.countParticipants %}idea.info.participants{% endtranschoice %} :</div>
+    <div class="label-full">{{ "idea.info.participants"|transchoice(base.idea.countParticipants) }} :</div>
     <ul class="content-full">
     {% for participatingUser in base.idea.participants %}
       {% if not participatingUser.isDeleted %}
