@@ -14,7 +14,7 @@ class SettingsController extends BaseController
     public function showSettingsAction($uid)
     {
 
-        $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => false));
+        $this->preComputeRights(array("mustBeOwner" => true, "mustParticipate" => false));
         
         if ($this->access == false) 
           return $this->forward('metaProjectBundle:Base:showRestricted', array('uid' => $uid));

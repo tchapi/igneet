@@ -38,13 +38,15 @@
       <div>
         <i class="fa fa-calendar"></i> {{ "project.info.created"|trans({'%date%': base.project.createdAt|date("date.fullFormat"|trans)}) }}
       </div>
-      {% if base.project.originalIdea %}
-      <div>
-        <i class="fa fa-bulb-o"></i> {{ "project.originalIdea"|trans({'%idea%': base.project.originalIdea.name}) }}
-      </div>
-      {% endif %}
-
     </h4>
+    
+    {% if base.project.originalIdea %}
+    <h4>
+      <div>
+        <i class="fa fa-lightbulb-o"></i> {{ "project.originalIdea"|trans({'%idea%': base.project.originalIdea.name}) }}
+      </div>
+    </h4>
+    {% endif %}
 
     <div>
         <i class="fa fa-rss"></i> 

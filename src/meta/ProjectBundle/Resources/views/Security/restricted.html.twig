@@ -1,10 +1,17 @@
-{% extends 'metaProjectBundle:Project:show.html.twig' %}
+{% extends 'metaProjectBundle::layout-card.html.twig' %}
 
 {% block title %}{{ parent() }} | {{ "restricted.title"|trans }}{% endblock %}
 
+{% block header %}
+<div class="title">
+    <h2>{{ "restricted.text"|trans }}</h2>
+</div>
+{% endblock %}
+
 {% block content %}
-<section class="centered">
-<i class="muted fa fa-minus-circle fa-4x"></i>
-<br />{{ "restricted.text"|trans }}
+<section>
+  <div class="content-full">
+    <em class="fa fa-minus-circle fa-4x"></em>
+  </div>
 </section>
 {% endblock %}

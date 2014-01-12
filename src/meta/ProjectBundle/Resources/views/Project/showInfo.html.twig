@@ -15,7 +15,7 @@
 {% endblock %}
 
 {% block navbar %}
-{% render(controller("metaProjectBundle:Base:navbar", { 'activeMenu' : 'info', 'uid' : base.project.id|to_uid, 'canEdit' : base.canEdit })) %}
+{% render(controller("metaProjectBundle:Base:navbar", { 'activeMenu' : 'info', 'uid' : base.project.id|to_uid, 'canEdit' : base.isOwning })) %}
 {% endblock %}
 
 {% block content %}

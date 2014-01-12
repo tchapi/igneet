@@ -65,7 +65,7 @@ project:
   privateShort: "private"
   propose: "Propose this project to a community"
   in.community: "This project is now part of the community %community%."
-  originalIdea: "originally from the idea '%idea%'"
+  originalIdea: "Originally from the idea '%idea%'"
   owners: "{0}No owners|{1}One owner|]1,Inf]%count% owners"
   participants: "{0}No participants|{1}One participant|]1,Inf]%count% participants"
   watchers: "{0}No users watching|{1}One user watching|]1,Inf]%count% users watching"

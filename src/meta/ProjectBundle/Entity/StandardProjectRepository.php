@@ -36,7 +36,7 @@ class StandardProjectRepository extends EntityRepository
         $guest = $query->getSingleResult();
 
         if (!$guest->isGuest()) {
-          $guestCriteria = 'sp.private = 0 OR ';
+          $guestCriteria = '(sp.private = 0 OR sp.private IS NULL) OR ';
         }
 
     } catch (\Doctrine\Orm\NoResultException $e) {
