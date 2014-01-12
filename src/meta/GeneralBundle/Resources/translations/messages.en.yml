@@ -59,7 +59,7 @@ community:
   newHelp: "Create a new community so you can work on ideas and projects in a team."
   managers: "Managers"
   users: "Users"
-  usersCount: "There are currently %users% users in this community."
+  usersCount: "There are currently %users% users (of which %guests% guests) in this community."
   add.manager: "Add a manager"
   manager:
     added: "%user% is now a manager of the community %community%."

@@ -15,7 +15,7 @@
   <section>
     <div class="label">{{ "community.users"|trans }} :</div>
     <div class="content">
-      {{ "community.usersCount"|trans({'%users%': usersCount }) }}
+      {{ "community.usersCount"|trans({'%users%': usersCount, '%guests%': guestsCount }) }}
       <p><a href="{{ path('g_invite') }}" class="button button-info"><i class="fa fa-user"></i> {{ "community.invite"|trans }}</a></p>
     </div>
   </section>

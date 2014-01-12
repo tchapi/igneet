@@ -337,11 +337,17 @@ class CommunityController extends Controller
 
                 // Counts the actual users in the community
                 $userCommunityUsers = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('community' => $community->getId(), 'deleted_at' => null));
+                $userCommunityGuests = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('community' => $community->getId(), 'deleted_at' => null, 'guest' => true));
 
                 $targetManagerAsBase64 = array('slug' => 'metaGeneralBundle:Community:addManager', 'external' => false, 'params' => array('guest' => false));
                 $targetManagerAsBase64 = base64_encode(json_encode($targetManagerAsBase64));
 
-                return $this->render('metaGeneralBundle:Community:manage.html.twig', array('userCommunityManagers' => $userCommunityManagers, 'usersCount' => count($userCommunityUsers), 'targetManagerAsBase64' => $targetManagerAsBase64));
+                return $this->render('metaGeneralBundle:Community:manage.html.twig', array(
+                    'userCommunityManagers' => $userCommunityManagers, 
+                    'usersCount' => count($userCommunityUsers), 
+                    'guestsCount' => count($userCommunityGuests), 
+                    'targetManagerAsBase64' => $targetManagerAsBase64)
+                );
 
             } else {
 
