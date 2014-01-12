@@ -20,6 +20,3 @@ app/config/parameters.yml
 .DS_Store
 .htpasswd
 composer.phar
-
-#perso script
-update.sh
