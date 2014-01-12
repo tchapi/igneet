@@ -24,7 +24,6 @@
   <section>
     
     <div class="label-full">{{ "project.info.about"|trans }}</div>
-
     <div class="content-full">
       <div{% if base.canEdit %} data-name="about" data-url="{{ path('p_edit_project', {'uid': base.project.id|to_uid, 'token': csrf_token('edit') }) }}" contenteditable="true" rich="true"{% else %} class="redactor_editor"{% endif %}>{{ base.project.about|deeplinks|raw }}</div>
     </div>
