@@ -87,7 +87,7 @@ image:
   resizeAndCropHelp: "Drag the handles to reposition and scale the image"
   continue: "Continue with this image"
 picture:
-  change: "change"
+  changeHelp: "Change"
   resetHelp: "Reset to default picture"
 # Comments
 comments:
