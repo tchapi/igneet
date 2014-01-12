@@ -48,13 +48,21 @@
               <div>{{ owner.lastName }}</div>
             </div>
           </a>
-          {% if base.isOwning %}<a class="remove" href="{{ path('p_remove_owner_to_project', { 'uid': base.project.id|to_uid, 'username' : owner.username, 'token': csrf_token('removeOwner') }) }}">&times;</a>{% endif %}
+          {% if base.isOwning and app.user != owner %}<a class="remove" href="{{ path('p_remove_owner_to_project', { 'uid': base.project.id|to_uid, 'username' : owner.username, 'token': csrf_token('removeParticipantOrOwner') }) }}">&times;</a>{% endif %}
         </li>
       {% endif %}
     {% endfor %}
+    {% if base.isOwning and base.project.community is not null %}
+        <li>
+          <a href="{{ path('u_choose_user', {'targetAsBase64': targetOwnerAsBase64, 'token': csrf_token('addParticipantOrOwner')  }) }}">
+            <i class="fa fa-plus-circle"></i>
+            <div><div>{{ "project.info.add.participant"|trans }}</div></div>
+          </a>
+        </li>
+    {% endif %}
     </ul>
   </section>
-  {% if base.project.community is not null and (base.project.participants|length > 0 or base.canEdit) %}
+  {% if base.project.community is not null and (base.project.participants|length > 0 or base.isOwning) %}
   <section>
     <div class="label-full">{{ "project.info.participants"|transchoice(base.project.countParticipants) }} :</div>
     <ul class="content-full">
@@ -71,14 +79,14 @@
           {% if app.user == participant %}
             <a class="remove" href="{{ path('p_remove_participant_to_project_self', { 'uid': base.project.id|to_uid, 'username' : participant.username, 'token': csrf_token('removeMySelfParticipant') }) }}">&times;</a>
           {% elseif base.isOwning %}
-            <a class="remove" href="{{ path('p_remove_participant_to_project', { 'uid': base.project.id|to_uid, 'username' : participant.username, 'token': csrf_token('removeParticipant') }) }}">&times;</a>
+            <a class="remove" href="{{ path('p_remove_participant_to_project', { 'uid': base.project.id|to_uid, 'username' : participant.username, 'token': csrf_token('removeParticipantOrOwner') }) }}">&times;</a>
           {% endif %}
         </li>
       {% endif %}
     {% endfor %}
-    {% if base.canEdit %}
+    {% if base.isOwning and base.project.community is not null %}
         <li>
-          <a href="{{ path('u_choose_user', {'targetAsBase64': targetParticipantAsBase64, 'token': csrf_token('addParticipant')  }) }}">
+          <a href="{{ path('u_choose_user', {'targetAsBase64': targetParticipantAsBase64, 'token': csrf_token('addParticipantOrOwner')  }) }}">
             <i class="fa fa-plus-circle"></i>
             <div><div>{{ "project.info.add.participant"|trans }}</div></div>
           </a>
