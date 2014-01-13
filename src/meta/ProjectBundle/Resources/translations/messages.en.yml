@@ -70,12 +70,10 @@ project:
   participants: "{0}No participants|{1}One participant|]1,Inf]%count% participants"
   watchers: "{0}No users watching|{1}One user watching|]1,Inf]%count% users watching"
   skills:
-    vacant: "Vacant skills"
-    endowed: "All skills are endowed !"
     needed: "Needed skills"
-    neededHelp: "What skills are needed for this project ?"
     needed.emptyText: "Add needed skills"
     needed.none: "No specific skills needed."
+    placeholder: "Start typing ..."
   timeline:
     title: "Timeline"
   info:

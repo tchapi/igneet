@@ -70,12 +70,10 @@ project:
   participants: "{0}Aucun participant|{1}Un participant|]1,Inf]%count% participants"
   watchers: "{0}Aucun abonné|{1}Un abonné|]1,Inf]%count% abonnés"
   skills:
-    vacant: "Compétences à pourvoir"
-    endowed: "Toutes les compétences sont pourvues !"
-    needed: "Compétences pour ce projet"
     neededHelp: "Quelles compétences sont nécessaires pour ce projet ?"
     needed.emptyText: "Ajouter des compétences"
     needed.none: "Aucune compétence spécifique requise."
+    placeholder: "Indiquez une compétence ..."
   timeline:
     title: "Historique"
   info:
