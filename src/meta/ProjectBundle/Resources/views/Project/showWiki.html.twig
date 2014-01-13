@@ -27,20 +27,17 @@
 {% block content %}
 <div class="wrapper info">
    
+  {# Title & Content #}
   <section>
-
     <div class="label-full"><span{% if base.canEdit %} data-name="title" data-url="{{ path('p_show_project_wiki_edit_page', {'uid': base.project.id|to_uid, 'page_uid': wikiPage.id|to_uid, 'token': csrf_token('editWikiPage') }) }}" contenteditable="true" rich="false"{% endif %}>{{ wikiPage.title }}</span></div>
     <div class="content-full">
       <div{% if base.canEdit %} data-name="about" data-url="{{ path('p_show_project_wiki_edit_page', {'uid': base.project.id|to_uid, 'page_uid': wikiPage.id|to_uid, 'token': csrf_token('editWikiPage') }) }}" contenteditable="true" rich="true"{% else %} class="redactor_editor"{% endif %}>{{ wikiPage.content|deeplinks|raw }}</div>
     </div>
-
   </section>
     
   <section>
 
   {% if wikiPages|length > 0 %}
-
-    <h4 class="editable" data-title="{{ "project.wiki.titleHelp"|trans }}" data-name="title" data-url="{{ path('p_show_project_wiki_edit_page', {'uid': base.project.id|to_uid, 'page_uid': wikiPage.id|to_uid, 'token': csrf_token('editWikiPage') }) }}" data-type="text">{{ wikiPage.title }}</h4>
 
     <div>
       {% if wikiPage.tags|length > 0 %}
