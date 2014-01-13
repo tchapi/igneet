@@ -115,6 +115,9 @@ class CommunityController extends Controller
                 $userCommunity->setGuest(false);
                 $userCommunity->setManager(true); // The one who creates is a manager by default
 
+                // We set the current community of the user
+                $authenticatedUser->setCurrentCommunity($community);
+
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($community);
                 $em->persist($userCommunity);
@@ -128,11 +131,10 @@ class CommunityController extends Controller
                     $this->get('translator')->trans('community.created', array( '%community%' => $community->getName()))
                 );
 
-                return $this->redirect($this->generateUrl('g_switch_community', array('uid' => $this->container->get('uid')->toUId($community->getId()), 'token' => $this->get('form.csrf_provider')->generateCsrfToken('switchCommunity') )));
+                return $this->redirect($this->generateUrl('g_manage_community'));
            
             } else {
                
-               var_dump($form->getErrors()); die;
                $this->get('session')->getFlashBag()->add(
                     'error',
                     $this->get('translator')->trans('information.not.valid', array(), 'errors')
