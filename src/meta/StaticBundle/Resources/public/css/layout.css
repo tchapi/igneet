@@ -117,18 +117,18 @@ p, body {
 input[type="submit"],
 input[type="reset"],
 input[type="button"] {
-	background: #3a3a3a;
+	background: hsl(194, 75%, 42%);
 	border: 0;
 	color: #fff;
 	display: inline-block;
-	font-size: 15px;
+	font-size: 45px;
 	font-weight: 400;
 	text-transform: uppercase;
 	text-decoration: none;
 	cursor: pointer;
 	margin-bottom: 20px;
 	line-height: normal;
-	padding: 6px 10px;
+	padding: 45px 30px;
 	font-family: 'Source Sans Pro', sans-serif; 
 }
 
@@ -1493,7 +1493,7 @@ nav select {
 	  }
 	  
 	  #intro {
-	   height: 500px;
+	   height: 250px;
 	  }
 	  
 	  .title {
@@ -1572,7 +1572,7 @@ nav select {
 	@media only screen and (max-width: 479px) {
 		
 		#intro {
-			height: 430px;
+			height: 250px;
 		}
 		
 		.title {
