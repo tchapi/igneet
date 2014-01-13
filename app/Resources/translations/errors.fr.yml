@@ -4,6 +4,7 @@ invalid:
   password.match: "Les deux mots de passe ne sont pas identiques."
 information.not.valid: "Les informations fournies ne semblent pas valides."
 openid.error: "Une erreur est survenue lors de la connexion au fournisseur Open Id."
+openid.already.exist: "L'email associé à votre compte Open Id est déjà enregistré par un utilisateur."
 unknown:
   user: "Utilisateur inconnu"
   project: "Projet inconnu"

@@ -37,6 +37,7 @@ security:
                     - contact/email
                     - namePerson/first
                     - namePerson/last
+                    - namePerson/friendly
 
             form_login:
                 login_path: /app/login

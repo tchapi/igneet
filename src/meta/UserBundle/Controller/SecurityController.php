@@ -162,8 +162,17 @@ class SecurityController extends Controller
                 'contact/email' => '',
                 'namePerson/first' => '',
                 'namePerson/last' => '',
+                'namePerson/friendly' => '',
                 ), $token->getAttributes())
             ;
+
+            // We have to cope when the provider doesn't send required info
+            if ($attributes['namePerson/friendly'] != "" ) {
+                if ($attributes['namePerson/last'] == "" && $attributes['namePerson/first'] == "") {
+                    $attributes['namePerson/last'] = $attributes['namePerson/friendly'];
+                    $attributes['namePerson/first'] = $attributes['namePerson/friendly'];
+                }
+            }
 
             // Already in ?
             $alreadyUser = $em->getRepository('metaUserBundle:User')->findOneBy(array(
@@ -172,10 +181,11 @@ class SecurityController extends Controller
 
             if ($alreadyUser){
 
-                if ($alreadyUser->isDeleted()){
-                    // Error will be screened automatically
-                    return $this->redirect($this->generateUrl('login'));
-                }
+                $this->get('session')->getFlashBag()->add(
+                    'error',
+                    $this->get('translator')->trans('openid.already.exist', array(), 'errors')
+                );
+                return $this->redirect($this->generateUrl('login'));
             }
 
         }
@@ -184,9 +194,9 @@ class SecurityController extends Controller
 
         if ($openid == true){
             // We already know some stuff
-            $user->setEmail($attributes['contact/email']);
-            $user->setFirstname($attributes['namePerson/first']);
-            $user->setLastname($attributes['namePerson/last']);
+            $user->setEmail(trim($attributes['contact/email']));
+            $user->setFirstname(trim($attributes['namePerson/first']));
+            $user->setLastname(trim($attributes['namePerson/last']));
 
             // Create a dummy password
             $factory = $this->get('security.encoder_factory');
@@ -194,7 +204,12 @@ class SecurityController extends Controller
             $user->setPassword($encoder->encodePassword($user->getSalt(), $user->getSalt()));
         }
 
-        $form = $this->createForm(new UserType(), $user, array( 'translator' => $this->get('translator'), 'openid' => $openid));
+        $form = $this->createForm(new UserType(), $user, array(
+            'translator' => $this->get('translator'),
+            'openid' => $openid,
+            'openid_firstname_set' => ($user->getFirstname()==""?false:true),
+            'openid_lastname_set' => ($user->getLastname()==""?false:true)
+        ));
 
         if ($request->isMethod('POST')) {
 

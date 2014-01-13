@@ -21,18 +21,14 @@ class UserType extends AbstractType
 
         } else {
 
-            $builder->add('first_name', 'hidden', array('label' => 'user.createForm.firstname', 'attr' => array('class' => 'input-xxlarge')));
-            $builder->add('last_name', 'hidden', array('label' => 'user.createForm.lastname', 'attr' => array('class' => 'input-xxlarge')));
+            $builder->add('first_name', $options['openid_firstname_set']?'hidden':null, array('label' => 'user.createForm.firstname', 'attr' => array('class' => 'input-xxlarge')));
+            $builder->add('last_name', $options['openid_lastname_set']?'hidden':null, array('label' => 'user.createForm.lastname', 'attr' => array('class' => 'input-xxlarge')));
+            
             $builder->add('email', 'hidden', array('label' => 'user.createForm.email', 'attr' => array('class' => 'input-xxlarge')));
             $builder->add('password', 'hidden', array( 'label' => 'user.createForm.password', 'attr' => array('class' => 'input-xxlarge')));
 
         }
-
-        /* We don't force City and headline now
-            $builder->add('city', 'text', array('label' => 'user.createForm.city', 'attr' => array('class' => 'input-xxlarge')));
-            $builder->add('headline', 'text',  array('label' => 'user.createForm.headline', 'required' => false, 'attr' => array('class' => 'input-xxlarge', 'help' => 'user.createForm.headlineHelp' )));
-        */
-
+        
         /* We don't ask for skills right now
         $builder->add('skills', 'entity', array(
             'label'  => $options['translator']->trans('user.createForm.skills'), 
@@ -50,7 +46,9 @@ class UserType extends AbstractType
     {
         $resolver->setDefaults(array(
             'translator' => null,
-            'openid' => false
+            'openid' => false,
+            'openid_firstname_set' => false,
+            'openid_lastname_set' => false,
         ));
     }
 
