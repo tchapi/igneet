@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller,
 
 use meta\GeneralBundle\Entity\Community\Community,
     meta\UserBundle\Entity\UserCommunity,
+    meta\UserBundle\Entity\UserInviteToken,
     meta\GeneralBundle\Form\Type\CommunityType;
 
 class CommunityController extends Controller

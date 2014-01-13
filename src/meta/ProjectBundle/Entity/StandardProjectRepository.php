@@ -70,7 +70,7 @@ class StandardProjectRepository extends EntityRepository
             ->andWhere( $guestCriteria .'u = :user OR u2 = :user')
             ->setParameter('user', $options['user']);
 
-    if ( !is_null($options['statuses']) ) { // We have to filter status
+    if ( isset($options['statuses']) && !is_null($options['statuses']) ) { // We have to filter status
       $query->andWhere('sp.status IN (:statuses)')
             ->setParameter('statuses', $options['statuses']);
     }
@@ -265,7 +265,7 @@ class StandardProjectRepository extends EntityRepository
 
     $max = $options['max']?$options['max']:3;
  
-    $query = $this->getQuery(array('community' => $community, 'user' =>  $user));
+    $query = $this->getQuery($options);
 
     return $query->groupBy('sp.id')
             ->orderBy('sp.created_at', 'DESC')
