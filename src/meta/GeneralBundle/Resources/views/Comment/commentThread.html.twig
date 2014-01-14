@@ -1,0 +1,17 @@
+{% set count = object.comments|length %}
+<div class="label-comments">{{ "comments.count"|transchoice(count, {'%count%': count}) }}</div>
+<div class="content-full">
+
+    {% include 'metaGeneralBundle:Comment:commentBox.html.twig' %}
+
+    <ul class="timeline">
+    {% spaceless %}
+    {% for comment in object.comments %}
+        <li class="log{% if comment.isDeleted() %} deleted{% endif %}">
+          {% include 'metaGeneralBundle:Log:logItemComment.html.twig' %}
+        </li>
+    {% endfor %}
+    {% endspaceless %}
+    </ul>
+
+</div>

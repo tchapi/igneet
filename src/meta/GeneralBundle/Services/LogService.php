@@ -136,11 +136,7 @@ class LogService
 
         if ($logEntryOrComment instanceof BaseComment) {
 
-            $text = $logEntryOrComment->getText();
-            $user = $logEntryOrComment->getUser();
-            $date = $logEntryOrComment->getCreatedAt();
-
-            return $this->twig->render($this->template_item_comment, array('user' => $user, 'comment' => $logEntryOrComment, 'locale' => $locale));
+            return $this->twig->render($this->template_item_comment, array('comment' => $logEntryOrComment, 'locale' => $locale));
 
         } else {
 

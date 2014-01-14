@@ -648,7 +648,7 @@ class IdeaController extends Controller
             $ideaRepository = $this->getDoctrine()->getRepository('metaIdeaBundle:Idea');
             $idea = $ideaRepository->findOneById($this->container->get('uid')->fromUId($uid));
 
-            return $this->render('metaGeneralBundle:Comment:timelineCommentBox.html.twig', 
+            return $this->render('metaGeneralBundle:Comment:commentBox.html.twig', 
                 array('object' => $idea, 'route' => $route, 'form' => $form->createView()));
 
         }
