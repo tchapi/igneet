@@ -72,6 +72,13 @@ a.button, input[type=submit].button, button {
 
 // @import "styles/_timeline";
 
+.label-comments {
+  @include fill-parent();
+  margin: 0 0 30px;
+  color: $_primary;
+  font-size: 1.8em;
+}
+
 .comment {
   @include row();
   @include clearfix;
@@ -92,44 +99,44 @@ a.button, input[type=submit].button, button {
       @include fill-parent();
     }
     & > textarea {
-      margin-top: 14px;
-      margin-bottom: 14px;
-      @include span-columns(10 of 12);
+      margin-top: 0;
+      margin-bottom: 0;
+      @include span-columns(12 of 12);
+      @include media ($desktop) {
+        @include omega;
+      }
       @include media ($tablet) {
         @include span-columns(3 of 4);
       }
       @include media ($mobile) {
         @include fill-parent();
         height: $column - $gutter;
-        margin-top: 0;
-        margin-bottom: 0;
       }
       border: none;
       background: white;
-      height: 34px;
-      @include transition (height 300ms ease-in-out, margin 300ms ease-in-out);
+      height: $column - $gutter;
       resize: none; 
-      &.open {
-        height: $column - $gutter;
-        margin-top: 0;
-        margin-bottom: 0;
-      }
     }    
     & > input[type=submit] {
       margin: 14px 0;
       @include span-columns(2 of 12);
+      @include shift(10);
       @include media ($tablet) {
+        @include shift(0);
         @include span-columns(1 of 4);
+        margin-top: 0;
+        height: $column - $gutter;
       }
       @include media ($mobile) {
+        @include shift(0);
         @include fill-parent();
       }
     }
   }
 }
 
+$comment_box_height : 70px;
 ul.timeline {
-  $image_size : 70px;
   margin: 0;
   padding: 0;
   list-style-type: none;
@@ -145,7 +152,7 @@ ul.timeline {
       color: $_discrete;
     }
     &:not(.step) {
-      min-height: $image_size + $gutter*2;
+      min-height: $comment_box_height + $gutter*2;
       background: $_container;
       display: block;
       margin: $gutter/2 0;
@@ -160,7 +167,7 @@ ul.timeline {
     & > .avatar {
       float: left;
       margin-right: $gutter;
-      & img { border-radius: 50%; height: $image_size; width: $image_size; }
+      & img { border-radius: 50%; height: $comment_box_height; width: $comment_box_height; }
     }
     & > .date {
       color: $_text-secondary;
@@ -211,6 +218,30 @@ ul.timeline {
   }
 }
 
+// For comments in a full page, on a dark background
+.wrapper.comment {
+  .comment {
+    margin-bottom: $gutter*1.5;
+    & > form > textarea { 
+      background: $_sensible-dark; 
+      color: white;
+    }
+  }
+  ul.timeline {
+    & > li {
+      & > .date { color: $_primary; }
+      & > .actions { top: $gutter; }
+    }
+    & > li:not(.step) {
+      min-height: $comment_box_height + $gutter*1.5*2;
+      background: none;
+      margin: 0;
+      padding: $gutter*1.5 $gutter;
+      border-top: 2px solid $_sensible-dark;
+    }
+  }
+}
+
 section.notifications.none {
   text-align: center;
 }
@@ -219,3 +250,16 @@ section.notifications.none {
 @import "styles/settings";
 @import "styles/user";
 @import "styles/projects";
+
+
+.label-wiki {
+  @include fill-parent();
+  margin: 0 0 10px;
+  font-size: 1.8em;
+}
+
+.label-tags {
+  @include fill-parent();
+  margin: 0 0 10px;
+  color: $_primary;
+}

@@ -69,7 +69,7 @@ body {
           background: $_background;
           color: $_text-secondary;
         }
-        &.team {
+        &.team, &.comment {
           background: $_background-strong;
           color: $_text-dark;
           & > section > .label {

@@ -29,17 +29,8 @@
    
   {# Title & Content #}
   <section>
-    <div class="label-full"><span{% if base.canEdit %} data-name="title" data-url="{{ path('p_show_project_wiki_edit_page', {'uid': base.project.id|to_uid, 'page_uid': wikiPage.id|to_uid, 'token': csrf_token('editWikiPage') }) }}" contenteditable="true" rich="false"{% endif %}>{{ wikiPage.title }}</span></div>
-    <div class="content-full">
-      <div{% if base.canEdit %} data-name="about" data-url="{{ path('p_show_project_wiki_edit_page', {'uid': base.project.id|to_uid, 'page_uid': wikiPage.id|to_uid, 'token': csrf_token('editWikiPage') }) }}" contenteditable="true" rich="true"{% else %} class="redactor_editor"{% endif %}>{{ wikiPage.content|deeplinks|raw }}</div>
-    </div>
-  </section>
-    
-  <section>
-
-  {% if wikiPages|length > 0 %}
-
-    <div>
+    <div class="label-wiki"><span{% if base.canEdit %} data-name="title" data-url="{{ path('p_show_project_wiki_edit_page', {'uid': base.project.id|to_uid, 'page_uid': wikiPage.id|to_uid, 'token': csrf_token('editWikiPage') }) }}" contenteditable="true" rich="false"{% endif %}>{{ wikiPage.title }}</span></div>
+    <div class="label-tags">
       {% if wikiPage.tags|length > 0 %}
         {{ "tags.title"|trans }} :
       {% elseif not base.canEdit %}
@@ -48,50 +39,47 @@
       <ul data-toggle="manual" data-title="{{ "tags.help"|trans }}" data-emptytext="{{ "tags.emptyText"|trans }}" data-url="{{ path('p_show_project_wiki_edit_page', {'uid': base.project.id|to_uid, 'page_uid': wikiPage.id|to_uid, 'token': csrf_token('editWikiPage')  }) }}" data-type="select2" data-name="tags" class="tags tags-target editable-li" >
       {% for tag in wikiPage.tags %}<li class="label label-default" rel="{{ tag.name }}">{{ tag.name }}</li>{% endfor %}
       </ul>
-      {% if base.canEdit %} <a class="editable-trigger" data-target="tags">&hellip;<i class="fa fa-pencil"></i></a>{% endif %}
     </div>
-
-    <div>
-      {% render(controller("metaProjectBundle:Comment:addWikiPageComment", { 'uid' : base.project.id|to_uid, 'page_uid': wikiPage.id|to_uid })) %}
+    <div class="content-full">
+      <div{% if base.canEdit %} data-name="about" data-url="{{ path('p_show_project_wiki_edit_page', {'uid': base.project.id|to_uid, 'page_uid': wikiPage.id|to_uid, 'token': csrf_token('editWikiPage') }) }}" contenteditable="true" rich="true"{% else %} class="redactor_editor"{% endif %}>{{ wikiPage.content|deeplinks|raw }}</div>
     </div>
-
   </section>
-
-    {% macro tree(wikipages, wikiPage, base, homePage) %}
-        {% for page in wikipages %}
-            <li class="{% if page.id == wikiPage.id %}active {% endif %}dd-item" id="{{ page.id|to_uid }}" data-name="parent" data-url="{{ path('p_show_project_wiki_edit_page', {'uid': base.project.id|to_uid, 'page_uid': page.id|to_uid, 'token': csrf_token('editWikiPage') }) }}">
-              {% if base.canEdit %}<div class="dd-handle"><i class="fa fa-bars"></i></div>{% endif %}
-              {% if base.canEdit %}<a title="{{ "project.wiki.make.home"|trans }}" href="{{ path('p_show_project_wiki_make_home_page', {'uid': base.project.id|to_uid, 'page_uid': page.id|to_uid, 'token': csrf_token('makeHomeWikiPage') }) }}">{% endif %}<i class="fa {% if page == homePage %}fa-home{% else %}fa-file-text{% endif %}"></i>{% if base.canEdit %}</a>{% endif %}{% if base.canEdit %}<a title="{{ "delete"|trans }}" data-confirm="{{ "project.wiki.deleteHelp"|trans }}" href="{{ path('p_show_project_wiki_delete_page', {'uid': base.project.id|to_uid, 'page_uid': page.id|to_uid, 'token': csrf_token('deleteWikiPage') }) }}"><i class="fa fa-times"></i></a>{% endif %} 
-              <a href="{{ path('p_show_project_wiki_show_page', {'uid': base.project.id|to_uid, 'page_uid': page.id|to_uid }) }}" title="{{ page.title }}" class="page_title">{{ page.title }}</a>
-              {% if page.children|length > 0 %}
-              <ul class="dd-list" data-value="{{ page.id|to_uid }}">
-                  {{ _self.tree(page.children, wikiPage, base, homePage) }}
-              </ul>
-              {% endif %}
-            </li>
-        {% endfor %}
-    {% endmacro %}
-    {% import _self as macros %}
-  <section>
-
-    <div class="menu dd">
-      {{ "project.wiki.pages"|trans }} :
-      <ul class="lists sortable dd-list" data-value="0" data-url="{{ path('p_show_project_wiki_rank', {'uid': base.project.id|to_uid}) }}">
-        {{ macros.tree(wikiPages, wikiPage, base, homePage) }}
-      </ul>
-      {% if base.canEdit %}
-      <div class="menu_new">
-        <a href="{{ path('p_show_project_wiki_new_page', {'uid': base.project.id|to_uid}) }}"><i class="fa fa-plus-circle"></i> {{ "project.wiki.new.page"|trans }}</a>
-      </div>
-      {% endif %}
+  
+</div>
+{# Tree of pages #}
+<div class="tree">
+  {% macro tree(wikipages, wikiPage, base, homePage) %}
+      {% for page in wikipages %}
+          <li class="{% if page.id == wikiPage.id %}active {% endif %}dd-item" id="{{ page.id|to_uid }}" data-name="parent" data-url="{{ path('p_show_project_wiki_edit_page', {'uid': base.project.id|to_uid, 'page_uid': page.id|to_uid, 'token': csrf_token('editWikiPage') }) }}">
+            {% if base.canEdit %}<div class="dd-handle"><i class="fa fa-bars"></i></div>{% endif %}
+            {% if base.canEdit %}<a title="{{ "project.wiki.make.home"|trans }}" href="{{ path('p_show_project_wiki_make_home_page', {'uid': base.project.id|to_uid, 'page_uid': page.id|to_uid, 'token': csrf_token('makeHomeWikiPage') }) }}">{% endif %}<i class="fa {% if page == homePage %}fa-home{% else %}fa-file-text{% endif %}"></i>{% if base.canEdit %}</a>{% endif %}{% if base.canEdit %}<a title="{{ "delete"|trans }}" data-confirm="{{ "project.wiki.deleteHelp"|trans }}" href="{{ path('p_show_project_wiki_delete_page', {'uid': base.project.id|to_uid, 'page_uid': page.id|to_uid, 'token': csrf_token('deleteWikiPage') }) }}"><i class="fa fa-times"></i></a>{% endif %} 
+            <a href="{{ path('p_show_project_wiki_show_page', {'uid': base.project.id|to_uid, 'page_uid': page.id|to_uid }) }}" title="{{ page.title }}" class="page_title">{{ page.title }}</a>
+            {% if page.children|length > 0 %}
+            <ul class="dd-list" data-value="{{ page.id|to_uid }}">
+                {{ _self.tree(page.children, wikiPage, base, homePage) }}
+            </ul>
+            {% endif %}
+          </li>
+      {% endfor %}
+  {% endmacro %}
+  {% import _self as macros %}
+  <div class="menu dd">
+    {{ "project.wiki.pages"|trans }} :
+    <ul class="lists sortable dd-list" data-value="0" data-url="{{ path('p_show_project_wiki_rank', {'uid': base.project.id|to_uid}) }}">
+      {{ macros.tree(wikiPages, wikiPage, base, homePage) }}
+    </ul>
+    {% if base.canEdit %}
+    <div class="menu_new">
+      <a href="{{ path('p_show_project_wiki_new_page', {'uid': base.project.id|to_uid}) }}"><i class="fa fa-plus-circle"></i> {{ "project.wiki.new.page"|trans }}</a>
     </div>
-
-    {% else %}
-    
-    {{ "project.wiki.no.page"|trans }}
-    
     {% endif %}
-  </section>
+  </div>
 
+</div>
+{# Comments section #}
+<div class="wrapper comment">
+  <section>
+    {% render(controller("metaProjectBundle:Comment:addWikiPageComment", { 'uid' : base.project.id|to_uid, 'page_uid': wikiPage.id|to_uid })) %}
+  </section>
 </div>
 {% endblock %}

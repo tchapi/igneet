@@ -103,21 +103,24 @@ body.full > .content-container section {
   }
 
   & > .label {
-    @include span-columns(3 of 12);
+    @include span-columns(4 of 12);
     @include shift(2);
+    text-align: right;
     @include media($tablet) {
       @include span-columns(1 of 4);
       @include shift(0);
+      text-align: left;
     }
     @include media($mobile) {
       @include fill-parent();
       @include shift(0);
+      text-align: left;
       margin-bottom: 5px;
     }
   }
 
   & > .content {
-    @include span-columns(5 of 12);
+    @include span-columns(4 of 12);
     @include clearfix;
     @include media($tablet) {
       @include span-columns(3 of 4);
