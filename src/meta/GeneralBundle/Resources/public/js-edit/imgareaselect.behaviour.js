@@ -27,5 +27,4 @@ $(document).ready(function(){
 
   }).attr("src", target.attr("src")); //set the src of the in memory copy after binding the load event, to avoid WebKit issues
 
-
 });
