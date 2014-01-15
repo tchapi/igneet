@@ -150,7 +150,7 @@ project:
     titleHelp: "Change the title of this wiki page"
     new: "New wiki page"
     newHelp: "Create a new page in your wiki"
-    pages: "Pages"
+    pages: "Wiki Index"
     new.page: "New page"
     deleteHelp: "Are you sure you want to delete this page of the wiki ?"
     no.page: "No wiki page yet."
@@ -159,6 +159,7 @@ project:
     home.already: "This page is already the home of this wiki."
     created: "Your page %page% was successfully created."
     deleted: "Your page %page% was successfully deleted. Its children, if any, have been put back at the root of the wiki."
+    open: "Toggle index view"
   settings:
     title: ""
     title.alt: "Settings"

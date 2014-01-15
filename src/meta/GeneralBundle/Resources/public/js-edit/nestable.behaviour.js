@@ -18,7 +18,7 @@ $(document).ready(function(){
         ranks: ranks
       })
       .error(function(errors) {
-        setFlash('error', Translator.trans('alert.error.saving.changes'));
+        alertify.error(Translator.trans('alert.error.saving.changes'));
       });
 
       // Update parenting
@@ -27,7 +27,7 @@ $(document).ready(function(){
         value: item.parent().parent().attr('id') || 0
       })
       .error(function(errors) {
-        setFlash('error', Translator.trans('alert.error.saving.changes'));
+        alertify.error(Translator.trans('alert.error.saving.changes'));
       });
 
   };
@@ -35,9 +35,14 @@ $(document).ready(function(){
   // Triggers nestable()
   sortableList.nestable({
     listNodeName: 'ul',
-    expandBtnHTML: '<button data-action="expand"><i class="fa fa-folder-o"></i></button>',
-    collapseBtnHTML: '<button data-action="collapse"><i class="fa fa-folder-open-o"></i></button>',
+    expandBtnHTML: '<a data-action="expand"><i class="fa fa-caret-right"></i></a>',
+    collapseBtnHTML: '<a data-action="collapse"><i class="fa fa-caret-down"></i></a>',
     callback : updateRanksAndNesting
   });
 
+  // Toggle view
+  $(".tree > .toggle").click(function(e){
+    $(this).parent().toggleClass("open");
+    e.preventDefault();
+  });
 });
