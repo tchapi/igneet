@@ -257,9 +257,13 @@ section.notifications.none {
   @include span-columns(1 of 12);
   overflow: hidden;
   height: 100%;
+  min-height: 170px;
   position: relative;
   &.open {
     @include span-columns(5 of 12);
+  }
+  & > a.toggle {
+    @include transition (all 500ms ease-in-out);
   }
   & > span { 
     display: inline-block;
@@ -329,6 +333,12 @@ section.notifications.none {
     width: 15px;
     text-align: center;
     color: $_discrete;
+  }
+  &:not(.open) {
+    ul, span { display: none; }
+    a {
+      transform: rotateY(180deg);
+    }
   }
 }
 
