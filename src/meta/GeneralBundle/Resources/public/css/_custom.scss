@@ -259,15 +259,18 @@ section.notifications.none {
   height: 100%;
   min-height: 170px;
   position: relative;
+  padding-right: 15px;
+  border-right: 1px dashed $_sensible;
   &.open {
     @include span-columns(5 of 12);
   }
   & > a.toggle {
-    @include transition (all 500ms ease-in-out);
+    @include transition (transform 500ms ease-out);
   }
   & > span { 
     display: inline-block;
     font-family: 'gotham_light';
+    line-height: 1.8em;
     margin-bottom: 20px;
     padding: 5px;
     text-transform: uppercase;
@@ -278,7 +281,7 @@ section.notifications.none {
     display: block;
     float: right;
     padding: 5px 9px;
-    margin-left: 2px;
+    margin: 3px 2px;
   }
   & ul {
     width: 100%;
@@ -335,8 +338,8 @@ section.notifications.none {
     color: $_discrete;
   }
   &:not(.open) {
-    ul, span { display: none; }
-    a {
+    ul, span, a:not(.toggle) { display: none; }
+    a.toggle {
       transform: rotateY(180deg);
     }
   }
