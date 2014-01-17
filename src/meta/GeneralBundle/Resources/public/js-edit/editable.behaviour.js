@@ -111,7 +111,7 @@ $(document).ready(function(){
   /* 
    * Text area editables
    */
-  if ($('[contenteditable=true][rich=true]').length > 0) {
+  if ($('[contenteditable=true][rich=true],[contenteditable=true][rich=full]').length > 0) {
     var richareaCallback = function(data) {
       target = data.$editor; // The textarea
       name = target.attr("data-name");
@@ -127,6 +127,15 @@ $(document).ready(function(){
       minHeight: 100, // To allow PASTE event - ARGHHHH I hate you Chrome
       airButtons: ['formatting', '|', 'bold', 'italic', 'deleted', '|', 'unorderedlist', 'orderedlist', 'outdent', 'indent', '|',
                                         'image', 'video', 'file', 'table', 'link'],
+      keyupCallback: richareaCallback,
+      execCommandCallback: richareaCallback
+    });
+    $('[contenteditable=true][rich=full]').redactor({
+      emptyHtml: '<p></p>',
+      minHeight: 100, // To allow PASTE event - ARGHHHH I hate you Chrome
+      buttons: ['html', '|', 'formatting', '|', 'bold', 'italic', 'underline', 'deleted', '|', 'unorderedlist', 'orderedlist', 'outdent', 'indent', '|',
+          'image', 'video', 'file', 'table', 'link', '|',
+          'fontcolor', 'backcolor', '|', 'horizontalrule'], 
       keyupCallback: richareaCallback,
       execCommandCallback: richareaCallback
     });

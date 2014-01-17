@@ -90,8 +90,10 @@ body .redactor_box_fullscreen {
 	white-space: normal;
 }
 .redactor_editor a {
-	color: #15c !important;
-	text-decoration: underline !important;
+	color: $_secondary !important;
+	background: lighten($_secondary,40%);
+	padding-left: 2px;
+	padding-right: 2px;
 }
 
 .redactor_editor object,

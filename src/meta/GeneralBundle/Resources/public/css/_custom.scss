@@ -254,15 +254,17 @@ section.notifications.none {
 // Tree
 
 .tree {
-  @include span-columns(1 of 12);
-  overflow: hidden;
-  height: 100%;
-  min-height: 170px;
-  position: relative;
-  padding-right: 15px;
-  border-right: 1px dashed $_sensible;
+  width: 0px;
+  height: 0px;
+  position: absolute;
+  @include transition (all 50ms ease-out);
   &.open {
     @include span-columns(5 of 12);
+    height: 100%;
+    min-height: 170px;
+    border-right: 1px dashed $_sensible;
+    padding-right: 15px;
+    position: relative;
   }
   & > a.toggle {
     @include transition (transform 500ms ease-out);
@@ -318,6 +320,10 @@ section.notifications.none {
         }
         & > i.muted { cursor: not-allowed; color: $_sensible; }
       }
+      & > i {
+        float: right;
+        padding-right: 10px;
+      }
     }
     .dd-placeholder {
       display: block;
@@ -360,8 +366,9 @@ section.notifications.none {
 }
 
 .content-wiki {
-  @include span-columns(11 of 12);
+  @include span-columns(12 of 12);
   @include omega;
+  & .redactor_box > .redactor_editor { min-height: 500px !important; }
 }
 
 .open + .label-title,

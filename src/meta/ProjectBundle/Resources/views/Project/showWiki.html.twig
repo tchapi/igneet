@@ -60,7 +60,7 @@
   <section>
 
     {# Tree of pages #}
-    <div class="tree open menu dd">
+    <div class="tree menu dd">
         <span>{{ "project.wiki.pages"|trans }}</span>
         <a href="#" class="toggle" title="{{ "project.wiki.open"|trans }}"><i class="fa fa-angle-double-left"></i></a>
         {% if base.canEdit %}
@@ -83,7 +83,7 @@
       </ul>
     </div>
     <div class="content-wiki">
-      <div{% if base.canEdit %} data-name="about" data-url="{{ path('p_show_project_wiki_edit_page', {'uid': base.project.id|to_uid, 'page_uid': wikiPage.id|to_uid, 'token': csrf_token('editWikiPage') }) }}" contenteditable="true" rich="true"{% else %} class="redactor_editor"{% endif %}>{{ wikiPage.content|deeplinks|raw }}</div>
+      <div{% if base.canEdit %} data-name="content" data-url="{{ path('p_show_project_wiki_edit_page', {'uid': base.project.id|to_uid, 'page_uid': wikiPage.id|to_uid, 'token': csrf_token('editWikiPage') }) }}" contenteditable="true" rich="full"{% else %} class="redactor_editor"{% endif %}>{{ wikiPage.content|deeplinks|raw }}</div>
     </div>
   </section>
   

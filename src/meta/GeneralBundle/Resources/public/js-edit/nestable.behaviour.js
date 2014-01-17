@@ -1,6 +1,6 @@
 $(document).ready(function(){
 
-  var sortableList = $(".dd");
+  var sortableList = $(".tree.dd");
 
   // Callback for ranks and nesting
   var updateRanksAndNesting = function(l, e) {
@@ -13,12 +13,24 @@ $(document).ready(function(){
                     return this.id;
                   }).get().join();
 
+      // To avoid double notifications
+      var warn = function() {
+        if (success) {
+          alertify.success(Translator.trans('alert.changes.saved'));
+        } else {
+          alertify.error(Translator.trans('alert.error.saving.changes'));
+        }
+      };
+
       // Update rank
       $.post(list.children('ul').attr('data-url'), {
         ranks: ranks
       })
+      .success(function() {
+        success = true; //alertify.success(Translator.trans('alert.changes.saved'));
+      })
       .error(function(errors) {
-        alertify.error(Translator.trans('alert.error.saving.changes'));
+        success = false; //alertify.error(Translator.trans('alert.error.saving.changes'));
       });
 
       // Update parenting
@@ -26,8 +38,13 @@ $(document).ready(function(){
         name: item.attr('data-name'),
         value: item.parent().parent().attr('id') || 0
       })
+      .success(function() {
+        success = true;
+        warn();
+      })
       .error(function(errors) {
-        alertify.error(Translator.trans('alert.error.saving.changes'));
+        success = false;
+        warn(); 
       });
 
   };
@@ -40,9 +57,4 @@ $(document).ready(function(){
     callback : updateRanksAndNesting
   });
 
-  // Toggle view
-  $(".tree > .toggle").click(function(e){
-    $(this).parent().toggleClass("open");
-    e.preventDefault();
-  });
 });
