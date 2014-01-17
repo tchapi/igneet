@@ -57,4 +57,9 @@ $(document).ready(function(){
     callback : updateRanksAndNesting
   });
 
+  // Toggle index (pages) view
+  $(".tree > .toggle").click(function(e){
+    $(this).parent().toggleClass("open");
+    e.preventDefault();
+  });
 });

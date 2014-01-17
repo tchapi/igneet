@@ -33,14 +33,6 @@ $(document).ready(function(){
       }, 1);
   });
 
-  /* Toggle index (pages) view
-   * in wikis 
-   */
-  $(".tree > .toggle").click(function(e){
-    $(this).parent().toggleClass("open");
-    e.preventDefault();
-  });
-
   /*
    * Dismiss & cookies
    */

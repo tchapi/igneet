@@ -121,6 +121,7 @@ $(document).ready(function(){
       value = data.getCode();
       catchChange({url: url, name: name, key: key, last: last, value: value});
     }
+    // Standard rich text : bar floats in the air
     $('[contenteditable=true][rich=true]').redactor({
       air: true,
       emptyHtml: '<p>...<br /></p>',
@@ -130,6 +131,7 @@ $(document).ready(function(){
       keyupCallback: richareaCallback,
       execCommandCallback: richareaCallback
     });
+    // Wiki-style rich text : bar is attached
     $('[contenteditable=true][rich=full]').redactor({
       emptyHtml: '<p></p>',
       minHeight: 100, // To allow PASTE event - ARGHHHH I hate you Chrome
@@ -142,7 +144,7 @@ $(document).ready(function(){
   }
 
   /*
-   * ul / li editables : skills
+   * ul / li editables : skills and tags
    */
   var displayResults = function(results, element) {
     element.find('ul').remove();
@@ -161,11 +163,12 @@ $(document).ready(function(){
       triggerElement.parent().hide();
       triggerElement.parent().parent().find('a.add').show();
       // Removes the list
-      $("ul#results").remove();
+      if ($("ul#results").length > 0) { $("ul#results").remove(); }
     }
   }
   // Remove an element
-  $("ul[contenteditable=list] > li > a.remove").on('click', function(){
+  $("ul[contenteditable=list] > li > a.remove").on('click', function(e){
+    e.preventDefault();
     target = $(this).parent();
     name = target.parent().attr("data-name");
     key = target.attr("rel");
@@ -177,22 +180,27 @@ $(document).ready(function(){
   });
   // Add an element
   editableListsData = {};
-  $("ul[contenteditable=list] > li > a.add").on('click', function(){
+  $("ul[contenteditable=list] > li > a.add").on('click', function(e){
+    e.preventDefault();
     display($(this),true);
-    // Gets the list
-    name = $(this).parents('ul').attr("data-name");
-    $.getJSON($(this).attr("data-url"), function(data) {
-      editableListsData[name] = data;
-    });
+    // Gets the list (only for skills)
+    if ($(this).attr("data-url") != "") {
+      name = $(this).parents('ul').attr("data-name");
+      $.getJSON($(this).attr("data-url"), function(data) {
+        editableListsData[name] = data;
+      });
+    }
   });
-  $("ul[contenteditable=list] > li > span > a").on('click', function(){
+  $("ul[contenteditable=list] > li > span > a").on('click', function(e){
+    e.preventDefault();
     display($(this),false);
   });
-  $("ul[contenteditable=list] > li > span > input")
+  $("ul[contenteditable=list][data-name=skills] > li > span > input")
     .on("keyup", function(e) {
-      if (e.which == '13'){ // Trigger a save with the Return key
+      if (e.which == '13'){
         e.preventDefault();
       } else {
+        // For skills, search in the list the correct skill ...
         target = $(this);
         name = target.parents('ul').attr("data-name");
         search = target.val().toLowerCase();
@@ -200,6 +208,14 @@ $(document).ready(function(){
           return (n.text.toLowerCase().indexOf(search) >= 0 && target.parents('ul').find('li[rel=' + n.value + ']').length == 0);
         })
         displayResults(results, target.parent().parent());
+      }
+    });
+    $("ul[contenteditable=list][data-name=tags] > li > span > input")
+    .on("keyup", function(e) {
+      if (e.which == '13'){ // Trigger a save with the Return key for tags
+        e.preventDefault();
+        console.log("tag saved");
+         // TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
       }
     });
   // We bind to document because we don't have the element yet
