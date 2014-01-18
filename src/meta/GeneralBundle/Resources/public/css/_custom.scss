@@ -257,7 +257,6 @@ section.notifications.none {
   width: 0px;
   height: 0px;
   position: absolute;
-  @include transition (all 50ms ease-out);
   &.open {
     @include span-columns(5 of 12);
     height: 100%;
@@ -265,9 +264,6 @@ section.notifications.none {
     border-right: 1px dashed $_sensible;
     padding-right: 15px;
     position: relative;
-  }
-  & > a.toggle {
-    @include transition (transform 500ms ease-out);
   }
   & > span { 
     display: inline-block;
@@ -281,9 +277,14 @@ section.notifications.none {
     background: $_primary;
     color: white;
     display: block;
-    float: right;
-    padding: 5px 9px;
-    margin: 3px 2px;
+    position: absolute;
+    padding: 5px 10px 6px 9px;
+    top: 2px;
+    right: 42px;
+  }
+  & > a.toggle {
+    @include transition (transform 500ms ease-out);
+    right: 10px;
   }
   & ul {
     width: 100%;
@@ -346,7 +347,7 @@ section.notifications.none {
   &:not(.open) {
     ul, span, a:not(.toggle) { display: none; }
     a.toggle {
-      transform: rotateY(180deg);
+      @include transform(rotateY(180deg));
     }
   }
 }
