@@ -297,27 +297,27 @@ class WikiController extends BaseController
                           );
                         break;
                     case 'tags':
-                        $tagsAsArray = array_map('strtolower', $request->request->get('value'));
-
-                        $wikiPage->clearTags();
+                        $tag = strtolower($request->request->get('key'));
 
                         $tagRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Behaviour\Tag');
-                        $existingTags = $tagRepository->findBy(array('name' => $tagsAsArray));
-                        $existingTagNames = array();
+                        $existingTag = $tagRepository->findOneBy(array('name' => $tag));
 
-                        foreach ($existingTags as $tag) {
-                          $wikiPage->addTag($tag);
-                          $existingTagNames[] = $tag->getName();
+                        if ($request->request->get('value') == 'remove' && $existingTag && $wikiPage->hasTag($existingTag)) {
+                            $wikiPage->removeTag($existingTag);
+                            $objectHasBeenModified = true;
+                        } else if ($request->request->get('value') == 'add' && $existingTag && !$wikiPage->hasTag($existingTag)) {
+                            $wikiPage->addTag($existingTag);
+                            $objectHasBeenModified = true;
+                            $response = json_encode(array('name' => $existingTag->getName(), 'color' => $existingTag->getColor()));
+                        } else if ($request->request->get('value') == 'add' && !$existingTag ){
+                            $newTag = new Tag($tag);
+                            $em->persist($newTag);
+                            $wikiPage->addTag($newTag);
+                            $objectHasBeenModified = true;
+                        } else {
+                            $error = $this->get('translator')->trans('invalid.request', array(), 'errors'); // tag already in the page
                         }
 
-                        foreach ($tagsAsArray as $name) {
-                          if ( in_array($name, $existingTagNames) ){ continue; }
-                          $tag = new Tag($name);
-                          $em->persist($tag);
-                          $wikiPage->addTag($tag);
-                        }
-
-                        $objectHasBeenModified = true;
                         break;
                 }
 

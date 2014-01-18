@@ -76,23 +76,23 @@
 
     <div class="label-title"><span{% if base.canEdit %} data-name="title" data-url="{{ path('p_show_project_wiki_edit_page', {'uid': base.project.id|to_uid, 'page_uid': wikiPage.id|to_uid, 'token': csrf_token('editWikiPage') }) }}" contenteditable="true" rich="false"{% endif %}>{{ wikiPage.title }}</span></div>
 
-    {# SKILLS #}
+    {# TAGS #}
     <div class="label-tags">
       {% if wikiPage.tags|length > 0 %}
         {% spaceless %}
-        <ul{% if base.canEdit %} data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" data-emptytext="{{ "wikiPage.tags.emptyText"|trans }}" contenteditable="list" data-name="tags"{% endif %}>
-        {% for skill in wikiPage.tags %}
-          <li rel="{{ tag.name }}">
+        <ul{% if base.canEdit %} data-url="{{ path('p_show_project_wiki_edit_page', {'uid': base.project.id|to_uid, 'page_uid': wikiPage.id|to_uid, 'token': csrf_token('editWikiPage')  }) }}" data-emptytext="{{ "wikiPage.tags.emptyText"|trans }}" contenteditable="list" data-name="tags"{% endif %}>
+        {% for tag in wikiPage.tags %}
+          <li {% if tag.color %}style="border: 1px solid #{{ tag.color }}" {% endif %}rel="{{ tag.name }}">
           {% if base.canEdit %}
             <a href="#" class="remove"><i class="fa fa-times"></i></a>  
           {% endif %}
           {{ tag.name }}</li>
         {% endfor %}
         {% if base.canEdit %}
-          <li><a href="#" class="add" data-url="{{ path('u_list_all_skills')}}"><i class="fa fa-plus"></i></a>
+          <li><a href="#" class="add"><i class="fa fa-plus"></i></a>
             <span style="display: none;">
               <a href="#"><i class="fa fa-times"></i></a>
-              <input type="text" id="skill" placeholder="{{ "wikiPage.tags.placeholder"|trans }}"/>
+              <input type="text" id="tag" placeholder="{{ "wikiPage.tags.placeholder"|trans }}"/>
             </span>
           </li>
         {% endif %}

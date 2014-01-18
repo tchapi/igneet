@@ -14,8 +14,10 @@ $(document).ready(function(){
           data = JSON.parse(data); 
           if (data.redirect) {
             window.location.replace(data.redirect);
-          } else {
+          } else if (data.message) {
             alertify.log(data.message, type);
+          } else {
+            alertify.log(defaultMessage, type);
           }
         } catch(err) { // In case the data is not JSON, we pass
           alertify.log(defaultMessage, type);
@@ -34,7 +36,7 @@ $(document).ready(function(){
     .success(function(data, config) {
       $("[data-name=" + dataArray["name"] + "]").attr("data-last", dataArray["value"]);
       process(data, "success", Translator.trans('alert.changes.saved'));
-      if (callback) callback();
+      if (callback) callback(data);
     })
     .error(function(data) {
       $("[data-name=" + dataArray["name"] + "]").html($("[data-name=" + dataArray["name"] + "]").attr("data-last"));
@@ -214,8 +216,16 @@ $(document).ready(function(){
     .on("keyup", function(e) {
       if (e.which == '13'){ // Trigger a save with the Return key for tags
         e.preventDefault();
-        console.log("tag saved");
-         // TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
+        target = $(this).parents('ul');
+        name = target.attr("data-name");
+        key = $(this).val();
+        url = target.attr("data-url");
+        value = "add";
+        saveData({url: url, name: name, key: key, value: value}, function(data){
+          try { data = JSON.parse(data); color = " style='border: 1px solid #" + data.color + ";'"; } catch(e) { color = ""; }
+          target.children().last().before("<li" + color + "><a href='#' class='remove'><i class='fa fa-times'></i></a>" + key + "</li>");
+          display(target.find('li > span > a'),false);
+        });
       }
     });
   // We bind to document because we don't have the element yet

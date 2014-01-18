@@ -102,5 +102,15 @@ abstract class Taggable
         return $this;
     }
 
+    /**
+     * Has the entity got this tag ?
+     *
+     * @return boolean 
+     */
+    public function hasTag(\meta\GeneralBundle\Entity\Behaviour\Tag $tag)
+    {
+        return $this->tags->contains($tag);
+    }
+
 
 }
