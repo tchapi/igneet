@@ -37,10 +37,10 @@ class DeepLinkingExtension extends \Twig_Extension
     private function renderLink($params)
     {
         if (is_null($params['args'])) {
-            return sprintf($this->templateUnknown, $params['icon'], $params['title']);
+            return sprintf($this->templateUnknown,/* $params['icon'],*/ $params['title']);
         } else {
             $url = $this->router->generate($params['path'], $params['args']);
-            return sprintf($this->template, $url, $params['icon'], $params['title']);
+            return sprintf($this->template, $url,/* $params['icon'], */ $params['title']);
         }
 
     }
