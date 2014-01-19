@@ -29,6 +29,10 @@ user:
     member.since: "Member since %date%"
     last.updated: "Last updated on %update% and last seen on %seen%"
     last.updated.full: "Last updated on %update%, last seen on %seen% and last contribution on %contrib%"
+    name: "Name"
+    created: "Created"
+    updated: "Updated"
+    members: "Members"
   delete: "Delete my account"
   deleteHelp: "Are you sure you want to delete yourself ? Ideas for which you are the only creator will be deleted as well."
   skills:

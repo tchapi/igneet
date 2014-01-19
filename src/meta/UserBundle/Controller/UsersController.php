@@ -17,8 +17,10 @@ class UsersController extends Controller
     /*
      * List users
      */
-    public function listAction($page, $sort)
+    public function listAction(Request $request, $sort)
     {
+
+        $page = max(1, $request->request->get('page'));
 
         $community = $this->getUser()->getCurrentCommunity();
 
@@ -29,17 +31,45 @@ class UsersController extends Controller
 
         $repository = $this->getDoctrine()->getRepository('metaUserBundle:User');
 
-        $totalUsers = $repository->countUsersInCommunity(array('community' => $community));
+        $totalUsers = $repository->countUsersInCommunity(array('community' => $community, 'includeGuests' => true));
         $maxPerPage = $this->container->getParameter('listings.number_of_items_per_page');
 
         if ( ($page-1) * $maxPerPage > $totalUsers) {
             return $this->redirect($this->generateUrl('u_list_users', array('sort' => $sort)));
         }
 
-        $users = $repository->findAllUsersInCommunity($community, true, $page, $maxPerPage, $sort);
+        if ($request->request->get('full') == "true"){
+            // We need to load all the uers from page 2 to page "$page" (the first page is already outputted in PHP)
+            $usersAndIsGuest = $repository->findAllUsersInCommunity(array( 'community' => $community, 'includeGuests' => true, 'page' => 1, 'maxPerPage' => $maxPerPage*$page, 'sort' => $sort));
+            array_splice($usersAndIsGuest, 0, $maxPerPage);
+        } else {
+            // We only load the requested page
+            $usersAndIsGuest = $repository->findAllUsersInCommunity(array( 'community' => $community, 'includeGuests' => true, 'page' => $page, 'maxPerPage' => $maxPerPage, 'sort' => $sort));
+        }
 
-        $pagination = array( 'page' => $page, 'totalUsers' => $totalUsers);
-        return $this->render('metaUserBundle:Users:list.html.twig', array('users' => $users, 'pagination' => $pagination, 'sort' => $sort ));
+        if ($request->isXmlHttpRequest()){
+        
+            $usersAsArray = array();
+            foreach($usersAndIsGuest as $userAndIsGuest){
+                $user = $userAndIsGuest['user'];
+                $usersAsArray[] = array(
+                    'url' => $this->generateUrl('u_show_user_profile', array('username' => $user->getUsername())), 
+                    'picture' => $user->getAvatar(), 
+                    'name' => $user->getFullName(), 
+                    'isGuest' => ($userAndIsGuest['isGuest']?"true":"false"), 
+                    'headline' => $user->getHeadline(), 
+                    'createdAt' => $user->getCreatedAt()->format($this->get('translator')->trans("date.fullFormat")), 
+                    'updatedAt' => $user->getUpdatedAt()->format($this->get('translator')->trans("date.fullFormat")),
+                    'updatedAt' => $user->getLastSeenAt()->format($this->get('translator')->trans("date.fullFormat"))
+                    );
+            }
+            return new Response(json_encode($usersAsArray), 200, array('Content-Type'=>'application/json'));
+        
+        } else {
+        
+            return $this->render('metaUserBundle:Users:list.html.twig', array('users' => $usersAndIsGuest, 'totalUsers' => $totalUsers, 'sort' => $sort ));
+        
+        }
 
     }
 

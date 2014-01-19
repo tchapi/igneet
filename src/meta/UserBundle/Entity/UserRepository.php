@@ -85,15 +85,21 @@ class UserRepository extends EntityRepository implements UserProviderInterface
 
     $qb = $this->getEntityManager()->createQueryBuilder();
 
-    return $qb->select('COUNT(u)')
+    $query = $qb->select('COUNT(u)')
             ->from('metaUserBundle:User', 'u')
             ->leftJoin('u.userCommunities', 'uc')
             ->leftJoin('uc.community', 'c')
             ->where('u.deleted_at IS NULL')
             ->andWhere('c = :community')
-            ->setParameter('community', $options['community'])
-            ->getQuery()
-            ->getSingleScalarResult();
+            ->setParameter('community', $options['community']);
+
+    if ($options['includeGuests'] !== true){
+      $query->andWhere('uc.guest = :guest')
+            ->setParameter('guest', false);
+    }
+
+    return $query->getQuery()
+                ->getSingleScalarResult();
 
   }
 
@@ -125,10 +131,10 @@ class UserRepository extends EntityRepository implements UserProviderInterface
   /*
    * Fetch all users in a given community
    */
-  public function findAllUsersInCommunity($community, $findGuests, $page, $maxPerPage, $sort)
+  public function findAllUsersInCommunity($options)
   {
-    
-    if ($community === null){
+
+    if ($options['community'] === null){
       return null;
     }
 
@@ -140,14 +146,14 @@ class UserRepository extends EntityRepository implements UserProviderInterface
             ->leftJoin('uc.community', 'c')
             ->where('u.deleted_at IS NULL')
             ->andWhere('c = :community')
-            ->setParameter('community', $community);
+            ->setParameter('community', $options['community']);
             
-    if ($findGuests !== true){
+    if ($options['includeGuests'] !== true){
       $query->andWhere('uc.guest = :guest')
             ->setParameter('guest', false);
     }
 
-    switch ($sort) {
+    switch ($options['sort']) {
       case 'update':
         $query->orderBy('u.updated_at', 'DESC');
         break;
@@ -164,8 +170,8 @@ class UserRepository extends EntityRepository implements UserProviderInterface
     }
 
     return $query
-            ->setFirstResult(($page-1)*$maxPerPage)
-            ->setMaxResults($maxPerPage)
+            ->setFirstResult(($options['page']-1)*$options['maxPerPage'])
+            ->setMaxResults($options['maxPerPage'])
             ->getQuery()
             ->getResult();
 

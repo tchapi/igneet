@@ -29,6 +29,10 @@ user:
     member.since: "Membre depuis le %date%"
     last.updated: "Mis à jour le %update%, dernière connexion le %seen%"
     last.updated.full: "Mis à jour le %update%, dernière connexion le %seen% et dernière contribution le %contrib%"
+    name: "Nom"
+    created: "Créé le"
+    updated: "Mis à jour"
+    members: "Membres"
   delete: "Supprimer mon compte"
   deleteHelp: "Êtes-vous sûr de vouloir supprimer votre compte ? Les idées desquelles vous êtes l'unique créateur seront également supprimées."
   skills:

@@ -1,55 +1,112 @@
-{% extends 'metaUserBundle::layout.html.twig' %}
+{% extends 'metaUserBundle::layout-full.html.twig' %}
 
 {% block title %}{{ parent() }} > {{ "user.allUsers"|trans }}{% endblock %}
 
+{% block javascripts %}
+  {{ parent() }}
+    {% javascripts '@metaGeneralBundle/Resources/public/js/infinite.scroll.behaviour.js' 
+            filter='?yui_js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
 {% block header %}
-  <div class="headerAvatarAndActions">
-    <div class="textAvatar"><i class="fa fa-group"></i></div>
-  </div>
-  <div class="objectHeader">
-    <h2>{{ "user.allUsers"|trans }}</h2>
+<div class="title">
+    <h2>{{ "user.allUsers"|trans }}</h2>    
     <h4>{{ "user.listHelp"|trans({ '%community%': app.user.currentCommunity.name}) }}</h4>
-    <p>{{ "filters.sort"|trans }} : 
-      <a href="{{ path('u_list_users', {'sort': 'newest', 'page' : pagination.page}) }}"><i class="fa fa-star"></i> {{ "filters.newest"|trans }}</a> - 
-      <a href="{{ path('u_list_users', {'sort': 'update', 'page' : pagination.page}) }}"><i class="fa fa-clock-o"></i> {{ "filters.recent"|trans }}</a> - 
-      <a href="{{ path('u_list_users', {'sort': 'active', 'page' : pagination.page}) }}"><i class="fa fa-dashboard"></i> {{ "filters.active"|trans }}</a> - 
-      <a href="{{ path('u_list_users', {'sort': 'alpha',  'page' : pagination.page}) }}"><i class="fa fa-font"></i> {{ "filters.alpha"|trans }}</a></p>
-  </div>
+</div>
 {% endblock %}
 
 {% block content %}
-{% if users %}
-{% for userAndIsGuest in users %}
-{% set user = userAndIsGuest['user'] %}
-<section class="listing">
-  
-  <a href="{{ path('u_show_user_profile', {'username': user.username}) }}">
-    <img src="{{ asset(user.getAvatar()) }}" width="100" height="100"/>
-  </a>
+<div class="wrapper list">
 
-  <div class="listingItemInfo">
-    <h4 class="ellipsis"><a href="{{ path('u_show_user_profile', {'username': user.username}) }}">{{ user.getFullName() }}</a>
-      {% if userAndIsGuest['isGuest'] %} ({{ "guest"|trans }}){% endif %}
-    </h4>
-    <div class="ellipsis">{{ user.headline }}</div>
-    <div class="muted"><i class="fa fa-calendar"></i> {{ "user.list.member.since"|trans({ '%date%': user.createdAt|date("date.format"|trans) }) }}</div>
-    <div class="muted"><i class="fa fa-clock-o"></i>
-      {% if user.initiatedLogEntries|length > 0 %}
-      {{ "user.list.last.updated.full"|trans({ '%update%': user.updatedAt|date("date.format"|trans), '%seen%': user.lastSeenAt|date("date.format"|trans), '%contrib%' : (user.initiatedLogEntries|last).createdAt|date("date.fullFormat"|trans) }) }}
-      {% else %}
-      {{ "user.list.last.updated"|trans({ '%update%': user.updatedAt|date("date.format"|trans), '%seen%': user.lastSeenAt|date("date.format"|trans) }) }}
-      {% endif %}</div>
-  </div>
+{% if users|length > 0 %}
+    
+  {# FILTERS #}
+  <section class="filters">
+    {{ "filters.sort"|trans }}
+    <a href="{{ path('u_list_users', {'sort': 'newest'}) }}"><i class="fa fa-star"></i> {{ "filters.newest"|trans }}</a> /
+    <a href="{{ path('u_list_users', {'sort': 'update'}) }}"><i class="fa fa-clock-o"></i> {{ "filters.recent"|trans }}</a> /
+    <a href="{{ path('u_list_users', {'sort': 'active'}) }}"><i class="fa fa-dashboard"></i> {{ "filters.active"|trans }}</a> /
+    <a href="{{ path('u_list_users', {'sort': 'alpha'}) }}"><i class="fa fa-font"></i> {{ "filters.alpha"|trans }}</a>
+  </section>
 
-</section>
-{% endfor %}
-<section>
-{% render(controller("metaGeneralBundle:Default:pagination", { 'route': 'u_list_users', 'page' : pagination.page, 'total' : pagination.totalUsers, 'params' : {'sort': sort } })) %}
-</section>
+  <table id="list" summary="users">
+    <thead>
+      <tr>
+        <th class="main">{{ "user.list.name"|trans }}</th>
+        <th></th>
+        <th><i class="fa fa-calendar"></i> {{ "user.list.created"|trans }}</th>
+        <th><i class="fa fa-clock-o"></i> {{ "user.list.updated"|trans }}</th>
+        <th><i class="fa fa-dashboard"></i> {{ "user.list.members"|trans }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {# TEMPLATE FOR INFINITE SCROLLING #}
+      <tr class="template" style="display: none !important;">
+        <td>
+          <a data-href="%url%">
+            <img data-src="%picture%" width="80px" height="80px"/>
+          </a>
+        </td>
+        <td class="main">
+          <a data-href="%url%">
+            <div>
+              <span data-private="%isGuest%"><i class="fa fa-eye-slash"></i> %name%</span>
+              <span class="headline">%headline%</span>
+            </div>
+          </a>
+        </td>
+        <td>
+           %createdAt%
+        </td>
+        <td>
+          %lastSeenAt%
+        </td>
+        <td>
+          %updatedAt%
+        </td>
+      </tr>
+      {# END OF TEMPLATE #}
+      {% for userAndIsGuest in users %}
+        {% set user = userAndIsGuest['user'] %}
+        <tr>
+          <td>
+            <a href="{{ path('u_show_user_profile', {'username': user.username}) }}">
+              <img src="{{ asset(user.getAvatar()) }}" width="80px" height="80px"/>
+            </a>
+          </td>
+          <td class="main">
+            <a href="{{ path('u_show_user_profile', {'username': user.username}) }}">
+              <div>
+                <span private="{{ userAndIsGuest['isGuest']?"true":"false" }}"><i class="fa fa-eye-slash"></i>  {{ user.getFullName() }}</span>
+                <!-- {% if userAndIsGuest['isGuest'] %} ({{ "guest"|trans }}){% endif %} -->
+                <span class="headline">{{ user.headline }}</span>
+              </div>
+            </a>
+          </td>
+          <td>
+             {{ user.createdAt|date("date.fullFormat"|trans) }}
+          </td>
+          <td>
+            {{ user.lastSeenAt|date("date.fullFormat"|trans) }}
+          </td>
+          <td>
+            {{ user.updatedAt|date("date.fullFormat"|trans) }}
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  {# PAGINATION #}
+  {{ include('metaGeneralBundle:Default:pagination.html.twig', { 'route': 'u_list_users', 'total_objects' : totalUsers, 'params' : {'sort': sort } }, with_context = false) }}
+
 {% else %}
-<section>
-{{ "user.none"|trans }}
-</section>
+  <section class="none">
+  {{ "user.none"|trans }}
+  </section>
 {% endif %}
 
+</div>
 {% endblock %}
