@@ -76,7 +76,7 @@ class ResourceController extends BaseController
         $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => $menu['resources']['private']));
 
         if ($this->base == false) 
-          return $this->forward('metaProjectBundle:Base:showRestricted', array('uid' => $uid));
+          return $this->forward('metaProjectBundle:Security:showRestricted', array('uid' => $uid));
 
         $types = $this->container->getParameter('project.resource_types');
         $providers = $this->container->getParameter('project.resource_providers');
@@ -125,8 +125,7 @@ class ResourceController extends BaseController
             }
         }
 
-
-        return $this->render('metaProjectBundle:Resource:listResources.html.twig', 
+        return $this->render('metaProjectBundle:Project:showResources.html.twig', 
             array('base' => $this->base, 'types' => $types, 'providers' => $providers, 'form' => $form->createView()));
     }
 
