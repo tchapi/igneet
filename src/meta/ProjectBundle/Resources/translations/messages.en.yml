@@ -149,7 +149,7 @@ project:
     not.found: "This page does not exist."
     titleHelp: "Change the title of this wiki page"
     new: "New wiki page"
-    newHelp: "Create a new page in your wiki"
+    newHelp: "Enter the name of the new page of your wiki"
     pages: "Wiki Index"
     new.page: "New page"
     deleteHelp: "Are you sure you want to delete this page of the wiki ?"

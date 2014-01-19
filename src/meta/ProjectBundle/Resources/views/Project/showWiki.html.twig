@@ -39,7 +39,7 @@
           {% if base.canEdit %}
             <div class="actions">
               {% if page != homePage %}<a title="{{ "project.wiki.make.home"|trans }}" href="{{ path('p_show_project_wiki_make_home_page', {'uid': base.project.id|to_uid, 'page_uid': page.id|to_uid, 'token': csrf_token('makeHomeWikiPage') }) }}"><i class="fa fa-home"></i></a>{% else %}<i class="fa fa-home muted"></i>{% endif %}
-              <a title="{{ "delete"|trans }}" data-confirm="{{ "project.wiki.deleteHelp"|trans }}" href="{{ path('p_show_project_wiki_delete_page', {'uid': base.project.id|to_uid, 'page_uid': page.id|to_uid, 'token': csrf_token('deleteWikiPage') }) }}">&times;</a>
+              <a title="{{ "delete"|trans }}" class="remove" data-title="{{ "project.wiki.deleteHelp"|trans }}" data-url="{{ path('p_show_project_wiki_delete_page', {'uid': base.project.id|to_uid, 'page_uid': page.id|to_uid, 'token': csrf_token('deleteWikiPage') }) }}">&times;</a>
             </div>
             <div class="dd-handle"><i class="fa fa-bars"></i></div>
           {% elseif page == homePage %}
@@ -67,9 +67,9 @@
         <span>{{ "project.wiki.pages"|trans }}</span>
         <a href="#" class="toggle" title="{{ "project.wiki.open"|trans }}"><i class="fa fa-angle-double-left"></i></a>
         {% if base.canEdit %}
-          <a href="{{ path('p_show_project_wiki_new_page', {'uid': base.project.id|to_uid}) }}" title="{{ "project.wiki.new.page"|trans }}">+</a>
+          <a href="#" data-url="{{ path('p_show_project_wiki_new_page', {'uid': base.project.id|to_uid, 'token': csrf_token('newWikiPage')}) }}" data-title="{{ "project.wiki.newHelp"|trans }}" title="{{ "project.wiki.new.page"|trans }}" class="new">+</a>
         {% endif %}
-        <ul class="lists sortable dd-list" data-value="0" data-url="{{ path('p_show_project_wiki_rank', {'uid': base.project.id|to_uid}) }}">
+        <ul class="sortable dd-list" data-value="0" data-url="{{ path('p_show_project_wiki_rank', {'uid': base.project.id|to_uid}) }}">
           {{ macros.tree(wikiPages, wikiPage, base, homePage) }}
         </ul>
     </div>
@@ -112,7 +112,6 @@
         {% endif %}
       {% endif %}
     </div>
-    {# SKILLS #}
 
     <div class="content-wiki">
       <div{% if base.canEdit %} data-name="content" data-url="{{ path('p_show_project_wiki_edit_page', {'uid': base.project.id|to_uid, 'page_uid': wikiPage.id|to_uid, 'token': csrf_token('editWikiPage') }) }}" contenteditable="true" rich="full"{% else %} class="redactor_editor"{% endif %}>{{ wikiPage.content|deeplinks|raw }}</div>

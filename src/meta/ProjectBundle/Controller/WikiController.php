@@ -101,28 +101,31 @@ class WikiController extends BaseController
      */
     public function newWikiPageAction(Request $request, $uid)
     {
+  
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('newWikiPage', $request->get('token')))
+            return new Response($this->get('translator')->trans('invalid.token', array(), 'errors'), 400);
 
         $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => true));
+        $error = null;
+        $response = null;
 
-        if ($this->access == false) 
-          return $this->forward('metaProjectBundle:Base:showRestricted', array('uid' => $uid));
+        if ($this->access != false) {
 
-        $wiki = $this->base['project']->getWiki();
+          $wiki = $this->base['project']->getWiki();
 
-        if (!$wiki){
-          return $this->forward('metaProjectBundle:Wiki:showWikiHome', array('uid' => $uid));
-        }
+          if ($wiki){
 
-        $wikiPage = new WikiPage();
-        $form = $this->createFormBuilder($wikiPage)
-            ->add('title', 'text', array( 'label' => "project.wiki.titleField"))
-            ->getForm();
+            $wikiPage = new WikiPage();
+            $wikiPage->setTitle($request->query->get('title'));
 
-        if ($request->isMethod('POST')) {
+            $repository = $this->getDoctrine()->getRepository('metaProjectBundle:WikiPage');
+            $parentPage = $repository->findOneByIdInWiki($this->container->get('uid')->fromUId($request->query->get('parent')), $wiki->getId());
 
-            $form->bind($request);
+            $wikiPage->setParent($parentPage);
 
-            if ($form->isValid()) {
+            $errors = $this->get('validator')->validate($wikiPage);
+
+            if (count($errors) == 0) {
 
                 $this->base['project']->getWiki()->addPage($wikiPage); /* ADD CHILD */
                 $this->base['project']->setUpdatedAt(new \DateTime('now'));
@@ -139,21 +142,21 @@ class WikiController extends BaseController
                     $this->get('translator')->trans('project.wiki.created', array( '%page%' => $wikiPage->getTitle() ))
                 );
 
-                return $this->redirect($this->generateUrl('p_show_project_wiki_show_page', array('uid' => $uid, 'page_uid' => $this->container->get('uid')->toUId($wikiPage->getId()) ) ));
+                return $this->redirect($this->generateUrl('p_show_project_wiki_show_page', array('uid' => $uid, 'page_uid' => $this->container->get('uid')->toUId($wikiPage->getId()))));
            
-            } else {
-
-               $this->get('session')->getFlashBag()->add(
-                    'error',
-                    $this->get('translator')->trans('information.not.valid', array(), 'errors')
-                );
             }
+
+          }
 
         }
 
-        return $this->render('metaProjectBundle:Project:newWikiPage.html.twig', 
-            array('base' => $this->base, 'form' => $form->createView()));
+        $this->get('session')->getFlashBag()->add(
+            'error',
+            $this->get('translator')->trans('invalid.request', array(), 'errors')
+        );
 
+        return $this->redirect($this->generateUrl('p_show_project_wiki', array('uid' => $uid )));
+           
     }
 
     /*

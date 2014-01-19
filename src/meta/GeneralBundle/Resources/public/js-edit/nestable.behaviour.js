@@ -62,4 +62,40 @@ $(document).ready(function(){
     $(this).parent().toggleClass("open");
     e.preventDefault();
   });
+
+  // Add new item in the list
+  $(".tree > .new").click(function(e){
+
+    e.preventDefault();
+    alertify.prompt($(this).attr('data-title'), $.proxy(function (e, str) {
+      // str is the input text
+      if (e) {
+        window.location.replace($(this).attr('data-url') + '&' + $.param({'title': str, 'parent': $(".tree .active").attr('id') }));
+      }
+    }, this), null);
+  
+  });
+
+  // Remove item from the list
+  $(".tree .remove").click(function(e){
+
+    e.preventDefault();
+    item = $(this).parent().parent('li');
+    alertify.confirm($(this).attr('data-title'), $.proxy(function (e, str) {
+      if (e) {
+        $.post($(this).attr('data-url'), {'uid': $(".tree .active").parents('li').attr('id') })
+          .success(function(){
+            // Remove the page under the current parent 
+            if (item.find('ul').length >= 1) {
+              // Has children : keep the children
+              children = item.children('ul').children('li');
+              $(".tree.dd > ul").append(children);
+            }
+            item.remove(); // finally remove the child
+          });
+      }
+    }, this));
+  
+  });
+
 });

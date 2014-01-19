@@ -34,12 +34,16 @@ $(document).ready(function(){
       value: dataArray["value"]
     })
     .success(function(data, config) {
-      $("[data-name=" + dataArray["name"] + "]").attr("data-last", dataArray["value"]);
+      if (dataArray["name"] != 'tags' && dataArray["name"] != 'skills') {
+        $("[data-name=" + dataArray["name"] + "]").attr("data-last", dataArray["value"]);
+      }
       process(data, "success", Translator.trans('alert.changes.saved'));
       if (callback) callback(data);
     })
     .error(function(data) {
-      $("[data-name=" + dataArray["name"] + "]").html($("[data-name=" + dataArray["name"] + "]").attr("data-last"));
+      if (dataArray["name"] != 'tags' && dataArray["name"] != 'skills') {
+        $("[data-name=" + dataArray["name"] + "]").html($("[data-name=" + dataArray["name"] + "]").attr("data-last"));
+      }
       process(data, "error", Translator.trans('alert.error.saving.changes'));
     });
 

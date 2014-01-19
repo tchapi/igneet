@@ -149,7 +149,7 @@ project:
     not.found: "Cette page n'existe pas."
     titleHelp: "Changer le titre de cette page"
     new: "Nouvelle page du wiki"
-    newHelp: "Créer une nouvelle page dans le wiki"
+    newHelp: "Entrez le nom de votre nouvelle page dans le wiki"
     pages: "Index du Wiki"
     new.page: "Nouvelle page"
     deleteHelp: "Êtes-vous sûr de vouloir supprimer cette page du wiki ?"
