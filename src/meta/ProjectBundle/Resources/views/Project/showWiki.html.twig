@@ -63,7 +63,7 @@
   <section>
 
     {# Tree of pages #}
-    <div class="tree menu dd">
+    <div class="tree menu dd{% if app.request.cookies.get('igneet_trees_open') == 'true' %} open{% endif %}">
         <span>{{ "project.wiki.pages"|trans }}</span>
         <a href="#" class="toggle" title="{{ "project.wiki.open"|trans }}"><i class="fa fa-angle-double-left"></i></a>
         {% if base.canEdit %}
