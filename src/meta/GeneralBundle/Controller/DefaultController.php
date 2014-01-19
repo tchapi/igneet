@@ -36,7 +36,7 @@ class DefaultController extends Controller
              
                 $this->get('session')->getFlashBag()->add(
                         'warning',
-                        $this->get('translator')->trans('file.too.large')
+                        $this->get('translator')->trans('file.too.large', array(), 'errors')
                     );
                 
                 return $this->render('metaGeneralBundle:Default:chooseFile.html.twig', array('targetAsBase64' => $targetAsBase64, 'backLink' => isset($target['backLink'])?$target['backLink']:null, 'token' => $request->get('token')));
@@ -59,7 +59,7 @@ class DefaultController extends Controller
                 if (!$allowed) {
                     $this->get('session')->getFlashBag()->add(
                             'warning',
-                            $this->get('translator')->trans('file.type.not.allowed')
+                            $this->get('translator')->trans('file.type.not.allowed', array(), 'errors')
                         );
                     return $this->render('metaGeneralBundle:Default:chooseFile.html.twig', array('targetAsBase64' => $targetAsBase64, 'filetypes' => $target['filetypes'], 'backLink' => isset($target['backLink'])?$target['backLink']:null, 'token' => $request->get('token')));
                 }
