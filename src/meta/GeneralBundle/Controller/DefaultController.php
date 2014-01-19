@@ -45,31 +45,31 @@ class DefaultController extends Controller
 
             $uploadedFile = $request->files->get('file');
 
-            // Is the file uploaded of the good format ?
-            if (isset($target['filetypes'])) {
-
-                $nb_filetypes = count($target['filetypes']);
-                $extension = strtolower($uploadedFile->guessExtension());
-                $allowed = false;
-
-                for ($x=0; $x < $nb_filetypes; $x++) {
-                    if ($extension == $$target['filetypes'][$x]) { $allowed = true; }
-                } 
-
-                if (!$allowed) {
-                    $this->get('session')->getFlashBag()->add(
-                            'warning',
-                            $this->get('translator')->trans('file.type.not.allowed', array(), 'errors')
-                        );
-                    return $this->render('metaGeneralBundle:Default:chooseFile.html.twig', array('targetAsBase64' => $targetAsBase64, 'filetypes' => $target['filetypes'], 'backLink' => isset($target['backLink'])?$target['backLink']:null, 'token' => $request->get('token')));
-                }
-
-            }
-
             if (null !== $uploadedFile) {
 
                 // An upload was performed
 
+                // Is the file uploaded of the good format ?
+                if (isset($target['filetypes'])) {
+
+                    $nb_filetypes = count($target['filetypes']);
+                    $extension = strtolower($uploadedFile->guessExtension());
+                    $allowed = false;
+
+                    for ($x=0; $x < $nb_filetypes; $x++) {
+                        if ($extension == $target['filetypes'][$x]) { $allowed = true; }
+                    } 
+
+                    if (!$allowed) {
+                        $this->get('session')->getFlashBag()->add(
+                                'warning',
+                                $this->get('translator')->trans('file.type.not.allowed', array(), 'errors')
+                            );
+                        return $this->render('metaGeneralBundle:Default:chooseFile.html.twig', array('targetAsBase64' => $targetAsBase64, 'filetypes' => $target['filetypes'], 'backLink' => isset($target['backLink'])?$target['backLink']:null, 'token' => $request->get('token')));
+                    }
+
+                }
+            
                 // Do we go to crop and resize ?
                 if ($target['crop'] == true){
 
