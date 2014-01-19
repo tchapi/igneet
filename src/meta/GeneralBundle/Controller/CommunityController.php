@@ -63,7 +63,7 @@ class CommunityController extends Controller
             $userRepository = $this->getDoctrine()->getRepository('metaUserBundle:User');
             $recentlyOnlineUsers = $userRepository->findAllRecentlyOnlineUsersInCommunity(array('community' => $community, 'time' => new \DateTime('now - 5 minutes')));
 
-            $targetPictureAsBase64 = array('slug' => 'metaGeneralBundle:Community:edit', 'params' => array(), 'crop' => true);
+            $targetPictureAsBase64 = array('slug' => 'metaGeneralBundle:Community:edit', 'params' => array(), 'crop' => true, 'filetypes' => array('png', 'jpg', 'jpeg', 'gif'));
 
             return $this->render('metaGeneralBundle:Community:home.html.twig', array(
                         'isManager' => ($userCommunity && $userCommunity->isManager()),

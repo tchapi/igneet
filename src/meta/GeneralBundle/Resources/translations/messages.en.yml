@@ -80,6 +80,7 @@ community:
 file:
   choose: "Choose a file"
   upload: "Upload this file"
+  extensions: "Allowed extensions : %filetypes%"
   chooseHelp: "You need to indicate a specific file to continue with your request."
 # Image
 image:

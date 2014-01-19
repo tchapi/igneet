@@ -20,7 +20,51 @@ class DefaultController extends Controller
 
         if ($request->isMethod('POST')) {
 
+            // Is the file uploaded too large ?
+            if ( $_SERVER['REQUEST_METHOD'] == 'POST' && empty($_POST) && empty($_FILES) && $_SERVER['CONTENT_LENGTH'] > 0 )
+            {      
+                $displayMaxSize = ini_get('post_max_size');
+
+                switch ( substr($displayMaxSize,-1) ) {
+                    case 'G':
+                        $displayMaxSize = $displayMaxSize * 1024;
+                    case 'M':
+                        $displayMaxSize = $displayMaxSize * 1024;
+                    case 'K':
+                        $displayMaxSize = $displayMaxSize * 1024;
+                }
+             
+                $this->get('session')->getFlashBag()->add(
+                        'warning',
+                        $this->get('translator')->trans('file.too.large')
+                    );
+                
+                return $this->render('metaGeneralBundle:Default:chooseFile.html.twig', array('targetAsBase64' => $targetAsBase64, 'backLink' => isset($target['backLink'])?$target['backLink']:null, 'token' => $request->get('token')));
+
+            }
+
             $uploadedFile = $request->files->get('file');
+
+            // Is the file uploaded of the good format ?
+            if (isset($target['filetypes'])) {
+
+                $nb_filetypes = count($target['filetypes']);
+                $extension = strtolower($uploadedFile->guessExtension());
+                $allowed = false;
+
+                for ($x=0; $x < $nb_filetypes; $x++) {
+                    if ($extension == $$target['filetypes'][$x]) { $allowed = true; }
+                } 
+
+                if (!$allowed) {
+                    $this->get('session')->getFlashBag()->add(
+                            'warning',
+                            $this->get('translator')->trans('file.type.not.allowed')
+                        );
+                    return $this->render('metaGeneralBundle:Default:chooseFile.html.twig', array('targetAsBase64' => $targetAsBase64, 'filetypes' => $target['filetypes'], 'backLink' => isset($target['backLink'])?$target['backLink']:null, 'token' => $request->get('token')));
+                }
+
+            }
 
             if (null !== $uploadedFile) {
 
@@ -28,9 +72,9 @@ class DefaultController extends Controller
 
                 // Do we go to crop and resize ?
                 if ($target['crop'] == true){
-    
+
                     $filename = sha1(uniqid(mt_rand(), true));
-                    $picture = $filename.'-toCropAndResize.'.$uploadedFile->guessExtension();
+                    $picture = $filename.'-toCropAndResize.'.$extension;
                     $uploadedFile->move(__DIR__.'/../../../../web/uploads/tmp', $picture);
                     unset($uploadedFile);
 
@@ -54,7 +98,7 @@ class DefaultController extends Controller
 
         } 
 
-        return $this->render('metaGeneralBundle:Default:chooseFile.html.twig', array('targetAsBase64' => $targetAsBase64, 'backLink' => isset($target['backLink'])?$target['backLink']:null, 'token' => $request->get('token')));
+        return $this->render('metaGeneralBundle:Default:chooseFile.html.twig', array('targetAsBase64' => $targetAsBase64, 'filetypes' => $target['filetypes'], 'backLink' => isset($target['backLink'])?$target['backLink']:null, 'token' => $request->get('token')));
 
     }
 

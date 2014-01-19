@@ -100,7 +100,7 @@ class UserController extends Controller
         $ideasWatched = $ideaRepository->findAllIdeasWatchedInCommunityForUser($community, $user);
         $projectsWatched = $projectRepository->findAllProjectsWatchedInCommunityForUser($community, $user);
 
-        $targetAvatarAsBase64 = array ('slug' => 'metaUserBundle:User:edit', 'params' => array('username' => $username ), 'crop' => true);
+        $targetAvatarAsBase64 = array ('slug' => 'metaUserBundle:User:edit', 'params' => array('username' => $username ), 'crop' => true, 'filetypes' => array('png', 'jpg', 'jpeg', 'gif'));
 
         return $this->render('metaUserBundle:User:show.html.twig', 
             array('user' => $user,

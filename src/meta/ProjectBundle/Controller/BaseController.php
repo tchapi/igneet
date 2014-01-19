@@ -15,7 +15,7 @@ class BaseController extends Controller
     public function preExecute(Request $request)
     {
 
-        $uid = $request->get('uid');
+        $uid = $request->get('uid');w
 
         $repository = $this->getDoctrine()->getRepository('metaProjectBundle:StandardProject');
         $project = $repository->findOneById($this->container->get('uid')->fromUId($uid)); // We do not enforce community here to be able to switch the user later on
@@ -168,7 +168,7 @@ class BaseController extends Controller
 
           $this->access = true;
 
-          $targetPictureAsBase64 = array ('slug' => 'metaProjectBundle:Project:edit', 'params' => array('uid' => $this->container->get('uid')->toUId($this->base['project']->getId()) ), 'crop' => true);
+          $targetPictureAsBase64 = array ('slug' => 'metaProjectBundle:Project:edit', 'params' => array('uid' => $this->container->get('uid')->toUId($this->base['project']->getId()) ), 'crop' => true, 'filetypes' => array('png', 'jpg', 'jpeg', 'gif'));
           $targetProposeToCommunityAsBase64 = array('slug' => 'metaProjectBundle:Project:edit', 'params' => array('uid' => $this->container->get('uid')->toUId($this->base['project']->getId())));
           $this->base['targetPictureAsBase64'] = base64_encode(json_encode($targetPictureAsBase64));
           $this->base['targetProposeToCommunityAsBase64'] = base64_encode(json_encode($targetProposeToCommunityAsBase64));

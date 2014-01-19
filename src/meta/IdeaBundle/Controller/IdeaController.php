@@ -141,7 +141,7 @@ class IdeaController extends Controller
 
             $this->access = true;
 
-            $targetPictureAsBase64 = array('slug' => 'metaIdeaBundle:Idea:edit', 'params' => array('uid' => $this->container->get('uid')->toUId($this->base['idea']->getId()) ), 'crop' => true);
+            $targetPictureAsBase64 = array('slug' => 'metaIdeaBundle:Idea:edit', 'params' => array('uid' => $this->container->get('uid')->toUId($this->base['idea']->getId()) ), 'crop' => true, 'filetypes' => array('png', 'jpg', 'jpeg', 'gif'));
             $targetProposeToCommunityAsBase64 = array('slug' => 'metaIdeaBundle:Idea:edit', 'params' => array('uid' => $this->container->get('uid')->toUId($this->base['idea']->getId()) ));
             $this->base['targetPictureAsBase64'] = base64_encode(json_encode($targetPictureAsBase64));
             $this->base['targetProposeToCommunityAsBase64'] = base64_encode(json_encode($targetProposeToCommunityAsBase64));

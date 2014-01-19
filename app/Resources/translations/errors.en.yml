@@ -2,6 +2,8 @@ invalid:
   request: "Invalid request."
   token: "Invalid token."
   password.match: "Password entries do not match."
+file.too.large: "The file you are trying to upload is too large."
+file.type.not.allowed: "This filetype is not allowed for upload."
 information.not.valid: "The information you provided does not seem valid."
 openid.error: "There has been an error while connecting to an Open Id provider."
 openid.already.exist: "The email associated to your Open Id account is already registered."

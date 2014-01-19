@@ -6,6 +6,9 @@
   <div class="title">
     <h2>{{ "file.choose"|trans }}</h2>
     <h3>{{ "file.chooseHelp"|trans }}</h3>
+    {% if filetypes %}
+      <h4>{{ "file.extensions"|trans({ '%filetypes%' : filetypes|join(', ') }) }}</h4>
+    {% endif %}
     {% if backLink %}
       <p><a href="{{ backLink }}">&laquo; {{ "back"|trans }}</a></p>
     {% endif %}
