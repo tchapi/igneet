@@ -18,6 +18,10 @@ project:
     all: "Show all projects"
     closed: "Only show closed projects"
     sleeping: "Only show sleeping projects"
+    name: "Name"
+    created: "Created"
+    updated: "Updated"
+    members: "Members"
   listHelp:
     community: "You will find here the list of projects in the community %community%."
     privateSpace: "You will find here all the projects in your own private space."
