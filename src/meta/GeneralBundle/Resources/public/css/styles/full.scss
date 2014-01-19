@@ -76,6 +76,9 @@ body.full > .content-container nav {
           overflow: hidden;
         }
       }
+      @include media ($tablet, $mobile) {
+        height: 55px;
+      }
       &.active {
         background: $_background;
       }
