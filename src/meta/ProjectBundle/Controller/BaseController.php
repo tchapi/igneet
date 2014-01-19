@@ -15,7 +15,7 @@ class BaseController extends Controller
     public function preExecute(Request $request)
     {
 
-        $uid = $request->get('uid');w
+        $uid = $request->get('uid');
 
         $repository = $this->getDoctrine()->getRepository('metaProjectBundle:StandardProject');
         $project = $repository->findOneById($this->container->get('uid')->fromUId($uid)); // We do not enforce community here to be able to switch the user later on
