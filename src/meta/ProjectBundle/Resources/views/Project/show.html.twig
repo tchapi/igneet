@@ -70,7 +70,7 @@
           {{ (skill.slug ~ ".name")|trans({}, 'skills') }}</li>
         {% endfor %}
         {% for skill in base.endowedSkills %}
-          <li rel="{{ skill.slug }}"> 
+          <li style="border: 1px solid #{{ skill.color }}" rel="{{ skill.slug }}"> 
           {% if base.canEdit %}
             <a href="#" class="remove"><i class="fa fa-times"></i> </a>  
           {% endif %}
