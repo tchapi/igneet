@@ -113,6 +113,14 @@ See : https://github.com/html5cat/redactor-js
 
 - - -
 
+### Dropzone.js
+
+Dropzone is under the MIT License.
+
+See : https://github.com/enyo/dropzone
+
+- - -
+
 
 For the static site only :
 

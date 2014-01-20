@@ -8,71 +8,70 @@
 {% render(controller("metaProjectBundle:Base:navbar", { 'activeMenu' : 'resources', 'uid' : base.project.id|to_uid, 'canEdit' : base.canEdit })) %}
 {% endblock %}
 
-{% form_theme form _self %}
-
-{% block form_row %}
-<section>
-<div class="sectionTitle">{{ form_label(form) }}</div>
-<div class="sectionContent">
-    {{ form_errors(form) }}
-    {{ form_widget(form) }}
-</div>
-</section>
-{% endblock form_row %}
+{% block javascripts %}
+  {{ parent() }}
+  {% if base.canEdit %}
+    {% javascripts '@metaGeneralBundle/Resources/public/js-edit/dropzone.js'
+                   '@metaGeneralBundle/Resources/public/js-edit/dropzone.behaviour.js'
+            filter='?yui_js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+  {% endif %}
+{% endblock %}
 
 {% block content %}
 <div class="wrapper info">
 
   {% if base.project.resources|length > 0 %}
+
   <section>
     <div class="label-full">{{ "project.resources.available"|trans }} :</div>
     <div class="content-full">
-    <ul class="resources">
-    {% for resource in base.project.resources %}
-        <li>
-          <a href="{{ path('p_show_project_resource', {'uid': base.project.id|to_uid, 'resource_uid': resource.id|to_uid}) }}">
-            <img src="{{ asset('/bundles/metageneral/img/icons/' ~ providers[resource.provider].icon ~ '.png') }}" width="32px" height="32px"/> 
-            <img src="{{ asset('/bundles/metageneral/img/icons/' ~ types[resource.type].icon ~ '.png') }}" width="32px" height="32px"/>
-            <span>{{ resource.title }}</span>{% if resource.originalFilename %} <em>({{ resource.originalFilename }})</em>{% endif %}
-          </a>
-          - 
-          {% if types[resource.type].displayable or not providers[resource.provider].downloadable %}<a title="{{ "project.resources.open"|trans }}" href="{{ resource.url }}" target="_blank"><i class="fa fa-external-link"></i></a>{% endif %}
-          {% if providers[resource.provider].downloadable %}<a title="{{ "project.resources.download"|trans }}" href="{{ path('p_show_project_resource_download', {'uid': base.project.id|to_uid, 'resource_uid': resource.id|to_uid})}}"><i class="fa fa-download"></i></a>{% endif %}
-          <span>
-            {% if resource.tags|length > 0 %}
-              {{ "tags.title"|trans }} :
-            {% else %}
-              {{ "tags.none"|trans }}
-            {% endif %}
+      <ul class="resources">
+      {% for resource in base.project.resources %}
+          <li>
+            <a href="{{ path('p_show_project_resource', {'uid': base.project.id|to_uid, 'resource_uid': resource.id|to_uid}) }}">
+              <img src="{{ asset('/bundles/metageneral/img/icons/' ~ providers[resource.provider].icon ~ '.png') }}" width="32px" height="32px"/> 
+              <img src="{{ asset('/bundles/metageneral/img/icons/' ~ types[resource.type].icon ~ '.png') }}" width="32px" height="32px"/>
+              <span>{{ resource.title }}</span>{% if resource.originalFilename %} <em>({{ resource.originalFilename }})</em>{% endif %}
+            </a>
+            {% if types[resource.type].displayable or not providers[resource.provider].downloadable %}<a title="{{ "project.resources.open"|trans }}" href="{{ resource.url }}" target="_blank"><i class="fa fa-external-link"></i></a>{% endif %}
+            {% if providers[resource.provider].downloadable %}<a title="{{ "project.resources.download"|trans }}" href="{{ path('p_show_project_resource_download', {'uid': base.project.id|to_uid, 'resource_uid': resource.id|to_uid})}}"><i class="fa fa-download"></i></a>{% endif %}
             <ul class="tags" >
-            {% for tag in resource.tags %}<li class="label label-default" rel="{{ tag.name }}">{{ tag.name }}</li>{% endfor %}
+            {% for tag in resource.tags %}<li {% if tag.color %}style="border: 1px solid #{{ tag.color }}" {% endif %}rel="{{ tag.name }}">{{ tag.name }}</li>{% endfor %}
             </ul>
-          </span>
-        </li>
-    {% endfor %}
-    </ul>
+          </li>
+      {% endfor %}
+      </ul>
     </div>
   </section>
-  {% elseif not base.canEdit %}
-  <section>
-  {{ "project.resources.none"|trans }}
-  </section>
+
+  {% else %}
+    <section class="none">
+    {{ "project.resources.none"|trans }}
+    </section>
   {% endif %}
+
   {% if base.canEdit %}
-  <form action="{{ path('p_show_project_list_resources', {'uid': base.project.id|to_uid}) }}" method="post" {{ form_enctype(form) }}>
-    <section>
-      <h4>{{ "project.resources.add"|trans }} :</h4>
-    </section>
-    {{ form_widget(form) }}
-    <section>
-      <div class="sectionTitle"></div>
-      <div class="sectionContent">
-        <input type="submit" value="{{ "add"|trans }}" class="btn btn-info" />
-      </div>
-    </section>
-  </form>
+  <section>
+    <div class="label-full">Add an url</div>
+    <div class="content-full">
+      {# The form to add a new url #}
+      <form action="{{ path('p_show_project_list_resources', {'uid': base.project.id|to_uid}) }}" method="post" {{ form_enctype(form) }}>
+        {{ form_widget(form.url) }}
+        <input type="submit" />
+      </form>
+    </div>
+    <div class="label-full">Add a file</div>
+    <div class="content-full">
+      {# The form to add a new file #}
+      <form class="dropzone" id="file" action="{{ path('p_show_project_list_resources', {'uid': base.project.id|to_uid}) }}" method="post" {{ form_enctype(form) }}>
+        {{ form_widget(form.file) }}
+      </form>
+      <button id="upload" style="display: none;">Upload all files</button>
+    </div>
+  </section>
   {% endif %}
 
 </div>
-
 {% endblock %}

@@ -150,6 +150,7 @@ project:
   wiki:
     title: "Wiki"
     titleField: "Titre"
+    default: "Page d'accueil"
     not.found: "Cette page n'existe pas."
     titleHelp: "Changer le titre de cette page"
     new: "Nouvelle page du wiki"

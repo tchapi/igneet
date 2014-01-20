@@ -9,6 +9,7 @@
 @import "_mixins";
 @import "neat/_neat";
 @import "alertify/_alertify";
+@import "dropzone/dropzone";
 @import "redactor/_redactor";
 @import "imgareaselect/jquery.imgareaselect";
 
@@ -251,7 +252,40 @@ section.notifications.none {
 @import "styles/user";
 @import "styles/projects";
 
-// Tree
+// dans projects
+
+ul.resources {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  & > li {
+    height: 50px;
+    border-bottom: 1px solid $_sensible;
+    & > a {
+      height: 50px;
+      padding: 9px;
+      display: inline-block;
+      color: $_discrete;
+      vertical-align: top;
+      & > img {
+        vertical-align: top;
+      }
+      & > span, & > i {
+        line-height: 31px;
+      }
+    }
+    &:hover { background: white; }
+    & > ul.tags {
+      @include tokens;
+      display: inline-block;
+      padding: 9px;
+      float: right;
+      line-height: 31px;
+    }
+  }
+}
+
+// Tree & Wiki's
 
 .tree {
   width: 0px;
@@ -370,36 +404,7 @@ section.notifications.none {
   }
 
   & > ul {
-    list-style: none;
-    margin: 0; 
-    padding: 0;
-    font-size: 0.9em;
-    display: inline-block;
-    color: $_text;
-
-    & > li {
-      display: inline-block;
-      padding: 3px 4px;
-      margin: 2px;
-      border-radius: $border-radius;
-      border: 1px solid $_muted;
-      position: relative;
-      & a {
-        color: $_muted;
-        display: inline-block;
-        &:hover { color: $_text; }
-      }
-      & em {
-        display: inline-block;
-        padding-left: 4px;
-      }
-      & > span > input { 
-        width: initial; 
-        border: none;
-        padding: 0; 
-        margin-left: 4px;
-      }
-    }
+    @include tokens;
   }
 }
 
