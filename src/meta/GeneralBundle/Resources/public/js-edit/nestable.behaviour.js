@@ -85,7 +85,7 @@ $(document).ready(function(){
     alertify.confirm($(this).attr('data-title'), $.proxy(function (e, str) {
       if (e) {
         $.post($(this).attr('data-url'), {'uid': $(".tree .active").parents('li').attr('id') })
-          .success(function(){
+          .success(function(data){
             // Remove the page under the current parent 
             if (item.find('ul').length >= 1) {
               // Has children : keep the children
@@ -93,6 +93,10 @@ $(document).ready(function(){
               $(".tree.dd > ul").append(children);
             }
             item.remove(); // finally remove the child
+            process(data, "success", Translator.trans('alert.changes.saved'));
+          })
+          .error(function(data){
+            process(data, "error", Translator.trans('alert.error.saving.changes'));
           });
       }
     }, this));

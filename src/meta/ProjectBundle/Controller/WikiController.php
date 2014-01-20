@@ -29,7 +29,8 @@ class WikiController extends BaseController
 
         $wiki = $this->base['project']->getWiki();
 
-        if ( !($wiki) ){
+        // If wiki is not yet created, we create it and create a first page
+        if (!$wiki){
 
           $wiki = new Wiki();
 
@@ -42,23 +43,31 @@ class WikiController extends BaseController
 
         }
 
-        $pages = $wiki->getPages();
-        $homePage = $wiki->getHomePage();
+        if (count($wiki->getPages()) == 0) {
 
-        if ( count($pages) == 0 && $this->base['canEdit']){
-          return $this->forward('metaProjectBundle:Wiki:newWikiPage', array('uid' => $uid));
+          // Yek, wiki is here but the last page was deleted, recreate one !!
+          $wikiPage = new WikiPage();
+          $wikiPage->setTitle($this->get('translator')->trans('project.wiki.default'));
+          $wikiPage->setParent(null);
+
+          $wiki->addPage($wikiPage);
+          $wiki->setHomePage($wikiPage);
+
+          $em = $this->getDoctrine()->getManager();
+          $em->persist($wikiPage);
+          $em->flush();
+
         }
 
+        //$pages = $wiki->getPages();
         $repository = $this->getDoctrine()->getRepository('metaProjectBundle:WikiPage');
         $wikiPages = $repository->findAllRootInWiki($wiki->getId());
 
-        $wikiPage = ($homePage!=null)?$homePage:$repository->findFirstInWiki($wiki->getId());
-
         return $this->render('metaProjectBundle:Project:showWiki.html.twig', 
             array('base' => $this->base, 
-                  'homePage' => $homePage,
+                  'homePage' => $wiki->getHomePage(),
                   'wikiPages' => $wikiPages,
-                  'wikiPage' => $wikiPage));
+                  'wikiPage' => $wiki->getHomePage()));
     }
 
     /*
@@ -388,8 +397,17 @@ class WikiController extends BaseController
                 if ($wikiPage){
                   
                   // What if this is the homepage of the wiki ?
-                  if ($wikiPage == $wiki->getHomePage()) $wiki->setHomePage(null);
                   $wiki->removePage($wikiPage);
+                  $redirect = null;
+                  
+                  if ($wikiPage == $wiki->getHomePage()) {
+                    if (count($wiki->getPages()) > 0) {
+                      $wiki->setHomePage($repository->findFirstInWiki($wiki->getId()));
+                    } else {
+                      $wiki->setHomePage(null);
+                      $redirect = $this->generateUrl('p_show_project_wiki', array('uid' => $uid));
+                    }
+                  }
 
                   // What if the page has children ?
                   foreach($wikiPage->getChildren() as $child){
@@ -405,32 +423,23 @@ class WikiController extends BaseController
 
                   $em->flush();
 
-                  $this->get('session')->getFlashBag()->add(
-                      'success',
-                      $this->get('translator')->trans('project.wiki.deleted', array( '%page%' => $wikiPage->getTitle() ))
-                  );
+                  $message = $this->get('translator')->trans('project.wiki.deleted', array( '%page%' => $wikiPage->getTitle() ));
 
                 } else {
 
-                    $this->get('session')->getFlashBag()->add(
-                        'warning',
-                        $this->get('translator')->trans('project.wiki.not.found')
-                    );
+                    $message = $this->get('translator')->trans('project.wiki.not.found');
 
                 }
 
             } else {
 
-                $this->get('session')->getFlashBag()->add(
-                    'warning',
-                    $this->get('translator')->trans('project.wiki.not.found')
-                );
+                $message = $this->get('translator')->trans('project.wiki.not.found');
 
             }
             
         }
 
-        return $this->redirect($this->generateUrl('p_show_project_wiki', array('uid' => $uid)));
+        return new Response(json_encode(array("redirect" => $redirect, "message" => $message)));
 
     }
 }

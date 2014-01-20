@@ -6,26 +6,26 @@ $(document).ready(function(){
   timers = {};
   saveDelay = 1000; // milliseconds
 
-  var saveData = function(dataArray, callback) {
-
-    var process = function(data, type, defaultMessage) {
-      if (data) {
-        try { 
-          data = JSON.parse(data); 
-          if (data.redirect) {
-            window.location.replace(data.redirect);
-          } else if (data.message) {
-            alertify.log(data.message, type);
-          } else {
-            alertify.log(defaultMessage, type);
-          }
-        } catch(err) { // In case the data is not JSON, we pass
+  process = function(data, type, defaultMessage) {
+    if (data) {
+      try { 
+        data = JSON.parse(data); 
+        if (data.redirect) {
+          window.location.replace(data.redirect);
+        } else if (data.message) {
+          alertify.log(data.message, type);
+        } else {
           alertify.log(defaultMessage, type);
         }
-      } else {
+      } catch(err) { // In case the data is not JSON, we pass
         alertify.log(defaultMessage, type);
       }
-    };
+    } else {
+      alertify.log(defaultMessage, type);
+    }
+  };
+
+  var saveData = function(dataArray, callback) {
 
     clearInterval(timers[dataArray["name"]]); // Clearing before sending the post request
     $.post(dataArray["url"], {
