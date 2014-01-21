@@ -125,9 +125,13 @@ project:
       deleted: "L'item de liste a été supprimé avec succès."
   resources:
     title: "Ressources"
+    default:
+      file: "Nouveau fichier"
+      link: "Nouveau lien"
     not:
       found: "Cette ressource n'existe pas existe."
       downloadable: "Le fichier attaché à cette ressource n'a pas pu être trouvé - il a sûrement été supprimé ou bougé."
+      valid.url: "L'url fournie n'est pas valide."
     titleHelp: "Changer le titre de cette ressource"
     change: "Changer cette ressource"
     delete: "Supprimer cette ressource"
@@ -138,15 +142,14 @@ project:
     original: "Fichier originel"
     latest: "dernière version mise en ligne le %date%"
     none: "Aucune ressource."
-    add: "Ajouter une ressource"
+    add:
+      url: "Ajouter un lien"
+      submit: "Ajouter"
+      file: "Ajouter un ou plusieurs fichiers"
+      upload: "Ajouter tous les fichiers"
     available: "Ressources disponibles"
     created: "La ressource %resource% a été ajoutée au projet %project% avec succès."
     deleted: "La ressource a bien été supprimée du projet %project%."
-    createForm:
-      title: "Titre de la ressource"
-      titlePlaceholder: "Ma ressource ..."
-      url: "Url de la ressource externe"
-      file: "ou choisir un fichier"
   wiki:
     title: "Wiki"
     titleField: "Titre"

@@ -25,6 +25,11 @@
   {% if base.project.resources|length > 0 %}
 
   <section>
+    {% if base.canEdit %}
+      <div class="jump">
+        <a href="#add" class="button">+</a>
+      </div>
+    {% endif %}
     <div class="label-full">{{ "project.resources.available"|trans }} :</div>
     <div class="content-full">
       <ul class="resources">
@@ -53,24 +58,27 @@
   {% endif %}
 
   {% if base.canEdit %}
-  <section>
-    <div class="label-full">Add an url</div>
-    <div class="content-full">
-      {# The form to add a new url #}
-      <form action="{{ path('p_show_project_list_resources', {'uid': base.project.id|to_uid}) }}" method="post" {{ form_enctype(form) }}>
-        {{ form_widget(form.url) }}
-        <input type="submit" />
-      </form>
-    </div>
-    <div class="label-full">Add a file</div>
-    <div class="content-full">
-      {# The form to add a new file #}
-      <form class="dropzone" id="file" action="{{ path('p_show_project_list_resources', {'uid': base.project.id|to_uid}) }}" method="post" {{ form_enctype(form) }}>
-        {{ form_widget(form.file) }}
-      </form>
-      <button id="upload" style="display: none;">Upload all files</button>
-    </div>
-  </section>
+  <form action="{{ path('p_show_project_list_resources', {'uid': base.project.id|to_uid}) }}" method="post" {{ form_enctype(form) }}>
+    <section id="add">
+      <div class="label-full">{{ "project.resources.add.url"|trans }}</div>
+      <div class="content-full">
+        {# The form to add a new url #}
+          {{ form_widget(form.url) }}
+          {{ form_row(form._token) }} 
+          <input type="submit" class="button button-info" value="{{ "project.resources.add.submit"|trans }}" />
+      </div>
+      <div class="label-full">{{ "project.resources.add.file"|trans }}</div>
+      <div class="content-full">
+        {# The form to add a new file #}
+        <div id="dropzone-trigger" class="dropzone" rel="resource[{{ form.file.vars.name }}]" token="{{ form._token.vars.value }}">
+          <div class="fallback">
+            {{ form_widget(form.file) }}
+          </div>
+        </div>
+        <a id="upload" class="button button-info" style="display: none;"><i class="fa fa-check"></i> {{ "project.resources.add.upload"|trans }}</a>
+      </div>
+    </section>
+  </form>
   {% endif %}
 
 </div>

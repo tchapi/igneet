@@ -439,7 +439,7 @@ class WikiController extends BaseController
             
         }
 
-        return new Response(json_encode(array("redirect" => $redirect, "message" => $message)));
+        return new Response(json_encode(array("redirect" => $redirect, "message" => $message)), 200, array('Content-Type'=>'application/json'));
 
     }
 }

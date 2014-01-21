@@ -125,9 +125,13 @@ project:
       deleted: "Your list item was successfully deleted."
   resources:
     title: "Resources"
+    default:
+      file: "New File"
+      link: "New link"
     not:
       found: "This resource does not exist."
       downloadable: "The file associated to this resource could not be found - it may have moved or been deleted."
+      valid.url: "The url that you provided is not valid."
     titleHelp: "Change the title of this resource"
     change: "Change this resource"
     delete: "Delete this resource"
@@ -138,15 +142,14 @@ project:
     original: "Original filename"
     latest: "latest version uploaded on %date%"
     none: "No resource yet."
-    add: "Add a new resource"
+    add:
+      url: "Add a new link"
+      submit: "Add"
+      file: "Add one or more files"
+      upload: "Upload all files"
     available: "Available resources"
     created: "Your resource %resource% has successfully been added to the project %project%."
     deleted: "Your resource has successfully been deleted from the project %project%."
-    createForm:
-      title: "Title of this resource"
-      titlePlaceholder: "My new resource ..."
-      url: "Url of a remote file"
-      file: "or Choose a file to upload"
   wiki:
     title: "Wiki"
     titleField: "Title"

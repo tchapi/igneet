@@ -241,6 +241,7 @@ body > .content-container section {
   border-top: 1px solid lighten($_background,2%);
   padding-top: $gutter*2;
   padding-bottom: $gutter*2;
+  position: relative;
 
   &:first-of-type { border-top: 1px solid $_background; }
   &:last-of-type { padding-bottom: $horizontal-padding; }

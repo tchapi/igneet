@@ -90,7 +90,8 @@
 }
 .dropzone .dz-preview:hover .dz-details img,
 .dropzone-previews .dz-preview:hover .dz-details img {
-  display: none;
+  //display: none;
+  opacity: 0.5;
 }
 .dropzone .dz-preview .dz-success-mark,
 .dropzone-previews .dz-preview .dz-success-mark,
@@ -153,4 +154,10 @@
 .dropzone .dz-preview:hover.dz-error .dz-error-message,
 .dropzone-previews .dz-preview:hover.dz-error .dz-error-message {
   display: block;
+}
+
+.dz-default {
+    height: 100px;
+    padding: 40px;
+    text-align: center;
 }

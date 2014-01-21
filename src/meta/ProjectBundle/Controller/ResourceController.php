@@ -82,6 +82,7 @@ class ResourceController extends BaseController
         $providers = $this->container->getParameter('project.resource_providers');
 
         $resource = new Resource();
+        $resource->setTitle($this->get('translator')->trans('project.resources.default.link'));
         $form = $this->createForm(new ResourceType(), $resource);
 
         if ($request->isMethod('POST')) {
@@ -89,12 +90,40 @@ class ResourceController extends BaseController
             $form->bind($request);
 
             $pattern = "|^http(s)?://[a-z0-9-]+(.[a-z0-9-_]+)*(:[0-9]+)?(/.*)?$|i";
-            
-            if ($form->isValid() && 
-              ($request->files->get('resource[file]', null, true) != null || preg_match( $pattern, $resource->getUrl() ) == 1 ) ) {
+
+            if ($form->isValid()) {
 
                 $this->base['project']->addResource($resource);
                 $this->base['project']->setUpdatedAt(new \DateTime('now'));
+
+                // What is it ?
+                $uploadedFile = $request->files->get('resource[file]', null, true);
+                if ($uploadedFile != null) {
+
+                    // A file
+                    $resource->setTitle($this->get('translator')->trans('project.resources.default.file'));
+                    $title = $uploadedFile->getClientOriginalName();
+                    if ($title != "") $resource->setTitle($title);
+                    
+                } else {
+
+                    // A url, but wait ...
+                    if (preg_match( $pattern, $resource->getUrl() ) != 1 ) {
+                        // It's an url but it's not valid
+                        $this->get('session')->getFlashBag()->add(
+                            'error',
+                            $this->get('translator')->trans('project.resources.not.valid.url')
+                        );
+                        return $this->redirect($this->generateUrl('p_show_project_list_resources', array('uid' => $uid)));
+                    } else {
+                        // It's good, let's try to get the title
+                        $doc = new \DOMDocument();
+                        @$doc->loadHTMLFile($resource->getUrl());
+                        $xpath = new \DOMXPath($doc);
+                        $title = $xpath->query('//title')->item(0)->nodeValue;
+                        if ($title != "") $resource->setTitle($title);
+                    }
+                }
 
                 // Guess resource type and provider
                 $guess = $this->guessProviderAndType($request->files->get('resource[file]', null, true), $resource->getUrl());
@@ -113,10 +142,28 @@ class ResourceController extends BaseController
                     $this->get('translator')->trans('project.resources.created', array( '%resource%' => $resource->getTitle(), '%project%' => $this->base['project']->getName()))
                 );
 
-                return $this->redirect($this->generateUrl('p_show_project_list_resources', array('uid' => $uid)));
+                return new Response(json_encode(array('redirect' => $this->generateUrl('p_show_project_list_resources', array('uid' => $uid)))), 200, array('Content-Type'=>'application/json'));
            
             } else {
-               
+
+                // Is the file uploaded too large ?
+                if ( $_SERVER['REQUEST_METHOD'] == 'POST' && empty($_POST) && empty($_FILES) && $_SERVER['CONTENT_LENGTH'] > 0 )
+                {      
+                    $displayMaxSize = ini_get('post_max_size');
+
+                    switch ( substr($displayMaxSize,-1) ) {
+                        case 'G':
+                            $displayMaxSize = $displayMaxSize * 1024;
+                        case 'M':
+                            $displayMaxSize = $displayMaxSize * 1024;
+                        case 'K':
+                            $displayMaxSize = $displayMaxSize * 1024;
+                    }
+                 
+                    return new Response(json_encode(array('error' => $this->get('translator')->trans('file.too.large', array(), 'errors'))), 500, array('Content-Type'=>'application/json'));
+           
+                }
+
                $this->get('session')->getFlashBag()->add(
                     'error',
                     $this->get('translator')->trans('information.not.valid', array(), 'errors')

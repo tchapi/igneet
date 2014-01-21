@@ -73,3 +73,16 @@ mail:
   hello: "Bonjour,"
   automated.user: "Ceci est un message automatique d'igneet, mais vous pouvez répondre directement à %user% en répondant à ce message."
   automated: "Ceci est un message automatique d'igneet, merci de ne pas y répondre."
+# dropzone
+dropzone:
+  dictDefaultMessage: "Cliquez ou glissez des fichiers ici pour les ajouter"
+  dictFallbackMessage: "Votre navigateur ne supporte pas le glisser-déposer pour ajouter des fichiers."
+  dictFallbackText: "Veuillez utiliser le formulaire classique pour ajouter des fichiers."
+  dictFileTooBig: "Le fichier est trop gros ({{filesize}}MiB). Taille maximum: {{maxFilesize}}MiB."
+  dictInvalidFileType: "Ce type de fichier n'est pas autorisé."
+  dictResponseError: "Il y a eu une erreur coté serveur, veuillez réessayer ({{statusCode}})."
+  dictCancelUpload: "Annuler"
+  dictCancelUploadConfirmation: "Voulez-vous vraiment annuler ?"
+  dictRemoveFile: "Supprimer"
+  dictRemoveFileConfirmation: null
+  dictMaxFilesExceeded: "Vous ne pouvez pas ajouter plus de fichiers en une fois"

@@ -24,6 +24,8 @@ Todo - Priorités :
    Combien de questions tu as résolu, combien d'actions tu as fait sur les projets / idées des autres
  import d'un dossier dropbox d'un projet automatiquement dans les ressources 
 
+limite les 10 dernieres notifs par mail
+
 Travail de fond :
  
  ☐ Passer les arguments en array() au lieu de liste ...

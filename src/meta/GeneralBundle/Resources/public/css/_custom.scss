@@ -285,6 +285,36 @@ ul.resources {
   }
 }
 
+form .content-full {
+  @include row();
+  & > input[type=text] {
+    @include span-columns(10 of 12);
+    height: 34px;
+    padding-left: 10px;
+    & ~ input {
+      @include span-columns(2 of 12);
+      @include omega;
+    }
+  }
+
+}
+
+.dropzone + a {
+  display: block;
+  float: right;
+  margin-top: $gutter;
+}
+
+section > .jump {
+  position: absolute;
+  right: 0;
+  top: 60px;
+  & > a {
+    min-width: 35px;
+  }
+}
+
+
 // Tree & Wiki's
 
 .tree {
