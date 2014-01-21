@@ -40,6 +40,7 @@
   
   <form action="{% if openid %}{{ path('u_signup_finish', { 'inviteToken': inviteToken }) }}{% else %}{{ path('u_signup', { 'inviteToken': inviteToken }) }}{% endif %}" method="post" {{ form_enctype(form) }} class="non-auth">
     {{ form_rest(form) }} {# Trick to avoid the <div> wrap by Twig #}
+    {{ form_row(form._token) }} 
     <em class="help terms">{{ "user.createForm.terms"|trans }}</em>
     <input type="submit" value="{{ "user.createForm.create"|trans }}" class="button button-success" />
   </form>

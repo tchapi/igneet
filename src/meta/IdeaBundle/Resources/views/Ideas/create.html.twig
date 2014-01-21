@@ -33,6 +33,7 @@
 {% block content %}
   <form action="{{ path('i_new_idea') }}" method="post" {{ form_enctype(form) }}>
     {{ form_rest(form) }}
+    {{ form_row(form._token) }} 
     <section>
       <div class="content">
         <input type="submit" value="{{ "create"|trans }}" class="button button-success" />
