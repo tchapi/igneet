@@ -141,9 +141,12 @@ class ResourceController extends BaseController
                     'success',
                     $this->get('translator')->trans('project.resources.created', array( '%resource%' => $resource->getTitle(), '%project%' => $this->base['project']->getName()))
                 );
+                if ($uploadedFile != null) {
+                    return new Response(json_encode(array('redirect' => $this->generateUrl('p_show_project_list_resources', array('uid' => $uid)))), 200, array('Content-Type'=>'application/json'));
+                } else {
+                    return $this->redirect($this->generateUrl('p_show_project_list_resources', array('uid' => $uid)));
+                }
 
-                return new Response(json_encode(array('redirect' => $this->generateUrl('p_show_project_list_resources', array('uid' => $uid)))), 200, array('Content-Type'=>'application/json'));
-           
             } else {
 
                 // Is the file uploaded too large ?

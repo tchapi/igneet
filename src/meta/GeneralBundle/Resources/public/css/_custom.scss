@@ -273,6 +273,12 @@ ul.resources {
       & > span, & > i {
         line-height: 31px;
       }
+      &:first-child {
+        @include media($tablet) {
+          @include span-columns(3 of 4);
+          @include ellipsis(75%);
+        }
+      }
     }
     &:hover { background: white; }
     & > ul.tags {
@@ -281,6 +287,14 @@ ul.resources {
       padding: 9px;
       float: right;
       line-height: 31px;
+      @include media($tablet, $mobile) {
+        display: none;
+      }
+    }
+  }
+  @include media($tablet, $mobile) {
+    & em {
+      display: none;
     }
   }
 }
@@ -291,9 +305,21 @@ form .content-full {
     @include span-columns(10 of 12);
     height: 34px;
     padding-left: 10px;
+    @include media($tablet) {
+      @include span-columns(3 of 4);
+    }
+    @include media($mobile) {
+      @include fill-parent();
+    }
     & ~ input {
       @include span-columns(2 of 12);
       @include omega;
+      @include media($tablet) {
+        @include span-columns(1 of 4);
+      }
+      @include media($mobile) {
+        @include fill-parent();
+      }
     }
   }
 
@@ -311,6 +337,9 @@ section > .jump {
   top: 60px;
   & > a {
     min-width: 35px;
+  }
+  @include media($tablet, $mobile) {
+    top: 30px;
   }
 }
 
