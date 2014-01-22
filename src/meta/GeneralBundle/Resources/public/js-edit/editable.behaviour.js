@@ -283,10 +283,12 @@ $(document).ready(function(){
   /*
    * Resources pages : see details
    */
-  $('ul.resources li > *:not(.details)').on('click', function(e){
+  $('ul.resources li > img, ul.resources li > span').on('click', function(e){
     e.preventDefault();
     $('.detailed').removeClass('detailed');
     $(this).parent('li').toggleClass('detailed');
+  }).children().click(function(e) {
+    e.stopPropagation();
   });
 
 });
