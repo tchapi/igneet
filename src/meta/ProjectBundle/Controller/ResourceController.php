@@ -231,31 +231,71 @@ class ResourceController extends BaseController
                 $objectHasBeenModified = false;
                 $em = $this->getDoctrine()->getManager();
 
+                if ( $_SERVER['REQUEST_METHOD'] == 'POST' && empty($_POST) && empty($_FILES) && $_SERVER['CONTENT_LENGTH'] > 0 )
+                {      
+                    $displayMaxSize = ini_get('post_max_size');
+                    switch ( substr($displayMaxSize,-1) ) {
+                        case 'G':
+                            $displayMaxSize = $displayMaxSize * 1024;
+                        case 'M':
+                            $displayMaxSize = $displayMaxSize * 1024;
+                        case 'K':
+                            $displayMaxSize = $displayMaxSize * 1024;
+                    }
+                 
+                    $error = $this->get('translator')->trans('file.too.large', array(), 'errors');
+                    $needsRedirect = true;
+           
+                }
+
                 switch ($request->request->get('name')) {
                     case 'title':
                         $resource->setTitle($request->request->get('value'));
                         $objectHasBeenModified = true;
                         break;
-                    case 'urlOrFile':
-                        $uploadedFile = $request->files->get('resource[file]', null, true);
-                        if (null !== $uploadedFile) {
-                            $resource->setFile($uploadedFile);
-                            $resource->setLatestVersionUploadedAt(new \DateTime('now'));
-                        } else if ($request->request->get('resource[url]', null, true) != "" ) {
-                            $resource->setUrl($request->request->get('resource[url]', null, true));
-                            $resource->setOriginalFilename(null);
+                    case 'url':
+                        $newUrl = trim($request->request->get('value'));
+                        $pattern = "|^http(s)?://[a-z0-9-]+(.[a-z0-9-_]+)*(:[0-9]+)?(/.*)?$|i";
+                        if (preg_match( $pattern, $newUrl ) != 1 ) {
+                            $error = $this->get('translator')->trans('project.resources.not.valid.url');
                         } else {
-                            $needsRedirect = true;
-                            break;
+                            $resource->setUrl($newUrl);
+                            // Guess resource type and provider
+                            $guess = $this->guessProviderAndType(null, $resource->getUrl());
+                                $resource->setType($guess['type']);
+                                $resource->setProvider($guess['provider']);
+
+                            $objectHasBeenModified = true;
                         }
 
-                        // Guess resource type and provider
-                        $guess = $this->guessProviderAndType($uploadedFile, $resource->getUrl());
-                            $resource->setType($guess['type']);
-                            $resource->setProvider($guess['provider']);
+                        break;
+                    case 'file':
 
-                        $objectHasBeenModified = true;
-                        $needsRedirect = true;
+                        $uploadedFile = $request->files->get('value', null, true);
+
+                        if (null !==$uploadedFile) {
+                            
+                            $resource->setFile($uploadedFile);
+                            $resource->setLatestVersionUploadedAt(new \DateTime('now'));
+
+                            $this->get('session')->getFlashBag()->add(
+                                'success',
+                                $this->get('translator')->trans('project.resources.changed', array( '%project%' => $this->base['project']->getName()))
+                            );
+                            // Guess resource type and provider
+                            $guess = $this->guessProviderAndType($uploadedFile, $resource->getUrl());
+                                $resource->setType($guess['type']);
+                                $resource->setProvider($guess['provider']);
+
+                            $objectHasBeenModified = true;
+                            $needsRedirect = true;
+       
+                        } else {
+    
+                            $error = $this->get('translator')->trans('project.resources.error.uploading');
+                        
+                        }
+
                         break;
                     case 'tags':
                         $tagsAsArray = array_map('strtolower', $request->request->get('value'));

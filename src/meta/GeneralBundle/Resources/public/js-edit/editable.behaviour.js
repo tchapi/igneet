@@ -280,4 +280,13 @@ $(document).ready(function(){
   $('#specificDay').change(function(){ $('.specificDayChoice').toggle(); });
   $('#specificEmails').change(function(){ $('.specificEmailsChoice').toggle(); });
 
+  /*
+   * Resources pages : see details
+   */
+  $('ul.resources li > *:not(.details)').on('click', function(e){
+    e.preventDefault();
+    $('.detailed').removeClass('detailed');
+    $(this).parent('li').toggleClass('detailed');
+  });
+
 });

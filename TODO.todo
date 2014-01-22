@@ -26,6 +26,8 @@ Todo - Priorités :
 
 limite les 10 dernieres notifs par mail
 
+ ☐ thumbnails stocké sur les ressources?
+
 Travail de fond :
  
  ☐ Passer les arguments en array() au lieu de liste ...

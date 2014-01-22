@@ -261,33 +261,90 @@ ul.resources {
   & > li {
     height: 50px;
     border-bottom: 1px solid $_sensible;
-    & > a {
-      height: 50px;
-      padding: 9px;
-      display: inline-block;
-      color: $_discrete;
+    color: $_discrete;
+    padding: 9px;
+    cursor: pointer;
+    & > img {
       vertical-align: top;
-      & > img {
-        vertical-align: top;
+    }
+    & > span {
+      @include media($tablet) {
+        @include ellipsis(65%);
       }
-      & > span, & > i {
-        line-height: 31px;
-      }
-      &:first-child {
-        @include media($tablet) {
-          @include span-columns(3 of 4);
-          @include ellipsis(75%);
-        }
+    }
+    & > span, & > i {
+      line-height: 31px;
+      display: inline-block;
+    }
+    & > a {
+      display: inline-block;
+      margin: 0 5px;
+      @include media($tablet) {
+        float: right;
       }
     }
     &:hover { background: white; }
     & > ul.tags {
       @include tokens;
       display: inline-block;
-      padding: 9px;
       float: right;
       line-height: 31px;
       @include media($tablet, $mobile) {
+        display: none;
+      }
+    }
+    & > .details {
+      display: none;
+      border-top: 1px solid $_sensible;
+      height: 150px;
+      margin: 20px 40px;
+      padding-top: 20px;
+      position: relative;
+      & > * {
+        margin-bottom: 10px;
+      }
+      & > span, & > em {
+        display: block;
+      }
+      & > h2 {
+        margin-top: 0;
+        @include ellipsis(100%);
+      }
+      & > .label-tags {
+        float: none;
+      }
+      & > form {
+        border-top: 1px solid $_sensible;
+        padding-top: 10px;
+        margin-top: 15px;
+        & > * { 
+          line-height: 25px;
+          vertical-align: top;
+        } 
+        & > span {
+          display: inline-block;
+          @include ellipsis(740px);
+        }
+        & > input {
+          width: auto;
+          &[type=submit] {
+            height: 28px;
+            padding: 0;
+          }
+        }
+        & > a.delete {
+          float: right;
+          color: $_red;
+        }
+      }
+    }
+    &.detailed {
+      height: 240px;
+      background: $_container;
+      & > .details {
+        display: block
+      }
+      & > ul.tags {
         display: none;
       }
     }
