@@ -105,19 +105,22 @@ class digestSendCommand extends ContainerAwareCommand
   
             $notificationsArray = $this->getContainer()->get('logService')->getNotifications($user, null, null, $locale);
 
-            $messages[] = \Swift_Message::newInstance()
-                ->setSubject($this->getContainer()->get('translator')->trans('user.digest.mail.subject', array(), null, $locale))
-                ->setFrom($this->getContainer()->getParameter('mailer_from'))
-                ->setTo($user->getEmail())
-                ->setBody(
-                    $this->getContainer()->get('templating')->render(
-                        'metaGeneralBundle:Digest:digest.mail.html.twig',
-                        array('notifications' => $notificationsArray['notifications'], 'lastNotified' => $notificationsArray['lastNotified'], 'from' => $notificationsArray['from'], 'community' => null, 'locale' => $locale)
-                    ), 'text/html'
-                );
+            if ($nbNotifications > 0) {
 
-            if ($verbose) $output->writeln('     --> Mail created');
+              $messages[] = \Swift_Message::newInstance()
+                  ->setSubject($this->getContainer()->get('translator')->trans('user.digest.mail.subject', array(), null, $locale))
+                  ->setFrom($this->getContainer()->getParameter('mailer_from'))
+                  ->setTo($user->getEmail())
+                  ->setBody(
+                      $this->getContainer()->get('templating')->render(
+                          'metaGeneralBundle:Digest:digest.mail.html.twig',
+                          array('notifications' => $notificationsArray['notifications'], 'lastNotified' => $notificationsArray['lastNotified'], 'from' => $notificationsArray['from'], 'community' => null, 'locale' => $locale)
+                      ), 'text/html'
+                  );
 
+              if ($verbose) $output->writeln('     --> Mail created');
+            }
+          
           } else {
             
             /*
