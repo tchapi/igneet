@@ -67,7 +67,7 @@ p_make_private:
 
 p_show_project_comment:
     pattern:  /project/0{uid}/comment
-    defaults: { _controller: metaProjectBundle:Comment:addStandardProjectComment }
+    defaults: { _controller: metaProjectBundle:Comment:addProjectComment }
     requirements:
       uid: "[0-9a-zA-Z]*"
 
