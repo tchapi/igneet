@@ -285,8 +285,9 @@ $(document).ready(function(){
    */
   $('ul.resources li > img, ul.resources li > span').on('click', function(e){
     e.preventDefault();
+    _self = $(this).parent('li').hasClass("detailed");
     $('.detailed').removeClass('detailed');
-    $(this).parent('li').toggleClass('detailed');
+    if (!_self) $(this).parent('li').toggleClass('detailed');
   }).children().click(function(e) {
     e.stopPropagation();
   });

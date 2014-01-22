@@ -90,7 +90,7 @@
     </div>
   </section>
 
-  {% else %}
+  {% elseif not base.canEdit %}
     <section class="none">
     {{ "project.resources.none"|trans }}
     </section>
