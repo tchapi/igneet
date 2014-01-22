@@ -40,7 +40,7 @@ class InfoController extends BaseController
     {
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('addParticipantOrOwner', $request->get('token')))
-            return $this->redirect($this->generateUrl('p_show_project', array('uid' => $uid)));
+            return $this->redirect($this->generateUrl('p_show_project_info', array('uid' => $uid)));
 
         $this->preComputeRights(array( "mustBeOwner" => true, "mustParticipate" => false));
 
@@ -112,7 +112,7 @@ class InfoController extends BaseController
 
         }
 
-        return $this->redirect($this->generateUrl('p_show_project', array('uid' => $uid)));
+        return $this->redirect($this->generateUrl('p_show_project_info', array('uid' => $uid)));
     }
 
     /*
@@ -122,7 +122,7 @@ class InfoController extends BaseController
     {
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('removeParticipantOrOwner', $request->get('token')))
-            return $this->redirect($this->generateUrl('p_show_project', array('uid' => $uid)));
+            return $this->redirect($this->generateUrl('p_show_project_info', array('uid' => $uid)));
 
         $this->preComputeRights(array( "mustBeOwner" => true, "mustParticipate" => false));
 
@@ -186,7 +186,7 @@ class InfoController extends BaseController
 
         }
 
-        return $this->redirect($this->generateUrl('p_show_project', array('uid' => $uid)));
+        return $this->redirect($this->generateUrl('p_show_project_info', array('uid' => $uid)));
     }
 
     /*
@@ -196,7 +196,7 @@ class InfoController extends BaseController
     {
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('removeMySelfParticipant', $request->get('token')))
-            return $this->redirect($this->generateUrl('p_show_project', array('uid' => $uid)));
+            return $this->redirect($this->generateUrl('p_show_project_info', array('uid' => $uid)));
 
         $this->preComputeRights(array( "mustBeOwner" => false, "mustParticipate" => true));
 

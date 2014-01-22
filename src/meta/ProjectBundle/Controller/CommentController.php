@@ -61,7 +61,7 @@ class CommentController extends BaseController
                     );
                 }
 
-                return $this->redirect($this->generateUrl('p_show_project_timeline', array('uid' => $uid)));
+                return $this->redirect($this->generateUrl('p_show_project', array('uid' => $uid)));
 
             } else {
 

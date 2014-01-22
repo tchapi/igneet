@@ -10,7 +10,7 @@ class TimelineController extends BaseController
     /*
      * Display the timeline tab of a project
      */
-    public function showTimelineAction($uid, $page)
+    public function showTimelineAction($uid)
     {
         $menu = $this->container->getParameter('project.menu');
         $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => $menu['timeline']['private']));

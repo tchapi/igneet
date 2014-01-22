@@ -2,11 +2,11 @@ parameters:
   project.menu:
     timeline:
       icon: fa fa-comments
-      route: p_show_project_timeline
+      route: p_show_project
       private: false
     info:
       icon: fa fa-info-circle
-      route: p_show_project
+      route: p_show_project_info
       private: false
     lists:
       icon: fa fa-tasks

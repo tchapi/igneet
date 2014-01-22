@@ -150,7 +150,7 @@ class ProjectController extends BaseController
                     );
             }
 
-            return $this->redirect($this->generateUrl('p_show_project', array('uid' => $uid)));
+            return $this->redirect($this->generateUrl('p_show_project_info', array('uid' => $uid)));
 
         } else {
         
@@ -169,7 +169,7 @@ class ProjectController extends BaseController
     public function deleteAction(Request $request, $uid){
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('delete', $request->get('token')))
-            return $this->redirect($this->generateUrl('p_show_project', array('uid' => $uid)));
+            return $this->redirect($this->generateUrl('p_show_project_settings', array('uid' => $uid)));
 
         $this->preComputeRights(array('mustBeOwner' => true, 'mustParticipate' => false));
 
@@ -193,7 +193,7 @@ class ProjectController extends BaseController
                     $this->get('translator')->trans('project.cannot.delete')
                 );
 
-            return $this->redirect($this->generateUrl('p_show_project', array('uid' => $uid)));
+            return $this->redirect($this->generateUrl('p_show_project_settings', array('uid' => $uid)));
         }
 
     }
@@ -206,7 +206,7 @@ class ProjectController extends BaseController
     {
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('resetPicture', $request->get('token')))
-            return $this->redirect($this->generateUrl('p_show_project', array('uid' => $uid)));
+            return $this->redirect($this->generateUrl('p_show_project_info', array('uid' => $uid)));
 
         $this->preComputeRights(array('mustBeOwner' => false, 'mustParticipate' => true));
 
@@ -229,7 +229,7 @@ class ProjectController extends BaseController
                 );
         }
 
-        return $this->redirect($this->generateUrl('p_show_project', array('uid' => $uid)));
+        return $this->redirect($this->generateUrl('p_show_project_info', array('uid' => $uid)));
 
     }
 
@@ -240,7 +240,7 @@ class ProjectController extends BaseController
     public function makePublicAction(Request $request, $uid)
     {
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('makePublic', $request->get('token')))
-            return $this->redirect($this->generateUrl('p_show_project', array('uid' => $uid)));
+            return $this->redirect($this->generateUrl('p_show_project_settings', array('uid' => $uid)));
 
         $this->preComputeRights(array('mustBeOwner' => true, 'mustParticipate' => false));
 
@@ -275,7 +275,7 @@ class ProjectController extends BaseController
     public function makePrivateAction(Request $request, $uid)
     {
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('makePrivate', $request->get('token')))
-            return $this->redirect($this->generateUrl('p_show_project', array('uid' => $uid)));
+            return $this->redirect($this->generateUrl('p_show_project_settings', array('uid' => $uid)));
 
         $this->preComputeRights(array('mustBeOwner' => true, 'mustParticipate' => false));
 
@@ -309,7 +309,7 @@ class ProjectController extends BaseController
     {
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('watch', $request->get('token')))
-            return $this->redirect($this->generateUrl('p_show_project', array('uid' => $uid)));
+            return $this->redirect($this->generateUrl('p_show_project_info', array('uid' => $uid)));
 
         $menu = $this->container->getParameter('project.menu');
         $this->preComputeRights(array('mustBeOwner' => false, 'mustParticipate' => $menu['info']['private']));
@@ -350,7 +350,7 @@ class ProjectController extends BaseController
             );
         }
 
-        return $this->redirect($this->generateUrl('p_show_project', array('uid' => $uid)));
+        return $this->redirect($this->generateUrl('p_show_project_info', array('uid' => $uid)));
     }
 
     /*
@@ -359,7 +359,7 @@ class ProjectController extends BaseController
     public function unwatchAction(Request $request, $uid)
     {
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('unwatch', $request->get('token')))
-            return $this->redirect($this->generateUrl('p_show_project', array('uid' => $uid)));
+            return $this->redirect($this->generateUrl('p_show_project_info', array('uid' => $uid)));
 
         $menu = $this->container->getParameter('project.menu');
         $this->preComputeRights(array('mustBeOwner' => false, 'mustParticipate' => $menu['info']['private']));
@@ -397,7 +397,7 @@ class ProjectController extends BaseController
             );
         }
 
-        return $this->redirect($this->generateUrl('p_show_project', array('uid' => $uid)));
+        return $this->redirect($this->generateUrl('p_show_project_info', array('uid' => $uid)));
     }
 
 }

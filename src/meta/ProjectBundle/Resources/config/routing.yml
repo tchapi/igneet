@@ -28,15 +28,6 @@ p_new_project:
     pattern:  /projects/new
     defaults: { _controller: metaProjectBundle:Projects:create }
 
-# /PROJECT/
-# ---------------
-
-p_show_project:
-    pattern:  /project/0{uid}
-    defaults: { _controller: metaProjectBundle:Info:showInfo }
-    requirements:
-      uid: "[0-9a-zA-Z]*"
-
 # /PROJECT/EDIT
 # ---------------
 
@@ -132,12 +123,19 @@ p_unwatch_project:
 # ---------------
 
 ## TIMELINE
-p_show_project_timeline:
-    pattern:  /project/0{uid}/timeline/{page}
-    defaults: { _controller: metaProjectBundle:Timeline:showTimeline, page: 1 }
+p_show_project:
+    pattern:  /project/0{uid}
+    defaults: { _controller: metaProjectBundle:Timeline:showTimeline }
     requirements:
         uid: "[0-9a-zA-Z]*"
-        page: \d+
+
+## INFO
+p_show_project_info:
+    pattern:  /project/0{uid}/info
+    defaults: { _controller: metaProjectBundle:Info:showInfo }
+    requirements:
+      uid: "[0-9a-zA-Z]*"
+
 
 ## RESOURCES
 p_show_project_list_resources:
