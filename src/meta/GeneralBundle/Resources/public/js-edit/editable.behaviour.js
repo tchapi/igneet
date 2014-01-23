@@ -191,7 +191,7 @@ $(document).ready(function(){
     display($(this),true);
     // Gets the list (only for skills)
     if ($(this).attr("data-url") != "") {
-      name = $(this).parents('ul').attr("data-name");
+      name = $(this).closest('ul').attr("data-name");
       $.getJSON($(this).attr("data-url"), function(data) {
         editableListsData[name] = data;
       });
@@ -220,7 +220,7 @@ $(document).ready(function(){
     .on("keyup", function(e) {
       if (e.which == '13'){ // Trigger a save with the Return key for tags
         e.preventDefault();
-        target = $(this).parents('ul');
+        target = $(this).closest('ul');
         name = target.attr("data-name");
         key = $(this).val();
         url = target.attr("data-url");
@@ -234,7 +234,7 @@ $(document).ready(function(){
     });
   // We bind to document because we don't have the element yet
   $(document).on('click', "ul#results li", function(){
-    target = $(this).parent('ul').parents('ul');
+    target = $(this).parent('ul').closest('ul');
     name = target.attr("data-name");
     key = $(this).attr("rel");
     url = target.attr("data-url");
