@@ -268,6 +268,7 @@ ul.resources {
       vertical-align: top;
     }
     & > span {
+      @include ellipsis($column*6 - $gutter*2);
       @include media($tablet) {
         @include ellipsis(65%);
       }
@@ -275,9 +276,11 @@ ul.resources {
     & > span, & > i {
       line-height: 31px;
       display: inline-block;
+      vertical-align: middle;
     }
     & > a {
       display: inline-block;
+      vertical-align: middle;
       margin: 0 5px;
       @include media($tablet) {
         float: right;
@@ -289,6 +292,7 @@ ul.resources {
       display: inline-block;
       float: right;
       line-height: 31px;
+      @include ellipsis($column*5 - $gutter);
       @include media($tablet, $mobile) {
         display: none;
       }
@@ -296,15 +300,22 @@ ul.resources {
     & > .details {
       display: none;
       border-top: 1px solid $_sensible;
-      height: 150px;
+      height: 200px;
       margin: 20px 40px;
+      @include media($tablet, $mobile) {
+        margin-left: 0;
+        margin-right: 0;
+      }
       padding-top: 20px;
       position: relative;
       & > * {
         margin-bottom: 10px;
       }
-      & > span, & > em {
+      & > em {
         display: block;
+      }
+      & > span, & > em.filename {
+        display: inline-block;
       }
       & > h2 {
         margin-top: 0;
@@ -317,6 +328,16 @@ ul.resources {
         border-top: 1px solid $_sensible;
         padding-top: 10px;
         margin-top: 15px;
+        @include media($tablet) {
+          @include fill-parent();
+          & > i { display: none; }
+          & > span { @include span-columns(3 of 4); }
+          & > input[type=file] { @include span-columns(2 of 4); }
+          & > input[type=submit] { @include span-columns(1 of 4); }
+        }
+        @include media($mobile) {
+          display: none;
+        }
         & > * { 
           line-height: 25px;
           vertical-align: top;
@@ -335,11 +356,20 @@ ul.resources {
         & > a.delete {
           float: right;
           color: $_red;
+          @include media($tablet) {
+            @include span-columns(1 of 4);
+            @include omega;
+            float: none;
+            display: inline-block;
+          }
         }
       }
     }
     &.detailed {
-      height: 240px;
+      height: 280px;
+      @include media($tablet) {
+        height: 300px;
+      }
       background: $_container;
       & > .details {
         display: block
