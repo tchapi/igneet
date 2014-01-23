@@ -53,7 +53,7 @@
                   <span>{{ "tags.none"|trans }}</span>
                 {% endif %}
                 {% spaceless %}
-                <ul data-url="{{ path('p_show_project_resource_edit', {'uid': base.project.id|to_uid, 'resource_uid': resource.id|to_uid, 'token': csrf_token('editResource')  }) }}" data-emptytext="{{ "resource.tags.emptyText"|trans }}" contenteditable="list" data-name="tags">
+                <ul data-url="{{ path('p_show_project_resource_edit', {'uid': base.project.id|to_uid, 'resource_uid': resource.id|to_uid, 'token': csrf_token('edit')  }) }}" data-emptytext="{{ "resource.tags.emptyText"|trans }}" contenteditable="list" data-name="tags">
                 {% for tag in resource.tags %}
                   <li {% if tag.color %}style="border: 1px solid #{{ tag.color }}" {% endif %}rel="{{ tag.name }}">
                   {% if base.canEdit %}

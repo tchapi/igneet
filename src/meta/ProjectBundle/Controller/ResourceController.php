@@ -231,7 +231,7 @@ class ResourceController extends BaseController
                 $objectHasBeenModified = false;
                 $em = $this->getDoctrine()->getManager();
 
-                if ( $_SERVER['REQUEST_METHOD'] == 'POST' && empty($_POST) && empty($_FILES) && $_SERVER['CONTENT_LENGTH'] > 0 )
+                if ($request->request->get('name') == "file" && $_SERVER['REQUEST_METHOD'] == 'POST' && empty($_POST) && empty($_FILES) && $_SERVER['CONTENT_LENGTH'] > 0 )
                 {      
                     $displayMaxSize = ini_get('post_max_size');
                     switch ( substr($displayMaxSize,-1) ) {
@@ -298,27 +298,28 @@ class ResourceController extends BaseController
 
                         break;
                     case 'tags':
-                        $tagsAsArray = array_map('strtolower', $request->request->get('value'));
 
-                        $resource->clearTags();
+                        $tag = strtolower($request->request->get('key'));
 
                         $tagRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Behaviour\Tag');
-                        $existingTags = $tagRepository->findBy(array('name' => $tagsAsArray));
-                        $existingTagNames = array();
+                        $existingTag = $tagRepository->findOneBy(array('name' => $tag));
 
-                        foreach ($existingTags as $tag) {
-                          $resource->addTag($tag);
-                          $existingTagNames[] = $tag->getName();
+                        if ($request->request->get('value') == 'remove' && $existingTag && $resource->hasTag($existingTag)) {
+                            $resource->removeTag($existingTag);
+                            $objectHasBeenModified = true;
+                        } else if ($request->request->get('value') == 'add' && $existingTag && !$resource->hasTag($existingTag)) {
+                            $resource->addTag($existingTag);
+                            $objectHasBeenModified = true;
+                            $response = json_encode(array('name' => $existingTag->getName(), 'color' => $existingTag->getColor()));
+                        } else if ($request->request->get('value') == 'add' && !$existingTag ){
+                            $newTag = new Tag($tag);
+                            $em->persist($newTag);
+                            $resource->addTag($newTag);
+                            $objectHasBeenModified = true;
+                        } else {
+                            $error = $this->get('translator')->trans('invalid.request', array(), 'errors'); // tag already in the page
                         }
 
-                        foreach ($tagsAsArray as $name) {
-                          if ( in_array($name, $existingTagNames) ){ continue; }
-                          $tag = new Tag($name);
-                          $em->persist($tag);
-                          $resource->addTag($tag);
-                        }
-
-                        $objectHasBeenModified = true;
                         break;
                 }
 
