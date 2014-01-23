@@ -454,7 +454,17 @@ section > .jump {
       }
       & > a.page_title {
         padding-left: 15px;
+        @include ellipsis($column*4 - $gutter*1.5);
         &:hover { color: $_primary; }
+      }
+      & ul li a.page_title {
+        @include ellipsis($column*4 - $gutter*2.25);
+      }
+      & ul li ul li a.page_title {
+        @include ellipsis($column*4 - $gutter*3);
+      }
+      & ul li ul li ul li a.page_title {
+        @include ellipsis($column*4 - $gutter*3.75);
       }
       & > a + a.page_title {
         padding-left: 0px;
@@ -493,6 +503,7 @@ section > .jump {
     width: 15px;
     text-align: center;
     color: $_discrete;
+    vertical-align: top;
   }
   &:not(.open) {
     ul, span, a:not(.toggle) { display: none; }
