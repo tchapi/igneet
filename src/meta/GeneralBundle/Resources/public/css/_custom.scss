@@ -282,6 +282,7 @@ section > .jump {
       @include fill-parent();
       border-right: none;
       padding-right: 0;
+      margin-bottom: 20px;
     }
   }
   & > span { 
@@ -324,16 +325,28 @@ section > .jump {
       & > a.page_title {
         padding-left: 15px;
         @include ellipsis($column*4 - $gutter*1.5);
+        @include media($tablet) {
+          @include ellipsis(66%);
+        }
         &:hover { color: $_primary; }
       }
       & ul li a.page_title {
         @include ellipsis($column*4 - $gutter*2.25);
+        @include media($tablet) {
+          @include ellipsis(63%);
+        }
       }
       & ul li ul li a.page_title {
         @include ellipsis($column*4 - $gutter*3);
+        @include media($tablet) {
+          @include ellipsis(60%);
+        }
       }
       & ul li ul li ul li a.page_title {
         @include ellipsis($column*4 - $gutter*3.75);
+        @include media($tablet) {
+          @include ellipsis(58%);
+        }
       }
       & > a + a.page_title {
         padding-left: 0px;
@@ -378,6 +391,9 @@ section > .jump {
     ul, span, a:not(.toggle) { display: none; }
     a.toggle {
       @include transform(rotateY(180deg));
+      @include media($tablet) {
+        right: -30px;
+      }
     }
   }
 }
