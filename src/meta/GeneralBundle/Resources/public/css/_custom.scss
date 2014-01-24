@@ -292,7 +292,8 @@ ul.resources {
       display: inline-block;
       float: right;
       line-height: 31px;
-      @include ellipsis($column*5 - $gutter);
+      @include ellipsis($column*5 - 2*$gutter);
+      direction: rtl;
       @include media($tablet, $mobile) {
         display: none;
       }
@@ -300,7 +301,7 @@ ul.resources {
     & > .details {
       display: none;
       border-top: 1px solid $_sensible;
-      height: 200px;
+      height: auto;
       margin: 20px 40px;
       @include media($tablet, $mobile) {
         margin-left: 0;
@@ -331,9 +332,6 @@ ul.resources {
         @include media($tablet) {
           @include fill-parent();
           & > i { display: none; }
-          & > span { @include span-columns(3 of 4); }
-          & > input[type=file] { @include span-columns(2 of 4); }
-          & > input[type=submit] { @include span-columns(1 of 4); }
         }
         @include media($mobile) {
           display: none;
@@ -345,12 +343,21 @@ ul.resources {
         & > span {
           display: inline-block;
           @include ellipsis(740px);
+          @include media($tablet) {
+            @include span-columns(3 of 4);
+          }
         }
         & > input {
           width: auto;
+          @include media($tablet) {
+            @include span-columns(2 of 4);
+          }
           &[type=submit] {
             height: 28px;
             padding: 0;
+            @include media($tablet) {
+              @include span-columns(1 of 4);
+            }
           }
         }
         & > a.delete {
@@ -360,22 +367,20 @@ ul.resources {
             @include span-columns(1 of 4);
             @include omega;
             float: none;
-            display: inline-block;
+            display: inline-block;   
+            text-align: right;
           }
         }
       }
     }
     &.detailed {
-      height: 280px;
-      @include media($tablet) {
-        height: 300px;
-      }
+      height: auto;
       background: $_container;
       & > .details {
         display: block
       }
       & > ul.tags {
-        display: none;
+        display: none; // no tags inline when opened
       }
     }
   }
