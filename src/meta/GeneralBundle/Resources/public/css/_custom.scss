@@ -71,181 +71,7 @@ a.button, input[type=submit].button, button {
 @import "styles/pagination";
 @import "styles/social";
 
-// @import "styles/_timeline";
-
-.label-comments {
-  @include fill-parent();
-  margin: 0 0 30px;
-  color: $_primary;
-  font-size: 1.8em;
-}
-
-.comment {
-  @include row();
-  @include clearfix;
-  & > .avatar {
-    @include span-columns(1 of 12);
-    & > img {
-      border-radius: 50%;
-      height: $column - $gutter;
-      width: $column - $gutter;
-    }
-    @include media ($tablet, $mobile) {
-      display: none;
-    }
-  }
-  & > form {
-    @include span-columns(11 of 12);
-    @include media ($tablet, $mobile) {
-      @include fill-parent();
-    }
-    & > textarea {
-      margin-top: 0;
-      margin-bottom: 0;
-      @include span-columns(12 of 12);
-      @include media ($desktop) {
-        @include omega;
-      }
-      @include media ($tablet) {
-        @include span-columns(3 of 4);
-      }
-      @include media ($mobile) {
-        @include fill-parent();
-        height: $column - $gutter;
-      }
-      border: none;
-      background: white;
-      height: $column - $gutter;
-      resize: none; 
-    }    
-    & > input[type=submit] {
-      margin: 14px 0;
-      @include span-columns(2 of 12);
-      @include shift(10);
-      @include media ($tablet) {
-        @include shift(0);
-        @include span-columns(1 of 4);
-        margin-top: 0;
-        height: $column - $gutter;
-      }
-      @include media ($mobile) {
-        @include shift(0);
-        @include fill-parent();
-      }
-    }
-  }
-}
-
-$comment_box_height : 70px;
-ul.timeline {
-  margin: 0;
-  padding: 0;
-  list-style-type: none;
-  @include fill-parent();
-  & > li { 
-    position: relative;
-    @include fill-parent();
-    &.step {
-      margin: 50px 0;
-      text-transform: uppercase;
-      text-align: center;
-      font-size: 1.2em;
-      color: $_discrete;
-    }
-    &:not(.step) {
-      min-height: $comment_box_height + $gutter*2;
-      background: $_container;
-      display: block;
-      margin: $gutter/2 0;
-      padding: $gutter;
-    }
-    & > i {
-      color: $_muted;
-      display: inline-block;
-      margin-left: $gutter/2;
-      font-size: 0.8em;
-    }
-    & > .avatar {
-      float: left;
-      margin-right: $gutter;
-      & img { border-radius: 50%; height: $comment_box_height; width: $comment_box_height; }
-    }
-    & > .date {
-      color: $_text-secondary;
-      display: inline-block;
-      margin-bottom: $gutter/2;
-      font-size: 0.8em;
-      font-family: 'gotham_medium';
-      vertical-align: baseline;
-    }
-    & > .actions {
-      // actions : validate and delete for comments
-      position: absolute;
-      right: $gutter;
-      top: $gutter/2;
-      & > .validation > .validate-trigger + span {
-        display: inline-block;
-        margin: 0 10px;
-        color: $_discrete;
-      }
-      & > .delete-trigger {
-        display: inline-block;
-        padding-left: 10px;
-        border-left: 1px solid $_sensible;
-        color: $_sensible;
-      }
-    }
-    & > .text {
-      font-family: 'gotham_light';
-      font-size: 0.9em;
-      display: block;
-    }
-    & > .count {
-      padding-left: 5px;
-    }
-    &.deleted {
-      @include media($tablet, $mobile) {
-        display: none;
-      }
-    }
-  }
-  &.notifications {
-    @include clearfix;
-    & > li:not(.step) { border: 1px solid rgba($_sensible,0.5); }
-    & > li.unseen { 
-      background: rgba($_secondary,0.1);
-      border: 1px solid $_secondary;
-    }
-  }
-}
-
-// For comments in a full page, on a dark background
-.wrapper.comment {
-  .comment {
-    margin-bottom: $gutter*1.5;
-    & > form > textarea { 
-      background: $_sensible-dark; 
-      color: white;
-    }
-  }
-  ul.timeline {
-    & > li {
-      & > .date { color: $_primary; }
-      & > .actions { top: $gutter; }
-    }
-    & > li:not(.step) {
-      min-height: $comment_box_height + $gutter*1.5*2;
-      background: none;
-      margin: 0;
-      padding: $gutter*1.5 $gutter;
-      border-top: 2px solid $_sensible-dark;
-    }
-  }
-}
-
-section.notifications.none {
-  text-align: center;
-}
+@import "styles/_timeline";
 
 // Page-specific
 @import "styles/settings";
@@ -449,6 +275,14 @@ section > .jump {
     border-right: 1px dashed $_sensible;
     padding-right: 15px;
     position: relative;
+    @include media($tablet) {
+      @include span-columns(2 of 4);
+    }
+    @include media($mobile) {
+      @include fill-parent();
+      border-right: none;
+      padding-right: 0;
+    }
   }
   & > span { 
     display: inline-block;
@@ -549,30 +383,25 @@ section > .jump {
 }
 
 .label-title {
-  @include span-columns(11 of 12);
-  @include omega;
+  @include fill-parent();
   margin-bottom: 10px;
   font-size: 1.8em;
 }
 
 .label-tags {
-  @include span-columns(11 of 12);
-  @include omega;
+  @include fill-parent();
   margin-bottom: 10px;
   color: $_primary;
-    
   & > span {
     display: inline-block;
   }
-
   & > ul {
     @include tokens;
   }
 }
 
 .content-wiki {
-  @include span-columns(12 of 12);
-  @include omega;
+  @include fill-parent();
   & .redactor_box > .redactor_editor { min-height: 500px !important; }
 }
 
@@ -581,4 +410,11 @@ section > .jump {
 .open ~ .content-wiki {
   @include span-columns(7 of 12);
   @include omega;
+  @include media($tablet) {
+    @include span-columns(2 of 4);
+    @include omega;
+  }
+  @include media($mobile) {
+    @include fill-parent();
+  }
 }
