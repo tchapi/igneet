@@ -206,10 +206,6 @@ class UserController extends Controller
                     $authenticatedUser->setHeadline($request->request->get('value'));
                     $objectHasBeenModified = true;
                     break;
-                case 'email':
-                    $authenticatedUser->setEmail($request->request->get('value'));
-                    $objectHasBeenModified = true;
-                    break;
                 case 'about':
                     $authenticatedUser->setAbout($request->request->get('value'));
                     $deepLinkingService = $this->container->get('deep_linking_extension');
