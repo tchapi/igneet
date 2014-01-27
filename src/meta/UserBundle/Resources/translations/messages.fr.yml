@@ -186,3 +186,4 @@ user:
       subject: "Quoi de neuf sur igneet récemment"
       intro: "Voici un résumé de ce que vous avez raté sur igneet depuis votre dernier passage dans la communauté %community%."
       intro.generic: "Voici un résumé de tout ce que vous avez raté sur igneet depuis votre dernier passage."
+      more: "... et d'autres encore."

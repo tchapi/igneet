@@ -7,7 +7,7 @@
   <section>
     <ul class="timeline">
       {% set currentDate = "now"|date_modify("+1 day") %}
-      {% for notification in notifications %}
+      {% for notification in notifications|slice(0, 10) %}
 
         {% if notification['createdAt']|date('Y-m-d') < currentDate|date('Y-m-d') %}
           <li class="dateWrapper date"><div class="date-wrapper"><div class="date">{{ notification['createdAt']|date("date.timeline"|trans({}, "messages", locale)) }}</div></div></li>
@@ -17,6 +17,9 @@
         <li class="logWrapper full"><div class="log{% if notification['createdAt']|date('c') > lastNotified|date('c') %} bold{% endif %}">{{ notification['data']|raw }}</div></li>
 
       {% endfor %}
+      {% if notifications|length > 10 %}
+        <li>{{ "user.digest.mail.more"|trans }}</li>
+      {% endif %}
     </ul>
   </section>
 {% else %}

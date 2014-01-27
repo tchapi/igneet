@@ -186,3 +186,4 @@ user:
       subject: "What's happening on igneet lately"
       intro: "This is a digest of the notifications you haven't seen yet for the community %community%."
       intro.generic: "This is a digest of all the notifications you haven't seen yet on igneet."
+      more: "... and more."
