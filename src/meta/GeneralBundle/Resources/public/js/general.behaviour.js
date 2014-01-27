@@ -46,6 +46,21 @@ $(document).ready(function(){
     // ** Others ? **
   });
 
+  /*
+   * Mark notifications as read
+   */
+  $("#markRead").click(function(e){
+    $.post($(this).attr('data-url'))
+    .success(function(data){
+      if (data.redirect) {
+        window.location.replace(data.redirect);
+      }
+    })
+    .error(function(){
+      alertify.error(Translator.trans('alert.error.saving.changes'));
+    });
+  });
+
   // Choose a user - select box that allows for a choice not in the community
   $("select#communityUsername").change(function(){
     if ($(this).val() == -1 ){

@@ -104,6 +104,7 @@ user:
     none: "Au top ! Vous n'avez rien manqué."
     see.more: "Voir toutes les notifications à compter du %date% ..."
     help: "Voir toutes les notifications"
+    mark.read: "Tout marquer comme vu"
   followers: "Mes abonnés"
   followings: "%user% suit"
   follow: "Suivre"

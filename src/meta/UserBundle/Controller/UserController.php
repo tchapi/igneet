@@ -148,10 +148,28 @@ class UserController extends Controller
 
         $notifications = array_merge(array('user' => $authenticatedUser), $logService->getNotifications($authenticatedUser, $date, null, null));
 
-        // Lastly, we update the last_notified_at date
-        $authenticatedUser->setLastNotifiedAt(new \DateTime('now'));
+        // Lastly, we update the last_notified_at date <-- No more !
+        // $authenticatedUser->setLastNotifiedAt(new \DateTime('now'));
 
         return $this->render('metaUserBundle:User:showNotifications.html.twig', $notifications);
+    }
+
+    /*
+     * Mark all notifications as read
+     */
+    public function markNotificationsReadAction(Request $request)
+    {
+        
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('markRead', $request->get('token')))
+            return new Response($this->get('translator')->trans('invalid.token', array(), 'errors'), 400);
+
+        $authenticatedUser = $this->getUser();
+        $authenticatedUser->setLastNotifiedAt(new \DateTime('now'));
+
+        $em = $this->getDoctrine()->getManager();
+        $em->flush();
+
+        return new Response(json_encode(array('redirect' => $this->generateUrl('u_show_user_notifications'))), 200, array('Content-Type'=>'application/json'));
     }
 
     /*

@@ -57,6 +57,12 @@ u_count_user_notifications:
     requirements:
         _method:  POST
 
+u_mark_read_notifications:
+    pattern:  /notifications/mark
+    defaults: { _controller: metaUserBundle:User:markNotificationsRead}
+    requirements:
+        _method:  POST
+
 u_edit_user_profile:
     pattern:  /who/{username}
     defaults: { _controller: metaUserBundle:User:edit }

@@ -104,6 +104,7 @@ user:
     none: "Great ! You didn't miss anything lately."
     see.more: "See more notifications starting from %date% ..."
     help: "See all notifications"
+    mark.read: "Mark all as read"
   followers: "My followers"
   followings: "%user% is following"
   follow: "Follow"
