@@ -62,6 +62,7 @@ twig:
         base_path: "%base_path%"
         uservoice_enabled: "%uservoice_enabled%"
         uservoice_id: "%uservoice_id%"
+        community_online_trigger: "%community.online_trigger%"
 
 # Assetic Configuration
 assetic:
@@ -137,3 +138,5 @@ parameters:
     # Communities
     community.demo_validity: '6 months' # Format : as in new \DateTime(now + $validity);
     community.viral_extension: '15 days' # idem
+    community.online_trigger: '5 minutes' # idem
+
