@@ -780,7 +780,7 @@ class IdeaController extends Controller
                 $authenticatedUser->addIdeasWatched($this->base['idea']);
 
                 $logService = $this->container->get('logService');
-                $logService->log($authenticatedUser, 'user_watch_idea', $idea, array());
+                $logService->log($authenticatedUser, 'user_watch_idea', $this->base['idea'], array());
 
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
