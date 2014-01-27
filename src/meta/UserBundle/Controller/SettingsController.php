@@ -43,8 +43,13 @@ class SettingsController extends Controller
 
             switch ($request->request->get('name')) {
                 case 'email':
-                    $authenticatedUser->setEmail($request->request->get('value'));
-                    $objectHasBeenModified = true;
+                    $email = $request->request->get('value');
+                    if (trim($email) != "") {
+                        $authenticatedUser->setEmail($email);
+                        $objectHasBeenModified = true;
+                    } else {
+                        $error = $this->get('translator')->trans('invalid.request', array(), 'errors');
+                    }
                     break;
                 case 'digestToggle':
                     $authenticatedUser->setEnableDigest(($request->request->get('value') == true));
