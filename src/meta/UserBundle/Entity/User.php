@@ -60,7 +60,7 @@ class User implements AdvancedUserInterface
     /**
      * @var string $email
      *
-     * @ORM\Column(name="email", type="string", length=255, unique=true)
+     * @ORM\Column(name="email", type="string", length=255, unique=true, nullable=true)
      * @Assert\NotBlank()
      * @Assert\Email()
      */
