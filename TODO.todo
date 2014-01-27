@@ -11,7 +11,8 @@ NEXT :
 
  ☐ Passer les arguments en array() au lieu de liste dans UserRepository
 
- ☐ Notifications globales : rajouter un bouton "Mark all as read" => ne pas modifier le notified _at par défaut
+ ☐ Liste d'items : encore a styler (ex: sur la page profil utilisateur)
+
  ☐ Sur les notifs, quand on clique et qu'elles sont a 0 affichées mettre directement une page présentant les anciennes
 
  ☐ Vérifier les inviteToken lors d'une inscription avec OpenId
