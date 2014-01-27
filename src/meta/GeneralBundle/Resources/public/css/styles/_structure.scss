@@ -65,7 +65,7 @@ body {
         @include media($tablet, $mobile) { 
           padding: 0px $gutter/2;
         }
-        &.list, &.info {
+        &.list, &.info, &.community {
           background: $_background;
           color: $_text-secondary;
         }
@@ -113,6 +113,7 @@ body {
 $horizontal-padding: 70px;
 body > .content-container header {
 
+  position: relative;
   @include row();
   padding-top: $horizontal-padding;
   padding-bottom: ($horizontal-padding - $gutter);

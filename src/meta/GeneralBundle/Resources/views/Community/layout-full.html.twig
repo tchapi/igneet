@@ -1,0 +1,19 @@
+{% extends '::base.html.twig' %}
+{% set template = 'full' %}
+
+{% block title %}{{ parent() }} > {{ "project.title"|trans }}{% endblock %}
+
+{% block container %}
+
+<div class="wrapper">
+  <header>
+  {% block header %}{% endblock %}
+  </header>
+  <nav role="navigation">
+  {% block navbar %}{% endblock %}
+  </nav>
+</div>
+
+{% block content %}{% endblock %}
+
+{% endblock %}

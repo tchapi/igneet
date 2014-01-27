@@ -1,11 +1,12 @@
-{% extends 'metaGeneralBundle:Community:layout.html.twig' %}
+{% extends 'metaGeneralBundle:Community:layout-full.html.twig' %}
 
 {% block title %}{{ parent() }} > {{ app.user.currentCommunity.name }} | {{ "community.home.title"|trans }}{% endblock %}
 
 {% block javascripts %}
   {{ parent() }}
   {% if isManager %}
-    {% javascripts '@metaGeneralBundle/Resources/public/js-edit/editable.behaviour.js' 
+    {% javascripts '@metaGeneralBundle/Resources/public/js-edit/editable.behaviour.js'
+                   '@metaGeneralBundle/Resources/public/js/comments.behaviour.js'  
             filter='?yui_js' %}
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
@@ -34,72 +35,79 @@
       <span{% if isManager %} data-url="{{ path('g_edit_community', {'token': csrf_token('edit') }) }}" data-name="headline" placeholder="{{ "community.createForm.headlinePlaceholder"|trans }}" data-type="text" data-last="{{ app.user.currentCommunity.headline }}" contenteditable="true" rich="false"{% endif %} title="{{ app.user.currentCommunity.headline }}">{{ app.user.currentCommunity.headline }}</span>
     </h3>
 
+    <h4>
+      <div>
+        <i class="fa fa-calendar"></i> {{ "community.createdOn"|trans({'%date%': app.user.currentCommunity.createdAt|date("date.fullFormat"|trans)}) }}
+      </div>
+    </h4>
+
     <p>{{ app.user.currentCommunity.about }}</p>
 
   </div>
 
-
-  {% if isManager %}
-  <div class="communityActions">
-    <p><a href="{{ path('g_invite') }}" class="btn btn-success"><i class="fa fa-user"></i> {{ "community.invite.short"|trans }}</a></p>
-    <p><a href="{{ path('g_manage_community') }}" class="btn btn-primary"><i class="fa fa-cogs"></i> {{ "community.manage.short"|trans }}</a></p>
-  </div>
-  {% endif %}
-
 {% endblock %}
 
 {% block content %}
+<div class="wrapper community">
+  
+  <div>
+   <section>
+  {% render(controller("metaGeneralBundle:Community:addCommunityComment")) %}
+
+  {% render(controller("metaGeneralBundle:Community:history", {'page' : 1})) %}
+
+  </section>
 
   {% if not isGuest %}
-  <section>
-    <div class="heading"><i class="fa fa-home"></i> {{ "community.home.recently.community"|trans }}</div>
-    <div class="row">
-
-      <span class="col-md-4">
-        <h4>{{ "community.home.last.ideas"|trans }}</h4>
-        {% if lastIdeas|length > 0 %}
-          <ul>
-          {% for idea in lastIdeas %}
-            <li><a href="{{ path('i_show_idea', { uid: idea.id|to_uid} ) }}">{{ idea.name }}</a> - <em>{{ "community.home.created.on"|trans({ '%date%': idea.createdAt|date("date.fullFormat"|trans) }) }}</em></li>
-          {% endfor %}
-          </ul>
-        {% else %}
-          <em class="muted">{{ "community.home.no.ideas"|trans }}</em>
-        {% endif %}
-      </span>
-
-      <span class="col-md-4">
-        <h4>{{ "community.home.last.projects"|trans }}</h4>
-        {% if lastProjects|length > 0 %}
-          <ul>
-          {% for project in lastProjects %}
-            <li><a href="{{ path('p_show_project', { uid: project.id|to_uid} ) }}">{{ project.name }}</a> - <em>{{ "community.home.created.on"|trans({ '%date%': project.createdAt|date("date.fullFormat"|trans) }) }}</em></li>
-          {% endfor %}
-          </ul>
-        {% else %}
-          <em class="muted">{{ "community.home.no.projects"|trans }}</em>
-        {% endif %}
-      </span>
-
-      <span class="col-md-4">
-        <h4>{{ "community.home.recentlyOnline"|trans }}</h4>
-        {% if recentlyOnlineUsers|length > 1 %}
-          <ul>
-          {% for user in recentlyOnlineUsers if (user != app.user) %}
-            <li>
-              <a href="{{ path('u_show_user_profile', {'username': user.username}) }}">
-                <img src="{{ user.avatar }}" title="{{ user.getFullName() }}" width="30" height="30" class="miniAvatar"/>
-              </a>
-            </li>
-          {% endfor %}
-          </ul>
-        {% else %}
-          <em class="muted">{{ "community.home.no.people"|trans }}</em>
-        {% endif %}
-      </span>
-
+  <div class="aside">
+    {% if isManager %}
+    <div>
+      <a class="button button-info" href="{{ path('g_invite') }}"><i class="fa fa-user"></i> {{ "community.invite.short"|trans }}</a>
+      <a class="button" href="{{ path('g_manage_community') }}"><i class="fa fa-cogs"></i> {{ "community.manage.short"|trans }}</a>
     </div>
-  </section>
+    {% endif %}
+    <div class="users">
+      <h4><i class="fa fa-group"></i> {{ "community.home.users"|trans }}</h4>
+      {% if users|length > 1 %}
+        <ul>
+        {% for user in users %}
+          <li{% if date(user.lastSeenAt) > date("now - " ~ community_online_trigger) %} class="online"{% endif %}>
+            <a href="{{ path('u_show_user_profile', {'username': user.username}) }}">
+              <img src="{{ user.avatar }}" title="{{ user.getFullName() }}" width="31px" height="31px"/>
+            </a>
+          </li>
+        {% endfor %}
+        </ul>
+      {% else %}
+        <em>{{ "community.home.no.people"|trans }}</em>
+      {% endif %}
+    </div>
+    <div class="objects">
+      <h4><i class="fa fa-lightbulb-o"></i> {{ "community.home.last.ideas"|trans }}</h4>
+      {% if lastIdeas|length > 0 %}
+        <ul>
+        {% for idea in lastIdeas %}
+          <li><a href="{{ path('i_show_idea', { uid: idea.id|to_uid} ) }}">{{ idea.name }}</a><em>{{ "community.home.created.on"|trans({ '%date%': idea.createdAt|date("date.format"|trans) }) }}</em></li>
+        {% endfor %}
+        </ul>
+      {% else %}
+        <em>{{ "community.home.no.ideas"|trans }}</em>
+      {% endif %}
+    </div>
+    <div class="objects">
+      <h4><i class="fa fa-paperclip"></i> {{ "community.home.last.projects"|trans }}</h4>
+      {% if lastProjects|length > 0 %}
+        <ul>
+        {% for project in lastProjects %}
+          <li><a href="{{ path('p_show_project', { uid: project.id|to_uid} ) }}">{{ project.name }}</a><em>{{ "community.home.created.on"|trans({ '%date%': project.createdAt|date("date.format"|trans) }) }}</em></li>
+        {% endfor %}
+        </ul>
+      {% else %}
+        <em>{{ "community.home.no.projects"|trans }}</em>
+      {% endif %}
+    </div>
+  </div>
   {% endif %}
-
+</div>
+</div>
 {% endblock %}

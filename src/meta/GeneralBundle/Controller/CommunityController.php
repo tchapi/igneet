@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller,
     Symfony\Component\HttpFoundation\Response;
 
 use meta\GeneralBundle\Entity\Community\Community,
+    meta\GeneralBundle\Entity\Comment\CommunityComment,
     meta\UserBundle\Entity\UserCommunity,
     meta\UserBundle\Entity\UserInviteToken,
     meta\GeneralBundle\Form\Type\CommunityType;
@@ -51,6 +52,10 @@ class CommunityController extends Controller
             // Is the user manager or guest ?
             $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'deleted_at' => null));
             
+            // ALL USERS as a mosaik with dot indicating number of recent actions (> 9  : show a '+') 
+            $userRepository = $this->getDoctrine()->getRepository('metaUserBundle:User');
+            $allUsers = $userRepository->findAllUsersInCommunityExceptMe($authenticatedUser, $community, false); // Without guests (false)
+
             // Last ideas
             $ideaRepository = $this->getDoctrine()->getRepository('metaIdeaBundle:Idea');
             $lastIdeas = $ideaRepository->findLastIdeasInCommunityForUser(array('community' => $community, 'user' => $authenticatedUser, 'max' => 3));
@@ -58,10 +63,6 @@ class CommunityController extends Controller
             // Last projects
             $projectRepository = $this->getDoctrine()->getRepository('metaProjectBundle:StandardProject');
             $lastProjects = $projectRepository->findLastProjectsInCommunityForUser(array('community' => $community, 'user' => $authenticatedUser, 'max' => 3));
-
-            // Actually connected
-            $userRepository = $this->getDoctrine()->getRepository('metaUserBundle:User');
-            $recentlyOnlineUsers = $userRepository->findAllRecentlyOnlineUsersInCommunity(array('community' => $community, 'time' => new \DateTime('now - 5 minutes')));
 
             $targetPictureAsBase64 = array('slug' => 'metaGeneralBundle:Community:edit', 'params' => array(), 'crop' => true, 'filetypes' => array('png', 'jpg', 'jpeg', 'gif'));
 
@@ -71,7 +72,7 @@ class CommunityController extends Controller
                         'targetPictureAsBase64' => base64_encode(json_encode($targetPictureAsBase64)),
                         'lastProjects' => $lastProjects,
                         'lastIdeas' => $lastIdeas,
-                        'recentlyOnlineUsers' => $recentlyOnlineUsers));
+                        'users' => $allUsers));
 
         } else { // Or in your private space ?
 
@@ -374,6 +375,67 @@ class CommunityController extends Controller
         }
 
     }
+ 
+    /*
+     * Output the comment form for a community or add a comment to a community when POST
+     */
+    public function addCommunityCommentAction(Request $request){
+
+        $authenticatedUser = $this->getUser();
+        $community = $authenticatedUser->getCurrentCommunity();
+
+        if ( !is_null($community) && $community){
+
+            $comment = new CommunityComment();
+            $form = $this->createFormBuilder($comment)
+                ->add('text', 'textarea', array('attr' => array('placeholder' => $this->get('translator')->trans('comment.placeholder') )))
+                ->getForm();
+
+            if ($request->isMethod('POST')) {
+
+                $form->bind($request);
+
+                if ($form->isValid()) {
+
+                    $comment->setUser($this->getUser());
+                    $community->addComment($comment);
+                    
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($comment);
+                    $em->flush();
+
+                    $logService = $this->container->get('logService');
+                    $logService->log($this->getUser(), 'user_comment_community', $community, array());
+
+                    $this->get('session')->getFlashBag()->add(
+                        'success',
+                        $this->get('translator')->trans('comment.added')
+                    );
+
+                } else {
+
+                   $this->get('session')->getFlashBag()->add(
+                        'error',
+                        $this->get('translator')->trans('information.not.valid', array(), 'errors')
+                    );
+                }
+
+                return $this->redirect($this->generateUrl('g_home_community'));
+
+            } else {
+
+                $route = $this->get('router')->generate('g_community_comment');
+
+                return $this->render('metaGeneralBundle:Comment:commentBox.html.twig', 
+                    array('object' => $community, 'route' => $route, 'form' => $form->createView()));
+
+            }
+
+        }
+
+        throw $this->createNotFoundException($this->get('translator')->trans('community.not.found'));
+
+    }
 
     /*
      * Display invite page or invite a user in a community by username or email
@@ -651,6 +713,110 @@ class CommunityController extends Controller
         }
 
         return $this->redirect($this->generateUrl('g_manage_community'));
+    }
+
+    /* ********************************************************************* */
+    /*                           Non-routed actions                          */
+    /* ********************************************************************* */
+
+    /*
+     * Output the timeline history
+     */
+    public function historyAction($page)
+    {
+
+        $authenticatedUser = $this->getUser();
+        $community = $authenticatedUser->getCurrentCommunity();
+
+        if ( is_null($community)){
+            return null;
+        }
+
+        $format = $this->get('translator')->trans('date.timeline');
+        $this->timeframe = array( 'today' => array( 'name' => $this->get('translator')->trans('date.today'), 'data' => array()),
+                            'd-1'   => array( 'name' => $this->get('translator')->trans('date.yesterday'), 'data' => array() ),
+                            'd-2'   => array( 'name' => $this->get('translator')->trans('date.timeline', array( "%days%" => 2)), 'data' => array() ),
+                            'd-3'   => array( 'name' => $this->get('translator')->trans('date.timeline', array( "%days%" => 3)), 'data' => array() ),
+                            'd-4'   => array( 'name' => $this->get('translator')->trans('date.timeline', array( "%days%" => 4)), 'data' => array() ),
+                            'd-5'   => array( 'name' => $this->get('translator')->trans('date.timeline', array( "%days%" => 5)), 'data' => array() ),
+                            'd-6'   => array( 'name' => $this->get('translator')->trans('date.timeline', array( "%days%" => 6)), 'data' => array() ),
+                            'before'=> array( 'name' => $this->get('translator')->trans('date.past.week'), 'data' => array() )
+                            );
+
+        $repository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\BaseLogEntry');
+        $entries = $repository->findByCommunity($community);
+
+        $history = array();
+
+        // Logs
+        $log_types = $this->container->getParameter('general.log_types');
+        $logService = $this->container->get('logService');
+
+        foreach ($entries as $entry) {
+          
+          if ($log_types[$entry->getType()]['displayable'] === false ) continue; // We do not display them
+
+          $text = $logService->getHTML($entry);
+          $createdAt = date_create($entry->getCreatedAt()->format('Y-m-d H:i:s')); // not for display
+
+          $history[] = array( 'createdAt' => $createdAt, 'text' => $text, 'deleted' => false, 'groups' => $log_types[$entry->getType()]['filter_groups']);
+        
+        }
+
+        // Comments
+        foreach ($community->getComments() as $comment) {
+
+          $text = $logService->getHTML($comment);
+          $createdAt = date_create($comment->getCreatedAt()->format('Y-m-d H:i:s')); // not for display
+
+          $history[] = array( 'createdAt' => $createdAt, 'text' => $text, 'deleted' => $comment->isDeleted(), 'groups' => array('comments') );
+
+        }
+
+        // Sort !
+        if (!function_exists('meta\GeneralBundle\Controller\build_sorter')) {
+          function build_sorter($key) {
+              return function ($a, $b) use ($key) {
+                  return $a[$key]>$b[$key];
+              };
+          }
+        }
+        usort($history, build_sorter('createdAt'));
+        
+        // Now put the entries in the correct timeframes
+        $startOfToday = date_create('midnight');
+        $before = date_create('midnight 6 days ago');
+        $filter_groups = array();
+
+        foreach ($history as $historyEntry) {
+          
+          if ( $historyEntry['createdAt'] > $startOfToday ) {
+            
+            // Today
+            array_unshift($this->timeframe['today']['data'], array( 'text' => $historyEntry['text'], 'deleted' => $historyEntry['deleted'], 'groups' => $historyEntry['groups']) );
+
+          } else if ( $historyEntry['createdAt'] < $before ) {
+
+            // Before
+            array_unshift($this->timeframe['before']['data'], array( 'text' => $historyEntry['text'], 'deleted' => $historyEntry['deleted'], 'groups' => $historyEntry['groups']) );
+
+          } else {
+
+            // Last seven days, by day
+            $days = date_diff($historyEntry['createdAt'], $startOfToday)->days + 1;
+
+            array_unshift($this->timeframe['d-'.$days]['data'], array( 'text' => $historyEntry['text'], 'deleted' => $historyEntry['deleted'], 'groups' => $historyEntry['groups']) );
+
+          }
+          
+          $filter_groups = array_merge_recursive($filter_groups,$historyEntry['groups']);
+
+        }
+
+        return $this->render('metaGeneralBundle:Timeline:timelineHistory.html.twig', 
+            array('timeframe' => $this->timeframe,
+                  'filter_groups' => array_unique($filter_groups)));
+
     }
 
 }

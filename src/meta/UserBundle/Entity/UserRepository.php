@@ -300,32 +300,6 @@ class UserRepository extends EntityRepository implements UserProviderInterface
   }
 
   /*
-   * Find all users for which last_seen_at is close to 'now'
-   */
-  public function findAllRecentlyOnlineUsersInCommunity($options)
-  {
-
-    if ($options['community'] === null){
-      return null;
-    }
-
-    $qb = $this->getEntityManager()->createQueryBuilder();
-
-    $query = $qb->select('u')
-            ->from('metaUserBundle:User', 'u')
-            ->leftJoin('u.userCommunities', 'uc')
-            ->leftJoin('uc.community', 'c')
-            ->where('u.deleted_at IS NULL')
-            ->andWhere('c = :community')
-            ->setParameter('community', $options['community'])
-            ->andWhere('u.last_seen_at > :time')
-            ->setParameter('time', $options['time']);
-
-    return  $query->getQuery()
-                  ->getResult();
-  }
-
-  /*
    * Find a community that is common to the two users and returns it (the community!)
    */
   public function findCommonCommunity($user1, $user2)

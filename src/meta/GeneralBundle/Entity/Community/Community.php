@@ -111,6 +111,13 @@ class Community
     private $userCommunities;
 
     /**
+     * Comments on this project (OWNING SIDE)
+     * @ORM\OneToMany(targetEntity="meta\GeneralBundle\Entity\Comment\CommunityComment", mappedBy="community", cascade="remove")
+     * @ORM\OrderBy({"created_at" = "DESC"})
+     **/
+    private $comments;
+
+    /**
      * Constructor
      */
     public function __construct($span = '1 month')
@@ -120,6 +127,8 @@ class Community
         $this->projects = new ArrayCollection();
         $this->ideas = new ArrayCollection();
         $this->usersCommunities = new ArrayCollection();
+
+        $this->comments = new ArrayCollection();
 
         // BILLING
         $this->type = "demo"; // By default, all communities are not _yet_ paid for
@@ -541,4 +550,44 @@ class Community
     {
         return $this->userCommunities;
     }
+
+    /**
+     * Add comment
+     *
+     * @param \meta\GeneralBundle\Entity\Comment\CommunityComment $comment
+     * @return Community
+     */
+    public function addComment(\meta\GeneralBundle\Entity\Comment\CommunityComment $comment)
+    {
+        if (!is_null($comment)){
+            $comment->setCommunity($this);
+        }
+        $this->comments[] = $comment;
+    
+        return $this;
+    }
+
+    /**
+     * Remove comment
+     *
+     * @param \meta\GeneralBundle\Entity\Comment\CommunityComment $comment
+     */
+    public function removeComment(\meta\GeneralBundle\Entity\Comment\CommunityComment $comment)
+    {
+        if (!is_null($comment)){
+            $comment->setCommunity(null);
+        }
+        $this->comments->removeElement($comment);
+    }
+
+    /**
+     * Get comments
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getComments()
+    {
+        return $this->comments;
+    }
+
 }

@@ -41,6 +41,7 @@ community:
     created.on: "Created on %date%"
     no.projects: "No new project in the community ..."
     no.ideas: "No new idea in the community ..."
+    users: "Community users"
     no.people: "No connected fellow members ..."
   picture:
     reset: "The picture for this community has successfully been reset."
@@ -76,6 +77,7 @@ community:
     headline: "Headline"
     headlinePlaceholder: "Give your community some nice catchline"
   created: "The community %community% has been created successfully. Start inviting your first teammates !"
+  createdOn: "Created on %date%"
 # File uploads
 file:
   choose: "Choose a file"

@@ -1,46 +1,45 @@
 
 ## TODO ##
 
-Todo - Priorités :
-
- ☐ Pagination de la timeline
-    
- ☐ Sur les notifs, quand on clique et qu'elles sont a 0 affichées mettre directement une page présentant les anciennes
-
-   ☐ + Deep linking : verifier a l'affichage que l'utilisateur a le droit de voir l'objet deep linké !
-   Sinon mettre en gras mais ne pas linker avec une icone oeil barré (?)
- 
- ☐ [Eric] Tri des resources dans la vue / resources
- ☐ Erreurs dans les formulaires de création : ils sont affichés n'importe comment a priori
-
- ☐ Faire des special announcements modifiables en backoffice pour annoncer des trucs a tous les utilisateurs : récupérer le % de vues etc
-
- ☐ 404 en mode non-auth ?
-
- ☐  Admin !!
- 
- ☐ commentaires en ajax
-
-   Combien de questions tu as résolu, combien d'actions tu as fait sur les projets / idées des autres
- import d'un dossier dropbox d'un projet automatiquement dans les ressources 
-
-limite les 10 dernieres notifs par mail
-
- ☐ thumbnails stocké sur les ressources?
-
-Travail de fond :
- 
- ☐ Passer les arguments en array() au lieu de liste ...
-
-Todo - Post-Passe-Créa :
-
- ☐ Faire une passe sur les titles/alt des liens d'éditions (les icon-pencils)
-
- ☐ Vérifier les inviteToken lors d'une inscription avec OpenId
+NEXT :
 
  ☐ lien sur le igneet logo en mode non-auth
 
- ☐  restreindre l'acces des fichiers uploadés si non loggé ?
+ ☐ 404 en mode non-auth ?
+
+ ☐ Refaire l'admin !!
+
+ ☐ Passer les arguments en array() au lieu de liste dans UserRepository
+
+ ☐ Notifications globales : rajouter un bouton "Mark all as read" => ne pas modifier le notified _at par défaut
+ ☐ Sur les notifs, quand on clique et qu'elles sont a 0 affichées mettre directement une page présentant les anciennes
+
+ ☐ Vérifier les inviteToken lors d'une inscription avec OpenId
+
+ ☐ Erreurs dans les formulaires de création : elles sont affichées n'importe comment a priori (A vérifier : déjà fixed ?)
+
+Simples :
+
+ ☐ Faire des special announcements modifiables en backoffice pour annoncer des trucs a tous les utilisateurs : récupérer le % de vues etc
+
+A évaluer :
+
+ ☐ + Deep linking : verifier a l'affichage que l'utilisateur a le droit de voir l'objet deep linké !
+   Sinon mettre en gras mais ne pas linker avec une icone oeil barré (?)
+ 
+ ☐ [Eric] Tri des resources dans la vue / resources
+
+ ☐ Restreindre l'acces des fichiers / ressources uploadés si non loggé (vaut aussi pour les images avatar)
+
+Complexe:
+
+ ☐ Lors de l'upload d'images en tant que ressources, passer les thumbnails en POST et les stocker dans les ressources pour les afficher a coté de la vue détail
+
+ ☐ Permettre l'mport d'un dossier dropbox d'un projet automatiquement dans les ressources 
+
+ ☐ Passer les commentaires en ajax plutot qu'en reload de pages
+
+ ☐ Pagination de la timeline
 
 Todo - Entity "Community" :
 

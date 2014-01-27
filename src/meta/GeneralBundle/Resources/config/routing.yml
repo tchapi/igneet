@@ -28,6 +28,10 @@ g_edit_community:
     pattern:  /community/edit
     defaults: { _controller: metaGeneralBundle:Community:edit }
 
+g_community_comment:
+    pattern:  /community/comment
+    defaults: { _controller: metaGeneralBundle:Community:addCommunityComment }
+
 g_edit_community_reset_picture:
     pattern:  /community/reset/picture
     defaults: { _controller: metaGeneralBundle:Community:resetPicture }
