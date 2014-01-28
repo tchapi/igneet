@@ -98,6 +98,7 @@ project:
     statusHelp: "What is the status of this project?"
   lists:
     title: "Lists"
+    open: "Toggle lists view"
     not.found: "This list does not exist."
     nameHelp: "Change the name of this list"
     descriptionHelp: "You can provide an optional description for this list"

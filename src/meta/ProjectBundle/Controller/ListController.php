@@ -19,7 +19,7 @@ class ListController extends BaseController
     /*
      * Show the lists tab
      */
-    public function showCommonListHomeAction($uid)
+    public function showListHomeAction($uid)
     {
         $menu = $this->container->getParameter('project.menu');
 
@@ -30,25 +30,25 @@ class ListController extends BaseController
 
         // Now we find the first ranked list
         $repository = $this->getDoctrine()->getRepository('metaProjectBundle:CommonList');
-        $commonList = $repository->findFirstInProject($this->base['project']->getId());
+        $list = $repository->findFirstInProject($this->base['project']->getId());
 
-        $commonLists = $repository->findAllInProject($this->base['project']->getId());
+        $lists = $repository->findAllInProject($this->base['project']->getId());
 
-        if (!$commonList && $this->base['canEdit']){
-          return $this->forward('metaProjectBundle:List:newCommonList', array('uid' => $uid));
+        if (!$list && $this->base['canEdit']){
+          return $this->forward('metaProjectBundle:List:newList', array('uid' => $uid));
         }
 
-        return $this->render('metaProjectBundle:List:showCommonList.html.twig', 
+        return $this->render('metaProjectBundle:Project:showList.html.twig', 
             array('base' => $this->base,
-                  'commonLists' => $commonLists,
-                  'commonList' => $commonList));
+                  'lists' => $lists,
+                  'list' => $list));
 
     }
 
     /*
      * Show the lists tab on a specific list
      */
-    public function showCommonListAction($uid, $list_uid)
+    public function showListAction($uid, $list_uid)
     {
         $menu = $this->container->getParameter('project.menu');
         $this->preComputeRights(array("mustBeOwner" =>false, "mustParticipate" => $menu['lists']['private']));
@@ -57,25 +57,25 @@ class ListController extends BaseController
           return $this->forward('metaProjectBundle:Base:showRestricted', array('uid' => $uid));
 
         $repository = $this->getDoctrine()->getRepository('metaProjectBundle:CommonList');
-        $commonList = $repository->findOneByIdInProject($this->container->get('uid')->fromUId($list_uid), $this->base['project']->getId());
+        $list = $repository->findOneByIdInProject($this->container->get('uid')->fromUId($list_uid), $this->base['project']->getId());
 
-        $commonLists = $repository->findAllInProject($this->base['project']->getId());
+        $lists = $repository->findAllInProject($this->base['project']->getId());
 
-        // Check if commonList belongs to project
-        if ( !$commonList ){
+        // Check if list belongs to project
+        if ( !$list ){
           throw $this->createNotFoundException($this->get('translator')->trans('project.lists.not.found'));
         }
 
-        return $this->render('metaProjectBundle:List:showCommonList.html.twig', 
+        return $this->render('metaProjectBundle:Project:showList.html.twig', 
             array('base' => $this->base,
-                  'commonLists' => $commonLists,
-                  'commonList' => $commonList));
+                  'lists' => $lists,
+                  'list' => $list));
     }
 
     /*
      * Rank the lists (via X-Editable)
      */
-    public function rankCommonListsAction(Request $request, $uid)
+    public function rankListsAction(Request $request, $uid)
     {
         $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => true));
 
@@ -87,8 +87,8 @@ class ListController extends BaseController
             foreach($ranks as $key => $list_uid)
             {
                 if ($list_uid == "") continue;
-                $commonList = $repository->findOneByIdInProject($this->container->get('uid')->fromUId($list_uid), $this->base['project']->getId());
-                if ($commonList) $commonList->setRank(intval($key));
+                $list = $repository->findOneByIdInProject($this->container->get('uid')->fromUId($list_uid), $this->base['project']->getId());
+                if ($list) $list->setRank(intval($key));
             }
 
             $em = $this->getDoctrine()->getManager();
@@ -109,15 +109,19 @@ class ListController extends BaseController
     /*
      * Display the form for a new list and process via POST
      */
-    public function newCommonListAction(Request $request, $uid)
+    public function newListAction(Request $request, $uid)
     {
+
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('newList', $request->get('token')))
+            return new Response($this->get('translator')->trans('invalid.token', array(), 'errors'), 400);
+
         $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => true));
 
         if ($this->access == false) 
           return $this->forward('metaProjectBundle:Base:showRestricted', array('uid' => $uid));
 
-        $commonList = new CommonList();
-        $form = $this->createFormBuilder($commonList)
+        $list = new CommonList();
+        $form = $this->createFormBuilder($list)
             ->add('name', 'text', array('label' => "project.lists.name"))
             ->add('description', 'text', array('required' => false, 'label' => "project.lists.description"))
             ->getForm();
@@ -128,22 +132,22 @@ class ListController extends BaseController
 
             if ($form->isValid()) {
 
-                $this->base['project']->addCommonList($commonList);
+                $this->base['project']->addCommonList($list);
                 $this->base['project']->setUpdatedAt(new \DateTime('now'));
 
                 $em = $this->getDoctrine()->getManager();
-                $em->persist($commonList);
+                $em->persist($list);
                 $em->flush();
 
                 $logService = $this->container->get('logService');
-                $logService->log($this->getUser(), 'user_create_list', $this->base['project'], array( 'list' => array( 'logName' => $commonList->getLogName(), 'identifier' => $commonList->getId()) ));
+                $logService->log($this->getUser(), 'user_create_list', $this->base['project'], array( 'list' => array( 'logName' => $list->getLogName(), 'identifier' => $list->getId()) ));
 
                 $this->get('session')->getFlashBag()->add(
                     'success',
-                    $this->get('translator')->trans('project.lists.created', array('%list%' => $commonList->getName()))
+                    $this->get('translator')->trans('project.lists.created', array('%list%' => $list->getName()))
                 );
 
-                return $this->redirect($this->generateUrl('p_show_project_list', array('uid' => $uid, 'list_uid' => $this->container->get('uid')->toUId($commonList->getId()) )));
+                return $this->redirect($this->generateUrl('p_show_project_list', array('uid' => $uid, 'list_uid' => $this->container->get('uid')->toUId($list->getId()) )));
            
             } else {
                
@@ -162,10 +166,10 @@ class ListController extends BaseController
     /*
      * Edit a list (via X-Editable)
      */
-    public function editCommonListAction(Request $request, $uid, $list_uid)
+    public function editListAction(Request $request, $uid, $list_uid)
     {
   
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('editCommonList', $request->get('token')))
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('editList', $request->get('token')))
             return new Response($this->get('translator')->trans('invalid.token', array(), 'errors'), 400);
 
         $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => true));
@@ -174,33 +178,33 @@ class ListController extends BaseController
         if ($this->access != false) {
 
             $repository = $this->getDoctrine()->getRepository('metaProjectBundle:CommonList');
-            $commonList = $repository->findOneByIdInProject($this->container->get('uid')->fromUId($list_uid), $this->base['project']->getId());
+            $list = $repository->findOneByIdInProject($this->container->get('uid')->fromUId($list_uid), $this->base['project']->getId());
 
-            if ($commonList) {
+            if ($list) {
 
                 $objectHasBeenModified = false;
                 $em = $this->getDoctrine()->getManager();
 
                 switch ($request->request->get('name')) {
                     case 'name':
-                        $commonList->setName($request->request->get('value'));
+                        $list->setName($request->request->get('value'));
                         $objectHasBeenModified = true;
                         break;
                     case 'description':
-                        $commonList->setDescription($request->request->get('value'));
+                        $list->setDescription($request->request->get('value'));
                         $objectHasBeenModified = true;
                         break;
                     case 'tags':
                         $tagsAsArray = array_map('strtolower', $request->request->get('value'));
 
-                        $commonList->clearTags();
+                        $list->clearTags();
 
                         $tagRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Behaviour\Tag');
                         $existingTags = $tagRepository->findBy(array('name' => $tagsAsArray));
                         $existingTagNames = array();
 
                         foreach ($existingTags as $tag) {
-                          $commonList->addTag($tag);
+                          $list->addTag($tag);
                           $existingTagNames[] = $tag->getName();
                         }
 
@@ -208,14 +212,14 @@ class ListController extends BaseController
                           if ( in_array($name, $existingTagNames) ){ continue; }
                           $tag = new Tag($name);
                           $em->persist($tag);
-                          $commonList->addTag($tag);
+                          $list->addTag($tag);
                         }
 
                         $objectHasBeenModified = true;
                         break;
                 }
 
-                $errors = $this->get('validator')->validate($commonList);
+                $errors = $this->get('validator')->validate($list);
 
                 if ($objectHasBeenModified === true && count($errors) == 0){
                     
@@ -223,7 +227,7 @@ class ListController extends BaseController
                     $em->flush();
 
                     $logService = $this->container->get('logService');
-                    $logService->log($this->getUser(), 'user_update_list', $this->base['project'], array( 'list' => array( 'logName' => $commonList->getLogName(), 'identifier' => $commonList->getId() ) ));
+                    $logService->log($this->getUser(), 'user_update_list', $this->base['project'], array( 'list' => array( 'logName' => $list->getLogName(), 'identifier' => $commonList->getId() ) ));
                 
                 } elseif (count($errors) > 0) {
 
@@ -253,10 +257,10 @@ class ListController extends BaseController
     /*
      * Delete a list
      */
-    public function deleteCommonListAction(Request $request, $uid, $list_uid)
+    public function deleteListAction(Request $request, $uid, $list_uid)
     {
   
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('deleteCommonList', $request->get('token')))
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('deleteList', $request->get('token')))
             return $this->redirect($this->generateUrl('p_show_project_list_home', array('uid' => $uid)));
 
         $this->preComputeRights(array("mustBeOwner" => false, "mutParticipate" => true));
@@ -264,23 +268,23 @@ class ListController extends BaseController
         if ($this->access != false) {
 
             $repository = $this->getDoctrine()->getRepository('metaProjectBundle:CommonList');
-            $commonList = $repository->findOneByIdInProject($this->container->get('uid')->fromUId($list_uid), $this->base['project']->getId());
+            $list = $repository->findOneByIdInProject($this->container->get('uid')->fromUId($list_uid), $this->base['project']->getId());
 
-            if ($commonList){
+            if ($list){
 
-                $this->base['project']->removeCommonList($commonList);
+                $this->base['project']->removeCommonList($list);
                 $this->base['project']->setUpdatedAt(new \DateTime('now'));
 
                 $logService = $this->container->get('logService');
-                $logService->log($this->getUser(), 'user_delete_list', $this->base['project'], array( 'list' => array( 'logName' => $commonList->getLogName() )) );
+                $logService->log($this->getUser(), 'user_delete_list', $this->base['project'], array( 'list' => array( 'logName' => $list->getLogName() )) );
 
                 $em = $this->getDoctrine()->getManager();
-                $em->remove($commonList);
+                $em->remove($list);
                 $em->flush();
 
                 $this->get('session')->getFlashBag()->add(
                     'success',
-                    $this->get('translator')->trans('project.lists.deleted', array( '%list%' => $commonList->getName()))
+                    $this->get('translator')->trans('project.lists.deleted', array( '%list%' => $list->getName()))
                 );
 
             } else {
@@ -301,46 +305,46 @@ class ListController extends BaseController
     /*
      * Create a new list item
      */
-    public function newCommonListItemAction($uid, $list_uid, $name)
+    public function newListItemAction($uid, $list_uid, $name)
     {
         $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => true));
 
         if ($this->access == false) 
           return $this->forward('metaProjectBundle:Base:showRestricted', array('uid' => $uid));
 
-        $commonListItem = new CommonListItem();
-        $commonListItem->setText($name);
+        $listItem = new CommonListItem();
+        $listItem->setText($name);
 
         $repository = $this->getDoctrine()->getRepository('metaProjectBundle:CommonList');
-        $commonList = $repository->findOneByIdInProject($this->container->get('uid')->fromUId($list_uid), $this->base['project']->getId());
+        $list = $repository->findOneByIdInProject($this->container->get('uid')->fromUId($list_uid), $this->base['project']->getId());
 
-        $commonList->addItem($commonListItem);
+        $list->addItem($listItem);
         $this->base['project']->setUpdatedAt(new \DateTime('now'));
 
         $em = $this->getDoctrine()->getManager();
-        $em->persist($commonListItem);
+        $em->persist($listItem);
         $em->flush();
 
         $logService = $this->container->get('logService');
-        $logService->log($this->getUser(), 'user_create_list_item', $this->base['project'], array( 'list' => array( 'logName' => $commonList->getLogName(), 'identifier' => $commonList->getId() ),
-                                                                                                           'list_item' => array( 'logName' => $commonListItem->getLogName() )) );
+        $logService->log($this->getUser(), 'user_create_list_item', $this->base['project'], array( 'list' => array( 'logName' => $list->getLogName(), 'identifier' => $list->getId() ),
+                                                                                                           'list_item' => array( 'logName' => $listItem->getLogName() )) );
 
         $this->get('session')->getFlashBag()->add(
             'success',
             $this->get('translator')->trans('project.lists.items.created')
         );
 
-        return $this->redirect($this->generateUrl('p_show_project_list', array('uid' => $uid, 'list_uid' => $this->container->get('uid')->toUId($commonList->getId()) )));
+        return $this->redirect($this->generateUrl('p_show_project_list', array('uid' => $uid, 'list_uid' => $this->container->get('uid')->toUId($list->getId()) )));
 
     }
 
     /*
      * Edit a list item (via X-Editable)
      */
-    public function editCommonListItemAction(Request $request, $uid, $list_uid, $item_uid)
+    public function editListItemAction(Request $request, $uid, $list_uid, $item_uid)
     {
   
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('editCommonListItem', $request->get('token')))
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('editListItem', $request->get('token')))
             return new Response($this->get('translator')->trans('invalid.token', array(), 'errors'), 400);
 
         $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => true));
@@ -350,18 +354,18 @@ class ListController extends BaseController
         if ($this->access != false) {
 
             $repository = $this->getDoctrine()->getRepository('metaProjectBundle:CommonList');
-            $commonList = $repository->findOneByIdInProject($this->container->get('uid')->fromUId($list_uid), $this->base['project']->getId());
+            $list = $repository->findOneByIdInProject($this->container->get('uid')->fromUId($list_uid), $this->base['project']->getId());
 
             $repository = $this->getDoctrine()->getRepository('metaProjectBundle:CommonListItem');
-            $commonListItem = $repository->findOneByIdInProjectAndList($this->container->get('uid')->fromUId($item_uid), $this->container->get('uid')->fromUId($list_uid), $this->base['project']->getId());
+            $listItem = $repository->findOneByIdInProjectAndList($this->container->get('uid')->fromUId($item_uid), $this->container->get('uid')->fromUId($list_uid), $this->base['project']->getId());
 
-            if ($commonList && $commonListItem) {
+            if ($list && $listItem) {
                 
                 $objectHasBeenModified = false;
 
                 switch ($request->request->get('name')) {
                     case 'text':
-                        $commonListItem->setText($request->request->get('value'));
+                        $listItem->setText($request->request->get('value'));
                         $deepLinkingService = $this->container->get('deep_linking_extension');
                         $response = $deepLinkingService->convertDeepLinks($request->request->get('value'));
                         $objectHasBeenModified = true;
@@ -369,7 +373,7 @@ class ListController extends BaseController
                 }
 
                 $validator = $this->get('validator');
-                $errors = $validator->validate($commonListItem);
+                $errors = $validator->validate($listItem);
 
                 if ($objectHasBeenModified === true && count($errors) == 0){
                     
@@ -378,8 +382,8 @@ class ListController extends BaseController
                     $em->flush();
 
                     $logService = $this->container->get('logService');
-                    $logService->log($this->getUser(), 'user_update_list_item', $this->base['project'], array( 'list' => array( 'logName' => $commonList->getLogName(), 'identifier' => $commonList->getId()),
-                                                                                                                       'list_item' => array( 'logName' => $commonListItem->getLogName() )) );
+                    $logService->log($this->getUser(), 'user_update_list_item', $this->base['project'], array( 'list' => array( 'logName' => $list->getLogName(), 'identifier' => $list->getId()),
+                                                                                                                       'list_item' => array( 'logName' => $listItem->getLogName() )) );
                 } elseif (count($errors) > 0) {
 
                     $error = $this->get('translator')->trans($errors[0]->getMessage()); 
@@ -408,10 +412,10 @@ class ListController extends BaseController
     /*
      * Delete a list item
      */
-    public function deleteCommonListItemAction(Request $request, $uid, $list_uid, $item_uid)
+    public function deleteListItemAction(Request $request, $uid, $list_uid, $item_uid)
     {
   
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('deleteCommonListItem', $request->get('token')))
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('deleteListItem', $request->get('token')))
             return $this->redirect($this->generateUrl('p_show_project_list', array('uid' => $uid, 'list_uid' => $this->container->get('uid')->fromUId($list_uid))));
 
         $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => true));
@@ -419,23 +423,23 @@ class ListController extends BaseController
         if ($this->access != false) {
 
             $repository = $this->getDoctrine()->getRepository('metaProjectBundle:CommonListItem');
-            $commonListItem = $repository->findOneByIdInProjectAndList($this->container->get('uid')->fromUId($item_uid), $this->container->get('uid')->fromUId($list_uid), $this->base['project']->getId());
+            $listItem = $repository->findOneByIdInProjectAndList($this->container->get('uid')->fromUId($item_uid), $this->container->get('uid')->fromUId($list_uid), $this->base['project']->getId());
 
             $repository = $this->getDoctrine()->getRepository('metaProjectBundle:CommonList');
-            $commonList = $repository->findOneByIdInProject($this->container->get('uid')->fromUId($list_uid), $this->base['project']->getId());
+            $list = $repository->findOneByIdInProject($this->container->get('uid')->fromUId($list_uid), $this->base['project']->getId());
 
-            if ($commonList && $commonListItem){
+            if ($list && $listItem){
 
-                $commonList->removeItem($commonListItem);
+                $list->removeItem($listItem);
                 $this->base['project']->setUpdatedAt(new \DateTime('now'));
 
                 $em = $this->getDoctrine()->getManager();
-                $em->remove($commonListItem);
+                $em->remove($listItem);
                 $em->flush();
 
                 $logService = $this->container->get('logService');
-                $logService->log($this->getUser(), 'user_delete_list_item', $this->base['project'], array( 'list' => array( 'logName' => $commonList->getLogName(), 'identifier' => $commonList->getId()),
-                                                                                                              'list_item' => array( 'logName' => $commonListItem->getLogName() )) );
+                $logService->log($this->getUser(), 'user_delete_list_item', $this->base['project'], array( 'list' => array( 'logName' => $list->getLogName(), 'identifier' => $list->getId()),
+                                                                                                              'list_item' => array( 'logName' => $listItem->getLogName() )) );
 
                 $this->get('session')->getFlashBag()->add(
                     'success',
@@ -453,17 +457,17 @@ class ListController extends BaseController
             
         }
 
-        return $this->redirect($this->generateUrl('p_show_project_list', array('uid' => $uid, 'list_uid' => $this->container->get('uid')->toUId($commonList->getId()) )));
+        return $this->redirect($this->generateUrl('p_show_project_list', array('uid' => $uid, 'list_uid' => $this->container->get('uid')->toUId($list->getId()) )));
 
     }
 
     /*
      * Toggle a list item
      */
-    public function toggleCommonListItemAction(Request $request, $uid, $list_uid, $item_uid, $do)
+    public function toggleListItemAction(Request $request, $uid, $list_uid, $item_uid, $do)
     {
   
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('toggleCommonListItem', $request->get('token')))
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('toggleListItem', $request->get('token')))
             return $this->redirect($this->generateUrl('p_show_project_list_home', array('uid' => $uid)));
 
         $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => true));
@@ -471,14 +475,14 @@ class ListController extends BaseController
         if ($this->access != false) {
 
             $repository = $this->getDoctrine()->getRepository('metaProjectBundle:CommonListItem');
-            $commonListItem = $repository->findOneByIdInProjectAndList($this->container->get('uid')->fromUId($item_uid), $this->container->get('uid')->fromUId($list_uid), $this->base['project']->getId());
+            $listItem = $repository->findOneByIdInProjectAndList($this->container->get('uid')->fromUId($item_uid), $this->container->get('uid')->fromUId($list_uid), $this->base['project']->getId());
 
             $repository = $this->getDoctrine()->getRepository('metaProjectBundle:CommonList');
-            $commonList = $repository->findOneByIdInProject($this->container->get('uid')->fromUId($list_uid), $this->base['project']->getId());
+            $list = $repository->findOneByIdInProject($this->container->get('uid')->fromUId($list_uid), $this->base['project']->getId());
 
-            if ($commonListItem){
+            if ($listItem){
 
-                $commonListItem->setDone($do);
+                $listItem->setDone($do);
                 $this->base['project']->setUpdatedAt(new \DateTime('now'));
                 
                 $em = $this->getDoctrine()->getManager();
@@ -486,10 +490,10 @@ class ListController extends BaseController
 
                 $logService = $this->container->get('logService');
                 $action = $do?'do':'undo';
-                $logService->log($this->getUser(), 'user_'.$action.'_list_item', $this->base['project'], array( 'list' => array( 'logName' => $commonList->getLogName(), 'identifier' => $commonList->getId()),
-                                                                                                                   'list_item' => array( 'logName' => $commonListItem->getLogName() )) );
+                $logService->log($this->getUser(), 'user_'.$action.'_list_item', $this->base['project'], array( 'list' => array( 'logName' => $list->getLogName(), 'identifier' => $list->getId()),
+                                                                                                                   'list_item' => array( 'logName' => $listItem->getLogName() )) );
 
-                return $this->redirect($this->generateUrl('p_show_project_list', array('uid' => $uid, 'list_uid' => $this->container->get('uid')->toUId($commonList->getId()) )));
+                return $this->redirect($this->generateUrl('p_show_project_list', array('uid' => $uid, 'list_uid' => $this->container->get('uid')->toUId($list->getId()) )));
 
             } else {
 

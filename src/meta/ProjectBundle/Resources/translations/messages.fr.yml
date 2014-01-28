@@ -98,6 +98,7 @@ project:
     statusHelp: "Où en est ce projet ?"
   lists:
     title: "Listes"
+    open: "Permuter la vue des listes"
     not.found: "Cette liste n'existe pas."
     nameHelp: "Changer le nom de cette liste"
     descriptionHelp: "Vous pouvez renseigner une description optionnelle pour cette liste"

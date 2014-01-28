@@ -1,9 +1,9 @@
 {% extends 'metaProjectBundle:Project:show.html.twig' %}
 
-{% block title %}{{ parent() }}{% if commonList %} | {{ "project.lists.title"|trans }} : {{ commonList.name }}{% endif %}{% endblock %}
+{% block title %}{{ parent() }}{% if list %} | {{ "project.lists.title"|trans }} : {{ list.name }}{% endif %}{% endblock %}
 
-{% if commonList %}
-  {% set shortcode %}[[list:{{ commonList.id|to_uid }}]]{% endset %}
+{% if list %}
+  {% set shortcode %}[[list:{{ list.id|to_uid }}]]{% endset %}
 {% else %}
   {% set shortcode %}[[project:{{ base.project.id|to_uid }}]]{% endset %}
 {% endif %}
@@ -14,90 +14,123 @@
 
 {% block javascripts %}
   {{ parent() }}
-    {% if base.canEdit %}
-    {% javascripts '@metaGeneralBundle/Resources/public/js-edit/jquery-nestable.js'
-                   '@metaGeneralBundle/Resources/public/js-edit/nestable.behaviour.js'
-            filter='?yui_js' %}
-    <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
-  {% endif %}
+  {% javascripts '@metaGeneralBundle/Resources/public/js-edit/jquery-nestable.js'
+                 '@metaGeneralBundle/Resources/public/js-edit/slip.js'
+                 '@metaGeneralBundle/Resources/public/js-edit/slip.behaviour.js'
+                 '@metaGeneralBundle/Resources/public/js-edit/nestable.behaviour.js'
+          filter='?yui_js' %}
+  <script src="{{ asset_url }}"></script>
+  {% endjavascripts %}
 {% endblock %}
 
 {% block content %}
-{% if commonLists|length > 0 %}
-<div class="column">
-<section class="listInfo">
-  <h4 class="editable" data-title="{{ "project.lists.nameHelp"|trans }}" data-name="name" data-url="{{ path('p_show_project_list_edit', {'uid': base.project.id|to_uid, 'list_uid': commonList.id|to_uid, 'token': csrf_token('editCommonList') }) }}" data-type="text">{{ commonList.name }} </h4>
-  <p><span class="editable description-target" data-title="{{ "project.lists.descriptionHelp"|trans }}" data-name="description" data-url="{{ path('p_show_project_list_edit', {'uid': base.project.id|to_uid, 'list_uid': commonList.id|to_uid, 'token': csrf_token('editCommonList') }) }}" data-toggle="manual" data-type="textarea" data-emptytext="{{ "project.lists.description.emptyText"|trans }}">{{ commonList.description }}</span>
-  {% if base.canEdit %} <a class="editable-trigger" data-target="description">&hellip;<i class="fa fa-pencil"></i></a>{% endif %}</p>
-  <div class="muted">
-    {{ "project.lists.done"|trans({'%advance%': commonList.getProgress() }) }}
-    <div class="progress progress-striped">
-      <div class="bar {% if commonList.getProgress() == 100 %}bar-success{% endif %}" style="width: {{ commonList.getProgress() }}%;"></div>
-    </div>
-  </div>
-  <div>
-    {% if commonList.tags|length > 0 %}
-      {{ "tags.title"|trans }} :
-    {% elseif not base.canEdit %}
-      {{ "tags.none"|trans }}
-    {% endif %}
-    <ul data-toggle="manual" data-title="{{ "tags.help"|trans }}" data-emptytext="{{ "tags.emptyText"|trans }}" data-url="{{ path('p_show_project_list_edit', {'uid': base.project.id|to_uid, 'list_uid': commonList.id|to_uid, 'token': csrf_token('editCommonList') }) }}" data-type="select2" data-name="tags" class="tags tags-target editable-li" >
-    {% for tag in commonList.tags %}<li class="label label-default" rel="{{ tag.name }}" style="background-color: #{{ tag.color }}">{{ tag.name }}</li>{% endfor %}
-    </ul>
-    {% if base.canEdit %} <a class="editable-trigger" data-target="tags">&hellip;<i class="fa fa-pencil"></i></a>{% endif %}
-  </div>
-</section>
-<section>
-{% if commonList.items|length > 0 %}
-  <ul class="list">
-  {% for item in commonList.items %}
-    <li class="{{ cycle(["even", "odd"], loop.index) }}{% if item.done %} done muted{% endif %}">
-      <span data-toggle="manual" class="text editable text-target editable-server-response listitem-{{ item.id|to_uid }}-target" data-pk="{{ item.id|to_uid }}" data-name="text" data-url="{{ path('p_show_project_listitem_edit', {'uid': base.project.id|to_uid, 'list_uid': commonList.id|to_uid, 'item_uid': item.id|to_uid, 'token': csrf_token('editCommonListItem') }) }}" data-type="text" data-value="{{ item.text }}">{{ item.text|deeplinks|raw }}</span>
-      {% if base.canEdit %}
-      <div class="actions">
-        {% if item.done %}
-        <span class="muted date">{{ "project.lists.items.doneAt"|trans({ '%date%': item.doneAt|date("date.format"|trans)}) }}</span>
-        <a href="{{ path('p_show_project_listitem_undo', {'uid': base.project.id|to_uid, 'list_uid': commonList.id|to_uid, 'item_uid': item.id|to_uid, 'token': csrf_token('toggleCommonListItem') }) }}" title="{{ "project.lists.items.recycleHelp"|trans }}"><i class="fa fa-repeat"></i></a>
-        {% else %}
-        <span class="muted date">{{ "project.lists.items.createdAt"|trans({ '%date%': item.createdAt|date("date.format"|trans)}) }}</span>
-        <a href="{{ path('p_show_project_listitem_do', {'uid': base.project.id|to_uid, 'list_uid': commonList.id|to_uid, 'item_uid': item.id|to_uid, 'token': csrf_token('toggleCommonListItem') }) }}" title="{{ "project.lists.items.finishHelp"|trans }}"><i class="fa fa-check text-success"></i></a>
-        {% endif %}
-        <a class="editable-trigger" data-target="listitem-{{ item.id|to_uid }}" title="{{ "project.lists.items.editHelp"|trans }}"><i class="fa fa-pencil"></i></a> | 
-        <a href="{{ path('p_show_project_listitem_delete', {'uid': base.project.id|to_uid, 'list_uid': commonList.id|to_uid, 'item_uid': item.id|to_uid, 'token': csrf_token('deleteCommonListItem') }) }}" title="{{ "project.lists.items.deleteHelp"|trans }}"><i class="fa fa-times text-error"></i></a>
+<div class="wrapper info">
+
+  <section>
+
+      {# Tree of lists #}
+      <div class="tree menu dd{% if app.request.cookies.get('igneet_trees_open') == 'true' %} open{% endif %}">
+          <span>{{ "project.lists.title"|trans }}</span>
+          <a href="#" class="toggle" title="{{ "project.lists.open"|trans }}"><i class="fa fa-angle-double-left"></i></a>
+          {% if base.canEdit %}
+            <a href="#" data-url="{{ path('p_show_project_list_new', {'uid': base.project.id|to_uid, 'token': csrf_token('newList')}) }}" data-title="{{ "project.lists.newHelp"|trans }}" title="{{ "project.lists.new"|trans }}" class="new">+</a>
+          {% endif %}
+          <ul class="sortable dd-list" data-value="0" data-url="{{ path('p_show_project_list_rank', {'uid': base.project.id|to_uid}) }}">
+            {% for list_ in lists %}
+              <li class="{% if list_.id == list.id %}active {% endif %}dd-item dd-nochildren{% if not base.canEdit %} dd-nodrag{% endif %}" id="{{ list_.id|to_uid }}">
+                {# Name of list #}
+                 <a href="{{ path('p_show_project_list', {'uid': base.project.id|to_uid, 'list_uid': list_.id|to_uid }) }}" title="{{ list_.name }}" class="page_title">{{ list_.name }} <em>{{ list_.getProgress() }}%</em></a>
+                 {# Handle for drag and drop #}
+                {% if base.canEdit %}
+                  <div class="actions">
+                    <a title="{{ "delete"|trans }}" class="remove" data-title="{{ "project.lists.deleteHelp"|trans }}" data-url="{{ path('p_show_project_list_delete', {'uid': base.project.id|to_uid, 'list_uid': list_.id|to_uid, 'token': csrf_token('deleteList') }) }}">&times;</a>
+                  </div>
+                  <div class="dd-handle"><i class="fa fa-bars"></i></div>
+                {% endif %}
+              </li>
+            {% endfor %}
+          </ul>
       </div>
-      {% endif %}
-    </li>
-  {% endfor %}
-    <li><a href="{{ path('p_show_project_listitem_new', {'uid': base.project.id|to_uid, 'list_uid': commonList.id|to_uid}) }}"><i class="fa fa-plus"></i>{{ "project.lists.items.new"|trans }}</a></li>
-  </ul>
-{% else %}
-  <p class="muted">{{ "project.lists.items.none"|trans }} {% if base.canEdit %}<a href="{{ path('p_show_project_listitem_new', {'uid': base.project.id|to_uid, 'list_uid': commonList.id|to_uid}) }}">{{ "project.lists.items.new"|trans }}</a></p>{% endif %}
-{% endif %}
-</section>
-<section>
-{% render(controller("metaProjectBundle:Comment:addCommonListComment", { 'uid' : base.project.id|to_uid, 'list_uid': commonList.id|to_uid })) %}
-</section>
+
+      <div class="label-title"><span{% if base.canEdit %} data-name="name" data-url="{{ path('p_show_project_list_edit', {'uid': base.project.id|to_uid, 'list_uid': list.id|to_uid, 'token': csrf_token('editList') }) }}" contenteditable="true" rich="false"{% endif %}>{{ list.name }}</span></div>
+
+      <div class="label-description"><span{% if base.canEdit %} placeholder="{{ "project.lists.description.emptyText"|trans }}" data-name="description" data-url="{{ path('p_show_project_list_edit', {'uid': base.project.id|to_uid, 'list_uid': list.id|to_uid, 'token': csrf_token('editList') }) }}" contenteditable="true" rich="false"{% endif %}>{{ list.description }}</span></div>
+
+      {# TAGS #}
+      <div class="label-tags">
+        {% if list.tags|length > 0 %}
+          {% spaceless %}
+          <ul{% if base.canEdit %} data-url="{{ path('p_show_project_list_edit', {'uid': base.project.id|to_uid, 'list_uid': list.id|to_uid, 'token': csrf_token('editList')  }) }}" data-emptytext="{{ "tags.emptyText"|trans }}" contenteditable="list" data-name="tags"{% endif %}>
+          {% for tag in list.tags %}
+            <li {% if tag.color %}style="border: 1px solid #{{ tag.color }}" {% endif %}rel="{{ tag.name }}">
+            {% if base.canEdit %}
+              <a href="#" class="remove"><i class="fa fa-times"></i></a>  
+            {% endif %}
+            {{ tag.name }}</li>
+          {% endfor %}
+          {% if base.canEdit %}
+            <li><a href="#" class="add"><i class="fa fa-plus"></i></a>
+              <span style="display: none;">
+                <a href="#"><i class="fa fa-times"></i></a>
+                <input type="text" id="tag" placeholder="{{ "tags.placeholder"|trans }}"/>
+              </span>
+            </li>
+          {% endif %}
+          </ul>
+          {% endspaceless %}
+        {% else %}
+          <span>{{ "tags.none"|trans }}</span>
+          {% if base.canEdit %}
+            <ul data-url="{{ path('p_show_project_list_edit', {'uid': base.project.id|to_uid, 'list_uid': list.id|to_uid, 'token': csrf_token('editList')  }) }}" data-emptytext="{{ "tags.emptyText"|trans }}" contenteditable="list" data-name="tags">
+              <li><a href="#" class="add"><i class="fa fa-plus"></i></a>
+                <span style="display: none;">
+                  <a href="#"><i class="fa fa-times"></i></a>
+                  <input type="text" id="tag" placeholder="{{ "tags.placeholder"|trans }}"/>
+                </span>
+              </li>
+            </ul>
+          {% endif %}
+        {% endif %}
+      </div>
+
+      <div class="label-progress">
+        <span style="width: {{ list.getProgress() }}%;"></span>
+      </div>
+
+      <div class="content-lists">
+        <ul class="slip">
+        {% for item in list.items %}
+          <li class="{{ cycle(["even", "odd"], loop.index) }}{% if item.done %} done{% endif %}" data-delete="{{ path('p_show_project_listitem_delete', {'uid': base.project.id|to_uid, 'list_uid': list.id|to_uid, 'item_uid': item.id|to_uid, 'token': csrf_token('deleteListItem') }) }}">
+            <div class="item">
+              <span{% if base.canEdit %} data-name="text" data-url="{{ path('p_show_project_listitem_edit', {'uid': base.project.id|to_uid, 'list_uid': list.id|to_uid, 'item_uid': item.id|to_uid, 'token': csrf_token('editListItem') }) }}" contenteditable="true" rich="false"{% endif %}>{{ item.text|deeplinks|raw }}</span>
+              {% if item.done %}
+              <span class="date">{{ "project.lists.items.doneAt"|trans({ '%date%': item.doneAt|date("date.format"|trans)}) }}</span>
+              {% else %}
+              <span class="date">{{ "project.lists.items.createdAt"|trans({ '%date%': item.createdAt|date("date.format"|trans)}) }}</span>
+              {% endif %}
+            </div>
+            {% if base.canEdit %}
+            <div class="actions">
+              {% if item.done %}
+              <a href="{{ path('p_show_project_listitem_undo', {'uid': base.project.id|to_uid, 'list_uid': list.id|to_uid, 'item_uid': item.id|to_uid, 'token': csrf_token('togglenListItem') }) }}" title="{{ "project.lists.items.recycleHelp"|trans }}"><i class="fa fa-repeat"></i></a>
+              {% else %}
+              <a href="{{ path('p_show_project_listitem_do', {'uid': base.project.id|to_uid, 'list_uid': list.id|to_uid, 'item_uid': item.id|to_uid, 'token': csrf_token('toggleListItem') }) }}" title="{{ "project.lists.items.finishHelp"|trans }}"><i class="fa fa-check"></i></a>
+              {% endif %}
+            </div>
+            {% endif %}
+            <span class="instant"><i class="fa fa-bars"></i></span>
+          </li>
+        {% endfor %}
+          <li><a href="{{ path('p_show_project_listitem_new', {'uid': base.project.id|to_uid, 'list_uid': list.id|to_uid}) }}"><i class="fa fa-plus"></i>{{ "project.lists.items.new"|trans }}</a></li>
+        </ul>
+      </div>
+
 </div>
-<div class="menu dd">
-  {{ "project.lists.title"|trans }} :
-  <ul class="lists sortable dd-list" data-url="{{ path('p_show_project_list_rank', {'uid': base.project.id|to_uid}) }}">
-  {% for list in commonLists %}
-      <li class="{% if list.id == commonList.id|to_uid %}active {% endif %}{% if base.canEdit %}dd-item dd-nochildren{% endif %}" id="{{ list.id|to_uid }}">
-        {% if base.canEdit %}<div class="dd-handle"><i class="fa fa-reorder"></i></div>{% endif %}
-        {% if base.canEdit %}<a data-confirm="{{ "project.lists.deleteHelp"|trans }}" href="{{ path('p_show_project_list_delete', {'uid': base.project.id|to_uid, 'list_uid': list.id|to_uid, 'token': csrf_token('deleteCommonList')}) }}"><i class="fa fa-times"></i></a>{% endif %} <a href="{{ path('p_show_project_list', {'uid': base.project.id|to_uid, 'list_uid': list.id|to_uid }) }}" title="{{ list.name }}" class="page_title">{{ list.name }} ({{list.getProgress()}}%)</a>
-      </li>
-  {% endfor %}
-  </ul>
-  {% if base.canEdit %}
-  <div class="menu_new">
-    <a href="{{ path('p_show_project_list_new', {'uid': base.project.id|to_uid }) }}"><i class="fa fa-plus-circle"></i> {{ "project.lists.new"|trans }}</a>
-  </div>
-  {% endif %}
+
+{# Comments section #}
+<div class="wrapper comment">
+  <section>
+    {% render(controller("metaProjectBundle:Comment:addListComment", { 'uid' : base.project.id|to_uid, 'list_uid': list.id|to_uid })) %}
+  </section>
 </div>
-{% else %}
-<section>
-{{ "project.lists.none"|trans }}
-</section>
-{% endif %}
 {% endblock %}

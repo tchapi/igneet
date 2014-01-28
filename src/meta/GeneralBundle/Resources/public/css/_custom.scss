@@ -78,6 +78,66 @@ a.button, input[type=submit].button, button {
 @import "styles/user";
 @import "styles/projects";
 
+// dans proejcts
+
+.label-progress {
+ 
+  height: 3px;
+  background: $_sensible;
+  margin-bottom: 10px;
+
+  & > span {
+    display: block;
+    height: 100%;
+    @include linear-gradient(to right, yellow, $_green);
+    background-attachment: fixed;
+  }
+
+}
+
+.slip {
+  list-style: none outside none;
+  margin: 0;
+  padding: 0;
+  & > li {
+    @include row();
+    background: $_sensible;
+    font-family: 'gotham_light';
+    margin-bottom: 4px;
+    border-right: 2px solid $_discrete;
+    &.done {
+      color: $_discrete;
+      background: lighten($_sensible, 2%);
+      border-right: 2px solid $_green;
+    }
+    & > .item {
+      @include span-columns (10 of 12);
+      padding: 10px;
+      & > .date {
+        text-transform: uppercase;
+        color: $_text-secondary;
+        display: block;
+        margin-top: 5px;
+        font-size: 0.7em;
+        font-family: 'gotham_medium';
+        vertical-align: baseline;
+      }
+    }
+    & > .actions {
+      @include span-columns(1 of 12);
+      padding: 20px 10px;
+      text-align: center;
+    }
+    & > .instant {
+      @include span-columns(1 of 12);
+      padding: 20px 10px;
+      @include omega;
+      cursor: pointer;
+      text-align: center;
+    }
+  }
+}
+
 // community
 
 .community div { 

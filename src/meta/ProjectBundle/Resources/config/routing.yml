@@ -177,34 +177,34 @@ p_show_project_resource_delete:
 ## LISTS
 p_show_project_list_home:
     pattern:  /project/0{uid}/lists/{page}
-    defaults: { _controller: metaProjectBundle:List:showCommonListHome, page: 1 }
+    defaults: { _controller: metaProjectBundle:List:showListHome, page: 1 }
     requirements:
       uid: "[0-9a-zA-Z]*"
       page: \d+
 
 p_show_project_list_new:
     pattern:  /project/0{uid}/lists/new
-    defaults: { _controller: metaProjectBundle:List:newCommonList }
+    defaults: { _controller: metaProjectBundle:List:newList }
     requirements:
       uid: "[0-9a-zA-Z]*"
 
 p_show_project_list_rank:
     pattern:  /project/0{uid}/lists/rank
-    defaults: { _controller: metaProjectBundle:List:rankCommonLists }
+    defaults: { _controller: metaProjectBundle:List:rankLists }
     requirements:
       uid: "[0-9a-zA-Z]*"
       _method:  POST
 
 p_show_project_list:
     pattern:  /project/0{uid}/list/0{list_uid}
-    defaults: { _controller: metaProjectBundle:List:showCommonList }
+    defaults: { _controller: metaProjectBundle:List:showList }
     requirements:
       uid: "[0-9a-zA-Z]*"
       list_uid: "[0-9a-zA-Z]*"
 
 p_show_project_list_edit:
     pattern:  /project/0{uid}/list/0{list_uid}/edit
-    defaults: { _controller: metaProjectBundle:List:editCommonList }
+    defaults: { _controller: metaProjectBundle:List:editList }
     requirements:
       uid: "[0-9a-zA-Z]*"
       list_uid: "[0-9a-zA-Z]*"
@@ -212,7 +212,7 @@ p_show_project_list_edit:
 
 p_show_project_list_delete:
     pattern:  /project/0{uid}/list/0{list_uid}/delete
-    defaults: { _controller: metaProjectBundle:List:deleteCommonList }
+    defaults: { _controller: metaProjectBundle:List:deleteList }
     requirements:
       uid: "[0-9a-zA-Z]*"
       list_uid: "[0-9a-zA-Z]*"
@@ -220,7 +220,7 @@ p_show_project_list_delete:
 
 p_show_project_list_comment:
     pattern:  /project/0{uid}/list/0{list_uid}/comment
-    defaults: { _controller: metaProjectBundle:Comment:addCommonListComment }
+    defaults: { _controller: metaProjectBundle:Comment:addListComment }
     requirements:
       uid: "[0-9a-zA-Z]*"
       list_uid: "[0-9a-zA-Z]*"
@@ -229,14 +229,14 @@ p_show_project_list_comment:
 ## LIST ITEMS
 p_show_project_listitem_new:
     pattern:  /project/0{uid}/list/0{list_uid}/items/new/{name}
-    defaults: { _controller: metaProjectBundle:List:newCommonListItem, name: "New Item" }
+    defaults: { _controller: metaProjectBundle:List:newListItem, name: "New Item" }
     requirements:
       uid: "[0-9a-zA-Z]*"
       list_uid: "[0-9a-zA-Z]*"
 
 p_show_project_listitem_edit:
     pattern:  /project/0{uid}/list/0{list_uid}/item/0{item_uid}/edit
-    defaults: { _controller: metaProjectBundle:List:editCommonListItem }
+    defaults: { _controller: metaProjectBundle:List:editListItem }
     requirements:
       uid: "[0-9a-zA-Z]*"
       list_uid: "[0-9a-zA-Z]*"
@@ -245,7 +245,7 @@ p_show_project_listitem_edit:
 
 p_show_project_listitem_do:
     pattern:  /project/0{uid}/list/0{list_uid}/item/0{item_uid}/do
-    defaults: { _controller: metaProjectBundle:List:toggleCommonListItem, do: true }
+    defaults: { _controller: metaProjectBundle:List:toggleListItem, do: true }
     requirements:
       uid: "[0-9a-zA-Z]*"
       list_uid: "[0-9a-zA-Z]*"
@@ -253,7 +253,7 @@ p_show_project_listitem_do:
 
 p_show_project_listitem_undo:
     pattern:  /project/0{uid}/list/0{list_uid}/item/0{item_uid}/undo
-    defaults: { _controller: metaProjectBundle:List:toggleCommonListItem, do: false }
+    defaults: { _controller: metaProjectBundle:List:toggleListItem, do: false }
     requirements:
       uid: "[0-9a-zA-Z]*"
       list_uid: "[0-9a-zA-Z]*"
@@ -261,7 +261,7 @@ p_show_project_listitem_undo:
 
 p_show_project_listitem_delete:
     pattern:  /project/0{uid}/list/0{list_uid}/item/0{item_uid}/delete
-    defaults: { _controller: metaProjectBundle:List:deleteCommonListItem }
+    defaults: { _controller: metaProjectBundle:List:deleteListItem }
     requirements:
       uid: "[0-9a-zA-Z]*"
       list_uid: "[0-9a-zA-Z]*"

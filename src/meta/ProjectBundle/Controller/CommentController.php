@@ -152,7 +152,7 @@ class CommentController extends BaseController
     /*
      * Output the comment form for a list or add a comment to a list when POST
      */
-    public function addCommonListCommentAction(Request $request, $uid, $list_uid){
+    public function addListCommentAction(Request $request, $uid, $list_uid){
 
         $menu = $this->container->getParameter('project.menu');
         $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => $menu['lists']['private']));

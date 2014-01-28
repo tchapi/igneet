@@ -330,6 +330,12 @@ section > .jump {
   font-size: 1.8em;
 }
 
+.label-description {
+  @include fill-parent();
+  margin-bottom: 10px;
+  font-size: 1.2em;
+}
+
 .label-tags {
   @include fill-parent();
   margin-bottom: 10px;
@@ -348,8 +354,11 @@ section > .jump {
 }
 
 .open + .label-title,
+.open ~ .label-progress,
+.open ~ .label-description,
 .open ~ .label-tags,
-.open ~ .content-wiki {
+.open ~ .content-wiki,
+.open ~ .content-lists {
   @include span-columns(7 of 12);
   @include omega;
   @include media($tablet) {
