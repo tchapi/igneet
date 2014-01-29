@@ -110,6 +110,10 @@ a.button, input[type=submit].button, button {
       background: lighten($_sensible, 2%);
       border-right: 2px solid $_green;
     }
+    &.new {
+      height: 40px;
+      padding: 10px;
+    }
     & > .item {
       @include span-columns (10 of 12);
       padding: 10px;
@@ -136,6 +140,13 @@ a.button, input[type=submit].button, button {
       text-align: center;
     }
   }
+}
+
+.slip-reordering {
+    box-shadow: 0 2px 10px rgba(0,0,0,0.45);
+}
+.slip-swiping-container {
+    overflow-x: hidden;
 }
 
 // community

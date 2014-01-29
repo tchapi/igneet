@@ -121,7 +121,7 @@
             <span class="instant"><i class="fa fa-bars"></i></span>
           </li>
         {% endfor %}
-          <li><a href="{{ path('p_show_project_listitem_new', {'uid': base.project.id|to_uid, 'list_uid': list.id|to_uid}) }}"><i class="fa fa-plus"></i>{{ "project.lists.items.new"|trans }}</a></li>
+          <li class="new"><a href="{{ path('p_show_project_listitem_new', {'uid': base.project.id|to_uid, 'list_uid': list.id|to_uid}) }}"><i class="fa fa-plus"></i>{{ "project.lists.items.new"|trans }}</a></li>
         </ul>
       </div>
 
