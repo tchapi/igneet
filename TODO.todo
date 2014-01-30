@@ -19,6 +19,8 @@ NEXT :
 
  ☐ Erreurs dans les formulaires de création : elles sont affichées n'importe comment a priori (A vérifier : déjà fixed ?)
 
+ ☐ comments sur idea : contenu
+
 Simples :
 
  ☐ Faire des special announcements modifiables en backoffice pour annoncer des trucs a tous les utilisateurs : récupérer le % de vues etc
@@ -36,7 +38,7 @@ Complexe:
 
  ☐ Lors de l'upload d'images en tant que ressources, passer les thumbnails en POST et les stocker dans les ressources pour les afficher a coté de la vue détail
 
- ☐ Permettre l'mport d'un dossier dropbox d'un projet automatiquement dans les ressources 
+ ☐ Permettre l'import d'un dossier dropbox d'un projet automatiquement dans les ressources 
 
  ☐ Passer les commentaires en ajax plutot qu'en reload de pages
 
