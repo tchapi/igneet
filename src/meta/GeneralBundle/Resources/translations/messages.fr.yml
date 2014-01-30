@@ -131,8 +131,7 @@ restricted:
 # Tags
 tags:
   title: "Tags"
-  help: "Indiquez des tags, séparés par des virgules"
-  emptyText: "Ajouter des tags"
+  emptyText: "Ajouter..."
   none: "Aucun tag."
 # Alerts
 alert:

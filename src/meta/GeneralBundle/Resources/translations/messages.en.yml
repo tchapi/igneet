@@ -131,8 +131,7 @@ restricted:
 # Tags
 tags:
   title: "Tags"
-  help: "Indicate tags separated by a comma"
-  emptyText: "Add tags"
+  emptyText: "Add tag ..."
   none: "No tags yet."
 # Alerts
 alert:

@@ -60,7 +60,7 @@
       <div class="label-tags">
         {% if list.tags|length > 0 %}
           {% spaceless %}
-          <ul{% if base.canEdit %} data-url="{{ path('p_show_project_list_edit', {'uid': base.project.id|to_uid, 'list_uid': list.id|to_uid, 'token': csrf_token('editList')  }) }}" data-emptytext="{{ "tags.emptyText"|trans }}" contenteditable="list" data-name="tags"{% endif %}>
+          <ul{% if base.canEdit %} data-url="{{ path('p_show_project_list_edit', {'uid': base.project.id|to_uid, 'list_uid': list.id|to_uid, 'token': csrf_token('editList')  }) }}" contenteditable="list" data-name="tags"{% endif %}>
           {% for tag in list.tags %}
             <li {% if tag.color %}style="border: 1px solid #{{ tag.color }}" {% endif %}rel="{{ tag.name }}">
             {% if base.canEdit %}
@@ -72,7 +72,7 @@
             <li><a href="#" class="add"><i class="fa fa-plus"></i></a>
               <span style="display: none;">
                 <a href="#"><i class="fa fa-times"></i></a>
-                <input type="text" id="tag" placeholder="{{ "tags.placeholder"|trans }}"/>
+                <input type="text" id="tag" placeholder="{{ "tags.emptyText"|trans }}"/>
               </span>
             </li>
           {% endif %}
