@@ -18,8 +18,10 @@ NEXT :
  ☐ Vérifier les inviteToken lors d'une inscription avec OpenId
 
  ☐ Erreurs dans les formulaires de création : elles sont affichées n'importe comment a priori (A vérifier : déjà fixed ?)
-
+ 
  ☐ faire des templates pour les ul.sortable et refresh en ajax quand on fait "new"
+
+ ☐ Page de management de communauté : rajouter un bouton "enlever un utilisateur de la communauté" supprimer cet utilisateur de la communauté. Il devriendra dans ce cas Guest sur les projets dans lesquels il était, et sera viré de ses idées... qui seront supprimées si elle n'appartiennent à personne d'autre..."
 
 Simples :
 
