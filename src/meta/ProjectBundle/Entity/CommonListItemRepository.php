@@ -37,4 +37,23 @@ class CommonListItemRepository extends EntityRepository
     return $commonListItem;
 
   }
+
+  public function findAllInProjectAndList($listId, $projectId)
+  {
+
+    $qb = $this->getEntityManager()->createQueryBuilder();
+
+    return $qb->select('cli')
+            ->from('metaProjectBundle:CommonListItem', 'cli')
+            ->join('cli.commonList', 'cl')
+            ->join('cl.project', 'sp')
+            ->where('sp.id = :pid')
+            ->setParameter('pid', $projectId)
+            ->andWhere('cl.id = :listId')
+            ->setParameter('listId', $listId)
+            ->orderBy('cli.rank', 'ASC')
+            ->getQuery()
+            ->getResult();
+  }
+
 }

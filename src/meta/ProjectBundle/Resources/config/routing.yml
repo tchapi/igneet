@@ -228,11 +228,18 @@ p_show_project_list_comment:
 
 ## LIST ITEMS
 p_show_project_listitem_new:
-    pattern:  /project/0{uid}/list/0{list_uid}/items/new/{name}
-    defaults: { _controller: metaProjectBundle:List:newListItem, name: "New Item" }
+    pattern:  /project/0{uid}/list/0{list_uid}/items/new
+    defaults: { _controller: metaProjectBundle:List:newListItem }
     requirements:
       uid: "[0-9a-zA-Z]*"
       list_uid: "[0-9a-zA-Z]*"
+
+p_show_project_listitem_rank:
+    pattern:  /project/0{uid}/list/0{list_uid}/items/rank
+    defaults: { _controller: metaProjectBundle:List:rankListItems }
+    requirements:
+      uid: "[0-9a-zA-Z]*"
+      _method:  POST
 
 p_show_project_listitem_edit:
     pattern:  /project/0{uid}/list/0{list_uid}/item/0{item_uid}/edit

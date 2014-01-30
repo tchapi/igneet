@@ -109,10 +109,25 @@ a.button, input[type=submit].button, button {
       color: $_discrete;
       background: lighten($_sensible, 2%);
       border-right: 2px solid $_green;
+      & > .item > span:not(.date) {
+        text-decoration: line-through;
+      }
     }
     &.new {
       height: 40px;
       padding: 10px;
+      color: $_primary;
+      & > input {
+        border: none;
+        color: $_primary;
+        background: none;
+        @include placeholder { 
+          color: $_primary;
+        }
+        &:focus {
+          background: lighten($_primary, 50%);
+        }
+      }
     }
     & > .item {
       @include span-columns (10 of 12);

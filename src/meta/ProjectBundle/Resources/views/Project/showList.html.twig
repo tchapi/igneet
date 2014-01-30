@@ -35,7 +35,7 @@
           {% if base.canEdit %}
             <a href="#" data-url="{{ path('p_show_project_list_new', {'uid': base.project.id|to_uid, 'token': csrf_token('newList')}) }}" data-title="{{ "project.lists.newHelp"|trans }}" title="{{ "project.lists.new"|trans }}" class="new">+</a>
           {% endif %}
-          <ul class="sortable dd-list" data-value="0" data-url="{{ path('p_show_project_list_rank', {'uid': base.project.id|to_uid}) }}">
+          <ul class="sortable dd-list" data-value="0" data-url="{{ path('p_show_project_list_rank', {'uid': base.project.id|to_uid, 'token': csrf_token('rankLists') }) }}">
             {% for list_ in lists %}
               <li class="{% if list_.id == list.id %}active {% endif %}dd-item dd-nochildren{% if not base.canEdit %} dd-nodrag{% endif %}" id="{{ list_.id|to_uid }}">
                 {# Name of list #}
@@ -98,30 +98,11 @@
       </div>
 
       <div class="content-lists">
-        <ul class="slip">
-        {% for item in list.items %}
-          <li class="{{ cycle(["even", "odd"], loop.index) }}{% if item.done %} done{% endif %}" data-delete="{{ path('p_show_project_listitem_delete', {'uid': base.project.id|to_uid, 'list_uid': list.id|to_uid, 'item_uid': item.id|to_uid, 'token': csrf_token('deleteListItem') }) }}">
-            <div class="item">
-              <span{% if base.canEdit %} data-name="text" data-url="{{ path('p_show_project_listitem_edit', {'uid': base.project.id|to_uid, 'list_uid': list.id|to_uid, 'item_uid': item.id|to_uid, 'token': csrf_token('editListItem') }) }}" contenteditable="true" rich="false"{% endif %}>{{ item.text|deeplinks|raw }}</span>
-              {% if item.done %}
-              <span class="date">{{ "project.lists.items.doneAt"|trans({ '%date%': item.doneAt|date("date.format"|trans)}) }}</span>
-              {% else %}
-              <span class="date">{{ "project.lists.items.createdAt"|trans({ '%date%': item.createdAt|date("date.format"|trans)}) }}</span>
-              {% endif %}
-            </div>
-            {% if base.canEdit %}
-            <div class="actions">
-              {% if item.done %}
-              <a href="{{ path('p_show_project_listitem_undo', {'uid': base.project.id|to_uid, 'list_uid': list.id|to_uid, 'item_uid': item.id|to_uid, 'token': csrf_token('togglenListItem') }) }}" title="{{ "project.lists.items.recycleHelp"|trans }}"><i class="fa fa-repeat"></i></a>
-              {% else %}
-              <a href="{{ path('p_show_project_listitem_do', {'uid': base.project.id|to_uid, 'list_uid': list.id|to_uid, 'item_uid': item.id|to_uid, 'token': csrf_token('toggleListItem') }) }}" title="{{ "project.lists.items.finishHelp"|trans }}"><i class="fa fa-check"></i></a>
-              {% endif %}
-            </div>
-            {% endif %}
-            <span class="instant"><i class="fa fa-bars"></i></span>
-          </li>
+        <ul class="slip" data-url="{{ path('p_show_project_listitem_rank', {'uid': base.project.id|to_uid, 'list_uid': list.id|to_uid, 'token': csrf_token('rankListItems') }) }}">
+        {% for item in items %}
+          {% include 'metaProjectBundle:Project:showList.item.html.twig' with {'item': item, 'list': list, 'project': base.project, 'canEdit': base.canEdit} %}
         {% endfor %}
-          <li class="new"><a href="{{ path('p_show_project_listitem_new', {'uid': base.project.id|to_uid, 'list_uid': list.id|to_uid}) }}"><i class="fa fa-plus"></i>{{ "project.lists.items.new"|trans }}</a></li>
+          <li class="new" data-url="{{ path('p_show_project_listitem_new', {'uid': base.project.id|to_uid, 'list_uid': list.id|to_uid, 'token': csrf_token('newListItem')}) }}"><i class="fa fa-plus"></i> <input type="text" placeholder="{{ "project.lists.items.new"|trans }}"/></li>
         </ul>
       </div>
 

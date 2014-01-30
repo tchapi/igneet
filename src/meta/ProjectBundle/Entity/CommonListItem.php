@@ -31,6 +31,13 @@ class CommonListItem
     private $text;
 
     /**
+     * @var integer $rank
+     *
+     * @ORM\Column(name="rank", type="integer")
+     */
+    private $rank;
+
+    /**
      * @var \DateTime $created_at
      *
      * @ORM\Column(name="created_at", type="datetime")
@@ -73,6 +80,8 @@ class CommonListItem
     {
         $this->created_at = $this->updated_at = new \DateTime('now');
         $this->done = false;
+        
+        $this->rank = 1000; // Big enough to be the last
     }
 
     public function getLogName()
@@ -239,4 +248,27 @@ class CommonListItem
     {
         return $this->commonList;
     }
+
+    /**
+     * Set rank
+     *
+     * @param integer $rank
+     * @return CommonListItem
+     */
+    public function setRank($rank)
+    {
+        $this->rank = $rank;
+        return $this;
+    }
+
+    /**
+     * Get rank
+     *
+     * @return integer 
+     */
+    public function getRank()
+    {
+        return $this->rank;
+    }
+
 }
