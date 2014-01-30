@@ -107,7 +107,7 @@ project:
     new: "New list"
     name: "Name"
     description: "Description"
-    newHelp: "Create a new list"
+    newHelp: "Enter the name of your new list"
     deleteHelp: "Are you sure you want to delete this list ?"
     created: "Your list %list% was successfully created."
     deleted: "Your list %list% was successfully deleted."

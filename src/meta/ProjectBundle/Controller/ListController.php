@@ -129,20 +129,14 @@ class ListController extends BaseController
 
         $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => true));
 
-        if ($this->access == false) 
-          return $this->forward('metaProjectBundle:Base:showRestricted', array('uid' => $uid));
+        if ($this->access != false) {
 
-        $list = new CommonList();
-        $form = $this->createFormBuilder($list)
-            ->add('name', 'text', array('label' => "project.lists.name"))
-            ->add('description', 'text', array('required' => false, 'label' => "project.lists.description"))
-            ->getForm();
+            $list = new CommonList();
+            $list->setName($request->query->get('title'));
 
-        if ($request->isMethod('POST')) {
+            $errors = $this->get('validator')->validate($list);
 
-            $form->bind($request);
-
-            if ($form->isValid()) {
+            if (count($errors) == 0) {
 
                 $this->base['project']->addCommonList($list);
                 $this->base['project']->setUpdatedAt(new \DateTime('now'));
@@ -161,17 +155,16 @@ class ListController extends BaseController
 
                 return $this->redirect($this->generateUrl('p_show_project_list', array('uid' => $uid, 'list_uid' => $this->container->get('uid')->toUId($list->getId()) )));
            
-            } else {
-               
-               $this->get('session')->getFlashBag()->add(
-                    'error',
-                    $this->get('translator')->trans('information.not.valid', array(), 'errors')
-                );
-            }
+            } 
 
         }
 
-        return $this->render('metaProjectBundle:List:newCommonList.html.twig', array('base' => $this->base, 'form' => $form->createView()));
+        $this->get('session')->getFlashBag()->add(
+            'error',
+            $this->get('translator')->trans('invalid.request', array(), 'errors')
+        );
+
+        return $this->redirect($this->generateUrl('p_show_project_list_home', array('uid' => $uid )));
 
     }
 
