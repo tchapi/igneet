@@ -41,7 +41,7 @@ class ListController extends BaseController
           return $this->forward('metaProjectBundle:List:newList', array('uid' => $uid));
         }
 
-        return $this->render('metaProjectBundle:Project:showList.html.twig', 
+        return $this->render('metaProjectBundle:Project:showLists.html.twig', 
             array('base' => $this->base,
                   'lists' => $lists,
                   'list' => $list,
@@ -73,7 +73,7 @@ class ListController extends BaseController
           throw $this->createNotFoundException($this->get('translator')->trans('project.lists.not.found'));
         }
 
-        return $this->render('metaProjectBundle:Project:showList.html.twig', 
+        return $this->render('metaProjectBundle:Project:showLists.html.twig', 
             array('base' => $this->base,
                   'lists' => $lists,
                   'list' => $list,
@@ -347,7 +347,7 @@ class ListController extends BaseController
         $logService->log($this->getUser(), 'user_create_list_item', $this->base['project'], array( 'list' => array( 'logName' => $list->getLogName(), 'identifier' => $list->getId() ),
                                                                                                            'list_item' => array( 'logName' => $listItem->getLogName() )) );
 
-        return $this->render('metaProjectBundle:Project:showList.item.html.twig', 
+        return $this->render('metaProjectBundle:Project:showLists.item.html.twig', 
             array('project' => $this->base['project'],
                   'item' => $listItem,
                   'list' => $list,
@@ -532,7 +532,7 @@ class ListController extends BaseController
                 $logService->log($this->getUser(), 'user_'.$action.'_list_item', $this->base['project'], array( 'list' => array( 'logName' => $list->getLogName(), 'identifier' => $list->getId()),
                                                                                                                    'list_item' => array( 'logName' => $listItem->getLogName() )) );
 
-                return $this->render('metaProjectBundle:Project:showList.item.html.twig', 
+                return $this->render('metaProjectBundle:Project:showLists.item.html.twig', 
                     array('project' => $this->base['project'],
                           'item' => $listItem,
                           'list' => $list,

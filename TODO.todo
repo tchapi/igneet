@@ -19,7 +19,7 @@ NEXT :
 
  ☐ Erreurs dans les formulaires de création : elles sont affichées n'importe comment a priori (A vérifier : déjà fixed ?)
 
- ☐ comments sur idea : contenu
+ ☐ faire des templates pour les ul.sortable et refresh en ajax quand on fait "new"
 
 Simples :
 

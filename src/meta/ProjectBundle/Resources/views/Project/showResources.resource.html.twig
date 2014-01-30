@@ -1,0 +1,52 @@
+<li>
+  <img src="{{ asset('/bundles/metageneral/img/icons/' ~ providers[resource.provider].icon ~ '.png') }}" width="32px" height="32px"/> 
+  <img src="{{ asset('/bundles/metageneral/img/icons/' ~ types[resource.type].icon ~ '.png') }}" width="32px" height="32px"/>
+  <span>{{ resource.title }}</span>
+  {% if types[resource.type].displayable or not providers[resource.provider].downloadable %}<a title="{{ "project.resources.open"|trans }}" href="{{ resource.url }}" target="_blank"><i class="fa fa-external-link"></i></a>{% endif %}
+  {% if providers[resource.provider].downloadable %}<a title="{{ "project.resources.download"|trans }}" href="{{ path('p_show_project_resource_download', {'uid': project.id|to_uid, 'resource_uid': resource.id|to_uid})}}"><i class="fa fa-download"></i></a>{% endif %}
+  <ul class="tags" >
+  {% for tag in resource.tags %}<li {% if tag.color %}style="border: 1px solid #{{ tag.color }}" {% endif %}rel="{{ tag.name }}">{{ tag.name }}</li>{% endfor %}
+  </ul>
+  {% if canEdit %}
+  <div class="details">
+    <h2 data-url="{{ path('p_show_project_resource_edit', {'uid': project.id|to_uid, 'resource_uid': resource.id|to_uid, 'token': csrf_token('edit') }) }}" data-name="title" data-last="{{ resource.title }}" contenteditable="true" rich="false">{{ resource.title }}</h2>
+    {% if resource.originalFilename %}<span>{{ "project.resources.original"|trans }} :</span> <em class="filename">{{ resource.originalFilename }}</em>{% endif %}
+    <em>{{ ('providers.' ~ resource.provider)|trans({}, 'resources') }} — {{ ('resources.' ~ resource.type)|trans({}, 'resources') }}</em>
+    {# TAGS #}
+    <div class="label-tags">
+      {% if resource.tags|length == 0 %}
+        <span>{{ "tags.none"|trans }}</span>
+      {% endif %}
+      {% spaceless %}
+      <ul data-url="{{ path('p_show_project_resource_edit', {'uid': project.id|to_uid, 'resource_uid': resource.id|to_uid, 'token': csrf_token('edit')  }) }}" contenteditable="list" data-name="tags">
+      {% for tag in resource.tags %}
+        <li {% if tag.color %}style="border: 1px solid #{{ tag.color }}" {% endif %}rel="{{ tag.name }}">
+        {% if canEdit %}
+          <a href="#" class="remove"><i class="fa fa-times"></i></a>  
+        {% endif %}
+        {{ tag.name }}</li>
+      {% endfor %}
+      <li><a href="#" class="add"><i class="fa fa-plus"></i></a>
+        <span style="display: none;">
+          <a href="#"><i class="fa fa-times"></i></a>
+          <input type="text" id="tag" placeholder="{{ "tags.emptyText"|trans }}"/>
+        </span>
+      </li>
+      </ul>
+      {% endspaceless %}
+    </div>
+    <form action="{{ path('p_show_project_resource_edit', {'uid': project.id|to_uid, 'resource_uid': resource.id|to_uid, 'token': csrf_token('edit')}) }}" method="post" {{ form_enctype(form) }}>
+      {# if url #}
+      {% if resource.provider == 'local' %}
+      <input type="hidden" name="name" value="file" />
+      <i class="fa fa-file-o"></i> <input type="file" name="value"/><input type="submit" class="button button-info" value="{{ "change"|trans }}"/>
+      {# if file #}
+      {% else %}
+      <i class="fa fa-link"></i> <span data-url="{{ path('p_show_project_resource_edit', {'uid': project.id|to_uid, 'resource_uid': resource.id|to_uid, 'token': csrf_token('edit') }) }}" data-name="url" data-last="{{ resource.url }}" contenteditable="true" rich="false">{{ resource.url }}</span>
+      {% endif %}
+      <a class="delete" data-confirm="{{ "project.resources.deleteHelp"|trans }}" href="{{ path('p_show_project_resource_delete', {'uid': project.id|to_uid, 'resource_uid': resource.id|to_uid, 'token': csrf_token('delete')}) }}"><i class="fa fa-trash-o"></i> {{ "delete"|trans }}</a>
+    </form>
+    
+  </div>
+  {% endif %}
+</li>

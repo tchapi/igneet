@@ -100,7 +100,7 @@
       <div class="content-lists">
         <ul class="slip" data-url="{{ path('p_show_project_listitem_rank', {'uid': base.project.id|to_uid, 'list_uid': list.id|to_uid, 'token': csrf_token('rankListItems') }) }}">
         {% for item in items %}
-          {% include 'metaProjectBundle:Project:showList.item.html.twig' with {'item': item, 'list': list, 'project': base.project, 'canEdit': base.canEdit} %}
+          {% include 'metaProjectBundle:Project:showLists.item.html.twig' with {'item': item, 'list': list, 'project': base.project, 'canEdit': base.canEdit} %}
         {% endfor %}
           <li class="new" data-url="{{ path('p_show_project_listitem_new', {'uid': base.project.id|to_uid, 'list_uid': list.id|to_uid, 'token': csrf_token('newListItem')}) }}"><i class="fa fa-plus"></i> <input type="text" placeholder="{{ "project.lists.items.new"|trans }}"/></li>
         </ul>
