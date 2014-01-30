@@ -33,7 +33,7 @@ class ListController extends BaseController
         $list = $repository->findFirstInProject($this->base['project']->getId());
 
         $itemsRepository = $this->getDoctrine()->getRepository('metaProjectBundle:CommonListItem');
-        $items = $itemsRepository->findAllInProjectAndList($this->container->get('uid')->fromUId($list_uid), $this->base['project']->getId());
+        $items = $itemsRepository->findAllInProjectAndList($list->getId(), $this->base['project']->getId());
 
         $lists = $repository->findAllInProject($this->base['project']->getId());
 
@@ -186,6 +186,7 @@ class ListController extends BaseController
 
         $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => true));
         $error = null;
+        $response = "";
 
         if ($this->access != false) {
 
@@ -240,7 +241,7 @@ class ListController extends BaseController
                     $em->flush();
 
                     $logService = $this->container->get('logService');
-                    $logService->log($this->getUser(), 'user_update_list', $this->base['project'], array( 'list' => array( 'logName' => $list->getLogName(), 'identifier' => $commonList->getId() ) ));
+                    $logService->log($this->getUser(), 'user_update_list', $this->base['project'], array( 'list' => array( 'logName' => $list->getLogName(), 'identifier' => $list->getId() ) ));
                 
                 } elseif (count($errors) > 0) {
 
@@ -264,7 +265,7 @@ class ListController extends BaseController
             return new Response($error, 406);
         }
 
-        return new Response();
+        return new Response($response);
     }
 
     /*
@@ -457,23 +458,12 @@ class ListController extends BaseController
                 $logService->log($this->getUser(), 'user_delete_list_item', $this->base['project'], array( 'list' => array( 'logName' => $list->getLogName(), 'identifier' => $list->getId()),
                                                                                                               'list_item' => array( 'logName' => $listItem->getLogName() )) );
 
-                $this->get('session')->getFlashBag()->add(
-                    'success',
-                    $this->get('translator')->trans('project.lists.items.deleted')
-                );
-
-            } else {
-
-                $this->get('session')->getFlashBag()->add(
-                    'warning',
-                    $this->get('translator')->trans('project.lists.items.not.found')
-                );
-
+                return new Response();
             }
             
         }
 
-        return $this->redirect($this->generateUrl('p_show_project_list', array('uid' => $uid, 'list_uid' => $this->container->get('uid')->toUId($list->getId()) )));
+        return new Response($this->get('translator')->trans('invalid.request', array(), 'errors'), 400);
 
     }
 
@@ -505,12 +495,9 @@ class ListController extends BaseController
     
             return new Response();
 
-        } else {
-
-            return new Response($this->get('translator')->trans('invalid.request', array(), 'errors'), 400);
-
         }
 
+        return new Response($this->get('translator')->trans('invalid.request', array(), 'errors'), 400);
     }
 
     /*

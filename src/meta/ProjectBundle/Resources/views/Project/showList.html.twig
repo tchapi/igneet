@@ -81,11 +81,11 @@
         {% else %}
           <span>{{ "tags.none"|trans }}</span>
           {% if base.canEdit %}
-            <ul data-url="{{ path('p_show_project_list_edit', {'uid': base.project.id|to_uid, 'list_uid': list.id|to_uid, 'token': csrf_token('editList')  }) }}" data-emptytext="{{ "tags.emptyText"|trans }}" contenteditable="list" data-name="tags">
+            <ul data-url="{{ path('p_show_project_list_edit', {'uid': base.project.id|to_uid, 'list_uid': list.id|to_uid, 'token': csrf_token('editList')  }) }}" contenteditable="list" data-name="tags">
               <li><a href="#" class="add"><i class="fa fa-plus"></i></a>
                 <span style="display: none;">
                   <a href="#"><i class="fa fa-times"></i></a>
-                  <input type="text" id="tag" placeholder="{{ "tags.placeholder"|trans }}"/>
+                  <input type="text" id="tag" placeholder="{{ "tags.emptyText"|trans }}"/>
                 </span>
               </li>
             </ul>
