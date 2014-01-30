@@ -82,6 +82,18 @@ body {
 
       }
     }
+    &.admin {
+      @include media($desktop) { 
+        & > menu {
+          background: $_red;
+          border-bottom: 1px solid darken($_red, 20%);
+        } 
+      }
+      & > .content-container > nav {
+        background: $_red;
+        border-bottom: 1px solid darken($_red, 20%);
+      }
+    }
   }
 
   @include media($tablet, $mobile) {

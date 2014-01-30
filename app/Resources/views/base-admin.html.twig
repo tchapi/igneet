@@ -1,0 +1,33 @@
+{% extends '::_base.html.twig' %}
+
+{% block javascripts %}
+  {{ parent() }}
+  {% javascripts '@metaGeneralBundle/Resources/public/js/general.behaviour.js' 
+          filter='?yui_js' %}
+  <script src="{{ asset_url }}"></script>
+  {% endjavascripts %}
+{% endblock %}
+
+{% block body %}
+<body class="full admin">
+
+
+<menu role="menu">
+
+  <a href="{{ path('a_home') }}" class="logo"><img src="{{ asset('/bundles/metageneral/img/logo/logo-64.png') }}" /><span>Igneet</span></a>
+
+  {% render(controller("metaAdminBundle:Admin:currentUserMenu")) %}
+
+</menu>
+
+<div class="content-container menu-push">
+
+  <nav role="mobile">
+    <a href="#" class="menu-trigger"><i class="fa fa-bars fa-lg"></i></a>
+    <a href="{{ path('a_home') }}" class="logo"><img src="{{ asset('/bundles/metageneral/img/logo/logo-64.png') }}" /><span>Igneet — Admin</span></a>
+    
+  </nav>
+
+{% block container %}{% endblock %}
+</div>
+{% endblock %}

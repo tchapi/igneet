@@ -1,18 +1,17 @@
-{% extends '::base.html.twig' %}
+{% extends '::base-admin.html.twig' %}
 
 {% block title %}Administration{% endblock %}
 
-{% block menu %}
-  {% render(controller("metaAdminBundle:Admin:currentUserMenu")) %}
-{% endblock %}
+{% block container %}
 
-{% block body %}
-<header>
-  <h1>Administration</h1>
-</header>
-
-<div class="content clearfix">
-{% block content %}
-{% endblock %}
+<div class="wrapper">
+  <header>
+  {% block header %}
+    <h1>Administration</h1>
+  {% endblock %}
+  </header>
 </div>
+
+{% block content %}{% endblock %}
+
 {% endblock %}
