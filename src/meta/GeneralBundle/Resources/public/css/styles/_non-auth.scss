@@ -24,7 +24,8 @@
       @include media($tablet, $mobile) {
         @include fill-parent();
       }
-      @include logo(70);
+      font-size: 1em;
+      & > a { @include logo(70); }
     }
     & > span {
       @include span-columns(3 of 8);
@@ -35,6 +36,15 @@
       text-align: right;
       padding-top: 40px;
       color: $_muted-dark;
+      & > img {
+        opacity: 0.4;
+      }
+      & > a > img {
+        opacity: 0.6;
+        &:hover {
+          opacity: 1;
+        }
+      }
     }
   }
   div.non-auth {

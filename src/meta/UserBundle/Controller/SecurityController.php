@@ -24,11 +24,29 @@ use meta\UserBundle\Entity\User,
  
 class SecurityController extends Controller
 {
+
+    /*
+     * Helper to get the lang cookie value
+     */ 
+    private function getLangCookie(Request $request)
+    {
+
+        $cookies = $request->cookies;
+        if ($cookies->has('igneet_lang'))
+        {
+            $request->setLocale($cookies->get('igneet_lang'));
+            
+        }
+
+    }
+
     /*
      * Login a user
      */
-    public function loginAction()
+    public function loginAction(Request $request)
     {
+        
+        $this->getLangCookie($request);
 
         $authenticatedUser = $this->getUser();
 
@@ -62,9 +80,11 @@ class SecurityController extends Controller
     /*
      * Shows the user the different signin methods available
      */
-    public function chooseSignupProviderAction($inviteToken)
+    public function chooseSignupProviderAction(Request $request, $inviteToken)
     {
     
+        $this->getLangCookie($request);
+
         $authenticatedUser = $this->getUser();
 
         if ($authenticatedUser) {
@@ -87,6 +107,8 @@ class SecurityController extends Controller
     public function createAction(Request $request, $inviteToken, $openid)
     {
         
+        $this->getLangCookie($request);
+
         $authenticatedUser = $this->getUser();
         $em = $this->getDoctrine()->getManager();
 
@@ -339,6 +361,8 @@ class SecurityController extends Controller
     public function recoverAction(Request $request)
     {
 
+        $this->getLangCookie($request);
+
         // You should not be logged
         if ($this->getUser()){
             
@@ -409,6 +433,8 @@ class SecurityController extends Controller
      */
     public function changePasswordAction(Request $request, $passwordToken)
     {
+
+        $this->getLangCookie($request);
 
         // It may be an internal request
         if (is_null($passwordToken) && $this->getUser()){

@@ -4,11 +4,6 @@
 
 {% block container %}
 
-  <header class="non-auth">
-    <h1><img src="{{ asset('/bundles/metageneral/img/logo/logo-128.png') }}" /><span>Igneet</span></h1>
-    <span>{{ app.request.host }}</span>
-  </header>
-
   <div class="non-auth">
       <h2>{{ "user.recover.title"|trans }}</h2>
       <h3><a href="{{ path("login") }}">&laquo; {{ "back"|trans }}</a></h3>

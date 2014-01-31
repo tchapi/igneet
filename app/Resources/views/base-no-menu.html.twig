@@ -1,10 +1,35 @@
 {% extends '::_base.html.twig' %}
 
+{% block javascripts %}
+  {{ parent() }}
+  {% javascripts '@metaGeneralBundle/Resources/public/js/non-auth.behaviour.js' 
+          filter='?yui_js' %}
+  <script src="{{ asset_url }}"></script>
+  {% endjavascripts %}
+{% endblock %}
+
 {% block body %}
 <body class="no-menu">
 
 <div class="content-container">
-{% block container %}{% endblock %}
+
+  <header class="non-auth">
+    <h1><a href="{{ path('g_home_community')}}"><img src="{{ asset('/bundles/metageneral/img/logo/logo-128.png') }}" /><span>Igneet</span></a></h1>
+    <span>
+      {% import '_locale.html.twig' as locale %}
+      {% set actualCode = locale.echoLocaleCode()|lower %}
+      {% for code, language in available_languages %}
+        {% if code == actualCode %}
+          <img src="{{ asset('bundles/metageneral/img/langs/' ~ code ~ '.png') }}" width="24px" height="24px"/>
+        {% else %}
+          <a href="#" class="lang" rel="{{ language.code }}"><img src="{{ asset('bundles/metageneral/img/langs/' ~ code ~ '.png') }}" title="{{ language.name }}" width="24px" height="24px"/></a>
+        {% endif %}
+      {% endfor %}
+    </span>
+  </header>
+  
+  {% block container %}{% endblock %}
+
 </div>
   
 {% endblock %}

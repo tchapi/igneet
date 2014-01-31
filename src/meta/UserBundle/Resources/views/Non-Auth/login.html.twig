@@ -4,11 +4,6 @@
 
 {% block container %}
   
-  <header class="non-auth">
-    <h1><img src="{{ asset('/bundles/metageneral/img/logo/logo-128.png') }}" /><span>Igneet</span></h1>
-    <span>{{ app.request.host }}</span>
-  </header>
-  
   <form action="{{ path('login_check') }}" method="POST" class="non-auth">
 
     <input id="username" type="text" name="_username" value="{{ last_username }}" placeholder="{{ "user.login.login"|trans }}"/>
