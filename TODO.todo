@@ -3,11 +3,9 @@
 
 NEXT :
 
- ☐ lien sur le igneet logo en mode non-auth
-
  ☐ 404 en mode non-auth ?
 
- ☐ Refaire l'admin !!
+ ☐ Refaire l'admin !! --> en cours
 
  ☐ Passer les arguments en array() au lieu de liste dans UserRepository
 
@@ -20,8 +18,6 @@ NEXT :
  ☐ Erreurs dans les formulaires de création : elles sont affichées n'importe comment a priori (A vérifier : déjà fixed ?)
  
  ☐ faire des templates pour les ul.sortable et refresh en ajax quand on fait "new"
-
- ☐ Page de management de communauté : rajouter un bouton "enlever un utilisateur de la communauté" supprimer cet utilisateur de la communauté. Il devriendra dans ce cas Guest sur les projets dans lesquels il était, et sera viré de ses idées... qui seront supprimées si elle n'appartiennent à personne d'autre..."
 
 Simples :
 
@@ -44,32 +40,25 @@ Complexe:
 
  ☐ Passer les commentaires en ajax plutot qu'en reload de pages
 
+ ☐ Ajout de wikipage et de list : passer en ajax ?
+
  ☐ Pagination de la timeline
 
 Todo - Entity "Community" :
 
 Home de community (penser au private space !!)
- - infos basiques (description / headline / created_at)
  - wiki avec wikipages (idem project)
  - resources ?? Vraiment besoin ?
  - listes ?? idem ??
- - timeline avec les updates propres à la communautés
-   \__ remonter des infos des projets, idées et users de la communauté => hardos !!
- 
-Managers qui peuvent éditer la communauté et inviter
-"Request a manager to invite XXXX" => le manager a un tableau de validation
+
+ ☐ "Request a manager to invite XXXX" => le manager a un tableau de validation
 
 Todo - entité "CommonList":
 
- ☐ Ajax pour new item, new list avec input a la place du 'New item' ?
  ☐ Faire un routing pour les listItems qui 'hightlight' le bon list item
  ☐ listes : reconnaitre les urls en mettre un lien pour y aller directement a coté ;)
  ☐ lien vers des droplr avec apercu auto
    \_ tout ca doit se faire en JS a priori
-
-Todo - entité "Wiki":
-
- ☐ Ajax pour new wiki page ?
 
 Todo - Search:
 
