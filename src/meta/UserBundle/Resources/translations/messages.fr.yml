@@ -114,6 +114,8 @@ user:
   already.following: "Vous suivez déjà l'utilisateur %user%."
   not.following: "Vous ne suivez pas l'utilisateur %user%."
   unfollowing: "Vous ne suivez plus l'utilisateur %user%."
+  not.in.community: "L'utilisateur %user% n'est pas dans la communauté %community%."
+  guest.in.community: "L'utilisateur %user% est seulement invité dans la communauté %community%."
   already.in.community: "L'utilisateur %user% est déjà membre de la communauté %community%."
   belonging.community: "L'utilisateur %user% est désormais membre de la communauté %community%. Un mail de notification lui a été envoyé en votre nom."
   invitation:
@@ -137,6 +139,24 @@ user:
           click: "Cliquez sur le lien suivant pour vous connecter"
           community: "%user% vous a fait membre de la communauté %community% sur igneet !"
           project: "%user% vous a fait membre du projet %project% sur igneet !"
+  removal:
+    title: "Retirer un utilisateur de la communauté"
+    community: "L'utilisateur sera retiré de la communauté %community%."
+    help: "Vous devez indiquer une adresse email ou un nom d'utilisateur valide."
+    text: "L'utilisateur sera automatiquement retiré de la communauté, et sera notifié par mail."
+    field: "Indiquez un nom d'utilisateur ou un mail valide"
+    button: "Retirer cet utilisateur"
+    sent: "Un mail a été envoyée à %mail% en votre nom."
+    impossible: "Vous devez êtes manager de la communauté pour retirer un autre utilisateur."
+    privatespace: "Vous ne pouvez pas retirer de gens dans votre espace privé"
+    stays.guest.in.community: "L'utilisateur %user% n'est plus membre de la communauté %community% mais en reste un invité."
+    no.guest.in.community: "L'utilisateur %user% n'est plus membre de la communauté %community%."
+    mail:
+      subject: "Vous avez été retiré d'une communauté sur igneet"
+      body:
+        member:
+          click: "Cliquez sur le lien suivant pour vous connecter"
+          community: "%user% vous a retiré de la communauté %community% sur igneet."
   email.invalid: "L'email que vous avez indiqué n'est pas valide, et ce n'est pas un nom d'utilisateur valide non plus."
   recover:
     title: "Réinitialiser votre mot de passe"

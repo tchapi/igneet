@@ -592,6 +592,170 @@ class CommunityController extends Controller
 
     }
 
+    /*
+     * Display remove page or remove a user in a community by username or email
+     */
+    public function removeAction(Request $request)
+    {
+
+        $authenticatedUser = $this->getUser();
+        $community = $authenticatedUser->getCurrentCommunity();
+
+        if (!is_null($community)){
+            $userCommunityManager = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'manager' => true, 'deleted_at' => null));
+        } else {
+
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $this->get('translator')->trans('user.removal.privatespace')
+            );
+
+            return $this->redirect($this->generateUrl('g_home_community'));
+        
+        }
+        
+        if ( !is_null($community) && $userCommunityManager ) {
+
+            if ($request->isMethod('POST')) {
+            
+                // Gets mail or username
+                $mailOrUsername = $request->request->get('mailOrUsername');
+                $isEmail = filter_var($mailOrUsername, FILTER_VALIDATE_EMAIL);
+
+                // It must be a user already
+                $repository = $this->getDoctrine()->getRepository('metaUserBundle:User');
+                $em = $this->getDoctrine()->getManager();
+
+                if($isEmail){
+                    $user = $repository->findOneByEmail($mailOrUsername);
+                } else {
+                    $user = $repository->findOneByUsername($mailOrUsername);
+                }
+
+                if ($user && !$user->isDeleted()) {
+
+                    $mailOrUsername = $user->getEmail();
+
+                    $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('user' => $user->getId(), 'community' => $community->getId(), 'guest' => false, 'deleted_at' => null));
+                    $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('user' => $user->getId(), 'community' => $community->getId(), 'guest' => true, 'deleted_at' => null));
+
+                    // If the user is in the community
+                    if ($userCommunity){
+
+                        $mustStayGuest = false;
+
+                        // IDEAS : Remove the ones where $user is the only creator, get him out of the others
+                        foreach ($user->getIdeasCreated() as $idea) {
+                            if ($idea->isDeleted() == false && $idea->getCommunity() == $community) {
+                                if ($idea->countCreators() == 1) {
+                                    $idea->delete();
+                                } else {
+                                    $idea->removeCreator($user);
+                                }
+                            }
+                        }
+                        // Get him out of the ideas he participates in
+                        foreach ($user->getIdeasParticipatedIn() as $idea) {
+                            if ($idea->isDeleted() == false && $idea->getCommunity() == $community) {
+                                $idea->removeParticipant($user);
+                            }
+                        }
+
+                        // PROJECTS : If he participates or owns a projet : keep him as guest
+                        foreach ($user->getProjectsParticipatedIn() as $project) {
+                            if ($project->isDeleted() == false && $project->getCommunity() == $community) {
+                                // No need to go further : user is in one project of the community, we shall keep him as a guest
+                                $mustStayGuest = true;
+                                break;
+                            }
+                        }
+                        foreach ($user->getProjectsOwned() as $project) {
+                            if ($project->isDeleted() == false && $project->getCommunity() == $community) {
+                                // No need to go further : user is in one project of the community, we shall keep him as a guest
+                                $mustStayGuest = true;
+                                break;
+                            }
+                        }
+
+                        // We keep the user as a guest :
+                        if ($mustStayGuest) {
+                            $userCommunity->setGuest(true);
+                            $this->get('session')->getFlashBag()->add(
+                                'success',
+                                $this->get('translator')->trans('user.removal.stays.guest.in.community', array( '%user%' => $user->getFullName(), '%community%' => $community->getName() ))
+                            );
+                        }
+
+                        $this->get('session')->getFlashBag()->add(
+                            'success',
+                            $this->get('translator')->trans('user.removal.no.guest.in.community', array( '%user%' => $user->getFullName(), '%community%' => $community->getName() ))
+                        );
+
+                         $em->flush();
+
+                        // Sends mail to removee
+                        $message = \Swift_Message::newInstance()
+                            ->setSubject($this->get('translator')->trans('user.removal.mail.subject'))
+                            ->setFrom($this->container->getParameter('mailer_from'))
+                            ->setReplyTo($authenticatedUser->getEmail())
+                            ->setTo($mailOrUsername)
+                            ->setBody(
+                                $this->renderView(
+                                    'metaUserBundle:Mail:remove.mail.html.twig',
+                                    array('user' => $authenticatedUser, 'removee' => ($user && !$user->isDeleted()), 'community' => $community)
+                                ), 'text/html'
+                            );
+                        $this->get('mailer')->send($message);
+
+
+                    // If the user is only a guest in the community
+                    } elseif ($userCommunityGuest) {
+    
+                        $this->get('session')->getFlashBag()->add(
+                            'warning',
+                            $this->get('translator')->trans('user.guest.in.community', array( '%user%' => $user->getFullName(), '%community%' => $community->getName() ))
+                        );
+
+                    // The user has no link with the current community
+                    } else {
+
+                        $this->get('session')->getFlashBag()->add(
+                            'error',
+                            $this->get('translator')->trans('user.not.in.community', array( '%user%' => $user->getFullName(), '%community%' => $community->getName() ))
+                        );
+
+                    }
+
+                } else {
+
+                    $this->get('session')->getFlashBag()->add(
+                        'error',
+                        $this->get('translator')->trans('user.email.invalid')
+                    );
+
+                    return $this->redirect($this->generateUrl('g_remove'));
+                }
+
+                return $this->redirect($this->generateUrl('g_manage_community'));
+
+            } else {
+
+                return $this->render('metaGeneralBundle:Community:remove.html.twig', array('community' => $community) );
+
+            }
+
+        } else {
+
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $this->get('translator')->trans('user.removal.impossible')
+            );
+
+            return $this->redirect($this->generateUrl('g_manage_community'));
+
+        }
+
+    }
 
     /*
      * Add a manager to a community

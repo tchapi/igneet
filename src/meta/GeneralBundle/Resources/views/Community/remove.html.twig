@@ -1,0 +1,24 @@
+{% extends 'metaGeneralBundle:Community:layout.html.twig' %}
+
+{% block title %}{{ parent() }} > {{ "user.removal.title"|trans }}{% endblock %}
+
+{% block header %}
+  <div class="title">
+    <h2>{{ "user.removal.title"|trans }}</h2>
+    <h3>{{ "user.removal.community"|trans({ '%community%': community.name}) }}</h3>
+    <h4>{{ "user.removal.text"|trans({ '%community%': community.name}) }}</h4>
+  </div>
+{% endblock %}
+
+{% block content %}
+<form action="{{ path('g_remove') }}" method="post">
+  <section>
+    <div class="label"><label for="mailOrUsername" class="required">{{ "user.removal.field"|trans }} : </label></div>
+    <div class="content"><input type="text" id="mailOrUsername" name="mailOrUsername" required="required"></div>
+  </section>
+  <section>
+    <div class="content">
+      <input type="submit" value="{{ "user.removal.button"|trans }}" class="button" /></div>
+  </section>
+</form>
+{% endblock %}

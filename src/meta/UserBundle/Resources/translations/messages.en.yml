@@ -114,6 +114,8 @@ user:
   already.following: "You are already following %user%."
   not.following: "You are not following %user%."
   unfollowing: "You are not following %user% anymore."
+  not.in.community: "The user %user% is not in the community %community%."
+  guest.in.community: "The user %user% is already only a guest in the community %community%."
   already.in.community: "The user %user% is already a member of the community %community%."
   belonging.community: "The user %user% now belongs to the community %community%. A notification mail was sent on your behalf."
   invitation:
@@ -137,6 +139,24 @@ user:
           click: "Click on the following link to login and go to your profile"
           community: "%user% has made you a member of the community %community% on igneet !"
           project: "%user% has made you a member of the project %project% on igneet !"
+  removal:
+    title: "Remove a user from the community"
+    community: "The user will be removed from the community %community%."
+    help: "You need to indicate a valid e-mail address or username to remove a user."
+    text: "The user will be automatically pulled out of the %community% community and will be notified."
+    field: "Indicate a valid e-mail or username"
+    button: "Remove this user"
+    sent: "A mail was sent to %mail% on your behalf."
+    impossible: "You need to be a manager of the community to remove someone."
+    privatespace: "You cannot remove someone from your private space"
+    stays.guest.in.community: "The user %user% is no longer a member of the community %community% but is still a guest in this community."
+    no.guest.in.community: "The user %user% is no longer a member of the community %community%."
+    mail:
+      subject: "You've been removed from a community on igneet"
+      body:
+        member:
+          click: "Click on the following link to login and go to your profile"
+          community: "%user% has pulled you out of the community %community% on igneet."
   email.invalid: "Neither the email you have indicated is valid, nor it is a valid username."
   recover:
     title: "Recover your lost password"

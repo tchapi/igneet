@@ -56,6 +56,10 @@ g_invite:
     pattern: /community/invite
     defaults: { _controller: metaGeneralBundle:Community:invite }
 
+g_remove:
+    pattern: /community/remove
+    defaults: { _controller: metaGeneralBundle:Community:remove }
+
 # Language
 
 g_switch_language:

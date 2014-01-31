@@ -1,0 +1,11 @@
+<h3>{{ "mail.hello"|trans }}</h3>
+
+  <p>
+    {{ "user.removal.mail.body.member.community"|trans({ '%user%': user.getFullName(), '%community%': user.getCurrentCommunity().name }) }}
+  </p> 
+
+  <p>{{ "user.removal.mail.body.member.click"|trans }} :</p>
+  <p><a href="{{ url('u_me' ) }}">{{ url('u_me' ) }}</a></p>
+
+<p><em>{{ "mail.automated.user"|trans({ '%user%': user.getFullName() }) }}</em></p>
+<p><strong>{{ "team"|trans }}</strong></p>
