@@ -143,7 +143,7 @@ user:
     title: "Retirer un utilisateur de la communauté"
     community: "L'utilisateur sera retiré de la communauté %community%."
     help: "Vous devez indiquer une adresse email ou un nom d'utilisateur valide."
-    text: "L'utilisateur sera automatiquement retiré de la communauté, et sera notifié par mail."
+    text: "Ses idées dans la communautés seront supprimées s'il en était l'unique créateur, et il sera retiré de toutes les autres idées de la communautés. S'il était participant ou propriétaire d'un ou plusieurs projets dans la communautés, il y restera en tant qu'invité. L'utilisateur sera automatiquement retiré de la communauté, et sera notifié par mail."
     field: "Indiquez un nom d'utilisateur ou un mail valide"
     button: "Retirer cet utilisateur"
     sent: "Un mail a été envoyée à %mail% en votre nom."

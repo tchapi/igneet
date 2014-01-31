@@ -143,7 +143,7 @@ user:
     title: "Remove a user from the community"
     community: "The user will be removed from the community %community%."
     help: "You need to indicate a valid e-mail address or username to remove a user."
-    text: "The user will be automatically pulled out of the %community% community and will be notified."
+    text: "His ideas will be deleted if he was the only creator, and he will be pulled out of every idea in this community. If he was in any project as owner or participant, he will become guest in the community. The user will be automatically pulled out of the %community% community and will be notified."
     field: "Indicate a valid e-mail or username"
     button: "Remove this user"
     sent: "A mail was sent to %mail% on your behalf."
