@@ -1,11 +1,14 @@
 {% extends 'metaAdminBundle::layout.html.twig' %}
 
-{% block title %}{{ parent() }} > Stats : New Users {% endblock %}
+{% block title %}{{ parent() }} > Statistics > Users{% endblock %}
+
+{% block section %}Statistics > Users{% endblock %}
 
 {% block content %}
-
+<div class="wrapper info">
   {{ include('metaAdminBundle:Stats:_datepicker.html.twig', {'admin_route': 'a_stats_users'}) }}
-  
+</div>
+<div class="wrapper stats">
   <section>
 
     <h4>List of new users (non deleted yet)</h4>
@@ -21,7 +24,7 @@
     {% endif %}
     
   </section>
-
+</div>
 {% endblock %}
 
 

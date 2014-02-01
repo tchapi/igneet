@@ -5,8 +5,6 @@ NEXT :
 
  ☐ 404 en mode non-auth ?
 
- ☐ Refaire l'admin !! --> en cours
-
  ☐ Passer les arguments en array() au lieu de liste dans UserRepository
 
  ☐ Liste d'items : encore a styler (ex: sur la page profil utilisateur)
@@ -21,7 +19,7 @@ NEXT :
 
 Simples :
 
- ☐ Faire des special announcements modifiables en backoffice pour annoncer des trucs a tous les utilisateurs : récupérer le % de vues etc
+ ☐ Admin : Faire des special announcements modifiables en backoffice pour annoncer des trucs a tous les utilisateurs : récupérer le % de vues etc
 
 A évaluer :
 

@@ -7,7 +7,9 @@
 <div class="wrapper">
   <header>
   {% block header %}
-    <h1>Administration</h1>
+    <h1>Administration > {% block section %}Home{% endblock %}</h1>
+    <h3>Logged in as {{ app.user.getFullName() }}</h3>
+    <h4><a href="{{ path('a_home') }}">&laquo; Admin home</a></h4>
   {% endblock %}
   </header>
 </div>

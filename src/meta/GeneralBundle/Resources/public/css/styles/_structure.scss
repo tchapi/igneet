@@ -65,11 +65,11 @@ body {
         @include media($tablet, $mobile) { 
           padding: 0px $gutter/2;
         }
-        &.list, &.info, &.community {
+        &.list, &.info, &.community, &.tiles {
           background: $_background;
           color: $_text-secondary;
         }
-        &.team, &.comment {
+        &.team, &.comment, &.stats {
           background: $_background-strong;
           color: $_text-dark;
           & > section > .label {

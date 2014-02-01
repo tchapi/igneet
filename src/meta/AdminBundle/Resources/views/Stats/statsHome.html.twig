@@ -1,11 +1,14 @@
 {% extends 'metaAdminBundle::layout.html.twig' %}
 
-{% block title %}{{ parent() }} > Stats{% endblock %}
+{% block title %}{{ parent() }} > Statistics{% endblock %}
+
+{% block section %}Statistics{% endblock %}
 
 {% block content %}
-
+<div class="wrapper info">
   {{ include('metaAdminBundle:Stats:_datepicker.html.twig', {'admin_route': 'a_stats_home'}) }}
-  
+</div>
+<div class="wrapper stats">
   <section>
 
     <h4>Turnover / Churn</h4>
@@ -30,7 +33,7 @@
     </ul>
     
   </section>
-
+</div>
 {% endblock %}
 
 

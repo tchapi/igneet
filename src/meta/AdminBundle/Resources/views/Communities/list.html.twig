@@ -2,6 +2,8 @@
 
 {% block title %}{{ parent() }} > Communities{% endblock %}
 
+{% block section %}Communities{% endblock %}
+
 {% block javascripts %}
   {{ parent() }}
   {% javascripts '@metaGeneralBundle/Resources/public/js-edit/editable.behaviour.js'
@@ -11,7 +13,7 @@
 {% endblock %}
 
 {% block content %}
-
+<div class="wrapper info">
   <section>
 
     <h4>Communities</h4>
@@ -34,5 +36,5 @@
     {% endif %}
     
   </section>
-
+</div>
 {% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'metaAdminBundle::layout.html.twig' %}
+
+{% block title %}{{ parent() }} > Announcements{% endblock %}
+
+{% block section %}Announcements{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  {% javascripts '@metaGeneralBundle/Resources/public/js-edit/editable.behaviour.js'
+          filter='?yui_js' %}
+  <script src="{{ asset_url }}"></script>
+  {% endjavascripts %}
+{% endblock %}
+
+{% block content %}
+<div class="wrapper info">
+  <section>
+
+    <h4>Announcements</h4>
+    
+  </section>
+</div>
+{% endblock %}

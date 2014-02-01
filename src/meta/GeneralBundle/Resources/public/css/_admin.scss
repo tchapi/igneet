@@ -1,0 +1,42 @@
+/* ******************************************************************** */
+/*                            ADMIN STRUCTURE                           */
+/* ******************************************************************** */
+
+.tiles > section > div.tile {
+
+  $total: 270px;
+
+  @include span-columns(4 of 12);
+  &:nth-child(3n) { @include omega; }
+
+  background: $_container;
+  height: $total;
+
+  & > * {
+    @include fill-parent();
+    display: block;
+    padding: $gutter;
+  }
+
+  & > .label {
+    & > h2 {
+      margin: 0;
+    }
+    height: 60px;
+  }
+
+  & > .content {
+    padding-top: 0;
+    height: ($total - 60px - 110px);
+    & > p {
+      margin: 0;
+      color: $_discrete;
+    }
+  }
+
+  & > .actions {
+    height: 110px;
+    background: $_sensible;
+  }
+
+}

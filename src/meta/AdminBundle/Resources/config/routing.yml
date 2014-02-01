@@ -17,6 +17,11 @@ a_stats_users:
       start: "[0-9]{4}-[0-9]{2}-[0-9]{2}"
       end: "[0-9]{4}-[0-9]{2}-[0-9]{2}"
 
+# ANNOUNCEMENTS
+a_announcements:
+    path:  /announcements
+    defaults: { _controller: metaAdminBundle:Admin:announcements }
+
 # ADMINISTRATE
 a_communities:
     path:  /communities

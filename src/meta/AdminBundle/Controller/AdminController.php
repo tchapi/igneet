@@ -19,6 +19,12 @@ class AdminController extends Controller
     }
 
 
+    public function announcementsAction()
+    {
+
+        return $this->render('metaAdminBundle:Announcements:list.html.twig');
+    }
+
     /* ********************************************************************* */
     /*                           Non-routed actions                          */
     /*                     are NOT subject to Pre-execute                    */

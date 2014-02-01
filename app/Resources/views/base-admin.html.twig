@@ -8,6 +8,14 @@
   {% endjavascripts %}
 {% endblock %}
 
+{% block stylesheets %}
+  {{ parent() }}
+  {% stylesheets 'bundles/metageneral/css/_admin.scss' 
+  filter='?yui_css,cssrewrite' output='css/min/base-admin.css' %}
+      <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}" />
+  {% endstylesheets %}
+{% endblock %}
+
 {% block body %}
 <body class="full admin">
 
@@ -15,7 +23,6 @@
 <menu role="menu">
 
   <a href="{{ path('a_home') }}" class="logo"><img src="{{ asset('/bundles/metageneral/img/logo/logo-64.png') }}" /><span>Igneet</span></a>
-
   {% render(controller("metaAdminBundle:Admin:currentUserMenu")) %}
 
 </menu>

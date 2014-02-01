@@ -1,7 +1,4 @@
 <section class="colored info">
-  <p>
-    Back to the <a href="{{ path('a_stats_home', {'start': start_date, 'end': end_date}) }}">statistics home</a>
-  </p>
   <form method="GET" class="form-inline" id="date" action="{{ path(admin_route) }}" >
     For <strong>{{ app.request.host }}</strong>
        from <input name="start" type="text" value="{{ start_date }}">
