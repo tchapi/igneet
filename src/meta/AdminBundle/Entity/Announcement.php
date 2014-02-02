@@ -44,7 +44,7 @@ class Announcement
      */
     private $type;
     // info, warning, technical
-
+    
     /**
      * @var \DateTime $created_at
      *
@@ -111,6 +111,149 @@ class Announcement
     {
         $this->targetedUsers[] = $user;
         return $this;
+    }
+
+    /**
+     * Set text
+     *
+     * @param string $text
+     * @return Announcement
+     */
+    public function setText($text)
+    {
+        $this->text = $text;
+        return $this;
+    }
+
+    /**
+     * Get text
+     *
+     * @return string 
+     */
+    public function getText()
+    {
+        return $this->text;
+    }
+  
+    /**
+     * Set type
+     *
+     * @param string $type
+     * @return Announcement
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+    
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return string 
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * Set active
+     *
+     * @param boolean $active
+     * @return Announcement
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+        return $this;
+    }
+
+    /**
+     * Get active
+     *
+     * @return boolean 
+     */
+    public function getActive()
+    {
+        return $this->active;
+    }
+
+    /**
+     * is active
+     *
+     * @return boolean 
+     */
+    public function isActive()
+    {
+        return $this->active;
+    }
+
+    /**
+     * Set created_at
+     *
+     * @param \DateTime $createdAt
+     * @return Announcement
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->created_at = $createdAt;
+        return $this;
+    }
+
+    /**
+     * Get created_at
+     *
+     * @return \DateTime 
+     */
+    public function getCreatedAt()
+    {
+        return $this->created_at;
+    }
+
+    /**
+     * Set valid_from
+     *
+     * @param \DateTime $validFrom
+     * @return Announcement
+     */
+    public function setValidFrom($validFrom)
+    {
+        $this->valid_from = $validFrom;
+        return $this;
+    }
+
+    /**
+     * Get valid_from
+     *
+     * @return \DateTime 
+     */
+    public function getValidFrom()
+    {
+        return $this->valid_from;
+    }
+
+    /**
+     * Set valid_until
+     *
+     * @param \DateTime $validUntil
+     * @return Announcement
+     */
+    public function setValidUntil($validUntil)
+    {
+        $this->valid_until = $validUntil;
+        return $this;
+    }
+
+    /**
+     * Get valid_until
+     *
+     * @return \DateTime 
+     */
+    public function getValidUntil()
+    {
+        return $this->valid_until;
     }
 
     /**

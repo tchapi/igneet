@@ -20,7 +20,11 @@ a_stats_users:
 # ANNOUNCEMENTS
 a_announcements:
     path:  /announcements
-    defaults: { _controller: metaAdminBundle:Admin:announcements }
+    defaults: { _controller: metaAdminBundle:Announcement:list }
+
+a_announcements_new:
+    path:  /announcements/new
+    defaults: { _controller: metaAdminBundle:Announcement:create }
 
 # ADMINISTRATE
 a_communities:

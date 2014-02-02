@@ -1,0 +1,6 @@
+announcement:
+  createForm:
+    text: "Texte"
+    textPlaceholder: "Votre annonce"
+    type: "Type"
+    typeHelp: "Type de message"

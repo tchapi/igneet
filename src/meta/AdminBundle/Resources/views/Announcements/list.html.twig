@@ -4,14 +4,6 @@
 
 {% block section %}Announcements{% endblock %}
 
-{% block javascripts %}
-  {{ parent() }}
-  {% javascripts '@metaGeneralBundle/Resources/public/js-edit/editable.behaviour.js'
-          filter='?yui_js' %}
-  <script src="{{ asset_url }}"></script>
-  {% endjavascripts %}
-{% endblock %}
-
 {% block content %}
 <div class="wrapper info">
   <section>
