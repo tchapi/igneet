@@ -73,16 +73,16 @@ class Announcement
     private $valid_until;
     
     /**
-     * Users targetted
-     * @ORM\OneToMany(targetEntity="meta\UserBundle\Entity\User", mappedBy="targetted_announcements")
+     * Users targeted
+     * @ORM\ManyToMany(targetEntity="meta\UserBundle\Entity\User", mappedBy="targeted_announcements")
      **/
-    private $usersTargetted;
+    private $targetedUsers;
     
     /**
      * Users hit by the announcement
-     * @ORM\OneToMany(targetEntity="meta\UserBundle\Entity\User", mappedBy="viewed_announcements")
+     * @ORM\ManyToMany(targetEntity="meta\UserBundle\Entity\User", mappedBy="viewed_announcements")
      **/
-    private $usersHit;
+    private $hitUsers;
 
     /**
      * Constructor
@@ -101,5 +101,51 @@ class Announcement
 
     }
 
+    /**
+     * Add targeted_user
+     *
+     * BINDING LOGIC IS DONE IN 'USER' CLASS 
+     * @param \meta\UserBundle\Entity\User $user
+     */
+    public function addTargetedUser(meta\UserBundle\Entity\User $user)
+    {
+        $this->targetedUsers[] = $user;
+        return $this;
+    }
 
+    /**
+     * Remove targeted_user
+     *
+     * BINDING LOGIC IS DONE IN 'USER' CLASS 
+     * @param \meta\UserBundle\Entity\User $user
+     */
+    public function removeTargetedUser(meta\UserBundle\Entity\User $user)
+    {
+        $this->targetedUsers->removeElement($user);
+        return $this;
+    }
+
+    /**
+     * Add hit_user
+     *
+     * BINDING LOGIC IS DONE IN 'USER' CLASS 
+     * @param \meta\UserBundle\Entity\User $user
+     */
+    public function addHitUser(meta\UserBundle\Entity\User $user)
+    {
+        $this->hitUsers[] = $user;
+        return $this;
+    }
+
+    /**
+     * Remove hit_user
+     *
+     * BINDING LOGIC IS DONE IN 'USER' CLASS 
+     * @param \meta\UserBundle\Entity\User $user
+     */
+    public function removeHitUser(meta\UserBundle\Entity\User $user)
+    {
+        $this->hitUsers->removeElement($user);
+        return $this;
+    }
 }

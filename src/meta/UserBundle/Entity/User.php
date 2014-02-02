@@ -351,15 +351,15 @@ class User implements AdvancedUserInterface
 
     /**
      * Announcements this user must see
-     * @ORM\OneToMany(targetEntity="meta\AdminBundle\Entity\Announcement", mappedBy="usersTargetted")
+     * @ORM\OneToMany(targetEntity="meta\AdminBundle\Entity\Announcement", mappedBy="targetedUsers")
      **/
-    private $targetted_announcements;
+    private $targetedAnnouncements;
 
     /**
      * Announcements this user has seen
-     * @ORM\OneToMany(targetEntity="meta\AdminBundle\Entity\Announcement", mappedBy="usersHit")
+     * @ORM\OneToMany(targetEntity="meta\AdminBundle\Entity\Announcement", mappedBy="hitUser")
      **/
-    private $viewed_announcements;
+    private $viewedAnnouncements;
 
 
     public function __construct() {
@@ -390,8 +390,8 @@ class User implements AdvancedUserInterface
         $this->currentCommunity = null;
         
         /* announcements */
-        $this->targetted_announcements = new ArrayCollection();
-        $this->viewed_announcements = new ArrayCollection();
+        $this->targetedAnnouncements = new ArrayCollection();
+        $this->viewedAnnouncements = new ArrayCollection();
 
         /* init */
         $this->salt = md5(uniqid(null, true));
@@ -1860,4 +1860,63 @@ class User implements AdvancedUserInterface
     {
         return $this->enableDigest;
     }
+
+    /**
+     * Add targetedAnnoucement
+     *
+     * @param meta\AdminBundle\Entity\Announcement $announcement
+     * @return Taggable
+     */
+    public function addTargetedAnnouncement(meta\AdminBundle\Entity\Announcement $announcement)
+    {
+        if (!is_null($announcement)){
+            $announcement->addTargetedUser($this);
+        }
+        $this->targetedAnnouncements[] = $announcement;
+    
+        return $this;
+    }
+
+    /**
+     * Remove targetedAnnoucement
+     *
+     * @param meta\AdminBundle\Entity\Announcement $announcement
+     */
+    public function removeTargetedAnnouncement(meta\AdminBundle\Entity\Announcement $announcement)
+    { 
+        if(!is_null($announcement)){
+            $announcement->removeTargetedUser($this);
+        }
+        $this->targetedAnnouncements->removeElement($announcement);
+    }
+
+    /**
+     * Add viewedAnnouncement
+     *
+     * @param meta\AdminBundle\Entity\Announcement $announcement
+     * @return Taggable
+     */
+    public function addViewedAnnouncement(meta\AdminBundle\Entity\Announcement $announcement)
+    {
+        if (!is_null($announcement)){
+            $announcement->addHitUser($this);
+        }
+        $this->viewedAnnouncements[] = $announcement;
+    
+        return $this;
+    }
+
+    /**
+     * Remove viewedAnnouncement
+     *
+     * @param meta\AdminBundle\Entity\Announcement $announcement
+     */
+    public function removeViewedAnnouncement(meta\AdminBundle\Entity\Announcement $announcement)
+    { 
+        if(!is_null($announcement)){
+            $announcement->removeHitUser($this);
+        }
+        $this->viewedAnnouncements->removeElement($announcement);
+    }
+
 }
