@@ -13,14 +13,12 @@ NEXT :
  
  ☐ faire des templates pour les ul.sortable et refresh en ajax quand on fait "new"
 
- ☐ Admin : inclure le jour dans les requetes SQL : end
  ☐ Admin : en mode $tablet, menu-active : que les icones dans le menu (pas good, il faut les textes aussi)
 
 Simples :
 
  ☐ Admin : Faire des special announcements modifiables en backoffice pour annoncer des trucs a tous les utilisateurs : récupérer le % de vues etc
-    TODO:
-      Dans le modèle, faire le nécessaire dans les getters et setters pour que les objets soient bien persistés !!!!!!! Surtout dans USer.php
+    Creation Announcement
 
 A évaluer :
 
@@ -28,8 +26,6 @@ A évaluer :
    Sinon mettre en gras mais ne pas linker avec une icone oeil barré (?)
  
  ☐ [Eric] Tri des resources dans la vue / resources
-
- ☐ Restreindre l'acces des fichiers / ressources uploadés si non loggé (vaut aussi pour les images avatar)
 
 Complexe:
 
