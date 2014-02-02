@@ -24,7 +24,7 @@ class StatsController extends Controller
 
         }
 
-        $stats = $this->get("stats")->getCombinedStats($start,$end);
+        $stats = $this->get("stats")->getCombinedStats($start . " 00:00:00",$end . " 23:59:59");
 
         return $this->render('metaAdminBundle:Stats:statsHome.html.twig', array("stats" => $stats[0], "start_date" => $start, "end_date" => $end));
    
@@ -45,7 +45,7 @@ class StatsController extends Controller
 
         }
 
-        $users = $this->get("stats")->getNewUsers($start,$end);
+        $users = $this->get("stats")->getNewUsers($start . " 00:00:00",$end . " 23:59:59");
 
         return $this->render('metaAdminBundle:Stats:statsUsers.html.twig', array("users" => $users, "start_date" => $start, "end_date" => $end));
 

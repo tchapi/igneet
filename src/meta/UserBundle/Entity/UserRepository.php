@@ -75,6 +75,9 @@ class UserRepository extends EntityRepository implements UserProviderInterface
   /*
    * Count all users in a given community
    * Includes GUESTS as well
+   * Options :
+   * - 'community'
+   * - 'includeGuests'
    */
   public function countUsersInCommunity($options)
   {
@@ -105,6 +108,8 @@ class UserRepository extends EntityRepository implements UserProviderInterface
 
   /*
    * Count all managers in a given community
+   * Options :
+   * - 'community'
    */
   public function countManagersInCommunity($options)
   {
@@ -130,6 +135,12 @@ class UserRepository extends EntityRepository implements UserProviderInterface
 
   /*
    * Fetch all users in a given community
+   * Options :
+   * - 'community'
+   * - 'includeGuests'
+   * - 'sort'
+   * - 'page'
+   * - 'maxPerPage'
    */
   public function findAllUsersInCommunity($options)
   {
@@ -179,11 +190,15 @@ class UserRepository extends EntityRepository implements UserProviderInterface
 
   /*
    * Fetch all users in a given community, except the user $user
+   * Options :
+   * - 'community'
+   * - 'includeGuests'
+   * - 'user'
    */
-  public function findAllUsersInCommunityExceptMe($user, $community, $findGuests)
+  public function findAllUsersInCommunityExceptMe($options)
   {
     
-    if ($community === null){
+    if ($options['community'] === null){
       return null;
     }
 
@@ -195,11 +210,11 @@ class UserRepository extends EntityRepository implements UserProviderInterface
             ->leftJoin('uc.community', 'c')
             ->where('u.deleted_at IS NULL')
             ->andWhere('c = :community')
-            ->setParameter('community', $community)
+            ->setParameter('community', $options['community'])
             ->andWhere('u <> :user')
-            ->setParameter('user', $user);
+            ->setParameter('user', $options['user']);
 
-    if ($findGuests !== true){
+    if ($options['includeGuests'] !== true){
       $query->andWhere('uc.guest = :guest')
             ->setParameter('guest', false);
     }
@@ -212,11 +227,14 @@ class UserRepository extends EntityRepository implements UserProviderInterface
 
   /*
    * Fetch all followers of a user in the given community
+   * Options :
+   * - 'community'
+   * - 'user'
    */
-  public function findAllFollowersInCommunityForUser($community, $user)
+  public function findAllFollowersInCommunityForUser($options)
   {
 
-    if ($community === null){
+    if ($options['community'] === null){
       return null;
     }
 
@@ -229,20 +247,23 @@ class UserRepository extends EntityRepository implements UserProviderInterface
             ->join('uc.community', 'c')
             ->where('u.deleted_at IS NULL')
             ->andWhere('f = :user')
-            ->setParameter('user', $user)
+            ->setParameter('user', $options['user'])
             ->andWhere('c = :community')
-            ->setParameter('community', $community)
+            ->setParameter('community', $options['community'])
             ->getQuery()
             ->getResult();
   }
 
   /*
    * Fetch all followings of a user in the given community
+   * Options :
+   * - 'community'
+   * - 'user'
    */
-  public function findAllFollowingInCommunityForUser($community, $user)
+  public function findAllFollowingInCommunityForUser($options)
   {
 
-    if ($community === null){
+    if ($options['community'] === null){
       return null;
     }
 
@@ -255,15 +276,19 @@ class UserRepository extends EntityRepository implements UserProviderInterface
             ->join('uc.community', 'c')
             ->where('u.deleted_at IS NULL')
             ->andWhere('f = :user')
-            ->setParameter('user', $user)
+            ->setParameter('user', $options['user'])
             ->andWhere('c = :community')
-            ->setParameter('community', $community)
+            ->setParameter('community', $options['community'])
             ->getQuery()
             ->getResult();
   }
 
   /*
    * Find a user by its username in a given community
+   * Options :
+   * - 'community'
+   * - 'username'
+   * - 'includeGuests'
    */
   public function findOneByUsernameInCommunity($options)
   {
@@ -282,7 +307,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface
             ->andWhere('c = :community')
             ->setParameter('community', $options['community']);
             
-    if ($options['findGuest'] !== true){
+    if ($options['includeGuests'] !== true){
       $query->andWhere('uc.guest = :guest')
             ->setParameter('guest', false);
     }

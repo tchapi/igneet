@@ -28,7 +28,7 @@ class UserController extends Controller
 
         $repository = $this->getDoctrine()->getRepository('metaUserBundle:User');
         if ($username !== $authenticatedUser->getUsername()){
-            $user = $repository->findOneByUsernameInCommunity(array('username' => $username, 'community' => $authenticatedUser->getCurrentCommunity(), 'findGuest' => true));
+            $user = $repository->findOneByUsernameInCommunity(array('username' => $username, 'community' => $authenticatedUser->getCurrentCommunity(), 'includeGuests' => true));
         } else {
             $user = $authenticatedUser;
         }
@@ -93,8 +93,8 @@ class UserController extends Controller
         $ideasParticipatedIn = $ideaRepository->findAllIdeasInCommunityParticipatedInBy($community, $user);
 
         // Followers / Followings
-        $followers = $repository->findAllFollowersInCommunityForUser($community, $user);
-        $following = $repository->findAllFollowingInCommunityForUser($community, $user);
+        $followers = $repository->findAllFollowersInCommunityForUser(array( 'community' => $community, 'user' => $user));
+        $following = $repository->findAllFollowingInCommunityForUser(array( 'community' => $community, 'user' => $user));
 
         // Watching projects / ideas
         $ideasWatched = $ideaRepository->findAllIdeasWatchedInCommunityForUser($community, $user);
@@ -145,6 +145,13 @@ class UserController extends Controller
     
         $authenticatedUser = $this->getUser();
         $logService = $this->container->get('logService');
+
+        // In case the last notification to display is before the date we want to display, when we just clicked on notifications
+        $lastNotificationDate = $logService->getLastNotificationDate($authenticatedUser, null);
+        if ($date == null && $lastNotificationDate < new \DateTime("now - 1 week") ){
+            $date = new \DateTime($lastNotificationDate->format('Y-m-d H:i:s') . " - 1 week");
+            $date = $date->format('Y-m-d H:i:s');
+        }
 
         $notifications = array_merge(array('user' => $authenticatedUser), $logService->getNotifications($authenticatedUser, $date, null, null));
 
@@ -437,7 +444,7 @@ class UserController extends Controller
         if ($username !== $authenticatedUser->getUsername()){
 
             $repository = $this->getDoctrine()->getRepository('metaUserBundle:User');
-            $user = $repository->findOneByUsernameInCommunity(array('username' => $username, 'community' => $authenticatedUser->getCurrentCommunity(), 'findGuest' => true));
+            $user = $repository->findOneByUsernameInCommunity(array('username' => $username, 'community' => $authenticatedUser->getCurrentCommunity(), 'includeGuests' => true));
 
             if ($user && !$user->isDeleted()){
 
@@ -499,7 +506,7 @@ class UserController extends Controller
         if ($username !== $authenticatedUser->getUsername()){
 
             $repository = $this->getDoctrine()->getRepository('metaUserBundle:User');
-            $user = $repository->findOneByUsernameInCommunity(array('username' => $username, 'community' => $authenticatedUser->getCurrentCommunity(), 'findGuest' => true));
+            $user = $repository->findOneByUsernameInCommunity(array('username' => $username, 'community' => $authenticatedUser->getCurrentCommunity(), 'includeGuests' => true));
 
             if ($user && !$user->isDeleted()){
 

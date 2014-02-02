@@ -86,15 +86,19 @@ class BaseLogEntryRepository extends EntityRepository
             ->andWhere('uc.user = :user')
             ->setParameter('user', $user)
             ->andWhere('uc.guest = :guest')
-            ->setParameter('guest', false)
-            ->andWhere('l.created_at > :from')
-            ->setParameter('from', $from)
-            ->orderBy('l.created_at', 'DESC');
-    
+            ->setParameter('guest', false);
+
+    if ($from != null) {
+      $query->andWhere('l.created_at > :from')
+            ->setParameter('from', $from);
+    }
+
     if (!is_null($community)) {
       $query->andWhere('l.community = :community')
             ->setParameter('community', $community);
     }
+
+    $query->orderBy('l.created_at', 'DESC');
 
     return $query;
 

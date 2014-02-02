@@ -17,9 +17,12 @@ class StandardProjectLogEntryRepository extends EntityRepository
     
     $query = $qb->from('metaGeneralBundle:Log\StandardProjectLogEntry', 'l')
             ->where('l.standardProject IN (:projects)')
-            ->setParameter('projects', $projects)
-            ->andWhere('l.created_at > :from')
+            ->setParameter('projects', $projects);
+
+    if ($from != null){
+      $query->andWhere('l.created_at > :from')
             ->setParameter('from', $from);
+    }
 
     if ($exceptedUser){
       $query->andWhere('l.user != :user')

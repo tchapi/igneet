@@ -54,7 +54,7 @@ class CommunityController extends Controller
             
             // ALL USERS as a mosaik with dot indicating number of recent actions (> 9  : show a '+') 
             $userRepository = $this->getDoctrine()->getRepository('metaUserBundle:User');
-            $allUsers = $userRepository->findAllUsersInCommunityExceptMe($authenticatedUser, $community, false); // Without guests (false)
+            $allUsers = $userRepository->findAllUsersInCommunityExceptMe(array( 'user' => $authenticatedUser, 'community' => $community, 'includeGuests' => false)); // Without guests (false)
 
             // Last ideas
             $ideaRepository = $this->getDoctrine()->getRepository('metaIdeaBundle:Idea');
@@ -770,7 +770,7 @@ class CommunityController extends Controller
         $authenticatedUser = $this->getUser();
         $community = $authenticatedUser->getCurrentCommunity();
 
-        $newManager = $userRepository->findOneByUsernameInCommunity(array('username' => $mailOrUsername, 'community' => $community, 'findGuest' => false));
+        $newManager = $userRepository->findOneByUsernameInCommunity(array('username' => $mailOrUsername, 'community' => $community, 'includeGuests' => false));
 
         // Does the user exist ?
         if ($newManager) {
@@ -831,7 +831,7 @@ class CommunityController extends Controller
         $userRepository = $this->getDoctrine()->getRepository('metaUserBundle:User');
         $authenticatedUser = $this->getUser();
         $community = $authenticatedUser->getCurrentCommunity();
-        $toRemoveManager = $userRepository->findOneByUsernameInCommunity(array('username' => $username, 'community' => $community, 'findGuest' => false));
+        $toRemoveManager = $userRepository->findOneByUsernameInCommunity(array('username' => $username, 'community' => $community, 'includeGuests' => false));
         $managersCount = $userRepository->countManagersInCommunity(array('community' => $community));
 
         if ($toRemoveManager && $managersCount > 1 ) {

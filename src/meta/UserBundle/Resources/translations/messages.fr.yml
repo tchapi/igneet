@@ -100,7 +100,7 @@ user:
   me.help: "Aller directement sur votre profil"
   notifications:
     title: "Notifications"
-    info: "{0}Aucune nouvelle notification depuis le %date%.|{1}Vous avez une nouvelle notification depuis le %date%.|]1,Inf]Vous avez %count% nouvelles notifications depuis le %date%."
+    info: "{0}Aucune nouvelle notification depuis votre dernier passage le %date%.|{1}Vous avez une nouvelle notification depuis votre dernier passage le %date%.|]1,Inf]Vous avez %count% nouvelles notifications depuis votre dernier passage le %date%."
     none: "Au top ! Vous n'avez rien manqué."
     see.more: "Voir toutes les notifications à compter du %date% ..."
     help: "Voir toutes les notifications"

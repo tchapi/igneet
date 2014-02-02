@@ -36,16 +36,20 @@ class UserLogEntryRepository extends EntityRepository
             ->where('l.other_user = :user')
             ->setParameter('user', $user)
             ->andWhere('l.type = :type')
-            ->setParameter('type', 'user_follow_user')
-            ->andWhere('l.created_at > :from')
-            ->setParameter('from', $from)
-            ->orderBy('l.created_at', 'DESC');
+            ->setParameter('type', 'user_follow_user');
+
+    if ($from != null) {
+      $query->andWhere('l.created_at > :from')
+            ->setParameter('from', $from);
+    }
 
     if (!is_null($community)) {
       $query->andWhere('l.community = :community')
             ->setParameter('community', $community);
     }
 
+    $query->orderBy('l.created_at', 'DESC');
+    
     return $query;
 
   }

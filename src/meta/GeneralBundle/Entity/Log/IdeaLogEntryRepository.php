@@ -17,9 +17,12 @@ class IdeaLogEntryRepository extends EntityRepository
     
     $query = $qb->from('metaGeneralBundle:Log\IdeaLogEntry', 'l')
             ->where('l.idea IN (:ideas)')
-            ->setParameter('ideas', $ideas)
-            ->andWhere('l.created_at > :from')
+            ->setParameter('ideas', $ideas);
+
+    if ($from != null) {
+      $query->andWhere('l.created_at > :from')
             ->setParameter('from', $from);
+    }
 
     if ($exceptedUser){
       $query->andWhere('l.user <> :user')

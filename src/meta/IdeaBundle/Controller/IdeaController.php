@@ -671,7 +671,7 @@ class IdeaController extends Controller
         if ($this->access != false && !is_null($this->base['idea']->getCommunity()) ) {
 
             $userRepository = $this->getDoctrine()->getRepository('metaUserBundle:User');
-            $newParticipant = $userRepository->findOneByUsernameInCommunity(array('username' => $mailOrUsername, 'community' => $this->base['idea']->getCommunity(), 'findGuest' => false));
+            $newParticipant = $userRepository->findOneByUsernameInCommunity(array('username' => $mailOrUsername, 'community' => $this->base['idea']->getCommunity(), 'includeGuests' => false));
 
             if ($newParticipant && 
                 !($newParticipant->hasCreatedIdea($this->base['idea'])) &&
@@ -725,7 +725,7 @@ class IdeaController extends Controller
         if ($this->access != false && !is_null($this->base['idea']->getCommunity())) {
 
             $userRepository = $this->getDoctrine()->getRepository('metaUserBundle:User');
-            $toRemoveParticipant = $userRepository->findOneByUsernameInCommunity(array('username' => $username, 'community' => $this->base['idea']->getCommunity(), 'findGuest' => false));
+            $toRemoveParticipant = $userRepository->findOneByUsernameInCommunity(array('username' => $username, 'community' => $this->base['idea']->getCommunity(), 'includeGuests' => false));
 
             if ($toRemoveParticipant && $toRemoveParticipant->isParticipatingInIdea($this->base['idea']) ) {
                 

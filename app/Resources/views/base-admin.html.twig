@@ -8,14 +8,6 @@
   {% endjavascripts %}
 {% endblock %}
 
-{% block stylesheets %}
-  {{ parent() }}
-  {% stylesheets 'bundles/metageneral/css/_admin.scss' 
-  filter='?yui_css,cssrewrite' output='css/min/base-admin.css' %}
-      <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}" />
-  {% endstylesheets %}
-{% endblock %}
-
 {% block body %}
 <body class="full admin">
 

@@ -290,6 +290,53 @@ class LogService
         return $total;
     }
 
+    public function getLastNotificationDate($user, $community = null)
+    {
+
+        $objects = $this->getAllObjects($user);
+
+        // Around myself
+        $userLogRepository = $this->em->getRepository('metaGeneralBundle:Log\UserLogEntry');
+        // Last self log
+        $selfLogs = $userLogRepository->findLogsForUser(null, $user, $community);
+        if (count($selfLogs) > 0) {
+            $lastDate = $selfLogs[0]->getCreatedAt();
+        } else {
+            $lastDate = new \DateTime('now - 1 year');
+        }
+
+        // Last projet log
+        if (count($objects['projects']) > 0){
+            $projectLogRepository = $this->em->getRepository('metaGeneralBundle:Log\StandardProjectLogEntry');
+            $projectLogs = $projectLogRepository->findLogsForProjects($objects['projects'], null, $user, $community);
+            if (count($projectLogs) > 0) {
+                $lastDate = max($lastDate, $projectLogs[0]->getCreatedAt());
+            }
+        }
+
+        // LAst idea log
+        if (count($objects['ideas']) > 0){
+            $ideaLogRepository = $this->em->getRepository('metaGeneralBundle:Log\IdeaLogEntry');
+            $ideaLogs = $ideaLogRepository->findLogsForIdeas($objects['ideas'], null, $user, $community);
+            if (count($ideaLogs) > 0) {
+                $lastDate = max($lastDate, $ideaLogs[0]->getCreatedAt());
+            }
+        }
+
+        // Last user log
+        // In the repository, we make sure we only get logs for the communities the current user can see
+        if (count($objects['users']) > 0){
+            $baseLogRepository = $this->em->getRepository('metaGeneralBundle:Log\BaseLogEntry');
+            $userLogs = $baseLogRepository->findSocialLogsForUsersInCommunitiesOfUser($objects['users'], null, $user, $community);
+            if (count($userLogs)> 0) {
+                $lastDate = max($lastDate, $userLogs[0]->getCreatedAt());
+            }
+        }
+
+        return $lastDate;
+
+    }
+
     public function getNotifications($user, $date = null, $community = null, $locale = null)
     {
 

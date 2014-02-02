@@ -107,9 +107,10 @@ class UsersController extends Controller
     {
 
         $authenticatedUser = $this->getUser();
+        $community = $authenticatedUser->getCurrentCommunity();
 
         // In private space : no users
-        if (is_null($authenticatedUser->getCurrentCommunity())) {
+        if (is_null($community)) {
             throw $this->createNotFoundException($this->get('translator')->trans('user.none.inPrivateSpace'));
         }
 
@@ -140,7 +141,7 @@ class UsersController extends Controller
         } else {
 
             $repository = $this->getDoctrine()->getRepository('metaUserBundle:User');
-            $users = $repository->findAllUsersInCommunityExceptMe($authenticatedUser, $authenticatedUser->getCurrentCommunity(), $target['params']['guest']);
+            $users = $repository->findAllUsersInCommunityExceptMe(array( 'user' => $authenticatedUser, 'community' => $community, 'includeGuests' => $target['params']['guest']));
 
             if (count($users) > 0 || $target['external'] == true){
 
