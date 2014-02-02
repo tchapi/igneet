@@ -1864,10 +1864,10 @@ class User implements AdvancedUserInterface
     /**
      * Add targetedAnnoucement
      *
-     * @param meta\AdminBundle\Entity\Announcement $announcement
+     * @param \meta\AdminBundle\Entity\Announcement $announcement
      * @return Taggable
      */
-    public function addTargetedAnnouncement(meta\AdminBundle\Entity\Announcement $announcement)
+    public function addTargetedAnnouncement(\meta\AdminBundle\Entity\Announcement $announcement)
     {
         if (!is_null($announcement)){
             $announcement->addTargetedUser($this);
@@ -1880,9 +1880,9 @@ class User implements AdvancedUserInterface
     /**
      * Remove targetedAnnoucement
      *
-     * @param meta\AdminBundle\Entity\Announcement $announcement
+     * @param \meta\AdminBundle\Entity\Announcement $announcement
      */
-    public function removeTargetedAnnouncement(meta\AdminBundle\Entity\Announcement $announcement)
+    public function removeTargetedAnnouncement(\meta\AdminBundle\Entity\Announcement $announcement)
     { 
         if(!is_null($announcement)){
             $announcement->removeTargetedUser($this);
@@ -1893,10 +1893,10 @@ class User implements AdvancedUserInterface
     /**
      * Add viewedAnnouncement
      *
-     * @param meta\AdminBundle\Entity\Announcement $announcement
+     * @param \meta\AdminBundle\Entity\Announcement $announcement
      * @return Taggable
      */
-    public function addViewedAnnouncement(meta\AdminBundle\Entity\Announcement $announcement)
+    public function addViewedAnnouncement(\meta\AdminBundle\Entity\Announcement $announcement)
     {
         if (!is_null($announcement)){
             $announcement->addHitUser($this);
@@ -1909,9 +1909,9 @@ class User implements AdvancedUserInterface
     /**
      * Remove viewedAnnouncement
      *
-     * @param meta\AdminBundle\Entity\Announcement $announcement
+     * @param \meta\AdminBundle\Entity\Announcement $announcement
      */
-    public function removeViewedAnnouncement(meta\AdminBundle\Entity\Announcement $announcement)
+    public function removeViewedAnnouncement(\meta\AdminBundle\Entity\Announcement $announcement)
     { 
         if(!is_null($announcement)){
             $announcement->removeHitUser($this);

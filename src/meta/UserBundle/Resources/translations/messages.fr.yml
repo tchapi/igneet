@@ -102,6 +102,7 @@ user:
     title: "Notifications"
     info: "{0}Aucune nouvelle notification depuis votre dernier passage le %date%.|{1}Vous avez une nouvelle notification depuis votre dernier passage le %date%.|]1,Inf]Vous avez %count% nouvelles notifications depuis votre dernier passage le %date%."
     none: "Au top ! Vous n'avez rien manqué."
+    none.auto: "Vous n'avez pas de nouvelles notifications, nous affichons donc les dernières vues."
     see.more: "Voir toutes les notifications à compter du %date% ..."
     help: "Voir toutes les notifications"
     mark.read: "Tout marquer comme vu"

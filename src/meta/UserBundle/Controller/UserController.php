@@ -151,6 +151,11 @@ class UserController extends Controller
         if ($date == null && $lastNotificationDate < new \DateTime("now - 1 week") ){
             $date = new \DateTime($lastNotificationDate->format('Y-m-d H:i:s') . " - 1 week");
             $date = $date->format('Y-m-d H:i:s');
+
+            $this->get('session')->getFlashBag()->add(
+                'success',
+                $this->get('translator')->trans('user.notifications.none.auto')
+            );
         }
 
         $notifications = array_merge(array('user' => $authenticatedUser), $logService->getNotifications($authenticatedUser, $date, null, null));
