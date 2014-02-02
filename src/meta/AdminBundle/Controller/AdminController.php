@@ -22,7 +22,10 @@ class AdminController extends Controller
     public function announcementsAction()
     {
 
-        return $this->render('metaAdminBundle:Announcements:list.html.twig');
+        $repository = $this->getDoctrine()->getRepository('metaAdminBundle:Announcement');
+        $announcements = $repository->findAll();
+
+        return $this->render('metaAdminBundle:Announcements:list.html.twig', array( 'announcements' => $announcements ));
     }
 
     /* ********************************************************************* */

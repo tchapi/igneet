@@ -15,20 +15,17 @@
 {% block content %}
 <div class="wrapper info">
   <section>
-
-    <h4>Communities</h4>
-
     {% if communities|length == 0 %}
     No communities to show
     {% else %}
     <ul>
       {% for community in communities %}
-      <li><strong>{{ community.getName() }}</strong> : <span class="muted">{{ community.headline }}</span> <span class="label label-{{ community.type }}">{{ community.type }}</span>
+      <li><strong>{{ community.getName() }}</strong> : <em>{{ community.headline }}</em> <span class="community-{{ community.type }}">{{ community.type }}</span>
         <ul>
           <li><strong>{{ community.userCommunities|length }}</strong> users, <strong>{{ community.ideas|length }}</strong> ideas, <strong>{{ community.projects|length }}</strong> projects </li>
           <li>Created on : {{ community.createdAt|date('d/m/Y') }}</li>
-          <li>Validity : {% if community.isValid %}<span class="badge badge-success"><i class="icon icon-ok"></i> Valid</span>{% else %}<span class="badge badge-error"><i class="icon icon-cross"></i> Expired</span>{% endif %}</li>
-          <li>Valid until : <a href="#" id="{{ community.id|to_uid}}" data-type="date" data-viewformat="dd/mm/yyyy" data-pk="{{ community.id|to_uid}}" data-placement="right" data-original-title="Choose the new validity date" data-url="{{ path('a_extend_community') }}" class="editable editable-click">{{ community.validUntil|date("d/m/Y") }}</a></li>
+          <li>Validity : {% if community.isValid %}<span><i class="fa fa-ok"></i> Valid</span>{% else %}<span><i class="fa fa-cross"></i> Expired</span>{% endif %}</li>
+          <li>Valid until : <a href="#" id="{{ community.id|to_uid}}" data-url="{{ path('a_extend_community') }}">{{ community.validUntil|date("d/m/Y") }}</a></li>
         </ul>
       </li>
       {% endfor %}

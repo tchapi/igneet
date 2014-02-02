@@ -349,6 +349,19 @@ class User implements AdvancedUserInterface
      */
     private $enableSpecificEmails;
 
+    /**
+     * Announcements this user must see
+     * @ORM\OneToMany(targetEntity="meta\AdminBundle\Entity\Announcement", mappedBy="usersTargetted")
+     **/
+    private $targetted_announcements;
+
+    /**
+     * Announcements this user has seen
+     * @ORM\OneToMany(targetEntity="meta\AdminBundle\Entity\Announcement", mappedBy="usersHit")
+     **/
+    private $viewed_announcements;
+
+
     public function __construct() {
         
         /* Links to Skills */
@@ -374,8 +387,12 @@ class User implements AdvancedUserInterface
         $this->createdTokens = new ArrayCollection();
 
         $this->userCommunities = new ArrayCollection();
-        $currentCommunity = null;
+        $this->currentCommunity = null;
         
+        /* announcements */
+        $this->targetted_announcements = new ArrayCollection();
+        $this->viewed_announcements = new ArrayCollection();
+
         /* init */
         $this->salt = md5(uniqid(null, true));
         $this->roles = array('ROLE_USER');

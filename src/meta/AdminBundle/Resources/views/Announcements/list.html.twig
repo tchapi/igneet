@@ -15,9 +15,25 @@
 {% block content %}
 <div class="wrapper info">
   <section>
+    <a href="#" class="button button-success">Create an announcement</a>
+  </section>
+  <section>
 
-    <h4>Announcements</h4>
-    
+    {% if announcements|length == 0 %}
+    No announcements to show
+    {% else %}
+    <ul>
+      {% for announcement in announcements %}
+      <li><strong>{{ announcement.createdAt }}</strong> : <span>{{ announcement.text }}</span> <span class="announcement-{{ announcement.type }}">{{ announcement.type }}</span>
+        <ul>
+          <li><strong>{{ announcement.usersTargetted|length }}</strong> users targetted, <strong>{{ announcement.usersHit|length }}</strong> users hit</li>
+          <li>Broadcasted on : {{ announcement.broadcastedAt|date('d/m/Y') }}</li>
+          <li>Valid until : <a href="#" id="{{ announcement.id|to_uid}}" data-url="TBC">{{ announcement.validUntil|date("d/m/Y") }}</a></li>
+        </ul>
+      </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
   </section>
 </div>
 {% endblock %}

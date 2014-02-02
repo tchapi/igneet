@@ -17,9 +17,17 @@ NEXT :
  
  ☐ faire des templates pour les ul.sortable et refresh en ajax quand on fait "new"
 
+ ☐ Admin : inclure le jour dans les requetes SQL : end
+ ☐ Admin : en mode $tablet, menu-active : que les icones dans le menu (pas good, il faut les textes aussi)
+
 Simples :
 
  ☐ Admin : Faire des special announcements modifiables en backoffice pour annoncer des trucs a tous les utilisateurs : récupérer le % de vues etc
+    modèle :
+    announcement
+      id | texte | type(info|technical|warning) | createdAt | broadcastedAt | usersTargetted(*|-->users| usersHit(->users)
+    TODO:
+      Dans le modèle, faire le nécessaire dans les getters et setters pour que les objets soient bien persistés !!!!!!! Surtout dans USer.php
 
 A évaluer :
 
@@ -38,7 +46,7 @@ Complexe:
 
  ☐ Passer les commentaires en ajax plutot qu'en reload de pages
 
- ☐ Ajout de wikipage et de list : passer en ajax ?
+ ☐ Ajout de wikipage et de list : passer en ajax ? Et du coup faire des templates pour les morceaux de liste
 
  ☐ Pagination de la timeline
 

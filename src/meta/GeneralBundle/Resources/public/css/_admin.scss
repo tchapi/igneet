@@ -2,6 +2,11 @@
 /*                            ADMIN STRUCTURE                           */
 /* ******************************************************************** */
 
+/* Announcements color */
+.announcement-info { color: $_blue; }
+.announcement-warning { color: $_blue; }
+.announcement-technical { color: $_green; }
+
 .tiles > section > div.tile {
 
   $total: 270px;
@@ -39,4 +44,13 @@
     background: $_sensible;
   }
 
+}
+
+.datepicker {
+  input, label {
+    display: inline-block;
+    width: auto !important;
+    border: none !important;
+    padding: 0.5em;
+  }
 }

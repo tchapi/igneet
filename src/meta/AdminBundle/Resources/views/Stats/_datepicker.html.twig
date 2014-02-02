@@ -1,8 +1,8 @@
-<section class="colored info">
-  <form method="GET" class="form-inline" id="date" action="{{ path(admin_route) }}" >
+<section class="datepicker">
+  <form method="GET" id="date" action="{{ path(admin_route) }}" >
     For <strong>{{ app.request.host }}</strong>
-       from <input name="start" type="text" value="{{ start_date }}">
-       to <input name="end" type="text" value="{{ end_date }}"> 
-       <input type="submit" class="btn btn-primary" value="Refresh" />
+       <label for="start">from</label> <input name="start" type="text" value="{{ start_date }}">
+       <label for="end">to</label> <input name="end" type="text" value="{{ end_date }}"> 
+       <input type="submit" class="button button-neutral" value="Refresh" />
   </form>
 </section>
