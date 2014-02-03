@@ -41,7 +41,7 @@ class AnnouncementController extends Controller
 
                 $this->get('session')->getFlashBag()->add(
                     'success',
-                    $this->get('translator')->trans('announcement.created', array( '%idea%' => $idea->getName()))
+                    $this->get('translator')->trans('announcement.created')
                 );
 
                 return $this->redirect($this->generateUrl('a_announcements' ));

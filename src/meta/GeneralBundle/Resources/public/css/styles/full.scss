@@ -107,7 +107,7 @@ body.full > .content-container section {
 
   & > .label {
     @include span-columns(4 of 12);
-    @include shift(2);
+    @include shift(1);
     text-align: right;
     @include media($tablet) {
       @include span-columns(1 of 4);
@@ -220,4 +220,32 @@ body.full > .content-container section {
       }
     }
   }
+}
+
+body.full > .content-container form > section {
+
+  padding-top: $gutter/2;
+  padding-bottom: $gutter/2;
+
+  &:first-of-type {
+    padding-top: $gutter*2;
+  }
+
+  & > .content {
+    @include span-columns(4 of 12);
+    @include shift(5);
+    @include media($tablet) {
+      @include span-columns(3 of 4);
+      @include shift(1);
+    }
+    @include media($mobile) {
+      @include fill-parent();
+      @include shift(0); 
+    }
+    & input.error { border-color: $_red; }
+  }
+  & > .label + .content {
+    @include shift(0);
+  }
+
 }

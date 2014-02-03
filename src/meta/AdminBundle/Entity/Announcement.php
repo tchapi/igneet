@@ -74,13 +74,21 @@ class Announcement
     
     /**
      * Users targeted
-     * @ORM\ManyToMany(targetEntity="meta\UserBundle\Entity\User", mappedBy="targeted_announcements")
+     * @ORM\ManyToMany(targetEntity="meta\UserBundle\Entity\User", inversedBy="targetedAnnouncements")
+     * @ORM\JoinTable(name="Announcement_targets_User",
+     *      joinColumns={@ORM\JoinColumn(name="announcement_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")}
+     *      )
      **/
     private $targetedUsers;
     
     /**
      * Users hit by the announcement
-     * @ORM\ManyToMany(targetEntity="meta\UserBundle\Entity\User", mappedBy="viewed_announcements")
+     * @ORM\ManyToMany(targetEntity="meta\UserBundle\Entity\User", inversedBy="viewedAnnouncements")
+     * @ORM\JoinTable(name="Announcement_hits_User",
+     *      joinColumns={@ORM\JoinColumn(name="announcement_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")}
+     *      )
      **/
     private $hitUsers;
 
@@ -101,16 +109,15 @@ class Announcement
 
     }
 
+
     /**
-     * Add targeted_user
+     * Get id
      *
-     * BINDING LOGIC IS DONE IN 'USER' CLASS 
-     * @param \meta\UserBundle\Entity\User $user
+     * @return integer 
      */
-    public function addTargetedUser(meta\UserBundle\Entity\User $user)
+    public function getId()
     {
-        $this->targetedUsers[] = $user;
-        return $this;
+        return $this->id;
     }
 
     /**
@@ -257,6 +264,18 @@ class Announcement
     }
 
     /**
+     * Add targeted_user
+     *
+     * BINDING LOGIC IS DONE IN 'USER' CLASS 
+     * @param \meta\UserBundle\Entity\User $user
+     */
+    public function addTargetedUser(meta\UserBundle\Entity\User $user)
+    {
+        $this->targetedUsers[] = $user;
+        return $this;
+    }
+
+    /**
      * Remove targeted_user
      *
      * BINDING LOGIC IS DONE IN 'USER' CLASS 
@@ -266,6 +285,16 @@ class Announcement
     {
         $this->targetedUsers->removeElement($user);
         return $this;
+    }
+
+    /**
+     * Get targetedUsers
+     *
+     * @return \Doctrine\Common\Collections\Collection  
+     */
+    public function getTargetedUsers()
+    {
+        return $this->targetedUsers;
     }
 
     /**
@@ -291,4 +320,15 @@ class Announcement
         $this->hitUsers->removeElement($user);
         return $this;
     }
+
+    /**
+     * Get hitUsers
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getHitUsers()
+    {
+        return $this->hitUsers;
+    }
+
 }

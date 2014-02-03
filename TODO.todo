@@ -2,8 +2,6 @@
 ## TODO ##
 
 NEXT :
-
- ☐ 404 en mode non-auth ?
    
  ☐ Liste d'items : encore a styler (ex: sur la page profil utilisateur)
 
@@ -18,7 +16,7 @@ NEXT :
 Simples :
 
  ☐ Admin : Faire des special announcements modifiables en backoffice pour annoncer des trucs a tous les utilisateurs : récupérer le % de vues etc
-    Creation Announcement
+    Edition Announcement
 
 A évaluer :
 

@@ -10,10 +10,9 @@ class AnnouncementType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('text', null, array('label'  => 'announcement.createForm.text', 'attr' => array( 'placeholder' => 'announcement.createForm.textPlaceholder')));
-        $builder->add('type', null, array(
-            'data' => array('info', 'warning', 'technical'), 
-            'required' => true, 
+        $builder->add('text', 'textarea', array('label'  => 'announcement.createForm.text', 'attr' => array( 'placeholder' => 'announcement.createForm.textPlaceholder')));
+        $builder->add('type', 'choice', array(
+            'choices' => array('info' => "Info", 'warning' => "Warning", 'technical' => "Technical"), 
             'label' => 'announcement.createForm.type',
             'attr' => array('help' => 'announcement.createForm.typeHelp')
             ));

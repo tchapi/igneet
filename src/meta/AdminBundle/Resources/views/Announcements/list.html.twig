@@ -7,7 +7,7 @@
 {% block content %}
 <div class="wrapper info">
   <section>
-    <a href="#" class="button button-success">Create an announcement</a>
+    <a href="{{ path('a_announcements_new') }}" class="button button-success">Create an announcement</a>
   </section>
   <section>
 
@@ -16,11 +16,10 @@
     {% else %}
     <ul>
       {% for announcement in announcements %}
-      <li><strong>{{ announcement.createdAt }}</strong> : <span>{{ announcement.text }}</span> <span class="announcement-{{ announcement.type }}">{{ announcement.type }}</span>
+      <li><strong>{{ announcement.createdAt|date('d/m/Y') }}</strong> : <span>{{ announcement.text }}</span> <span class="announcement-{{ announcement.type }}">{{ announcement.type }}</span>
         <ul>
-          <li><strong>{{ announcement.usersTargetted|length }}</strong> users targetted, <strong>{{ announcement.usersHit|length }}</strong> users hit</li>
-          <li>Broadcasted on : {{ announcement.broadcastedAt|date('d/m/Y') }}</li>
-          <li>Valid until : <a href="#" id="{{ announcement.id|to_uid}}" data-url="TBC">{{ announcement.validUntil|date("d/m/Y") }}</a></li>
+          <li><strong>{{ announcement.targetedUsers|length }}</strong> users targetted, <strong>{{ announcement.hitUsers|length }}</strong> users hit</li>
+          <li>Valid from {{ announcement.validFrom|date('d/m/Y') }} until {{ announcement.validUntil|date("d/m/Y") }}</li>
         </ul>
       </li>
       {% endfor %}

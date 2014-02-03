@@ -4,3 +4,6 @@ announcement:
     textPlaceholder: "Your announcement"
     type: "Type"
     typeHelp: "Type of message"
+    valid_from: "Online from"
+    valid_until: "Valid until"
+  created: "Announcement created successfully"

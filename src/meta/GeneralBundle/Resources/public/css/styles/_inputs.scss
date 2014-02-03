@@ -13,7 +13,7 @@ input {
       }
 }
 form {
-    input[type=text], input[type=email],input[type=password], input[type=file], select {
+    input[type=text], input[type=email],input[type=password], input[type=file] {
         width: 100%;
         &:disabled { 
             @include stripped-background(lighten($_muted,10%));

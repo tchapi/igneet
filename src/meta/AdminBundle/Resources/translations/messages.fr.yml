@@ -4,3 +4,6 @@ announcement:
     textPlaceholder: "Votre annonce"
     type: "Type"
     typeHelp: "Type de message"
+    valid_from: "En ligne du"
+    valid_until: "En ligne jusqu'au"
+  created: "Annonce créée avec succès"

@@ -351,13 +351,13 @@ class User implements AdvancedUserInterface
 
     /**
      * Announcements this user must see
-     * @ORM\OneToMany(targetEntity="meta\AdminBundle\Entity\Announcement", mappedBy="targetedUsers")
+     * @ORM\ManyToMany(targetEntity="meta\AdminBundle\Entity\Announcement", mappedBy="targetedUsers")
      **/
     private $targetedAnnouncements;
 
     /**
      * Announcements this user has seen
-     * @ORM\OneToMany(targetEntity="meta\AdminBundle\Entity\Announcement", mappedBy="hitUser")
+     * @ORM\ManyToMany(targetEntity="meta\AdminBundle\Entity\Announcement", mappedBy="hitUsers")
      **/
     private $viewedAnnouncements;
 
@@ -1891,6 +1891,16 @@ class User implements AdvancedUserInterface
     }
 
     /**
+     * get targetedAnnoucement
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTargetedAnnouncements()
+    { 
+       return $this->targetedAnnouncements;
+    }
+
+    /**
      * Add viewedAnnouncement
      *
      * @param \meta\AdminBundle\Entity\Announcement $announcement
@@ -1917,6 +1927,16 @@ class User implements AdvancedUserInterface
             $announcement->removeHitUser($this);
         }
         $this->viewedAnnouncements->removeElement($announcement);
+    }
+
+    /**
+     * get viewedAnnoucement
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getViewedAnnouncements()
+    { 
+       return $this->viewedAnnouncements;
     }
 
 }
