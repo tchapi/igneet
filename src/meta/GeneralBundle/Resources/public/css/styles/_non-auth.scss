@@ -13,19 +13,22 @@
     }
   }
   header.non-auth {
-    margin-top: 110px;
+    margin-top: 70px;
     margin-bottom: 60px;
     @include media($tablet, $mobile) {
       margin-top: 30px;
       margin-bottom: 20px;
     }
     & > h1 {
+      font-size: 1em;
       @include span-columns(5 of 8);
       @include media($tablet, $mobile) {
         @include fill-parent();
       }
-      font-size: 1em;
-      & > a { @include logo(70); }
+      a {
+        color: $_green;
+        @include logo(70);
+      }
     }
     & > span {
       @include span-columns(3 of 8);

@@ -23,8 +23,13 @@ body {
     footer {
       color: $_text-dark;
     }
+    &.error {
+      @include stripped-background($_muted);
+      header {
+        margin-bottom: 0;
+      }
+    }
   }
-
   /* Where content is inside a "card" when in desktop resolution */
   &.card, &.no-menu {
     /* CONTENT CONTAINER */

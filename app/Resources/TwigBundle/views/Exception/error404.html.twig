@@ -1,23 +1,13 @@
-{% extends '::base.html.twig' %}
+{% extends '::base-error.html.twig' %}
 
 {% block title %}{{ parent() }} > {{ "error.404.title"|trans }}{% endblock %}
 
-{% block body %}
-<header class="home">
-  <div class="headerAvatarAndActions">
-    <div class="textAvatar"><i class="fa fa-bug"></i></div>
+{% block container %}
+
+  <div class="non-auth">
+    <h2>{{ "error.404.text"|trans }}</h2>
+    <h3><i class="fa fa-bug"></i> {{ "error.404.title"|trans }}</h3>
+    <h4><a href="{{ path("g_home_community") }}">&laquo; {{ "home"|trans }}</a></h4>
+    <h4>{{ "error.help"|trans }}</h4>
   </div>
-  <div class="objectHeader">
-    <h2>{{ "error.404.title"|trans }}</h2>
-  </div>
-</header>
-<div class="content home clearfix">
-  <section>
-  <h4>{{ "error.404.text"|trans }}</h4>
-  <p>{{ "error.help"|trans }}</p>
-</section>
-</div>
-<footer>
-{% block footer %}{% endblock %}
-</footer>
 {% endblock %}
