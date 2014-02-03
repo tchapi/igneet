@@ -11,8 +11,6 @@ NEXT :
  
  ☐ faire des templates pour les ul.sortable et refresh en ajax quand on fait "new"
 
- ☐ Admin : en mode $tablet, menu-active : que les icones dans le menu (pas good, il faut les textes aussi)
-
 Simples :
 
  ☐ Admin : Faire des special announcements modifiables en backoffice pour annoncer des trucs a tous les utilisateurs : récupérer le % de vues etc
