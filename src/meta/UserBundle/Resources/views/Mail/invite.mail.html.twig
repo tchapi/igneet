@@ -10,7 +10,7 @@
   </p> 
 
   <p>{{ "user.invitation.mail.body.new.click"|trans }} :</p>
-  <p><a href="{{ url('u_signup', { 'inviteToken': inviteToken } ) }}">{{ url('u_signup', { 'inviteToken': inviteToken } ) }}</a></p>
+  <p><a href="{{ url('u_signup_choice', { 'inviteToken': inviteToken } ) }}">{{ url('u_signup', { 'inviteToken': inviteToken } ) }}</a></p>
 {% else %}
   <p>
     {% if project is null %}
