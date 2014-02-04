@@ -17,7 +17,10 @@ class AnnouncementController extends Controller
         $repository = $this->getDoctrine()->getRepository('metaAdminBundle:Announcement');
         $announcements = $repository->findAll();
 
-        return $this->render('metaAdminBundle:Announcements:list.html.twig', array( 'announcements' => $announcements ));
+        $userRepository = $this->getDoctrine()->getRepository('metaUserBundle:User');
+        $totalUsers = count($userRepository->findBy(array('deleted_at' => null)));
+
+        return $this->render('metaAdminBundle:Announcements:list.html.twig', array( 'announcements' => $announcements, 'totalUsers' => $totalUsers ));
     }
 
    /*

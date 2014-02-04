@@ -14,16 +14,29 @@
     {% if announcements|length == 0 %}
     No announcements to show
     {% else %}
-    <ul>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Text</th>
+          <th>Targets</th>
+          <th>Hits</th>
+          <th>Validity</th>
+        </tr>
+      </thead>
+      <tbody>
       {% for announcement in announcements %}
-      <li><strong>{{ announcement.createdAt|date('d/m/Y') }}</strong> : <span>{{ announcement.text }}</span> <span class="announcement-{{ announcement.type }}">{{ announcement.type }}</span>
-        <ul>
-          <li><strong>{{ announcement.targetedUsers|length }}</strong> users targetted, <strong>{{ announcement.hitUsers|length }}</strong> users hit</li>
-          <li>Valid from {{ announcement.validFrom|date('d/m/Y') }} until {{ announcement.validUntil|date("d/m/Y") }}</li>
-        </ul>
-      </li>
+      {% set targets = announcement.targetedUsers|length %}
+      <tr>
+        <td class="announcement-{{ announcement.type }}">{{ announcement.type }}</td>
+        <td class="announcement-text">{{ announcement.text }}</td> 
+        <td>{% if targets == 0 %}<i class="fa fa-asterisk"></i>{% else %}{{ targets }}{% endif %}</td>
+        <td>{{ announcement.hitUsers|length }} ({% if targets == 0 %}{{ announcement.hitUsers|length/totalUsers*100|number_format }}{% else %}{{ announcement.hitUsers|length/targets*100|number_format }}{% endif %}%)</td>
+        <td>From {{ announcement.validFrom|date('d/m/Y') }}<br/>until {{ announcement.validUntil|date("d/m/Y") }}</td>
+      </tr>
       {% endfor %}
-    </ul>
+      </tbody>
+    </table>
     {% endif %}
   </section>
 </div>

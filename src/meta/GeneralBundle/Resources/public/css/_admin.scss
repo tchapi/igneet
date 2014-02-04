@@ -3,10 +3,18 @@
 /* ******************************************************************** */
 
 /* Announcements color */
-.announcement-info { color: $_blue; }
-.announcement-warning { color: $_blue; }
-.announcement-technical { color: $_green; }
+.announcement-info { background: $_blue; color: white; }
+.announcement-warning { background: $_blue; color: white; }
+.announcement-technical { background: $_green; color: white; }
 
+table tr td {
+  &.announcement-text {
+    width: 100%;
+    text-align: left;
+  }
+}
+
+/* Admin home page : tiles */
 .tiles > section > div.tile {
 
   $total: 270px;
@@ -46,6 +54,7 @@
 
 }
 
+/* Date picker on all pages for statistics */
 .datepicker {
   input, label {
     display: inline-block;
