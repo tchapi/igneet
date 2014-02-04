@@ -38,6 +38,8 @@ security:
                     - namePerson/first
                     - namePerson/last
                     - namePerson/friendly
+                optional_attributes: # Allows to pass the inviteToken for signup_finish
+                    - inviteToken
 
             form_login:
                 login_path: /app/login
