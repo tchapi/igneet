@@ -1,5 +1,16 @@
 <?php
 
+// Maintenance mode, if maintenance.html exists
+if (file_exists("maintenance.html")){
+
+  header('HTTP/1.1 503 Service Temporarily Unavailable');
+  header('Status: 503 Service Temporarily Unavailable');
+  header('Retry-After: 60'); // 60 seconds
+
+  include_once 'maintenance.html';
+  exit;
+}
+
 use Symfony\Component\ClassLoader\ApcClassLoader;
 use Symfony\Component\HttpFoundation\Request;
 
