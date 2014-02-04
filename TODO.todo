@@ -5,18 +5,18 @@ NEXT :
    
  ☐ Liste d'items : encore a styler (ex: sur la page profil utilisateur)
 
- ☐ Maintenance mode ?
-
  ☐ Erreurs dans les formulaires de création : elles sont affichées n'importe comment a priori (A vérifier : déjà fixed ?)
  
  ☐ faire des templates pour les ul.sortable et refresh en ajax quand on fait "new"
 
-Simples :
+ ☐ ne pas afficher le mark all as read des notifications si toutes les notifications sont "read"
+
+Admin :
 
  ☐ Admin : Faire des special announcements modifiables en backoffice pour annoncer des trucs a tous les utilisateurs : récupérer le % de vues etc
     Edition Announcement
 
- ☐ Admin : listes de communautés et d'utilisateurs
+ ☐ Admin : listes de communautés et d'utilisateurs à styler en tableau  comme les announcements
 
 A évaluer :
 
@@ -50,8 +50,6 @@ Todo - entité "CommonList":
 
  ☐ Faire un routing pour les listItems qui 'hightlight' le bon list item
  ☐ listes : reconnaitre les urls en mettre un lien pour y aller directement a coté ;)
- ☐ lien vers des droplr avec apercu auto
-   \_ tout ca doit se faire en JS a priori
 
 Todo - Search:
 
