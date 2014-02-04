@@ -5,7 +5,7 @@ NEXT :
    
  ☐ Liste d'items : encore a styler (ex: sur la page profil utilisateur)
 
- ☐  Maintenance mode ?
+ ☐ Maintenance mode ?
 
  ☐ Erreurs dans les formulaires de création : elles sont affichées n'importe comment a priori (A vérifier : déjà fixed ?)
  
@@ -15,6 +15,8 @@ Simples :
 
  ☐ Admin : Faire des special announcements modifiables en backoffice pour annoncer des trucs a tous les utilisateurs : récupérer le % de vues etc
     Edition Announcement
+
+ ☐ Admin : listes de communautés et d'utilisateurs
 
 A évaluer :
 
