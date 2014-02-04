@@ -178,15 +178,20 @@ class SecurityController extends Controller
                 return $this->redirect($this->generateUrl('login'));
 
             }
-
+            
             // Merges
             $attributes = array_merge(array(
                 'contact/email' => '',
                 'namePerson/first' => '',
                 'namePerson/last' => '',
                 'namePerson/friendly' => '',
+                'inviteToken' => '',
                 ), $token->getAttributes())
             ;
+
+            if ($attributes['inviteToken']){
+                $inviteToken = $attributes['inviteToken'];
+            }
 
             // We have to cope when the provider doesn't send required info
             if ($attributes['namePerson/friendly'] != "" ) {

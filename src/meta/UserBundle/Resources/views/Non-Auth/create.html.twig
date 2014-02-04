@@ -27,7 +27,7 @@
     <h3><a href="{{ path("login") }}">&laquo; {{ "back"|trans }}</a></h3>
     <h3>{{ "user.createForm.help"|trans }}</h3>
     {% if openid %}
-    <h4>{{ "user.createForm.usernameChoose"|trans }}</h4>
+    <h4>{{ "user.createForm.usernameChoose"|trans({'%email%': form.vars.value.email}) }}</h4>
     {% else %}
     <h4>{{ "user.createForm.fillIn"|trans }}</h4>
     {% endif %}

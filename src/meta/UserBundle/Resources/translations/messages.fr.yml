@@ -90,7 +90,7 @@ user:
     fillIn: "Remplissez les champs ci-dessous."
     username: "Nom d'utilisateur"
     usernameHelp: "Caractères alphanumériques seulement (sans espace ni caractère spécial). ex : patrick75"
-    usernameChoose: "Pour finir votre inscription, vous devez choisir un nom d'utilisateur :"
+    usernameChoose: "Pour finir votre inscription liéé à l'email %email%, vous devez choisir un nom d'utilisateur :"
     firstname: "Prénom"
     lastname: "Nom"
     password: "Mot de passe"

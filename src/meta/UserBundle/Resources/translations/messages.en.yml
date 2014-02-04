@@ -90,7 +90,7 @@ user:
     fillIn: "Fill in the fields below."
     username: "Username"
     usernameHelp: "Only alphanumeric values are allowed (no spaces, no special caracters). ex : johndoe44"
-    usernameChoose: "To finish your setup, you must choose a username :"
+    usernameChoose: "You are creating an account linked to %email%. To finish your setup, you must choose a username :"
     firstname: "First name"
     lastname: "Last name"
     password: "Password"
