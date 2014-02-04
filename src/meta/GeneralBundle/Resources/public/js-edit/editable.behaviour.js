@@ -1,3 +1,5 @@
+/*global $,Translator,alertify */
+/*jslint browser: true*/
 $(document).ready(function() {
 
     /*
