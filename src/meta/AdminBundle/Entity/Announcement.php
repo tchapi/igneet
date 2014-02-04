@@ -269,7 +269,7 @@ class Announcement
      * BINDING LOGIC IS DONE IN 'USER' CLASS 
      * @param \meta\UserBundle\Entity\User $user
      */
-    public function addTargetedUser(meta\UserBundle\Entity\User $user)
+    public function addTargetedUser(\meta\UserBundle\Entity\User $user)
     {
         $this->targetedUsers[] = $user;
         return $this;
@@ -281,7 +281,7 @@ class Announcement
      * BINDING LOGIC IS DONE IN 'USER' CLASS 
      * @param \meta\UserBundle\Entity\User $user
      */
-    public function removeTargetedUser(meta\UserBundle\Entity\User $user)
+    public function removeTargetedUser(\meta\UserBundle\Entity\User $user)
     {
         $this->targetedUsers->removeElement($user);
         return $this;
@@ -303,7 +303,7 @@ class Announcement
      * BINDING LOGIC IS DONE IN 'USER' CLASS 
      * @param \meta\UserBundle\Entity\User $user
      */
-    public function addHitUser(meta\UserBundle\Entity\User $user)
+    public function addHitUser(\meta\UserBundle\Entity\User $user)
     {
         $this->hitUsers[] = $user;
         return $this;
@@ -315,7 +315,7 @@ class Announcement
      * BINDING LOGIC IS DONE IN 'USER' CLASS 
      * @param \meta\UserBundle\Entity\User $user
      */
-    public function removeHitUser(meta\UserBundle\Entity\User $user)
+    public function removeHitUser(\meta\UserBundle\Entity\User $user)
     {
         $this->hitUsers->removeElement($user);
         return $this;
