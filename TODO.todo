@@ -9,8 +9,6 @@ NEXT :
  
  ☐ faire des templates pour les ul.sortable et refresh en ajax quand on fait "new"
 
- ☐ ne pas afficher le mark all as read des notifications si toutes les notifications sont "read"
-
 Admin :
 
  ☐ Admin : Faire des special announcements modifiables en backoffice pour annoncer des trucs a tous les utilisateurs : récupérer le % de vues etc

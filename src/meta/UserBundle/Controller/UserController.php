@@ -168,9 +168,6 @@ class UserController extends Controller
         }
         $params = array_merge(array('user' => $authenticatedUser, 'date' => $date, 'newNotifications' => $count), $notifications);
 
-        // Lastly, we update the last_notified_at date <-- No more !
-        // $authenticatedUser->setLastNotifiedAt(new \DateTime('now'));
-
         return $this->render('metaUserBundle:User:showNotifications.html.twig', $params);
     }
 
