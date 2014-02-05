@@ -148,7 +148,7 @@ class UserController extends Controller
 
         // In case the last notification to display is before the date we want to display, when we just clicked on notifications
         $lastNotificationDate = $logService->getLastNotificationDate($authenticatedUser, null);
-        if ($date == null && $lastNotificationDate < new \DateTime("now - 1 week") ){
+        if ($authenticatedUser->getLastNotifiedAt() > $lastNotificationDate && $date == null && $lastNotificationDate < new \DateTime("now - 1 week") ){
             $date = new \DateTime($lastNotificationDate->format('Y-m-d H:i:s') . " - 1 week");
             $date = $date->format('Y-m-d H:i:s');
 
@@ -156,14 +156,22 @@ class UserController extends Controller
                 'success',
                 $this->get('translator')->trans('user.notifications.none.auto')
             );
+
         }
 
-        $notifications = array_merge(array('user' => $authenticatedUser), $logService->getNotifications($authenticatedUser, $date, null, null));
+        $notifications = $logService->getNotifications($authenticatedUser, $date, null, null);
+        $count = 0;
+        foreach ($notifications['notifications'] as $notification) {
+            if ($notification["createdAt"] > $authenticatedUser->getLastNotifiedAt()) {
+                $count++;
+            }
+        }
+        $params = array_merge(array('user' => $authenticatedUser, 'date' => $date, 'newNotifications' => $count), $notifications);
 
         // Lastly, we update the last_notified_at date <-- No more !
         // $authenticatedUser->setLastNotifiedAt(new \DateTime('now'));
 
-        return $this->render('metaUserBundle:User:showNotifications.html.twig', $notifications);
+        return $this->render('metaUserBundle:User:showNotifications.html.twig', $params);
     }
 
     /*

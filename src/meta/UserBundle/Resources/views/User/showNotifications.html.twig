@@ -1,12 +1,12 @@
 {% extends 'metaUserBundle::layout.html.twig' %}
 
-{% block title %}{{ parent() }} > {{ user.getFullName() }} | {{ "user.notifications.title"|trans }}{% endblock %}
+{% block title %}{{ parent() }} > {{ app.user.getFullName() }} | {{ "user.notifications.title"|trans }}{% endblock %}
 
 {% block header %}
   <div class="title">
     <h2>{{ "user.notifications.title"|trans }}</h2>
-    <h4>{{ "user.notifications.info"|transchoice(notifications|length, { '%count%': notifications|length, '%date%': lastNotified|date('date.readable'|trans) }) }}</h4>
-    {% if notifications|length > 0 %}
+    <h4>{{ "user.notifications.info"|transchoice(newNotifications, { '%count%': newNotifications, '%date%': lastNotified|date('date.readable'|trans) }) }}</h4>
+    {% if newNotifications > 0 %}
     <button class="button-success" id="markRead" data-url="{{ path('u_mark_read_notifications', {'token': csrf_token('markRead')}) }}"><i class="fa fa-eye"></i> {{ "user.notifications.mark.read"|trans }}</button>
     {% endif %}
   </div>
