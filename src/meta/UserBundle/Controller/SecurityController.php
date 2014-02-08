@@ -108,9 +108,17 @@ class SecurityController extends Controller
     {
         
         $this->getLangCookie($request);
+        $session = $request->getSession();
 
         $authenticatedUser = $this->getUser();
         $em = $this->getDoctrine()->getManager();
+
+        // For OpenId
+        if ($session->has('inviteToken')){
+            $inviteToken = $session->get('inviteToken');
+        } else if ($inviteToken != "") {
+            $session->set('inviteToken', $inviteToken);
+        }
 
         if ($authenticatedUser) {
 
@@ -185,13 +193,8 @@ class SecurityController extends Controller
                 'namePerson/first' => '',
                 'namePerson/last' => '',
                 'namePerson/friendly' => '',
-                'inviteToken' => '',
                 ), $token->getAttributes())
             ;
-
-            if ($attributes['inviteToken']){
-                $inviteToken = $attributes['inviteToken'];
-            }
 
             // We have to cope when the provider doesn't send required info
             if ($attributes['namePerson/friendly'] != "" ) {
