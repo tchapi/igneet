@@ -348,13 +348,6 @@ class SecurityController extends Controller
                     return $this->redirect($this->generateUrl('g_home_community'));
                 }
 
-            } else {
-               
-               $this->get('session')->getFlashBag()->add(
-                    'error',
-                    $this->get('translator')->trans('information.not.valid', array(), 'errors')
-                );
-
             }
 
         }
