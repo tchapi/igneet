@@ -107,10 +107,10 @@ class Wiki
      */
     public function removePage(\meta\ProjectBundle\Entity\WikiPage $page)
     {
+        $this->pages->removeElement($page);
         if (!is_null($page)){
             $page->setWiki(null);
         }
-        $this->pages->removeElement($page);
     }
 
     /**
