@@ -300,10 +300,6 @@ class IdeaController extends Controller
                     break;
                 case 'about':
                     $this->base['idea']->setAbout($request->request->get('value'));
-                    $deepLinkingService = $this->container->get('deep_linking_extension');
-                    $response = $deepLinkingService->convertDeepLinks(
-                      $this->container->get('markdown.parser')->transformMarkdown($request->request->get('value'))
-                    );
                     $objectHasBeenModified = true;
                     break;
                 case 'file': // In this case, no file was passed to upload, so we just pass our way
@@ -336,10 +332,6 @@ class IdeaController extends Controller
                     break;
                 case 'content':
                     $this->base['idea']->setContent($request->request->get('value'));
-                    $deepLinkingService = $this->container->get('deep_linking_extension');
-                    $response = $deepLinkingService->convertDeepLinks(
-                      $this->container->get('markdown.parser')->transformMarkdown($request->request->get('value'))
-                    );
                     $objectHasBeenModified = true;
                     break;
             }
@@ -381,10 +373,10 @@ class IdeaController extends Controller
         } else {
         
             if (!is_null($error)) {
-                return new Response($error, 406);
+                return new Response(json_encode(array('message' => $error)), 406, array('Content-Type'=>'application/json'));
             }
 
-            return new Response($response);
+            return new Response(json_encode($response), 200, array('Content-Type'=>'application/json'));
         }
 
     }
