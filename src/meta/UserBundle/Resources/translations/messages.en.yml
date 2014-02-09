@@ -55,7 +55,7 @@ user:
     help: "Where do you live?"
     emptyText: "Add your city"
   password: "Password"
-  about: "You, in a few words"
+  about: "In a few words"
   activity: "Activity"
   login:
     signup: "Sign up"
@@ -72,13 +72,13 @@ user:
     alternate: "Or by e-mail or username"
     button: "Choose this user"
   ideas:
-    participated: "Ideas I participate in"
-    watched: "Ideas I watch"
-    initiated: "Ideas I initiated"
+    participated: "Ideas participated in"
+    watched: "Ideas watched"
+    initiated: "Ideas initiated"
   projects:
-    participated: "Projects I'm in"
-    owned: "Projects I own"
-    watched: "Projects I watch"
+    participated: "Projects participated in"
+    owned: "Projects owned"
+    watched: "Projects watched"
   cancelled.signup: "You cancelled your signing up."
   createForm:
     chooseProvider: "Choose one of the following OpenId providers to create an account :"

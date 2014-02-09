@@ -55,7 +55,7 @@ user:
     help: "Où habitez-vous ?"
     emptyText: "Ajoutez votre ville"
   password: "Mot de passe"
-  about: "Ce qu'il faut savoir sur vous"
+  about: "En quelques mots"
   activity: "Activité"
   login:
     signup: "S'enregistrer"
@@ -72,12 +72,12 @@ user:
     alternate: "Ou indiquer un nom d'utilisateur ou email valide"
     button: "Choisir cet utilisateur"
   ideas:
-    participated: "Idées dans lesquelles j'ai pris part"
+    participated: "Idées aidées"
     watched: "Idées suivies"
     initiated: "Idées créées"
   projects:
-    participated: "Projets dans lesquels j'ai pris part"
-    owned: "Mes projets"
+    participated: "Projets aidés"
+    owned: "Projets créés"
     watched: "Projets suivis"
   cancelled.signup: "Vous avez annulé le processus d'enregistrement d'un nouveau compte."
   createForm:
