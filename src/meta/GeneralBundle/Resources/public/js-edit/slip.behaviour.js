@@ -2,8 +2,13 @@
 /*jslint browser: true*/
 $(document).ready(function() {
 
-    var list = document.querySelector('ul.slip'),
-        listObject = new Slip(list);
+    var list = document.querySelector('ul.slip');
+
+    if (list === null) {
+        return;
+    }
+
+    var listObject = new Slip(list);
 
     list.addEventListener('slip:reorder', function(e) {
         // e.target list item reordered.
@@ -48,7 +53,7 @@ $(document).ready(function() {
     // new item
     $("ul.slip > li > input")
         .on("keyup", function(e) {
-            if (e.which === '13') { // Trigger a save with the Return key for new item
+            if (e.which === 13) { // Trigger a save with the Return key for new item
                 e.preventDefault();
                 var parent = $(this).closest('ul'),
                     text = $(this).val(),
