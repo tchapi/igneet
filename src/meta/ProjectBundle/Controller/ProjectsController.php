@@ -96,7 +96,7 @@ class ProjectsController extends Controller
                     'url' => $this->generateUrl('p_show_project', array('uid' => $this->container->get('uid')->toUId($project->getId()))), 
                     'picture' => $project->getPicture(), 
                     'name' => $project->getName(), 
-                    'isPrivate' => ($project->isPrivate()?"true":"false"), 
+                    'isPrivate' => (($project->isPrivate()&&!is_null($community))?"true":"false"), 
                     'headline' => $project->getHeadline(), 
                     'createdAt' => $project->getCreatedAt()->format($this->get('translator')->trans("date.fullFormat")), 
                     'updatedAt' => $project->getUpdatedAt()->format($this->get('translator')->trans("date.fullFormat")), 
