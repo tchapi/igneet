@@ -105,13 +105,14 @@
 {% if following|length > 0 %}
 <section>
 <div class="label">{{ "user.followings"|trans({'%user%': user.firstName }) }} :</div>
-<ul class="content">
+<ul class="content thumbs">
 {% for followingUser in following %}
   <li>
     <a href="{{ path('u_show_user_profile', {'username': followingUser.username}) }}">
-      <img src="{{ followingUser.avatar }}" width="70" height="70" class="smallAvatar"/>
-      <div class="smallObjectInfos ellipsis-multiline">
-        <span><div>{{ followingUser.firstName }}</div><div>{{ followingUser.lastName }}</div></span>
+      <img src="{{ followingUser.avatar }}" width="100px" height="100px"/>
+      <div>
+        <div>{{ followingUser.firstName }}</div>
+        <div>{{ followingUser.lastName }}</div>
       </div>
     </a>
   </li>
@@ -123,13 +124,14 @@
 {% if canEdit and followers|length > 0 %}
 <section>
 <div class="label">{{ "user.followers"|trans }} :</div>
-<ul class="content">
+<ul class="content thumbs">
 {% for followerUser in followers %}
   <li>
     <a href="{{ path('u_show_user_profile', {'username': followerUser.username}) }}">
-      <img src="{{ followerUser.avatar }}" width="70" height="70" class="smallAvatar"/>
-      <div class="smallObjectInfos ellipsis-multiline">
-        <span><div>{{ followerUser.firstName }}</div><div>{{ followerUser.lastName }}</div></span>
+      <img src="{{ followerUser.avatar }}" width="100px" height="100px"/>
+      <div>
+        <div>{{ followerUser.firstName }}</div>
+        <div>{{ followerUser.lastName }}</div>
       </div>
     </a>
   </li>
@@ -141,13 +143,13 @@
 {% if canEdit and projectsWatched|length > 0 %}
 <section>
 <div class="label">{{ "user.projects.watched"|trans }} :</div>
-<ul class="content">
+<ul class="content thumbs">
 {% for watchedProject in projectsWatched %}
   <li>
     <a href="{{ path('p_show_project', {'uid': watchedProject.id|to_uid }) }}">
-      <img src="{{ watchedProject.picture }}" width="70" height="70" class="smallAvatar"/>
-      <div class="smallObjectInfos ellipsis-multiline">
-        <span>{{ watchedProject.name }}</span>
+      <img src="{{ watchedProject.picture }}" width="100px" height="100px"/>
+      <div>
+        <div>{{ watchedProject.name }}</div>
       </div>
     </a>
   </li>
@@ -159,13 +161,13 @@
 {% if projectsOwned|length > 0 %}
 <section>
 <div class="label">{{ "user.projects.owned"|trans }} :</div>
-<ul class="content">
+<ul class="content thumbs">
 {% for ownedProject in projectsOwned %}
   <li>
     <a href="{{ path('p_show_project', {'uid': ownedProject.id|to_uid }) }}">
-      <img src="{{ ownedProject.picture }}" width="70" height="70" class="smallAvatar"/>
-      <div class="smallObjectInfos ellipsis-multiline">
-        <span>{{ ownedProject.name }}</span>
+      <img src="{{ ownedProject.picture }}" width="100px" height="100px"/>
+      <div>
+        <div>{{ ownedProject.name }}</div>
       </div>
     </a>
   </li>
@@ -174,16 +176,16 @@
 </section>
 {% endif %}
 
-{% if projectsParticipatedIn|length > 0 %}
+{% if canEdit and projectsParticipatedIn|length > 0 %}
 <section>
 <div class="label">{{ "user.projects.participated"|trans }} :</div>
-<ul class="content">
+<ul class="content thumbs">
 {% for participatedInProject in projectsParticipatedIn %}
   <li>
     <a href="{{ path('p_show_project', {'uid': participatedInProject.id|to_uid }) }}">
-      <img src="{{ participatedInProject.picture }}" width="70" height="70" class="smallAvatar"/>
-      <div class="smallObjectInfos ellipsis-multiline">
-        <span>{{ participatedInProject.name }}</span>
+      <img src="{{ participatedInProject.picture }}" width="100px" height="100px"/>
+      <div>
+        <div>{{ participatedInProject.name }}</div>
       </div>
     </a>
   </li>
@@ -195,13 +197,13 @@
 {% if canEdit and ideasWatched|length > 0 %}
 <section>
 <div class="label">{{ "user.ideas.watched"|trans }} :</div>
-<ul class="content">
+<ul class="content thumbs">
 {% for idea in ideasWatched %}
   <li>
     <a href="{{ path('i_show_idea', {'uid': idea.id|to_uid }) }}">
-      <img src="{{ idea.picture }}" width="70" height="70" class="smallAvatar"/>
-      <div class="smallObjectInfos ellipsis-multiline">
-        <span>{{ idea.name }}</span>
+      <img src="{{ idea.picture }}" width="100px" height="100px"/>
+      <div>
+        <div>{{ idea.name }}</div>
       </div>
     </a>
   </li>
@@ -213,13 +215,13 @@
 {% if ideasCreated|length > 0 %}
 <section>
 <div class="label">{{ "user.ideas.initiated"|trans }} :</div>
-<ul class="content">
+<ul class="content thumbs">
 {% for idea in ideasCreated %}
   <li>
     <a href="{{ path('i_show_idea', {'uid': idea.id|to_uid }) }}">
-      <img src="{{ idea.picture }}" width="70" height="70" class="smallAvatar"/>
-      <div class="smallObjectInfos ellipsis-multiline">
-        <span>{{ idea.name }}</span>
+      <img src="{{ idea.picture }}" width="100px" height="100px"/>
+      <div>
+        <div>{{ idea.name }}</div>
       </div>
     </a>
   </li>
@@ -228,16 +230,16 @@
 </section>
 {% endif %}
 
-{% if ideasParticipatedIn|length > 0 %}
+{% if canEdit and ideasParticipatedIn|length > 0 %}
 <section>
 <div class="label">{{ "user.ideas.participated"|trans }} :</div>
-<ul class="content">
+<ul class="content thumbs">
 {% for idea in ideasParticipatedIn %}
   <li>
     <a href="{{ path('i_show_idea', {'uid': idea.id|to_uid }) }}">
-      <img src="{{ idea.picture }}" width="70" height="70" class="smallAvatar"/>
-      <div class="smallObjectInfos ellipsis-multiline">
-        <span>{{ idea.name }}</span>
+      <img src="{{ idea.picture }}" width="100px" height="100px"/>
+      <div>
+        <div>{{ idea.name }}</div>
       </div>
     </a>
   </li>

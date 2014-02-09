@@ -233,3 +233,8 @@ a.button, input[type=submit].button, button {
 // Admin
 @import "_admin";
 
+// DRY ????
+ul.content.thumbs {
+  @include thumbs(2.333333, 7);
+  font-size: 0.8em;
+}

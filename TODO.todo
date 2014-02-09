@@ -2,8 +2,11 @@
 ## TODO ##
 
 NEXT :
-   
- ☐ Liste d'items : encore a styler (ex: sur la page profil utilisateur)
+
+Chaque post :
+   'message'
+   'redirect'
+   value => value
 
  ☐ Erreurs dans les formulaires de création : elles sont affichées n'importe comment a priori (A vérifier : déjà fixed ?)
  

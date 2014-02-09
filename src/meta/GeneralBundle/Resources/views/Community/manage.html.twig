@@ -22,26 +22,29 @@
 
   <section>
     <div class="label">{{ "community.managers"|trans }} :</div>
-    <ul class="content">
+    <ul class="content thumbs">
     {% for managerCommunity in userCommunityManagers %}
      
         <li>
           <a href="{{ path('u_show_user_profile', {'username': managerCommunity.user.username}) }}">
-            <img src="{{ managerCommunity.user.avatar }}" width="70" height="70" class="smallAvatar"/>
-            <div class="smallObjectInfos ellipsis-multiline">
-              <span><div>{{ managerCommunity.user.firstName }}</div><div>{{ managerCommunity.user.lastName }}</div></span>
+            <img src="{{ managerCommunity.user.avatar }}" width="100px" height="100px"/>
+            <div>
+              <div>{{ managerCommunity.user.firstName }}</div>
+              <div>{{ managerCommunity.user.lastName }}</div>
             </div>
           </a>
-          <a class="removeUserIcon" href="{{ path('g_remove_manager_community', { 'uid': managerCommunity.community.id|to_uid, 'username' : managerCommunity.user.username, 'token': csrf_token('removeManager') }) }}"><i class="fa fa-times fa-lg"></i></a>
+          {% if managerCommunity.user != app.user %}
+          <a class="remove" href="{{ path('g_remove_manager_community', { 'uid': managerCommunity.community.id|to_uid, 'username' : managerCommunity.user.username, 'token': csrf_token('removeManager') }) }}">&times;</a>
+          {% endif %}
         </li>
 
     {% endfor %}
 
     <li>
       <a href="{{ path('u_choose_user', {'targetAsBase64': targetManagerAsBase64, 'token': csrf_token('addManager') }) }}">
-        <div class="smallTextAvatar"><i class="fa fa-plus-circle"></i></div>
-        <div class="smallObjectInfos ellipsis-multiline">
-          <span>{{ "community.add.manager"|trans }}</span>
+        <i class="fa fa-plus-circle"></i>
+        <div>
+          <div>{{ "community.add.manager"|trans }}</div>
         </div>
       </a>
     </li>
