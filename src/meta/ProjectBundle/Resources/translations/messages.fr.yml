@@ -104,6 +104,7 @@ project:
     descriptionHelp: "Vous pouvez renseigner une description optionnelle pour cette liste"
     description.emptyText: "Renseignez une description (optionnelle)"
     none: "Aucune liste."
+    none.help: "En créer une"
     new: "Nouvelle liste"
     name: "Nom"
     description: "Description"
