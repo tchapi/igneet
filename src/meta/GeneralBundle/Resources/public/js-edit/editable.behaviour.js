@@ -8,50 +8,48 @@ $(document).ready(function() {
     var timers = {};
     var saveDelay = 1000; // milliseconds
 
-    var process = function(data, type, defaultMessage) {
-        if (data) {
-            try {
-                data = JSON.parse(data);
-                if (data.redirect) {
-                    window.location.replace(data.redirect);
-                } else if (data.message) {
-                    alertify.log(data.message, type);
-                } else {
-                    alertify.log(defaultMessage, type);
-                }
-            } catch (err) { // In case the data is not JSON, we pass
-                alertify.log(defaultMessage, type);
+    window.process = function(data, type, defaultMessage) {
+
+        if (data !== null) {
+            if (data.redirect) {
+                // We must reload the page
+                window.location.replace(data.redirect);
             }
-        } else {
-            alertify.log(defaultMessage, type);
+            defaultMessage = data.message || defaultMessage;
         }
-    },
 
-        saveData = function(dataArray, callback) {
+        alertify.log(defaultMessage, type);
+    
+    };
 
-            clearInterval(timers[dataArray.name]); // Clearing before sending the post request
-            $.post(dataArray.url, {
-                name: dataArray.name,
-                key: dataArray.key,
-                value: dataArray.value
-            })
-                .success(function(data, config) {
-                    if (dataArray.name !== 'tags' && dataArray.name !== 'skills') {
-                        $("[data-name=" + dataArray.name + "]").attr("data-last", dataArray.value);
-                    }
-                    process(data, "success", Translator.trans('alert.changes.saved'));
-                    if (callback) {
-                        callback(data);
-                    }
-                })
-                .error(function(data) {
-                    if (dataArray.name !== 'tags' && dataArray.name !== 'skills') {
-                        $("[data-name=" + dataArray.name + "]").html($("[data-name=" + dataArray.name + "]").attr("data-last"));
-                    }
-                    process(data, "error", Translator.trans('alert.error.saving.changes'));
-                });
+    var saveData = function(dataArray, callback) {
 
-        };
+        clearInterval(timers[dataArray.name]); // Clearing before sending the post request
+        
+        var posting = $.post(dataArray.url, {
+            name: dataArray.name,
+            key: dataArray.key,
+            value: dataArray.value
+        });
+
+        posting.done(function(data) {
+            if (dataArray.name !== 'tags' && dataArray.name !== 'skills') {
+                $("[data-name=" + dataArray.name + "]").attr("data-last", dataArray.value);
+            }
+            process(data, "success", Translator.trans('alert.changes.saved'));
+            if (callback) {
+                callback(data);
+            }
+        });
+
+        posting.fail(function(xhr) {
+            if (dataArray.name !== 'tags' && dataArray.name !== 'skills') {
+                $("[data-name=" + dataArray.name + "]").html($("[data-name=" + dataArray.name + "]").attr("data-last"));
+            }
+            process(xhr.responseJSON, "error", Translator.trans('alert.error.saving.changes'));
+        });
+
+    };
 
     var createInterval = function(f, parameters, interval) {
         return setInterval(function() {
@@ -68,7 +66,7 @@ $(document).ready(function() {
 
     $('[contenteditable=true][rich=false]')
         .on("keypress", function(e) {
-            if (e.which == '13') { // Prevents the Return to be inserted
+            if (e.which === 13) { // Prevents the Return to be inserted
                 e.preventDefault();
             }
         })
@@ -78,7 +76,7 @@ $(document).ready(function() {
             url = $(this).attr("data-url");
             last = $(this).attr("data-last");
             value = $.trim($(this).text());
-            if (e.which == '13') { // Trigger a save with the Return key
+            if (e.which === 13) { // Trigger a save with the Return key
                 e.preventDefault();
                 clearInterval(timers[name]);
                 if (last !== value)  {
@@ -254,7 +252,7 @@ $(document).ready(function() {
 
     $("ul[contenteditable=list][data-name=skills] > li > span > input")
         .on("keyup", function(e) {
-            if (e.which == '13') {
+            if (e.which === 13) {
                 e.preventDefault();
             } else {
                 // For skills, search in the list the correct skill ...
@@ -270,7 +268,7 @@ $(document).ready(function() {
 
     $("ul[contenteditable=list][data-name=tags] > li > span > input")
         .on("keyup", function(e) {
-            if (e.which == '13') { // Trigger a save with the Return key for tags
+            if (e.which === 13) { // Trigger a save with the Return key for tags
                 e.preventDefault();
                 target = $(this).closest('ul');
                 name = target.attr("data-name");
@@ -283,10 +281,9 @@ $(document).ready(function() {
                     key: key,
                     value: value
                 }, function(data) {
-                    try {
-                        data = JSON.parse(data);
+                    if (data) {
                         color = " style='border: 1px solid #" + data.color + ";'";
-                    } catch (e) {
+                    } else {
                         color = "";
                     }
                     target.children().last().before("<li" + color + "><a href='#' class='remove'><i class='fa fa-times'></i></a>" + key + "</li>");
@@ -297,7 +294,7 @@ $(document).ready(function() {
 
     // We bind to document because we don't have the element yet
     $(document).on('click', "ul#results li", function() {
-        target = $(this).parent('ul').closest('ul');
+        target = $(this).parent('ul').parent().closest('ul');
         name = target.attr("data-name");
         key = $(this).attr("rel");
         url = target.attr("data-url");
