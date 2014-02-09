@@ -110,7 +110,7 @@
           <td class="main">
             <a href="{{ path('p_show_project', {'uid': project.id|to_uid }) }}">
               <div>
-                <span private="{{ project.isPrivate?"true":"false" }}"><i class="fa fa-lock"></i>  {{ project.name }}</span>
+                <span private="{{ (project.isPrivate and app.user.currentCommunity is not null)?"true":"false" }}"><i class="fa fa-lock"></i>  {{ project.name }}</span>
                 <span class="headline">{{ project.headline }}</span>
               </div>
             </a>
