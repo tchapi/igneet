@@ -234,18 +234,19 @@ $(document).ready(function() {
 
     // Add an element
     editableListsData = {};
-    $("ul[contenteditable=list] > li > a.add").on('click', function(e) {
+    $("ul[contenteditable=list][data-name=skills] > li > a.add").on('click', function(e) {
         e.preventDefault();
         displayInput($(this), true);
-        // Gets the list (only for skills)
-        if ($(this).attr("data-url") != "") {
-            name = $(this).closest('ul').attr("data-name");
-            $.getJSON($(this).attr("data-url"), function(data) {
-                editableListsData[name] = data;
-            });
-        }
+        // Gets the list
+        name = $(this).closest('ul').attr("data-name");
+        $.getJSON($(this).attr("data-url"), function(data) {
+            editableListsData[name] = data;
+        });
     });
-
+    $("ul[contenteditable=list][data-name=tags] > li > a.add").on('click', function(e) {
+        e.preventDefault();
+        displayInput($(this), true);
+    });
     $("ul[contenteditable=list] > li > span > a").on('click', function(e) {
         e.preventDefault();
         displayInput($(this), false);
@@ -282,7 +283,7 @@ $(document).ready(function() {
                     key: key,
                     value: value
                 }, function(data) {
-                    target.children().last().before(data);
+                    target.children().last().before(data.tag);
                     displayInput(target.find('li > span > a'), false);
                 });
             }
@@ -300,11 +301,8 @@ $(document).ready(function() {
             name: name,
             key: key,
             value: value
-        }, function() {
-            var result = $.grep(editableListsData[name], function(n) {
-                return n.value == key;
-            });
-            target.children().last().before("<li rel='" + key + "' style='border: 1px solid #" + result[0].color + ";'><a href='#' class='remove'><i class='fa fa-times'></i></a>" + result[0].text + "</li>");
+        }, function(data) {
+            target.children().last().before(data.skill);
             displayInput(target.find('li > span > a'), false);
         });
     });
