@@ -310,11 +310,12 @@ class ResourceController extends BaseController
                         } else if ($request->request->get('value') == 'add' && $existingTag && !$resource->hasTag($existingTag)) {
                             $resource->addTag($existingTag);
                             $objectHasBeenModified = true;
-                            $response = json_encode(array('name' => $existingTag->getName(), 'color' => $existingTag->getColor()));
+                            $response = array('tag' => $this->renderView('metaGeneralBundle:Tags:tag.html.twig', array( 'tag' => $existingTag, 'canEdit' => true)));
                         } else if ($request->request->get('value') == 'add' && !$existingTag ){
                             $newTag = new Tag($tag);
                             $em->persist($newTag);
                             $resource->addTag($newTag);
+                            $response = array('tag' => $this->renderView('metaGeneralBundle:Tags:tag.html.twig', array( 'tag' => $newTag, 'canEdit' => true)));
                             $objectHasBeenModified = true;
                         } else {
                             $error = $this->get('translator')->trans('invalid.request', array(), 'errors'); // tag already in the page
@@ -370,7 +371,7 @@ class ResourceController extends BaseController
                 return new Response($error, 406);
             }
 
-            return new Response($response);
+            return new Response(json_encode($response), 200, array('Content-Type'=>'application/json'));
         }
     }
 
