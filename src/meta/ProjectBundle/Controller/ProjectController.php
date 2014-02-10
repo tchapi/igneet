@@ -41,10 +41,6 @@ class ProjectController extends BaseController
                     break;
                 case 'about':
                     $this->base['project']->setAbout($request->request->get('value'));
-                    $deepLinkingService = $this->container->get('deep_linking_extension');
-                    $response = $deepLinkingService->convertDeepLinks(
-                      $this->container->get('markdown.parser')->transformMarkdown($request->request->get('value'))
-                    );
                     $objectHasBeenModified = true;
                     break;
                 case 'community':
@@ -109,6 +105,7 @@ class ProjectController extends BaseController
                         $objectHasBeenModified = true;
                     } else if ($request->request->get('value') == 'add' && !$this->base['project']->hasNeededSkill($skill)) {
                         $this->base['project']->addNeededSkill($skill);
+                        $response = array('skill' => $this->renderView('metaUserBundle:Skills:skill.html.twig', array( 'skill' => $skill, 'canEdit' => true)));
                         $objectHasBeenModified = true;
                     }
 
@@ -155,10 +152,10 @@ class ProjectController extends BaseController
         } else {
         
             if (!is_null($error)) {
-                return new Response($error, 406);
+                return new Response(json_encode(array('message' => $error)), 406, array('Content-Type'=>'application/json'));
             }
 
-            return new Response($response);
+            return new Response(json_encode($response), 200, array('Content-Type'=>'application/json'));
         }
 
     }
