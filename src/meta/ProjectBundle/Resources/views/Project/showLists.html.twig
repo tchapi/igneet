@@ -26,6 +26,7 @@
 {% block content %}
 <div class="wrapper info">
 
+  {% if lists and lists|length > 0 %}
   <section>
 
       {# Tree of lists #}
@@ -102,16 +103,28 @@
         {% for item in items %}
           {% include 'metaProjectBundle:Project:showLists.item.html.twig' with {'item': item, 'list': list, 'project': base.project, 'canEdit': base.canEdit} %}
         {% endfor %}
+        {% if base.canEdit %}
           <li class="new" data-url="{{ path('p_show_project_listitem_new', {'uid': base.project.id|to_uid, 'list_uid': list.id|to_uid, 'token': csrf_token('newListItem')}) }}"><i class="fa fa-plus"></i> <input type="text" placeholder="{{ "project.lists.items.new"|trans }}"/></li>
+        {% endif %}
         </ul>
       </div>
+  </section>
+
+  {% else %}
+    <section class="none">
+    {{ "project.lists.none"|trans }}
+    {% if base.canEdit %}<a href="#" data-url="{{ path('p_show_project_list_new', {'uid': base.project.id|to_uid, 'token': csrf_token('newList')}) }}" data-title="{{ "project.lists.newHelp"|trans }}" title="{{ "project.lists.new"|trans }}" class="button button-success new">{{ "project.lists.none.help"|trans }}</a>{% endif %}
+    </section>
+  {% endif %}
 
 </div>
 
+{% if lists and lists|length > 0 %}
 {# Comments section #}
 <div class="wrapper comment">
   <section>
     {% render(controller("metaProjectBundle:Comment:addListComment", { 'uid' : base.project.id|to_uid, 'list_uid': list.id|to_uid })) %}
   </section>
 </div>
+{% endif %}
 {% endblock %}
