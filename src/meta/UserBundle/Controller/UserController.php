@@ -225,10 +225,6 @@ class UserController extends Controller
                     break;
                 case 'about':
                     $authenticatedUser->setAbout($request->request->get('value'));
-                    $deepLinkingService = $this->container->get('deep_linking_extension');
-                    $response = $deepLinkingService->convertDeepLinks(
-                      $this->container->get('markdown.parser')->transformMarkdown($request->request->get('value'))
-                    );
                     $objectHasBeenModified = true;
                     break;
                 case 'file': // In this case, no file was passed to upload, so we just pass our way
@@ -268,6 +264,7 @@ class UserController extends Controller
                         $objectHasBeenModified = true;
                     } else if ($request->request->get('value') == 'add' && !$authenticatedUser->hasSkill($skill)) {
                         $authenticatedUser->addSkill($skill);
+                        $response = array('skill' => $this->renderView('metaUserBundle:Skills:skill.html.twig', array( 'skill' => $skill, 'canEdit' => true)));
                         $objectHasBeenModified = true;
                     }
 
@@ -314,7 +311,7 @@ class UserController extends Controller
                 return new Response($error, 406);
             }
 
-            return new Response($response);
+            return new Response(json_encode($response), 200, array('Content-Type'=>'application/json') );
         }
 
     }
