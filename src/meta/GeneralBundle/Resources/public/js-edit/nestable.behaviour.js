@@ -27,26 +27,28 @@ $(document).ready(function() {
             $.post(list.children('ul').attr('data-url'), {
                 ranks: ranks
             })
-                .success(function() {
+                .done(function() {
                     success = true; //alertify.success(Translator.trans('alert.changes.saved'));
                 })
-                .error(function() {
+                .fail(function() {
                     success = false; //alertify.error(Translator.trans('alert.error.saving.changes'));
                 });
 
             // Update parenting
-            $.post(item.attr('data-url'), {
-                name: item.attr('data-name'),
-                value: item.parent().parent().attr('id') || 0
-            })
-                .success(function() {
-                    success = true;
-                    warn();
+            if (item.attr('data-name') !== undefined) {
+                $.post(item.attr('data-url'), {
+                    name: item.attr('data-name'),
+                    value: item.parent().parent().attr('id') || 0
                 })
-                .error(function() {
-                    success = false;
-                    warn();
-                });
+                    .done(function() {
+                        success = true;
+                        warn();
+                    })
+                    .fail(function() {
+                        success = false;
+                        warn();
+                    });
+            }
 
         };
 
@@ -66,7 +68,7 @@ $(document).ready(function() {
     });
 
     // Add new item in the list
-    $(".tree > .new").click(function(e) {
+    $(".new").click(function(e) {
 
         e.preventDefault();
         alertify.prompt($(this).attr('data-title'), $.proxy(function(e, str) {
@@ -92,13 +94,6 @@ $(document).ready(function() {
                     'uid': $(".tree .active").parents('li').attr('id')
                 })
                     .success(function(data) {
-                        // Remove the page under the current parent 
-                        if (item.find('ul').length >= 1) {
-                            // Has children : keep the children
-                            var children = item.children('ul').children('li');
-                            $(".tree.dd > ul").append(children);
-                        }
-                        item.remove(); // finally remove the child
                         process(data, "success", Translator.trans('alert.changes.saved'));
                     })
                     .error(function(data) {
