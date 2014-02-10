@@ -59,15 +59,20 @@ class WikiController extends BaseController
 
         }
 
-        //$pages = $wiki->getPages();
         $repository = $this->getDoctrine()->getRepository('metaProjectBundle:WikiPage');
+        if ($wiki->getHomePage() === null) {
+          $page = $repository->findFirstInWiki($wiki->getId());
+        } else {
+          $page = $wiki->getHomePage();
+        }
+
         $wikiPages = $repository->findAllRootInWiki($wiki->getId());
 
         return $this->render('metaProjectBundle:Project:showWiki.html.twig', 
             array('base' => $this->base, 
                   'homePage' => $wiki->getHomePage(),
                   'wikiPages' => $wikiPages,
-                  'wikiPage' => $wiki->getHomePage()));
+                  'wikiPage' => $page));
     }
 
     /*
@@ -303,10 +308,6 @@ class WikiController extends BaseController
                     case 'content':
                         $wikiPage->setContent($request->request->get('value'));
                         $objectHasBeenModified = true;
-                        $deepLinkingService = $this->container->get('deep_linking_extension');
-                        $response = $deepLinkingService->convertDeepLinks(
-                          $this->container->get('markdown.parser')->transformMarkdown($request->request->get('value'))
-                          );
                         break;
                     case 'tags':
                         $tag = strtolower($request->request->get('key'));
@@ -320,11 +321,12 @@ class WikiController extends BaseController
                         } else if ($request->request->get('value') == 'add' && $existingTag && !$wikiPage->hasTag($existingTag)) {
                             $wikiPage->addTag($existingTag);
                             $objectHasBeenModified = true;
-                            $response = json_encode(array('name' => $existingTag->getName(), 'color' => $existingTag->getColor()));
+                            $response = array('tag' => $this->renderView('metaGeneralBundle:Tags:tag.html.twig', array( 'tag' => $existingTag, 'canEdit' => true)));
                         } else if ($request->request->get('value') == 'add' && !$existingTag ){
                             $newTag = new Tag($tag);
                             $em->persist($newTag);
                             $wikiPage->addTag($newTag);
+                            $response = array('tag' => $this->renderView('metaGeneralBundle:Tags:tag.html.twig', array( 'tag' => $newTag, 'canEdit' => true)));
                             $objectHasBeenModified = true;
                         } else {
                             $error = $this->get('translator')->trans('invalid.request', array(), 'errors'); // tag already in the page
@@ -371,7 +373,7 @@ class WikiController extends BaseController
             return new Response($error, 406);
         }
 
-        return new Response($response);
+        return new Response(json_encode($response), 200, array('Content-Type'=>'application/json'));
     }
 
     /*
@@ -396,18 +398,12 @@ class WikiController extends BaseController
 
                 if ($wikiPage){
                   
-                  // What if this is the homepage of the wiki ?
+                  $em = $this->getDoctrine()->getManager();
                   $wiki->removePage($wikiPage);
-                  $redirect = null;
-                  
-                  if ($wikiPage == $wiki->getHomePage()) {
-                    if (count($wiki->getPages()) > 0) {
-                      $wiki->setHomePage($repository->findFirstInWiki($wiki->getId()));
-                    } else {
-                      $wiki->setHomePage(null);
-                      $redirect = $this->generateUrl('p_show_project_wiki', array('uid' => $uid));
-                    }
-                  }
+                  $wiki->setHomePage(null);
+                  $em->flush();
+
+                  $redirect = $this->generateUrl('p_show_project_wiki', array('uid' => $uid));
 
                   // What if the page has children ?
                   foreach($wikiPage->getChildren() as $child){
