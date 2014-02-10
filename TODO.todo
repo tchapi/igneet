@@ -8,6 +8,25 @@ Chaque post :
    'redirect'
    value => value
 
+   Tout en json_encode
+
+
+ ☐ Mettre du json pour les erreurs dans ces parties la :
+
+        // Wraps up and return a response
+        if (!is_null($error)) {
+            return new Response($error, 406);
+        }
+
+        return new Response(json_encode($response), 200, array('Content-Type'=>'application/json'));
+ ☐ Simplifier ca :
+
+      else {
+
+           $error = $this->get('translator')->trans('invalid.request', array(), 'errors');
+
+      }
+
  ☐ Erreurs dans les formulaires de création : elles sont affichées n'importe comment a priori (A vérifier : déjà fixed ?)
  
  ☐ faire des templates pour les ul.sortable et refresh en ajax quand on fait "new"

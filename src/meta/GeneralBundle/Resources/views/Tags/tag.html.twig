@@ -1,0 +1,15 @@
+{% spaceless %}
+
+  {% if tag.color is not null %}
+    <li style="border: 1px solid #{{ tag.color }}" rel="{{ tag.name }}">
+  {% else %}
+    <li rel="{{ tag.name }}">
+  {% endif %}
+
+  {% if canEdit %}
+    <a href="#" class="remove"><i class="fa fa-times"></i></a>  
+  {% endif %}
+  {{ tag.name }}
+  </li>
+  
+{% endspaceless %}

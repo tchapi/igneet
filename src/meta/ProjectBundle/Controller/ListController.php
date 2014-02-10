@@ -32,13 +32,13 @@ class ListController extends BaseController
         $repository = $this->getDoctrine()->getRepository('metaProjectBundle:CommonList');
         $list = $repository->findFirstInProject($this->base['project']->getId());
 
-        $itemsRepository = $this->getDoctrine()->getRepository('metaProjectBundle:CommonListItem');
-        $items = $itemsRepository->findAllInProjectAndList($list->getId(), $this->base['project']->getId());
+        $items = null;
+        $lists = null;
 
-        $lists = $repository->findAllInProject($this->base['project']->getId());
-
-        if (!$list && $this->base['canEdit']){
-          return $this->forward('metaProjectBundle:List:newList', array('uid' => $uid));
+        if ($list != null ){
+            $itemsRepository = $this->getDoctrine()->getRepository('metaProjectBundle:CommonListItem');
+            $items = $itemsRepository->findAllInProjectAndList($list->getId(), $this->base['project']->getId());
+            $lists = $repository->findAllInProject($this->base['project']->getId());
         }
 
         return $this->render('metaProjectBundle:Project:showLists.html.twig', 
@@ -107,11 +107,13 @@ class ListController extends BaseController
             $this->base['project']->setUpdatedAt(new \DateTime('now'));
             $em->flush();
         
-            return new Response();
+             return new Response();
 
         } else {
 
-            return new Response($this->get('translator')->trans('invalid.request', array(), 'errors'), 400);
+            return new Response(json_encode(array(
+                'message' => $this->get('translator')->trans('invalid.request', array(), 'errors')
+                )), 400, array('Content-Type'=>'application/json'));
             
         }
 
@@ -212,11 +214,12 @@ class ListController extends BaseController
                         } else if ($request->request->get('value') == 'add' && $existingTag && !$list->hasTag($existingTag)) {
                             $list->addTag($existingTag);
                             $objectHasBeenModified = true;
-                            $response = json_encode(array('name' => $existingTag->getName(), 'color' => $existingTag->getColor()));
+                            $response = array('tag' => $this->renderView('metaGeneralBundle:Tags:tag.html.twig', array( 'tag' => $existingTag, 'canEdit' => true)));
                         } else if ($request->request->get('value') == 'add' && !$existingTag ){
                             $newTag = new Tag($tag);
                             $em->persist($newTag);
                             $list->addTag($newTag);
+                            $response = array('tag' => $this->renderView('metaGeneralBundle:Tags:tag.html.twig', array( 'tag' => $newTag, 'canEdit' => true)));
                             $objectHasBeenModified = true;
                         } else {
                             $error = $this->get('translator')->trans('invalid.request', array(), 'errors'); // tag already in the page
@@ -258,7 +261,7 @@ class ListController extends BaseController
             return new Response($error, 406);
         }
 
-        return new Response($response);
+        return new Response(json_encode($response), 200, array('Content-Type'=>'application/json'));
     }
 
     /*
@@ -270,7 +273,7 @@ class ListController extends BaseController
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('deleteList', $request->get('token')))
             return $this->redirect($this->generateUrl('p_show_project_list_home', array('uid' => $uid)));
 
-        $this->preComputeRights(array("mustBeOwner" => false, "mutParticipate" => true));
+        $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => true));
 
         if ($this->access != false) {
 
@@ -289,23 +292,17 @@ class ListController extends BaseController
                 $em->remove($list);
                 $em->flush();
 
-                $this->get('session')->getFlashBag()->add(
-                    'success',
-                    $this->get('translator')->trans('project.lists.deleted', array( '%list%' => $list->getName()))
-                );
+                $message = $this->get('translator')->trans('project.lists.deleted', array( '%list%' => $list->getName()));
 
             } else {
 
-                $this->get('session')->getFlashBag()->add(
-                    'warning',
-                    $this->get('translator')->trans('project.lists.not.found')
-                );
+                $message = $this->get('translator')->trans('project.lists.not.found');
 
             }
             
         }
 
-        return $this->redirect($this->generateUrl('p_show_project_list_home', array('uid' => $uid)));
+        return new Response(json_encode(array('message' => $message, 'redirect' => $this->generateUrl('p_show_project_list_home', array('uid' => $uid)))), 200, array('Content-Type'=>'application/json'));
 
     }
 
@@ -376,8 +373,9 @@ class ListController extends BaseController
                 switch ($request->request->get('name')) {
                     case 'text':
                         $listItem->setText($request->request->get('value'));
+                        // This needs to stay here for the list items
                         $deepLinkingService = $this->container->get('deep_linking_extension');
-                        $response = $deepLinkingService->convertDeepLinks($request->request->get('value'));
+                        $response = array('text' => $deepLinkingService->convertDeepLinks($request->request->get('value')));
                         $objectHasBeenModified = true;
                         break;
                 }
@@ -416,7 +414,7 @@ class ListController extends BaseController
             return new Response($error, 406);
         }
 
-        return new Response($response);
+        return new Response(json_encode($response, 200, array('Content-Type'=>'application/json')));
     }
 
     /*
