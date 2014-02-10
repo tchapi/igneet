@@ -1,0 +1,17 @@
+{% spaceless %}
+
+  {% if skill.color is not null %}
+    <li style="border: 1px solid #{{ skill.color }}" rel="{{ skill.slug }}">
+  {% else %}
+    <li rel="{{ skill.slug }}">
+  {% endif %}
+
+  {% if canEdit %}
+    <a href="#" class="remove"><i class="fa fa-times"></i></a>  
+  {% endif %}
+  {% if endowed is defined and endowed == true %}<em class="fa fa-users"></em>{% endif %}
+  {{ (skill.slug ~ ".name")|trans({}, 'skills') }}
+
+  </li>
+  
+{% endspaceless %}

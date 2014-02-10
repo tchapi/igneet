@@ -25,7 +25,7 @@ $(document).ready(function() {
     var saveData = function(dataArray, callback) {
 
         clearInterval(timers[dataArray.name]); // Clearing before sending the post request
-        
+
         var posting = $.post(dataArray.url, {
             name: dataArray.name,
             key: dataArray.key,
@@ -214,7 +214,8 @@ $(document).ready(function() {
         };
 
     // Remove an element
-    $("ul[contenteditable=list] > li > a.remove").on('click', function(e) {
+    // We bind to document because we don't have the element yet
+    $(document).on('click', "ul[contenteditable=list] > li > a.remove", function(e) {
         e.preventDefault();
         target = $(this).parent();
         name = target.parent().attr("data-name");
@@ -281,12 +282,7 @@ $(document).ready(function() {
                     key: key,
                     value: value
                 }, function(data) {
-                    if (data) {
-                        color = " style='border: 1px solid #" + data.color + ";'";
-                    } else {
-                        color = "";
-                    }
-                    target.children().last().before("<li" + color + "><a href='#' class='remove'><i class='fa fa-times'></i></a>" + key + "</li>");
+                    target.children().last().before(data);
                     displayInput(target.find('li > span > a'), false);
                 });
             }

@@ -41,11 +41,7 @@
         {% spaceless %}
         <ul{% if canEdit %} data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" data-emptytext="{{ "user.skills.emptyText"|trans }}" contenteditable="list" data-name="skills"{% endif %}>
         {% for skill in user.skills %}
-          <li style="border: 1px solid #{{ skill.color }}" rel="{{ skill.slug }}">
-          {% if canEdit %}
-            <a href="#" class="remove"><i class="fa fa-times"></i></a>  
-          {% endif %}
-          {{ (skill.slug ~ ".name")|trans({}, 'skills') }}</li>
+          {% include 'metaUserBundle:Skills:skill.html.twig' with {'skill': skill, 'canEdit': canEdit} %}
         {% endfor %}
         {% if canEdit %}
           <li><a href="#" class="add" data-url="{{ path('u_list_all_skills')}}"><i class="fa fa-plus"></i></a>

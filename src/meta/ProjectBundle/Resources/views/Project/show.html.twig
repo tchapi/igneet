@@ -63,19 +63,10 @@
         {% spaceless %}
         <ul{% if base.canEdit %} data-url="{{ path('p_edit_project', {'uid': base.project.id|to_uid, 'token': csrf_token('edit') }) }}" data-emptytext="{{ "project.skills.needed.emptyText"|trans }}" contenteditable="list" data-name="skills"{% endif %}>
         {% for skill in base.vacantSkills %}
-          <li style="border: 1px solid #{{ skill.color }}" rel="{{ skill.slug }}">
-          {% if base.canEdit %}
-            <a href="#" class="remove"><i class="fa fa-times"></i></a>  
-          {% endif %}
-          {{ (skill.slug ~ ".name")|trans({}, 'skills') }}</li>
+          {% include 'metaUserBundle:Skills:skill.html.twig' with {'skill': skill, 'canEdit': base.canEdit} %}
         {% endfor %}
         {% for skill in base.endowedSkills %}
-          <li style="border: 1px solid #{{ skill.color }}" rel="{{ skill.slug }}"> 
-          {% if base.canEdit %}
-            <a href="#" class="remove"><i class="fa fa-times"></i> </a>  
-          {% endif %}
-           <em class="fa fa-users"></em> 
-          {{ (skill.slug ~ ".name")|trans({}, 'skills') }}</li>
+          {% include 'metaUserBundle:Skills:skill.html.twig' with {'skill': skill, 'canEdit': base.canEdit, 'endowed': true} %}
         {% endfor %}
         {% if base.canEdit %}
           <li><a href="#" class="add" data-url="{{ path('u_list_all_skills')}}"><i class="fa fa-plus"></i></a>
