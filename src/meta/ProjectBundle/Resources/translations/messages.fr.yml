@@ -81,7 +81,7 @@ project:
   timeline:
     title: "Historique"
   info:
-    title: "Info"
+    title: "Résumé"
     about: "À propos de ce projet"
     created: "Créé le %date%"
     updated: "Mis à jour le %date%"

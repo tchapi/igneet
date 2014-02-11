@@ -81,7 +81,7 @@ project:
   timeline:
     title: "Timeline"
   info:
-    title: "Info"
+    title: "Overview"
     about: "About this project"
     created: "Created on %date%"
     updated: "Last update on %date%"

@@ -69,7 +69,7 @@ idea:
   timeline:
     title: "Historique"
   info:
-    title: "Info"
+    title: "Résumé"
     last.updated: "Dernière mise à jour le %date%"
     archived: "Archivé le %date%"
     created: "Créée le %date%"

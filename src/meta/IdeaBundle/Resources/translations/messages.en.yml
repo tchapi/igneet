@@ -69,7 +69,7 @@ idea:
   timeline:
     title: "Timeline"
   info:
-    title: "Info"
+    title: "Overview"
     last.updated: "Last updated on %date%"
     archived: "Archived on %date%"
     created: "Created on %date%"
