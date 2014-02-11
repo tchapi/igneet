@@ -163,7 +163,8 @@ class ResourceController extends BaseController
                             $displayMaxSize = $displayMaxSize * 1024;
                     }
                  
-                    return new Response(json_encode(array('error' => $this->get('translator')->trans('file.too.large', array(), 'errors'))), 500, array('Content-Type'=>'application/json'));
+                    // Specific "error" token for Dropzone
+                    return new Response(json_encode(array('error' => $this->get('translator')->trans('file.too.large', array(), 'errors'))), 413, array('Content-Type'=>'application/json'));
            
                 }
 
@@ -209,16 +210,25 @@ class ResourceController extends BaseController
     }
 
     /*
-     * Edit a resource (via X-Editable)
+     * Edit a resource
+     * NEEDS JSON
      */
     public function editResourceAction(Request $request, $uid, $resource_uid)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('edit', $request->get('token')))
-            return $this->redirect($this->generateUrl('p_show_project_list_resources', array('uid' => $uid)));
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('edit', $request->get('token'))) {
+            return new Response(
+                json_encode(
+                    array(
+                        'message' => $this->get('translator')->trans('invalid.token', array(), 'errors'))
+                    ), 
+                400, 
+                array('Content-Type'=>'application/json')
+            );
+        }
           
         $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => true));
-        $error = null;
+
         $response = null;
 
         if ($this->base != false) {
@@ -243,8 +253,12 @@ class ResourceController extends BaseController
                             $displayMaxSize = $displayMaxSize * 1024;
                     }
                  
-                    $error = $this->get('translator')->trans('file.too.large', array(), 'errors');
-                    $needsRedirect = true;
+                    $this->get('session')->getFlashBag()->add(
+                                'error',
+                                $this->get('translator')->trans('file.too.large', array(), 'errors')
+                            );
+
+                    return new Response(json_encode(array('redirect' => $this->generateUrl('p_show_project_list_resources', array('uid' => $uid)))), 413, array('Content-Type'=>'application/json'));
            
                 }
 
@@ -255,10 +269,19 @@ class ResourceController extends BaseController
                         break;
                     case 'url':
                         $newUrl = trim($request->request->get('value'));
+
+                        if (substr($newUrl, 0, 4) !== "http") { // http://stackoverflow.com/questions/834303/php-startswith-and-endswith-functions
+                            $newUrl = "http://" . $newUrl;
+                        }
+
                         $pattern = "|^http(s)?://[a-z0-9-]+(.[a-z0-9-_]+)*(:[0-9]+)?(/.*)?$|i";
+                        
                         if (preg_match( $pattern, $newUrl ) != 1 ) {
-                            $error = $this->get('translator')->trans('project.resources.not.valid.url');
+                        
+                            $response = array('message' => $this->get('translator')->trans('project.resources.not.valid.url'));
+                        
                         } else {
+                        
                             $resource->setUrl($newUrl);
                             // Guess resource type and provider
                             $guess = $this->guessProviderAndType(null, $resource->getUrl());
@@ -266,6 +289,7 @@ class ResourceController extends BaseController
                                 $resource->setProvider($guess['provider']);
 
                             $objectHasBeenModified = true;
+                        
                         }
 
                         break;
@@ -288,11 +312,11 @@ class ResourceController extends BaseController
                                 $resource->setProvider($guess['provider']);
 
                             $objectHasBeenModified = true;
-                            $needsRedirect = true;
+                            $response = array('redirect' => $this->generateUrl('p_show_project_list_resources', array('uid' => $uid)));
        
                         } else {
     
-                            $error = $this->get('translator')->trans('project.resources.error.uploading');
+                            $response = array('message' => $this->get('translator')->trans('project.resources.error.uploading'));
                         
                         }
 
@@ -318,14 +342,13 @@ class ResourceController extends BaseController
                             $response = array('tag' => $this->renderView('metaGeneralBundle:Tags:tag.html.twig', array( 'tag' => $newTag, 'canEdit' => true)));
                             $objectHasBeenModified = true;
                         } else {
-                            $error = $this->get('translator')->trans('invalid.request', array(), 'errors'); // tag already in the page
+                            $response = array('message' => $this->get('translator')->trans('project.resources.tag.already', array(), 'errors'));
                         }
 
                         break;
                 }
 
-                $validator = $this->get('validator');
-                $errors = $validator->validate($resource);
+                $errors = $this->get('validator')->validate($resource);
 
                 if ($objectHasBeenModified === true && count($errors) == 0){
 
@@ -337,42 +360,23 @@ class ResourceController extends BaseController
                     $logService = $this->container->get('logService');
                     $logService->log($this->getUser(), 'user_update_resource', $this->base['project'], array( 'resource' => array( 'logName' => $resource->getLogName(), 'identifier' => $resource->getId()) ) );
                 
+                    return new Response(json_encode($response), 200, array('Content-Type'=>'application/json'));
+
                 } elseif (count($errors) > 0) {
 
-                    $error = $this->get('translator')->trans($errors[0]->getMessage()); 
+                    $response = array('message' => $this->get('translator')->trans($errors[0]->getMessage()));
+
+                } else {
+                    
+                    $response = array('message' => $this->get('translator')->trans('unnecessary.request', array(), 'errors'));
+
                 }
 
-            } else {
-
-              $error = $this->get('translator')->trans('invalid.request', array(), 'errors');
-
             }
-            
-        } else {
-
-            $error = $this->get('translator')->trans('invalid.request', array(), 'errors');
-
         }
 
-        // Wraps up and either return a response or redirect
-        if (isset($needsRedirect) && $needsRedirect) {
+        return new Response(json_encode($response?$response:array('message' => $this->get('translator')->trans('invalid.request', array(), 'errors'))), 406, array('Content-Type'=>'application/json'));
 
-            if (!is_null($error)) {
-                $this->get('session')->getFlashBag()->add(
-                    'error', $error
-                );
-            }
-
-            return $this->redirect($this->generateUrl('p_show_project_list_resources', array('uid' => $uid)));
-
-        } else {
-        
-            if (!is_null($error)) {
-                return new Response($error, 406);
-            }
-
-            return new Response(json_encode($response), 200, array('Content-Type'=>'application/json'));
-        }
     }
 
     /*
@@ -380,8 +384,13 @@ class ResourceController extends BaseController
      */
     public function deleteResourceAction(Request $request, $uid, $resource_uid)
     {
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('delete', $request->get('token')))
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('delete', $request->get('token'))) {
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $this->get('translator')->trans('invalid.token', array(), 'errors')
+            );
             return $this->redirect($this->generateUrl('p_show_project_list_resources', array('uid' => $uid)));
+        }
           
         $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => true));
 

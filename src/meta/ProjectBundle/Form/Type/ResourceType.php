@@ -11,7 +11,7 @@ class ResourceType extends AbstractType
     {
 
         $builder->add('file', 'file', array('required' => false, 'label' => 'project.resources.createForm.file'));
-        $builder->add('url', null, array('label'  => 'project.resources.createForm.url', 'attr' => array( 'placeholder' => 'http://...')));
+        $builder->add('url', 'url', array('label'  => 'project.resources.createForm.url', 'attr' => array( 'placeholder' => 'http://...')));
 
     }    
 

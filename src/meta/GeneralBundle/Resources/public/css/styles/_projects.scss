@@ -145,7 +145,7 @@ ul.resources {
 
 form .content-full {
   @include row();
-  & > input[type=text] {
+  & > input[type=text], & > input[type=url] {
     @include span-columns(10 of 12);
     height: 34px;
     padding-left: 10px;
