@@ -19,15 +19,6 @@ i_new_idea:
     pattern:  /ideas/new
     defaults: { _controller: metaIdeaBundle:Ideas:create }
 
-# /IDEA/
-# ---------------
-
-i_show_idea:
-    pattern:  /idea/0{uid}
-    defaults: { _controller: metaIdeaBundle:Idea:show }
-    requirements:
-        uid: "[0-9a-zA-Z]*"
-
 # /IDEA/EDIT
 # ---------------
 
@@ -110,6 +101,13 @@ i_unwatch_idea:
 # /IDEA/{SUB-ITEM}
 # ---------------
 
+## INFO
+i_show_idea_info:
+    pattern:  /idea/0{uid}
+    defaults: { _controller: metaIdeaBundle:Idea:show }
+    requirements:
+        uid: "[0-9a-zA-Z]*"
+
 ## SETTINGS
 i_show_idea_settings:
     pattern:  /idea/0{uid}/settings
@@ -118,9 +116,9 @@ i_show_idea_settings:
         uid: "[0-9a-zA-Z]*"
 
 ## TIMELINE
-i_show_idea_timeline:
-    pattern:  /idea/0{uid}/timeline/{page}
-    defaults: { _controller: metaIdeaBundle:Idea:showTimeline, page: 1 }
+i_show_idea:
+    pattern:  /idea/0{uid}
+    defaults: { _controller: metaIdeaBundle:Idea:showTimeline }
     requirements:
         uid: "[0-9a-zA-Z]*"
         page: \d+

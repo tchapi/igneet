@@ -2,11 +2,11 @@ parameters:
   idea.menu:
     timeline:
       icon: fa fa-comments
-      route: i_show_idea_timeline
+      route: i_show_idea
       private: false
     info:
       icon: fa fa-info-circle
-      route: i_show_idea
+      route: i_show_idea_info
       private: false
     content:
       icon: fa fa-book

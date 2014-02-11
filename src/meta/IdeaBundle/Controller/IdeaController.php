@@ -180,7 +180,7 @@ class IdeaController extends Controller
     /*
      * Show an idea's timeline
      */
-    public function showTimelineAction($uid, $page)
+    public function showTimelineAction($uid)
     {
         $this->preComputeRights(array('mustBeCreator' => false, 'mustParticipate' => false));
 
@@ -368,7 +368,7 @@ class IdeaController extends Controller
                 );
             }
 
-            return $this->redirect($this->generateUrl('i_show_idea', array('uid' => $uid)));
+            return $this->redirect($this->generateUrl('i_show_idea_info', array('uid' => $uid)));
 
         } else {
         
@@ -388,7 +388,7 @@ class IdeaController extends Controller
     {
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('delete', $request->get('token')))
-            return $this->redirect($this->generateUrl('i_show_idea', array('uid' => $uid)));
+            return $this->redirect($this->generateUrl('i_show_idea_settings', array('uid' => $uid)));
 
         $this->preComputeRights(array('mustBeCreator' => true, 'mustParticipate' => false));
 
@@ -424,7 +424,7 @@ class IdeaController extends Controller
     {
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('archiveOrRecycle', $request->get('token')))
-            return $this->redirect($this->generateUrl('i_show_idea', array('uid' => $uid)));
+            return $this->redirect($this->generateUrl('i_show_idea_settings', array('uid' => $uid)));
 
         $this->preComputeRights(array('mustBeCreator' => false, 'mustParticipate' => false));
 
@@ -454,7 +454,7 @@ class IdeaController extends Controller
                 $this->get('translator')->trans('idea.cannot.archiveOrRecycle')
             );
 
-            return $this->redirect($this->generateUrl('i_show_idea', array('uid' => $uid)));
+            return $this->redirect($this->generateUrl('i_show_idea_settings', array('uid' => $uid)));
         }
 
     }
@@ -466,7 +466,7 @@ class IdeaController extends Controller
     {
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('resetPicture', $request->get('token')))
-            return $this->redirect($this->generateUrl('i_show_idea', array('uid' => $uid)));
+            return $this->redirect($this->generateUrl('i_show_idea_info', array('uid' => $uid)));
 
         $this->preComputeRights(array('mustBeCreator' => false, 'mustParticipate' => true));
 
@@ -489,7 +489,7 @@ class IdeaController extends Controller
             );
         }
 
-        return $this->redirect($this->generateUrl('i_show_idea', array('uid' => $uid)));
+        return $this->redirect($this->generateUrl('i_show_idea_info', array('uid' => $uid)));
 
     }
 
@@ -500,7 +500,7 @@ class IdeaController extends Controller
     {
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('projectize', $request->get('token')))
-            return $this->redirect($this->generateUrl('i_show_idea', array('uid' => $uid)));
+            return $this->redirect($this->generateUrl('i_show_idea_settings', array('uid' => $uid)));
 
         $this->preComputeRights(array('mustBeCreator' => false, 'mustParticipate' => false));
 
@@ -579,7 +579,7 @@ class IdeaController extends Controller
                 $this->get('translator')->trans('idea.cannot.projectize')
             );
 
-            return $this->redirect($this->generateUrl('i_show_idea', array('uid' => $uid)));
+            return $this->redirect($this->generateUrl('i_show_idea_settings', array('uid' => $uid)));
         }
 
 
@@ -629,7 +629,7 @@ class IdeaController extends Controller
                     );
                 }
 
-                return $this->redirect($this->generateUrl('i_show_idea_timeline', array('uid' => $uid)));
+                return $this->redirect($this->generateUrl('i_show_idea', array('uid' => $uid)));
             }
 
         } else { // Non-routed
@@ -656,7 +656,7 @@ class IdeaController extends Controller
     {
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('addParticipant', $request->get('token')))
-            return $this->redirect($this->generateUrl('i_show_idea', array('uid' => $uid)));
+            return $this->redirect($this->generateUrl('i_show_idea_info', array('uid' => $uid)));
 
         $this->preComputeRights(array('mustBeCreator' => true, 'mustParticipate' => false));
 
@@ -700,7 +700,7 @@ class IdeaController extends Controller
 
         }
 
-        return $this->redirect($this->generateUrl('i_show_idea', array('uid' => $uid)));
+        return $this->redirect($this->generateUrl('i_show_idea_info', array('uid' => $uid)));
     }
 
     /*
@@ -710,7 +710,7 @@ class IdeaController extends Controller
     {
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('removeParticipant', $request->get('token')))
-            return $this->redirect($this->generateUrl('i_show_idea', array('uid' => $uid)));
+            return $this->redirect($this->generateUrl('i_show_idea_info', array('uid' => $uid)));
 
         $this->preComputeRights(array('mustBeCreator' => true, 'mustParticipate' => false));
 
@@ -748,7 +748,7 @@ class IdeaController extends Controller
 
         }
 
-        return $this->redirect($this->generateUrl('i_show_idea', array('uid' => $uid)));
+        return $this->redirect($this->generateUrl('i_show_idea_info', array('uid' => $uid)));
     }
 
     /*
