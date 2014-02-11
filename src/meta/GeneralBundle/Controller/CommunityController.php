@@ -640,7 +640,7 @@ class CommunityController extends Controller
                     $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('user' => $user->getId(), 'community' => $community->getId(), 'guest' => true, 'deleted_at' => null));
 
                     // If the user is in the community
-                    if ($userCommunity){
+                    if ($userCommunity && $userCommunity->getManager() === false){ 
 
                         $mustStayGuest = false;
 
@@ -677,6 +677,9 @@ class CommunityController extends Controller
                             }
                         }
 
+                        // Is he (not the only) manager in the community ? We have to desistuate him hahah
+                        $userCommunity->setManager(false);
+
                         // We keep the user as a guest :
                         if ($mustStayGuest) {
                             $userCommunity->setGuest(true);
@@ -707,6 +710,13 @@ class CommunityController extends Controller
                             );
                         $this->get('mailer')->send($message);
 
+
+                    } elseif ($userCommunity && $userCommunity->getManager() === true){ 
+
+                        $this->get('session')->getFlashBag()->add(
+                            'error',
+                            $this->get('translator')->trans('user.removal.manager', array( '%user%' => $user->getFullName(), '%community%' => $community->getName() ))
+                        );
 
                     // If the user is only a guest in the community
                     } elseif ($userCommunityGuest) {
