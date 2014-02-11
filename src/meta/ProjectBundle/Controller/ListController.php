@@ -81,13 +81,22 @@ class ListController extends BaseController
     }
 
     /*
-     * Rank the lists (via X-Editable)
+     * Rank the lists (POST)
+     * NEEDS JSON
      */
     public function rankListsAction(Request $request, $uid)
     {
         
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('rankLists', $request->get('token')))
-            return new Response($this->get('translator')->trans('invalid.token', array(), 'errors'), 400);
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('rankLists', $request->get('token'))) {
+            return new Response(
+                json_encode(
+                    array(
+                        'message' => $this->get('translator')->trans('invalid.token', array(), 'errors'))
+                    ), 
+                400, 
+                array('Content-Type'=>'application/json')
+            );
+        }
 
         $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => true));
 
@@ -121,13 +130,18 @@ class ListController extends BaseController
     }
 
     /*
-     * Display the form for a new list and process via POST
+     * Process via GET
      */
     public function newListAction(Request $request, $uid)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('newList', $request->get('token')))
-            return new Response($this->get('translator')->trans('invalid.token', array(), 'errors'), 400);
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('newList', $request->get('token'))) {
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $this->get('translator')->trans('invalid.token', array(), 'errors')
+            );
+            return $this->redirect($this->generateUrl('p_show_project_list_home', array('uid' => $uid )));
+        }
 
         $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => true));
 
@@ -171,17 +185,26 @@ class ListController extends BaseController
     }
 
     /*
-     * Edit a list (via X-Editable)
+     * Edit a list
+     * NEEDS JSON
      */
     public function editListAction(Request $request, $uid, $list_uid)
     {
   
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('editList', $request->get('token')))
-            return new Response($this->get('translator')->trans('invalid.token', array(), 'errors'), 400);
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('editList', $request->get('token'))) {
+            return new Response(
+                json_encode(
+                    array(
+                        'message' => $this->get('translator')->trans('invalid.token', array(), 'errors'))
+                    ), 
+                400, 
+                array('Content-Type'=>'application/json')
+            );
+        }
 
         $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => true));
-        $error = null;
-        $response = "";
+
+        $response = null;
 
         if ($this->access != false) {
 
@@ -222,7 +245,7 @@ class ListController extends BaseController
                             $response = array('tag' => $this->renderView('metaGeneralBundle:Tags:tag.html.twig', array( 'tag' => $newTag, 'canEdit' => true)));
                             $objectHasBeenModified = true;
                         } else {
-                            $error = $this->get('translator')->trans('invalid.request', array(), 'errors'); // tag already in the page
+                            $response = array('message' => $this->get('translator')->trans('invalid.request', array(), 'errors')); // tag already in the page
                         }
 
                         break;
@@ -239,39 +262,43 @@ class ListController extends BaseController
                     $logService = $this->container->get('logService');
                     $logService->log($this->getUser(), 'user_update_list', $this->base['project'], array( 'list' => array( 'logName' => $list->getLogName(), 'identifier' => $list->getId() ) ));
                 
+                    return new Response(json_encode($response), 200, array('Content-Type'=>'application/json'));
+
                 } elseif (count($errors) > 0) {
 
-                    $error = $this->get('translator')->trans($errors[0]->getMessage());
+                    $response = array('message' => $this->get('translator')->trans($errors[0]->getMessage()));
+
+                } else {
+                    
+                    $response = array('message' => $this->get('translator')->trans('unnecessary.request', array(), 'errors'));
+
                 }
-
-            } else {
-
-              $error = $this->get('translator')->trans('invalid.request', array(), 'errors');
 
             }
             
-        } else {
-
-            $error = $this->get('translator')->trans('invalid.request', array(), 'errors');
-
         }
 
-        // Wraps up and return a response
-        if (!is_null($error)) {
-            return new Response($error, 406);
-        }
+        return new Response(json_encode($response?$response:array('message' => $this->get('translator')->trans('invalid.request', array(), 'errors'))), 406, array('Content-Type'=>'application/json'));
 
-        return new Response(json_encode($response), 200, array('Content-Type'=>'application/json'));
     }
 
     /*
      * Delete a list
+     * NEEDS JSON
      */
     public function deleteListAction(Request $request, $uid, $list_uid)
     {
   
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('deleteList', $request->get('token')))
-            return $this->redirect($this->generateUrl('p_show_project_list_home', array('uid' => $uid)));
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('deleteList', $request->get('token'))) {
+            return new Response(
+                json_encode(
+                    array(
+                        'message' => $this->get('translator')->trans('invalid.token', array(), 'errors'))
+                    ), 
+                400, 
+                array('Content-Type'=>'application/json')
+            );
+        }
 
         $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => true));
 
@@ -292,70 +319,94 @@ class ListController extends BaseController
                 $em->remove($list);
                 $em->flush();
 
-                $message = $this->get('translator')->trans('project.lists.deleted', array( '%list%' => $list->getName()));
+                $this->get('session')->getFlashBag()->add(
+                    'success',
+                    $this->get('translator')->trans('project.lists.deleted', array('%list%' => $list->getName()))
+                );
 
-            } else {
+                return new Response(json_encode(array('redirect' => $this->generateUrl('p_show_project_list_home', array('uid' => $uid)))), 200, array('Content-Type'=>'application/json'));
 
-                $message = $this->get('translator')->trans('project.lists.not.found');
-
-            }
+            } 
             
         }
 
-        return new Response(json_encode(array('message' => $message, 'redirect' => $this->generateUrl('p_show_project_list_home', array('uid' => $uid)))), 200, array('Content-Type'=>'application/json'));
+        return new Response(json_encode(array('message' =>  $this->get('translator')->trans('invalid.request', array(), 'errors'))), 406, array('Content-Type'=>'application/json'));
 
     }
 
     /*
      * Create a new list item
+     * NEEDS JSON
      */
     public function newListItemAction(Request $request, $uid, $list_uid)
     {
         
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('newListItem', $request->get('token')))
-            return new Response($this->get('translator')->trans('invalid.token', array(), 'errors'), 400);
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('newListItem', $request->get('token'))) {
+            return new Response(
+                json_encode(
+                    array(
+                        'message' => $this->get('translator')->trans('invalid.token', array(), 'errors'))
+                    ), 
+                400, 
+                array('Content-Type'=>'application/json')
+            );
+        }
 
         $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => true));
 
-        if ($this->access == false) 
-          return new Response($this->get('translator')->trans('invalid.token', array(), 'errors'), 400);
+        if ($this->access != false) {
 
-        $listItem = new CommonListItem();
-        $listItem->setText($request->get('text'));
+            $listItem = new CommonListItem();
+            $listItem->setText($request->get('text'));
 
-        $repository = $this->getDoctrine()->getRepository('metaProjectBundle:CommonList');
-        $list = $repository->findOneByIdInProject($this->container->get('uid')->fromUId($list_uid), $this->base['project']->getId());
+            $repository = $this->getDoctrine()->getRepository('metaProjectBundle:CommonList');
+            $list = $repository->findOneByIdInProject($this->container->get('uid')->fromUId($list_uid), $this->base['project']->getId());
 
-        $list->addItem($listItem);
-        $this->base['project']->setUpdatedAt(new \DateTime('now'));
+            $list->addItem($listItem);
+            $this->base['project']->setUpdatedAt(new \DateTime('now'));
 
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($listItem);
-        $em->flush();
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($listItem);
+            $em->flush();
 
-        $logService = $this->container->get('logService');
-        $logService->log($this->getUser(), 'user_create_list_item', $this->base['project'], array( 'list' => array( 'logName' => $list->getLogName(), 'identifier' => $list->getId() ),
-                                                                                                           'list_item' => array( 'logName' => $listItem->getLogName() )) );
+            $logService = $this->container->get('logService');
+            $logService->log($this->getUser(), 'user_create_list_item', $this->base['project'], array( 'list' => array( 'logName' => $list->getLogName(), 'identifier' => $list->getId() ),
+                                                                                                               'list_item' => array( 'logName' => $listItem->getLogName() )) );
 
-        return $this->render('metaProjectBundle:Project:showLists.item.html.twig', 
-            array('project' => $this->base['project'],
-                  'item' => $listItem,
-                  'list' => $list,
-                  'canEdit' => $this->base['canEdit']));
+            return new Response(json_encode(array(
+                // no message here, we don't want UI to be crowded
+                'item' => $this->renderView('metaProjectBundle:Project:showLists.item.html.twig', 
+                        array('project' => $this->base['project'],
+                              'item' => $listItem,
+                              'list' => $list,
+                              'canEdit' => $this->base['canEdit']))
+                )), 200, array('Content-Type'=>'application/json'));
+        }
+
+        return new Response(json_encode(array('message' =>  $this->get('translator')->trans('invalid.request', array(), 'errors'))), 406, array('Content-Type'=>'application/json'));
 
     }
 
     /*
-     * Edit a list item (via X-Editable)
+     * Edit a list item
+     * NEEDS JSON
      */
     public function editListItemAction(Request $request, $uid, $list_uid, $item_uid)
     {
   
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('editListItem', $request->get('token')))
-            return new Response($this->get('translator')->trans('invalid.token', array(), 'errors'), 400);
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('editListItem', $request->get('token'))) {
+            return new Response(
+                json_encode(
+                    array(
+                        'message' => $this->get('translator')->trans('invalid.token', array(), 'errors'))
+                    ), 
+                400, 
+                array('Content-Type'=>'application/json')
+            );
+        }
 
         $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => true));
-        $error = null;
+
         $response = null;
 
         if ($this->access != false) {
@@ -373,7 +424,7 @@ class ListController extends BaseController
                 switch ($request->request->get('name')) {
                     case 'text':
                         $listItem->setText($request->request->get('value'));
-                        // This needs to stay here for the list items
+                        // This needs to stay here for the list items, we need to send the value back
                         $deepLinkingService = $this->container->get('deep_linking_extension');
                         $response = array('text' => $deepLinkingService->convertDeepLinks($request->request->get('value')));
                         $objectHasBeenModified = true;
@@ -392,39 +443,44 @@ class ListController extends BaseController
                     $logService = $this->container->get('logService');
                     $logService->log($this->getUser(), 'user_update_list_item', $this->base['project'], array( 'list' => array( 'logName' => $list->getLogName(), 'identifier' => $list->getId()),
                                                                                                                        'list_item' => array( 'logName' => $listItem->getLogName() )) );
+                
+                    return new Response(json_encode($response), 200, array('Content-Type'=>'application/json'));
+
                 } elseif (count($errors) > 0) {
 
-                    $error = $this->get('translator')->trans($errors[0]->getMessage()); 
+                    $message = array('message' => $this->get('translator')->trans($errors[0]->getMessage())); 
+
+                } else {
+                    
+                    $response = array('message' => $this->get('translator')->trans('unnecessary.request', array(), 'errors'));
+
                 }
 
-            } else {
-
-              $error = $this->get('translator')->trans('invalid.request', array(), 'errors');
-
-            }
-            
-        } else {
-
-            $error = $this->get('translator')->trans('invalid.request', array(), 'errors');
+            } 
 
         }
 
-        // Wraps up and return a response
-        if (!is_null($error)) {
-            return new Response($error, 406);
-        }
+        return new Response(json_encode($response?$response:array('message' => $this->get('translator')->trans('invalid.request', array(), 'errors'))), 406, array('Content-Type'=>'application/json'));
 
-        return new Response(json_encode($response, 200, array('Content-Type'=>'application/json')));
     }
 
     /*
      * Delete a list item
+     * NEEDS JSON
      */
     public function deleteListItemAction(Request $request, $uid, $list_uid, $item_uid)
     {
   
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('deleteListItem', $request->get('token')))
-            return $this->redirect($this->generateUrl('p_show_project_list', array('uid' => $uid, 'list_uid' => $this->container->get('uid')->fromUId($list_uid))));
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('deleteListItem', $request->get('token'))) {
+            return new Response(
+                json_encode(
+                    array(
+                        'message' => $this->get('translator')->trans('invalid.token', array(), 'errors'))
+                    ), 
+                400, 
+                array('Content-Type'=>'application/json')
+            );
+        }
 
         $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => true));
 
@@ -454,17 +510,26 @@ class ListController extends BaseController
             
         }
 
-        return new Response($this->get('translator')->trans('invalid.request', array(), 'errors'), 400);
+        return new Response(json_encode(array('message' => $this->get('translator')->trans('invalid.request', array(), 'errors'))), 406, array('Content-Type'=>'application/json'));
 
     }
 
     /*
      * Rank listItems
+     * NEEDS JSON
      */
     public function rankListItemsAction(Request $request, $uid)
     {
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('rankListItems', $request->get('token')))
-            return new Response($this->get('translator')->trans('invalid.token', array(), 'errors'), 400);
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('rankListItems', $request->get('token'))) {
+            return new Response(
+                json_encode(
+                    array(
+                        'message' => $this->get('translator')->trans('invalid.token', array(), 'errors'))
+                    ), 
+                400, 
+                array('Content-Type'=>'application/json')
+            );
+        }
 
         $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => true));
 
@@ -488,17 +553,27 @@ class ListController extends BaseController
 
         }
 
-        return new Response($this->get('translator')->trans('invalid.request', array(), 'errors'), 400);
+        return new Response(json_encode(array('message' => $this->get('translator')->trans('invalid.request', array(), 'errors'))), 406, array('Content-Type'=>'application/json'));
+
     }
 
     /*
      * Toggle a list item
+     * NEEDS JSON
      */
     public function toggleListItemAction(Request $request, $uid, $list_uid, $item_uid, $do)
     {
   
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('toggleListItem', $request->get('token')))
-            return new Response($this->get('translator')->trans('invalid.token', array(), 'errors'), 400);
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('toggleListItem', $request->get('token'))) {
+            return new Response(
+                json_encode(
+                    array(
+                        'message' => $this->get('translator')->trans('invalid.token', array(), 'errors'))
+                    ), 
+                400, 
+                array('Content-Type'=>'application/json')
+            );
+        }
 
         $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => true));
 
@@ -523,17 +598,20 @@ class ListController extends BaseController
                 $logService->log($this->getUser(), 'user_'.$action.'_list_item', $this->base['project'], array( 'list' => array( 'logName' => $list->getLogName(), 'identifier' => $list->getId()),
                                                                                                                    'list_item' => array( 'logName' => $listItem->getLogName() )) );
 
-                return $this->render('metaProjectBundle:Project:showLists.item.html.twig', 
-                    array('project' => $this->base['project'],
-                          'item' => $listItem,
-                          'list' => $list,
-                          'canEdit' => $this->base['canEdit']));
-    
+                return new Response(json_encode(array(
+                    // no message here, we don't want UI to be crowded
+                    'item' => $this->renderView('metaProjectBundle:Project:showLists.item.html.twig', 
+                                array('project' => $this->base['project'],
+                                      'item' => $listItem,
+                                      'list' => $list,
+                                      'canEdit' => $this->base['canEdit']))
+                    )), 200, array('Content-Type'=>'application/json'));
+        
             } 
             
         }
 
-        return new Response($this->get('translator')->trans('invalid.request', array(), 'errors'), 400);
+        return new Response(json_encode(array('message' => $this->get('translator')->trans('invalid.request', array(), 'errors'))), 406, array('Content-Type'=>'application/json'));
         
     }
 

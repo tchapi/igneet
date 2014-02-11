@@ -14,24 +14,15 @@ $(document).ready(function() {
                     return this.id;
                 }).get().join();
 
-            // To avoid double notifications
-            var warn = function() {
-                if (success) {
-                    alertify.success(Translator.trans('alert.changes.saved'));
-                } else {
-                    alertify.error(Translator.trans('alert.error.saving.changes'));
-                }
-            };
-
             // Update rank
             $.post(list.children('ul').attr('data-url'), {
                 ranks: ranks
             })
-                .done(function() {
-                    success = true; //alertify.success(Translator.trans('alert.changes.saved'));
+                .done(function(data) {
+                    process(data, "success", Translator.trans('alert.changes.saved'));
                 })
-                .fail(function() {
-                    success = false; //alertify.error(Translator.trans('alert.error.saving.changes'));
+                .fail(function(xhr) {
+                    process(xhr.responseJSON, "error", Translator.trans('alert.error.saving.changes'));
                 });
 
             // Update parenting
@@ -40,13 +31,11 @@ $(document).ready(function() {
                     name: item.attr('data-name'),
                     value: item.parent().parent().attr('id') || 0
                 })
-                    .done(function() {
-                        success = true;
-                        warn();
+                    .done(function(data) {
+                        process(data, "success", Translator.trans('alert.changes.saved'));
                     })
-                    .fail(function() {
-                        success = false;
-                        warn();
+                    .fail(function(xhr) {
+                        process(xhr.responseJSON, "error", Translator.trans('alert.error.saving.changes'));
                     });
             }
 

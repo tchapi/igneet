@@ -10,12 +10,20 @@ $(document).ready(function() {
 
     var listObject = new Slip(list);
 
+    list.addEventListener('slip:beforereorder', function(e) {
+        // e.detail.insertBefore == null means we're at the end of the list, below the "new"
+        if ($(e.target).hasClass('new')) {
+            e.preventDefault();
+        }
+    });
+
     list.addEventListener('slip:reorder', function(e) {
         // e.target list item reordered.
-        // e.detail.insertBefore == null means we're at the end of the list, below the "new"
-        if ($(e.target).hasClass('new') || e.detail.insertBefore === null) {
+        if (e.detail.insertBefore === null) {
             e.preventDefault();
         } else {
+
+            var undo = e.target.nextSibling; // in case ...
             e.target.parentNode.insertBefore(e.target, e.detail.insertBefore);
 
             // Compute ranks
@@ -28,12 +36,13 @@ $(document).ready(function() {
             $.post(ul.attr('data-url'), {
                 ranks: ranks
             })
-                .success(function() {
-                    alertify.success(Translator.trans('alert.changes.saved'));
-                })
-                .error(function() {
+                .fail(function() {
+                    // Undo
+                    e.target.parentNode.insertBefore(e.target, undo);
                     alertify.error(Translator.trans('alert.error.saving.changes'));
                 });
+            
+
         }
 
     });
@@ -53,7 +62,7 @@ $(document).ready(function() {
     // new item
     $("ul.slip > li > input")
         .on("keyup", function(e) {
-            if (e.which === 13) { // Trigger a save with the Return key for new item
+            if (e.which === 13 && $(this).val() !== "") { // Trigger a save with the Return key for new item
                 e.preventDefault();
                 var parent = $(this).closest('ul'),
                     text = $(this).val(),
@@ -62,7 +71,7 @@ $(document).ready(function() {
                 $.post(url, {
                     text: text
                 }, function(data) {
-                    parent.children().last().before(data);
+                    parent.children().last().before(data.item);
                     self.val('');
                 });
             }
@@ -73,9 +82,12 @@ $(document).ready(function() {
         var li = $(this).closest('li'),
             url = $(this).attr("data-url");
         $.post(url, function(data) {
-            li.replaceWith(data);
-            var val = $("ul.slip > li.done").length / ($("ul.slip > li").length - 1) * 100;
-            $('.label-progress > span').width(val + "%");
+            li.replaceWith(data.item);
+            // Calculate progression, when needed
+            if ($('.label-progress > span').length > 0) {
+                var val = $("ul.slip > li.done").length / ($("ul.slip > li").length - 1) * 100;
+                $('.label-progress > span').width(val + "%");
+            }
         });
     });
 
