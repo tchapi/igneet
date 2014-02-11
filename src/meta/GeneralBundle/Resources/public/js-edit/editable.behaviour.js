@@ -14,6 +14,7 @@ $(document).ready(function() {
             if (data.redirect) {
                 // We must reload the page
                 window.location.replace(data.redirect);
+                return;
             }
             defaultMessage = data.message || defaultMessage;
         }
