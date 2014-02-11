@@ -140,7 +140,7 @@
   }
 }
 
-@mixin thumbs($width, $total){
+@mixin thumbs($width, $total, $flavour){
   $pad: $gutter*$width/4;
   $inner_size: ($column*$width/2 - $pad*2);
   margin: 0;
@@ -152,7 +152,11 @@
     margin-bottom: $pad;
     position: relative;
     height: $inner_size;
-    background: $_sensible-dark;
+    @if $flavour == 'dark' {
+      background: $_sensible-dark;
+    } @else {
+      background: $_sensible;
+    }
 
     @include span-columns($width of $total);
     &:nth-child(#{floor($total/$width)}n) { @include omega; }
@@ -165,7 +169,11 @@
     }
     
     & > a {
-      color: $_text-dark;
+      @if $flavour == 'dark' {
+        color: $_text-dark;
+      } @else {
+        color: $_text;
+      }
       display: block;
       & > img {
         border-radius: 50%;
@@ -178,7 +186,11 @@
         display: inline-block;
         float: left;
         font-size: 1.375em*ceil($width);
-        color: $_muted;
+        @if $flavour == 'dark' {
+          color: $_muted;
+        } @else {
+          color: $_text;
+        }
       }
       & > div {
         display: table-cell;
@@ -213,7 +225,11 @@
       }
     }
     &:hover{
-      background: $_text-secondary;
+      @if $flavour == 'dark' {
+        background: $_text-secondary;
+      } @else {
+        background: $_muted;
+      }
     }
   }
 }

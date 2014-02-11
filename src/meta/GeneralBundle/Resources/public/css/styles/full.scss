@@ -144,7 +144,7 @@ body.full > .content-container section {
   }
 
   & > ul.content-full {
-    @include thumbs(3,12);
+    @include thumbs(3,12, 'dark');
   }
 }
 
