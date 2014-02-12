@@ -39,13 +39,19 @@ $(document).ready(function() {
     /*
      * Dismiss & cookies
      */
-    $("[dismiss]").on('click', function() {
+    $("[dismiss]").on('click', function(e) {
         var targetId = $(this).attr('dismiss');
         $("#" + targetId).slideUp();
+        if (document.cookie.indexOf("igneet_dismiss[" + targetId + "]") === -1) {
+            alertify.log(Translator.trans('guide.dismissed'), "info");
+        }
         document.cookie = "igneet_dismiss[" + targetId + "]=true; path=/; expires=Wed, 1 Jan 2020 00:42:42 UTC;";
+        e.preventDefault();
     });
-    $("[dismiss-reset=all]").on('click', function() {
+    $("[dismiss-reset=all]").on('click', function(e) {
         document.cookie = "igneet_dismiss[shared_projects]=false; expires=; path=/;";
+        alertify.log(Translator.trans('guide.reactivated'), "info");
+        e.preventDefault();
         // ** Others ? **
     });
 
