@@ -52,7 +52,7 @@ filter='?yui_css,cssrewrite' output='css/min/base.css' %}
      <script type="text/javascript">
     {% for type in ['success', 'warning', 'error', 'info'] %}
       {% for flashMessage in app.session.flashbag.get(type) %}
-        alertify.log("{{ flashMessage }}", "{{ type }}", 0);
+        alertify.log("{{ flashMessage }}", "{{ type }}");
       {% endfor %}
     {% endfor %}
     </script>
