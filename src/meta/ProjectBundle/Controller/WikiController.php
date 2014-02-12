@@ -111,17 +111,20 @@ class WikiController extends BaseController
     }
 
     /*
-     * Output the form to create a new page and process the POST
+     * Process via GET
      */
     public function newWikiPageAction(Request $request, $uid)
     {
   
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('newWikiPage', $request->get('token')))
-            return new Response($this->get('translator')->trans('invalid.token', array(), 'errors'), 400);
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('newWikiPage', $request->get('token'))) {
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $this->get('translator')->trans('invalid.token', array(), 'errors')
+            );
+            return $this->redirect($this->generateUrl('p_show_project_wiki', array('uid' => $uid )));
+        }
 
         $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => true));
-        $error = null;
-        $response = null;
 
         if ($this->access != false) {
 
@@ -178,8 +181,13 @@ class WikiController extends BaseController
      */
     public function makeHomeWikiPageAction(Request $request, $uid, $page_uid)
     {
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('makeHomeWikiPage', $request->get('token')))
-            return $this->redirect($this->generateUrl('p_show_project_wiki', array('uid' => $uid)));
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('makeHomeWikiPage', $request->get('token'))) {
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $this->get('translator')->trans('invalid.token', array(), 'errors')
+            );
+            return $this->redirect($this->generateUrl('p_show_project_wiki', array('uid' => $uid )));
+        }
 
         $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => true));
 
@@ -187,10 +195,6 @@ class WikiController extends BaseController
           return $this->forward('metaProjectBundle:Base:showRestricted', array('uid' => $uid));
 
         $wiki = $this->base['project']->getWiki();
-
-        if (!$wiki){
-          return $this->forward('metaProjectBundle:Wiki:showWikiHome', array('uid' => $uid));
-        }
 
         $repository = $this->getDoctrine()->getRepository('metaProjectBundle:WikiPage');
         $wikiPage = $repository->findOneByIdInWiki($this->container->get('uid')->fromUId($page_uid), $wiki->getId());
@@ -227,6 +231,7 @@ class WikiController extends BaseController
 
     /*
      * Rank wiki pages
+     * NEEDS JSON
      */
     public function rankWikiPagesAction(Request $request, $uid)
     {
@@ -254,31 +259,36 @@ class WikiController extends BaseController
         
                 return new Response();
               
-            } else {
-
-                return new Response($this->get('translator')->trans('invalid.request', array(), 'errors'), 400);
-
             }
 
-        } else {
+        } 
 
-            return new Response($this->get('translator')->trans('invalid.request', array(), 'errors'), 400);
-
-        }
+        return new Response(json_encode(array(
+                'message' => $this->get('translator')->trans('invalid.request', array(), 'errors')
+                )), 400, array('Content-Type'=>'application/json'));
 
     }
 
     /*
-     * Edit a wiki page (via X-Editable)
+     * Edit a wiki page
+     * NEEDS JSON
      */
     public function editWikiPageAction(Request $request, $uid, $page_uid)
     {
   
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('editWikiPage', $request->get('token')))
-            return new Response($this->get('translator')->trans('invalid.token', array(), 'errors'), 400);
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('editWikiPage', $request->get('token'))) {
+            return new Response(
+                json_encode(
+                    array(
+                        'message' => $this->get('translator')->trans('invalid.token', array(), 'errors'))
+                    ), 
+                400, 
+                array('Content-Type'=>'application/json')
+            );
+        }
 
         $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => true));
-        $error = null;
+
         $response = null;
 
         if ($this->access != false) {
@@ -329,7 +339,7 @@ class WikiController extends BaseController
                             $response = array('tag' => $this->renderView('metaGeneralBundle:Tags:tag.html.twig', array( 'tag' => $newTag, 'canEdit' => true)));
                             $objectHasBeenModified = true;
                         } else {
-                            $error = $this->get('translator')->trans('invalid.request', array(), 'errors'); // tag already in the page
+                            $response = array('message' => $this->get('translator')->trans('project.wiki.tag.already', array(), 'errors')); // tag already in the page
                         }
 
                         break;
@@ -345,45 +355,45 @@ class WikiController extends BaseController
                     $logService = $this->container->get('logService');
                     $logService->log($this->getUser(), 'user_update_wikipage', $this->base['project'], array( 'wikipage' => array( 'logName' => $wikiPage->getLogName(), 'identifier' => $wikiPage->getId() ) ));
                 
+                    return new Response(json_encode($response), 200, array('Content-Type'=>'application/json'));
+
                 } elseif (count($errors) > 0) {
 
-                    $error = $this->get('translator')->trans($errors[0]->getMessage());
+                    $response = array('message' => $this->get('translator')->trans($errors[0]->getMessage()));
+
+                } else {
+                    
+                    $response = array('message' => $this->get('translator')->trans('unnecessary.request', array(), 'errors'));
+
                 }
                 
-              } else {
-
-                $error = $this->get('translator')->trans('invalid.request', array(), 'errors');
-
               }
-
-            } else {
-
-              $error = $this->get('translator')->trans('invalid.request', array(), 'errors');
 
             }
 
-        } else {
-
-            $error = $this->get('translator')->trans('invalid.request', array(), 'errors');
-
         }
 
-        // Wraps up and return a response
-        if (!is_null($error)) {
-            return new Response($error, 406);
-        }
+        return new Response(json_encode($response?$response:array('message' => $this->get('translator')->trans('invalid.request', array(), 'errors'))), 406, array('Content-Type'=>'application/json'));
 
-        return new Response(json_encode($response), 200, array('Content-Type'=>'application/json'));
     }
 
     /*
      * Delete a wiki page
+     * NEEDS JSON (not implemented yet but we will)
      */
     public function deleteWikiPageAction(Request $request, $uid, $page_uid)
     {
   
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('deleteWikiPage', $request->get('token')))
-            return $this->redirect($this->generateUrl('p_show_project_wiki', array('uid' => $uid)));
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('deleteWikiPage', $request->get('token'))) {
+            return new Response(
+                json_encode(
+                    array(
+                        'message' => $this->get('translator')->trans('invalid.token', array(), 'errors'))
+                    ), 
+                400, 
+                array('Content-Type'=>'application/json')
+            );
+        }
 
         $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => true));
 
@@ -403,8 +413,6 @@ class WikiController extends BaseController
                   $wiki->setHomePage(null);
                   $em->flush();
 
-                  $redirect = $this->generateUrl('p_show_project_wiki', array('uid' => $uid));
-
                   // What if the page has children ?
                   foreach($wikiPage->getChildren() as $child){
                     $child->setParent(null);
@@ -419,23 +427,20 @@ class WikiController extends BaseController
 
                   $em->flush();
 
-                  $message = $this->get('translator')->trans('project.wiki.deleted', array( '%page%' => $wikiPage->getTitle() ));
+                  $this->get('session')->getFlashBag()->add(
+                      'success',
+                      $this->get('translator')->trans('project.wiki.deleted', array( '%page%' => $wikiPage->getTitle() ))
+                  );
 
-                } else {
-
-                    $message = $this->get('translator')->trans('project.wiki.not.found');
+                  return new Response(json_encode(array("redirect" => $this->generateUrl('p_show_project_wiki', array('uid' => $uid)))), 200, array('Content-Type'=>'application/json'));
 
                 }
-
-            } else {
-
-                $message = $this->get('translator')->trans('project.wiki.not.found');
 
             }
             
         }
 
-        return new Response(json_encode(array("redirect" => $redirect, "message" => $message)), 200, array('Content-Type'=>'application/json'));
+        return new Response(json_encode(array("message" => ($message?$message:$this->get('translator')->trans('project.wiki.not.found')))), 406, array('Content-Type'=>'application/json'));
 
     }
 }

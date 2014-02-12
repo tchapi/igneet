@@ -172,6 +172,7 @@ project:
     created: "Your page %page% was successfully created."
     deleted: "Your page %page% was successfully deleted. Its children, if any, have been put back at the root of the wiki."
     open: "Toggle index view"
+    tag.already: "This tag is already assigned to this page."
   settings:
     title: ""
     title.alt: "Settings"

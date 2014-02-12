@@ -172,6 +172,7 @@ project:
     created: "La page %page% a été créée avec succès."
     deleted: "La page %page% a été supprimée avec succès. Ses pages 'enfants', si elles en avait, ont été rattachées à la page racine du wiki."
     open: "Permuter la vue de l'index"
+    tag.already: "Ce tag est déjà attribué à cette page."
   settings:
     title: ""
     title.alt: "Paramètres"
