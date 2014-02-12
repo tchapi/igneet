@@ -122,7 +122,7 @@ project:
       editHelp: "Edit this item"
       finishHelp: "Finish this item"
       recycleHelp: "Recycle this item"
-      doneAt: "done on %date%"
+      doneAt: "created on %date1% and done on %date2%"
       createdAt: "created on %date%"
       created: "Your list item was successfully created."
       deleted: "Your list item was successfully deleted."
