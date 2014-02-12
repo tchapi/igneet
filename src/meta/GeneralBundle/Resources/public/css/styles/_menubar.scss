@@ -210,6 +210,8 @@ nav[role=mobile]{
           position: absolute;
           top: 45px;
           z-index: 1000;
+          max-height: 500px;
+          overflow-y: auto;
           border-radius: $border-radius;
           box-shadow: 0 0 $border-radius $_menu-background;
 
