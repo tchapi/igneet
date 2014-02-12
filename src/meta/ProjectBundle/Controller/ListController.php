@@ -245,7 +245,7 @@ class ListController extends BaseController
                             $response = array('tag' => $this->renderView('metaGeneralBundle:Tags:tag.html.twig', array( 'tag' => $newTag, 'canEdit' => true)));
                             $objectHasBeenModified = true;
                         } else {
-                            $response = array('message' => $this->get('translator')->trans('invalid.request', array(), 'errors')); // tag already in the page
+                            $response = array('message' => $this->get('translator')->trans('project.lists.tag.already', array(), 'errors')); // tag already in the page
                         }
 
                         break;
@@ -606,7 +606,7 @@ class ListController extends BaseController
                                       'list' => $list,
                                       'canEdit' => $this->base['canEdit']))
                     )), 200, array('Content-Type'=>'application/json'));
-        
+
             } 
             
         }

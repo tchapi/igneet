@@ -113,6 +113,7 @@ project:
     created: "Your list %list% was successfully created."
     deleted: "Your list %list% was successfully deleted."
     done: "Progress : %advance%%"
+    tag.already: "This tag is already assigned to this list."
     items:
       none: "No list item yet !"
       not.found: "This list item does not exist."
@@ -134,6 +135,7 @@ project:
       found: "This resource does not exist."
       downloadable: "The file associated to this resource could not be found - it may have moved or been deleted."
       valid.url: "The url that you provided is not valid."
+    tag.already: "This tag is already assigned to this resource."
     titleHelp: "Change the title of this resource"
     change: "Change this resource"
     delete: "Delete this resource"
