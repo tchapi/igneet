@@ -57,7 +57,7 @@ $(document).ready(function() {
     });
 
     // Add new item in the list
-    $(".new").click(function(e) {
+    $(".tree .new, .none .new").click(function(e) {
 
         e.preventDefault();
         alertify.prompt($(this).attr('data-title'), $.proxy(function(e, str) {
