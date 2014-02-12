@@ -16,7 +16,7 @@
     <div class="label">{{ "community.users"|trans }} :</div>
     <div class="content">
       {{ "community.usersCount"|trans({'%users%': usersCount, '%guests%': guestsCount }) }}
-      <p><a href="{{ path('g_invite') }}" class="button button-info"><i class="fa fa-user"></i> {{ "community.invite"|trans }}</a> <a href="{{ path('g_remove') }}" class="button button-danger"><i class="fa fa-user"></i> {{ "community.remove"|trans }}</a></p>
+      <p><a href="{{ path('g_invite', {'token': csrf_token('invite')}) }}" class="button button-info"><i class="fa fa-user"></i> {{ "community.invite"|trans }}</a> <a href="{{ path('g_remove', {'token': csrf_token('remove')}) }}" class="button button-danger"><i class="fa fa-user"></i> {{ "community.remove"|trans }}</a></p>
     </div>
   </section>
 

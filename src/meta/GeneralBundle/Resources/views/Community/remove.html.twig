@@ -11,7 +11,7 @@
 {% endblock %}
 
 {% block content %}
-<form action="{{ path('g_remove') }}" method="post">
+<form action="{{ path('g_remove', {'token': csrf_token('remove')}) }}" method="post">
   <section>
     <div class="label"><label for="mailOrUsername" class="required">{{ "user.removal.field"|trans }} : </label></div>
     <div class="content"><input type="text" id="mailOrUsername" name="mailOrUsername" required="required"></div>

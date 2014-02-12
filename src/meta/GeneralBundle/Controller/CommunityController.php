@@ -160,10 +160,17 @@ class CommunityController extends Controller
     public function editAction(Request $request)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('edit', $request->get('token')))
-            return new Response($this->get('translator')->trans('invalid.token', array(), 'errors'), 400);
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('edit', $request->get('token'))) {
+            return new Response(
+                json_encode(
+                    array(
+                        'message' => $this->get('translator')->trans('invalid.token', array(), 'errors'))
+                    ), 
+                400, 
+                array('Content-Type'=>'application/json')
+            );
+        }
 
-        $error = null;
         $response = null;
 
         $authenticatedUser = $this->getUser();
@@ -243,15 +250,7 @@ class CommunityController extends Controller
                     $error = $this->get('translator')->trans($errors[0]->getMessage());
                 }
 
-            } else {
-
-                $error = $this->get('translator')->trans('invalid.request', array(), 'errors');
-
             }
-
-        } else {
-
-            $error = $this->get('translator')->trans('invalid.request', array(), 'errors');
 
         }
 
@@ -270,10 +269,10 @@ class CommunityController extends Controller
         } else {
         
             if (!is_null($error)) {
-                return new Response($error, 406);
+                return new Response(json_encode(array('message' => $error)), 406, array('Content-Type'=>'application/json'));
             }
 
-            return new Response($response);
+            return new Response(json_encode($response), 200, array('Content-Type'=>'application/json'));
         }
 
     }
@@ -284,8 +283,13 @@ class CommunityController extends Controller
     public function resetPictureAction(Request $request)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('resetPicture', $request->get('token')))
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('resetPicture', $request->get('token'))) {
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $this->get('translator')->trans('invalid.token', array(), 'errors')
+            );
             return $this->redirect($this->generateUrl('g_home_community'));
+        }
 
         $authenticatedUser = $this->getUser();
         $community = $authenticatedUser->getCurrentCommunity();
@@ -443,6 +447,14 @@ class CommunityController extends Controller
     public function inviteAction(Request $request)
     {
 
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('invite', $request->get('token'))) {
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $this->get('translator')->trans('invalid.token', array(), 'errors')
+            );
+            return $this->redirect($this->generateUrl('g_home_community'));
+        }
+
         $authenticatedUser = $this->getUser();
         $community = $authenticatedUser->getCurrentCommunity();
 
@@ -598,6 +610,14 @@ class CommunityController extends Controller
     public function removeAction(Request $request)
     {
 
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('remove', $request->get('token'))) {
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $this->get('translator')->trans('invalid.token', array(), 'errors')
+            );
+            return $this->redirect($this->generateUrl('g_manage_community'));
+        }
+
         $authenticatedUser = $this->getUser();
         $community = $authenticatedUser->getCurrentCommunity();
 
@@ -687,14 +707,16 @@ class CommunityController extends Controller
                                 'success',
                                 $this->get('translator')->trans('user.removal.stays.guest.in.community', array( '%user%' => $user->getFullName(), '%community%' => $community->getName() ))
                             );
+                        } else {
+
+                            $this->get('session')->getFlashBag()->add(
+                                'success',
+                                $this->get('translator')->trans('user.removal.no.guest.in.community', array( '%user%' => $user->getFullName(), '%community%' => $community->getName() ))
+                            );
+
                         }
 
-                        $this->get('session')->getFlashBag()->add(
-                            'success',
-                            $this->get('translator')->trans('user.removal.no.guest.in.community', array( '%user%' => $user->getFullName(), '%community%' => $community->getName() ))
-                        );
-
-                         $em->flush();
+                        $em->flush();
 
                         // Sends mail to removee
                         $message = \Swift_Message::newInstance()
@@ -773,8 +795,13 @@ class CommunityController extends Controller
     public function addManagerAction(Request $request, $mailOrUsername)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('addManager', $request->get('token')))
-            return $this->redirect($this->generateUrl('g_home_community'));
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('addManager', $request->get('token'))) {
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $this->get('translator')->trans('invalid.token', array(), 'errors')
+            );
+            return $this->redirect($this->generateUrl('g_manage_community'));
+        }
 
         $userRepository = $this->getDoctrine()->getRepository('metaUserBundle:User');
         $authenticatedUser = $this->getUser();
@@ -835,8 +862,13 @@ class CommunityController extends Controller
     public function removeManagerAction(Request $request, $username)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('removeManager', $request->get('token')))
-            return $this->redirect($this->generateUrl('g_home_community'));
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('removeManager', $request->get('token'))) {
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $this->get('translator')->trans('invalid.token', array(), 'errors')
+            );
+            return $this->redirect($this->generateUrl('g_manage_community'));
+        }
 
         $userRepository = $this->getDoctrine()->getRepository('metaUserBundle:User');
         $authenticatedUser = $this->getUser();
