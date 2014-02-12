@@ -39,8 +39,13 @@ class InfoController extends BaseController
     public function addParticipantOrOwnerAction(Request $request, $uid, $mailOrUsername, $owner)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('addParticipantOrOwner', $request->get('token')))
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('addParticipantOrOwner', $request->get('token'))) {
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $this->get('translator')->trans('invalid.token', array(), 'errors')
+            );
             return $this->redirect($this->generateUrl('p_show_project_info', array('uid' => $uid)));
+          }
 
         $this->preComputeRights(array( "mustBeOwner" => true, "mustParticipate" => false));
 
@@ -121,8 +126,13 @@ class InfoController extends BaseController
     public function removeParticipantOrOwnerAction(Request $request, $uid, $username, $owner)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('removeParticipantOrOwner', $request->get('token')))
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('removeParticipantOrOwner', $request->get('token'))) {
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $this->get('translator')->trans('invalid.token', array(), 'errors')
+            );
             return $this->redirect($this->generateUrl('p_show_project_info', array('uid' => $uid)));
+          }
 
         $this->preComputeRights(array( "mustBeOwner" => true, "mustParticipate" => false));
 
@@ -195,8 +205,13 @@ class InfoController extends BaseController
     public function removeMySelfParticipantAction(Request $request, $uid, $username)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('removeMySelfParticipant', $request->get('token')))
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('removeMySelfParticipant', $request->get('token'))) {
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $this->get('translator')->trans('invalid.token', array(), 'errors')
+            );
             return $this->redirect($this->generateUrl('p_show_project_info', array('uid' => $uid)));
+          }
 
         $this->preComputeRights(array( "mustBeOwner" => false, "mustParticipate" => true));
 

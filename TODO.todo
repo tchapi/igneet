@@ -10,6 +10,7 @@ Chaque post :
   RESOURCE '' : OK !
   WIKI : OK !
   project : ok
+  info : ok
 
   USER ?
   IDEA  : ok
@@ -18,23 +19,6 @@ Chaque post :
   penser au invalid.token avec Json/pas Json selon les cas
   Response dans les edit, 406 pour erreur, 200 sinon
   renderView et non render quand on renvoie du twig
-
- ☐ Mettre du json pour les erreurs dans ces parties la :
-
-        // Wraps up and return a response
-        if (!is_null($error)) {
-            return new Response($error, 406);
-        }
-
-        return new Response(json_encode($response), 200, array('Content-Type'=>'application/json'));
- ☐ Simplifier ca :
-
-      else {
-
-           $error = $this->get('translator')->trans('invalid.request', array(), 'errors');
-
-      }
-
 
  ☐ Créer des partials pour le infinite scrolling et s'en servir pour recréer les reponses en AJAX
 
