@@ -20,12 +20,15 @@ $.fn.isOnScreen = function() {
 };
 
 $(document).ready(function() {
+    
+    var canLoad;
 
     var retrieveResults = function(page, full, callback) {
 
         $('#loading').show();
         $('#more').hide();
-        var canLoad = false; // While we're doing this, prevent other calls
+
+        canLoad = false; // While we're doing this, prevent other calls
 
         $.ajax({
             type: "POST",
