@@ -4,12 +4,14 @@
 NEXT :
 
 Chaque post :
-   'message'
-   'redirect'
-   value => value
 
-   Tout en json_encode
 
+  LIST CONTROLLER : OK !
+  RESOURCE '' : OK !
+
+  penser au invalid.token avec Json/pas Json selon les cas
+  Response dans les edit, 406 pour erreur, 200 sinon
+  renderView et non render quand on renvoie du twig
 
  ☐ Mettre du json pour les erreurs dans ces parties la :
 
@@ -27,7 +29,6 @@ Chaque post :
 
       }
 
- ☐ supprimer json_encode(null) qqpart
 
  ☐ Erreurs dans les formulaires de création : elles sont affichées n'importe comment a priori (A vérifier : déjà fixed ?)
  
@@ -46,6 +47,8 @@ A évaluer :
    Sinon mettre en gras mais ne pas linker avec une icone oeil barré (?)
  
  ☐ [Eric] Tri des resources dans la vue / resources
+
+ ☐ deeplinks dans listes et wiki : catcher le click et proposer d'aller vers le lien plutot que d'éditer
 
 Complexe:
 
