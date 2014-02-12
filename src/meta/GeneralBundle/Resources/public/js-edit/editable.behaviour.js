@@ -20,7 +20,7 @@ $(document).ready(function() {
         }
 
         alertify.log(defaultMessage, type);
-    
+
     };
 
     var saveData = function(dataArray, callback) {
@@ -65,48 +65,47 @@ $(document).ready(function() {
             }
         };
 
-    $('[contenteditable=true][rich=false]')
-        .on("keypress", function(e) {
-            if (e.which === 13) { // Prevents the Return to be inserted
-                e.preventDefault();
-            }
-        })
-        .on("keyup", function(e) {
-            name = $(this).attr("data-name");
-            key = $(this).attr("data-key");
-            url = $(this).attr("data-url");
-            last = $(this).attr("data-last");
-            value = $.trim($(this).text());
-            if (e.which === 13) { // Trigger a save with the Return key
-                e.preventDefault();
-                clearInterval(timers[name]);
-                if (last !== value)  {
-                    saveData({
-                        url: url,
-                        name: name,
-                        key: key,
-                        value: value
-                    });
-                }
-            } else {
-                catchChange({
+    $(document).on('keypress', '[contenteditable=true][rich=false]', function(e) {
+        if (e.which === 13) { // Prevents the Return to be inserted
+            e.preventDefault();
+        }
+    });
+    $(document).on('keyup', '[contenteditable=true][rich=false]', function(e) {
+        name = $(this).attr("data-name");
+        key = $(this).attr("data-key");
+        url = $(this).attr("data-url");
+        last = $(this).attr("data-last");
+        value = $.trim($(this).text());
+        if (e.which === 13) { // Trigger a save with the Return key
+            e.preventDefault();
+            clearInterval(timers[name]);
+            if (last !== value)  {
+                saveData({
                     url: url,
                     name: name,
                     key: key,
-                    last: last,
                     value: value
                 });
             }
-        })
-        .on('paste', function(e) { // Prevents insertion of markup
-            if (document.queryCommandEnabled('inserttext')) {
-                e.preventDefault();
-                var pastedText = prompt(Translator.trans('paste.something'));
-                if (pastedText !== null) {
-                    document.execCommand('inserttext', false, $.trim(pastedText));
-                }
+        } else {
+            catchChange({
+                url: url,
+                name: name,
+                key: key,
+                last: last,
+                value: value
+            });
+        }
+    });
+    $(document).on('paste', '[contenteditable=true][rich=false]', function(e) { // Prevents insertion of markup
+        if (document.queryCommandEnabled('inserttext')) {
+            e.preventDefault();
+            var pastedText = prompt(Translator.trans('paste.something'));
+            if (pastedText !== null) {
+                document.execCommand('inserttext', false, $.trim(pastedText));
             }
-        });
+        }
+    });
 
     /* 
      * Select box editables
