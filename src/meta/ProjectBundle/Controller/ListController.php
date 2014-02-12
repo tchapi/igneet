@@ -284,7 +284,7 @@ class ListController extends BaseController
 
     /*
      * Delete a list
-     * NEEDS JSON
+     * NEEDS JSON (not implemented yet but we will)
      */
     public function deleteListAction(Request $request, $uid, $list_uid)
     {
