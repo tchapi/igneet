@@ -23,5 +23,5 @@ providers:
   droplr: "Droplr file storage"
   youtube: "Youtube video"
   skydrive: "Microsoft Skydrive"
-  other: "Unknown remote document repository"
+  other: "Remote document repository / Web link"
   local: "Local document repository"

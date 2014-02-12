@@ -23,5 +23,5 @@ providers:
   droplr: "Stockage Droplr"
   youtube: "Vidéo Youtube"
   skydrive: "Microsoft Skydrive"
-  other: "Entrepôt de données distant"
+  other: "Entrepôt de données distant / Lien web"
   local: "Stockage local igneet"
