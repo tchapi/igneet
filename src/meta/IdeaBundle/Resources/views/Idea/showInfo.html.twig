@@ -20,7 +20,7 @@
     <div class="label-full">{{ "idea.info.about"|trans }}</div>
 
     <div class="content-full">
-      <div{% if base.canEdit %} data-name="about" data-url="{{ path('i_edit_idea', {'uid': base.idea.id|to_uid, 'token': csrf_token('edit') }) }}" contenteditable="true" rich="true"{% else %} class="redactor_editor"{% endif %}>{{ base.idea.about|deeplinks|raw }}</div>
+      <div{% if base.canEdit %} data-name="about" data-url="{{ path('i_edit_idea', {'uid': base.idea.id|to_uid, 'token': csrf_token('edit') }) }}" contenteditable="true" rich="true"{% else %} class="redactor_editor"{% endif %}>{{ base.idea.about|deeplinks|markdown|raw }}</div>
     </div>
 
   </section>
