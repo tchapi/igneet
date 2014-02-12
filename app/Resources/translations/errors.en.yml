@@ -2,6 +2,7 @@ invalid:
   request: "Invalid request."
   token: "Invalid token."
   password.match: "Password entries do not match."
+unnecessary.request: "Unnecessary request."
 file.too.large: "The file you are trying to upload is too large."
 file.type.not.allowed: "This filetype is not allowed for upload."
 information.not.valid: "The information you provided does not seem valid."
