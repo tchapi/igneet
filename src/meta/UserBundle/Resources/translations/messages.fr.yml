@@ -96,7 +96,7 @@ user:
     password: "Mot de passe"
     email: "E-mail"
     create: "Créer"
-    terms: "En créant votre compte, vous reconnaissez avoir lu et accepté les conditions d'utilisation et de confidentialité."
+    terms: "En créant votre compte, vous reconnaissez avoir lu et accepté les <a href='http://igneet.com/terms'>conditions d'utilisation et de confidentialité</a>."
   me.help: "Aller directement sur votre profil"
   notifications:
     title: "Notifications"

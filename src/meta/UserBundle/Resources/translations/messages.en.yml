@@ -96,7 +96,7 @@ user:
     password: "Password"
     email: "E-mail"
     create: "Create"
-    terms: "By creating your account, you are agreeing to the Terms of Service and the Privacy Policy."
+    terms: "By creating your account, you are agreeing to the <a href='http://igneet.com/terms'>Terms of Service and the Privacy Policy</a>."
   me.help: "Directly go to your profile"
   notifications:
     title: "Notifications"
