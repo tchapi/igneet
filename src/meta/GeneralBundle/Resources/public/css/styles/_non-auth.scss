@@ -108,6 +108,12 @@
       @include media($mobile) {
         display: none;
       }
+      & > a {
+        color: white;
+        &:hover {
+          color: $_primary;
+        }
+      }
     }
     div.error {
       @include up-triangle(20px, $_error, left);
@@ -125,11 +131,7 @@
       @include media($mobile) {
         display: none;
       }
-      color: $_text-dark;
       text-align: center;
-      &:hover{
-        color: $_primary;
-      }
     }
     input[type=submit]{
       @include span-columns(2 of 8);
