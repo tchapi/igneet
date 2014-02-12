@@ -68,6 +68,9 @@ error:
     title: "Error 404 : page not found"
     text: "The requested page does not exist."
   help: "You can still come back to the home page of the site. If you believe this error should not happen, send us a message (via Uservoice, below on the right), we'll be happy to hear from you and fix it !"
+# Guides
+guide.dismissed: "You can re-enable the interface guide texts and default messages in your settings."
+guide.reactivated: "Interface guide texts and default messages have been reset to default."
 # Mails
 mail:
   hello: "Hello,"

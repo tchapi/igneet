@@ -68,6 +68,9 @@ error:
     title: "Erreur 404 : page non trouvée"
     text: "La page demandée n'existe pas."
   help: "Vous pouvez retourner à l'accueil du site. Si vous pensez que c'est un bug, n'hésitez pas à nous contacter (via le widget Uservoice en bas à droite de l'écran), nous regarderons tout ça rapidement !"
+# Guides
+guide.dismissed: "Vous pouvez réinitialiser votre interface et retrouver les guides et textes par défaut en allant dans vos paramètres."
+guide.reactivated: "Interface, guides et textes par défaut ont été réinitialisés"
 # Mails
 mail:
   hello: "Bonjour,"

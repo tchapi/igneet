@@ -33,6 +33,8 @@ Admin :
 
  ☐ Admin : listes de communautés et d'utilisateurs à styler en tableau  comme les announcements
 
+ ☐ Output la version dans le footer MM.mm-CCC (M = MAjeure, m = mineure, C = dernier commit)
+   
 A évaluer :
 
  ☐ + Deep linking : verifier a l'affichage que l'utilisateur a le droit de voir l'objet deep linké !
