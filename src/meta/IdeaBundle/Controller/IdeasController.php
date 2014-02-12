@@ -74,7 +74,12 @@ class IdeasController extends Controller
         $maxPerPage = $this->container->getParameter('listings.number_of_items_per_page');
 
         if ( ($page-1) * $maxPerPage > $totalIdeas) {
-            return $this->redirect($this->generateUrl('i_list_ideas', array('sort' => $sort)));
+            if ($request->isXmlHttpRequest()){
+                // No content
+                return new Response(null, 204, array('Content-Type'=>'application/json'));
+            } else {
+                return $this->redirect($this->generateUrl('i_list_ideas', array('sort' => $sort)));
+            }
         }
 
         if ($request->request->get('full') == "true"){
