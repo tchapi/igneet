@@ -250,15 +250,25 @@ class IdeaController extends Controller
     }
 
     /*
-     * Edit an idea (via X-Editable)
+     * Edit an idea
+     * NEEDS JSON
      */
     public function editAction(Request $request, $uid)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('edit', $request->get('token')))
-            return new Response($this->get('translator')->trans('invalid.token', array(), 'errors'), 400);
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('edit', $request->get('token'))) {
+            return new Response(
+                json_encode(
+                    array(
+                        'message' => $this->get('translator')->trans('invalid.token', array(), 'errors'))
+                    ), 
+                400, 
+                array('Content-Type'=>'application/json')
+            );
+        }
 
         $this->preComputeRights(array('mustBeCreator' => false, 'mustParticipate' => true));
+
         $error = null;
         $response = null;
 
@@ -363,8 +373,7 @@ class IdeaController extends Controller
 
             if (!is_null($error)) {
                 $this->get('session')->getFlashBag()->add(
-                    'error',
-                    $error
+                    'error', $error
                 );
             }
 
@@ -387,8 +396,13 @@ class IdeaController extends Controller
     public function deleteAction(Request $request, $uid)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('delete', $request->get('token')))
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('delete', $request->get('token'))) {
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $this->get('translator')->trans('invalid.token', array(), 'errors')
+            );
             return $this->redirect($this->generateUrl('i_show_idea_settings', array('uid' => $uid)));
+        }
 
         $this->preComputeRights(array('mustBeCreator' => true, 'mustParticipate' => false));
 
@@ -423,8 +437,13 @@ class IdeaController extends Controller
     public function archiveOrRecycleAction(Request $request, $uid, $archive)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('archiveOrRecycle', $request->get('token')))
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('archiveOrRecycle', $request->get('token'))) {
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $this->get('translator')->trans('invalid.token', array(), 'errors')
+            );
             return $this->redirect($this->generateUrl('i_show_idea_settings', array('uid' => $uid)));
+        }
 
         $this->preComputeRights(array('mustBeCreator' => false, 'mustParticipate' => false));
 
@@ -465,8 +484,13 @@ class IdeaController extends Controller
     public function resetPictureAction(Request $request, $uid)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('resetPicture', $request->get('token')))
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('resetPicture', $request->get('token'))) {
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $this->get('translator')->trans('invalid.token', array(), 'errors')
+            );
             return $this->redirect($this->generateUrl('i_show_idea_info', array('uid' => $uid)));
+        }
 
         $this->preComputeRights(array('mustBeCreator' => false, 'mustParticipate' => true));
 
@@ -499,8 +523,13 @@ class IdeaController extends Controller
     public function projectizeAction(Request $request, $uid)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('projectize', $request->get('token')))
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('projectize', $request->get('token'))) {
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $this->get('translator')->trans('invalid.token', array(), 'errors')
+            );
             return $this->redirect($this->generateUrl('i_show_idea_settings', array('uid' => $uid)));
+        }
 
         $this->preComputeRights(array('mustBeCreator' => false, 'mustParticipate' => false));
 
@@ -655,8 +684,13 @@ class IdeaController extends Controller
     public function addParticipantAction(Request $request, $uid, $mailOrUsername)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('addParticipant', $request->get('token')))
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('addParticipant', $request->get('token'))) {
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $this->get('translator')->trans('invalid.token', array(), 'errors')
+            );
             return $this->redirect($this->generateUrl('i_show_idea_info', array('uid' => $uid)));
+        }
 
         $this->preComputeRights(array('mustBeCreator' => true, 'mustParticipate' => false));
 
@@ -709,8 +743,13 @@ class IdeaController extends Controller
     public function removeParticipantAction(Request $request, $uid, $username)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('removeParticipant', $request->get('token')))
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('removeParticipant', $request->get('token'))) {
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $this->get('translator')->trans('invalid.token', array(), 'errors')
+            );
             return $this->redirect($this->generateUrl('i_show_idea_info', array('uid' => $uid)));
+        }
 
         $this->preComputeRights(array('mustBeCreator' => true, 'mustParticipate' => false));
 
@@ -757,8 +796,13 @@ class IdeaController extends Controller
     public function watchAction(Request $request, $uid)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('watch', $request->get('token')))
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('watch', $request->get('token'))) {
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $this->get('translator')->trans('invalid.token', array(), 'errors')
+            );
             return $this->redirect($this->generateUrl('i_show_idea', array('uid' => $uid)));
+        }
 
         $authenticatedUser = $this->getUser();
         $community = $authenticatedUser->getCurrentCommunity();
@@ -808,8 +852,13 @@ class IdeaController extends Controller
      */
     public function unwatchAction(Request $request, $uid)
     {
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('unwatch', $request->get('token')))
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('unwatch', $request->get('token'))) {
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $this->get('translator')->trans('invalid.token', array(), 'errors')
+            );
             return $this->redirect($this->generateUrl('i_show_idea', array('uid' => $uid)));
+        }
 
         $authenticatedUser = $this->getUser();
         $community = $authenticatedUser->getCurrentCommunity();

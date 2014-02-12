@@ -1,6 +1,6 @@
 invalid:
   request: "Invalid request."
-  token: "Invalid token."
+  token: "Invalid token. Please reload the page and retry."
   password.match: "Password entries do not match."
 unnecessary.request: "Unnecessary request."
 file.too.large: "The file you are trying to upload is too large."
@@ -16,4 +16,3 @@ unknown:
   list: "Unknow list"
   resource: "Unknow resource"
 "Bad credentials": "Incorrect login or password."
-"User account is disabled.": "Your account is disabled, please recover it before signing in."

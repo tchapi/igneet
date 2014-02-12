@@ -15,10 +15,19 @@ class ProjectController extends BaseController
      */
     public function editAction(Request $request, $uid){
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('edit', $request->get('token')))
-            return new Response($this->get('translator')->trans('invalid.token', array(), 'errors'), 400);
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('edit', $request->get('token'))) {
+            return new Response(
+                json_encode(
+                    array(
+                        'message' => $this->get('translator')->trans('invalid.token', array(), 'errors'))
+                    ), 
+                400, 
+                array('Content-Type'=>'application/json')
+            );
+        }
 
         $this->preComputeRights(array('mustBeOwner' => false, 'mustParticipate' => true));
+
         $error = null;
         $response = null;
 
@@ -165,8 +174,13 @@ class ProjectController extends BaseController
      */
     public function deleteAction(Request $request, $uid){
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('delete', $request->get('token')))
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('delete', $request->get('token'))) {
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $this->get('translator')->trans('invalid.token', array(), 'errors')
+            );
             return $this->redirect($this->generateUrl('p_show_project_settings', array('uid' => $uid)));
+        }
 
         $this->preComputeRights(array('mustBeOwner' => true, 'mustParticipate' => false));
 
@@ -202,8 +216,13 @@ class ProjectController extends BaseController
     public function resetPictureAction(Request $request, $uid)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('resetPicture', $request->get('token')))
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('resetPicture', $request->get('token'))) {
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $this->get('translator')->trans('invalid.token', array(), 'errors')
+            );
             return $this->redirect($this->generateUrl('p_show_project_info', array('uid' => $uid)));
+        }
 
         $this->preComputeRights(array('mustBeOwner' => false, 'mustParticipate' => true));
 
@@ -236,8 +255,13 @@ class ProjectController extends BaseController
      */
     public function makePublicAction(Request $request, $uid)
     {
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('makePublic', $request->get('token')))
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('makePublic', $request->get('token'))) {
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $this->get('translator')->trans('invalid.token', array(), 'errors')
+            );
             return $this->redirect($this->generateUrl('p_show_project_settings', array('uid' => $uid)));
+        }
 
         $this->preComputeRights(array('mustBeOwner' => true, 'mustParticipate' => false));
 
@@ -271,8 +295,13 @@ class ProjectController extends BaseController
      */
     public function makePrivateAction(Request $request, $uid)
     {
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('makePrivate', $request->get('token')))
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('makePrivate', $request->get('token'))) {
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $this->get('translator')->trans('invalid.token', array(), 'errors')
+            );
             return $this->redirect($this->generateUrl('p_show_project_settings', array('uid' => $uid)));
+        }
 
         $this->preComputeRights(array('mustBeOwner' => true, 'mustParticipate' => false));
 
@@ -305,8 +334,13 @@ class ProjectController extends BaseController
     public function watchAction(Request $request, $uid)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('watch', $request->get('token')))
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('watch', $request->get('token'))) {
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $this->get('translator')->trans('invalid.token', array(), 'errors')
+            );
             return $this->redirect($this->generateUrl('p_show_project_info', array('uid' => $uid)));
+        }
 
         $menu = $this->container->getParameter('project.menu');
         $this->preComputeRights(array('mustBeOwner' => false, 'mustParticipate' => $menu['info']['private']));
@@ -355,8 +389,13 @@ class ProjectController extends BaseController
      */
     public function unwatchAction(Request $request, $uid)
     {
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('unwatch', $request->get('token')))
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('unwatch', $request->get('token'))) {
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $this->get('translator')->trans('invalid.token', array(), 'errors')
+            );
             return $this->redirect($this->generateUrl('p_show_project_info', array('uid' => $uid)));
+        }
 
         $menu = $this->container->getParameter('project.menu');
         $this->preComputeRights(array('mustBeOwner' => false, 'mustParticipate' => $menu['info']['private']));

@@ -1,6 +1,6 @@
 invalid:
   request: "Requête non valide."
-  token: "Token non valide."
+  token: "Token non valide. Veuillez recharger la page et réessayer."
   password.match: "Les deux mots de passe ne sont pas identiques."
 unnecessary.request: "Requête inutile."
 file.too.large: "Le fichier que vous essayez d'uploader est trop gros."
@@ -16,4 +16,3 @@ unknown:
   list: "Liste inconnue"
   resource: "Ressource inconnue"
 "Bad credentials": "Nom d'utilisateur ou mot de passe incorrect"
-"User account is disabled.": "Votre compte a été désactivé, veuillez le réactiver avant de vous réidentifier."
