@@ -70,6 +70,7 @@ user:
     help: "You need to indicate a specific user to continue with your request."
     field: "From the community"
     alternate: "Or by e-mail or username"
+    guestWarning: "In this case, the use will only be a guest in the community, and will not be included in other activities of the community."
     button: "Choose this user"
   ideas:
     participated: "Ideas participated in"
