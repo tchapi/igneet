@@ -365,3 +365,8 @@ body > .content-container aside {
     }
   }
 }
+
+ul.content.thumbs {
+  @include thumbs(2.333333, 7, 'light');
+  font-size: 0.8em;
+}

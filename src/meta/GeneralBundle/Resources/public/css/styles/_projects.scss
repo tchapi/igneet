@@ -369,3 +369,87 @@ section > .jump {
     @include fill-parent();
   }
 }
+
+.label-progress {
+ 
+  height: 3px;
+  background: $_sensible;
+  margin-bottom: 10px;
+
+  & > span {
+    display: block;
+    height: 100%;
+    @include linear-gradient(to right, yellow, $_green);
+    background-attachment: fixed;
+  }
+
+}
+
+.slip {
+  list-style: none outside none;
+  margin: 0;
+  padding: 0;
+  & > li {
+    @include row();
+    background: $_sensible;
+    font-family: 'gotham_light';
+    margin-bottom: 4px;
+    border-right: 2px solid $_discrete;
+    &.done {
+      color: $_discrete;
+      background: lighten($_sensible, 2%);
+      border-right: 2px solid $_green;
+      & > .item > span:not(.date) {
+        text-decoration: line-through;
+      }
+    }
+    &.new {
+      height: 40px;
+      padding: 10px;
+      color: $_primary;
+      & > input {
+        border: none;
+        color: $_primary;
+        background: none;
+        @include placeholder { 
+          color: $_primary;
+        }
+        &:focus {
+          background: lighten($_primary, 50%);
+        }
+      }
+    }
+    & > .item {
+      @include span-columns (10 of 12);
+      padding: 10px;
+      & > .date {
+        text-transform: uppercase;
+        color: $_text-secondary;
+        display: block;
+        margin-top: 5px;
+        font-size: 0.7em;
+        font-family: 'gotham_medium';
+        vertical-align: baseline;
+      }
+    }
+    & > .actions {
+      @include span-columns(1 of 12);
+      padding: 20px 10px;
+      text-align: center;
+    }
+    & > .instant {
+      @include span-columns(1 of 12);
+      padding: 20px 10px;
+      @include omega;
+      cursor: pointer;
+      text-align: center;
+    }
+  }
+}
+
+.slip-reordering {
+    box-shadow: 0 2px 10px rgba(0,0,0,0.45);
+}
+.slip-swiping-container {
+    overflow-x: hidden;
+}
