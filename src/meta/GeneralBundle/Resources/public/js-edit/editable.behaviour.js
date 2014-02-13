@@ -256,13 +256,15 @@ $(document).ready(function() {
         .on("keyup", function(e) {
             if (e.which === 13) {
                 e.preventDefault();
+            } else if (e.keyCode === 27) {
+                displayInput($(this), false);
             } else {
                 // For skills, search in the list the correct skill ...
                 target = $(this);
                 name = target.parents('ul').attr("data-name");
                 search = target.val().toLowerCase();
                 results = $.grep(editableListsData[name], function(n) {
-                    return (n.text.toLowerCase().indexOf(search) >= 0 && target.parents('ul').find('li[rel=' + n.value + ']').length == 0);
+                    return (n.text.toLowerCase().indexOf(search) >= 0 && target.parents('ul').children('li[rel=' + n.value + ']').length == 0);
                 })
                 displayResults(results, target.parent().parent());
             }
@@ -270,9 +272,9 @@ $(document).ready(function() {
 
     $("ul[contenteditable=list][data-name=tags] > li > span > input")
         .on("keyup", function(e) {
+            target = $(this).closest('ul');
             if (e.which === 13) { // Trigger a save with the Return key for tags
                 e.preventDefault();
-                target = $(this).closest('ul');
                 name = target.attr("data-name");
                 key = $(this).val();
                 url = target.attr("data-url");
@@ -284,8 +286,10 @@ $(document).ready(function() {
                     value: value
                 }, function(data) {
                     target.children().last().before(data.tag);
-                    displayInput(target.find('li > span > a'), false);
+                    target.find('li > span > input').val("").focus(); // to allow multiple tags entry
                 });
+            } else if (e.keyCode === 27) {
+                displayInput(target.find('li > span > a'), false);
             }
         });
 
