@@ -25,16 +25,25 @@ class SettingsController extends Controller
     }
 
     /*
-     * Edit a user (via X-editable)
+     * Edit the settings
+     * NEEDS JSON
      */
     public function editSettingsAction(Request $request)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('editSettings', $request->get('token')))
-            return new Response($this->get('translator')->trans('invalid.token', array(), 'errors'), 400);
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('editSettings', $request->get('token'))) {
+            return new Response(
+                json_encode(
+                    array(
+                        'message' => $this->get('translator')->trans('invalid.token', array(), 'errors'))
+                    ), 
+                400, 
+                array('Content-Type'=>'application/json')
+            );
+        }
 
         $authenticatedUser = $this->getUser();
-        $error = null;
+
         $response = null;
 
         if ($authenticatedUser) {
@@ -47,8 +56,6 @@ class SettingsController extends Controller
                     if (trim($email) != "") {
                         $authenticatedUser->setEmail($email);
                         $objectHasBeenModified = true;
-                    } else {
-                        $error = $this->get('translator')->trans('invalid.request', array(), 'errors');
                     }
                     break;
                 case 'digestToggle':
@@ -91,40 +98,24 @@ class SettingsController extends Controller
             if ($objectHasBeenModified === true && count($errors) == 0){
 
                 // No need to log anything
-
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
 
+                return new Response(json_encode($response), 200, array('Content-Type'=>'application/json'));
+
             } elseif (count($errors) > 0) {
 
-                $error = $this->get('translator')->trans($errors[0]->getMessage());
+                    $response = array('message' => $this->get('translator')->trans($errors[0]->getMessage()));
+
+            } else {
+                
+                $response = array('message' => $this->get('translator')->trans('unnecessary.request', array(), 'errors'));
+
             }
-
-        } else {
-
-            $error = $this->get('translator')->trans('invalid.request', array(), 'errors');
 
         }
         
-        // Wraps up and either return a response or redirect
-        if (isset($needsRedirect) && $needsRedirect) {
-
-            if (!is_null($error)) {
-                $this->get('session')->getFlashBag()->add(
-                    'error', $error
-                );
-            }
-
-            return $this->redirect($this->generateUrl('u_show_user_settings'));
-
-        } else {
-            
-            if (!is_null($error)) {
-                return new Response($error, 406);
-            }
-
-            return new Response($response);
-        }
+        return new Response(json_encode(array('message' =>  $this->get('translator')->trans('invalid.request', array(), 'errors'))), 406, array('Content-Type'=>'application/json'));
 
     }
 
