@@ -173,12 +173,21 @@ class UserController extends Controller
 
     /*
      * Mark all notifications as read
+     * NEEDS JSON
      */
     public function markNotificationsReadAction(Request $request)
     {
         
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('markRead', $request->get('token')))
-            return new Response($this->get('translator')->trans('invalid.token', array(), 'errors'), 400);
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('markRead', $request->get('token'))) {
+            return new Response(
+                json_encode(
+                    array(
+                        'message' => $this->get('translator')->trans('invalid.token', array(), 'errors'))
+                    ), 
+                400, 
+                array('Content-Type'=>'application/json')
+            );
+        }
 
         $authenticatedUser = $this->getUser();
         $authenticatedUser->setLastNotifiedAt(new \DateTime('now'));
@@ -190,15 +199,25 @@ class UserController extends Controller
     }
 
     /*
-     * Edit a user (via X-editable)
+     * Edit a user
+     * NEEDS JSON
      */
     public function editAction(Request $request, $username)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('edit', $request->get('token')))
-            return new Response($this->get('translator')->trans('invalid.token', array(), 'errors'), 400);
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('edit', $request->get('token'))) {
+            return new Response(
+                json_encode(
+                    array(
+                        'message' => $this->get('translator')->trans('invalid.token', array(), 'errors'))
+                    ), 
+                400, 
+                array('Content-Type'=>'application/json')
+            );
+        }
 
         $authenticatedUser = $this->getUser();
+
         $error = null;
         $response = null;
 
@@ -308,10 +327,10 @@ class UserController extends Controller
         } else {
             
             if (!is_null($error)) {
-                return new Response($error, 406);
+                return new Response(json_encode(array('message' => $error)), 406, array('Content-Type'=>'application/json'));
             }
 
-            return new Response(json_encode($response), 200, array('Content-Type'=>'application/json') );
+            return new Response(json_encode($response), 200, array('Content-Type'=>'application/json'));
         }
 
     }
@@ -322,8 +341,13 @@ class UserController extends Controller
     public function resetAvatarAction(Request $request, $username)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('resetAvatar', $request->get('token')))
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('resetAvatar', $request->get('token'))) {
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $this->get('translator')->trans('invalid.token', array(), 'errors')
+            );
             return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $this->getUser()->getUsername())));
+        }
 
         $authenticatedUser = $this->getUser();
 
@@ -358,8 +382,13 @@ class UserController extends Controller
     public function deleteAction(Request $request, $username)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('delete', $request->get('token')))
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('delete', $request->get('token'))) {
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $this->get('translator')->trans('invalid.token', array(), 'errors')
+            );
             return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $this->getUser()->getUsername())));
+        }
 
         $authenticatedUser = $this->getUser();
 
@@ -442,8 +471,13 @@ class UserController extends Controller
      */
     public function followUserAction(Request $request, $username)
     {
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('followUser', $request->get('token')))
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('followUser', $request->get('token'))) {
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $this->get('translator')->trans('invalid.token', array(), 'errors')
+            );
             return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $username)));
+        }
 
         $authenticatedUser = $this->getUser();
 
@@ -504,8 +538,13 @@ class UserController extends Controller
     public function unfollowUserAction(Request $request, $username)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('unfollowUser', $request->get('token')))
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('unfollowUser', $request->get('token'))) {
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $this->get('translator')->trans('invalid.token', array(), 'errors')
+            );
             return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $username)));
+        }
 
         $authenticatedUser = $this->getUser();
 
