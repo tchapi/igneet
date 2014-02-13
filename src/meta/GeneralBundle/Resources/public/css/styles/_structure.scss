@@ -208,6 +208,7 @@ body > .content-container header {
             position: absolute;
             top: 21px;
             left: 15px;
+            z-index: 1000;
             & > li { 
               display: block; 
               cursor: pointer;
