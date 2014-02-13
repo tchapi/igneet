@@ -80,13 +80,18 @@ $(document).ready(function() {
     // toggle item
     $(document).on('click', "ul.slip > li > .actions > a", function() {
         var li = $(this).closest('li'),
+            id = $(this).parents('ul').attr('data-id'),
             url = $(this).attr("data-url");
         $.post(url, function(data) {
             li.replaceWith(data.item);
             // Calculate progression, when needed
-            if ($('.label-progress > span').length > 0) {
-                var val = $("ul.slip > li.done").length / ($("ul.slip > li").length - 1) * 100;
-                $('.label-progress > span').width(val + "%");
+            var val = $("ul.slip > li.done").length / ($("ul.slip > li").length - 1) * 100;
+            if ($('.label-progress[data-list="' + id + '"]').length > 0) { // if there is a progress bar
+                $('.label-progress[data-list="' + id + '"] > span').width(val + "%");
+            }
+            // If there is a sum up number
+            if ($('.hint-progress[data-list="' + id + '"]').length > 0) { // if there is a progress bar
+                $('.hint-progress[data-list="' + id + '"]').text(val.toFixed(0) + "%");
             }
         });
     });
