@@ -52,8 +52,9 @@ $(document).ready(function() {
     // Toggle index (pages) view
     $(".tree > .toggle").click(function(e) {
         $(this).parent().toggleClass("open");
+        var flavour = $(this).parent().attr('data-trees');
         e.preventDefault();
-        document.cookie = "igneet_trees_open=" + ($(this).parent().hasClass('open') ? "true" : "false") + "; path=/; expires=Wed, 1 Jan 2020 00:42:42 UTC;";
+        document.cookie = "igneet_trees_open[" + flavour + "]=" + ($(this).parent().hasClass('open') ? "true" : "false") + "; path=/; expires=Wed, 1 Jan 2020 00:42:42 UTC;";
     });
 
     // Add new item in the list
