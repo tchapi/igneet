@@ -63,9 +63,12 @@ $(document).ready(function() {
                 e.preventDefault();
                 var parent = $(this).closest('ul'),
                     id = parent.attr('data-id'),
-                    text = $(this).val(),
                     url = $(this).parent().attr("data-url"),
-                    self = $(this);
+                    self = $(this),
+                    dummy = $('<span>' + $(this).val() + '</span>');
+                dummy.linkify();
+                text = dummy.html();
+                dummy.remove();
                 $.post(url, {
                     text: text
                 }, function(data) {
