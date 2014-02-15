@@ -10,10 +10,11 @@
   {% if canEdit %}
   <div class="actions">
     {% if item.done %}
-    <a data-url="{{ path('p_show_project_listitem_undo', {'uid': project.id|to_uid, 'list_uid': list.id|to_uid, 'item_uid': item.id|to_uid, 'token': csrf_token('toggleListItem') }) }}" title="{{ "project.lists.items.recycleHelp"|trans }}"><i class="fa fa-repeat"></i></a>
+    <a class="toggle" data-url="{{ path('p_show_project_listitem_undo', {'uid': project.id|to_uid, 'list_uid': list.id|to_uid, 'item_uid': item.id|to_uid, 'token': csrf_token('toggleListItem') }) }}" title="{{ "project.lists.items.recycleHelp"|trans }}"><i class="fa fa-repeat"></i></a>
     {% else %}
-    <a data-url="{{ path('p_show_project_listitem_do', {'uid': project.id|to_uid, 'list_uid': list.id|to_uid, 'item_uid': item.id|to_uid, 'token': csrf_token('toggleListItem') }) }}" title="{{ "project.lists.items.finishHelp"|trans }}"><i class="fa fa-check"></i></a>
+    <a class="toggle" data-url="{{ path('p_show_project_listitem_do', {'uid': project.id|to_uid, 'list_uid': list.id|to_uid, 'item_uid': item.id|to_uid, 'token': csrf_token('toggleListItem') }) }}" title="{{ "project.lists.items.finishHelp"|trans }}"><i class="fa fa-check"></i></a>
     {% endif %}
+    <a class="delete" data-url="{{ path('p_show_project_listitem_delete', {'uid': project.id|to_uid, 'list_uid': list.id|to_uid, 'item_uid': item.id|to_uid, 'token': csrf_token('deleteListItem') }) }}" ><i class="fa fa-trash-o"></i></a>
   </div>
   {% endif %}
   <span class="instant"><i class="fa fa-bars"></i></span>
