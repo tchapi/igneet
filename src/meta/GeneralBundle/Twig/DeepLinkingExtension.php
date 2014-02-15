@@ -21,7 +21,7 @@ class DeepLinkingExtension extends \Twig_Extension
         $this->log_routing = $log_routing;
 
         $this->template = '<a title="' . $translator->trans('goto.related.object') . '" href="%s">%s</a>';
-        $this->templateUnknown = '<strong>%s</strong>';
+        $this->templateUnknown = '[%s]';
 
     }
 
