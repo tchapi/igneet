@@ -434,8 +434,11 @@ section > .jump {
     }
     & > .actions {
       @include span-columns(1 of 12);
-      padding: 20px 10px;
-      text-align: center;
+      padding: 20px 0px;
+      text-align: right;
+      & > a.delete {
+        margin-left: 10px;
+      }
     }
     & > .instant {
       @include span-columns(1 of 12);

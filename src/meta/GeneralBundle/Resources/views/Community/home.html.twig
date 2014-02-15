@@ -62,7 +62,7 @@
   <div class="aside">
     {% if isManager %}
     <div>
-      <a class="button button-info" href="{{ path('g_invite') }}"><i class="fa fa-user"></i> {{ "community.invite.short"|trans }}</a>
+      <a class="button button-info" href="{{ path('g_invite', {'token': csrf_token('invite')}) }}"><i class="fa fa-user"></i> {{ "community.invite.short"|trans }}</a>
       <a class="button" href="{{ path('g_manage_community') }}"><i class="fa fa-cogs"></i> {{ "community.manage.short"|trans }}</a>
     </div>
     {% endif %}

@@ -30,7 +30,7 @@
   <section>
 
       {# Tree of lists #}
-      <div class="tree menu dd{% if app.request.cookies.get('igneet_trees_open').lists == 'true' %} open{% endif %}" data-trees="lists">
+      <div class="tree menu dd{% if app.request.cookies.get('igneet_trees_open').lists is defined and app.request.cookies.get('igneet_trees_open').lists == 'true' %} open{% endif %}" data-trees="lists">
           <span>{{ "project.lists.title"|trans }}</span>
           <a href="#" class="toggle" title="{{ "project.lists.open"|trans }}"><i class="fa fa-angle-double-left"></i></a>
           {% if base.canEdit %}
