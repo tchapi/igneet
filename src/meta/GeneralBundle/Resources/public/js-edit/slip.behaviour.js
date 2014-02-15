@@ -41,7 +41,6 @@ $(document).ready(function() {
                     e.target.parentNode.insertBefore(e.target, undo);
                     alertify.error(Translator.trans('alert.error.saving.changes'));
                 });
-            
 
         }
 
@@ -53,10 +52,8 @@ $(document).ready(function() {
         }
     }, false);
 
-    list.addEventListener('slip:afterswipe', function(e) {
-        // e.target list item swiped
-        e.target.parentNode.removeChild(e.target);
-        $.post($(e.target).attr('data-delete'));
+    list.addEventListener('slip:beforeswipe', function(e) {
+        e.preventDefault();
     });
 
     // new item
@@ -65,6 +62,7 @@ $(document).ready(function() {
             if (e.which === 13 && $(this).val() !== "") { // Trigger a save with the Return key for new item
                 e.preventDefault();
                 var parent = $(this).closest('ul'),
+                    id = parent.attr('data-id'),
                     text = $(this).val(),
                     url = $(this).parent().attr("data-url"),
                     self = $(this);
@@ -73,26 +71,46 @@ $(document).ready(function() {
                 }, function(data) {
                     parent.children().last().before(data.item);
                     self.val('');
+                    updateProgress(id);
                 });
             }
         });
 
+    // Calculate progress
+    var updateProgress = function(id) {
+        var val = $("ul.slip > li.done").length / ($("ul.slip > li").length - 1) * 100;
+        if ($('.label-progress[data-list="' + id + '"]').length > 0) { // if there is a progress bar
+            $('.label-progress[data-list="' + id + '"] > span').width(val + "%");
+        }
+        // If there is a sum up number
+        if ($('.hint-progress[data-list="' + id + '"]').length > 0) { // if there is a progress bar
+            $('.hint-progress[data-list="' + id + '"]').text(val.toFixed(0) + "%");
+        }
+    };
+
+    // delete item
+    $(document).on('click', "ul.slip > li > .actions > a.delete", function(e) {
+        var li = $(this).closest('li'),
+            id = $(this).parents('ul').attr('data-id'),
+            url = $(this).attr("data-url");
+        $.post(url, function(data) {
+            li.animate({
+                height: "toggle"
+            }, 300, function() {
+                $(this).remove();
+                updateProgress(id);
+            });
+        });
+    });
+
     // toggle item
-    $(document).on('click', "ul.slip > li > .actions > a", function() {
+    $(document).on('click', "ul.slip > li > .actions > a.toggle", function() {
         var li = $(this).closest('li'),
             id = $(this).parents('ul').attr('data-id'),
             url = $(this).attr("data-url");
         $.post(url, function(data) {
             li.replaceWith(data.item);
-            // Calculate progression, when needed
-            var val = $("ul.slip > li.done").length / ($("ul.slip > li").length - 1) * 100;
-            if ($('.label-progress[data-list="' + id + '"]').length > 0) { // if there is a progress bar
-                $('.label-progress[data-list="' + id + '"] > span').width(val + "%");
-            }
-            // If there is a sum up number
-            if ($('.hint-progress[data-list="' + id + '"]').length > 0) { // if there is a progress bar
-                $('.hint-progress[data-list="' + id + '"]').text(val.toFixed(0) + "%");
-            }
+            updateProgress(id);
         });
     });
 

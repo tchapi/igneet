@@ -171,6 +171,7 @@ class CommunityController extends Controller
             );
         }
 
+        $error = null;
         $response = null;
 
         $authenticatedUser = $this->getUser();

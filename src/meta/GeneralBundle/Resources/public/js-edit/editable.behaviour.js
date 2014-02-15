@@ -52,24 +52,52 @@ $(document).ready(function() {
 
     };
 
-    var createInterval = function(f, parameters, interval) {
+    var createInterval = function(f, parameters, callback, interval) {
         return setInterval(function() {
-            f(parameters);
+            f(parameters, callback);
         }, interval);
     },
 
-        catchChange = function(dataArray) {
+        catchChange = function(dataArray, callback) {
             if (dataArray.last !== dataArray.value)  {
                 clearInterval(timers[dataArray.name]);
-                timers[dataArray.name] = createInterval(saveData, dataArray, saveDelay);
+                timers[dataArray.name] = createInterval(saveData, dataArray, callback, saveDelay);
             }
         };
 
-    $(document).on('keypress', '[contenteditable=true][rich=false]', function(e) {
+    $(document).on('keypress', '[contenteditable=true][rich=false], [contenteditable=true][rich=links]', function(e) {
         if (e.which === 13) { // Prevents the Return to be inserted
             e.preventDefault();
+        } else if (e.keyCode === 27) {
+            $(this).blur();
+            $('.link_choice').remove();
         }
     });
+
+    // Links in list items and wiki pages
+    $(document).on('click', "ul.slip [contenteditable=true], .redactor_editor[contenteditable=true]", function(e) {
+
+        if ($(e.target).closest('a').length) {
+            var offsets = $(e.target).offset();
+            var div = $('<a href="' + e.target.href + '" target="_blank" class="link_choice"><i class="fa fa-external-link"></i> Go to Link</a>').css({
+                "position": "absolute",
+                "left": offsets.left,
+                "top": offsets.top + e.target.offsetHeight + 4
+            });
+            $('.link_choice').remove();
+            $(document.body).append(div);
+        }
+
+    });
+    $(document).on('click', function(e) {
+        if (e.target.className !== "link_choice" && $(e.target).closest('a').length === 0) {
+            $('.link_choice').remove();
+        }
+    });
+    $(document).on('keyup', "ul.slip [contenteditable=true]", function(e) {
+        $('.link_choice').remove();
+    });
+
     $(document).on('keyup', '[contenteditable=true][rich=false]', function(e) {
         name = $(this).attr("data-name");
         key = $(this).attr("data-key");
@@ -97,13 +125,49 @@ $(document).ready(function() {
             });
         }
     });
-    $(document).on('paste', '[contenteditable=true][rich=false]', function(e) { // Prevents insertion of markup
+    $(document).on('paste', '[contenteditable=true][rich=false], [contenteditable=true][rich=links]', function(e) { // Prevents insertion of markup
         if (document.queryCommandEnabled('inserttext')) {
             e.preventDefault();
             var pastedText = prompt(Translator.trans('paste.something'));
             if (pastedText !== null) {
                 document.execCommand('inserttext', false, $.trim(pastedText));
             }
+        }
+    });
+
+    $(document).on('keyup', '[contenteditable=true][rich=links]', function(e) {
+        name = $(this).attr("data-name");
+        key = $(this).attr("data-key");
+        url = $(this).attr("data-url");
+        last = $(this).attr("data-last");
+        value = $.trim($(this).html());
+        if (e.which === 13) { // Trigger a save with the Return key
+            e.preventDefault();
+            clearInterval(timers[name]);
+            if (last !== value)  {
+                saveData({
+                    url: url,
+                    name: name,
+                    key: key,
+                    value: value
+                }, function(data) {
+                    if (data !== null && data.text != e.target.innerHTML) {
+                        e.target.innerHTML = data.text;
+                    }
+                });
+            }
+        } else {
+            catchChange({
+                url: url,
+                name: name,
+                key: key,
+                last: last,
+                value: value
+            }, function(data) {
+                if (data !== null && data.text != e.target.innerHTML) {
+                    e.target.innerHTML = data.text;
+                }
+            });
         }
     });
 
