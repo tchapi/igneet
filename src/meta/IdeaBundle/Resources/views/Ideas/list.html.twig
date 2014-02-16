@@ -68,60 +68,7 @@
       </tr>
     </thead>
     <tbody>
-      {# TEMPLATE FOR INFINITE SCROLLING #}
-      <tr class="template" style="display: none !important;">
-        <td>
-          <a data-href="%url%">
-            <img data-src="%picture%" width="80px" height="80px"/>
-          </a>
-        </td>
-        <td class="main">
-          <a data-href="%url%">
-            <div>
-              <span>%name%</span>
-              <span class="headline">%headline%</span>
-            </div>
-          </a>
-        </td>
-        <td>
-           %createdAt%
-        </td>
-        <td>
-          %updatedAt%
-        </td>
-        <td>
-          <div>%creators%</div>
-          <div>%participants%</div>
-        </td>
-      </tr>
-      {# END OF TEMPLATE #}
-    {% for idea in ideas %}
-      <tr>
-        <td>
-          <a href="{{ path('i_show_idea', {'uid': idea.id|to_uid }) }}">
-            <img src="{{ asset(idea.getPicture()) }}" width="80px" height="80px"/>
-          </a>
-        </td>
-        <td class="main">
-          <a href="{{ path('i_show_idea', {'uid': idea.id|to_uid }) }}">
-            <div>
-              <span>{{ idea.name }}</span>
-              <span class="headline">{{ idea.headline }}</span>
-            </div>
-          </a>
-        </td>
-        <td>
-           {{ idea.createdAt|date("date.fullFormat"|trans) }}
-        </td>
-        <td>
-          {{ idea.updatedAt|date("date.fullFormat"|trans) }}
-        </td>
-        <td>
-          <div>{{ "idea.creators"|transchoice(idea.countCreators, {"%count%": idea.countCreators }) }}</div>
-          <div>{{ "idea.participants"|transchoice(idea.countParticipants, {"%count%": idea.countParticipants }) }}</div>
-        </td>
-      </tr>
-    {% endfor %}
+      {% include 'metaIdeaBundle:Ideas:list.ideas.html.twig' with {'ideas': ideas} %}
     </tbody>
   </table>
 

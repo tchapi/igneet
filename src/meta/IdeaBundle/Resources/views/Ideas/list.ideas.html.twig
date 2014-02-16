@@ -1,0 +1,27 @@
+{% for idea in ideas %}
+  <tr>
+    <td>
+      <a href="{{ path('i_show_idea', {'uid': idea.id|to_uid }) }}">
+        <img src="{{ asset(idea.getPicture()) }}" width="80px" height="80px"/>
+      </a>
+    </td>
+    <td class="main">
+      <a href="{{ path('i_show_idea', {'uid': idea.id|to_uid }) }}">
+        <div>
+          <span>{{ idea.name }}</span>
+          <span class="headline">{{ idea.headline }}</span>
+        </div>
+      </a>
+    </td>
+    <td>
+       {{ idea.createdAt|date("date.fullFormat"|trans) }}
+    </td>
+    <td>
+      {{ idea.updatedAt|date("date.fullFormat"|trans) }}
+    </td>
+    <td>
+      <div>{{ "idea.creators"|transchoice(idea.countCreators, {"%count%": idea.countCreators }) }}</div>
+      <div>{{ "idea.participants"|transchoice(idea.countParticipants, {"%count%": idea.countParticipants }) }}</div>
+    </td>
+  </tr>
+{% endfor %}

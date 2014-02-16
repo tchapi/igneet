@@ -48,22 +48,9 @@ class UsersController extends Controller
         }
 
         if ($request->isXmlHttpRequest()){
-        
-            $usersAsArray = array();
-            foreach($usersAndIsGuest as $userAndIsGuest){
-                $user = $userAndIsGuest['user'];
-                $usersAsArray[] = array(
-                    'url' => $this->generateUrl('u_show_user_profile', array('username' => $user->getUsername())), 
-                    'picture' => $user->getAvatar(), 
-                    'name' => $user->getFullName(), 
-                    'isGuest' => ($userAndIsGuest['isGuest']?"true":"false"), 
-                    'headline' => $user->getHeadline(), 
-                    'createdAt' => $user->getCreatedAt()->format($this->get('translator')->trans("date.fullFormat")), 
-                    'updatedAt' => $user->getUpdatedAt()->format($this->get('translator')->trans("date.fullFormat")),
-                    'updatedAt' => $user->getLastSeenAt()->format($this->get('translator')->trans("date.fullFormat"))
-                    );
-            }
-            return new Response(json_encode($usersAsArray), 200, array('Content-Type'=>'application/json'));
+
+            $response = array('objects' => $this->renderView('metaUserBundle:Users:list.users.html.twig', array('users' => $usersAndIsGuest)));
+            return new Response(json_encode($response), 200, array('Content-Type'=>'application/json'));
         
         } else {
         

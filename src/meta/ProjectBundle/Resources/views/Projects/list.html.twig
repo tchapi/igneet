@@ -73,61 +73,7 @@
       </tr>
     </thead>
     <tbody>
-      {# TEMPLATE FOR INFINITE SCROLLING #}
-      <tr class="template" style="display: none !important;">
-        <td>
-          <a data-href="%url%">
-            <img data-src="%picture%" width="80px" height="80px"/>
-          </a>
-        </td>
-        <td class="main">
-          <a data-href="%url%">
-            <div>
-              <span data-private="%isPrivate%"><i class="fa fa-lock"></i> %name%</span>
-              <span class="headline">%headline%</span>
-            </div>
-          </a>
-        </td>
-        <td>
-           %createdAt%
-        </td>
-        <td>
-          %updatedAt%
-        </td>
-        <td>
-          <div>%creators%</div>
-          <div>%participants%</div>
-        </td>
-      </tr>
-      {# END OF TEMPLATE #}
-      {% for project in projects %}
-        <tr>
-          <td>
-            <a href="{{ path('p_show_project', {'uid': project.id|to_uid }) }}">
-              <img src="{{ asset(project.getPicture()) }}" width="80px" height="80px"/>
-            </a>
-          </td>
-          <td class="main">
-            <a href="{{ path('p_show_project', {'uid': project.id|to_uid }) }}">
-              <div>
-                <span private="{{ (project.isPrivate and app.user.currentCommunity is not null)?"true":"false" }}"><i class="fa fa-lock"></i>  {{ project.name }}</span>
-                <span class="headline">{{ project.headline }}</span>
-              </div>
-            </a>
-          </td>
-          <td>
-             {{ project.createdAt|date("date.fullFormat"|trans) }}
-          </td>
-          <td>
-            {{ project.updatedAt|date("date.fullFormat"|trans) }}
-          </td>
-          <td>
-            <div>{{ "project.owners"|transchoice(project.countOwners, {"%count%": project.countOwners }) }}</div>
-            <div>{{ "project.participants"|transchoice(project.countParticipants, {"%count%": project.countParticipants }) }}</div>
-          </td>
-        </tr>
-
-      {% endfor %}
+      {% include 'metaProjectBundle:Projects:list.projects.html.twig' with {'projects': projects} %}
     </tbody>
   </table>
 

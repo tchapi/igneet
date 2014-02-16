@@ -1,0 +1,27 @@
+{% for userAndIsGuest in users %}
+  {% set user = userAndIsGuest['user'] %}
+  <tr>
+    <td>
+      <a href="{{ path('u_show_user_profile', {'username': user.username}) }}">
+        <img src="{{ asset(user.getAvatar()) }}" width="80px" height="80px"/>
+      </a>
+    </td>
+    <td class="main">
+      <a href="{{ path('u_show_user_profile', {'username': user.username}) }}">
+        <div>
+          <span private="{{ userAndIsGuest['isGuest']?"true":"false" }}"><i class="fa fa-eye-slash"></i>  {{ user.getFullName() }}</span>
+          <span class="headline">{{ user.headline }}</span>
+        </div>
+      </a>
+    </td>
+    <td>
+       {{ user.createdAt|date("date.fullFormat"|trans) }}
+    </td>
+    <td>
+      {{ user.lastSeenAt|date("date.fullFormat"|trans) }}
+    </td>
+    <td>
+      {{ user.updatedAt|date("date.fullFormat"|trans) }}
+    </td>
+  </tr>
+{% endfor %}

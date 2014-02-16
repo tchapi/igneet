@@ -42,60 +42,7 @@
       </tr>
     </thead>
     <tbody>
-      {# TEMPLATE FOR INFINITE SCROLLING #}
-      <tr class="template" style="display: none !important;">
-        <td>
-          <a data-href="%url%">
-            <img data-src="%picture%" width="80px" height="80px"/>
-          </a>
-        </td>
-        <td class="main">
-          <a data-href="%url%">
-            <div>
-              <span data-private="%isGuest%"><i class="fa fa-eye-slash"></i> %name%</span>
-              <span class="headline">%headline%</span>
-            </div>
-          </a>
-        </td>
-        <td>
-           %createdAt%
-        </td>
-        <td>
-          %lastSeenAt%
-        </td>
-        <td>
-          %updatedAt%
-        </td>
-      </tr>
-      {# END OF TEMPLATE #}
-      {% for userAndIsGuest in users %}
-        {% set user = userAndIsGuest['user'] %}
-        <tr>
-          <td>
-            <a href="{{ path('u_show_user_profile', {'username': user.username}) }}">
-              <img src="{{ asset(user.getAvatar()) }}" width="80px" height="80px"/>
-            </a>
-          </td>
-          <td class="main">
-            <a href="{{ path('u_show_user_profile', {'username': user.username}) }}">
-              <div>
-                <span private="{{ userAndIsGuest['isGuest']?"true":"false" }}"><i class="fa fa-eye-slash"></i>  {{ user.getFullName() }}</span>
-                <!-- {% if userAndIsGuest['isGuest'] %} ({{ "guest"|trans }}){% endif %} -->
-                <span class="headline">{{ user.headline }}</span>
-              </div>
-            </a>
-          </td>
-          <td>
-             {{ user.createdAt|date("date.fullFormat"|trans) }}
-          </td>
-          <td>
-            {{ user.lastSeenAt|date("date.fullFormat"|trans) }}
-          </td>
-          <td>
-            {{ user.updatedAt|date("date.fullFormat"|trans) }}
-          </td>
-        </tr>
-      {% endfor %}
+      {% include 'metaUserBundle:Users:list.users.html.twig' with {'users': users} %}
     </tbody>
   </table>
 
