@@ -3,23 +3,6 @@
 
 NEXT :
 
-Chaque post :
-
-
-  LIST CONTROLLER : OK !
-  RESOURCE '' : OK !
-  WIKI : OK !
-  project : ok
-  info : ok
-
-  USER : ok 
-  IDEA  : ok
-  Community : OK !
-
-  penser au invalid.token avec Json/pas Json selon les cas
-  Response dans les edit, 406 pour erreur, 200 sinon
-  renderView et non render quand on renvoie du twig
-
  ☐ Créer des partials pour le infinite scrolling et s'en servir pour recréer les reponses en AJAX
 
  ☐ Erreurs dans les formulaires de création : elles sont affichées n'importe comment a priori (A vérifier : déjà fixed ?)
@@ -28,11 +11,6 @@ Chaque post :
 
  ☐ Créer ta communauté --> inviter des gens
     raconter les ecrans
-
- ☐ valider l'invitation de personnes dans une communauté par pop-in
-
- ☐ resource : aller vers la page lists des ressources vers le hashtag
-    pop-in autour du lien avec le lien vers la page / la ressource
 
 Admin :
 

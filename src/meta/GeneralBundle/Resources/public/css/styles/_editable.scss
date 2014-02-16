@@ -20,14 +20,17 @@
 
 // "Go to link" divs when we click on links 
 .link_choice {
-  color: white;
   position: absolute;
   padding: 5px;
   z-index: 10;
   background: $_secondary;
   border-radius: 3px;
   @include up-triangle(14px, $_secondary, left);
-  &:hover {
-    color: $_muted;
+  color: white;
+  & > a {
+    color: white;
+    &:hover {
+      color: $_muted;
+    }
   }
 }

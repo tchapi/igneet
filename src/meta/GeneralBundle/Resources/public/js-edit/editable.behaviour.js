@@ -2,6 +2,43 @@
 /*jslint browser: true*/
 $(document).ready(function() {
 
+    // Define: Linkify plugin from stackoverflow
+    (function($) {
+
+        "use strict";
+
+        var protocol = 'http://';
+        var url1 = /(^|&lt;|\s)(www\..+?\..+?)(\s|&gt;|$)/g,
+            url2 = /(^|&lt;|\s)(((https?|ftp):\/\/|mailto:).+?)(\s|&gt;|$)/g,
+
+            linkifyThis = function() {
+                var childNodes = this.childNodes,
+                    i = childNodes.length;
+                while (i--) {
+                    var n = childNodes[i];
+                    if (n.nodeType === 3) {
+                        var html = n.nodeValue;
+                        if (html) {
+                            html = html.replace(/&/g, '&amp;')
+                                .replace(/</g, '&lt;')
+                                .replace(/>/g, '&gt;')
+                                .replace(url1, '$1<a href="' + protocol + '$2">$2</a>$3')
+                                .replace(url2, '$1<a href="$2">$2</a>$5');
+
+                            $(n).after(html).remove();
+                        }
+                    } else if (n.nodeType === 1 && !/^(a|button|textarea)$/i.test(n.tagName)) {
+                        linkifyThis.call(n);
+                    }
+                }
+            };
+
+        $.fn.linkify = function() {
+            this.each(linkifyThis);
+        };
+
+    })(jQuery);
+
     /*
      * Editables
      */
@@ -75,15 +112,33 @@ $(document).ready(function() {
     });
 
     // Links in list items and wiki pages
-    $(document).on('click', "ul.slip [contenteditable=true], .redactor_editor[contenteditable=true]", function(e) {
+    $(document).on('click', "[contenteditable=true][rich=full], [contenteditable=true][rich=true], [contenteditable=true][rich=links]", function(e) {
 
         if ($(e.target).closest('a').length) {
             var offsets = $(e.target).offset();
-            var div = $('<a href="' + e.target.href + '" target="_blank" class="link_choice"><i class="fa fa-external-link"></i> Go to Link</a>').css({
-                "position": "absolute",
-                "left": offsets.left,
-                "top": offsets.top + e.target.offsetHeight + 4
-            });
+            if (e.target.getAttribute('data-provider')) {
+                // Resource link
+                var open = null;
+                if (e.target.getAttribute('data-provider') === "local") {
+                    open = '<a href="' + e.target.href + '/download" target="_blank"><i class="fa fa-download"></i> Download Resource</a>';
+                } else {
+                    open = '<a href="' + e.target.href + '/link" target="_blank"><i class="fa fa-external-link"></i> Open Resource</a>';
+                }
+                var div  = $('<div class="link_choice">' + open + ' | <a href="' + e.target.href + '" target="_blank"><i class="fa fa-pencil"></i> Edit</a></div>').css({
+                    "position": "absolute",
+                    "left": offsets.left,
+                    "top": offsets.top + e.target.offsetHeight + 4
+                });
+            } else {
+                // Standard link
+                var div = $('<div class="link_choice"><a href="' + e.target.href + '" target="_blank"><i class="fa fa-external-link"></i> Go to Link</a></div>').css({
+                    "position": "absolute",
+                    "left": offsets.left,
+                    "top": offsets.top + e.target.offsetHeight + 4
+                });
+            }
+
+            // Remove everything before putting in the new one
             $('.link_choice').remove();
             $(document.body).append(div);
         }
@@ -94,7 +149,7 @@ $(document).ready(function() {
             $('.link_choice').remove();
         }
     });
-    $(document).on('keyup', "ul.slip [contenteditable=true]", function(e) {
+    $(document).on('keyup', "[contenteditable=true][rich=full], [contenteditable=true][rich=true], [contenteditable=true][rich=links]", function(e) {
         $('.link_choice').remove();
     });
 
@@ -140,7 +195,10 @@ $(document).ready(function() {
         key = $(this).attr("data-key");
         url = $(this).attr("data-url");
         last = $(this).attr("data-last");
-        value = $.trim($(this).html());
+        var dummy = $(this).clone();
+        dummy.linkify();
+        value = $.trim(dummy.html());
+        dummy.remove();
         if (e.which === 13) { // Trigger a save with the Return key
             e.preventDefault();
             clearInterval(timers[name]);

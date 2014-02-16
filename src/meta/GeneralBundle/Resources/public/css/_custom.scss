@@ -82,15 +82,22 @@ a.button, input[type=submit].button, button {
 // Admin
 @import "_admin";
 
-.link_choice {
-  color: white;
-  position: absolute;
-  padding: 5px;
-  z-index: 10;
-  background: $_secondary;
-  border-radius: 3px;
-  @include up-triangle(14px, $_secondary, left);
-  &:hover {
-    color: $_muted;
+.content-full.single-user {
+  & > img {
+    @include span-columns(1 of 10);
+    border-radius: 50%;
+    @include shift(2);
+  }
+  & > div {
+    @include span-columns(5 of 10);
+    padding: 5px;
+    & > h4 {
+      margin-top: 0;
+      margin-bottom: 5px;
+    }
+    & > p {
+      margin: 0;
+      color: $_muted;
+    }
   }
 }

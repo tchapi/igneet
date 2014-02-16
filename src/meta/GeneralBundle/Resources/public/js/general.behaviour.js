@@ -1,15 +1,5 @@
 /*global $,Translator,alertify */
 /*jslint browser: true*/
-var linkify = function(text) {
-    var urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
-    return text.replace(urlRegex, function(url) {
-        return '<a href="' + url + '">' + url + '</a>';
-    })
-},
-    unlinkify = function(text) {
-        return text.replace(/(<([^>]+)>)/ig, "");
-    };
-
 $(document).ready(function() {
 
     /*
@@ -112,5 +102,12 @@ $(document).ready(function() {
         });
         e.preventDefault();
     });
+
+    // Scroll to resource
+    if ($(".detailed").length) {
+        $('html,body').animate({
+            scrollTop: $(".detailed").offset().top - 65
+        });
+    }
 
 });

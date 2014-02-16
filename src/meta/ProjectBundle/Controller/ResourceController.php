@@ -70,7 +70,7 @@ class ResourceController extends BaseController
     /*
      * List all the resources of the project
      */
-    public function listResourcesAction(Request $request, $uid, $page)
+    public function listResourcesAction(Request $request, $uid)
     {
         $menu = $this->container->getParameter('project.menu');
         $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => $menu['resources']['private']));
@@ -177,7 +177,7 @@ class ResourceController extends BaseController
         }
 
         return $this->render('metaProjectBundle:Project:showResources.html.twig', 
-            array('base' => $this->base, 'types' => $types, 'providers' => $providers, 'form' => $form->createView()));
+            array('base' => $this->base, 'types' => $types, 'providers' => $providers, 'form' => $form->createView(), 'resource' => null));
     }
 
     /*
@@ -194,6 +194,10 @@ class ResourceController extends BaseController
         $types = $this->container->getParameter('project.resource_types');
         $providers = $this->container->getParameter('project.resource_providers');
 
+        $resource = new Resource();
+        $resource->setTitle($this->get('translator')->trans('project.resources.default.link'));
+        $form = $this->createForm(new ResourceType(), $resource);
+
         $repository = $this->getDoctrine()->getRepository('metaProjectBundle:Resource');
         $resource = $repository->findOneById($this->container->get('uid')->fromUId($resource_uid));
 
@@ -201,10 +205,7 @@ class ResourceController extends BaseController
             throw $this->createNotFoundException($this->get('translator')->trans('project.resources.not.found'));
         }
 
-        $newResource = new Resource();
-        $form = $this->createForm(new ResourceType(), $newResource)->remove('title');
-
-        return $this->render('metaProjectBundle:Resource:showResource.html.twig', 
+        return $this->render('metaProjectBundle:Project:showResources.html.twig', 
             array('base' => $this->base, 'types' => $types, 'providers' => $providers, 'form' => $form->createView(), 'resource' => $resource));
 
     }
@@ -461,6 +462,48 @@ class ResourceController extends BaseController
                   $response->setContent($content);
 
                   return $response;
+              }
+
+            } else {
+
+                $this->get('session')->getFlashBag()->add(
+                    'warning',
+                    $this->get('translator')->trans('project.resources.not.found')
+                );
+
+            }
+            
+        }
+
+        return $this->redirect($this->generateUrl('p_show_project_list_resources', array('uid' => $uid)));
+
+    }
+
+    /*
+     * Redirect to a resource
+     */
+    public function linkResourceAction(Request $request, $uid, $resource_uid)
+    {
+        $menu = $this->container->getParameter('project.menu');
+        $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => $menu['resources']['private']));
+
+        if ($this->base != false) {
+
+            $repository = $this->getDoctrine()->getRepository('metaProjectBundle:Resource');
+            $resource = $repository->findOneById($this->container->get('uid')->fromUId($resource_uid));
+
+            if ($resource){
+
+              if ($resource->getProvider() === "local"){
+
+                $this->get('session')->getFlashBag()->add(
+                    'error',
+                    $this->get('translator')->trans('project.resources.not.linkable')
+                );
+
+              } else {
+
+                  return $this->redirect($resource->getUrl());
               }
 
             } else {

@@ -17,3 +17,27 @@ ul.content {
   right: 40px;
   top: 40px;
 }
+
+/* ******************************************************************** */
+/*                                INVITE                                */
+/* ******************************************************************** */
+
+.content-full.single-user {
+  & > img {
+    @include span-columns(1 of 10);
+    border-radius: 50%;
+    @include shift(2);
+  }
+  & > div {
+    @include span-columns(5 of 10);
+    padding: 5px;
+    & > h4 {
+      margin-top: 0;
+      margin-bottom: 5px;
+    }
+    & > p {
+      margin: 0;
+      color: $_muted;
+    }
+  }
+}
