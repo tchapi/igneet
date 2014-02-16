@@ -1,0 +1,30 @@
+{% extends 'metaGeneralBundle:Community:layout.html.twig' %}
+
+{% block title %}{{ parent() }} > {{ "user.invitation.title"|trans }}{% endblock %}
+
+{% block header %}
+  <div class="title">
+    <h2>{{ "user.invitation.title"|trans }}</h2>
+    <h3>{{ "user.invitation.community"|trans({ '%community%': community.name}) }}</h3>
+    <h4>{{ "user.invitation.confirmation"|trans({ '%community%': community.name}) }}</h4>
+  </div>
+{% endblock %}
+
+{% block content %}
+<form action="{{ path('g_invite', {'token': csrf_token('invite')}) }}" method="post">
+  <section>
+    <div class="content-full single-user">
+      <img src="{% if user %}{{ asset(user.getAvatar()) }}{% else %}{{ "http://www.gravatar.com/avatar/" ~ md5 }}{% endif %}" />
+      <div>
+        <h4>{% if user %}{{ user.getFullname() }}{% else %}{{ email }}{% endif %}</h4>
+        {% if user %}<p>{{ user.headline }}</p>{% endif %}
+      </div>
+    </div>
+  </section>
+  <section>
+    <div class="content">
+      <input type="hidden" id="mailOrUsername" name="mailOrUsername" required="required" value="{% if user %}{{ user.username }}{% else %}{{ email }}{% endif %}">
+      <input type="submit" value="{{ "confirm"|trans }}" class="button button-success" /></div>
+  </section>
+</form>
+{% endblock %}

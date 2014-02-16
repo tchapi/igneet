@@ -492,6 +492,11 @@ class CommunityController extends Controller
 
                 if ($user && !$user->isDeleted()) {
 
+                    // Confirm .. ?
+                    if ($request->get('confirm') == true) {
+                        return $this->render('metaGeneralBundle:Community:invite.confirm.html.twig', array('community' => $community, 'user' => $user) );
+                    }
+
                     $mailOrUsername = $user->getEmail();
                     $token = null;
 
@@ -507,7 +512,7 @@ class CommunityController extends Controller
                             $this->get('translator')->trans('user.already.in.community', array( '%user%' => $user->getFullName(), '%community%' => $community->getName() ))
                         );
 
-                        return $this->redirect($this->generateUrl('g_invite'));
+                        return $this->redirect($this->generateUrl('g_invite', array('token' => $this->get('form.csrf_provider')->generateCsrfToken('invite'))));
 
                     // If the user is already a guest in the community
                     } elseif ($userCommunityGuest) {
@@ -549,6 +554,11 @@ class CommunityController extends Controller
 
                 } elseif ($isEmail) {
 
+                    // Confirm .. ?
+                    if ($request->get('confirm') == true) {
+                        return $this->render('metaGeneralBundle:Community:invite.confirm.html.twig', array('community' => $community, 'user' => null, 'email' => $mailOrUsername, 'md5' => md5(strtolower(trim($mailOrUsername)))) );
+                    }
+
                     // Create token linked to email
                     $token = new UserInviteToken($authenticatedUser, $mailOrUsername, $community, 'user', null, null);
                     $em->persist($token);
@@ -565,7 +575,7 @@ class CommunityController extends Controller
                         $this->get('translator')->trans('user.email.invalid')
                     );
 
-                    return $this->redirect($this->generateUrl('g_invite'));
+                    return $this->redirect($this->generateUrl('g_invite', array('token' => $this->get('form.csrf_provider')->generateCsrfToken('invite'))));
                 }
 
                 $em->flush();

@@ -130,6 +130,7 @@ user:
     sent: "An invitation was sent to %mail% on your behalf."
     impossible: "You need to be a manager of the community to invite someone."
     privatespace: "You cannot invite someone into your private space"
+    confirmation: "Please confirm that you want to invite this user in the community %community% :"
     mail:
       subject: "You've been invited to a community on igneet !"
       body:
