@@ -166,6 +166,13 @@ p_show_project_resource_download:
       uid: "[0-9a-zA-Z]*"
       resource_uid: "[0-9a-zA-Z]*"
 
+p_show_project_resource_link:
+    pattern:  /project/0{uid}/resource/0{resource_uid}/link
+    defaults: { _controller: metaProjectBundle:Resource:linkResource }
+    requirements:
+      uid: "[0-9a-zA-Z]*"
+      resource_uid: "[0-9a-zA-Z]*"
+
 p_show_project_resource_delete:
     pattern:  /project/0{uid}/resource/0{resource_uid}/delete
     defaults: { _controller: metaProjectBundle:Resource:deleteResource }

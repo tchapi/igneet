@@ -21,6 +21,7 @@ class DeepLinkingExtension extends \Twig_Extension
         $this->log_routing = $log_routing;
 
         $this->template = '<a title="' . $translator->trans('goto.related.object') . '" href="%s">%s</a>';
+        $this->templateResource = '<a title="' . $translator->trans('goto.related.object') . '" href="%s" data-provider="%s">%s</a>';
         $this->templateUnknown = '[%s]';
 
     }
@@ -35,10 +36,15 @@ class DeepLinkingExtension extends \Twig_Extension
     private function renderLink($params)
     {
         if (is_null($params['args'])) {
-            return sprintf($this->templateUnknown,/* $params['icon'],*/ $params['title']);
+            return sprintf($this->templateUnknown,$params['title']);
         } else {
             $url = $this->router->generate($params['path'], $params['args']);
-            return sprintf($this->template, $url,/* $params['icon'], */ $params['title']);
+            // Different templates for resources
+            if (isset($params['provider'])) {
+                return sprintf($this->templateResource, $url, $params['provider'], $params['title']);
+            } else {
+                return sprintf($this->template, $url, $params['title']);
+            }
         }
 
     }
@@ -57,7 +63,7 @@ class DeepLinkingExtension extends \Twig_Extension
                  // $matches[2][$i] contains the second portion (ex: tchap)
 
                 $matched = false;
-                $title = $args = null;
+                $title = $args = $link = $type = null;
 
                 switch ($matches[1][$i]) {
                     case 'user':
@@ -129,7 +135,8 @@ class DeepLinkingExtension extends \Twig_Extension
                         if ($resource){
                             $project = $resource->getProject();
                             $args = array( $this->log_routing['project']['key'] => $this->uid->toUId($project->getId()), $this->log_routing['resource']['key'] => $this->uid->toUId($resource->getId()));
-                            $title = $resource->getTitle();  
+                            $title = $resource->getTitle();
+                            $provider = $resource->getProvider();
                         } else {
                             $title = $this->translator->trans('unknown.resource', array(), 'errors');
                         }
@@ -143,7 +150,8 @@ class DeepLinkingExtension extends \Twig_Extension
                         array('path' => $config['routing'], 
                               'args' => $args,
                               'icon' => $config['icon'], 
-                              'title' => $title
+                              'title' => $title,
+                              'provider' => $provider
                         ));
 
                     $text = str_replace($matches[0][$i], $replacement, $text);

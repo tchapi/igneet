@@ -2,7 +2,7 @@
   <img src="{{ asset('/bundles/metageneral/img/icons/' ~ providers[resource.provider].icon ~ '.png') }}" width="32px" height="32px"/> 
   <img src="{{ asset('/bundles/metageneral/img/icons/' ~ types[resource.type].icon ~ '.png') }}" width="32px" height="32px"/>
   <span>{{ resource.title }}</span>
-  {% if types[resource.type].displayable or not providers[resource.provider].downloadable %}<a title="{{ "project.resources.open"|trans }}" href="{{ resource.url }}" target="_blank"><i class="fa fa-external-link"></i></a>{% endif %}
+  {% if types[resource.type].displayable or not providers[resource.provider].downloadable %}<a title="{{ "project.resources.open"|trans }}" href="{{ path('p_show_project_resource_link', {'uid': project.id|to_uid, 'resource_uid': resource.id|to_uid})}}" target="_blank"><i class="fa fa-external-link"></i></a>{% endif %}
   {% if providers[resource.provider].downloadable %}<a title="{{ "project.resources.download"|trans }}" href="{{ path('p_show_project_resource_download', {'uid': project.id|to_uid, 'resource_uid': resource.id|to_uid})}}"><i class="fa fa-download"></i></a>{% endif %}
   <ul class="tags" >
   {% for tag in resource.tags %}<li {% if tag.color %}style="border: 1px solid #{{ tag.color }}" {% endif %}rel="{{ tag.name }}">{{ tag.name }}</li>{% endfor %}

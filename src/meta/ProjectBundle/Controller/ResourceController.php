@@ -479,4 +479,46 @@ class ResourceController extends BaseController
 
     }
 
+    /*
+     * Redirect to a resource
+     */
+    public function linkResourceAction(Request $request, $uid, $resource_uid)
+    {
+        $menu = $this->container->getParameter('project.menu');
+        $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => $menu['resources']['private']));
+
+        if ($this->base != false) {
+
+            $repository = $this->getDoctrine()->getRepository('metaProjectBundle:Resource');
+            $resource = $repository->findOneById($this->container->get('uid')->fromUId($resource_uid));
+
+            if ($resource){
+
+              if ($resource->getProvider() === "local"){
+
+                $this->get('session')->getFlashBag()->add(
+                    'error',
+                    $this->get('translator')->trans('project.resources.not.linkable')
+                );
+
+              } else {
+
+                  return $this->redirect($resource->getUrl());
+              }
+
+            } else {
+
+                $this->get('session')->getFlashBag()->add(
+                    'warning',
+                    $this->get('translator')->trans('project.resources.not.found')
+                );
+
+            }
+            
+        }
+
+        return $this->redirect($this->generateUrl('p_show_project_list_resources', array('uid' => $uid)));
+
+    }
+
 }
