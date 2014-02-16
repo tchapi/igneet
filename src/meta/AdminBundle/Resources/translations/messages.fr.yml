@@ -6,4 +6,7 @@ announcement:
     typeHelp: "Type de message"
     valid_from: "En ligne du"
     valid_until: "En ligne jusqu'au"
+    targeted: "Utilisateurs ciblés"
   created: "Annonce créée avec succès"
+  saved: "Annonce sauvegardée"
+  deleted: "Annonce supprimée"

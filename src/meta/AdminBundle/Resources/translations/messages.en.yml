@@ -6,4 +6,7 @@ announcement:
     typeHelp: "Type of message"
     valid_from: "Online from"
     valid_until: "Valid until"
+    targeted: "Targeted Users"
   created: "Announcement created successfully"
+  saved: "Announcement saved"
+  deleted: "Announcement deleted"

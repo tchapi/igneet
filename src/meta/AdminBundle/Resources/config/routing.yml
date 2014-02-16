@@ -26,6 +26,14 @@ a_announcements_new:
     path:  /announcements/new
     defaults: { _controller: metaAdminBundle:Announcement:create }
 
+a_announcements_edit:
+    path:  /announcements/edit/{uid}
+    defaults: { _controller: metaAdminBundle:Announcement:edit }
+
+a_announcements_delete:
+    path:  /announcements/delete/{uid}
+    defaults: { _controller: metaAdminBundle:Announcement:delete }
+
 # ADMINISTRATE
 a_communities:
     path:  /communities

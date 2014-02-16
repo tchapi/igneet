@@ -7,59 +7,70 @@
 .announcement-warning { background: $_blue; color: white; }
 .announcement-technical { background: $_green; color: white; }
 
-table tr td {
-  &.announcement-text {
-    width: 100%;
-    text-align: left;
-  }
-}
+body.admin {
 
-/* Admin home page : tiles */
-.tiles > section > div.tile {
-
-  $total: 270px;
-
-  @include span-columns(4 of 12);
-  &:nth-child(3n) { @include omega; }
-
-  background: $_container;
-  height: $total;
-
-  & > * {
-    @include fill-parent();
-    display: block;
-    padding: $gutter;
-  }
-
-  & > .label {
-    & > h2 {
-      margin: 0;
-    }
-    height: 60px;
-  }
-
-  & > .content {
-    padding-top: 0;
-    height: ($total - 60px - 110px);
-    & > p {
-      margin: 0;
-      color: $_discrete;
+  table tbody tr td {
+    min-width: 0;
+    &.announcement-text {
+      width: 100%;
+      text-align: left;
     }
   }
 
-  & > .actions {
-    height: 110px;
-    background: $_sensible;
+  table tbody tr td:first-of-type {
+    padding: 5px;
+    & > a {
+      color: white;
+    }
   }
 
-}
+  /* Admin home page : tiles */
+  .tiles > section > div.tile {
 
-/* Date picker on all pages for statistics */
-.datepicker {
-  input, label {
-    display: inline-block;
-    width: auto !important;
-    border: none !important;
-    padding: 0.5em;
+    $total: 270px;
+
+    @include span-columns(4 of 12);
+    &:nth-child(3n) { @include omega; }
+
+    background: $_container;
+    height: $total;
+
+    & > * {
+      @include fill-parent();
+      display: block;
+      padding: $gutter;
+    }
+
+    & > .label {
+      & > h2 {
+        margin: 0;
+      }
+      height: 60px;
+    }
+
+    & > .content {
+      padding-top: 0;
+      height: ($total - 60px - 110px);
+      & > p {
+        margin: 0;
+        color: $_discrete;
+      }
+    }
+
+    & > .actions {
+      height: 110px;
+      background: $_sensible;
+    }
+
+  }
+
+  /* Date picker on all pages for statistics */
+  .datepicker {
+    input, label {
+      display: inline-block;
+      width: auto !important;
+      border: none !important;
+      padding: 0.5em;
+    }
   }
 }

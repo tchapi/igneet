@@ -19,7 +19,20 @@ class AnnouncementType extends AbstractType
 
         $builder->add('valid_from', 'date', array('label'  => 'announcement.createForm.valid_from', 'attr' => array( 'placeholder' => 'announcement.createForm.validPlaceholder')));
         $builder->add('valid_until', 'date', array('label'  => 'announcement.createForm.valid_until', 'attr' => array( 'placeholder' => 'announcement.createForm.validPlaceholder')));
-        
+     
+        $builder->add('targetedUsers', 'entity', array(
+                'multiple' => true, 
+                'required' => false, // We will add the authenticated user afterwards 
+                'property' => 'fullName',
+                'class' => 'meta\UserBundle\Entity\User',
+                'query_builder' => function(\Doctrine\ORM\EntityRepository $er) {
+                    return $er->createQueryBuilder("u")
+                              ->where("u.deleted_at IS NULL")
+                              ->orderBy("u.username", "ASC");
+                },
+                'label' => 'announcement.createForm.targeted'
+                ));
+
     }
 
     public function getName()

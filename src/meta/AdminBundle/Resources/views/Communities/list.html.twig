@@ -15,23 +15,36 @@
 {% block content %}
 <div class="wrapper info">
   <section>
+
     {% if communities|length == 0 %}
     No communities to show
     {% else %}
-    <ul>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Name & Headline</th>
+          <th>Activity</th>
+          <th>Created</th>
+          <th>Valid until</th>
+          <th>Validity</th>
+        </tr>
+      </thead>
+      <tbody>
       {% for community in communities %}
-      <li><strong>{{ community.getName() }}</strong> : <em>{{ community.headline }}</em> <span class="community-{{ community.type }}">{{ community.type }}</span>
-        <ul>
-          <li><strong>{{ community.userCommunities|length }}</strong> users, <strong>{{ community.ideas|length }}</strong> ideas, <strong>{{ community.projects|length }}</strong> projects </li>
-          <li>Created on : {{ community.createdAt|date('d/m/Y') }}</li>
-          <li>Validity : {% if community.isValid %}<span><i class="fa fa-ok"></i> Valid</span>{% else %}<span><i class="fa fa-cross"></i> Expired</span>{% endif %}</li>
-          <li>Valid until : <a href="#" id="{{ community.id|to_uid}}" data-url="{{ path('a_extend_community') }}">{{ community.validUntil|date("d/m/Y") }}</a></li>
-        </ul>
-      </li>
+        <tr>
+          <td class="community-background-{{ community.type }}">{{ community.type }}</td>
+          <td class="commnunity-text">{{ community.name }} <em> {{ community.headline }}</em></td> 
+          <td><strong>{{ community.userCommunities|length }}</strong> users, <strong>{{ community.ideas|length }}</strong> ideas, <strong>{{ community.projects|length }}</strong> projects</td>
+          <td>{{ community.createdAt|date('d/m/Y') }}</td>
+          <td>{{ community.validUntil|date("d/m/Y") }} <a href="#" id="{{ community.id|to_uid}}" data-url="{{ path('a_extend_community') }}"><i class="fa fa-level-up"></i></a></td>
+          <td>{% if community.isValid %}<span><i class="fa fa-check"></i> Valid</span>{% else %}<span><i class="fa fa-warning"></i> Expired</span>{% endif %}</td>
+        </tr>
       {% endfor %}
-    </ul>
+      </tbody>
+    </table>
     {% endif %}
-    
+
   </section>
 </div>
 {% endblock %}
