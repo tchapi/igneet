@@ -10,8 +10,8 @@ class IdeaType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name', null, array('label'  => 'idea.createForm.name', 'attr' => array( 'class' => 'input-xxlarge', 'placeholder' => 'idea.createForm.namePlaceholder')));
-        $builder->add('headline', 'text',  array('required' => false, 'label'  => 'idea.createForm.headline', 'attr' => array('class' => 'input-xxlarge', 'help' => 'idea.createForm.headlinePlaceholder')));
+        $builder->add('name', null, array('label'  => 'idea.createForm.name', 'attr' => array( 'placeholder' => 'idea.createForm.namePlaceholder')));
+        $builder->add('headline', 'text',  array('required' => false, 'label'  => 'idea.createForm.headline', 'attr' => array('help' => 'idea.createForm.headlinePlaceholder')));
 
         // In the case where we are in the private space, 
         // we do not allow the creator to add creators to this idea
@@ -34,7 +34,7 @@ class IdeaType extends AbstractType
                               ->orderBy("u.username", "ASC");
                 },
                 'label' => 'idea.createForm.creators',
-                'attr' => array('class' => 'select2-trigger', 'help' => 'idea.createForm.creatorsPlaceholder', 'data-placeholder' => $options['translator']->trans('idea.createForm.creatorsPlaceholder'))
+                'attr' => array('help' => 'idea.createForm.creatorsPlaceholder', 'data-placeholder' => $options['translator']->trans('idea.createForm.creatorsPlaceholder'))
                 ));
         }
     }
