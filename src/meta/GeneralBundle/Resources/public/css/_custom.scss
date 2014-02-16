@@ -48,6 +48,11 @@ em { color: $_muted; }
 .community-entreprise { color: $_green; }
 .community-expired { color: $_red; }
 
+.community-background-demo { background: $_orange; color: white; }
+.community-background-association { background: $_blue; color: white; }
+.community-background-entreprise { background: $_green; color: white; }
+.community-background-expired { background: $_red; color: white; }
+
 /* Buttons */
 a.button, input[type=submit].button, button {
   @include button();
@@ -81,23 +86,3 @@ a.button, input[type=submit].button, button {
 
 // Admin
 @import "_admin";
-
-.content-full.single-user {
-  & > img {
-    @include span-columns(1 of 10);
-    border-radius: 50%;
-    @include shift(2);
-  }
-  & > div {
-    @include span-columns(5 of 10);
-    padding: 5px;
-    & > h4 {
-      margin-top: 0;
-      margin-bottom: 5px;
-    }
-    & > p {
-      margin: 0;
-      color: $_muted;
-    }
-  }
-}
