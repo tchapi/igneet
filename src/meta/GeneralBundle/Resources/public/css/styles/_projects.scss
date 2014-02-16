@@ -65,10 +65,15 @@ ul.resources {
         margin-bottom: 10px;
       }
       & > em {
-        display: block;
-      }
-      & > span, & > em.filename {
         display: inline-block;
+        width: 60%;
+      }
+      & > em + input {
+        float: right;
+        width: 230px;
+      }
+      & > span {
+        display: block;
       }
       & > h2 {
         margin-top: 0;

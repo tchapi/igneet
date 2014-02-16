@@ -1,4 +1,4 @@
-<li>
+<li {% if detailed %}class="detailed"{% endif %}>
   <img src="{{ asset('/bundles/metageneral/img/icons/' ~ providers[resource.provider].icon ~ '.png') }}" width="32px" height="32px"/> 
   <img src="{{ asset('/bundles/metageneral/img/icons/' ~ types[resource.type].icon ~ '.png') }}" width="32px" height="32px"/>
   <span>{{ resource.title }}</span>
@@ -10,8 +10,9 @@
   {% if canEdit %}
   <div class="details">
     <h2 data-url="{{ path('p_show_project_resource_edit', {'uid': project.id|to_uid, 'resource_uid': resource.id|to_uid, 'token': csrf_token('edit') }) }}" data-name="title" data-last="{{ resource.title }}" contenteditable="true" rich="false">{{ resource.title }}</h2>
-    {% if resource.originalFilename %}<span>{{ "project.resources.original"|trans }} :</span> <em class="filename">{{ resource.originalFilename }}</em>{% endif %}
+    {% if resource.originalFilename %}<span>{{ "project.resources.original"|trans }} : {{ resource.originalFilename }}</span>{% endif %}
     <em>{{ ('providers.' ~ resource.provider)|trans({}, 'resources') }} — {{ ('resources.' ~ resource.type)|trans({}, 'resources') }}</em>
+    <input type="text" onclick="this.select()" value="[[resource:{{ resource.id|to_uid }}]]"/>
     {# TAGS #}
     <div class="label-tags">
       {% if resource.tags|length == 0 %}

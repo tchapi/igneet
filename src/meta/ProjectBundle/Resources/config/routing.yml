@@ -139,11 +139,10 @@ p_show_project_info:
 
 ## RESOURCES
 p_show_project_list_resources:
-    pattern:  /project/0{uid}/resources/{page}
-    defaults: { _controller: metaProjectBundle:Resource:listResources, page: 1 }
+    pattern:  /project/0{uid}/resources
+    defaults: { _controller: metaProjectBundle:Resource:listResources}
     requirements:
       uid: "[0-9a-zA-Z]*"
-      page: \d+
 
 p_show_project_resource:
     pattern:  /project/0{uid}/resource/0{resource_uid}

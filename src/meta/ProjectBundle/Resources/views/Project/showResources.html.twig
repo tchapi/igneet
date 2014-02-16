@@ -33,8 +33,8 @@
     <div class="label-full">{{ "project.resources.available"|trans }} :</div>
     <div class="content-full">
       <ul class="resources">
-      {% for resource in base.project.resources %}
-        {% include 'metaProjectBundle:Project:showResources.resource.html.twig' with {'resource': resource, 'project': base.project, 'canEdit': base.canEdit} %}
+      {% for resource_ in base.project.resources %}
+        {% include 'metaProjectBundle:Project:showResources.resource.html.twig' with {'resource': resource_, 'detailed': (resource_ == resource), 'project': base.project, 'canEdit': base.canEdit} %}
       {% endfor %}
       </ul>
     </div>

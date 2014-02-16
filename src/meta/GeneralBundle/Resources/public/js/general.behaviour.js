@@ -103,4 +103,11 @@ $(document).ready(function() {
         e.preventDefault();
     });
 
+    // Scroll to resource
+    if ($(".detailed").length) {
+        $('html,body').animate({
+            scrollTop: $(".detailed").offset().top - 65
+        });
+    }
+
 });
