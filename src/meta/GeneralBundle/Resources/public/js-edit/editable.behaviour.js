@@ -287,7 +287,7 @@ $(document).ready(function() {
         // Standard rich text : bar floats in the air
         $('[contenteditable=true][rich=true]').redactor({
             air: true,
-            emptyHtml: '<p>...<br /></p>',
+            emptyHtml: '<p></p>',
             minHeight: 100, // To allow PASTE event - ARGHHHH I hate you Chrome
             airButtons: ['formatting', '|', 'bold', 'italic', 'deleted', '|', 'unorderedlist', 'orderedlist', 'outdent', 'indent', '|',
                 'image', 'video', 'file', 'table', 'link'
