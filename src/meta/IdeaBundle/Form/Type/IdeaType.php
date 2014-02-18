@@ -10,7 +10,7 @@ class IdeaType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name', null, array('label'  => 'idea.createForm.name', 'attr' => array( 'placeholder' => 'idea.createForm.namePlaceholder')));
+        $builder->add('name', null, array('label'  => 'idea.createForm.name', 'attr' => array( 'autofocus' => "autofocus", 'placeholder' => 'idea.createForm.namePlaceholder')));
         $builder->add('headline', 'text',  array('required' => false, 'label'  => 'idea.createForm.headline', 'attr' => array('help' => 'idea.createForm.headlinePlaceholder')));
 
         // In the case where we are in the private space, 
