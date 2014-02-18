@@ -482,16 +482,4 @@ $(document).ready(function() {
         $('.specificEmailsChoice').toggle();
     });
 
-    /*
-     * Resources pages : see details
-     */
-    $('ul.resources li > img, ul.resources li > span').on('click', function(e) {
-        e.preventDefault();
-        _self = $(this).parent('li').hasClass("detailed");
-        $('.detailed').removeClass('detailed');
-        if (!_self) $(this).parent('li').toggleClass('detailed');
-    }).children().click(function(e) {
-        e.stopPropagation();
-    });
-
 });
