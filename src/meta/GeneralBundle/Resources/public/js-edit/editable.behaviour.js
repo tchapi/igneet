@@ -287,7 +287,7 @@ $(document).ready(function() {
         // Standard rich text : bar floats in the air
         $('[contenteditable=true][rich=true]').redactor({
             air: true,
-            emptyHtml: '<p>...<br /></p>',
+            emptyHtml: '<p></p>',
             minHeight: 100, // To allow PASTE event - ARGHHHH I hate you Chrome
             airButtons: ['formatting', '|', 'bold', 'italic', 'deleted', '|', 'unorderedlist', 'orderedlist', 'outdent', 'indent', '|',
                 'image', 'video', 'file', 'table', 'link'
@@ -480,18 +480,6 @@ $(document).ready(function() {
     });
     $('#specificEmails').change(function() {
         $('.specificEmailsChoice').toggle();
-    });
-
-    /*
-     * Resources pages : see details
-     */
-    $('ul.resources li > img, ul.resources li > span').on('click', function(e) {
-        e.preventDefault();
-        _self = $(this).parent('li').hasClass("detailed");
-        $('.detailed').removeClass('detailed');
-        if (!_self) $(this).parent('li').toggleClass('detailed');
-    }).children().click(function(e) {
-        e.stopPropagation();
     });
 
 });

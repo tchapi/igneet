@@ -103,6 +103,18 @@ $(document).ready(function() {
         e.preventDefault();
     });
 
+    /*
+     * Resources pages : see details
+     */
+    $('ul.resources > li').on('click', function(e) {
+        e.preventDefault();
+        _self = $(this).hasClass("detailed");
+        $('.detailed').removeClass('detailed');
+        if (!_self) $(this).toggleClass('detailed');
+    }).children(".details, a").click(function(e) {
+        e.stopPropagation();
+    });
+
     // Scroll to resource
     if ($(".detailed").length) {
         $('html,body').animate({

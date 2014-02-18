@@ -339,7 +339,7 @@ class WikiController extends BaseController
                             $response = array('tag' => $this->renderView('metaGeneralBundle:Tags:tag.html.twig', array( 'tag' => $newTag, 'canEdit' => true)));
                             $objectHasBeenModified = true;
                         } else {
-                            $response = array('message' => $this->get('translator')->trans('project.wiki.tag.already', array(), 'errors')); // tag already in the page
+                            $response = array('message' => $this->get('translator')->trans('project.wiki.tag.already')); // tag already in the page
                         }
 
                         break;
@@ -363,8 +363,9 @@ class WikiController extends BaseController
 
                 } else {
                     
-                    $response = array('message' => $this->get('translator')->trans('unnecessary.request', array(), 'errors'));
-
+                    if ($response == null) {
+                      $response = array('message' => $this->get('translator')->trans('unnecessary.request', array(), 'errors'));
+                    }
                 }
                 
               }

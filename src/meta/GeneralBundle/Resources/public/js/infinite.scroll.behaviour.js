@@ -39,14 +39,8 @@ $(document).ready(function() {
             },
             success: function(data) {
 
-                for (key in data) {
-                    // Let's replace the placeholders first
-                    str = template.replace(/%\w+%/g, function(all) {
-                        return data[key][all.replace(/%/g, '')] || "";
-                    });
-                    str = str.replace(/data\-/g, ''); // Replace data-href and the like with href in the template
-                    $('#list tr:last').after('<tr>' + str + '</tr>');
-                }
+                $('#list tr:last').after(data.objects);
+
                 // Are we at the end of the results ?
                 if (page * objects_per_page > total_objects) {
                     $('#no-more').show();

@@ -92,21 +92,9 @@ class IdeasController extends Controller
         }
 
         if ($request->isXmlHttpRequest()){
-        
-            $ideasAsArray = array();
-            foreach($ideas as $idea){
-                $ideasAsArray[] = array(
-                    'url' => $this->generateUrl('i_show_idea', array('uid' => $this->container->get('uid')->toUId($idea->getId()))), 
-                    'picture' => $idea->getPicture(), 
-                    'name' => $idea->getName(), 
-                    'headline' => $idea->getHeadline(), 
-                    'createdAt' => $idea->getCreatedAt()->format($this->get('translator')->trans("date.fullFormat")), 
-                    'updatedAt' => $idea->getUpdatedAt()->format($this->get('translator')->trans("date.fullFormat")), 
-                    'creators' => $this->get('translator')->transchoice('idea.creators', $idea->countCreators(), array('%count%' => $idea->countCreators())), 
-                    'participants' => $this->get('translator')->transchoice('idea.participants', $idea->countParticipants(), array('%count%' => $idea->countParticipants()))
-                );
-            }
-            return new Response(json_encode($ideasAsArray), 200, array('Content-Type'=>'application/json'));
+
+            $response = array('objects' => $this->renderView('metaIdeaBundle:Ideas:list.ideas.html.twig', array('ideas' => $ideas)));
+            return new Response(json_encode($response), 200, array('Content-Type'=>'application/json'));
         
         } else {
         

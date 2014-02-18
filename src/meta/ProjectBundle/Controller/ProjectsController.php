@@ -95,21 +95,8 @@ class ProjectsController extends Controller
 
         if ($request->isXmlHttpRequest()){
         
-            $projectsAsArray = array();
-            foreach($projects as $project){
-                $projectsAsArray[] = array(
-                    'url' => $this->generateUrl('p_show_project', array('uid' => $this->container->get('uid')->toUId($project->getId()))), 
-                    'picture' => $project->getPicture(), 
-                    'name' => $project->getName(), 
-                    'isPrivate' => (($project->isPrivate()&&!is_null($community))?"true":"false"), 
-                    'headline' => $project->getHeadline(), 
-                    'createdAt' => $project->getCreatedAt()->format($this->get('translator')->trans("date.fullFormat")), 
-                    'updatedAt' => $project->getUpdatedAt()->format($this->get('translator')->trans("date.fullFormat")), 
-                    'owners' => $this->get('translator')->transchoice('project.owners', $project->countOwners(), array('%count%' => $project->countOwners())), 
-                    'participants' => $this->get('translator')->transchoice('project.participants', $project->countParticipants(), array('%count%' => $project->countParticipants()))
-                );
-            }
-            return new Response(json_encode($projectsAsArray), 200, array('Content-Type'=>'application/json'));
+            $response = array('objects' => $this->renderView('metaProjectBundle:Projects:list.projects.html.twig', array('projects' => $projects)));
+            return new Response(json_encode($response), 200, array('Content-Type'=>'application/json'));
         
         } else {
         

@@ -109,8 +109,9 @@ class SettingsController extends Controller
 
             } else {
                 
-                $response = array('message' => $this->get('translator')->trans('unnecessary.request', array(), 'errors'));
-
+                if ($response == null) {
+                    $response = array('message' => $this->get('translator')->trans('unnecessary.request', array(), 'errors'));
+                }
             }
 
         }

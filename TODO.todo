@@ -3,8 +3,6 @@
 
 NEXT :
 
- ☐ Créer des partials pour le infinite scrolling et s'en servir pour recréer les reponses en AJAX
-
  ☐ Erreurs dans les formulaires de création : elles sont affichées n'importe comment a priori (A vérifier : déjà fixed ?)
  
  ☐ faire des templates pour les ul.sortable et refresh en ajax quand on fait "new"
@@ -14,12 +12,9 @@ NEXT :
 
 Admin :
 
- ☐ Admin : Faire des special announcements modifiables en backoffice pour annoncer des trucs a tous les utilisateurs : récupérer le % de vues etc
-    Edition Announcement
+ ☐ Visualiser les annonces en front office
 
- ☐ Admin : listes de communautés et d'utilisateurs à styler en tableau  comme les announcements
-
- ☐ Output la version dans le footer MM.mm-CCC (M = MAjeure, m = mineure, C = dernier commit)
+ ☐ Admin : liste des utilisateurs à styler en tableau comme les announcements
    
 A évaluer :
 
@@ -27,8 +22,6 @@ A évaluer :
    Sinon mettre en gras mais ne pas linker avec une icone oeil barré (?)
  
  ☐ [Eric] Tri des resources dans la vue / resources
-
- ☐ deeplinks dans listes et wiki : catcher le click et proposer d'aller vers le lien plutot que d'éditer
 
 Complexe:
 

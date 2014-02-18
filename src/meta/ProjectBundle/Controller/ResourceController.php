@@ -343,7 +343,7 @@ class ResourceController extends BaseController
                             $response = array('tag' => $this->renderView('metaGeneralBundle:Tags:tag.html.twig', array( 'tag' => $newTag, 'canEdit' => true)));
                             $objectHasBeenModified = true;
                         } else {
-                            $response = array('message' => $this->get('translator')->trans('project.resources.tag.already', array(), 'errors'));
+                            $response = array('message' => $this->get('translator')->trans('project.resources.tag.already'));
                         }
 
                         break;
@@ -369,7 +369,9 @@ class ResourceController extends BaseController
 
                 } else {
                     
-                    $response = array('message' => $this->get('translator')->trans('unnecessary.request', array(), 'errors'));
+                    if ($response == null) {
+                        $response = array('message' => $this->get('translator')->trans('unnecessary.request', array(), 'errors'));
+                    }
 
                 }
 
