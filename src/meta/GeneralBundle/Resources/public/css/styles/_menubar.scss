@@ -261,6 +261,11 @@ nav[role=mobile]{
     }
 
   }
+  div.announcements {
+    & > div {
+
+    }
+  }
 }
 /* Thanks Chrome : http://stackoverflow.com/questions/13935255/chrome-float-right-resize-bug */
 body > menu > ul.user { float: right; }

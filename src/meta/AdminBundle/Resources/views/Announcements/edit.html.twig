@@ -25,6 +25,12 @@
 
 {% endblock form_row %}
 
+{% block checkbox_widget %}
+  {% spaceless %}
+      <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} /><label for="{{ id }}" class="checkbox {% if checked %}checked{% endif %}" >{{ label|trans }}</label>
+  {% endspaceless %}
+{% endblock checkbox_widget %}
+
 {% block content %}
 <div class="wrapper info">
   <form action="{{ path('a_announcements_edit', { 'uid': uid}) }}" method="post" {{ form_enctype(form) }}>

@@ -17,6 +17,10 @@ body.admin {
     }
   }
 
+  section > a {
+    margin-bottom: 20px;
+  }
+  
   table tbody tr td:first-of-type {
     padding: 5px;
     & > a {

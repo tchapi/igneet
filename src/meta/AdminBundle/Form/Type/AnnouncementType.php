@@ -32,7 +32,8 @@ class AnnouncementType extends AbstractType
                 },
                 'label' => 'announcement.createForm.targeted'
                 ));
-
+        $builder->add('active', 'checkbox', array('label'  => 'announcement.createForm.active', 'required' => false));
+     
     }
 
     public function getName()

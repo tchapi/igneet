@@ -7,6 +7,7 @@ announcement:
     valid_from: "En ligne du"
     valid_until: "En ligne jusqu'au"
     targeted: "Utilisateurs ciblés"
+    active: "Active"
   created: "Annonce créée avec succès"
   saved: "Annonce sauvegardée"
   deleted: "Annonce supprimée"
