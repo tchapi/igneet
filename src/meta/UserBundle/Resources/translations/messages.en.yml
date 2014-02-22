@@ -120,6 +120,18 @@ user:
   guest.in.community: "The user %user% is already only a guest in the community %community%."
   already.in.community: "The user %user% is already a member of the community %community%."
   belonging.community: "The user %user% now belongs to the community %community%. A notification mail was sent on your behalf."
+  creation:
+    mail:
+      subject: "Welcome to Igneet !"
+      body:
+        one: "Welcome to Igneet, thanks for trusting us !"
+        list: 
+          title: "Here are some tips and tricks for you so you can start on a good basis :"
+          one: "for your first connection, you have a nice tutorial to follow, it will give you a good preview of all the functionalities."
+          two: "among the essential points, do not forget to activate the digest emails - we recommend that you do so but as we value your privacy and we don't want to seem too intrusive, we deactivate them by default."
+          three: "to go further, we have a blog : http://blog.igneet.com"
+        two: "All the data is hosted in France. We value your comments and feedback - please do not hesitate to use the widget at the bottom of each page to tell us what you think. We'll get back to you as soon as we can"
+        envoy: "We hope that you will find Igneet useful"
   invitation:
     title: "Invite a user"
     community: "The user will be invited in the community %community%."

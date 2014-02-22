@@ -120,6 +120,18 @@ user:
   guest.in.community: "L'utilisateur %user% est seulement invité dans la communauté %community%."
   already.in.community: "L'utilisateur %user% est déjà membre de la communauté %community%."
   belonging.community: "L'utilisateur %user% est désormais membre de la communauté %community%. Un mail de notification lui a été envoyé en votre nom."
+  creation:
+    mail:
+      subject: "Welcome to igneet !"
+      body:
+        one: "Bienvenue sur Igneet et merci de nous faire confiance !"
+        list: 
+          title: "Permettez nous de vous faire part de quelques conseils pour tirer le meilleur parti d'Igneet dans les meilleures conditions possibles :"
+          one: "lors de votre premier passage sur la plateforme, jetez un œil à notre tutoriel, il vous donnera un panorama d'Igneet et des fonctions essentielles, tant du point de vue utilisateur qu'Administrateur de communauté. En particulier, n'oubliez pas de remplir votre profil avec votre photo !"
+          two: "parmi les points essentiels, n'oubliez pas d'activer les mails de résumé des notifications (nous vous conseillons un mail quotidien, afin de garder un maximum de dynamisme pour votre communauté). Nous préférons vous laisser activer ces emails par vous même plutôt que vous les imposer."
+          three: "pour aller plus loin, vous pouvez aller jeter un œil à nos astuces et nos use cases sur le blog d'Igneet : http://blog.igneet.com"
+        two: "Sachez par ailleurs que toutes les données qui sont sur Igneet sont hébergées en France. Pour terminer, nous sommes friands de vos commentaires et retours divers sur l'usage de la plateforme. Vous avez à votre disposition un outil pour vous exprimer. Nous vous répondrons dans les plus brefs délais, et nous ferons notre possible pour trouver des solutions à vos demandes."
+        envoy: "Nous vous souhaitons beaucoup de plaisir dans l'utilisation d'Igneet !"
   invitation:
     title: "Inviter un utilisateur"
     community: "L'utilisateur sera invité à rejoindre la communauté %community%."

@@ -336,6 +336,20 @@ class SecurityController extends Controller
                     $this->get('translator')->trans('user.welcome')
                 );
 
+                // Send the welcome mail
+                $message = \Swift_Message::newInstance()
+                    ->setSubject($this->get('translator')->trans('user.creation.mail.subject'))
+                    ->setFrom($this->container->getParameter('mailer_from'))
+                    ->setTo($user->getEmail())
+                    ->setBody(
+                        $this->renderView(
+                            'metaUserBundle:Mail:welcome.mail.html.twig',
+                            array('user' => $user)
+                        ), 'text/html'
+                    );
+
+                $this->get('mailer')->send($message);
+
                 // Returns and redirects
                 if ($openid === true ) {
 
