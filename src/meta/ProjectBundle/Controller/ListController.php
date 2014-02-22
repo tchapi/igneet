@@ -359,7 +359,8 @@ class ListController extends BaseController
         if ($this->access != false) {
 
             $listItem = new CommonListItem();
-            $listItem->setText($request->get('text'));
+            $deepLinkingService = $this->container->get('deep_linking_extension');
+            $listItem->setText($deepLinkingService->convertDeepLinks($request->get('text')));
 
             $repository = $this->getDoctrine()->getRepository('metaProjectBundle:CommonList');
             $list = $repository->findOneByIdInProject($this->container->get('uid')->fromUId($list_uid), $this->base['project']->getId());

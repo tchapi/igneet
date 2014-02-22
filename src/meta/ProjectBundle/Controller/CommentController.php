@@ -39,6 +39,7 @@ class CommentController extends BaseController
                 if ($form->isValid()) {
 
                     $comment->setUser($this->getUser());
+                    $comment->linkify();
                     $this->base['project']->addComment($comment);
                     
                     $em = $this->getDoctrine()->getManager();
@@ -108,6 +109,7 @@ class CommentController extends BaseController
                         if ($form->isValid()) {
 
                             $comment->setUser($this->getUser());
+                            $comment->linkify();
                             $wikiPage->addComment($comment);
                             
                             $em = $this->getDoctrine()->getManager();
@@ -175,6 +177,7 @@ class CommentController extends BaseController
                     if ($form->isValid()) {
 
                         $comment->setUser($this->getUser());
+                        $comment->linkify();
                         $commonList->addComment($comment);
                         
                         $em = $this->getDoctrine()->getManager();

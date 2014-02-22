@@ -636,6 +636,7 @@ class IdeaController extends Controller
                 if ($form->isValid()) {
 
                     $comment->setUser($this->getUser());
+                    $comment->linkify();
                     $this->base['idea']->addComment($comment);
                     
                     $em = $this->getDoctrine()->getManager();
