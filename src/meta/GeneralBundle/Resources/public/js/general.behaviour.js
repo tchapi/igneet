@@ -60,12 +60,12 @@ $(document).ready(function() {
      */
     $("#markRead").click(function() {
         $.post($(this).attr('data-url'))
-            .success(function(data) {
+            .done(function(data) {
                 if (data.redirect) {
                     window.location.replace(data.redirect);
                 }
             })
-            .error(function() {
+            .fail(function() {
                 alertify.error(Translator.trans('alert.error.saving.changes'));
             });
     });
@@ -121,5 +121,13 @@ $(document).ready(function() {
             scrollTop: $(".detailed").offset().top - 65
         });
     }
+
+    // Announcements 
+    $(".announcements .close").on('click', function() {
+        var target = $(this).parent();
+        $.post(target.attr('data-url'), function(){
+            target.fadeOut();
+        });
+    });
 
 });

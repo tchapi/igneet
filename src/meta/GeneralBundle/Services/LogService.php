@@ -212,7 +212,9 @@ class LogService
             
             }
 
-            $parameters["%$key%"] = $this->twig->render($this->template_link, array( 'logName' => $object['logName'], 'routing' => $routing ) );
+            $logName = strip_tags($object['logName']);
+
+            $parameters["%$key%"] = $this->twig->render($this->template_link, array( 'logName' => $logName, 'routing' => $routing ) );
             
         }
 

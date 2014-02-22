@@ -4,15 +4,12 @@
 NEXT :
 
  ☐ Erreurs dans les formulaires de création : elles sont affichées n'importe comment a priori (A vérifier : déjà fixed ?)
- 
  ☐ faire des templates pour les ul.sortable et refresh en ajax quand on fait "new"
 
  ☐ Créer ta communauté --> inviter des gens
-    raconter les ecrans
+    raconter les ecrans => Benjy
 
 Admin :
-
- ☐ Visualiser les annonces en front office
 
  ☐ Admin : liste des utilisateurs à styler en tableau comme les announcements
    

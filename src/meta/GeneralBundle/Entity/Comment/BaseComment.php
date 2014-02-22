@@ -292,11 +292,32 @@ class BaseComment
     /**
      * Deletes
      *
-     * @return Idea 
+     * @return BaseComment 
      */
     public function delete()
     {
         $this->deleted_at = new \DateTime('now');
+        return $this;
+    }
+
+    /**
+     * Turns links and emails into <a> in comment text
+     *
+     * @return BaseComment 
+     */
+    public function linkify()
+    {
+        $pattern = array(
+          '/([\w\-\d]+\@[\w\-\d]+\.[\w\-\d]+)/', # Email
+          '/((?:[\w\d]+\:\/\/)(?:[\w\-\d]+\.)+[\w\-\d]+(?:\/[\w\-\d]+)*(?:\/|\.[\w\-\d]+)?(?:\?[\w\-\d]+\=[\w\-\d]+\&?)?(?:\#[\w\-\d]*)?)/' # URL
+        );
+        $replace = array(
+          '<a href="mailto:$1">$1</a>',
+          '<a href="$1" target="_blank">$1</a>'
+        );
+
+        $this->text = stripslashes(preg_replace($pattern, $replace, $this->text));
+        
         return $this;
     }
 }

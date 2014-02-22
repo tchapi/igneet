@@ -7,6 +7,7 @@ announcement:
     valid_from: "Online from"
     valid_until: "Valid until"
     targeted: "Targeted Users"
+    active: "Active"
   created: "Announcement created successfully"
   saved: "Announcement saved"
   deleted: "Announcement deleted"

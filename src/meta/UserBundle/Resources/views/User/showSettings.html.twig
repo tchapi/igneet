@@ -88,7 +88,7 @@
 
       <div class="specificEmail">
 
-          <input type="checkbox" id="specificEmails" {% if app.user.enableSpecificEmails %}checked="checked"{% endif %} data-name="specificEmailsToggle" data-url="{{ path('u_edit_user_settings', {'token': csrf_token('editSettings') }) }}"><label for="specificEmails">{{ "user.digest.specificEmails"|trans }} :</label>
+          <input type="checkbox" id="specificEmails" {% if app.user.enableSpecificEmails %}checked="checked"{% endif %} data-name="specificEmailsToggle" data-url="{{ path('u_edit_user_settings', {'token': csrf_token('editSettings') }) }}"><label for="specificEmails">{{ "user.digest.specificEmails"|trans }}</label>
 
       </div>
       <ul class="specificEmailsChoice" {% if not app.user.enableSpecificEmails %}style="display: none;"{% endif %}>

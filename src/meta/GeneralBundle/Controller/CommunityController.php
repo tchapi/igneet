@@ -403,6 +403,7 @@ class CommunityController extends Controller
                 if ($form->isValid()) {
 
                     $comment->setUser($this->getUser());
+                    $comment->linkify();
                     $community->addComment($comment);
                     
                     $em = $this->getDoctrine()->getManager();

@@ -1,0 +1,5 @@
+<div class="announcements">
+  {% for announcement in announcements %}
+    <div data-url="{{ path("a_announcements_stat", { "uid": announcement.id|to_uid}) }}" class="announcement-{{ announcement.type }}">{{ announcement.text }} <a href="#" class="close">&times;</a></div>
+  {% endfor %}
+</div>

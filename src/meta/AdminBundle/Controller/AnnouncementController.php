@@ -3,7 +3,8 @@
 namespace meta\AdminBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller,
-    Symfony\Component\HttpFoundation\Request;
+    Symfony\Component\HttpFoundation\Request,
+    Symfony\Component\HttpFoundation\Response;
 
 use meta\AdminBundle\Entity\Announcement,
     meta\AdminBundle\Form\Type\AnnouncementType;
@@ -130,4 +131,31 @@ class AnnouncementController extends Controller
         return $this->redirect($this->generateUrl('a_announcements'));
    
     }
+
+
+    /*
+     * A user has closed an announcement
+     */
+    public function statAction($uid)
+    {
+
+        $repository = $this->getDoctrine()->getRepository('metaAdminBundle:Announcement');
+        $announcement = $repository->findOneById($this->container->get('uid')->fromUId($uid));
+
+        $authenticatedUser = $this->getUser();
+
+        if ($announcement) {
+            
+            if (!$authenticatedUser->getViewedAnnouncements()->contains($announcement)) {
+                $authenticatedUser->addViewedAnnouncement($announcement);
+            }
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+
+        }
+
+        return new Response(json_encode("OK"), 200, array('Content-Type'=>'application/json'));
+
+    }
+
 }

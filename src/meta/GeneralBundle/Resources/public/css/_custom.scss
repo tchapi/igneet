@@ -53,6 +53,21 @@ em { color: $_muted; }
 .community-background-entreprise { background: $_green; color: white; }
 .community-background-expired { background: $_red; color: white; }
 
+/* Announcements */
+.announcements {
+  margin: 9px -10px 0;
+  & > * {
+    padding: 10px;
+    & > .close {
+      float: right;
+      color: $_muted;
+      &:hover {
+        color: white;
+      }
+    }
+  }
+}
+
 /* Buttons */
 a.button, input[type=submit].button, button {
   @include button();
