@@ -34,10 +34,6 @@ a_announcements_delete:
     path:  /announcements/delete/{uid}
     defaults: { _controller: metaAdminBundle:Announcement:delete }
 
-a_announcements_stat:
-    path:  /announcements/stat/{uid}
-    defaults: { _controller: metaAdminBundle:Announcement:stat }
-
 # ADMINISTRATE
 a_communities:
     path:  /communities

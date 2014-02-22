@@ -93,3 +93,9 @@ g_delete_comment:
     requirements:
       _method: POST
       id: \d+
+
+# Announcements (deported here because /admin is protected)
+
+a_announcements_stat:
+    path:  /announcements/stat/{uid}
+    defaults: { _controller: metaAdminBundle:Announcement:stat }
