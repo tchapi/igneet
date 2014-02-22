@@ -123,11 +123,12 @@ $(document).ready(function() {
     }
 
     // Announcements 
-    $(".announcements .close").on('click', function() {
+    $(".announcements .close").on('click', function(e) {
         var target = $(this).parent();
         $.post(target.attr('data-url'), function(){
             target.fadeOut();
         });
+        e.preventDefault();
     });
 
 });
