@@ -203,7 +203,7 @@ user:
     specificDay: "Choisir mon propre jour de réception"
     specificDayHelp: "Choisissez un jour de la semaine"
     specificDayChoose: "Indiquez quel jour vous souhaitez recevoir le résumé d'activité"
-    specificEmails: "Recevoir les résumés sur différents emails par communauté"
+    specificEmails: "Choisir l'email sur lequel sont envoyées les notifications pour chacune de vos communautés"
     specificEmailsHelp: "Changez l'email associé au résumé de cette communauté"
     noCommunity: "Vous n'appartenez pour l'instant à aucune communauté. Vous pourrez changer vos paramètres de réception des résumés quand vous ferez parti d'une ou plusieurs communautés."
     mail:
