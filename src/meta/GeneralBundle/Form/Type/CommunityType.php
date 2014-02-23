@@ -10,7 +10,7 @@ class CommunityType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name', null, array('label'  => 'community.createForm.name', 'attr' => array( 'placeholder' => 'community.createForm.namePlaceholder')));
+        $builder->add('name', null, array('label'  => 'community.createForm.name', 'attr' => array( 'autofocus' => "autofocus", 'placeholder' => 'community.createForm.namePlaceholder')));
         $builder->add('headline', 'text',  array('required' => false, 'label'  => 'community.createForm.headline', 'attr' => array( 'help' => 'community.createForm.headlinePlaceholder')));
     }
 
