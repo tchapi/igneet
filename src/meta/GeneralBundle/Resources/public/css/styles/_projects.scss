@@ -333,6 +333,9 @@ section > .jump {
   @include fill-parent();
   margin-bottom: 10px;
   font-size: 1.8em;
+  @include media($tablet, $mobile) {
+    margin-left: 40px;
+  }
 }
 
 .label-description {
