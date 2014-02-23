@@ -78,39 +78,15 @@
 
     {# TAGS #}
     <div class="label-tags">
-      {% if wikiPage.tags|length > 0 %}
-        {% spaceless %}
-        <ul{% if base.canEdit %} data-url="{{ path('p_show_project_wiki_edit_page', {'uid': base.project.id|to_uid, 'page_uid': wikiPage.id|to_uid, 'token': csrf_token('editWikiPage')  }) }}" contenteditable="list" data-name="tags"{% endif %}>
-        {% for tag in wikiPage.tags %}
-          <li {% if tag.color %}style="border: 1px solid #{{ tag.color }}" {% endif %}rel="{{ tag.name }}">
-          {% if base.canEdit %}
-            <a href="#" class="remove"><i class="fa fa-times"></i></a>  
-          {% endif %}
-          {{ tag.name }}</li>
-        {% endfor %}
-        {% if base.canEdit %}
-          <li><a href="#" class="add"><i class="fa fa-plus"></i></a>
-            <span style="display: none;">
-              <a href="#"><i class="fa fa-times"></i></a>
-              <input type="text" id="tag" placeholder="{{ "tags.emptyText"|trans }}"/>
-            </span>
-          </li>
-        {% endif %}
-        </ul>
-        {% endspaceless %}
-      {% else %}
+      {% if wikiPage.tags|length == 0 %}
         <span>{{ "tags.none"|trans }}</span>
-        {% if base.canEdit %}
-          <ul data-url="{{ path('p_show_project_wiki_edit_page', {'uid': base.project.id|to_uid, 'page_uid': wikiPage.id|to_uid, 'token': csrf_token('editWikiPage')  }) }}" contenteditable="list" data-name="tags">
-            <li><a href="#" class="add"><i class="fa fa-plus"></i></a>
-              <span style="display: none;">
-                <a href="#"><i class="fa fa-times"></i></a>
-                <input type="text" id="tag" placeholder="{{ "tags.emptyText"|trans }}"/>
-              </span>
-            </li>
-          </ul>
-        {% endif %}
       {% endif %}
+      <ul{% if base.canEdit %} data-url="{{ path('p_show_project_wiki_edit_page', {'uid': base.project.id|to_uid, 'page_uid': wikiPage.id|to_uid, 'token': csrf_token('editWikiPage')  }) }}" contenteditable="list" data-name="tags"{% endif %}>
+      {% for tag in wikiPage.tags %}
+        {% include 'metaGeneralBundle:Tags:tag.html.twig' with {'tag': tag, 'canEdit': base.canEdit} %}
+      {% endfor %}
+      {% include 'metaGeneralBundle:Tags:tag.new.html.twig' with {'canEdit': base.canEdit} %}
+      </ul>
     </div>
 
     <div class="content-wiki">

@@ -6,8 +6,30 @@ NEXT :
  ☐ Erreurs dans les formulaires de création : elles sont affichées n'importe comment a priori (A vérifier : déjà fixed ?)
  ☐ faire des templates pour les ul.sortable et refresh en ajax quand on fait "new"
 
+ ☐ PAGE RESOURCES / PROJET : click sur un tag a.remove : marche plus sur RESOURCES
+
  ☐ Créer ta communauté --> inviter des gens
     raconter les ecrans => Benjy
+          Écran d'accueil à la première connexion :
+
+          Commencez tout de suite à créer votre première communauté sur Igneet :
+          - la plupart des gens créent plusieurs communautés : une pour l'équipe de travail dans leur entreprise, une pour l'ensemble des startups de leur incubateur, une pour chacune des associations (club de sport, associations étudiantes, associations de solidarité, ...) dans lesquels ils sont, parfois d'autres encore...
+
+          Et vous quelle serait la première communauté à créer sous igneet ? Donnez lui un nom :
+          Champ texte
+          "Bouton Next"
+
+          Next Step : dans votre communauté XXXX qui seraient les personnes à inviter ? Vous pouvez les inviter ci dessous en inscrivant leur adresse email : (ils recevront un email de votre part les invitant à rejoindre la communauté XXXX que vous venez de créer, s'ils ne donnent pas suite ils ne recevront aucune autre sollicitation de notre part ni de qui que ça soit venant de nous - nous aussi, on déteste les spams).
+
+          Si vous préférez, vous pourrez toujours ajouter des utilisateurs à vos communautés par la suite sur la page d'administration de la communauté
+
+          -------
+
+          Bravo, vous venez de créer votre première communauté. C'est un joli premier pas.
+
+          Mais peut être avec vous d'autres cercles avec lesquels vous échangez régulièrement et pour lesquels les outils actuels vous pèsent : créez ci dessous une autre communauté ou quittez en cliquant là.
+
+          À tout instant vous pourrez créer une communauté en utilisant le menu de communauté en haut à gauche, ou depuis votre espace personnel.
 
 Admin :
 

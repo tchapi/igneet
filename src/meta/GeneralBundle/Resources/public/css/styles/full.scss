@@ -66,18 +66,18 @@ body.full > .content-container nav {
     & > li {
       display: inline-block;
       & > a {
-        padding: $gutter;
+        padding: 16px;
         display: block;
         color: $_discrete;
         @include media ($tablet, $mobile) {
           display: inline-block;
-          height: 40px;
-          width: 56px;
+          height: 24px;
+          width: 46px;
           overflow: hidden;
         }
       }
       @include media ($tablet, $mobile) {
-        height: 55px;
+        height: 46px;
       }
       &.active {
         background: $_background;

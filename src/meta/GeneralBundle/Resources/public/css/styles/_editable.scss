@@ -18,6 +18,10 @@
   }
 }
 
+.thinking > i {
+  color: $_secondary;
+}
+
 // "Go to link" divs when we click on links 
 .link_choice {
   position: absolute;

@@ -397,6 +397,8 @@ $(document).ready(function() {
             target = $(this).closest('ul');
             if (e.which === 13) { // Trigger a save with the Return key for tags
                 e.preventDefault();
+                target.find('.thinking').show();
+                target.find('.cancel').hide();
                 name = target.attr("data-name");
                 key = $(this).val();
                 url = target.attr("data-url");
@@ -409,6 +411,8 @@ $(document).ready(function() {
                 }, function(data) {
                     target.children().last().before(data.tag);
                     target.find('li > span > input').val("").focus(); // to allow multiple tags entry
+                    target.find('.thinking').hide();
+                    target.find('.cancel').show();
                 });
             } else if (e.keyCode === 27) {
                 displayInput(target.find('li > span > a'), false);

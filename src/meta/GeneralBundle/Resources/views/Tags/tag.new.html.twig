@@ -1,0 +1,15 @@
+{% spaceless %}
+
+  {% if canEdit %}
+
+  <li><a href="#" class="add"><i class="fa fa-plus"></i></a>
+    <span style="display: none;">
+      <a href="#" class="cancel"><i class="fa fa-times"></i></a>
+      <a href="#" class="thinking" style="display: none;"><i class="fa fa-cog fa-spin"></i></a>
+      <input type="text" id="tag" placeholder="{{ "tags.emptyText"|trans }}"/>
+    </span>
+  </li>
+
+  {% endif %}
+
+{% endspaceless %}
