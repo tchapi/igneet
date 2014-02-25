@@ -5,6 +5,9 @@
 .community div { 
   & > section {
     @include span-columns(9 of 12);
+    @include media($mobile) {
+      @include fill-parent();
+    }
   }
   & > div.aside {
     @include span-columns(3 of 12);
@@ -12,6 +15,9 @@
     border-left: 1px dashed $_discrete;
     padding-left: $gutter;
     margin-top: 20px;
+    @include media($mobile) {
+      display: none;
+    }
     & > div > a.button {
       width: 100%;
       &:first-child {
@@ -53,12 +59,18 @@
         list-style: none;
         margin: 0;
         padding: 0;
-        & > li em {
-          display: block;
-          font-family: 'gotham_medium';
-          font-size: 0.8em;
-          margin-bottom: 10px;
-          vertical-align: baseline;
+        & > li {
+          & >em {
+            display: block;
+            font-family: 'gotham_medium';
+            font-size: 0.8em;
+            margin-bottom: 10px;
+            vertical-align: baseline;
+          }
+          & > a {
+            display: block;
+            @include ellipsis($column*3);
+          }
         }
       }
     }

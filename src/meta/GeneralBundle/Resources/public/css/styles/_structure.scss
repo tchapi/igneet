@@ -5,6 +5,7 @@
 body {
   background-color: $_background;
   font-family: 'gotham_book', 'Arial', sans-serif;
+  overflow-x: hidden; /* Dirty, accounts for the menu-active on tablet and mobile */
 
   footer {
     text-align: center;
@@ -47,10 +48,12 @@ body {
 
       &.menu-push {
         margin-top: $menu-height + $content-margin; 
-        @include media($tablet, $mobile) { 
-          margin-top: 0;
-        }
         background: $_container;
+        @include media($tablet, $mobile) { 
+          height: 100%;
+          margin-top: 0;
+          padding-top: $menu-height;
+        }
       }
     }
   }
@@ -62,7 +65,9 @@ body {
       &.menu-push { 
         margin-top: $menu-height;
         @include media($tablet, $mobile) { 
+          height: 100%;
           margin-top: 0;
+          padding-top: $menu-height;
         }
       }
       & > .wrapper { /* The grid is associated to the children elements instead of content-container */
@@ -105,8 +110,7 @@ body {
 
     .content-container{
       @include transition (left 300ms ease-in-out);
-      position: fixed;
-      overflow-y: scroll;
+      position: absolute;
       top: 0px;
       left: 0px;
       width: 100%;
@@ -115,7 +119,9 @@ body {
 
     /* Responsive */
     &.menu-active menu { 
-      position: inherit;
+      position: fixed;
+      overflow-y: auto;
+      overflow-x: hidden;
       opacity: 1;
       left: 0px;
     }
