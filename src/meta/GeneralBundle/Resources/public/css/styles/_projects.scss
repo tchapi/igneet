@@ -244,6 +244,7 @@ section > .jump {
     padding: 0;
     & > li {
       border-top: 1px solid $_sensible;
+      height: 40px; /* Ensures iOs compatibility and avoid "stepdown" */
       &:hover, &.active {
         background: white;
       }
@@ -429,6 +430,12 @@ section > .jump {
     }
     & > .item {
       @include span-columns (10 of 12);
+      @include media($tablet) {
+        @include span-columns (3 of 4);
+      }
+      @include media($mobile) {
+        @include fill-parent();
+      }
       padding: 10px;
       & > .date {
         text-transform: uppercase;
@@ -442,6 +449,14 @@ section > .jump {
     }
     & > .actions {
       @include span-columns(1 of 12);
+      @include media($tablet) {
+        @include span-columns (1 of 4);
+        @include omega;
+        text-align: center;
+      }
+      @include media($mobile) {
+        display: none;
+      }
       padding: 20px 0px;
       text-align: right;
       & > a.delete {
@@ -450,6 +465,9 @@ section > .jump {
     }
     & > .instant {
       @include span-columns(1 of 12);
+      @include media($tablet, $mobile) {
+        display: none;
+      }
       padding: 20px 10px;
       @include omega;
       cursor: pointer;
