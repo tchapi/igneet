@@ -50,7 +50,7 @@ body {
         margin-top: $menu-height + $content-margin; 
         background: $_container;
         @include media($tablet, $mobile) { 
-          height: 100%;
+          min-height: 100%;
           margin-top: 0;
           padding-top: $menu-height;
         }
@@ -65,7 +65,7 @@ body {
       &.menu-push { 
         margin-top: $menu-height;
         @include media($tablet, $mobile) { 
-          height: 100%;
+          min-height: 100%;
           margin-top: 0;
           padding-top: $menu-height;
         }
@@ -114,7 +114,7 @@ body {
       top: 0px;
       left: 0px;
       width: 100%;
-      height: 100%;
+      min-height: 100%;
     }
 
     /* Responsive */

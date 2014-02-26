@@ -8,6 +8,9 @@ NEXT :
 
  ☐ PAGE RESOURCES / PROJET : click sur un tag a.remove : marche plus sur RESOURCES
 
+ ☐ config avec numéro de version
+    + créer une commande bumpVersion qui écrit dans config en remplacant un placeholder ou un commentaire ?
+
  ☐ Créer ta communauté --> inviter des gens
     raconter les ecrans => Benjy
           Écran d'accueil à la première connexion :
