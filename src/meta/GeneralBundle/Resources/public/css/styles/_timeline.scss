@@ -112,6 +112,9 @@ ul.timeline {
       position: absolute;
       right: $gutter;
       top: $gutter/2;
+      @include media($mobile) {
+        right: 0px;
+      }
       & > .validation > .validate-trigger + span {
         display: inline-block;
         margin: 0 10px;
@@ -122,6 +125,9 @@ ul.timeline {
         padding-left: 10px;
         border-left: 1px solid $_sensible;
         color: $_sensible;
+        @include media($mobile) {
+          display: none;
+        }
       }
     }
     & > .text {
@@ -170,6 +176,10 @@ ul.timeline {
       margin: 0;
       padding: $gutter*1.5 $gutter;
       border-top: 2px solid $_sensible-dark;
+      @include media($tablet, $mobile) {
+        min-height: $comment_box_height + $gutter*1.5;
+        padding: $gutter $gutter/2;
+      }
     }
   }
 }

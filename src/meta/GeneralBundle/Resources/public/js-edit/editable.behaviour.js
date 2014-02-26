@@ -2,6 +2,8 @@
 /*jslint browser: true*/
 $(document).ready(function() {
 
+    var fireEvent = ("ontouchend" in document)?'touchend':'click';
+
     // Define: Linkify plugin from stackoverflow
     (function($) {
 
@@ -111,10 +113,13 @@ $(document).ready(function() {
         }
     });
 
+    
     // Links in list items and wiki pages
-    $(document).on('click', "[contenteditable=true][rich=full], [contenteditable=true][rich=true], [contenteditable=true][rich=links]", function(e) {
+    $(document).on(fireEvent, "[contenteditable=true][rich=full], [contenteditable=true][rich=true], [contenteditable=true][rich=links]", function(e) {
 
         if ($(e.target).closest('a').length) {
+            //e.preventDefault();
+            $(this).focus();
             var offsets = $(e.target).offset();
             if (e.target.getAttribute('data-provider')) {
                 // Resource link
@@ -141,10 +146,11 @@ $(document).ready(function() {
             // Remove everything before putting in the new one
             $('.link_choice').remove();
             $(document.body).append(div);
+            
         }
 
     });
-    $(document).on('click', function(e) {
+    $(document).on(fireEvent, function(e) {
         if (e.target.className !== "link_choice" && $(e.target).closest('a').length === 0) {
             $('.link_choice').remove();
         }
@@ -395,6 +401,8 @@ $(document).ready(function() {
     $("ul[contenteditable=list][data-name=tags] > li > span > input")
         .on("keyup", function(e) {
             target = $(this).closest('ul');
+            target.find('.thinking').hide();
+            target.find('.cancel').show();
             if (e.which === 13) { // Trigger a save with the Return key for tags
                 e.preventDefault();
                 target.find('.thinking').show();
@@ -440,7 +448,7 @@ $(document).ready(function() {
     /* Delete behaviours
      * to catch and two-stepize deletion
      */
-    $('a[data-confirm]').click(function(ev) {
+    $('a[data-confirm]').on('click', function(ev) {
 
         var href = $(this).attr('href');
         var text = $(this).attr('data-confirm') || Translator.trans('alert.please.confirm');

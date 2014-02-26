@@ -2,6 +2,7 @@
 /*jslint browser: true*/
 $(document).ready(function() {
 
+    var fireEvent = ("ontouchend" in document)?'touchend':'click';
     var list = document.querySelector('ul.slip');
 
     if (list === null) {
@@ -92,7 +93,7 @@ $(document).ready(function() {
     };
 
     // delete item
-    $(document).on('click', "ul.slip > li > .actions > a.delete", function(e) {
+    $(document).on(fireEvent, "ul.slip > li > .actions > a.delete", function(e) {
         var li = $(this).closest('li'),
             id = $(this).parents('ul').attr('data-id'),
             url = $(this).attr("data-url");
@@ -107,7 +108,7 @@ $(document).ready(function() {
     });
 
     // toggle item
-    $(document).on('click', "ul.slip > li > .actions > a.toggle", function() {
+    $(document).on(fireEvent, "ul.slip > li > .actions > a.toggle", function() {
         var li = $(this).closest('li'),
             id = $(this).parents('ul').attr('data-id'),
             url = $(this).attr("data-url");

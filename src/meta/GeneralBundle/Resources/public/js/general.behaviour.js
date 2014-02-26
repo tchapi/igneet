@@ -7,7 +7,8 @@ $(document).ready(function() {
      */
     var $menu_trigger = $(".menu-trigger");
     if ($menu_trigger !== undefined) {
-        $menu_trigger.on('click', function() {
+        $menu_trigger.on('click', function(e) {
+            e.preventDefault();
             if ($("body").hasClass('menu-active')) {
                 $("body").removeClass('menu-active');
             } else {

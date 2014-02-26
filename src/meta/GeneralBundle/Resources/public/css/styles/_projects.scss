@@ -236,6 +236,7 @@ section > .jump {
   & > a.toggle {
     @include transition (transform 500ms ease-out);
     right: 10px;
+    z-index: 10;
   }
   & ul {
     width: 100%;
@@ -335,7 +336,13 @@ section > .jump {
   margin-bottom: 10px;
   font-size: 1.8em;
   @include media($tablet, $mobile) {
-    margin-left: 40px;
+    left: 40px;
+    position: relative;
+  }
+}
+@include media($tablet, $mobile) {
+  .tree.open ~ .label-title {
+    left: 0px;
   }
 }
 
