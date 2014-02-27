@@ -245,6 +245,7 @@ section > .jump {
     padding: 0;
     & > li {
       border-top: 1px solid $_sensible;
+      min-height: 40px; /* Ensures iOs compatibility and avoid "stepdown" */
       &:hover, &.active {
         background: white;
       }
@@ -285,6 +286,10 @@ section > .jump {
       }
       & > .actions, & > .dd-handle {
         float: right;
+        @include media ($mobile){
+          position: absolute;
+          right: 6px;
+        }
         & > a, & > i {
           cursor: pointer;
           width: 20px;
@@ -294,6 +299,11 @@ section > .jump {
           &:hover { color: $_secondary; }
         }
         & > i.muted { cursor: not-allowed; color: $_sensible; }
+      }
+      & > .actions {
+        @include media ($mobile){
+          right: 28px;
+        }
       }
       & > i {
         float: right;
