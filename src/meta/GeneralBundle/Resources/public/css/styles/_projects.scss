@@ -442,6 +442,7 @@ section > .jump {
       }
       @include media($mobile) {
         @include fill-parent();
+        padding-right: 70px;
       }
       padding: 10px;
       & > .date {
@@ -461,8 +462,10 @@ section > .jump {
         @include omega;
         text-align: center;
       }
-      @include media($mobile) {
-        display: none;
+      @include media($mobile){
+        position: absolute;
+        right: 0;
+        float: none;
       }
       padding: 20px 0px;
       text-align: right;
