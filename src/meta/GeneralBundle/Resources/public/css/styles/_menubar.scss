@@ -48,7 +48,7 @@ nav[role=mobile]{
   background-color: $_menu-background;
   border-bottom: 1px solid $_menu_border;
   box-shadow: 0 0 3px $_menu-background;
-  z-index: 3;
+  z-index: 20;
   position: fixed;
   top: 0;
 
