@@ -245,7 +245,6 @@ section > .jump {
     padding: 0;
     & > li {
       border-top: 1px solid $_sensible;
-      height: 40px; /* Ensures iOs compatibility and avoid "stepdown" */
       &:hover, &.active {
         background: white;
       }
