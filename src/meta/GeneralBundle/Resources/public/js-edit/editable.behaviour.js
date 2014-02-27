@@ -403,7 +403,7 @@ $(document).ready(function() {
             target = $(this).closest('ul');
             target.find('.thinking').hide();
             target.find('.cancel').show();
-            if (e.which === 13) { // Trigger a save with the Return key for tags
+            if (e.which === 13 && $.trim($(this).val()) != "" ) { // Trigger a save with the Return key for tags
                 e.preventDefault();
                 target.find('.thinking').show();
                 target.find('.cancel').hide();
