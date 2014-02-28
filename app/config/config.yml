@@ -52,7 +52,7 @@ twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
     globals:
-        current_version: "v2.0-8e0c69e"
+        current_version: "CURRENT_VERSION"
         ga_tracker_id: "%ga_tracker_id%"
         mailer_from: "%mailer_from%"
         mailer_contact: "%mailer_contact%"

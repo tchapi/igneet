@@ -231,6 +231,7 @@ class ResourceController extends BaseController
         $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => true));
 
         $response = null;
+        $error = null;
 
         if ($this->base != false) {
 
@@ -279,7 +280,7 @@ class ResourceController extends BaseController
                         
                         if (preg_match( $pattern, $newUrl ) != 1 ) {
                         
-                            $response = array('message' => $this->get('translator')->trans('project.resources.not.valid.url'));
+                            $error = $this->get('translator')->trans('project.resources.not.valid.url');
                         
                         } else {
                         
@@ -298,7 +299,7 @@ class ResourceController extends BaseController
 
                         $uploadedFile = $request->files->get('value', null, true);
 
-                        if (null !==$uploadedFile) {
+                        if (null !== $uploadedFile) {
                             
                             $resource->setFile($uploadedFile);
                             $resource->setLatestVersionUploadedAt(new \DateTime('now'));
@@ -313,11 +314,11 @@ class ResourceController extends BaseController
                                 $resource->setProvider($guess['provider']);
 
                             $objectHasBeenModified = true;
-                            $response = array('redirect' => $this->generateUrl('p_show_project_list_resources', array('uid' => $uid)));
+                            $needsRedirect = true;
        
                         } else {
     
-                            $response = array('message' => $this->get('translator')->trans('project.resources.error.uploading'));
+                            $error = $this->get('translator')->trans('project.resources.error.uploading');
                         
                         }
 
@@ -343,7 +344,7 @@ class ResourceController extends BaseController
                             $response = array('tag' => $this->renderView('metaGeneralBundle:Tags:tag.html.twig', array( 'tag' => $newTag, 'canEdit' => true)));
                             $objectHasBeenModified = true;
                         } else {
-                            $response = array('message' => $this->get('translator')->trans('project.resources.tag.already'));
+                            $error = $this->get('translator')->trans('project.resources.tag.already');
                         }
 
                         break;
@@ -360,17 +361,15 @@ class ResourceController extends BaseController
 
                     $logService = $this->container->get('logService');
                     $logService->log($this->getUser(), 'user_update_resource', $this->base['project'], array( 'resource' => array( 'logName' => $resource->getLogName(), 'identifier' => $resource->getId()) ) );
-                
-                    return new Response(json_encode($response), 200, array('Content-Type'=>'application/json'));
 
                 } elseif (count($errors) > 0) {
 
-                    $response = array('message' => $this->get('translator')->trans($errors[0]->getMessage()));
+                    $error = $this->get('translator')->trans($errors[0]->getMessage());
 
                 } else {
                     
                     if ($response == null) {
-                        $response = array('message' => $this->get('translator')->trans('unnecessary.request', array(), 'errors'));
+                        $error = $this->get('translator')->trans('unnecessary.request', array(), 'errors');
                     }
 
                 }
@@ -378,8 +377,27 @@ class ResourceController extends BaseController
             }
         }
 
-        return new Response(json_encode($response?$response:array('message' => $this->get('translator')->trans('invalid.request', array(), 'errors'))), 406, array('Content-Type'=>'application/json'));
+        // Wraps up and either return a response or redirect
+        if (isset($needsRedirect) && $needsRedirect) {
 
+            if (!is_null($error)) {
+                $this->get('session')->getFlashBag()->add(
+                    'error',
+                    $error
+                );
+            }
+
+            return $this->redirect($this->generateUrl('p_show_project_resource', array('uid' => $uid, 'resource_uid' => $resource_uid)));
+
+        } else {
+        
+            if (!is_null($error)) {
+                return new Response(json_encode(array('message' => $error)), 406, array('Content-Type'=>'application/json'));
+            }
+
+            return new Response(json_encode($response), 200, array('Content-Type'=>'application/json'));
+        }
+        
     }
 
     /*
