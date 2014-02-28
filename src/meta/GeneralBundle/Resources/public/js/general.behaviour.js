@@ -108,12 +108,14 @@ $(document).ready(function() {
      * Resources pages : see details
      */
     $('ul.resources > li').on('click', function(e) {
-        e.preventDefault();
-        _self = $(this).hasClass("detailed");
-        $('.detailed').removeClass('detailed');
-        if (!_self) $(this).toggleClass('detailed');
-    }).children(".details, a").click(function(e) {
-        e.stopPropagation();
+        if($(e.target).parents('.details').length === 0) { // Make sure we're not bubbling too much
+            e.preventDefault();
+            _self = $(this).hasClass("detailed");
+            $('.detailed').removeClass('detailed');
+            if (!_self) $(this).toggleClass('detailed');
+        }
+    }).children("a").click(function(e){
+        e.stopPropagation(); // Download and view buttons
     });
 
     // Scroll to resource
