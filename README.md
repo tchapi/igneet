@@ -9,26 +9,11 @@ Igneet
 Libraries and plugins used
 ===
 
-### imgAreaSelect jQuery plugin - http://odyniec.net/projects/imgareaselect/
+### jCrop jQuery plugin - http://deepliquid.com/projects/Jcrop/
 
-Copyright (c) 2008-2013 Michal Wojciechowski (odyniec.net)
+© 2008-2010 Kelly Hallman
 
-Dual licensed under the MIT and GPL licenses.
-
-
-- - - 
-
-### Pagedown-boostrap - https://github.com/tchapi/pagedown-bootstrap
-
-A javascript port of Markdown, as used on Stack Overflow and the rest of Stack Exchange network.
-
-Largely based on showdown.js by John Fraser (Attacklab). Original Markdown Copyright (c) 2004-2005 John Gruber - http://daringfireball.net/projects/markdown/
-
-Original Showdown code copyright (c) 2007 John Fraser
-
- - Modifications and bugfixes (c) 2009 Dana Robinson
- - Modifications and bugfixes (c) 2009-2011 Stack Exchange Inc.
- - Modifications and bugfixes (c) 2012-2013 tchap (https://github.com/tchapi)
+Free software released under MIT License
 
 - - - 
 
@@ -51,14 +36,6 @@ Contributions by tchapi (https://github.com/tchapi) - https://github.com/tchapi/
 Dual-licensed under the BSD or MIT licenses
 
 - - -
-
-### D3.js by Michael Bostock - http://d3js.org/
-
-Copyright (c) 2013, Michael Bostock
-
-All rights reserved.
-
-- - - 
 
 ### Linecons UI icons - http://designmodo.com/linecons-free
 

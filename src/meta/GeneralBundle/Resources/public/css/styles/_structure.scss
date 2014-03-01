@@ -52,7 +52,7 @@ body {
         @include media($tablet, $mobile) { 
           min-height: 100%;
           margin-top: 0;
-          padding-top: $menu-height;
+          padding-top: 0;
         }
       }
     }
@@ -67,7 +67,7 @@ body {
         @include media($tablet, $mobile) { 
           min-height: 100%;
           margin-top: 0;
-          padding-top: $menu-height;
+          padding-top: 0;
         }
       }
       & > .wrapper { /* The grid is associated to the children elements instead of content-container */

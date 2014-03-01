@@ -22,11 +22,12 @@
 <form action="{{ path('g_choose_file', { 'targetAsBase64' : targetAsBase64, 'token': token  }) }}" method="post" enctype="multipart/form-data">
   <section>
     <div class="content-full">
+      <img id="target" src="{{ image }}" style="display:none;"/>
+      <div id="loading" class="jcrop-loading">
+        <i class="fa fa-cog fa-spin fa-3x"></i>
+      </div>
       <input type="hidden" name="name" id="name" value="picture" />
       <input type="hidden" name="value" id="value" value="{{ image }}" />
-      <div class="imageCropWrapper">
-        <img id="target" src="{{ image }}"/>
-      </div>
       <input type="hidden" id="x" name="x" value="0"/>
       <input type="hidden" id="y" name="y" value="0" />
       <input type="hidden" id="w" name="w" value="150" />
