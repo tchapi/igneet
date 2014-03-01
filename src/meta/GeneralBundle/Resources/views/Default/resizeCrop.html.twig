@@ -4,8 +4,8 @@
 
 {% block javascripts %}
   {{ parent() }}
-    {% javascripts '@metaGeneralBundle/Resources/public/js-edit/jquery-imgareaselect.js'
-                   '@metaGeneralBundle/Resources/public/js-edit/imgareaselect.behaviour.js' 
+    {% javascripts '@metaGeneralBundle/Resources/public/js-edit/jcrop.js'
+                   '@metaGeneralBundle/Resources/public/js-edit/jcrop.behaviour.js' 
             filter='?yui_js' %}
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
