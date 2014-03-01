@@ -15,6 +15,8 @@ $(document).ready(function() {
         $('#h').val(Math.abs(c.y2 - c.y));
     }
 
+    var jcrop_api;
+
     $('#target').Jcrop({
         allowSelect: false,
         boxWidth: cW,
@@ -26,6 +28,8 @@ $(document).ready(function() {
         onChange: showCoords
     }, function() {
         $("#loading").hide();
+        jcrop_api = this;
+        jcrop_api.setSelect([0, 0, min, min]);
     });
 
 });

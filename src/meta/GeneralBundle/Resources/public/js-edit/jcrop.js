@@ -231,7 +231,7 @@
         return false;
       }
       if (!options.allowSelect) {
-        return false;
+        return true;
       }
       btndown = true;
       docOffset = getPos($img);
