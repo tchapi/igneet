@@ -48,7 +48,7 @@ nav[role=mobile]{
   background-color: $_menu-background;
   border-bottom: 1px solid $_menu_border;
   box-shadow: 0 0 3px $_menu-background;
-  z-index: 20;
+  z-index: 700; /* jcrop is using 600 .. */
   position: fixed;
   top: 0;
 
@@ -101,7 +101,7 @@ nav[role=mobile]{
     background-color: $_menu-background;
     border-bottom: 1px solid $_menu_border;
     box-shadow: 0 0 3px $_menu-background;
-    z-index: 3;
+    z-index: 700; /* for jcrop */
 
     & a { color: $_text-dark; vertical-align: top; } // All links are in color $_text-dark in the menu
 
