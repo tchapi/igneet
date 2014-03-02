@@ -18,7 +18,7 @@ $(document).ready(function() {
     var jcrop_api;
 
     $('#target').Jcrop({
-        allowSelect: false,
+        allowSelect: false, /* For mobile compatibility */
         boxWidth: cW,
         boxHeight: cW,
         aspectRatio: 1,
