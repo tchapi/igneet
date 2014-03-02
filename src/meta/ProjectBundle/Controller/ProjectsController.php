@@ -103,11 +103,10 @@ class ProjectsController extends Controller
             // Get statuses names
             $map_status = $this->container->getParameter('project_statuses');
             $translator = $this->get('translator');
-            $statuses_names = array_map( 
-                function($status_code) use ($map_status, $translator) { return $translator->trans("project.info.status." . $map_status[$status_code]); }, 
-                $statuses
-            );
-
+            $statuses_names = array();
+            foreach ($statuses as $key) {
+                $statuses_names[$key] = $translator->trans("project.info.status." . $map_status[$key]);
+            }
             return $this->render('metaProjectBundle:Projects:list.html.twig', array('projects' => $projects, 'totalProjects' => $totalProjects, 'sort' => $sort, 'userIsGuest' => $userIsGuest, 'statuses' => $statuses_names ));
         
         }

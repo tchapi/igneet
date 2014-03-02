@@ -16,7 +16,7 @@ project:
     cannot.reset: "Vous n'avez pas les droits pour réinitialiser l'image de ce projet."
   list:
     all: "Voir tous les projets"
-    closed: "Ne voir que les projets fermés"
+    archived: "Ne voir que les projets archivés"
     sleeping: "Ne voir que les projets en attente"
     name: "Nom"
     created: "Créé le"
@@ -93,8 +93,7 @@ project:
       title: "Statut"
       active: "Actif"
       sleeping: "Mis en attente"
-      launched: "Lancé"
-      abandonned: "Abandonné"
+      archived: "Archivé"
     statusHelp: "Où en est ce projet ?"
   lists:
     title: "Listes"

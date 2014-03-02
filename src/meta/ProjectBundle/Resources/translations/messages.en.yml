@@ -16,7 +16,7 @@ project:
     cannot.reset: "You cannot reset the picture for this project."
   list:
     all: "Show all projects"
-    closed: "Only show closed projects"
+    archived: "Only show archived projects"
     sleeping: "Only show sleeping projects"
     name: "Name"
     created: "Created"
@@ -93,8 +93,7 @@ project:
       title: "Status"
       active: "Active"
       sleeping: "Sleeping"
-      launched: "Launched"
-      abandonned: "Abandonned"
+      archived: "Archived"
     statusHelp: "What is the status of this project?"
   lists:
     title: "Lists"

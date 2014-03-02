@@ -31,15 +31,13 @@
       {% endif %}
     </h4>
 
-    {% if statuses|length < 4 %}
-      <em>{{ "project.listHelp.statuses"|trans({'%statuses%': statuses|join(', ') }) }}</em>
-    {% endif %}
-
+    <em>{{ "project.listHelp.statuses"|trans({'%statuses%': statuses|join(', ') }) }}</em>
+    
     <p>
     {% if not userIsGuest %}<a href="{{ path('p_new_project') }}" class="button"><i class="fa fa-pencil"></i> {{ "project.new"|trans }}</a>{% endif %}
-    {% if statuses|length == 4 %}
+    {% if statuses == [0] %} {# active projects #}
       <a href="{{ path('p_list_sleeping_projects') }}" class="button button-neutral">{{ "project.list.sleeping"|trans }}</a>
-      <a href="{{ path('p_list_closed_projects') }}" class="button button-neutral"><i class="fa fa-archive"></i> {{ "project.list.closed"|trans }}</a>
+      <a href="{{ path('p_list_archived_projects') }}" class="button button-neutral"><i class="fa fa-archive"></i> {{ "project.list.archived"|trans }}</a>
     {% else %}
       <a href="{{ path('p_list_projects') }}" class="button button-success">{{ "project.list.all"|trans }}</a>
     {% endif %}

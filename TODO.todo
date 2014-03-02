@@ -6,9 +6,6 @@ NEXT :
  ☐ Erreurs dans les formulaires de création : elles sont affichées n'importe comment a priori (A vérifier : déjà fixed ?)
  ☐ faire des templates pour les ul.sortable et refresh en ajax quand on fait "new"
 
- ☐ config avec numéro de version
-    + créer une commande bumpVersion qui écrit dans config en remplacant un placeholder ou un commentaire ?
-
  ☐ Créer ta communauté --> inviter des gens
     raconter les ecrans => Benjy
           Écran d'accueil à la première connexion :
