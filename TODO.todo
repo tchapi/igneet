@@ -64,7 +64,6 @@ Home de community (penser au private space !!)
 Todo - entité "CommonList":
 
  ☐ Faire un routing pour les listItems qui 'hightlight' le bon list item
- ☐ listes : reconnaitre les urls en mettre un lien pour y aller directement a coté ;)
 
 Todo - Search:
 
@@ -73,5 +72,4 @@ Todo - Search:
 
 Site statique:
 
- ☐ Page credits avec les attributions des icones, librairies JS, etc
  ☐ Page Licence CC avec explication que tous les contenus sont soumis au copyright etc ...

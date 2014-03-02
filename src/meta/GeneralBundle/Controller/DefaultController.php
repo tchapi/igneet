@@ -330,4 +330,11 @@ class DefaultController extends Controller
         }
 
     }
+
+    public function showCreditsAction() 
+    {
+
+        return $this->render('metaGeneralBundle:Default:credits.html.twig');
+
+    }
 }

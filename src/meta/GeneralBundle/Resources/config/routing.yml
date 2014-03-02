@@ -70,6 +70,10 @@ g_switch_language:
 
 # General
 
+g_credits:
+    pattern: /credits
+    defaults: { _controller: metaGeneralBundle:Default:showCredits }
+
 g_choose_file:
     pattern:  /file/upload/{targetAsBase64}
     defaults: { _controller: metaGeneralBundle:Default:chooseFile }

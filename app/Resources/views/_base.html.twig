@@ -61,7 +61,7 @@ filter='?yui_css,cssrewrite' output='css/min/base.css' %}
 
     <footer>
       <!-- {{ current_version }} -->
-    <em>{{ current_version|split('/')[0] }}</em> | &copy; copyright <a href="https://about.me/tchap">tchap</a> 2012-{{ "now"|date('Y') }} | <a href="http://igneet.com/terms">{{ "terms"|trans }}</a>
+    <em>{{ current_version|split('/')[0] }}</em> | &copy; copyright <a href="https://about.me/tchap">tchap</a> 2012-{{ "now"|date('Y') }} | <a href="{{ path('g_credits') }}">{{ "credits"|trans }}</a> | <a href="http://igneet.com/terms">{{ "terms"|trans }}</a>
     </footer>
 
 {% if uservoice_enabled %}

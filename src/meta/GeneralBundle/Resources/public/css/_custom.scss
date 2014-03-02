@@ -53,6 +53,22 @@ em { color: $_muted; }
 .community-background-entreprise { background: $_green; color: white; }
 .community-background-expired { background: $_red; color: white; }
 
+.credits {
+  h2 {
+    margin: 50px 0 10px 0;
+  }
+  .license {
+    background: $_blue;
+    color: white;
+    border-radius: 3px;
+    padding: 3px;
+    font-size: 0.8em;
+  }
+  .author {
+    font-size: 0.8em;
+  }
+}
+
 /* Announcements */
 .announcements {
   margin: 9px -10px 0;

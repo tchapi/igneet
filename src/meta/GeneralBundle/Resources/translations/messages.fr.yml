@@ -145,26 +145,6 @@ alert:
   changes.saved.at: "Modifications sauvegardées à %date%"
 # Shortcode
 shortcode.help: "Afficher/Masquer le code court de cette page"
-# Markdown editor
-markdown:
-  optional.title: "titre optionnel"
-  editing.help: "Aide sur le Markdown"
-  bold: "Gras"
-  italic: "Italique"
-  link: "Lien"
-  blockquote: "Citation"
-  code.sample: "Code"
-  image: "Image"
-  list:
-    numbered: "Liste numérotée"
-    bulletted: "Liste simple"
-    item: "Élement de liste"
-  heading: "Titre"
-  rule: "Séparateur horizontal"
-  undo: "Annuler"
-  redo: "Refaire"
-  image.placeholder: "entrez la description de l'image ici"
-  image.insert: "Insérer une image"
-  link.placeholder: "eentrez la description du lien ici"
-  link.insert: "Insérer un lien"
-  code.enter: "entrez du code ici"
+# General
+credits: "Crédits"
+creditsHelp: "Mecri à tous ces projets sans lesquels construire igneet n'aurait pas été possible."
