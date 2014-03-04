@@ -103,7 +103,7 @@ i_unwatch_idea:
 
 ## INFO
 i_show_idea_info:
-    pattern:  /idea/0{uid}
+    pattern:  /idea/0{uid}/info
     defaults: { _controller: metaIdeaBundle:Idea:show }
     requirements:
         uid: "[0-9a-zA-Z]*"
