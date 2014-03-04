@@ -790,16 +790,20 @@ class IdeaController extends Controller
 
     /*
      * Authenticated user now watches the idea
+     * NEEDS JSON
      */
     public function watchAction(Request $request, $uid)
     {
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('watch', $request->get('token'))) {
-            $this->get('session')->getFlashBag()->add(
-                'error',
-                $this->get('translator')->trans('invalid.token', array(), 'errors')
+            return new Response(
+                json_encode(
+                    array(
+                        'message' => $this->get('translator')->trans('invalid.token', array(), 'errors'))
+                    ), 
+                400, 
+                array('Content-Type'=>'application/json')
             );
-            return $this->redirect($this->generateUrl('i_show_idea', array('uid' => $uid)));
         }
 
         $authenticatedUser = $this->getUser();
@@ -818,44 +822,43 @@ class IdeaController extends Controller
 
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
+                
+                $rendered = $this->renderView('metaIdeaBundle:Partials:watchers.html.twig', array('idea' => $this->base['idea'], 'isAlreadyWatching' => true));
 
-                $this->get('session')->getFlashBag()->add(
-                    'success',
-                    $this->get('translator')->trans('idea.now.watching', array('%idea%' => $this->base['idea']->getName()))
-                );
+                $response = array( 'div' => $rendered, 'message' => $this->get('translator')->trans('idea.now.watching', array('%idea%' => $this->base['idea']->getName())));
 
+                return new Response(json_encode($response), 200, array('Content-Type'=>'application/json'));
+                
             } else {
 
-                $this->get('session')->getFlashBag()->add(
-                    'warning',
-                    $this->get('translator')->trans('idea.already.watching', array('%idea%' => $this->base['idea']->getName()))
-                );
+                $error = $this->get('translator')->trans('idea.already.watching', array('%idea%' => $this->base['idea']->getName()));
 
             }
 
         } else {
 
-           $this->get('session')->getFlashBag()->add(
-                'error',
-                $this->get('translator')->trans('idea.cannot.watch')
-            ); 
-
+           $error = $this->get('translator')->trans('idea.cannot.watch');
         }
 
-        return $this->redirect($this->generateUrl('i_show_idea', array('uid' => $uid)));
+        return new Response(json_encode(array('message' => $error)), 406, array('Content-Type'=>'application/json'));
     }
 
     /*
      * Authenticated user now unwatches the idea
+     * NEEDS JSON
      */
     public function unwatchAction(Request $request, $uid)
     {
+
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('unwatch', $request->get('token'))) {
-            $this->get('session')->getFlashBag()->add(
-                'error',
-                $this->get('translator')->trans('invalid.token', array(), 'errors')
+            return new Response(
+                json_encode(
+                    array(
+                        'message' => $this->get('translator')->trans('invalid.token', array(), 'errors'))
+                    ), 
+                400, 
+                array('Content-Type'=>'application/json')
             );
-            return $this->redirect($this->generateUrl('i_show_idea', array('uid' => $uid)));
         }
 
         $authenticatedUser = $this->getUser();
@@ -873,30 +876,25 @@ class IdeaController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
 
-                $this->get('session')->getFlashBag()->add(
-                    'success',
-                    $this->get('translator')->trans('idea.unwatching', array('%idea%' => $this->base['idea']->getName()))
-                );
+                $rendered = $this->renderView('metaIdeaBundle:Partials:watchers.html.twig', array('idea' => $this->base['idea'], 'isAlreadyWatching' => false));
 
+                $response = array( 'div' => $rendered, 'message' => $this->get('translator')->trans('idea.unwatching', array('%idea%' => $this->base['idea']->getName())));
+
+                return new Response(json_encode($response), 200, array('Content-Type'=>'application/json'));
+                
             } else {
 
-                $this->get('session')->getFlashBag()->add(
-                    'warning',
-                    $this->get('translator')->trans('idea.not.watching', array('%idea%' => $this->base['idea']->getName()))
-                );
-
+                $error = $this->get('translator')->trans('idea.not.watching', array('%idea%' => $this->base['idea']->getName()));
             }
 
         } else {
 
-           $this->get('session')->getFlashBag()->add(
-                'error',
-                $this->get('translator')->trans('idea.cannot.watch')
-            ); 
+           $error = $this->get('translator')->trans('idea.cannot.watch');
 
         }
 
-        return $this->redirect($this->generateUrl('i_show_idea', array('uid' => $uid)));
+        return new Response(json_encode(array('message' => $error)), 406, array('Content-Type'=>'application/json'));
+
     }
 
     /* ********************************************************************* */

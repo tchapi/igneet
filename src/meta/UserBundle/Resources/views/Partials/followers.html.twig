@@ -1,0 +1,12 @@
+{% if not canEdit %}
+<i class="fa fa-rss"></i> 
+<div class="followers{% if alreadyFollowing %} in{% endif %}">{{ user.countFollowers }}</div>
+
+{% if alreadyFollowing %}
+  {{ "user.following"|trans({'%user%': user.firstName}) }} <a class="follow" href="{{ path('u_unfollow_user', {'username': user.username, 'token': csrf_token('unfollowUser') }) }}">{{ "user.unfollow"|trans }}</a>
+{% else %}
+  {{ "user.not.following"|trans({'%user%': user.firstName}) }} <a class="follow" href="{{ path('u_follow_user', {'username': user.username, 'token': csrf_token('followUser') }) }}">{{ "user.follow"|trans }}</a>
+{% endif %}
+
+<i class="fa fa-cog fa-spin working" style="display: none;"></i>
+{% endif %}

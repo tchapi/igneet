@@ -5,4 +5,7 @@
 .watchers,
 .followers {
   @include count-badge(18px, "left", -10px, -7px);
+  &.in {
+    background: $_green;
+  }
 }

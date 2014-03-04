@@ -2,6 +2,7 @@
 /*jslint browser: true*/
 $(document).ready(function() {
 
+    /* Helper function for displaying alerts after $.post */
     window.process = function(data, type, defaultMessage) {
 
         if (data !== null) {
@@ -16,7 +17,7 @@ $(document).ready(function() {
         alertify.log(defaultMessage, type);
 
     };
-    
+
     /*
      * Responsive slide menu
      */
@@ -120,16 +121,36 @@ $(document).ready(function() {
     });
 
     /*
+     * Watching / unwatching
+     */
+    $(document).on('click', '.watch, .follow', function(e) {
+        e.preventDefault();
+        var _self = $(this);
+        _self.parent().find('.working').show();
+        $.post(_self.attr('href'))
+            .done(function(data) {
+                _self.parent().html(data.div);
+                process(data, "success", Translator.trans('changes.saved'));
+            })
+            .fail(function(xhr) {
+                process(xhr.responseJSON, "error", Translator.trans('alert.error.saving.changes'));
+            })
+            .always(function(){
+                _self.parent().find('.working').fadeOut();
+            });
+    });
+
+    /*
      * Resources pages : see details
      */
     $('ul.resources > li').on('click', function(e) {
-        if($(e.target).parents('.details').length === 0) { // Make sure we're not bubbling too much
+        if ($(e.target).parents('.details').length === 0) { // Make sure we're not bubbling too much
             e.preventDefault();
             _self = $(this).hasClass("detailed");
             $('.detailed').removeClass('detailed');
             if (!_self) $(this).toggleClass('detailed');
         }
-    }).children("a").click(function(e){
+    }).children("a").click(function(e) {
         e.stopPropagation(); // Download and view buttons
     });
 
@@ -143,7 +164,7 @@ $(document).ready(function() {
     // Announcements 
     $(".announcements .close").on('click', function(e) {
         var target = $(this).parent();
-        $.post(target.attr('data-url'), function(){
+        $.post(target.attr('data-url'), function() {
             target.fadeOut();
         });
         e.preventDefault();

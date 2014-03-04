@@ -46,11 +46,20 @@
       background: white;
       height: $column - $gutter;
       resize: none; 
-    }    
+    }  
+    & > span.working {
+      margin: 14px 0;
+      @include span-columns(1 of 12);
+      @include shift(9);
+      padding: 8px;
+      text-align: right;
+      @include media ($tablet, $mobile) {
+        display: none;
+      }
+    }  
     & > input[type=submit] {
       margin: 14px 0;
       @include span-columns(2 of 12);
-      @include shift(10);
       @include media ($tablet) {
         @include shift(0);
         @include span-columns(1 of 4);

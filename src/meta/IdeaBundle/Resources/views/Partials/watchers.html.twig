@@ -1,0 +1,9 @@
+<i class="fa fa-rss"></i> 
+<div class="watchers{% if isAlreadyWatching %} in{% endif %}">{{ idea.countWatchers }}</div>
+
+{% if isAlreadyWatching %}
+  {{ "idea.watching"|trans }} <a class="watch" href="{{ path('i_unwatch_idea', {'uid': idea.id|to_uid, 'token': csrf_token('unwatch') }) }}">{{ "idea.unwatch"|trans }}</a>
+{% else %}
+  {{ "idea.not.watching"|trans }} <a class="watch" href="{{ path('i_watch_idea', {'uid': idea.id|to_uid, 'token': csrf_token('watch') }) }}">{{ "idea.watch"|trans }}</a>
+{% endif %}
+<i class="fa fa-cog fa-spin working" style="display: none;"></i>

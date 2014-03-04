@@ -49,13 +49,7 @@
     </h4>
 
     <div>
-        <i class="fa fa-rss"></i> 
-        <div class="watchers">{{ base.idea.countWatchers }}</div>
-    {% if base.isAlreadyWatching %}
-        {{ "idea.watching"|trans }} <a href="{{ path('i_unwatch_idea', {'uid': base.idea.id|to_uid, 'token': csrf_token('unwatch') }) }}">{{ "idea.unwatch"|trans }}</a>
-    {% else %}
-        {{ "idea.not.watching"|trans }} <a href="{{ path('i_watch_idea', {'uid': base.idea.id|to_uid, 'token': csrf_token('watch') }) }}">{{ "idea.watch"|trans }}</a>
-    {% endif %}
+      {% include 'metaIdeaBundle:Partials:watchers.html.twig' with { 'idea' : base.idea, 'isAlreadyWatching' : base.isAlreadyWatching} %}
     </div>
 
   </div>

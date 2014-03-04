@@ -46,8 +46,6 @@ Complexe:
 
  ☐ Permettre l'import d'un dossier dropbox d'un projet automatiquement dans les ressources 
 
- ☐ Passer le watch/unwatch en Ajax
-
  ☐ Ajout de wikipage et de list : passer en ajax ? Et du coup faire des templates pour les morceaux de liste
 
  ☐ Pagination de la timeline

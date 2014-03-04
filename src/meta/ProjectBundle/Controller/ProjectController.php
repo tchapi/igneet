@@ -13,7 +13,8 @@ class ProjectController extends BaseController
     /*
      * Edit a project (via X-Editable)
      */
-    public function editAction(Request $request, $uid){
+    public function editAction(Request $request, $uid)
+    {
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('edit', $request->get('token'))) {
             return new Response(
@@ -330,16 +331,20 @@ class ProjectController extends BaseController
 
     /*
      * Authenticated user now watches the project
+     * NEEDS JSON
      */
     public function watchAction(Request $request, $uid)
     {
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('watch', $request->get('token'))) {
-            $this->get('session')->getFlashBag()->add(
-                'error',
-                $this->get('translator')->trans('invalid.token', array(), 'errors')
+            return new Response(
+                json_encode(
+                    array(
+                        'message' => $this->get('translator')->trans('invalid.token', array(), 'errors'))
+                    ), 
+                400, 
+                array('Content-Type'=>'application/json')
             );
-            return $this->redirect($this->generateUrl('p_show_project_info', array('uid' => $uid)));
         }
 
         $menu = $this->container->getParameter('project.menu');
@@ -359,42 +364,43 @@ class ProjectController extends BaseController
                 $logService = $this->container->get('logService');
                 $logService->log($authenticatedUser, 'user_watch_project', $this->base['project'], array());
 
-                $this->get('session')->getFlashBag()->add(
-                    'success',
-                    $this->get('translator')->trans('project.now.watching', array('%project%' => $this->base['project']->getName() ))
-                );
+                $rendered = $this->renderView('metaProjectBundle:Partials:watchers.html.twig', array('project' => $this->base['project'], 'isAlreadyWatching' => true));
+
+                $response = array( 'div' => $rendered, 'message' => $this->get('translator')->trans('project.now.watching', array('%project%' => $this->base['project']->getName())));
+
+                return new Response(json_encode($response), 200, array('Content-Type'=>'application/json'));
 
             } else {
 
-                $this->get('session')->getFlashBag()->add(
-                    'warning',
-                    $this->get('translator')->trans('project.already.watching', array('%project%' => $this->base['project']->getName() ))
-                );
+                $error = $this->get('translator')->trans('project.already.watching', array('%project%' => $this->base['project']->getName() ));
 
             }
 
         } else {
 
-            $this->get('session')->getFlashBag()->add(
-                'warning',
-                $this->get('translator')->trans('project.cannot.watch')
-            );
+            $error = $this->get('translator')->trans('project.cannot.watch');
+
         }
 
-        return $this->redirect($this->generateUrl('p_show_project_info', array('uid' => $uid)));
+        return new Response(json_encode(array('message' => $error)), 406, array('Content-Type'=>'application/json'));
     }
 
     /*
      * Authenticated user now unwatches the project
+     * NEEDS JSON
      */
     public function unwatchAction(Request $request, $uid)
     {
+
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('unwatch', $request->get('token'))) {
-            $this->get('session')->getFlashBag()->add(
-                'error',
-                $this->get('translator')->trans('invalid.token', array(), 'errors')
+            return new Response(
+                json_encode(
+                    array(
+                        'message' => $this->get('translator')->trans('invalid.token', array(), 'errors'))
+                    ), 
+                400, 
+                array('Content-Type'=>'application/json')
             );
-            return $this->redirect($this->generateUrl('p_show_project_info', array('uid' => $uid)));
         }
 
         $menu = $this->container->getParameter('project.menu');
@@ -411,29 +417,25 @@ class ProjectController extends BaseController
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
 
-                $this->get('session')->getFlashBag()->add(
-                    'success',
-                    $this->get('translator')->trans('project.unwatching', array('%project%' => $this->base['project']->getName() ))
-                );
+                $rendered = $this->renderView('metaProjectBundle:Partials:watchers.html.twig', array('project' => $this->base['project'], 'isAlreadyWatching' => false));
+
+                $response = array( 'div' => $rendered, 'message' => $this->get('translator')->trans('project.unwatching', array('%project%' => $this->base['project']->getName())));
+
+                return new Response(json_encode($response), 200, array('Content-Type'=>'application/json'));
 
             } else {
 
-                $this->get('session')->getFlashBag()->add(
-                    'warning',
-                    $this->get('translator')->trans('project.not.watching', array('%project%' => $this->base['project']->getName() ))
-                );
+                $error = $this->get('translator')->trans('project.not.watching', array('%project%' => $this->base['project']->getName() ));
 
             }
 
         } else {
 
-            $this->get('session')->getFlashBag()->add(
-                'warning',
-                $this->get('translator')->trans('project.cannot.unwatch')
-            );
+            $error = $this->get('translator')->trans('project.cannot.unwatch');
+
         }
 
-        return $this->redirect($this->generateUrl('p_show_project_info', array('uid' => $uid)));
+        return new Response(json_encode(array('message' => $error)), 406, array('Content-Type'=>'application/json'));
     }
 
 }

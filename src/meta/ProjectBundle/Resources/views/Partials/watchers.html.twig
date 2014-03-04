@@ -1,0 +1,9 @@
+<i class="fa fa-rss"></i> 
+<div class="watchers{% if isAlreadyWatching %} in{% endif %}">{{ project.countWatchers }}</div>
+
+{% if isAlreadyWatching %}
+    {{ "project.watching"|trans({ '%project%': project.name}) }} <a class="watch" href="{{ path('p_unwatch_project', {'uid': project.id|to_uid, 'token': csrf_token('unwatch') }) }}">{{ "project.unwatch"|trans }}</a>
+{% else %}
+    {{ "project.not.watching"|trans({ '%project%': project.name}) }} <a class="watch" href="{{ path('p_watch_project', {'uid': project.id|to_uid, 'token': csrf_token('watch') }) }}">{{ "project.watch"|trans }}</a>
+{% endif %}
+<i class="fa fa-cog fa-spin working" style="display: none;"></i>

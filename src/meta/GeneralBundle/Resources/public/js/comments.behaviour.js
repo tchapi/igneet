@@ -15,6 +15,9 @@ $(document).ready(function() {
             return false;
         }
 
+        _self.find('[type=submit]').attr('disabled', 'disabled');
+        _self.find('.working i').show();
+
         $.post(_self.attr('action'), {
             'comment': comment
         })
@@ -25,7 +28,7 @@ $(document).ready(function() {
                 _self.children('textarea').blur().val("");
 
                 // Adds the comment, depends on the timeline type
-                if (firstTimelineItem.length == 0 ) {
+                if (firstTimelineItem.length == 0) {
                     timeline.append(data.comment);
                 } else if (firstTimelineItem.hasClass("step") && firstTimelineItem.attr('current')) {
                     firstTimelineItem.after(data.comment);
@@ -35,6 +38,10 @@ $(document).ready(function() {
             })
             .fail(function(xhr) {
                 process(xhr.responseJSON, "error", Translator.trans('comment.cannot.add'));
+            })
+            .always(function() {
+                _self.find('[type=submit]').removeAttr('disabled');
+                _self.find('.working i').fadeOut();
             });
     });
 

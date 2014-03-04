@@ -49,13 +49,7 @@
     {% endif %}
 
     <div>
-        <i class="fa fa-rss"></i> 
-        <div class="watchers">{{ base.project.countWatchers }}</div>
-    {% if base.isAlreadyWatching %}
-        {{ "project.watching"|trans({ '%project%': base.project.name}) }} <a href="{{ path('p_unwatch_project', {'uid': base.project.id|to_uid, 'token': csrf_token('unwatch') }) }}">{{ "project.unwatch"|trans }}</a>
-    {% else %}
-        {{ "project.not.watching"|trans({ '%project%': base.project.name}) }} <a href="{{ path('p_watch_project', {'uid': base.project.id|to_uid, 'token': csrf_token('watch') }) }}">{{ "project.watch"|trans }}</a>
-    {% endif %}
+      {% include 'metaProjectBundle:Partials:watchers.html.twig' with { 'project' : base.project, 'isAlreadyWatching' : base.isAlreadyWatching} %}
     </div>
 
     <div class="skills">

@@ -106,6 +106,7 @@ comment:
   placeholder: "Leave a comment ..."
   been.deleted: "Your comment was deleted."
   cannot:
+    add: "There was a problem adding your comment."
     delete: "There was a problem with the deletion of this comment."
     validate: "There was a problem validating this comment."
 toggle: "Toggle"

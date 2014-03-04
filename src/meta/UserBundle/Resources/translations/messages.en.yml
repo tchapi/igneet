@@ -54,6 +54,7 @@ user:
   city:
     help: "Where do you live?"
     emptyText: "Add your city"
+    none: "No city specified"
   password: "Password"
   about: "In a few words"
   activity: "Activity"

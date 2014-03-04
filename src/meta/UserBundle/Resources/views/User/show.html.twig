@@ -70,7 +70,7 @@
 
     <h4>
       <div>
-        <i class="fa fa-map-marker"></i> <span{% if canEdit %} data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" data-name="city" data-title="{{ "user.city.help"|trans }}" data-last="{{ user.city }}" placeholder="{{ "user.city.emptyText"|trans }}" contenteditable="true" rich="false"{% endif %}>{{ user.city }}</span>
+        <i class="fa fa-map-marker"></i> <span{% if canEdit %} data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" data-name="city" data-title="{{ "user.city.help"|trans }}" data-last="{{ user.city }}" placeholder="{{ "user.city.emptyText"|trans }}" contenteditable="true" rich="false"{% endif %}>{% if user.city == "" and not canEdit %}{{ "user.city.none"|trans }}{% else %}{{ user.city }}{% endif %}</span>
       </div>
 
       <div>
@@ -79,11 +79,7 @@
     </h4>
 
     <div>
-    {% if alreadyFollowing %}
-        <i class="fa fa-rss"></i> {{ "user.following"|trans({'%user%': user.firstName}) }} <a href="{{ path('u_unfollow_user', {'username': user.username, 'token': csrf_token('unfollowUser') }) }}">{{ "user.unfollow"|trans }}</a>
-    {% elseif not canEdit %}
-        <i class="fa fa-rss"></i> {{ "user.not.following"|trans({'%user%': user.firstName}) }} <a href="{{ path('u_follow_user', {'username': user.username, 'token': csrf_token('followUser') }) }}">{{ "user.follow"|trans }}</a>
-    {% endif %}
+    {% include 'metaUserBundle:Partials:followers.html.twig' with { 'user': user, 'alreadyFollowing' : alreadyFollowing} %}
     </div>
 
   </div>

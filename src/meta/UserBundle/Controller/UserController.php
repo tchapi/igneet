@@ -468,15 +468,19 @@ class UserController extends Controller
 
     /*
      * Authenticated user follows the request user
+     * NEEDS JSON
      */
     public function followUserAction(Request $request, $username)
     {
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('followUser', $request->get('token'))) {
-            $this->get('session')->getFlashBag()->add(
-                'error',
-                $this->get('translator')->trans('invalid.token', array(), 'errors')
+            return new Response(
+                json_encode(
+                    array(
+                        'message' => $this->get('translator')->trans('invalid.token', array(), 'errors'))
+                    ), 
+                400, 
+                array('Content-Type'=>'application/json')
             );
-            return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $username)));
         }
 
         $authenticatedUser = $this->getUser();
@@ -499,51 +503,49 @@ class UserController extends Controller
                     $em = $this->getDoctrine()->getManager();
                     $em->flush();
 
-                    $this->get('session')->getFlashBag()->add(
-                        'success',
-                        $this->get('translator')->trans('user.now.following', array( '%user%' => $user->getFullName() ))
-                    );
+                    $rendered = $this->renderView('metaUserBundle:Partials:followers.html.twig', array('user' => $user, 'alreadyFollowing' => true, 'canEdit' => false));
+
+                    $response = array( 'div' => $rendered, 'message' => $this->get('translator')->trans('user.now.following', array('%user%' => $user->getFullName())));
+
+                    return new Response(json_encode($response), 200, array('Content-Type'=>'application/json'));
 
                 } else {
 
-                    $this->get('session')->getFlashBag()->add(
-                        'warning',
-                        $this->get('translator')->trans('user.already.following', array( '%user%' => $user->getFullName() ))
-                    );
+                    $error = $this->get('translator')->trans('user.already.following', array( '%user%' => $user->getFullName() ));
 
                 }
 
             } else {
 
-               $this->get('session')->getFlashBag()->add(
-                    'error',
-                    $this->get('translator')->trans('user.cannot.follow')
-                ); 
+               $error = $this->get('translator')->trans('user.cannot.follow');
 
             }
 
         } else {
-            $this->get('session')->getFlashBag()->add(
-                'warning',
-                $this->get('translator')->trans('user.cannot.followSelf')
-            );
+
+            $error = $this->get('translator')->trans('user.cannot.followSelf');
+
         }
 
-        return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $username)));
+        return new Response(json_encode(array('message' => $error)), 406, array('Content-Type'=>'application/json'));
     }
 
     /*
      * Authenticated user unfollows the request user
+     * NEEDS JSON
      */
     public function unfollowUserAction(Request $request, $username)
     {
 
         if (!$this->get('form.csrf_provider')->isCsrfTokenValid('unfollowUser', $request->get('token'))) {
-            $this->get('session')->getFlashBag()->add(
-                'error',
-                $this->get('translator')->trans('invalid.token', array(), 'errors')
+            return new Response(
+                json_encode(
+                    array(
+                        'message' => $this->get('translator')->trans('invalid.token', array(), 'errors'))
+                    ), 
+                400, 
+                array('Content-Type'=>'application/json')
             );
-            return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $username)));
         }
 
         $authenticatedUser = $this->getUser();
@@ -563,37 +565,30 @@ class UserController extends Controller
                     $em = $this->getDoctrine()->getManager();
                     $em->flush();
 
-                    $this->get('session')->getFlashBag()->add(
-                        'success',
-                        $this->get('translator')->trans('user.unfollowing', array('%user%' => $user->getFullName()))
-                    );
+                    $rendered = $this->renderView('metaUserBundle:Partials:followers.html.twig', array('user' => $user, 'alreadyFollowing' => false, 'canEdit' => false));
+
+                    $response = array( 'div' => $rendered, 'message' => $this->get('translator')->trans('user.unfollowing', array('%user%' => $user->getFullName())));
+
+                    return new Response(json_encode($response), 200, array('Content-Type'=>'application/json'));
 
                 } else {
 
-                    $this->get('session')->getFlashBag()->add(
-                        'warning',
-                        $this->get('translator')->trans('user.not.following', array('%user%' => $user->getFullName()))
-                    );
+                    $error = $this->get('translator')->trans('user.not.following', array('%user%' => $user->getFullName()));
 
                 }
 
             } else {
 
-               $this->get('session')->getFlashBag()->add(
-                    'error',
-                    $this->get('translator')->trans('user.cannot.unfollow')
-                ); 
+               $error = $this->get('translator')->trans('user.cannot.unfollow');
 
             }
 
         } else {
-            $this->get('session')->getFlashBag()->add(
-                'warning',
-                $this->get('translator')->trans('user.cannot.unfollowSelf')
-            );
+
+            $error = $this->get('translator')->trans('user.cannot.unfollowSelf');
         }
             
-        return $this->redirect($this->generateUrl('u_show_user_profile', array('username' => $username)));
+        return new Response(json_encode(array('message' => $error)), 406, array('Content-Type'=>'application/json'));
     }
 
 }

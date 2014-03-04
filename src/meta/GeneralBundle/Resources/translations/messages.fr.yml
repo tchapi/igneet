@@ -106,6 +106,7 @@ comment:
   placeholder: "Laissez un commentaire ..."
   been.deleted: "Votre commentaire a été supprimé."
   cannot:
+    add: "Il y a eu un problème lors de l'ajout du commentaire."
     delete: "Il y a eu un problème à la suppression du commentaire."
     validate: "Il y a eu un problème à la validation du commentaire."
 toggle: "Afficher/Masquer"
