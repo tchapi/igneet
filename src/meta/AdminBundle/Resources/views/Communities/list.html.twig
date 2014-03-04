@@ -28,6 +28,7 @@
           <th>Created</th>
           <th>Valid until</th>
           <th>Validity</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -37,8 +38,9 @@
           <td class="commnunity-text">{{ community.name }} <em> {{ community.headline }}</em></td> 
           <td><strong>{{ community.userCommunities|length }}</strong> users, <strong>{{ community.ideas|length }}</strong> ideas, <strong>{{ community.projects|length }}</strong> projects</td>
           <td>{{ community.createdAt|date('d/m/Y') }}</td>
-          <td>{{ community.validUntil|date("d/m/Y") }} <a href="#" id="{{ community.id|to_uid}}" data-url="{{ path('a_extend_community') }}"><i class="fa fa-level-up"></i></a></td>
+          <td>{{ community.validUntil|date("d/m/Y") }}</td>
           <td>{% if community.isValid %}<span><i class="fa fa-check"></i> Valid</span>{% else %}<span><i class="fa fa-warning"></i> Expired</span>{% endif %}</td>
+          <td><a href="{{ path('a_communities_edit', { 'uid' : community.id|to_uid }) }}"><i class="fa fa-pencil"></i></a> <a class="storage" href="{{ path('a_communities_storage', { 'uid' : community.id|to_uid }) }}"><i class="fa fa-hdd-o"></i></a></td>
         </tr>
       {% endfor %}
       </tbody>

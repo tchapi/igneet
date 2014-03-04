@@ -33,7 +33,7 @@
           <td>{% if targets == 0 %}<i class="fa fa-asterisk"></i>{% else %}{{ targets }}{% endif %}</td>
           <td>{{ announcement.hitUsers|length }} ({% if targets == 0 %}{{ (announcement.hitUsers|length/totalUsers*100)|number_format }}{% else %}{{ (announcement.hitUsers|length/targets*100)|number_format }}{% endif %}%)</td>
           <td>From {{ announcement.validFrom|date('d/m/Y') }}<br/>until {{ announcement.validUntil|date("d/m/Y") }}</td>
-          <td><a href="{{ path('a_announcements_edit', { 'uid' : announcement.id|to_uid } ) }}"><i class="fa fa-pencil-square-o"></i></a><a href="{{ path('a_announcements_delete', { 'uid' : announcement.id|to_uid } ) }}"><i class="fa fa-trash-o"></i></a></td>
+          <td><a href="{{ path('a_announcements_edit', { 'uid' : announcement.id|to_uid } ) }}"><i class="fa fa-pencil"></i></a><a href="{{ path('a_announcements_delete', { 'uid' : announcement.id|to_uid } ) }}"><i class="fa fa-trash-o"></i></a></td>
         </tr>
       {% endfor %}
       </tbody>

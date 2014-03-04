@@ -9,11 +9,24 @@
 
 body.admin {
 
+  header {
+    padding: 10px 0;
+  }
+
+  section {
+    padding: 20px 0;
+    &:last-of-type {
+      padding-bottom: 40px;
+    }
+  }
+
   table tbody tr td {
     min-width: 0;
     &.announcement-text {
-      width: 100%;
       text-align: left;
+    }
+    a {
+      margin: 5px;
     }
   }
 
@@ -38,6 +51,7 @@ body.admin {
 
     background: $_container;
     height: $total;
+    margin-top: 15px;
 
     & > * {
       @include fill-parent();

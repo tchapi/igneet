@@ -9,7 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection,
 /**
  * Community
  * @ORM\Table(name="Community")
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="meta\GeneralBundle\Entity\Community\CommunityRepository")
  * @ORM\HasLifecycleCallbacks
  */
 class Community

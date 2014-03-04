@@ -11,3 +11,10 @@ announcement:
   created: "Announcement created successfully"
   saved: "Announcement saved"
   deleted: "Announcement deleted"
+community:
+  createForm:
+    type: "Type"
+    typeHelp: "Type of community"
+    valid_until: "Valid until"
+  created: "Community created successfully"
+  saved: "Community saved"

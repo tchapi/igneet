@@ -43,6 +43,19 @@
       </div>
     </div>
 
+    <div class="tile">
+      <div class="label">
+        <h2><i class="fa fa-hdd-o"></i> Storage</h2>
+      </div>
+      <div class="content">
+        <p>All files total : <strong id="total_storage" data-url="{{ path('a_communities_storage') }}" ><i class="fa fa-cog fa-spin"></i></strong></p>
+        <p># of Resources : <strong id="total_files"><i class="fa fa-cog fa-spin"></i></strong></p>
+      </div>
+      <div class="actions">
+        <a class="button button-warning" href="{{ path('a_prune') }}">List prunables</a>
+      </div>
+    </div>
+
 </div>
 {% endblock %}
 

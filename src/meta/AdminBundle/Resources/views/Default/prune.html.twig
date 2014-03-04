@@ -1,0 +1,37 @@
+{% extends 'metaAdminBundle::layout.html.twig' %}
+
+{% block title %}{{ parent() }} > Prunable files{% endblock %}
+
+{% block section %}Prunable files{% endblock %}
+
+{% block content %}
+<div class="wrapper tiles">
+
+  <section>
+    {% if details|length > 0 %}
+    
+    <h3>Total prunable : {{ saved }}</h3>
+    <ul>
+      {% for file in details %}
+        <li>{{ file }}</li>
+      {% endfor %}
+    </ul>
+
+    <h3>Shell action : </h3>
+
+    {% spaceless %}
+    <pre>rm -fi{% for file in details %}{{ " '" ~ file ~ "'" }}{% endfor %}</pre>
+    {% endspaceless %}
+
+    {% else %}
+    
+    <h3>No prunable files</h3>
+    
+    {% endif %}
+
+  </section>
+
+</div>
+{% endblock %}
+
+

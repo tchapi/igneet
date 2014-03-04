@@ -39,6 +39,14 @@ a_communities:
     path:  /communities
     defaults: { _controller: metaAdminBundle:Communities:list }
 
-a_extend_community:
-    path:  /community/extend
-    defaults: { _controller: metaAdminBundle:Communities:extend }
+a_communities_edit:
+    path:  /community/edit/{uid}
+    defaults: { _controller: metaAdminBundle:Communities:edit }
+
+a_communities_storage:
+    path:  /community/storage/{uid}
+    defaults: { _controller: metaAdminBundle:Communities:storage, uid: null }
+
+a_prune:
+    path:  /files/prune
+    defaults: { _controller: metaAdminBundle:Communities:prune }

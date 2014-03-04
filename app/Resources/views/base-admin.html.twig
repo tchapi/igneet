@@ -3,6 +3,7 @@
 {% block javascripts %}
   {{ parent() }}
   {% javascripts '@metaGeneralBundle/Resources/public/js/general.behaviour.js' 
+                 '@metaAdminBundle/Resources/public/js/admin.js' 
           filter='?yui_js' %}
   <script src="{{ asset_url }}"></script>
   {% endjavascripts %}
