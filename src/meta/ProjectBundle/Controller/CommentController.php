@@ -20,7 +20,8 @@ class CommentController extends BaseController
     /*
      * Output the comment form for an project or add a comment to an project when POST
      */
-    public function addProjectCommentAction(Request $request, $uid){
+    public function addProjectCommentAction(Request $request, $uid)
+    {
 
         $menu = $this->container->getParameter('project.menu');
         $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => $menu['timeline']['private']));
@@ -29,16 +30,18 @@ class CommentController extends BaseController
 
             $comment = new StandardProjectComment();
             $form = $this->createFormBuilder($comment)
-                ->add('text', 'textarea', array('attr' => array('placeholder' => $this->get('translator')->trans('comment.placeholder') )))
+                ->add('text', 'textarea', array('required' => false, 'attr' => array('placeholder' => $this->get('translator')->trans('comment.placeholder') )))
                 ->getForm();
 
             if ($request->isMethod('POST')) {
 
-                $form->bind($request);
+                $comment->setText($request->get('comment'));
+                $comment->setUser($this->getUser());
 
-                if ($form->isValid()) {
+                $errors = $this->get('validator')->validate($comment);
 
-                    $comment->setUser($this->getUser());
+                if (count($errors) == 0) {
+                    
                     $comment->linkify();
                     $this->base['project']->addComment($comment);
                     
@@ -49,20 +52,14 @@ class CommentController extends BaseController
                     $logService = $this->container->get('logService');
                     $logService->log($this->getUser(), 'user_comment_project', $this->base['project'], array());
 
-                    $this->get('session')->getFlashBag()->add(
-                        'success',
-                        $this->get('translator')->trans('comment.added')
-                    );
+                    $renderedComment = $this->renderView('metaGeneralBundle:Log:logItemComment.html.twig', array('comment' => $comment));
+
+                    return new Response(json_encode(array( 'comment' => $renderedComment, 'message' => $this->get('translator')->trans('comment.added'))), 200, array('Content-Type'=>'application/json'));
 
                 } else {
 
-                   $this->get('session')->getFlashBag()->add(
-                        'error',
-                        $this->get('translator')->trans('information.not.valid', array(), 'errors')
-                    );
+                   return new Response(json_encode(array('message' => $this->get('translator')->trans('information.not.valid', array(), 'errors'))), 400, array('Content-Type'=>'application/json'));
                 }
-
-                return $this->redirect($this->generateUrl('p_show_project', array('uid' => $uid)));
 
             } else {
 
@@ -97,18 +94,21 @@ class CommentController extends BaseController
                 $wikiPage = $repository->findOneByIdInWiki($this->container->get('uid')->fromUId($page_uid), $wiki->getId());
 
                 if ($wikiPage){
+
                     $comment = new WikiPageComment();
                     $form = $this->createFormBuilder($comment)
-                        ->add('text', 'textarea', array('attr' => array('placeholder' => $this->get('translator')->trans('comment.placeholder') )))
+                        ->add('text', 'textarea', array('required' => false, 'attr' => array('placeholder' => $this->get('translator')->trans('comment.placeholder') )))
                         ->getForm();
 
                     if ($request->isMethod('POST')) {
 
-                        $form->bind($request);
+                        $comment->setText($request->get('comment'));
+                        $comment->setUser($this->getUser());
 
-                        if ($form->isValid()) {
+                        $errors = $this->get('validator')->validate($comment);
 
-                            $comment->setUser($this->getUser());
+                        if (count($errors) == 0) {
+                            
                             $comment->linkify();
                             $wikiPage->addComment($comment);
                             
@@ -119,21 +119,15 @@ class CommentController extends BaseController
                             $logService = $this->container->get('logService');
                             $logService->log($this->getUser(), 'user_comment_wikipage', $this->base['project'], array( 'wikipage' => array( 'logName' => $wikiPage->getLogName(), 'identifier' => $wikiPage->getId()) ));
 
-                            $this->get('session')->getFlashBag()->add(
-                                'success',
-                                $this->get('translator')->trans('comment.added')
-                            );
+                            $renderedComment = $this->renderView('metaGeneralBundle:Log:logItemComment.html.twig', array('comment' => $comment));
+
+                            return new Response(json_encode(array( 'comment' => $renderedComment, 'message' => $this->get('translator')->trans('comment.added'))), 200, array('Content-Type'=>'application/json'));
 
                         } else {
 
-                           $this->get('session')->getFlashBag()->add(
-                                'error',
-                                $this->get('translator')->trans('information.not.valid', array(), 'errors')
-                            );
+                           return new Response(json_encode(array('message' => $this->get('translator')->trans('information.not.valid', array(), 'errors'))), 400, array('Content-Type'=>'application/json'));
                         }
-
-                        return $this->redirect($this->generateUrl('p_show_project_wiki_show_page', array('uid' => $uid, 'page_uid' => $page_uid )));
-
+           
                     } else {
 
                         $route = $this->get('router')->generate('p_show_project_wikipage_comment', array('uid' => $uid, 'page_uid' => $page_uid ));
@@ -167,16 +161,18 @@ class CommentController extends BaseController
             if ($commonList){
                 $comment = new CommonListComment();
                 $form = $this->createFormBuilder($comment)
-                    ->add('text', 'textarea', array('attr' => array('placeholder' => $this->get('translator')->trans('comment.placeholder') )))
+                    ->add('text', 'textarea', array('required' => false, 'attr' => array('placeholder' => $this->get('translator')->trans('comment.placeholder') )))
                     ->getForm();
 
                 if ($request->isMethod('POST')) {
 
-                    $form->bind($request);
+                    $comment->setText($request->get('comment'));
+                    $comment->setUser($this->getUser());
 
-                    if ($form->isValid()) {
+                    $errors = $this->get('validator')->validate($comment);
 
-                        $comment->setUser($this->getUser());
+                    if (count($errors) == 0) {
+                        
                         $comment->linkify();
                         $commonList->addComment($comment);
                         
@@ -187,20 +183,14 @@ class CommentController extends BaseController
                         $logService = $this->container->get('logService');
                         $logService->log($this->getUser(), 'user_comment_list', $this->base['project'], array( 'list' => array( 'logName' => $commonList->getLogName(), 'identifier' => $commonList->getId()) ));
 
-                        $this->get('session')->getFlashBag()->add(
-                            'success',
-                            $this->get('translator')->trans('comment.added')
-                        );
+                        $renderedComment = $this->renderView('metaGeneralBundle:Log:logItemComment.html.twig', array('comment' => $comment));
+
+                        return new Response(json_encode(array( 'comment' => $renderedComment, 'message' => $this->get('translator')->trans('comment.added'))), 200, array('Content-Type'=>'application/json'));
 
                     } else {
 
-                       $this->get('session')->getFlashBag()->add(
-                            'error',
-                            $this->get('translator')->trans('information.not.valid', array(), 'errors')
-                        );
+                       return new Response(json_encode(array('message' => $this->get('translator')->trans('information.not.valid', array(), 'errors'))), 400, array('Content-Type'=>'application/json'));
                     }
-                    
-                    return $this->redirect($this->generateUrl('p_show_project_list', array('uid' => $uid, 'list_uid' => $list_uid )));
 
                 } else {
 

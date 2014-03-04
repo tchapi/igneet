@@ -149,8 +149,9 @@ class LogService
             $user = $logEntryOrComment->getUser();
             $combinedCount = $logEntryOrComment->getCombinedCount();
             $icon = $this->log_types[$logEntryOrComment->getType()]['icon'];
+            $groups = $this->log_types[$logEntryOrComment->getType()]['filter_groups'];
 
-            return $this->twig->render($this->template_item, array( 'icon' => $icon, 'user' => $user, 'text' => $text, 'date' => $date, 'combinedCount' => $combinedCount, 'locale' => $locale));
+            return $this->twig->render($this->template_item, array( 'icon' => $icon, 'user' => $user, 'text' => $text, 'date' => $date, 'combinedCount' => $combinedCount, 'groups' => $groups, 'locale' => $locale));
 
         }
 

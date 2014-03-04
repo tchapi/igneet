@@ -41,6 +41,12 @@ parameters:
       filter_groups: [creations, community, social]
       type: community
       icon: group
+    user_comment_community:
+      combinable: false
+      displayable: false
+      filter_groups: [comments, community, social]
+      type: community
+      icon: group
     user_update_community_info:
       combinable: false
       displayable: true

@@ -38,6 +38,7 @@ logs:
   user_watch_idea: "%user% s'est abonné à l'idée %idea%."
   user_create_community: "%user% a créé la communauté %community%."
   user_update_community_info: "La communauté %community% a été mise à jour."
+  user_comment_community: "%user% a commenté la communauté %community%."
 
 groups: 
   projects: Projets

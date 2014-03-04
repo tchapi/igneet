@@ -7,9 +7,7 @@
     <ul class="timeline">
     {% spaceless %}
     {% for comment in object.comments %}
-        <li class="log{% if comment.isDeleted() %} deleted{% endif %}">
-          {% include 'metaGeneralBundle:Log:logItemComment.html.twig' %}
-        </li>
+        {% include 'metaGeneralBundle:Log:logItemComment.html.twig' %}
     {% endfor %}
     {% endspaceless %}
     </ul>

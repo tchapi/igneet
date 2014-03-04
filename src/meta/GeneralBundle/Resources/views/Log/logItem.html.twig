@@ -1,25 +1,25 @@
 {% if locale is not defined %}{% set locale = app.user.getPreferredLanguage() %}{% endif %}
 {% spaceless %}
+<li class="log" {{ groups|join(' ') }}>
+  <div class="avatar">
+    {% if not user.isDeleted %}
+    <a href="{{url('u_show_user_profile', {'username': user.username}) }}" title="{{ user.getFullName }}">
+      <img src="{% if user.isAvatarGravatar %}{{ user.avatar }}{% else %}{{ base_path ~ user.avatar }}{% endif %}" width="50px" height="50px"/>
+    </a>
+    {% else %}
+    <img src="{{ base_path ~ "/bundles/metageneral/img/defaults/user.png" }}" width="50px" height="50px" title="{{ user.getFullName }}"/>
+    {% endif %}
+  </div>
 
-<div class="avatar">
-  {% if not user.isDeleted %}
-  <a href="{{url('u_show_user_profile', {'username': user.username}) }}" title="{{ user.getFullName }}">
-    <img src="{% if user.isAvatarGravatar %}{{ user.avatar }}{% else %}{{ base_path ~ user.avatar }}{% endif %}" width="50px" height="50px"/>
-  </a>
-  {% else %}
-  <img src="{{ base_path ~ "/bundles/metageneral/img/defaults/user.png" }}" width="50px" height="50px" title="{{ user.getFullName }}"/>
-  {% endif %}
-</div>
+  <span class="date">{{ date|date("date.fullFormat"|trans({}, 'messages', locale)) }}</span>
 
-<span class="date">{{ date|date("date.fullFormat"|trans({}, 'messages', locale)) }}</span>
+  <i class="fa fa-{{ icon }}"></i>
 
-<i class="fa fa-{{ icon }}"></i>
-
-<span class="text">
-  {{ text|raw }}
-  {% if combinedCount > 1 %}
-    <em class="count">({{ combinedCount }})</em>
-  {% endif %}
-</span>
-
+  <span class="text">
+    {{ text|raw }}
+    {% if combinedCount > 1 %}
+      <em class="count">({{ combinedCount }})</em>
+    {% endif %}
+  </span>
+</li>
 {% endspaceless %}

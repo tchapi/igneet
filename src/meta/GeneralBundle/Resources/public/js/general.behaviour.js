@@ -2,6 +2,21 @@
 /*jslint browser: true*/
 $(document).ready(function() {
 
+    window.process = function(data, type, defaultMessage) {
+
+        if (data !== null) {
+            if (data.redirect) {
+                // We must reload the page
+                window.location.replace(data.redirect);
+                return;
+            }
+            defaultMessage = data.message || defaultMessage;
+        }
+
+        alertify.log(defaultMessage, type);
+
+    };
+    
     /*
      * Responsive slide menu
      */

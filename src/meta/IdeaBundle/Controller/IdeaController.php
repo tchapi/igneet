@@ -621,7 +621,7 @@ class IdeaController extends Controller
 
         $comment = new IdeaComment();
         $form = $this->createFormBuilder($comment)
-            ->add('text', 'textarea', array('attr' => array('placeholder' => $this->get('translator')->trans('comment.placeholder') )))
+            ->add('text', 'textarea', array('required' => false, 'attr' => array('placeholder' => $this->get('translator')->trans('comment.placeholder') )))
             ->getForm();
 
         // Routed
@@ -631,11 +631,13 @@ class IdeaController extends Controller
 
             if ($this->access != false) {
                 
-                $form->bind($request);
+                $comment->setText($request->get('comment'));
+                $comment->setUser($this->getUser());
 
-                if ($form->isValid()) {
+                $errors = $this->get('validator')->validate($comment);
 
-                    $comment->setUser($this->getUser());
+                if (count($errors) == 0) {
+                    
                     $comment->linkify();
                     $this->base['idea']->addComment($comment);
                     
@@ -643,23 +645,18 @@ class IdeaController extends Controller
                     $em->persist($comment);
                     $em->flush();
 
-                    $this->get('session')->getFlashBag()->add(
-                        'success',
-                        $this->get('translator')->trans('comment.added')
-                    );
-
                     $logService = $this->container->get('logService');
                     $logService->log($this->getUser(), 'user_comment_idea', $this->base['idea'], array());
 
+                    $renderedComment = $this->renderView('metaGeneralBundle:Log:logItemComment.html.twig', array('comment' => $comment));
+
+                    return new Response(json_encode(array( 'comment' => $renderedComment, 'message' => $this->get('translator')->trans('comment.added'))), 200, array('Content-Type'=>'application/json'));
+
                 } else {
 
-                   $this->get('session')->getFlashBag()->add(
-                        'error',
-                        $this->get('translator')->trans('information.not.valid', array(), 'errors')
-                    );
+                   return new Response(json_encode(array('message' => $this->get('translator')->trans('information.not.valid', array(), 'errors'))), 400, array('Content-Type'=>'application/json'));
                 }
-
-                return $this->redirect($this->generateUrl('i_show_idea', array('uid' => $uid)));
+              
             }
 
         } else { // Non-routed
@@ -923,7 +920,7 @@ class IdeaController extends Controller
     public function historyAction($uid, $page)
     {
 
-        $this->timeframe = array( 'today' => array( 'name' => $this->get('translator')->trans('date.today'), 'data' => array()),
+        $this->timeframe = array( 'today' => array( 'current' => true, 'name' => $this->get('translator')->trans('date.today'), 'data' => array()),
                             'd-1'   => array( 'name' => $this->get('translator')->trans('date.yesterday'), 'data' => array() ),
                             'd-2'   => array( 'name' => $this->get('translator')->trans('date.timeline', array( "%days%" => 2)), 'data' => array() ),
                             'd-3'   => array( 'name' => $this->get('translator')->trans('date.timeline', array( "%days%" => 3)), 'data' => array() ),
@@ -949,7 +946,7 @@ class IdeaController extends Controller
           $text = $logService->getHTML($entry);
           $createdAt = date_create($entry->getCreatedAt()->format('Y-m-d H:i:s')); // Not for display
 
-          $history[] = array( 'createdAt' => $createdAt , 'text' => $text, 'deleted' => false, 'groups' => $log_types[$entry->getType()]['filter_groups']);
+          $history[] = array( 'createdAt' => $createdAt , 'text' => $text);
         
         }
 
@@ -959,7 +956,7 @@ class IdeaController extends Controller
           $text = $logService->getHTML($comment);
           $createdAt = date_create($comment->getCreatedAt()->format('Y-m-d H:i:s')); // not for display
 
-          $history[] = array( 'createdAt' => $createdAt , 'text' => $text, 'deleted' => $comment->isDeleted(), 'groups' => array('comments') );
+          $history[] = array( 'createdAt' => $createdAt , 'text' => $text);
 
         }
 
@@ -983,23 +980,21 @@ class IdeaController extends Controller
           if ( $historyEntry['createdAt'] > $startOfToday ) {
             
             // Today
-            array_unshift($this->timeframe['today']['data'], array( 'text' => $historyEntry['text'], 'deleted' => $historyEntry['deleted'], 'groups' => $historyEntry['groups']) );
+            array_unshift($this->timeframe['today']['data'], $historyEntry['text']);
 
           } else if ( $historyEntry['createdAt'] < $before ) {
 
             // Before
-            array_unshift($this->timeframe['before']['data'], array( 'text' => $historyEntry['text'], 'deleted' => $historyEntry['deleted'], 'groups' => $historyEntry['groups']) );
+            array_unshift($this->timeframe['before']['data'], $historyEntry['text']);
 
           } else {
 
             // Last seven days, by day
             $days = date_diff($historyEntry['createdAt'], $startOfToday)->days + 1;
 
-            array_unshift($this->timeframe['d-'.$days]['data'], array( 'text' => $historyEntry['text'], 'deleted' => $historyEntry['deleted'], 'groups' => $historyEntry['groups']) );
+            array_unshift($this->timeframe['d-'.$days]['data'], $historyEntry['text']);
 
           }
-
-          $filter_groups = array_merge_recursive($filter_groups,$historyEntry['groups']);
 
         }
 

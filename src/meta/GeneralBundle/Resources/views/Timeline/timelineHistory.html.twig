@@ -14,12 +14,10 @@
 
   {% if step.data|length > 0 %}
 
-    <li class="step">{{ step.name }}</li>
+    <li class="step"{% if step.current is defined %} current="true"{% endif %}>{{ step.name }}</li>
 
     {% for item in step.data %}
-      <li class="log{% if item.deleted %} deleted{% endif %}" {{ item.groups|join(' ') }}>
-        {{ item.text|raw }}
-      </li>
+        {{ item|raw }}
     {% endfor %}
 
   {% endif %}

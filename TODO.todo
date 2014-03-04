@@ -6,8 +6,6 @@ NEXT :
  ☐ Erreurs dans les formulaires de création : elles sont affichées n'importe comment a priori (A vérifier : déjà fixed ?)
  ☐ faire des templates pour les ul.sortable et refresh en ajax quand on fait "new"
 
- ☐ Faire un check de la taille du dossier resource en disk, pour comparer a la taille calculée en base quand meme
-
  ☐ Créer ta communauté --> inviter des gens
     raconter les ecrans => Benjy
           Écran d'accueil à la première connexion :
@@ -48,7 +46,6 @@ Complexe:
 
  ☐ Permettre l'import d'un dossier dropbox d'un projet automatiquement dans les ressources 
 
- ☐ Passer les commentaires en ajax plutot qu'en reload de pages
  ☐ Passer le watch/unwatch en Ajax
 
  ☐ Ajout de wikipage et de list : passer en ajax ? Et du coup faire des templates pour les morceaux de liste
@@ -61,8 +58,6 @@ Home de community (penser au private space !!)
  - wiki avec wikipages (idem project)
  - resources ?? Vraiment besoin ?
  - listes ?? idem ??
-
- ☐ "Request a manager to invite XXXX" => le manager a un tableau de validation
 
 Todo - entité "CommonList":
 

@@ -39,7 +39,7 @@ class TimelineController extends BaseController
           return $this->forward('metaProjectBundle:Base:showRestricted', array('uid' => $uid));
 
         $format = $this->get('translator')->trans('date.timeline');
-        $this->timeframe = array( 'today' => array( 'name' => $this->get('translator')->trans('date.today'), 'data' => array()),
+        $this->timeframe = array( 'today' => array( 'current' =>  true, 'name' => $this->get('translator')->trans('date.today'), 'data' => array()),
                             'd-1'   => array( 'name' => $this->get('translator')->trans('date.yesterday'), 'data' => array() ),
                             'd-2'   => array( 'name' => $this->get('translator')->trans('date.timeline', array( "%days%" => 2)), 'data' => array() ),
                             'd-3'   => array( 'name' => $this->get('translator')->trans('date.timeline', array( "%days%" => 3)), 'data' => array() ),
@@ -65,7 +65,7 @@ class TimelineController extends BaseController
           $text = $logService->getHTML($entry);
           $createdAt = date_create($entry->getCreatedAt()->format('Y-m-d H:i:s')); // not for display
 
-          $history[] = array( 'createdAt' => $createdAt, 'text' => $text, 'deleted' => false, 'groups' => $log_types[$entry->getType()]['filter_groups']);
+          $history[] = array( 'createdAt' => $createdAt, 'text' => $text);
         
         }
 
@@ -75,7 +75,7 @@ class TimelineController extends BaseController
           $text = $logService->getHTML($comment);
           $createdAt = date_create($comment->getCreatedAt()->format('Y-m-d H:i:s')); // not for display
 
-          $history[] = array( 'createdAt' => $createdAt, 'text' => $text, 'deleted' => $comment->isDeleted(), 'groups' => array('comments') );
+          $history[] = array( 'createdAt' => $createdAt, 'text' => $text);
 
         }
 
@@ -99,23 +99,21 @@ class TimelineController extends BaseController
           if ( $historyEntry['createdAt'] > $startOfToday ) {
             
             // Today
-            array_unshift($this->timeframe['today']['data'], array( 'text' => $historyEntry['text'], 'deleted' => $historyEntry['deleted'], 'groups' => $historyEntry['groups']) );
+            array_unshift($this->timeframe['today']['data'], $historyEntry['text']);
 
           } else if ( $historyEntry['createdAt'] < $before ) {
 
             // Before
-            array_unshift($this->timeframe['before']['data'], array( 'text' => $historyEntry['text'], 'deleted' => $historyEntry['deleted'], 'groups' => $historyEntry['groups']) );
+            array_unshift($this->timeframe['before']['data'], $historyEntry['text']);
 
           } else {
 
             // Last seven days, by day
             $days = date_diff($historyEntry['createdAt'], $startOfToday)->days + 1;
 
-            array_unshift($this->timeframe['d-'.$days]['data'], array( 'text' => $historyEntry['text'], 'deleted' => $historyEntry['deleted'], 'groups' => $historyEntry['groups']) );
+            array_unshift($this->timeframe['d-'.$days]['data'], $historyEntry['text']);
 
           }
-          
-          $filter_groups = array_merge_recursive($filter_groups,$historyEntry['groups']);
 
         }
 
