@@ -514,7 +514,10 @@ class ResourceController extends BaseController
 
             if ($resource){
 
-              if ($resource->getProvider() === "local"){
+                $type = $resource->getType();
+                $types = $this->container->getParameter('project.resource_types');
+
+              if ($resource->getProvider() === "local" && $types[$type]['displayable'] == false){
 
                 $this->get('session')->getFlashBag()->add(
                     'error',
