@@ -52,7 +52,7 @@ twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
     globals:
-        current_version: "CURRENT_VERSION"
+        current_version: "%current_version%"
         ga_tracker_id: "%ga_tracker_id%"
         mailer_from: "%mailer_from%"
         mailer_contact: "%mailer_contact%"
@@ -115,6 +115,7 @@ swiftmailer:
 
 # Application specific
 parameters:
+    current_version: "%version%"
     # This is a fantastic hack to be able to use absolute-path images in the CLI without breaking everything
     router.request_context.host: "%host%"
     router.request_context.scheme: "%scheme%"

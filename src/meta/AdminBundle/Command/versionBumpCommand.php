@@ -65,12 +65,12 @@ class versionBumpCommand extends ContainerAwareCommand
       $output->writeln('');
       $output->writeln('Actual repository version is <comment>' . $version_full .'.</comment>');
 
-      $output->writeln('<comment>Reading config</comment>');
+      $output->writeln('<comment>Reading parameters.yml</comment>');
 
-      // Get config file      
+      // Get parameters file      
       $configDirectories = array($this->getContainer()->getParameter('kernel.root_dir') .'/config');
       $locator = new FileLocator($configDirectories);
-      $config_file = $locator->locate('config.yml', null, true); // returns the first file
+      $config_file = $locator->locate('parameters.yml', null, true); // returns the first file
 
       // read the entire string
       $config = file_get_contents($config_file);
@@ -81,11 +81,11 @@ class versionBumpCommand extends ContainerAwareCommand
       // config_new should be larger and writeConfig enabled
       if ($writeConfig && (strlen($config_new) > strlen($config)) ) {
           file_put_contents($config_file, $config_new);
-          $output->writeln('<info>Config written.</info>');
+          $output->writeln('<info>Parameters.yml written.</info>');
       } else if ($config_new === $config) {
           $output->writeln('<important>Nothing to replace.</important>');
       } else {
-          $output->writeln('<important>Config untouched.</important>');
+          $output->writeln('<important>Parameters.yml untouched.</important>');
       }
 
       $output->writeln('<info>Done.</info>');
