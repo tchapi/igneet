@@ -15,7 +15,7 @@ project:
     reset: "L'image de ce projet a été réinitialisée avec succès."
     cannot.reset: "Vous n'avez pas les droits pour réinitialiser l'image de ce projet."
   list:
-    all: "Voir tous les projets"
+    all: "Voir les projets actifs"
     archived: "Ne voir que les projets archivés"
     sleeping: "Ne voir que les projets en attente"
     name: "Nom"

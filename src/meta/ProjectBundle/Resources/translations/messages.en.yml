@@ -15,7 +15,7 @@ project:
     reset: "The picture for this project has successfully been reset."
     cannot.reset: "You cannot reset the picture for this project."
   list:
-    all: "Show all projects"
+    all: "Show active projects"
     archived: "Only show archived projects"
     sleeping: "Only show sleeping projects"
     name: "Name"
