@@ -42,5 +42,8 @@ input[type="checkbox"]:checked + label:before{
 }
 
 body.card, body.full {
-    & input { border: 1px solid $_muted; }
+    & input { 
+        border: 1px solid $_muted;
+        margin-bottom: 3px;
+    }
 }
