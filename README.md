@@ -1,5 +1,14 @@
-
 Igneet
 ===
 
-(Readme to come soon ...)
+A tool for communities.
+
+Bundles
+
+AdminBundle
+GeneralBundle
+ProjectBundle
+IdeaBundle
+UserBundle
+StaticBundle
+
