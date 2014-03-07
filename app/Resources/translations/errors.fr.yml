@@ -2,6 +2,7 @@ invalid:
   request: "Requête non valide."
   token: "Token non valide. Veuillez recharger la page et réessayer."
   password.match: "Les deux mots de passe ne sont pas identiques."
+  values: "Valeurs non valides, veuillez vérifier."
 unnecessary.request: "Requête inutile."
 file.too.large: "Le fichier que vous essayez d'uploader est trop gros."
 file.type.not.allowed: "Ce type de fichier n'est pas autorisé."
