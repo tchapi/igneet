@@ -130,7 +130,7 @@ $(document).ready(function() {
         $.post(_self.attr('href'))
             .done(function(data) {
                 _self.parent().html(data.div);
-                process(data, "success", Translator.trans('changes.saved'));
+                process(data, "success", Translator.trans('alert.changes.saved'));
             })
             .fail(function(xhr) {
                 process(xhr.responseJSON, "error", Translator.trans('alert.error.saving.changes'));
