@@ -498,7 +498,7 @@ class UserController extends Controller
                     $authenticatedUser->addFollowing($user);
 
                     $logService = $this->container->get('logService');
-                    $logService->log($authenticatedUser, 'user_follow_user', $user->getFullName(), array());
+                    $logService->log($authenticatedUser, 'user_follow_user', $user, array());
 
                     $em = $this->getDoctrine()->getManager();
                     $em->flush();
