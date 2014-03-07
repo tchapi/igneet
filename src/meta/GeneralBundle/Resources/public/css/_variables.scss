@@ -9,6 +9,7 @@ $_background: #f4f4f4;
 $_container: white;
 $_primary: hsla(30, 100%, 45%, 1);
 $_secondary: hsla(203, 50%, 50%, 1);
+$_secondary_lighter: desaturate(lighten($_secondary, 45%),15%);
 
 $_text: black;
 $_text-dark: white;
@@ -51,7 +52,7 @@ $_menu-shadow_top: #5B5B5B;
 $_menu-shadow_bottom: #343434;
 $_menu-dropdown: white;
 $_menu-dropdown-highlight: $_secondary;
-$_menu-dropdown-hover: desaturate(lighten($_secondary, 45%),15%);
+$_menu-dropdown-hover: $_secondary_lighter;
 $_menu-dropdown-text: #b2b2b2;
 
 // The main width of the container
