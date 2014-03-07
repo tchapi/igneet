@@ -114,7 +114,7 @@ class SecurityController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         // For OpenId
-        if ($session->has('inviteToken')){
+        if ($session->has('inviteToken') && $inviteToken == ""){
             $inviteToken = $session->get('inviteToken');
         } else if ($inviteToken != "") {
             $session->set('inviteToken', $inviteToken);
