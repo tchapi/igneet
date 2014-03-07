@@ -17,7 +17,7 @@ class versionBumpCommand extends ContainerAwareCommand
         $this->setName('version:bump')->setDescription('Bumps the actual git version and commit number of the application');
         
         // Config placeholder
-        $this->placeholder = "CURRENT_VERSION";
+        $this->pattern = '/version\:\ \"([^\"]*)\"/';
 
         // New style for <important>
         $this->importantStyle = new OutputFormatterStyle('red', null, array('bold'));
@@ -76,10 +76,10 @@ class versionBumpCommand extends ContainerAwareCommand
       $config = file_get_contents($config_file);
 
       // replace something in the file string
-      $config_new = str_replace($this->placeholder, $version_full, $config);
+      $config_new = preg_replace($this->pattern, "version: \"$version_full\"", $config);
       
       // config_new should be larger and writeConfig enabled
-      if ($writeConfig && (strlen($config_new) > strlen($config)) ) {
+      if ($writeConfig && ($config_new !== $config) ) {
           file_put_contents($config_file, $config_new);
           $output->writeln('<info>Parameters.yml written.</info>');
       } else if ($config_new === $config) {
