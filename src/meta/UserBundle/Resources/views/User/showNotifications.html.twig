@@ -24,7 +24,7 @@
           {% set currentDate = notification['createdAt'] %}
         {% endif %}
 
-        <li class="log{% if notification['createdAt']|date('c') > lastNotified|date('c') %} unseen{% endif %}">{{ notification['data']|raw }}</li>
+        {{ notification['data']|raw }}
 
       {% endfor %}
     </ul>
