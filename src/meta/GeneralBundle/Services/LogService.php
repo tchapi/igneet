@@ -136,7 +136,7 @@ class LogService
 
         if ($logEntryOrComment instanceof BaseComment) {
 
-            return $this->twig->render($this->template_item_comment, array('comment' => $logEntryOrComment, 'locale' => $locale));
+            return $this->twig->render($this->template_item_comment, array('comment' => $logEntryOrComment, 'locale' => $locale, 'lastNotified' => $this->security_context->getToken()->getUser()->getLastNotifiedAt()));
 
         } else {
 
@@ -151,7 +151,7 @@ class LogService
             $icon = $this->log_types[$logEntryOrComment->getType()]['icon'];
             $groups = $this->log_types[$logEntryOrComment->getType()]['filter_groups'];
 
-            return $this->twig->render($this->template_item, array( 'icon' => $icon, 'user' => $user, 'text' => $text, 'date' => $date, 'combinedCount' => $combinedCount, 'groups' => $groups, 'locale' => $locale));
+            return $this->twig->render($this->template_item, array( 'icon' => $icon, 'user' => $user, 'text' => $text, 'date' => $date, 'combinedCount' => $combinedCount, 'groups' => $groups, 'locale' => $locale, 'lastNotified' => $this->security_context->getToken()->getUser()->getLastNotifiedAt()));
 
         }
 
