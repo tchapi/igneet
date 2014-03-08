@@ -97,6 +97,14 @@ ul.timeline {
       margin: $gutter/2 0;
       padding: $gutter;
     }
+    &.unseen { 
+      background: rgba($_secondary,0.1);
+      border: 1px solid $_secondary;
+      & > .actions > .delete-trigger {
+        color: $_discrete;
+        border-left: 1px solid $_discrete;
+      }
+    }
     & > i {
       color: $_muted;
       display: inline-block;
