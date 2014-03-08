@@ -915,7 +915,7 @@ class IdeaController extends Controller
     /*
      * Output the timeline history
      */
-    public function historyAction($uid, $page)
+    public function historyAction(Request $request, $uid)
     {
 
         $this->timeframe = array( 'today' => array( 'current' => true, 'name' => $this->get('translator')->trans('date.today'), 'data' => array()),
