@@ -1,7 +1,7 @@
 {# This is for the mails to be localized correctly #}
 {% if locale is not defined %}{% set locale = app.user.getPreferredLanguage() %}{% endif %}
 {% spaceless %}
-<li class="log{% if comment.isDeleted %} deleted{% endif %}" comments>
+<li class="log{% if comment.isDeleted %} deleted{% endif %}{% if lastNotified is defined and comment.createdAt|date('c') > lastNotified|date('c') %} unseen{% endif %}" comments>
   <div class="avatar">
     {% if not comment.user.isDeleted %}
     <a href="{{url('u_show_user_profile', {'username': comment.user.username}) }}" title="{{ comment.user.getFullName }}">
