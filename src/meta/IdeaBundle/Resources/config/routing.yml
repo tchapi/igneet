@@ -121,7 +121,6 @@ i_show_idea:
     defaults: { _controller: metaIdeaBundle:Idea:showTimeline }
     requirements:
         uid: "[0-9a-zA-Z]*"
-        page: \d+
 
 ## CONTENT
 i_show_idea_content:
