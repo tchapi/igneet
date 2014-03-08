@@ -17,7 +17,7 @@ class versionBumpCommand extends ContainerAwareCommand
         $this->setName('version:bump')->setDescription('Bumps the actual git version and commit number of the application');
         
         // Config placeholder
-        $this->pattern = '/version\:\ \"([^\"]*)\"/';
+        $this->pattern = '/version\:\ \'([^\"]*)\'/';
 
         // New style for <important>
         $this->importantStyle = new OutputFormatterStyle('red', null, array('bold'));
