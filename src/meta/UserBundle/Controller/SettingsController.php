@@ -82,7 +82,7 @@ class SettingsController extends Controller
                     break;
                 case 'community':
                     $repository = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity');
-                    $userRepository = $repository->findOneBy(array( 'user' => $authenticatedUser->getId(), 'deleted_at' => null, 'community' => $this->container->get('uid')->fromUId($request->request->get('key')) ));
+                    $userRepository = $repository->findOneBy(array( 'user' => $authenticatedUser->getId(), 'community' => $this->container->get('uid')->fromUId($request->request->get('key')) ));
                     if ($userRepository){
                         $userRepository->setEmail($request->request->get('value'));
                         $objectHasBeenModified = true;

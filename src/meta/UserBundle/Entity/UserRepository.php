@@ -335,7 +335,6 @@ class UserRepository extends EntityRepository implements UserProviderInterface
     $query = $qb->select('uc, COUNT(uc.user) as nbCommunities')
             ->from('metaUserBundle:UserCommunity', 'uc')
             ->where('uc.user = :user1 OR uc.user = :user2')
-            ->andWhere('uc.deleted_at IS NULL')
             ->setParameter('user1', $user1)
             ->setParameter('user2', $user2)
             ->groupBy('uc.community')

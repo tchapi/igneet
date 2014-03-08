@@ -428,13 +428,14 @@ class UserController extends Controller
                     }
                 }
 
+                $em = $this->getDoctrine()->getManager();
+                
                 foreach ($authenticatedUser->getUserCommunities() as $userCommunity) {
                     // We delete the userCommunity object
-                    $userCommunity->delete();
+                    $em->remove($userCommunity);
                 }
 
                 // Delete the user
-                $em = $this->getDoctrine()->getManager();
                 $authenticatedUser->delete();
                 $em->flush();
                 

@@ -46,7 +46,7 @@ class BaseController extends Controller
 
         if (!is_null($community)){
           
-          $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true, 'deleted_at' => null));
+          $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true));
         
           // User is guest in community
           if ($userCommunityGuest && !$isOwning && !$isParticipatingIn){
@@ -92,8 +92,8 @@ class BaseController extends Controller
 
             } else {
 
-              $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => false, 'deleted_at' => null));
-              $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true, 'deleted_at' => null));
+              $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => false));
+              $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true));
 
               if ($userCommunity || ($userCommunityGuest && ($isOwning || $isParticipatingIn)) ){
                   $authenticatedUser->setCurrentCommunity($community);
@@ -228,7 +228,7 @@ class BaseController extends Controller
       if ($user && !$user->isDeleted()) {
 
           // If the user is already in the community, might be a guest
-          $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $user->getId(), 'community' => $community->getId(), 'deleted_at' => null));
+          $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $user->getId(), 'community' => $community->getId()));
 
           if ($userCommunity){
 

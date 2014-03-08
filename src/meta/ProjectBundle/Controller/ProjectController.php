@@ -60,7 +60,7 @@ class ProjectController extends BaseController
                         
                         if (!is_null($community)){
                             
-                            $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $this->getUser()->getId(), 'community' => $community->getId(), 'guest' => false, 'deleted_at' => null));
+                            $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $this->getUser()->getId(), 'community' => $community->getId(), 'guest' => false));
 
                             if ($userCommunity){
                                 $community->addProject($this->base['project']);

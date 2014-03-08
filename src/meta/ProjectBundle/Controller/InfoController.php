@@ -168,6 +168,27 @@ class InfoController extends BaseController
                     }
 
                     $em = $this->getDoctrine()->getManager();
+                    // We need to flush now to be able to count the remaining projects afterwards
+                    $em->flush();
+
+                    $userCommunityRepository = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity');
+                    $userCommunity = $userCommunityRepository->findOneBy(array('user' => $toRemoveParticipantOrOwner, 'community' => $this->base['project']->getCommunity()));
+
+                    // If he is guest in the community, we might need to get him out of the community if he isn't in any 
+                    // projects anymore
+                    if ($userCommunity->isGuest()) {
+                      // How many projects has this user in the community ?
+                      $projectRepository = $this->getDoctrine()->getRepository('metaProjectBundle:StandardProject');
+                      $count = $projectRepository->countProjectsInCommunityForUser(array('user' => $toRemoveParticipantOrOwner, 'community' => $this->base['project']->getCommunity()));
+                      
+                      if ($count == 0) {
+                        // Bye bye 
+                        $em->remove($userCommunity);
+                        $toRemoveParticipantOrOwner->setCurrentCommunity(null);
+                      }
+                    }
+                    
+                    // Flush again
                     $em->flush();
 
                 } else {
@@ -230,6 +251,27 @@ class InfoController extends BaseController
                 );
 
                 $em = $this->getDoctrine()->getManager();
+                // We need to flush now to be able to count the remaining projects afterwards
+                $em->flush();
+
+                $userCommunityRepository = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity');
+                $userCommunity = $userCommunityRepository->findOneBy(array('user' => $toRemoveParticipantOrOwner, 'community' => $this->base['project']->getCommunity()));
+
+                // If he is guest in the community, we might need to get him out of the community if he isn't in any 
+                // projects anymore
+                if ($userCommunity->isGuest()) {
+                  // How many projects has this user in the community ?
+                  $projectRepository = $this->getDoctrine()->getRepository('metaProjectBundle:StandardProject');
+                  $count = $projectRepository->countProjectsInCommunityForUser(array('user' => $toRemoveParticipantOrOwner, 'community' => $this->base['project']->getCommunity()));
+                  
+                  if ($count == 0) {
+                    // Bye bye 
+                    $em->remove($userCommunity);
+                    $toRemoveParticipantOrOwner->setCurrentCommunity(null);
+                  }
+                }
+                
+                // Flush again
                 $em->flush();
 
             } else {

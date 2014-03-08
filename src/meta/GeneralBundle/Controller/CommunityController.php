@@ -50,7 +50,7 @@ class CommunityController extends Controller
             }
 
             // Is the user manager or guest ?
-            $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'deleted_at' => null));
+            $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId()));
             
             // ALL USERS as a mosaik with dot indicating number of recent actions (> 9  : show a '+') 
             $userRepository = $this->getDoctrine()->getRepository('metaUserBundle:User');
@@ -180,7 +180,7 @@ class CommunityController extends Controller
         if ( !is_null($community) && $community){
 
             // Is the user manager ?
-            $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'deleted_at' => null, 'manager' => true));
+            $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'manager' => true));
 
             if ($userCommunity){
         
@@ -298,7 +298,7 @@ class CommunityController extends Controller
         if ( !is_null($community) && $community){
 
             // Is the user manager ?
-            $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'deleted_at' => null, 'manager' => true));
+            $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'manager' => true));
 
             if ($userCommunity){
 
@@ -337,16 +337,16 @@ class CommunityController extends Controller
         if ( !is_null($community) && $community){
 
             // Is the user manager ?
-            $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'deleted_at' => null, 'manager' => true));
+            $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'manager' => true));
 
             if ($userCommunity){
             
                 // Retrieve all the actual managers from the community
-                $userCommunityManagers = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('community' => $community->getId(), 'deleted_at' => null, 'manager' => true));
+                $userCommunityManagers = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('community' => $community->getId(), 'manager' => true));
 
                 // Counts the actual users in the community
-                $userCommunityUsers = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('community' => $community->getId(), 'deleted_at' => null));
-                $userCommunityGuests = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('community' => $community->getId(), 'deleted_at' => null, 'guest' => true));
+                $userCommunityUsers = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('community' => $community->getId()));
+                $userCommunityGuests = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('community' => $community->getId(), 'guest' => true));
 
                 $targetManagerAsBase64 = array('slug' => 'metaGeneralBundle:Community:addManager', 'external' => false, 'params' => array('guest' => false));
                 $targetManagerAsBase64 = base64_encode(json_encode($targetManagerAsBase64));
@@ -457,7 +457,7 @@ class CommunityController extends Controller
         $community = $authenticatedUser->getCurrentCommunity();
 
         if (!is_null($community)){
-            $userCommunityManager = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'manager' => true, 'deleted_at' => null));
+            $userCommunityManager = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'manager' => true));
         } else {
 
             $this->get('session')->getFlashBag()->add(
@@ -497,9 +497,9 @@ class CommunityController extends Controller
                     $mailOrUsername = $user->getEmail();
                     $token = null;
 
-                    $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('user' => $user->getId(), 'community' => $community->getId(), 'guest' => false, 'deleted_at' => null));
+                    $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('user' => $user->getId(), 'community' => $community->getId(), 'guest' => false));
 
-                    $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('user' => $user->getId(), 'community' => $community->getId(), 'guest' => true, 'deleted_at' => null));
+                    $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('user' => $user->getId(), 'community' => $community->getId(), 'guest' => true));
 
                     // If the user is already in the community
                     if ($userCommunity){
@@ -630,7 +630,7 @@ class CommunityController extends Controller
         $community = $authenticatedUser->getCurrentCommunity();
 
         if (!is_null($community)){
-            $userCommunityManager = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'manager' => true, 'deleted_at' => null));
+            $userCommunityManager = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'manager' => true));
         } else {
 
             $this->get('session')->getFlashBag()->add(
@@ -664,8 +664,8 @@ class CommunityController extends Controller
 
                     $mailOrUsername = $user->getEmail();
 
-                    $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('user' => $user->getId(), 'community' => $community->getId(), 'guest' => false, 'deleted_at' => null));
-                    $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('user' => $user->getId(), 'community' => $community->getId(), 'guest' => true, 'deleted_at' => null));
+                    $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('user' => $user->getId(), 'community' => $community->getId(), 'guest' => false));
+                    $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('user' => $user->getId(), 'community' => $community->getId(), 'guest' => true));
 
                     // If the user is in the community
                     if ($userCommunity && $userCommunity->getManager() === false){ 
@@ -821,7 +821,7 @@ class CommunityController extends Controller
         if ($newManager) {
 
             // Is he in the community, not as a guest ?
-            $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('community' => $community->getId(), 'user' => $newManager->getId(), 'deleted_at' => null, 'guest' => false));
+            $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('community' => $community->getId(), 'user' => $newManager->getId(), 'guest' => false));
 
             if ($userCommunity && !$userCommunity->isManager()){
 
@@ -887,7 +887,7 @@ class CommunityController extends Controller
         if ($toRemoveManager && $managersCount > 1 ) {
             
             // Is he manager in the community ?
-            $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('community' => $community->getId(), 'user' => $toRemoveManager->getId(), 'deleted_at' => null, 'manager' => true));
+            $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('community' => $community->getId(), 'user' => $toRemoveManager->getId(), 'manager' => true));
 
             if ($userCommunity && $userCommunity->isManager()){
 

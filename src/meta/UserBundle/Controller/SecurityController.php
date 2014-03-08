@@ -324,6 +324,7 @@ class SecurityController extends Controller
                         }
 
                     }
+
                 }
 
                 $em->flush();
@@ -589,7 +590,7 @@ class SecurityController extends Controller
                 // Private space, you're not a guest
                 $userCommunity = null;
             } else {
-                $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'deleted_at' => null));
+                $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId()));
             }
             
             return $this->render(

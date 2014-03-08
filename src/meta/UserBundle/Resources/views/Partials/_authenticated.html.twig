@@ -15,7 +15,7 @@
 
       <li class="divider"></li>
 
-      {% for userCommunity in user.userCommunities if not userCommunity.isDeleted %}
+      {% for userCommunity in user.userCommunities %}
       <li><a href="{{ path('g_switch_community', { 'uid': userCommunity.community.id|to_uid, 'token': csrf_token('switchCommunity') } ) }}" title="{{ userCommunity.community.type }}">{% if user.currentCommunity == userCommunity.community %}<i class="fa fa-check"></i> {% endif %}{{ userCommunity.community.name }}{% if userCommunity.guest %} <i class="fa fa-lock"></i>{% else %} <span class="community-{% if userCommunity.community.isValid() %}{{ userCommunity.community.type }}{% else %}expired{% endif %}">&#9679;</span>{% endif %}</a></li>
       {% endfor %}
 

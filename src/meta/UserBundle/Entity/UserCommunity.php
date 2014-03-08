@@ -65,14 +65,6 @@ class UserCommunity
      * @Assert\DateTime()
      */
     private $created_at;  
-    
-    /**
-     * @var \DateTime $deleted_at
-     *
-     * @ORM\Column(name="deleted_at", type="datetime", nullable=true)
-     * @Assert\DateTime()
-     */
-    private $deleted_at;
 
     public function __construct() {
         
@@ -81,7 +73,6 @@ class UserCommunity
         
         $this->email = null;
         $this->created_at = new \DateTime('now');
-        $this->deleted_at = null;
 
     }
 
@@ -250,50 +241,6 @@ class UserCommunity
     public function getCreatedAt()
     {
         return $this->created_at;
-    }
-
-    /**
-     * Set deleted_at
-     *
-     * @param \DateTime $deletedAt
-     * @return User
-     */
-    public function setDeletedAt($deletedAt)
-    {
-        $this->deleted_at = $deletedAt;
-    
-        return $this;
-    }
-
-    /**
-     * Get deleted_at
-     *
-     * @return \DateTime 
-     */
-    public function getDeletedAt()
-    {
-        return $this->deleted_at;
-    }
-
-    /**
-     * Is deleted
-     *
-     * @return boolean 
-     */
-    public function isDeleted()
-    {
-        return !($this->deleted_at === NULL);
-    }
-
-    /**
-     * Deletes
-     *
-     * @return User 
-     */
-    public function delete()
-    {
-        $this->deleted_at = new \DateTime('now');
-        return $this;
     }
 
 }
