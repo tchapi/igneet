@@ -1,0 +1,31 @@
+{% extends 'metaGeneralBundle:FirstRun:base.step.html.twig' %}
+
+{% block header %}
+  <div class="title">
+    <h2>{{ ("firstrun.steps.inviteUsers.name")|trans }}</h2>
+    <h4>{{ ("firstrun.steps.inviteUsers.header")|trans({ '%community%' : community.name }) }}</h4>
+  </div>
+{% endblock %}
+
+{% block step %}
+
+<section>
+  <div class="content-full">
+
+    <p>{{ "firstrun.steps.inviteUsers.text"|trans({ '%community%' : community.name })|raw }}</p>
+
+    <form action="">
+      <input type="email" name="emails[]" placeholder="{{ "firstrun.steps.inviteUsers.email"|trans }}">
+      <input type="email" name="emails[]" placeholder="{{ "firstrun.steps.inviteUsers.email"|trans }}">
+      <input type="email" name="emails[]" placeholder="{{ "firstrun.steps.inviteUsers.email"|trans }}">
+      <input type="email" name="emails[]" placeholder="{{ "firstrun.steps.inviteUsers.email"|trans }}">
+      <input type="submit" style="display: none;">
+    </form>
+
+  </div>
+</section>
+
+
+
+
+{% endblock %}

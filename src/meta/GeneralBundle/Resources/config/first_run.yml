@@ -1,0 +1,11 @@
+parameters:
+  steps:
+    - 
+      name: "createCommunity"
+      action: "metaGeneralBundle:FirstRun:createCommunity"
+    -
+      name: "inviteUsers"
+      action: "metaGeneralBundle:FirstRun:inviteUsers"
+    -
+      name: "congrats"
+      action: "metaGeneralBundle:FirstRun:congrats"

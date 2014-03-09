@@ -79,6 +79,26 @@ community:
     headlinePlaceholder: "Donnez un slogan accrocheur à votre communauté"
   created: "La communauté %community% a été créée avec succès. Commencez par ajouter vos premiers membres !"
   createdOn: "Créée le %date%"
+# First run
+firstrun:
+  welcome: "Bienvenue !"
+  finish: "C'est parti !"
+  cancel: "Passer ces étapes"
+  next: "Suivant .."
+  steps:
+    createCommunity:
+      name: "Créez votre première communauté"
+      header: "Commencez tout de suite à créer votre première communauté sur Igneet"
+      text: "La plupart des gens créent plusieurs communautés : une pour l'équipe de travail dans leur entreprise, une pour l'ensemble des startups de leur incubateur, une pour chacune des associations (club de sport, association étudiante, association de solidarité, ...) dans lesquels ils sont, et parfois d'autres encore.<br><br>Et vous, quelle serait la première communauté à créer sur igneet ? Donnez-lui un nom :"
+    inviteUsers:
+      name: "Invitez des gens"
+      header: "Qui seraient les personnes à inviter dans votre nouvelle communauté %community% ?"
+      text: "Vous pouvez les inviter ci-dessous en inscrivant leur adresse email — ils recevront un email de votre part les invitant à rejoindre la communauté %community% que vous venez de créer.<br><br>S'ils ne donnent pas suite, ils ne recevront aucune autre sollicitation de notre part, ni quoi que ce soit venant de nous - nous aussi, on déteste les spams).<br><br>Si vous préférez, vous pourrez toujours ajouter des utilisateurs à vos communautés par la suite sur la page d'administration de la communauté."
+      email: "Email"
+    congrats:
+      name: "Bravo"
+      header: "Vous venez de créer votre première communauté. C'est un joli premier pas."
+      text: "Peut-être avez-vous d'autres cercles avec lesquels vous échangez régulièrement et pour lesquels les outils actuels vous pèsent : pourquoi ne pas essayer igneet ?<br /><br/>À tout instant vous pourrez créer une nouvelle communauté en utilisant le menu de communauté en haut à gauche, ou depuis votre espace personnel."
 # File uploads
 file:
   choose: "Choisir un fichier"

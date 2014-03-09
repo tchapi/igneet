@@ -79,6 +79,26 @@ community:
     headlinePlaceholder: "Give your community some nice catchline"
   created: "The community %community% has been created successfully. Start inviting your first teammates !"
   createdOn: "Created on %date%"
+# First run
+firstrun:
+  welcome: "Welcome !"
+  finish: "Ok, let's go!"
+  cancel: "Skip this tour"
+  next: "Next .."
+  steps:
+    createCommunity:
+      name: "Create a first community"
+      header: "Start off by creating a new community on igneet"
+      text: "A large part of our users create more than one community : one for the team they work with in their company, one for their startup pals, one for each of their associations (sports club, students club, charities, ...), and sometimes many more.<br><br>What will be your first community ? Give it a name :"
+    inviteUsers:
+      name: "Invite users"
+      header: "Who would you like to invite in your community %community% ?"
+      text: "Put their email below - they will receive a mail sent on your behalf, inviting them in the community %community% you have just created.<br><br>If they ignore this email they will never be contacted again by us - yes, we hate spam too.<br><br>You can always add them (and more people) later on the management page of your community if you wish :"
+      email: "Email"
+    congrats:
+      name: "Congratulations"
+      header: "You've just setup your first community, it's a great first step !"
+      text: "Maybe you have other circles of friends or collaborators with which you exchange on a regular basis, and for which your tools are not satisfying. Why not give igneet a try for that too ?<br/><br/>Create a new community anytime in the menu above, or from your private space."
 # File uploads
 file:
   choose: "Choose a file"

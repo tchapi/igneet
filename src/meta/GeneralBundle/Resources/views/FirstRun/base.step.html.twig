@@ -1,0 +1,60 @@
+{% extends 'metaGeneralBundle:Community:layout.html.twig' %}
+
+{% block title %}{{ "firstrun.welcome"|trans }} | {{ ("firstrun.steps." ~ currentStep.name ~ ".name")|trans }} {% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+    <script type="text/javascript">
+    $(document).ready(function(){
+
+      if ($('form').length === 1){
+        
+        $('form').on('submit', function(e){
+          e.preventDefault();
+          $.post($('form').attr('action'), $("form").serialize())
+          .done(function(data){
+            process(data, "success", null);
+          })
+          .fail(function(xhr){
+            process(xhr.responseJSON, "error", null);
+          });
+        });
+
+        $(".submit").on('click', function(e){
+          e.preventDefault();
+          $('form input[type=submit]').trigger('click');
+        });
+
+      }
+
+    });
+    </script>
+{% endblock %}
+
+{% block container %}
+
+<header class="welcome">
+{% block header %}
+  <div class="title">
+    <h2>{{ ("firstrun.steps." ~ currentStep.name ~ ".name")|trans }}</h2>
+    <h4>{{ ("firstrun.steps." ~ currentStep.name ~ ".header")|trans }}</h4>
+  </div>
+{% endblock %}
+</header>
+
+{% block step %}{% endblock %}
+
+{% block actions %}
+<section class="actions">
+  <div class="content-full">
+
+    {% if nextStepId is null %}
+      <a class="button button-success" href="{{ path('g_home_community') }}">{{ "firstrun.finish"|trans }}</a>
+    {% else %}
+      <a class="button-link" href="{{ path('g_home_community') }}">{{ "firstrun.cancel"|trans }}</a><a class="button button-info submit" href="{{ path('g_first_run', { 'step': nextStepId }) }}">{{ "firstrun.next"|trans }}</a>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}
+
+{% endblock %}

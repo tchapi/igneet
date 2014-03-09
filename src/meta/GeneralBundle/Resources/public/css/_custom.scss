@@ -17,6 +17,25 @@ body {
   font-weight: 300;
 }
 
+header.welcome {
+    &:before {
+      @include linear-gradient(-45deg, $_secondary 25%, $_secondary_lighter 25%, $_secondary_lighter 50%, $_secondary 50%, $_secondary 75%, $_secondary_lighter 75%, $_secondary_lighter);
+      background-size: 25px 25px;
+      height: 20px;
+      width: 100%;
+      content: " ";
+      display: block;
+      position: absolute;
+      top: 0;
+    }
+    background: $_secondary_lighter;
+    & ~ section.actions {
+      & > .content-full {
+        text-align: right;
+      }
+    }
+}
+
 a {
   color: $_primary;
   cursor: pointer;
@@ -87,6 +106,17 @@ em { color: $_muted; }
 /* Buttons */
 a.button, input[type=submit].button, button {
   @include button();
+}
+a.button-link {
+  padding: 0.5em;
+  min-width: 100px;
+  display: inline-block;
+  text-align: center;
+  margin-bottom: 2px;
+  color: $_secondary;
+  &:hover{
+    color: darken($_secondary, 10%);
+  }
 }
 
 // Structure card && full

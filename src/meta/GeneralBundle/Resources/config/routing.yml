@@ -60,6 +60,12 @@ g_remove:
     pattern: /community/remove
     defaults: { _controller: metaGeneralBundle:Community:remove }
 
+# First run
+
+g_first_run:
+    pattern: /welcome/{step}
+    defaults: { _controller: metaGeneralBundle:FirstRun:doStep, step: 0 }
+
 # Language
 
 g_switch_language:

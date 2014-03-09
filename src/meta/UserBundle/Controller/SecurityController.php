@@ -360,7 +360,8 @@ class SecurityController extends Controller
 
                 } else {
 
-                    return $this->redirect($this->generateUrl('g_home_community'));
+                    $session->set('inviteToken', null);
+                    return $this->redirect($this->generateUrl('g_first_run'));
                 }
 
             }
