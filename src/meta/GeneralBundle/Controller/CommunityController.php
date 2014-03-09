@@ -970,6 +970,11 @@ class CommunityController extends Controller
           
           if ($log_types[$entry->getType()]['displayable'] === false ) continue; // We do not display them
 
+          // Strips private projects logs
+          if ($log_types[$entry->getType()]['type'] === "project" && $entry->getSubject()->isPrivate()) {
+            continue;
+          }
+
           $text = $logService->getHTML($entry);
           $createdAt = date_create($entry->getCreatedAt()->format('Y-m-d H:i:s')); // not for display
 
