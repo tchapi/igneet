@@ -582,47 +582,6 @@ class StandardProject extends Taggable
     }
 
     /**
-     * Get N random owners
-     *
-     * @return Doctrine\Common\Collections\Collections
-     */
-    public function getRandomOwners($limit)
-    {
-        $sub_array = $this->owners->slice(0,max(0,$limit));
-        shuffle($sub_array);
-
-        return $sub_array;
-
-    }
-
-    /**
-     * Get N random participants
-     *
-     * @return Doctrine\Common\Collections\Collections
-     */
-    public function getRandomParticipants($limit)
-    {
-        $sub_array = $this->participants->slice(0,max(0,$limit));
-        shuffle($sub_array);
-
-        return $sub_array;
-
-    }
-
-     /**
-     * Get N random participants or owners
-     *
-     * @return array
-     */
-    public function getRandomParticipantsAndOwners($limit)
-    {
-        $array = array_merge($this->getRandomParticipants($limit), $this->getRandomOwners($limit));
-        shuffle($array);
-
-        return array_slice($array, 0, max(0,$limit));
-    }
-
-    /**
      * Add watcher
      *
      * BINDING LOGIC IS DONE IN 'USER' CLASS 
