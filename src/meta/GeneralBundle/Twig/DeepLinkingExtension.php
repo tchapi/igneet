@@ -151,7 +151,7 @@ class DeepLinkingExtension extends \Twig_Extension
                               'args' => $args,
                               'icon' => $config['icon'], 
                               'title' => $title,
-                              'provider' => $provider
+                              'provider' => isset($provider)?$provider:null
                         ));
 
                     $text = str_replace($matches[0][$i], $replacement, $text);
