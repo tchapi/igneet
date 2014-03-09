@@ -2,6 +2,9 @@
 
 namespace meta\ProjectBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Request,
+    Symfony\Component\HttpFoundation\Response;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class TimelineController extends BaseController
@@ -29,7 +32,7 @@ class TimelineController extends BaseController
     /*
      * Output the timeline history
      */
-    public function historyAction($uid, $page)
+    public function historyAction(Request $request, $uid)
     {
 
         $menu = $this->container->getParameter('project.menu');
