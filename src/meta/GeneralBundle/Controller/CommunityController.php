@@ -942,6 +942,8 @@ class CommunityController extends Controller
         $authenticatedUser = $this->getUser();
         $community = $authenticatedUser->getCurrentCommunity();
 
+        $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('community' => $community->getId(), 'user' => $authenticatedUser->getId()));
+
         if ( is_null($community)){
             return null;
         }
@@ -967,19 +969,33 @@ class CommunityController extends Controller
         $logService = $this->container->get('logService');
 
         foreach ($entries as $entry) {
-          
-          if ($log_types[$entry->getType()]['displayable'] === false ) continue; // We do not display them
 
-          // Strips private projects logs
-          if ($log_types[$entry->getType()]['type'] === "project" && $entry->getSubject()->isPrivate()) {
-            continue;
-          }
+            if ($log_types[$entry->getType()]['displayable'] === false ) {
+                continue; // We do not display them
+            }
 
-          $text = $logService->getHTML($entry);
-          $createdAt = date_create($entry->getCreatedAt()->format('Y-m-d H:i:s')); // not for display
+            // Strips private projects logs
+            if ($log_types[$entry->getType()]['type'] === "project" && $entry->getSubject()->isPrivate()) {
+                continue;
+            }
 
-          $history[] = array( 'createdAt' => $createdAt, 'text' => $text);
-        
+            // If I'm guest, I don't see idea logs, and projects where I'm not in
+            if ($userCommunity->isGuest()) {
+                if ($log_types[$entry->getType()]['type'] === "idea") {
+                    continue;
+                } elseif ($log_types[$entry->getType()]['type'] === "project" && 
+                    !$entry->getSubject()->getOwners()->contains($authenticatedUser) &&
+                    !$entry->getSubject()->getParticipants()->contains($authenticatedUser)
+                    ) {
+                    continue;
+                }
+            }
+
+            $text = $logService->getHTML($entry);
+            $createdAt = date_create($entry->getCreatedAt()->format('Y-m-d H:i:s')); // not for display
+
+            $history[] = array( 'createdAt' => $createdAt, 'text' => $text);
+
         }
 
         // Comments
