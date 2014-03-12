@@ -18,9 +18,6 @@ $(document).ready(function() {
             $.post(list.children('ul').attr('data-url'), {
                 ranks: ranks
             })
-                .done(function(data) {
-                    process(data, "success", Translator.trans('alert.changes.saved'));
-                })
                 .fail(function(xhr) {
                     process(xhr.responseJSON, "error", Translator.trans('alert.error.saving.changes'));
                 });
@@ -31,9 +28,6 @@ $(document).ready(function() {
                     name: item.attr('data-name'),
                     value: item.parent().parent().attr('id') || 0
                 })
-                    .done(function(data) {
-                        process(data, "success", Translator.trans('alert.changes.saved'));
-                    })
                     .fail(function(xhr) {
                         process(xhr.responseJSON, "error", Translator.trans('alert.error.saving.changes'));
                     });
