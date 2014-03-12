@@ -76,7 +76,7 @@ class versionBumpCommand extends ContainerAwareCommand
       $config = file_get_contents($config_file);
 
       // replace something in the file string
-      $config_new = preg_replace($this->pattern, "version: \'$version_full\'", $config);
+      $config_new = preg_replace($this->pattern, "version: '$version_full'", $config);
       
       // config_new should be larger and writeConfig enabled
       if ($writeConfig && ($config_new !== $config) ) {
