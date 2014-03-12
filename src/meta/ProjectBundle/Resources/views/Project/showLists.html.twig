@@ -14,10 +14,8 @@
 
 {% block javascripts %}
   {{ parent() }}
-  {% javascripts '@metaGeneralBundle/Resources/public/js-edit/jquery-nestable.js'
-                 '@metaGeneralBundle/Resources/public/js-edit/slip.js'
+  {% javascripts '@metaGeneralBundle/Resources/public/js-edit/slip.js'
                  '@metaGeneralBundle/Resources/public/js-edit/slip.behaviour.js'
-                 '@metaGeneralBundle/Resources/public/js-edit/nestable.behaviour.js'
           filter='?yui_js' %}
   <script src="{{ asset_url }}"></script>
   {% endjavascripts %}
@@ -30,25 +28,15 @@
   <section>
 
       {# Tree of lists #}
-      <div class="tree menu dd{% if app.request.cookies.get('igneet_trees_open').lists is defined and app.request.cookies.get('igneet_trees_open').lists == 'true' %} open{% endif %}" data-trees="lists">
+      <div class="tree menu{% if app.request.cookies.get('igneet_trees_open').lists is defined and app.request.cookies.get('igneet_trees_open').lists == 'true' %} open{% endif %}" data-trees="lists">
           <span>{{ "project.lists.title"|trans }}</span>
           <a href="#" class="toggle" title="{{ "project.lists.open"|trans }}"><i class="fa fa-angle-double-left"></i></a>
           {% if base.canEdit %}
             <a href="#" data-url="{{ path('p_show_project_list_new', {'uid': base.project.id|to_uid, 'token': csrf_token('newList')}) }}" data-title="{{ "project.lists.newHelp"|trans }}" title="{{ "project.lists.new"|trans }}" class="new">+</a>
           {% endif %}
-          <ul class="sortable dd-list" data-value="0" data-url="{{ path('p_show_project_list_rank', {'uid': base.project.id|to_uid, 'token': csrf_token('rankLists') }) }}">
+          <ul class="slip" data-value="0" data-url="{{ path('p_show_project_list_rank', {'uid': base.project.id|to_uid, 'token': csrf_token('rankLists') }) }}">
             {% for list_ in lists %}
-              <li class="{% if list_.id == list.id %}active {% endif %}dd-item dd-nochildren{% if not base.canEdit %} dd-nodrag{% endif %}" id="{{ list_.id|to_uid }}">
-                {# Name of list #}
-                 <a href="{{ path('p_show_project_list', {'uid': base.project.id|to_uid, 'list_uid': list_.id|to_uid }) }}" title="{{ list_.name }}" class="page_title">{{ list_.name }} <em class="hint-progress" data-list="{{ list_.id|to_uid }}">{{ list_.getProgress() }}%</em></a>
-                 {# Handle for drag and drop #}
-                {% if base.canEdit %}
-                  <div class="actions">
-                    <a title="{{ "delete"|trans }}" class="remove" data-title="{{ "project.lists.deleteHelp"|trans }}" data-url="{{ path('p_show_project_list_delete', {'uid': base.project.id|to_uid, 'list_uid': list_.id|to_uid, 'token': csrf_token('deleteList') }) }}">&times;</a>
-                  </div>
-                  <div class="dd-handle"><i class="fa fa-bars"></i></div>
-                {% endif %}
-              </li>
+              {% include 'metaProjectBundle:Project:showLists.list.html.twig' with {'list': list_, 'current_list': list, 'canEdit' : base.canEdit, 'project' : base.project} %}
             {% endfor %}
           </ul>
       </div>

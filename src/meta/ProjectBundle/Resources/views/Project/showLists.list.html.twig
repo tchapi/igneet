@@ -1,0 +1,16 @@
+{% spaceless %}
+<li{% if list.id == current_list.id %} class="active"{% endif %} id="{{ list.id|to_uid }}">
+  
+  {# Name of list #}
+  <a href="{{ path('p_show_project_list', {'uid': project.id|to_uid, 'list_uid': list.id|to_uid }) }}" title="{{ list.name }}" class="page_title">{{ list.name }} <em class="hint-progress" data-list="{{ list.id|to_uid }}">{{ list.getProgress() }}%</em></a>
+  
+  {# Handle for drag and drop #}
+  {% if canEdit %}
+    <div class="actions">
+      <a title="{{ "delete"|trans }}" class="remove" data-title="{{ "project.lists.deleteHelp"|trans }}" data-url="{{ path('p_show_project_list_delete', {'uid': project.id|to_uid, 'list_uid': list.id|to_uid, 'token': csrf_token('deleteList') }) }}">&times;</a>
+    </div>
+    <div class="instant"><i class="fa fa-bars"></i></div>
+  {% endif %}
+
+</li>
+{% endspaceless %}
