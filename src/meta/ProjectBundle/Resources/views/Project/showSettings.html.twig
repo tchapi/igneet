@@ -15,7 +15,7 @@
     
       {% if base.project.private and base.project.community is not null %}
         <a class="button button-success" data-confirm="{{ "project.privateHelp"|trans }}" href="{{ path('p_make_public', {'uid': base.project.id|to_uid, 'token': csrf_token('makePublic') }) }}"><i class="fa fa-globe"></i> {{ "project.make.public"|trans }}</a>
-      {% else %}
+      {% elseif base.project.community is not null %}
         <a class="button button-warning" data-confirm="{{ "project.publicHelp"|trans }}" href="{{ path('p_make_private', {'uid': base.project.id|to_uid, 'token': csrf_token('makePrivate') }) }}"><i class="fa fa-minus-circle"></i> {{ "project.make.private"|trans }}</a>
       {% endif %}
 
