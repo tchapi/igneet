@@ -2,7 +2,7 @@
 /*jslint browser: true*/
 $(document).ready(function() {
 
-    var fireEvent = ("ontouchend" in document)?'touchend':'click';
+    var fireEvent = ("ontouchend" in document) ? 'touchend' : 'click';
 
     // Define: Linkify plugin from stackoverflow
     (function($) {
@@ -98,7 +98,7 @@ $(document).ready(function() {
         }
     });
 
-    
+
     // Links in list items and wiki pages
     $(document).on(fireEvent, "[contenteditable=true][rich=full], [contenteditable=true][rich=true], [contenteditable=true][rich=links]", function(e) {
 
@@ -114,7 +114,7 @@ $(document).ready(function() {
                 } else {
                     open = '<a href="' + e.target.href + '/link" target="_blank"><i class="fa fa-external-link"></i> Open Resource</a>';
                 }
-                var div  = $('<div class="link_choice">' + open + ' | <a href="' + e.target.href + '" target="_blank"><i class="fa fa-pencil"></i> Edit</a></div>').css({
+                var div = $('<div class="link_choice">' + open + ' | <a href="' + e.target.href + '" target="_blank"><i class="fa fa-pencil"></i> Edit</a></div>').css({
                     "position": "absolute",
                     "left": offsets.left,
                     "top": offsets.top + e.target.offsetHeight + 4
@@ -131,7 +131,7 @@ $(document).ready(function() {
             // Remove everything before putting in the new one
             $('.link_choice').remove();
             $(document.body).append(div);
-            
+
         }
 
     });
@@ -349,11 +349,13 @@ $(document).ready(function() {
     editableListsData = {};
     $("ul[contenteditable=list][data-name=skills] > li > a.add").on('click', function(e) {
         e.preventDefault();
-        displayInput($(this), true);
+        var _self = $(this);
+        displayInput(_self, true);
         // Gets the list
-        name = $(this).closest('ul').attr("data-name");
-        $.getJSON($(this).attr("data-url"), function(data) {
+        name = _self.closest('ul').attr("data-name");
+        $.getJSON(_self.attr("data-url"), function(data) {
             editableListsData[name] = data;
+            displayResults(data, _self.parent());
         });
     });
     $("ul[contenteditable=list][data-name=tags] > li > a.add").on('click', function(e) {
@@ -388,7 +390,7 @@ $(document).ready(function() {
             target = $(this).closest('ul');
             target.find('.thinking').hide();
             target.find('.cancel').show();
-            if (e.which === 13 && $.trim($(this).val()) != "" ) { // Trigger a save with the Return key for tags
+            if (e.which === 13 && $.trim($(this).val()) != "") { // Trigger a save with the Return key for tags
                 e.preventDefault();
                 target.find('.thinking').show();
                 target.find('.cancel').hide();
@@ -433,7 +435,7 @@ $(document).ready(function() {
     /*
      * Slip / Nestable
      */
-     
+
     // Add new item in the list
     $(".tree .new, .none .new").click(function(e) {
 
