@@ -26,7 +26,9 @@ member.in:
 community:
   invalid: "Oups, votre communauté %community% est arrivée à expiration. Veuillez nous contacter pour continuer à en bénéficier."
   validUntil: "Pour information, votre communauté est valable jusqu'au %date%."
-  upgrade: "Choisissez un package pour votre communauté"
+  upgrade: "Votre communauté a expiré"
+  upgradeHelp: "Votre communauté n'est plus valable — pas de panique, vous pouvez étendre sa validité, nous n'avons rien touché ni supprimé pour l'instant."
+  upgradeText: "Pour le moment, vous ne pouvez pas encore étendre la validité de votre communauté en ligne, mais cela va bientôt arriver. En attendant, il suffit de nous envoyer un email à <a href='mailto:contact@igneet.com'>contact@igneet.com</a> et nous reviendrons vers vous dès que possible."
   manage: "Administrez votre communauté"
   manageHelp: "En tant qu'administrateur, vous pouvez rendre un autre membre de la communauté administrateur, ou révoquer des administrateurs."
   manage.short: "Administrer"

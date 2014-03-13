@@ -27,6 +27,8 @@ community:
   invalid: "Oops, your community %community% is no longer valid. Please contact us now to re-enable it."
   validUntil: "For information, your community is valid until %date%."
   upgrade: "Upgrade your community"
+  upgradeHelp: "Your community has expired — but this is ok, you can still extend it and nothing has been deleted from it yet."
+  upgradeText: "While we are building igneet, you cannot automatically extend it online, but drop us an email at <a href='mailto:contact@igneet.com'>contact@igneet.com</a> and we will get back to you as soon as possible."
   manage: "Manage your community"
   manageHelp: "As a manager, you can invite other members to manage the community or revoke managers."
   manage.short: "Manage"
