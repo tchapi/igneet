@@ -199,7 +199,7 @@ class DefaultController extends Controller
         } else {
 
             $repository = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity');
-            $userCommunities = $repository->findBy(array( 'user' => $this->getUser(), 'guest' => false, 'deleted_at' => null));
+            $userCommunities = $repository->findBy(array( 'user' => $this->getUser(), 'guest' => false));
 
             if (count($userCommunities) == 0 ){
 
