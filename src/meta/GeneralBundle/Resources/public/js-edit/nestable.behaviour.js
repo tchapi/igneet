@@ -43,49 +43,4 @@ $(document).ready(function() {
         callback: updateRanksAndNesting
     });
 
-    // Toggle index (pages) view
-    $(".tree > .toggle").click(function(e) {
-        $(this).parent().toggleClass("open");
-        var flavour = $(this).parent().attr('data-trees');
-        e.preventDefault();
-        document.cookie = "igneet_trees_open[" + flavour + "]=" + ($(this).parent().hasClass('open') ? "true" : "false") + "; path=/; expires=Wed, 1 Jan 2020 00:42:42 UTC;";
-    });
-
-    // Add new item in the list
-    $(".tree .new, .none .new").click(function(e) {
-
-        e.preventDefault();
-        alertify.prompt($(this).attr('data-title'), $.proxy(function(e, str) {
-            // str is the input text
-            if (e) {
-                window.location.replace($(this).attr('data-url') + '&' + $.param({
-                    'title': str,
-                    'parent': $(".tree .active").attr('id')
-                }));
-            }
-        }, this), null);
-
-    });
-
-    // Remove item from the list
-    $(".tree .remove").click(function(e) {
-
-        e.preventDefault();
-        var item = $(this).parent().parent('li');
-        alertify.confirm($(this).attr('data-title'), $.proxy(function(e) {
-            if (e) {
-                $.post($(this).attr('data-url'), {
-                    'uid': $(".tree .active").parents('li').attr('id')
-                })
-                    .success(function(data) {
-                        process(data, "success", Translator.trans('alert.changes.saved'));
-                    })
-                    .error(function(data) {
-                        process(data, "error", Translator.trans('alert.error.saving.changes'));
-                    });
-            }
-        }, this));
-
-    });
-
 });
