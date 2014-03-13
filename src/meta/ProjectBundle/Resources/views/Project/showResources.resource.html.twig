@@ -28,8 +28,8 @@
     <form action="{{ path('p_show_project_resource_edit', {'uid': project.id|to_uid, 'resource_uid': resource.id|to_uid, 'token': csrf_token('edit')}) }}" method="post" {{ form_enctype(form) }}>
       {# if url #}
       {% if resource.provider == 'local' %}
-      <input type="hidden" name="name" value="file" />
-      <i class="fa fa-file-o"></i> <input type="file" name="value"/><input type="submit" class="button button-info" value="{{ "change"|trans }}"/>
+      <input type="hidden" name="name" value="file"/>
+      <i class="fa fa-file-o"></i> <input type="file" name="value" required="required"/><input type="submit" class="button button-info" value="{{ "change"|trans }}"/>
       {# if file #}
       {% else %}
       <i class="fa fa-link"></i> <span data-url="{{ path('p_show_project_resource_edit', {'uid': project.id|to_uid, 'resource_uid': resource.id|to_uid, 'token': csrf_token('edit') }) }}" data-name="url" data-last="{{ resource.url }}" contenteditable="true" rich="false">{{ resource.url }}</span>
