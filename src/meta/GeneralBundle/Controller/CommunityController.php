@@ -668,7 +668,7 @@ class CommunityController extends Controller
                     $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('user' => $user->getId(), 'community' => $community->getId(), 'guest' => true));
 
                     // If the user is in the community
-                    if ($userCommunity && $userCommunity->getManager() === false){ 
+                    if ($userCommunity && $userCommunity->isManager() === false){ 
 
                         $mustStayGuest = false;
 
@@ -741,7 +741,7 @@ class CommunityController extends Controller
                         $this->get('mailer')->send($message);
 
 
-                    } elseif ($userCommunity && $userCommunity->getManager() === true){ 
+                    } elseif ($userCommunity && $userCommunity->isManager() === true){ 
 
                         $this->get('session')->getFlashBag()->add(
                             'error',
