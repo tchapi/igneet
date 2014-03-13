@@ -15,15 +15,15 @@ class StandardProjectType extends AbstractType
 
         $builder->add('private', 'checkbox',  array('required' => false, 'data' => $options['isPrivate'], 'disabled' => $options['isPrivate'], 'label'  => 'project.createForm.private', 'attr' => array('help' => 'project.createForm.privateHelp')));
 
-        $builder->add('neededSkills', 'entity', array(
-            'label' => $options['translator']->trans('project.createForm.skills'),
-            'multiple' => true, 
-            'required' => false, 
-            'property' => 'I18nSlug',
-            'class' => 'meta\UserBundle\Entity\Skill',
-            'attr' => array('class' => 'select2-trigger', 'data-placeholder' => $options['translator']->trans('project.createForm.skillsPlaceholder')),
-            'translation_domain' => 'skills'
-            ));
+        // $builder->add('neededSkills', 'entity', array(
+        //     'label' => $options['translator']->trans('project.createForm.skills'),
+        //     'multiple' => true, 
+        //     'required' => false, 
+        //     'property' => 'I18nSlug',
+        //     'class' => 'meta\UserBundle\Entity\Skill',
+        //     'attr' => array('class' => 'select2-trigger', 'data-placeholder' => $options['translator']->trans('project.createForm.skillsPlaceholder')),
+        //     'translation_domain' => 'skills'
+        //     ));
     }
     
     public function setDefaultOptions(OptionsResolverInterface $resolver)
