@@ -1,6 +1,6 @@
 {% if locale is not defined %}{% set locale = app.user.getPreferredLanguage() %}{% endif %}
 {% spaceless %}
-<li class="log{% if date|date('c') > lastNotified|date('c') %} unseen{% endif %}" {{ groups|join(' ') }}>
+<li class="log{% if date|date('c') > lastNotified|date('c') and user != app.user %} unseen{% endif %}" {{ groups|join(' ') }}>
   <div class="avatar">
     {% if not user.isDeleted %}
     <a href="{{url('u_show_user_profile', {'username': user.username}) }}" title="{{ user.getFullName }}">
