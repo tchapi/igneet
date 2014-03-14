@@ -16,6 +16,7 @@ if (isset($_SERVER['HTTP_CLIENT_IP'])
         '37.59.11.115',   // Proxy ismerging.us
         '82.228.146.195', // Benjy Home
         '128.78.93.110', // Bus Home
+        '82.66.246.250', // CKAB
         '::1',
         'fe80::1' // WTF
     ))
