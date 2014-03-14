@@ -78,8 +78,8 @@ user:
     watched: "Idées suivies"
     initiated: "Idées créées"
   projects:
-    participated: "Projets aidés"
-    owned: "Projets créés"
+    participated: "Projets auxquels je participe"
+    owned: "Projets que je gère "
     watched: "Projets suivis"
   cancelled.signup: "Vous avez annulé le processus d'enregistrement d'un nouveau compte."
   createForm:

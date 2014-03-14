@@ -88,7 +88,7 @@
 
 {% block content %}
 <section>
-  <div class="label">{{ "user.about"|trans }} :</div>
+  <div class="label">{{ "user.about"|trans }}&nbsp;:</div>
   <div class="content">
     <div{% if canEdit %} data-name="about" data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" contenteditable="true" rich="true"{% else %} class="redactor_editor"{% endif %}>{{ user.about|deeplinks|markdown|raw }}</div>
   </div>
@@ -96,7 +96,7 @@
 
 {% if following|length > 0 %}
 <section>
-<div class="label">{{ "user.followings"|trans({'%user%': user.firstName }) }} :</div>
+<div class="label">{{ "user.followings"|trans({'%user%': user.firstName }) }}&nbsp;:</div>
 <ul class="content thumbs">
 {% for followingUser in following %}
   <li>
@@ -115,7 +115,7 @@
 
 {% if canEdit and followers|length > 0 %}
 <section>
-<div class="label">{{ "user.followers"|trans }} :</div>
+<div class="label">{{ "user.followers"|trans }}&nbsp;:</div>
 <ul class="content thumbs">
 {% for followerUser in followers %}
   <li>
@@ -134,7 +134,7 @@
 
 {% if canEdit and projectsWatched|length > 0 %}
 <section>
-<div class="label">{{ "user.projects.watched"|trans }} :</div>
+<div class="label">{{ "user.projects.watched"|trans }}&nbsp;:</div>
 <ul class="content thumbs">
 {% for watchedProject in projectsWatched %}
   <li>
@@ -152,7 +152,7 @@
 
 {% if projectsOwned|length > 0 %}
 <section>
-<div class="label">{{ "user.projects.owned"|trans }} :</div>
+<div class="label">{{ "user.projects.owned"|trans }}&nbsp;:</div>
 <ul class="content thumbs">
 {% for ownedProject in projectsOwned %}
   <li>
@@ -170,7 +170,7 @@
 
 {% if canEdit and projectsParticipatedIn|length > 0 %}
 <section>
-<div class="label">{{ "user.projects.participated"|trans }} :</div>
+<div class="label">{{ "user.projects.participated"|trans }}&nbsp;:</div>
 <ul class="content thumbs">
 {% for participatedInProject in projectsParticipatedIn %}
   <li>
@@ -188,7 +188,7 @@
 
 {% if canEdit and ideasWatched|length > 0 %}
 <section>
-<div class="label">{{ "user.ideas.watched"|trans }} :</div>
+<div class="label">{{ "user.ideas.watched"|trans }}&nbsp;:</div>
 <ul class="content thumbs">
 {% for idea in ideasWatched %}
   <li>
@@ -206,7 +206,7 @@
 
 {% if ideasCreated|length > 0 %}
 <section>
-<div class="label">{{ "user.ideas.initiated"|trans }} :</div>
+<div class="label">{{ "user.ideas.initiated"|trans }}&nbsp;:</div>
 <ul class="content thumbs">
 {% for idea in ideasCreated %}
   <li>
@@ -224,7 +224,7 @@
 
 {% if canEdit and ideasParticipatedIn|length > 0 %}
 <section>
-<div class="label">{{ "user.ideas.participated"|trans }} :</div>
+<div class="label">{{ "user.ideas.participated"|trans }}&nbsp;:</div>
 <ul class="content thumbs">
 {% for idea in ideasParticipatedIn %}
   <li>
