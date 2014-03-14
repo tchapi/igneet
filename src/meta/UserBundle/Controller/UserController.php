@@ -411,7 +411,7 @@ class UserController extends Controller
             $userRepository = $this->getDoctrine()->getRepository('metaUserBundle:User');
             foreach ($authenticatedUser->getUserCommunities() as $userCommunity) {
                 $nbManagersInCommunity = $userRepository->countManagersInCommunity(array('community' => $userCommunity->getCommunity()));
-                if ($nbManagersInCommunity == 1){
+                if ($nbManagersInCommunity == 1 && $userCommunity->isManager()){
                     // not good : we're the only manager of the community
                     $deletable = false;
                     $communities .= $userCommunity->getCommunity()->getName(). ",";
