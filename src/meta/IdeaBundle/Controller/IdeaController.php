@@ -542,6 +542,7 @@ class IdeaController extends Controller
                 $project->setHeadline($this->base['idea']->getHeadline());
                 $project->setPicture($this->base['idea']->getRawPicture());
                 $project->setCreatedAt($this->base['idea']->getCreatedAt());
+                $project->setAbout($this->base['idea']->getAbout()); 
 
                 foreach ($this->base['idea']->getWatchers() as $watcher) {
                     $watcher->addProjectsWatched($project);
