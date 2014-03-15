@@ -31,7 +31,7 @@
     & > textarea {
       margin-top: 0;
       margin-bottom: 0;
-      @include span-columns(12 of 12);
+      @include fill-parent();
       @include media ($desktop) {
         @include omega;
       }
@@ -49,8 +49,8 @@
     }  
     & > span.working {
       margin: 14px 0;
-      @include span-columns(1 of 12);
-      @include shift(9);
+      @include span-columns(1 of 11);
+      @include shift(8);
       padding: 8px;
       text-align: right;
       @include media ($tablet, $mobile) {
@@ -59,7 +59,7 @@
     }  
     & > input[type=submit] {
       margin: 14px 0;
-      @include span-columns(2 of 12);
+      @include span-columns(2 of 11);
       @include media ($tablet) {
         @include shift(0);
         @include span-columns(1 of 4);

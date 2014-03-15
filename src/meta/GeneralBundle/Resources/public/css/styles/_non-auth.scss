@@ -87,9 +87,12 @@
 
       @include placeholder { color: $_input-placeholder; }
     }
+    input#username {
+      padding-right: 110px; // For the openid buttons
+    }
     .openid {
       position: absolute;
-      right: 6px;
+      right: 16px;
       top: 8px;
       z-index: 2;
     }
