@@ -32,7 +32,7 @@ project:
     headline: "Headline"
     headlineHelp: "Give your project some nice catchline"
     private: "Private project"
-    privateHelp: "Decide wether your project should be seen by non-participants. Private space projects are always private"
+    privateHelp: "Decide whether your project should be seen by non-participants. Private space projects are always private"
     skills: "Skills needed for this project (if any)"
     skillsPlaceholder: "Indicate needed skills"
   watch: "Watch project"
