@@ -6,7 +6,11 @@
   <div class="content-full">
 
     <p>{{ "firstrun.steps.congrats.text"|trans|raw }}</p>
-
+    <ul>
+      {% for project in shared_projects %}
+        <li><a href="{{ path('p_show_project', {uid: project.id|to_uid}) }}"><img src="{{ asset(project.getPicture()) }}" width="20px" height="20px"/> {{ project.name }}</a></li>
+      {% endfor %}
+    </ul>
   </div>
 </section>
 

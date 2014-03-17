@@ -100,7 +100,7 @@ firstrun:
     congrats:
       name: "Bravo"
       header: "Vous venez de créer votre première communauté. C'est un joli premier pas."
-      text: "Peut-être avez-vous d'autres cercles avec lesquels vous échangez régulièrement et pour lesquels les outils actuels vous pèsent : pourquoi ne pas essayer igneet ?<br /><br/>À tout instant vous pourrez créer une nouvelle communauté en utilisant le menu de communauté en haut à gauche, ou depuis votre espace personnel."
+      text: "Peut-être avez-vous d'autres cercles avec lesquels vous échangez régulièrement et pour lesquels les outils actuels vous pèsent : pourquoi ne pas essayer igneet ?<br /><br/>À tout instant vous pourrez créer une nouvelle communauté en utilisant le menu de communauté en haut à gauche, ou depuis votre espace personnel.<br /><br/>Enfin, le projet ci-dessous vous donnera un aperçu de toutes les fonctionnalités d'igneet; Laissez-vous guider :"
 # File uploads
 file:
   choose: "Choisir un fichier"

@@ -100,7 +100,7 @@ firstrun:
     congrats:
       name: "Congratulations"
       header: "You've just setup your first community, it's a great first step !"
-      text: "Maybe you have other circles of friends or collaborators with which you exchange on a regular basis, and for which your tools are not satisfying. Why not give igneet a try for that too ?<br/><br/>Create a new community anytime in the menu above, or from your private space."
+      text: "Maybe you have other circles of friends or collaborators with which you exchange on a regular basis, and for which your tools are not satisfying. Why not give igneet a try for that too ?<br/><br/>Create a new community anytime in the menu above, or from your private space.<br /><br/>Lastly, this project is here to help you get around the various functionalities of igneet, give it a look when you can :"
 # File uploads
 file:
   choose: "Choose a file"

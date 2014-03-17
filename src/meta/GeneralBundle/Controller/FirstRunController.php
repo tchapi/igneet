@@ -192,7 +192,10 @@ class FirstRunController extends Controller
     $session = $request->getSession();
     $session->set('community', null);
 
-    return $this->render("metaGeneralBundle:FirstRun:congrats.html.twig", array( 'currentStep' => $currentStep, 'nextStepId' => $nextStepId));
+    $projectRepository = $this->getDoctrine()->getRepository('metaProjectBundle:StandardProject');
+    $shared_projects = $projectRepository->findById($this->container->getParameter('shared.projects'));
+
+    return $this->render("metaGeneralBundle:FirstRun:congrats.html.twig", array( 'currentStep' => $currentStep, 'nextStepId' => $nextStepId, 'shared_projects' => $shared_projects));
 
   }
 
