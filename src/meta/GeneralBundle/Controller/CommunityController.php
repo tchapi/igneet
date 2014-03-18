@@ -717,6 +717,7 @@ class CommunityController extends Controller
                             );
                         } else {
 
+                            $em->remove($userCommunity);
                             $this->get('session')->getFlashBag()->add(
                                 'success',
                                 $this->get('translator')->trans('user.removal.no.guest.in.community', array( '%user%' => $user->getFullName(), '%community%' => $community->getName() ))
