@@ -116,7 +116,7 @@ project:
     items:
       none: "No list item yet !"
       not.found: "This list item does not exist."
-      new: "Create one"
+      new: "Type your item here and press Enter"
       deleteHelp: "Delete this item"
       editHelp: "Edit this item"
       finishHelp: "Finish this item"

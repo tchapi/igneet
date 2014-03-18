@@ -273,38 +273,4 @@ class StandardProjectRepository extends EntityRepository
             ->getResult();
   }
 
-  /*
-   * Compute log activity for a project over a week (7 rolling days)
-   */
-  public function computeWeekActivityForProjects($projects)
-  {
- 
-    $qb = $this->getEntityManager()->createQueryBuilder();
-
-    return $qb->select('l AS log')
-            ->addSelect('sp.id as id')
-            ->addSelect('COUNT(DISTINCT l.id) - COUNT(DISTINCT c.id) AS nb_actions')
-            ->addSelect('COUNT(DISTINCT c.id) AS nb_comments')
-            ->addSelect('SUBSTRING(l.created_at,1,10) AS date')
-            ->addSelect('MAX(l.created_at) AS last_activity')
-
-            ->from('metaGeneralBundle:Log\StandardProjectLogEntry', 'l')
-            ->leftJoin('l.standardProject', 'sp')
-            
-            ->leftJoin('sp.logEntries', 'l2', 'WITH', 'SUBSTRING(l2.created_at,1,10) = SUBSTRING(l.created_at,1,10) AND l2.created_at > l.created_at')
-            ->leftJoin('sp.comments', 'c', 'WITH', 'SUBSTRING(c.created_at,1,10) = SUBSTRING(l.created_at,1,10)')
-
-            ->andWhere('sp IN (:pids)')
-            ->setParameter('pids', $projects)
-            ->andWhere("l.created_at > DATE_SUB(CURRENT_DATE(),7,'DAY')")
-            
-            ->andWhere('sp.deleted_at IS NULL')
-            
-            ->groupBy('sp.id, date')
-            ->orderBy('sp.updated_at', 'DESC')
-            ->addOrderBy('date','DESC')
-            ->getQuery()
-            ->getResult();
-
-  }
 }

@@ -450,6 +450,7 @@ section > .jump {
       & > input {
         border: none;
         color: $_primary;
+        font-style: italic;
         background: none;
         @include placeholder { 
           color: $_primary;
