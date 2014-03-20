@@ -1,3 +1,4 @@
+{% spaceless %}
 <li {% if detailed %}class="detailed"{% endif %}>
   <img src="{{ asset('/bundles/metageneral/img/icons/' ~ providers[resource.provider].icon ~ '.png') }}" width="32px" height="32px"/> 
   <img src="{{ asset('/bundles/metageneral/img/icons/' ~ types[resource.type].icon ~ '.png') }}" width="32px" height="32px"/>
@@ -7,9 +8,9 @@
   <ul class="tags" >
   {% for tag in resource.tags %}<li {% if tag.color %}style="border: 1px solid #{{ tag.color }}" {% endif %}rel="{{ tag.name }}">{{ tag.name }}</li>{% endfor %}
   </ul>
-  {% if canEdit %}
+  
   <div class="details">
-    <h2 data-url="{{ path('p_show_project_resource_edit', {'uid': project.id|to_uid, 'resource_uid': resource.id|to_uid, 'token': csrf_token('edit') }) }}" data-name="title" data-last="{{ resource.title }}" contenteditable="true" rich="false">{{ resource.title }}</h2>
+    <h2{% if canEdit %} data-url="{{ path('p_show_project_resource_edit', {'uid': project.id|to_uid, 'resource_uid': resource.id|to_uid, 'token': csrf_token('edit') }) }}" data-name="title" data-last="{{ resource.title }}" contenteditable="true" rich="false"{% endif %}>{{ resource.title }}</h2>
     {% if resource.originalFilename %}<span>{{ "project.resources.original"|trans }} : {{ resource.originalFilename }}</span>{% endif %}
     <em>{{ ('providers.' ~ resource.provider)|trans({}, 'resources') }} — {{ ('resources.' ~ resource.type)|trans({}, 'resources') }}</em>
     <input type="text" onclick="this.select()" value="[[resource:{{ resource.id|to_uid }}]]"/>
@@ -25,6 +26,7 @@
       {% include 'metaGeneralBundle:Tags:tag.new.html.twig' with {'canEdit': base.canEdit} %}
       </ul>
     </div>
+    {% if canEdit %} 
     <form action="{{ path('p_show_project_resource_edit', {'uid': project.id|to_uid, 'resource_uid': resource.id|to_uid, 'token': csrf_token('edit')}) }}" method="post" {{ form_enctype(form) }}>
       {# if url #}
       {% if resource.provider == 'local' %}
@@ -36,7 +38,9 @@
       {% endif %}
       <a class="delete" data-confirm="{{ "project.resources.deleteHelp"|trans }}" href="{{ path('p_show_project_resource_delete', {'uid': project.id|to_uid, 'resource_uid': resource.id|to_uid, 'token': csrf_token('delete')}) }}"><i class="fa fa-trash-o"></i> {{ "delete"|trans }}</a>
     </form>
+    {% endif %}
     
   </div>
-  {% endif %}
+  
 </li>
+{% endspaceless %}
