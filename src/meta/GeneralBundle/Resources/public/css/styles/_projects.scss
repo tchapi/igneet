@@ -461,7 +461,7 @@ section > .jump {
       }
     }
     & > .item {
-      @include span-columns (10 of 12);
+      @include span-columns (9 of 12);
       @include media($tablet) {
         @include span-columns (3 of 4);
       }
@@ -481,7 +481,7 @@ section > .jump {
       }
     }
     & > .actions {
-      @include span-columns(1 of 12);
+      @include span-columns(2 of 12);
       @include media($tablet) {
         @include span-columns (1 of 4);
         @include omega;
@@ -494,8 +494,10 @@ section > .jump {
       }
       padding: 20px 0px;
       text-align: right;
-      & > a.delete {
-        margin-left: 5px;
+      & > a {
+        margin: 0 5px;
+        &:first-child { margin-right: 15px; }
+        &:last-child { margin-left: 15px; margin-right: 10px; }
       }
     }
     & > .instant {
