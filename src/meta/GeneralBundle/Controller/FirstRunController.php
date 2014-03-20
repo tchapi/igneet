@@ -117,7 +117,9 @@ class FirstRunController extends Controller
 
       foreach ($emails as $email) {
         
-        if ($email == "") continue;
+        if ($email == "" || $email == $this->getUser()->getEmail()) {
+          continue;
+        } 
 
         $user = $repository->findOneByEmail($email);
         $em = $this->getDoctrine()->getManager();
