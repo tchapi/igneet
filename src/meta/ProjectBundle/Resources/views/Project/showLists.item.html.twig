@@ -17,7 +17,7 @@
     {% endif %}
     <a class="delete" data-url="{{ path('p_show_project_listitem_delete', {'uid': project.id|to_uid, 'list_uid': list.id|to_uid, 'item_uid': item.id|to_uid, 'token': csrf_token('deleteListItem') }) }}" ><i class="fa fa-trash-o"></i></a>
   </div>
-  {% endif %}
   <span class="instant"><i class="fa fa-bars"></i></span>
+  {% endif %}
 </li>
 {% endspaceless %}

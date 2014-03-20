@@ -14,11 +14,13 @@
 
 {% block javascripts %}
   {{ parent() }}
+  {% if base.canEdit %}
   {% javascripts '@metaGeneralBundle/Resources/public/js-edit/slip.js'
                  '@metaGeneralBundle/Resources/public/js-edit/slip.behaviour.js'
           filter='?yui_js' %}
   <script src="{{ asset_url }}"></script>
   {% endjavascripts %}
+  {% endif %}
 {% endblock %}
 
 {% block content %}
