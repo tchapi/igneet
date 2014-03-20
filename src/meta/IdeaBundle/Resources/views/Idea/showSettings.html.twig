@@ -9,10 +9,10 @@
     <div class="label">{{ "idea.settings.actions"|trans }} : </div>
     <div class="content">
       {% if not base.idea.archived %}
-      <a class="button button-success" data-confirm="{{ "idea.projectizeHelp"|trans }}" href="{{ path('i_turn_idea_into_project', {'uid': base.idea.id|to_uid, 'token': csrf_token('projectize')  }) }}"><i class="fa fa-external-link"></i> {{ "idea.projectize"|trans }}</a>
+      <a class="button" data-confirm="{{ "idea.projectizeHelp"|trans }}" href="{{ path('i_turn_idea_into_project', {'uid': base.idea.id|to_uid, 'token': csrf_token('projectize')  }) }}"><i class="fa fa-external-link"></i> {{ "idea.projectize"|trans }}</a>
       {% endif %}
       {% if base.idea.community is null %}
-      <a class="button button-info" href="{{ path('g_choose_community', {'targetAsBase64': base.targetProposeToCommunityAsBase64 , 'token': csrf_token('edit') }) }}"><i class="fa fa-group"></i> {{ "idea.propose"|trans }}</a>
+      <a class="button" href="{{ path('g_choose_community', {'targetAsBase64': base.targetProposeToCommunityAsBase64 , 'token': csrf_token('edit') }) }}"><i class="fa fa-group"></i> {{ "idea.propose"|trans }}</a>
       {% endif %}
       {% if base.isCreator %}
         {% if not base.idea.archived %}
