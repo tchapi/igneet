@@ -12,7 +12,7 @@ A évaluer :
  
  ☐ [Eric] Tri des resources dans la vue / resources
 
-Complexe:
+Fausses bonnes idées:
 
  ☐ Lors de l'upload d'images en tant que ressources, passer les thumbnails en POST et les stocker dans les ressources pour les afficher a coté de la vue détail
 
@@ -35,4 +35,4 @@ Todo - Search:
 
 Site statique:
 
- ☐ Page Licence CC avec explication que tous les contenus sont soumis au copyright etc ...
+ ☐ Page Licence avec explication que tous les contenus sont soumis au copyright etc ... expliquer que l'hébergement est en France, etc
