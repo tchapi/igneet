@@ -54,7 +54,7 @@ class versionBumpCommand extends ContainerAwareCommand
 
       if ($head_sha === $tag_sha) {
         // We're on a tag
-        $version_full = $tag . "-" . $tag_sha . "(RELEASE)";
+        $version_full = $tag . "-" . $tag_sha . "/RELEASE";
       } else {
         // We have commited stuff but not released <- not very good
         $version_full = $tag . "-" . $tag_sha . "/" . $head_sha . "(HEAD)";
@@ -78,12 +78,14 @@ class versionBumpCommand extends ContainerAwareCommand
       // replace something in the file string
       $config_new = preg_replace($this->pattern, "version: '$version_full'", $config);
       
-      // config_new should be larger and writeConfig enabled
+      // config_new should be different and writeConfig enabled
       if ($writeConfig && ($config_new !== $config) ) {
           file_put_contents($config_file, $config_new);
           $output->writeln('<info>Parameters.yml written.</info>');
-      } else if ($config_new === $config) {
-          $output->writeln('<important>Nothing to replace.</important>');
+      } else if (!$writeConfig && ($config_new !== $config) ) {
+          $output->writeln('<important>Parameters.yml not written.</important> Use --force to write the changes');
+      } else if ($config_new === $config ) {
+          $output->writeln('<important>Nothing to replace — version has not changed.</important>');
       } else {
           $output->writeln('<important>Parameters.yml untouched.</important>');
       }
