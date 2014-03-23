@@ -12,6 +12,15 @@ A évaluer :
  
  ☐ [Eric] Tri des resources dans la vue / resources
 
+ ☐ Retirer le markdown :
+    retirer ensuite les |markdown dans
+        Project:showInfo.twig
+        Project:showWiki.twig
+        User:show.twig
+        Idea:showInfo.twig
+        Idea:showContent.twig
+    Puis dans logItemComment.html.twig 
+
 Fausses bonnes idées:
 
  ☐ Lors de l'upload d'images en tant que ressources, passer les thumbnails en POST et les stocker dans les ressources pour les afficher a coté de la vue détail
@@ -27,6 +36,9 @@ Home de community
  - wiki avec wikipages (idem project)
  - resources ?? Vraiment besoin ?
  - listes ?? idem ??
+
+ ☐ Limiter le nombre de notifs en home page ...
+     ☐ coté requete SQL / ou coté display ??
 
 Todo - Search:
 
