@@ -186,10 +186,27 @@ class ProjectController extends BaseController
         $this->preComputeRights(array('mustBeOwner' => true, 'mustParticipate' => false));
 
         if ($this->access != false) {
-        
+
             $em = $this->getDoctrine()->getManager();
             $this->base['project']->delete();
             $em->flush();
+
+            $community = $this->base['project']->getCommunity();
+
+            // If we had owners or participants that were only in this project AND guest in the community, we should get them out
+            $communityRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Community\Community');
+            $userCommunityRepository = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity');
+            $guests = $communityRepository->findAllPrunableGuestsInCommunity($community);
+
+            foreach ($guests as $guest) {
+                $userCommunityToRemove = $userCommunityRepository->findOneById($guest['userCommunityId']);
+                if ($userCommunityToRemove) {
+                    $em->remove($userCommunityToRemove);
+                    $guest['user']->setCurrentCommunity(null);
+                }
+            }
+
+            $em->flush(); // Flush again for deleted guests
 
             $this->get('session')->getFlashBag()->add(
                     'success',

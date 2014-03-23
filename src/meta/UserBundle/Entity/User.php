@@ -34,7 +34,7 @@ class User implements AdvancedUserInterface
     /**
      * @var string $username
      *
-     * @ORM\Column(name="username", type="string", length=255, unique=true)
+     * @ORM\Column(name="username", type="string", length=255, unique=true, nullable=true)
      * @Assert\NotBlank()
      * @Assert\Length(min = "3")
      * @Assert\Regex(pattern="/^[a-zA-Z0-9\-]+$/")
@@ -1621,6 +1621,8 @@ class User implements AdvancedUserInterface
     public function delete()
     {
         $this->deleted_at = new \DateTime('now');
+        // Resets the unique properties
+        $this->username = null;
         $this->email = null;
         return $this;
     }
