@@ -58,4 +58,36 @@ class CommunityRepository extends EntityRepository
             ->getResult();
   }
 
+  public function findAllPrunableGuestsInCommunity($community)
+  {
+    $qb = $this->getEntityManager()->createQueryBuilder();
+    $sqb = $this->getEntityManager()->createQueryBuilder();
+
+    $query = $qb->select('u AS user, uc.id AS userCommunityId');
+
+    // For each user, counting all projects in the community in which they are either participant or owner    
+    $subquery = $sqb->select('COUNT(DISTINCT p_sub)')
+                    ->from('metaProjectBundle:StandardProject', 'p_sub')
+                    ->join('p_sub.owners', 'u1')
+                    ->leftJoin('p_sub.participants', 'u2')
+                    ->where('p_sub.deleted_at IS NULL')
+                    ->andWhere('p_sub.community = :community')
+                    ->setParameter('community', $community)
+                    ->andWhere('u1 = u OR u2 = u');
+
+    // For each user that is a guest in the community, we have the count and we only take those users with 0
+    $query->addSelect(sprintf('(%s) AS nb', $subquery->getDql()))
+            ->from('metaUserBundle:User', 'u')
+            ->join('u.userCommunities', 'uc')
+            ->where('uc.community = :community')
+            ->setParameter('community', $community)
+            ->andWhere("uc.guest = 1")
+            ->andWhere("u.deleted_at IS NULL")
+            ->add("having", "nb = 0");
+
+    return $query->getQuery()
+            ->getResult();
+
+  }
+
 }
