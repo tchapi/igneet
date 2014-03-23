@@ -2,13 +2,13 @@
 
 namespace meta\UserBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase,
+use meta\UserBundle\Tests\SecuredWebTestCase,
     Symfony\Component\HttpFoundation\Response;
 
-class SecurityControllerTest extends WebTestCase
+class SecurityControllerTest extends SecuredWebTestCase
 {
 
-  public function testLoginPage()
+  public function testLoginPageNotAuthenticated()
   {
 
     $client = static::createClient();
@@ -21,10 +21,22 @@ class SecurityControllerTest extends WebTestCase
 
   }
 
+  public function testLoginPageAuthenticated()
+  {
+
+    $client = static::createClientWithAuthentication();
+    $crawler = $client->request('GET', '/app/login');
+    
+    $this->assertTrue(
+        $client->getResponse()->isRedirect('/app/')
+    );
+
+  }
+
   public function testLogoutPage()
   {
 
-    $client = static::createClient();
+    $client = static::createClientWithAuthentication();
     $crawler = $client->request('GET', '/app/logout');
   
     $this->assertTrue($client->getResponse()->isRedirect());

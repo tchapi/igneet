@@ -2,16 +2,16 @@
 
 namespace meta\IdeaBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase,
+use meta\UserBundle\Tests\SecuredWebTestCase,
     Symfony\Component\HttpFoundation\Response;
 
-class IdeasControllerTest extends WebTestCase
+class IdeasControllerTest extends SecuredWebTestCase
 {
 
   public function testIdeasList()
   {
 
-    $client = static::createClient();
+    $client = static::createClientWithAuthentication();
     $crawler = $client->request('GET', '/app/ideas');
     
     $this->assertEquals(
