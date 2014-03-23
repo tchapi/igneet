@@ -435,10 +435,18 @@ class UserController extends Controller
                     $em->remove($userCommunity);
                 }
 
+                // Removes any previous OpenIdEntities linked to that user
+                $openIdIdentityRepository = $this->getDoctrine()->getRepository('metaUserBundle:OpenIdIdentity');
+                $openIdIdentities = $openIdIdentityRepository->findByUser($authenticatedUser);
+
+                foreach ($openIdIdentities as $openIdIdentity) {
+                    $em->remove($openIdIdentity);
+                }
+
                 // Delete the user
                 $authenticatedUser->delete();
                 $em->flush();
-                
+
                 $this->get('security.context')->setToken(null);
                 $this->get('request')->getSession()->invalidate();
 
