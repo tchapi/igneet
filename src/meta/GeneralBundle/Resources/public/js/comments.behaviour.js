@@ -72,6 +72,7 @@ $(document).ready(function() {
         $.post($(this).attr('data-url'))
             .done(function() {
                 commentBox.html('<em>' + Translator.trans('comment.deleted') + '</em>');
+                commentBox.parent().addClass("deleted");
                 actionBox.fadeOut();
                 alertify.success(Translator.trans('comment.been.deleted'));
             })
