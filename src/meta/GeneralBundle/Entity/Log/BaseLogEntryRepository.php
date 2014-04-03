@@ -32,23 +32,6 @@ class BaseLogEntryRepository extends EntityRepository
   
   }
 
-  public function computeWeekActivityForUser($user)
-  {
- 
-    $qb = $this->getEntityManager()->createQueryBuilder();
-
-    return $qb->select('COUNT(l.id) AS nb_actions')
-            ->addSelect('SUBSTRING(l.created_at,1,10) AS date')
-            ->from('metaGeneralBundle:Log\BaseLogEntry', 'l')
-            ->where('l.user = :user')
-            ->setParameter('user', $user)
-            ->andWhere("l.created_at > DATE_SUB(CURRENT_DATE(),7,'DAY')")
-            ->groupBy('date')
-            ->getQuery()
-            ->getResult();
-
-  }
-
   public function findLastActivityDateForUser($user)
   {
     $qb = $this->getEntityManager()->createQueryBuilder();
