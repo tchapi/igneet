@@ -14,14 +14,15 @@ class LogService
 {
 
     private $em;
-    private $log_types, $log_routing, $concurrent_merge_interval;
+    private $log_types, $log_social_filters, $log_routing, $concurrent_merge_interval;
     private $twig, $template_link, $template_link_null, $template_item;
 
-    public function __construct(EntityManager $entity_manager, $log_types, $log_routing, $log_concurrent_merge_interval, $security_context, $twig, $translator, $uid)
+    public function __construct(EntityManager $entity_manager, $log_types, $log_social_filters, $log_routing, $log_concurrent_merge_interval, $security_context, $twig, $translator, $uid)
     {
         $this->em = $entity_manager;
         
         $this->log_types = $log_types;
+        $this->log_social_filters = $log_social_filters;
         $this->log_routing = $log_routing;
         $this->concurrent_merge_interval = $log_concurrent_merge_interval;
 
@@ -283,7 +284,7 @@ class LogService
         // In the repository, we make sure we only get logs for the communities the current user can see
         if (count($objects['users']) > 0){
             $baseLogRepository = $this->em->getRepository('metaGeneralBundle:Log\BaseLogEntry');
-            $userLogs = $baseLogRepository->countSocialLogsForUsersInCommunitiesOfUser($objects['users'], $from, $user, $community);
+            $userLogs = $baseLogRepository->countSocialLogsForUsersInCommunitiesOfUser($this->log_social_filters, $objects['users'], $from, $user, $community);
         } else {
             $userLogs = 0;
         }
@@ -330,7 +331,7 @@ class LogService
         // In the repository, we make sure we only get logs for the communities the current user can see
         if (count($objects['users']) > 0){
             $baseLogRepository = $this->em->getRepository('metaGeneralBundle:Log\BaseLogEntry');
-            $userLogs = $baseLogRepository->findSocialLogsForUsersInCommunitiesOfUser($objects['users'], null, $user, $community);
+            $userLogs = $baseLogRepository->findSocialLogsForUsersInCommunitiesOfUser($this->log_social_filters, $objects['users'], null, $user, $community);
             if (count($userLogs)> 0) {
                 $lastDate = max($lastDate, $userLogs[0]->getCreatedAt());
             }
@@ -375,7 +376,7 @@ class LogService
         // In the repository, we make sure we only get logs for the communities the current user can see
         if (count($objects['users']) > 0){
             $baseLogRepository = $this->em->getRepository('metaGeneralBundle:Log\BaseLogEntry');
-            $userLogs = $baseLogRepository->findSocialLogsForUsersInCommunitiesOfUser($objects['users'], $from, $user, $community);
+            $userLogs = $baseLogRepository->findSocialLogsForUsersInCommunitiesOfUser($this->log_social_filters, $objects['users'], $from, $user, $community);
             foreach ($userLogs as $notification) { $notifications[] = array( 'createdAt' => date_create($notification->getCreatedAt()->format('Y-m-d H:i:s')), 'data' => $this->getHTML($notification, $locale) ); }
         }
 

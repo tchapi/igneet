@@ -1,9 +1,16 @@
 
 ## TODO ##
 
+TODO : 
+
+  ☐  Refaire un point sur la deletion des users
+    
 Admin :
 
  ☐ Admin : liste des utilisateurs à styler en tableau comme les announcements
+   
+ ☐ Mettre un log dans l'admin avec les X derniers commits et fichiers modifiés
+ ☐ brad : rajouter une notification (mail a la fin de la mise en prod) dans la config ?
    
 A évaluer :
 
