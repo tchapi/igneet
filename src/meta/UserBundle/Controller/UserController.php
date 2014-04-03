@@ -399,23 +399,56 @@ class UserController extends Controller
             // Performs checks for ownerships
             $projects = "";
             foreach ($authenticatedUser->getProjectsOwned() as $project) {
+
+                // If we are the only owner, we might have a problem.
                 if (!$project->isDeleted() && $project->countOwners() == 1){
-                    // not good : we're the only owner
-                    $deletable = false;
-                    $projects .= $project->getName(). ",";
+
+                    if ($project->getCommunity() == null){
+                        // It's a private space project : kill it !
+                        $project->delete();
+
+                    } else {
+
+                        // Not good : we're the only owner, and the project is in a community
+                        $deletable = false;
+                        $projects .= $project->getName(). ",";
+
+                    }
                 }
             }
 
             // Performs checks for community management
             $communities = "";
             $userRepository = $this->getDoctrine()->getRepository('metaUserBundle:User');
+
+            // Yes, we have to check for each community
             foreach ($authenticatedUser->getUserCommunities() as $userCommunity) {
-                $nbManagersInCommunity = $userRepository->countManagersInCommunity(array('community' => $userCommunity->getCommunity()));
+                
+                $community = $userCommunity->getCommunity();
+                $nbManagersInCommunity = $userRepository->countManagersInCommunity(array('community' => $community));
+                $nbUsersInCommunity = $userRepository->countUsersInCommunity(array('community' => $community));
+
+                // Do we have a single manager ? Then we might have a problem. Else, no.
                 if ($nbManagersInCommunity == 1 && $userCommunity->isManager()){
-                    // not good : we're the only manager of the community
-                    $deletable = false;
-                    $communities .= $userCommunity->getCommunity()->getName(). ",";
+                
+                    // Two cases : either it's a community the user created and he is the single user/manager in it,
+                    // or he is the only manager of a community of others, in which case he is not deletable
+                    if ($nbUsersInCommunity == 1) {
+
+                        // Good to go : it's his own community and he's alone in it
+                        // But we have to delete the community as well (the following is safe since it will not be flushed until $em->flush() though)
+                        $em->remove($community);
+
+                    } else {
+                        
+                        // Not good : we're the only manager of the community
+                        $deletable = false;
+                        $communities .= $userCommunity->getCommunity()->getName() . ",";
+                    
+                    }
+
                 }
+
             }
 
             // Projects must have at least an owner
@@ -443,7 +476,8 @@ class UserController extends Controller
                     $em->remove($openIdIdentity);
                 }
 
-                // Delete the user
+                // Delete the user and the associated elements FOR REAL MOTHER FUCKERZ
+                $authenticatedUser->setCurrentCommunity(null); // Just in case
                 $authenticatedUser->delete();
                 $em->flush();
 

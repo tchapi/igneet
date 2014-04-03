@@ -705,7 +705,7 @@ class CommunityController extends Controller
                             }
                         }
 
-                        // Is he (not the only) manager in the community ? We have to desistuate him hahah
+                        // Is he (not the only) manager in the community ? We have to destituate him hahah
                         $userCommunity->setManager(false);
 
                         // We keep the user as a guest :
