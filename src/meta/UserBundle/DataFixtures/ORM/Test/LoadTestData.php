@@ -7,6 +7,8 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use meta\UserBundle\Entity\User;
+use meta\UserBundle\Entity\UserCommunity;
+use meta\GeneralBundle\Entity\Community\Community;
 
 class LoadTestData implements FixtureInterface, ContainerAwareInterface
 {
@@ -59,32 +61,51 @@ class LoadTestData implements FixtureInterface, ContainerAwareInterface
 
         // New communities the user is in / is out
         // Check if test communities are already in
-        $community = $this->container->get('doctrine')->getRepository('metaGeneralBundle:Community\Community')->findOneByUsername('test_in');
+        $community = $this->container->get('doctrine')->getRepository('metaGeneralBundle:Community\Community')->findOneByName('test_in');
 
         if (!$community){
             // A New test community
             $community = new Community();
+            $userCommunity = new UserCommunity();
             $manager->persist($community);
+            $manager->persist($userCommunity);
+        } else {
+            $userCommunity = $this->container->get('doctrine')->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('user' => $user->getId(), 'community' => $community->getId()));
+            if (!$userCommunity){
+                $userCommunity = new UserCommunity();
+                $manager->persist($userCommunity);
+            }
         }
 
+        $userCommunity->setUser($user);
+        $userCommunity->setCommunity($community);
+        $userCommunity->setGuest(false);
         $community->setName('test_in');
         $community->setHeadline('User test should be here.');
 
         // --
-        $community = $this->container->get('doctrine')->getRepository('metaGeneralBundle:Community\Community')->findOneByUsername('test_out');
+        $community = $this->container->get('doctrine')->getRepository('metaGeneralBundle:Community\Community')->findOneByName('test_out');
 
         if (!$community){
             // A New test community
             $community = new Community();
             $manager->persist($community);
+        } else {
+            $userCommunity = $this->container->get('doctrine')->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('user' => $user->getId(), 'community' => $community->getId()));
+            if ($userCommunity){
+                $manager->remove($userCommunity);
+            }
         }
 
         $community->setName('test_out');
         $community->setHeadline('User test should NOT be here.');
 
-        // User communities related to this
-
         // FIXME 
+        // FIXME 
+        // FIXME 
+        // FIXME 
+        // FIXME 
+        
 
         // Flushes all that shit
         $manager->flush();
