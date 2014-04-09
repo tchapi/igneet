@@ -113,6 +113,9 @@ ul.timeline {
         border-left: 1px solid $_primary;
       }
     }
+    &.log-comment.deleted {
+      display: none;
+    }
     & > i {
       color: $_muted;
       display: inline-block;
