@@ -12,6 +12,7 @@ web/bundles/*
 web/css/*
 web/js/*
 web/id.php
+web/CHANGELOG.txt
 
 # Configuration files
 app/config/parameters.ini
