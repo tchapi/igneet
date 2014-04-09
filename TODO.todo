@@ -4,7 +4,15 @@
 TODO : 
 
   ☐  Refaire un point sur la deletion des users
-    
+
+  ☐ Tests : créer un fixture user pour les tests + community fixture etc ...
+  ☐  Tests unitaires : continuer User
+  ☐  tests unitaires : project
+  ☐  tests unitaires : idea
+  ☐  tests unitaires : community
+  ☐  tests unitaires : general
+  ☐  tests unitaires : admin
+
 Admin :
 
  ☐ Admin : liste des utilisateurs à styler en tableau comme les announcements
@@ -51,7 +59,3 @@ Todo - Search:
 
  ☐ Recherche
  ☐ par tags exacts
-
-Site statique:
-
- ☐ Page Licence avec explication que tous les contenus sont soumis au copyright etc ... expliquer que l'hébergement est en France, etc
