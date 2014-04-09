@@ -50,3 +50,7 @@ a_communities_storage:
 a_prune:
     path:  /files/prune
     defaults: { _controller: metaAdminBundle:Communities:prune }
+
+a_changelog:
+    path:  /changelog
+    defaults: { _controller: metaAdminBundle:Admin:changelog }

@@ -1,0 +1,27 @@
+{% extends 'metaAdminBundle::layout.html.twig' %}
+
+{% block title %}{{ parent() }} > Changelog & Version{% endblock %}
+
+{% block section %}Changelog & version{% endblock %}
+
+{% block content %}
+<div class="wrapper tiles">
+
+  <section>
+    
+    <h2>Environment version</h2>
+    <p>{{ current_version }}</p>
+    <p>Last commit : FIXME</p>
+
+    <h2>Last changes</h2>
+    <p>FIX ME</p>
+
+    <h2>Full Changelog</h2>
+    <p>{{ log|nl2br }}</p>
+
+  </section>
+
+</div>
+{% endblock %}
+
+
