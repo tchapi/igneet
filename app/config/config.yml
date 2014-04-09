@@ -1,6 +1,7 @@
 imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
+    - { resource: @metaUserBundle/Resources/config/skills.yml }
     - { resource: @metaProjectBundle/Resources/config/menu.yml }
     - { resource: @metaProjectBundle/Resources/config/resources.yml }
     - { resource: @metaIdeaBundle/Resources/config/menu.yml }

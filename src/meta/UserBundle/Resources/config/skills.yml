@@ -1,0 +1,59 @@
+parameters:
+  skills:
+    - 
+        slug: marketResearch
+        color: "08800c"
+    - 
+        slug: productMarketing
+        color: "087C14"
+    - 
+        slug: communication
+        color: "08791c"
+    - 
+        slug: creativeThinking
+        color: "087624"
+    - 
+        slug: finance
+        color: "08722D"
+    - 
+        slug: commercial
+        color: "086F35"
+    - 
+        slug: negotation
+        color: "086F35"
+    - 
+        slug: management
+        color: "213C80"
+    - 
+        slug: problemSolving
+        color: "086C3D"
+    - 
+        slug: businessKnowledge
+        color: "1A4280"
+    - 
+        slug: entrepreneurialKnowledge
+        color: "086946"
+    - 
+        slug: productDevelopment
+        color: "08654E"
+    - 
+        slug: productionManagement
+        color: "086256"
+    - 
+        slug: supplyChain
+        color: "085F5E"
+    - 
+        slug: code
+        color: "0E4C80"
+    - 
+        slug: electronics
+        color: "085B67"
+    - 
+        slug: maths
+        color: "08586F"
+    - 
+        slug: physics
+        color: "085577"
+    - 
+        slug: chemical
+        color: "085280"
