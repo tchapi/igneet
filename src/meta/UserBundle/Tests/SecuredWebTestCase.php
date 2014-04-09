@@ -19,8 +19,8 @@ class SecuredWebTestCase extends WebTestCase
     {
         /* @var $client \Symfony\Component\BrowserKit\Client */
         $client = static::createClient($options, array_merge($server, array(
-            'PHP_AUTH_USER' => 'tchap',
-            'PHP_AUTH_PW'   => 'tata',
+            'PHP_AUTH_USER' => 'test',
+            'PHP_AUTH_PW'   => 'test',
         )));
 
         return $client;
