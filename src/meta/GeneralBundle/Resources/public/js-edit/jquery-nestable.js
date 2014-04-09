@@ -310,8 +310,8 @@
 
             this.placeEl.css('height', dragItem.height());
 
-            mouse.offsetX = e.offsetX !== undefined ? e.offsetX : e.pageX - dragItem.offset().left;
-            mouse.offsetY = e.offsetY !== undefined ? e.offsetY : e.pageY - dragItem.offset().top;
+            mouse.offsetX = e.pageX - dragItem.offset().left;
+            mouse.offsetY = e.pageY - dragItem.offset().top;
             mouse.startX = mouse.lastX = e.pageX;
             mouse.startY = mouse.lastY = e.pageY;
 
