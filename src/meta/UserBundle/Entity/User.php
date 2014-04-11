@@ -1298,7 +1298,7 @@ class User implements AdvancedUserInterface
      * @param \meta\IdeaBundle\Entity\Idea $ideaCreated
      * @return User
      */
-    public function addIdeasCreated(\meta\IdeaBundle\Entity\Idea $ideaCreated)
+    public function addIdeaCreated(\meta\IdeaBundle\Entity\Idea $ideaCreated)
     {
         $this->ideasCreated[] = $ideaCreated;
         return $this;
@@ -1310,7 +1310,7 @@ class User implements AdvancedUserInterface
      * BINDING LOGIC IS DONE IN 'IDEA' CLASS
      * @param \meta\IdeaBundle\Entity\Idea $ideaCreated
      */
-    public function removeIdeasCreated(\meta\IdeaBundle\Entity\Idea $ideaCreated)
+    public function removeIdeaCreated(\meta\IdeaBundle\Entity\Idea $ideaCreated)
     {
         $this->ideasCreated->removeElement($ideaCreated);
     }
