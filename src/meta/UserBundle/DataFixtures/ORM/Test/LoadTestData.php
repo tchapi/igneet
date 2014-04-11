@@ -41,12 +41,14 @@ class LoadTestData implements FixtureInterface, ContainerAwareInterface
 
             Communauté test_out : 
                 other_test appartient à la communauté test_out
+        
+            Communauté test_guest :
+                 other_test appartient à la communauté test_guest
+                 test est guest dans la communauté test_guest sur le projet test_guest_project
 
             Projets / Idées : 
               test_project_private_space : projet privé dans le private space de test
               test_idea_private_space : idée privée dans le private space de test
-              test_project_private_space_other : projet privé dans le private space de other_test
-              test_idea_private_space_other : idée privée dans le private space de other_test
 
               test_project_community_owner : projet public dans test_in, test est owner, other_test n'est pas dedans
               test_project_community_owner_private : projet privé dans test_in, test est owner, other_test n'est pas dedans
@@ -56,11 +58,108 @@ class LoadTestData implements FixtureInterface, ContainerAwareInterface
 
               test_idea_community_owner : idée dans test_in, test est creator, other_test n'est pas dedans
               test_idea_community_participant : idée dans test_in, test est participant, other_test n'est pas dedans
-              test_idea_community_not_in : idée dans test_in, test n'est pas dedans, other_test est owner
+              test_idea_community_not_in : idée dans test_in, test n'est pas dedans, other_test est creator
 
               test_out_project : project dans test_out, other_test est owner
               test_out_idea : idée dans test_out, other_test est creator
 
+              test_guest_project : projet dans test_guest, test est guest owner, other_test est owner
+              test_guest_project_not_in : projet dans test_guest, test n'est pas dedans, other_test est owner
+              test_guest_idea : idée dans test_guest, test n'est pas dedans (il est guest, normal), other_test est creator
+
+        // FIX ME : managers ?
+
+            TESTS:
+
+            0.
+                test a accès à test_in
+                other_test a accès à test_in
+                test n'a pas accès à test_out
+                other_test a accès à test_out
+                test a accès à test_guest
+                other_test a accès à test_guest
+
+            1.
+                test a accès à test_project_private_space
+                Switch auto quand accès alors que dans une communauté
+                other_test n'a pas accès à test_project_private_space
+
+                "add participant" dans test_project_private_space ne marche pas avec test
+                "add owner" dans test_project_private_space ne marche pas avec test
+                toutes modifs (POST) etc, marchent avec test
+
+            2.
+                test a accès à test_idea_private_space
+                Switch auto quand accès alors que dans une communauté
+                other_test n'a pas accès à test_idea_private_space
+
+                "add participant" dans test_idea_private_space ne marche pas avec test
+                "add owner" dans test_idea_private_space ne marche pas avec test
+                toutes modifs (POST) etc, marchent avec test
+
+            3. 
+                test a accès à test_project_community_owner
+                other_test a accès à test_project_community_owner
+                    Switch auto quand accès alors que dans une communauté
+                test peut modifier tout dans test_project_community_owner
+                other_test ne peut pas mofidier test_project_community_owner, sauf commenter
+
+            4.  
+                test a accès à test_project_community_owner_private
+                other_test n'a pas accès à test_project_community_owner_private
+                    Switch auto quand accès alors que dans une communauté
+                test peut modifier tout dans test_project_community_owner, sauf commenter
+
+            5.
+                test a accès à test_project_community_participant
+                other_test a accès à test_project_community_participant
+                    Switch auto quand accès alors que dans une communauté
+                test peut modifier tout ce que peut faire un participant dans test_project_community_participant
+                other_test ne peut pas mofidier test_project_community_participant, sauf commenter
+
+            6.
+                test a accès à test_project_community_not_in
+                test ne peut pas modifier test_project_community_not_in, sauf commenter
+
+            7.
+                test n'a pas accès à test_project_community_not_in_private
+
+            8.
+                test a accès à test_idea_community_owner
+                other_test a accès à test_idea_community_owner
+                test peut modifier test_idea_community_owner
+                other_test ne peut pas modifier test_idea_community_owner
+
+            9.
+                test a accès à test_idea_community_participant 
+                other_test a accès à test_idea_community_participant 
+                test peut modifier en tant que participant test_idea_community_participant 
+                other_test ne peut pas modifier test_idea_community_participant 
+
+            10.
+                test a accès à test_idea_community_not_in
+                test ne peut pas modifier test_idea_community_not_in
+
+            11. 
+                test n'a pas accès à test_out_project (404)
+
+            12. 
+                test n'a pas accès à test_out_idea (404)
+
+            13.
+                test a accès a test_guest_project
+                test peut modifier test_guest_project
+                other_test a accès à test_guest_project
+                other_test peut modifier test_guest_project
+
+            14. 
+                test n'a pas accès a test_guest_project_not_in
+                other_test a accès à test_guest_project_not_in
+                other_test peut modifier test_guest_project_not_in
+
+            15.
+                other_test a accès a test_guest_idea
+                test n'a pas accès à test_guest_idea
         **/
 
         /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
@@ -172,7 +271,11 @@ class LoadTestData implements FixtureInterface, ContainerAwareInterface
         if (!$communityOut){
             // A New test community
             $communityOut = new Community();
+            $userCommunity = new UserCommunity();
+            $otherUserCommunity = new UserCommunity();
             $manager->persist($communityOut);
+            $manager->persist($userCommunity);
+            $manager->persist($otherUserCommunity);
         } else {
             $userCommunity = $this->container->get('doctrine')->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('user' => $user->getId(), 'community' => $communityOut->getId()));
             if ($userCommunity){
@@ -192,6 +295,41 @@ class LoadTestData implements FixtureInterface, ContainerAwareInterface
         $otherUserCommunity->setGuest(false);
 
         /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
+           **                       THIRD COMMUNITY : "TEST_GUEST"                       **
+           ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
+        $communityGuest = $this->container->get('doctrine')->getRepository('metaGeneralBundle:Community\Community')->findOneByName('test_guest');
+
+        if (!$communityGuest){
+            // A New test community
+            $communityGuest = new Community();
+            $userCommunity = new UserCommunity();
+            $otherUserCommunity = new UserCommunity();
+            $manager->persist($communityGuest);
+            $manager->persist($userCommunity);
+            $manager->persist($otherUserCommunity);
+        } else {
+            $userCommunity = $this->container->get('doctrine')->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('user' => $user->getId(), 'community' => $communityGuest->getId()));
+            if (!$userCommunity){
+                $userCommunity = new UserCommunity();
+                $manager->persist($userCommunity);
+            }
+            $otherUserCommunity = $this->container->get('doctrine')->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('user' => $otherUser->getId(), 'community' => $communityGuest->getId()));
+            if (!$otherUserCommunity){
+                $otherUserCommunity = new UserCommunity();
+                $manager->persist($otherUserCommunity);
+            }
+        }
+
+        $communityGuest->setName('test_guest');
+        $communityGuest->setHeadline('Only OTHER_TEST should be here, and TEST as guest.');
+        $otherUserCommunity->setUser($otherUser);
+        $otherUserCommunity->setCommunity($communityGuest);
+        $otherUserCommunity->setGuest(false);
+        $userCommunity->setUser($user);
+        $userCommunity->setCommunity($communityGuest);
+        $userCommunity->setGuest(true);
+
+        /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
            **                           IDEAS IN PRIVATE SPACE                           **
            ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
         $idea = $this->container->get('doctrine')->getRepository('metaIdeaBundle:Idea')->findOneByName('test_idea_private_space');
@@ -205,21 +343,6 @@ class LoadTestData implements FixtureInterface, ContainerAwareInterface
         $idea->setName('test_idea_private_space');
         if (!$idea->getCreators()->contains($user)){
             $idea->addCreator($user);
-        }
-        $idea->setCommunity(null);
-
-        // New private space project and idea for other_user
-        $idea = $this->container->get('doctrine')->getRepository('metaIdeaBundle:Idea')->findOneByName('test_idea_private_space_other');
-
-        if (!$idea){
-            // A New test idea
-            $idea = new Idea();
-            $manager->persist($idea);
-        }
-
-        $idea->setName('test_idea_private_space_other');
-        if (!$idea->getCreators()->contains($otherUser)){
-            $idea->addCreator($otherUser);
         }
         $idea->setCommunity(null);
 
@@ -241,24 +364,8 @@ class LoadTestData implements FixtureInterface, ContainerAwareInterface
         $project->setCommunity(null);
         $project->setPrivate(true);
 
-        $project = $this->container->get('doctrine')->getRepository('metaProjectBundle:StandardProject')->findOneByName('test_project_private_space_other');
-
-        if (!$project){
-            // A New test project
-            $project = new StandardProject();
-            $manager->persist($project);
-        }
-
-        $project->setName('test_project_private_space_other');
-        if (!$otherUser->isOwning($project)){
-            $otherUser->addProjectsOwned($project);
-        }
-        $project->setCommunity(null);
-        $project->setPrivate(true);
-
-
         /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
-           **                        PROJECTS IN COMMUNITY TEST_IN                       **
+           **                     PROJECTS/IDEAS IN COMMUNITY TEST_IN                    **
            ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
 
         /* ** ** test_project_community_owner ** ** */
@@ -452,6 +559,73 @@ class LoadTestData implements FixtureInterface, ContainerAwareInterface
             $communityOut->addProject($project);
         }
         $project->setPrivate(false);
+
+
+        /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
+           **                   PROJECTS/IDEAS IN COMMUNITY TEST_GUEST                   **
+           ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
+
+        /* ** ** test_guest_project ** ** */
+        /* ** ** TEST IS GUEST OWNER OF THIS PROJECT ** ** */
+        $project = $this->container->get('doctrine')->getRepository('metaProjectBundle:StandardProject')->findOneByName('test_guest_project');
+
+        if (!$project){
+            // A New test project
+            $project = new StandardProject();
+            $manager->persist($project);
+        }
+
+        $project->setName('test_guest_project');
+        if (!$user->isOwning($project)){
+            $user->addProjectsOwned($project);
+        }
+        if (!$otherUser->isOwning($project)){
+            $otherUser->addProjectsOwned($project);
+        }
+        if (!$communityGuest->getProjects()->contains($project)){
+            $communityGuest->addProject($project);
+        }
+        $project->setPrivate(false);
+
+        /* ** ** test_guest_project_not_in ** ** */
+        /* ** ** TEST IS GUEST OWNER OF THIS PROJECT ** ** */
+        $project = $this->container->get('doctrine')->getRepository('metaProjectBundle:StandardProject')->findOneByName('test_guest_project_not_in');
+
+        if (!$project){
+            // A New test project
+            $project = new StandardProject();
+            $manager->persist($project);
+        }
+
+        $project->setName('test_guest_project_not_in');
+        if (!$otherUser->isOwning($project)){
+            $otherUser->addProjectsOwned($project);
+        }
+        if (!$communityGuest->getProjects()->contains($project)){
+            $communityGuest->addProject($project);
+        }
+        $project->setPrivate(false);
+
+        /* ** ** test_guest_idea ** ** */
+        /* ** ** TEST IS NOT IN THIS IDEA ** ** */
+        $idea = $this->container->get('doctrine')->getRepository('metaIdeaBundle:Idea')->findOneByName('test_guest_idea');
+
+        if (!$idea){
+            // A New test idea
+            $idea = new Idea();
+            $manager->persist($idea);
+        }
+
+        $idea->setName('test_guest_idea');
+        if (!$idea->getCreators()->contains($otherUser)){
+            $idea->addCreator($otherUser);
+        }
+        if (!$communityGuest->getIdeas()->contains($idea)){
+            $communityGuest->addIdea($idea);
+        }
+
+
+
 
         /* ********************* */
         /* FLUSHES ALL THAT SHIT */
