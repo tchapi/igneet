@@ -34,7 +34,38 @@ class LoadTestData implements FixtureInterface, ContainerAwareInterface
     public function load(ObjectManager $manager)
     {
 
-        // Check if test user is already in
+        /**
+            Communauté test_in :
+              test appartient à la communauté test_in
+              other_test appartient à la communauté test_in
+
+            Communauté test_out : 
+                other_test appartient à la communauté test_out
+
+            Projets / Idées : 
+              test_project_private_space : projet privé dans le private space de test
+              test_idea_private_space : idée privée dans le private space de test
+              test_project_private_space_other : projet privé dans le private space de other_test
+              test_idea_private_space_other : idée privée dans le private space de other_test
+
+              test_project_community_owner : projet public dans test_in, test est owner, other_test n'est pas dedans
+              test_project_community_owner_private : projet privé dans test_in, test est owner, other_test n'est pas dedans
+              test_project_community_participant : projet public dans test_in, test est participant, other_test est owner
+              test_project_community_not_in : projet public dans test_in, test n'est pas dans le projet, other_test est owner
+              test_project_community_not_in_private : projet privé dans test_in, test n'est pas dedans, other_test est owner
+
+              test_idea_community_owner : idée dans test_in, test est creator, other_test n'est pas dedans
+              test_idea_community_participant : idée dans test_in, test est participant, other_test n'est pas dedans
+              test_idea_community_not_in : idée dans test_in, test n'est pas dedans, other_test est owner
+
+              test_out_project : project dans test_out, other_test est owner
+              test_out_idea : idée dans test_out, other_test est creator
+
+        **/
+
+        /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
+           **                         FIRST TEST USER : "TEST"                           **
+           ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
         $user = $this->container->get('doctrine')->getRepository('metaUserBundle:User')->findOneByUsername('test');
 
         if (!$user){
@@ -60,7 +91,9 @@ class LoadTestData implements FixtureInterface, ContainerAwareInterface
             ->getEncoder($user);
         $user->setPassword($encoder->encodePassword('test', $user->getSalt()));
 
-         // Check if other test user is already in
+        /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
+           **                      SECOND TEST USER : "OTHER_TEST"                       **
+           ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
         $otherUser = $this->container->get('doctrine')->getRepository('metaUserBundle:User')->findOneByUsername('other_test');
 
         if (!$otherUser){
@@ -86,10 +119,17 @@ class LoadTestData implements FixtureInterface, ContainerAwareInterface
             ->getEncoder($otherUser);
         $otherUser->setPassword($encoder->encodePassword('test', $otherUser->getSalt()));
 
-        // They follow each other
-        $user->addFollowing($otherUser);
-        $otherUser->addFollowing($user);
+        // They follow each 
+        if (!$user->isFollowing($otherUser)){
+            $user->addFollowing($otherUser);
+        }
+        if (!$otherUser->isFollowing($user)){
+            $otherUser->addFollowing($user);
+        }
 
+        /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
+           **                        FIRST COMMUNITY : "TEST_IN"                         **
+           ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
         // New communities the user is in / is out
         // Check if test communities are already in
         $community = $this->container->get('doctrine')->getRepository('metaGeneralBundle:Community\Community')->findOneByName('test_in');
@@ -122,9 +162,11 @@ class LoadTestData implements FixtureInterface, ContainerAwareInterface
         $otherUserCommunity->setCommunity($community);
         $otherUserCommunity->setGuest(false);
         $community->setName('test_in');
-        $community->setHeadline('User test should be here.');
+        $community->setHeadline('Test users should be here.');
 
-        // --
+        /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
+           **                       SECOND COMMUNITY : "TEST_OUT"                        **
+           ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
         $communityOut = $this->container->get('doctrine')->getRepository('metaGeneralBundle:Community\Community')->findOneByName('test_out');
 
         if (!$communityOut){
@@ -136,12 +178,22 @@ class LoadTestData implements FixtureInterface, ContainerAwareInterface
             if ($userCommunity){
                 $manager->remove($userCommunity);
             }
+            $otherUserCommunity = $this->container->get('doctrine')->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('user' => $otherUser->getId(), 'community' => $communityOut->getId()));
+            if (!$otherUserCommunity){
+                $otherUserCommunity = new UserCommunity();
+                $manager->persist($otherUserCommunity);
+            }
         }
 
         $communityOut->setName('test_out');
-        $communityOut->setHeadline('User test should NOT be here.');
+        $communityOut->setHeadline('Only OTHER_TEST should be here.');
+        $otherUserCommunity->setUser($otherUser);
+        $otherUserCommunity->setCommunity($communityOut);
+        $otherUserCommunity->setGuest(false);
 
-        // New private space project and idea for user
+        /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
+           **                           IDEAS IN PRIVATE SPACE                           **
+           ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
         $idea = $this->container->get('doctrine')->getRepository('metaIdeaBundle:Idea')->findOneByName('test_idea_private_space');
 
         if (!$idea){
@@ -156,6 +208,24 @@ class LoadTestData implements FixtureInterface, ContainerAwareInterface
         }
         $idea->setCommunity(null);
 
+        // New private space project and idea for other_user
+        $idea = $this->container->get('doctrine')->getRepository('metaIdeaBundle:Idea')->findOneByName('test_idea_private_space_other');
+
+        if (!$idea){
+            // A New test idea
+            $idea = new Idea();
+            $manager->persist($idea);
+        }
+
+        $idea->setName('test_idea_private_space_other');
+        if (!$idea->getCreators()->contains($otherUser)){
+            $idea->addCreator($otherUser);
+        }
+        $idea->setCommunity(null);
+
+        /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
+           **                         PROJECTS IN PRIVATE SPACE                          **
+           ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
         $project = $this->container->get('doctrine')->getRepository('metaProjectBundle:StandardProject')->findOneByName('test_project_private_space');
 
         if (!$project){
@@ -171,7 +241,28 @@ class LoadTestData implements FixtureInterface, ContainerAwareInterface
         $project->setCommunity(null);
         $project->setPrivate(true);
 
-        // New project where test is owner  in community
+        $project = $this->container->get('doctrine')->getRepository('metaProjectBundle:StandardProject')->findOneByName('test_project_private_space_other');
+
+        if (!$project){
+            // A New test project
+            $project = new StandardProject();
+            $manager->persist($project);
+        }
+
+        $project->setName('test_project_private_space_other');
+        if (!$otherUser->isOwning($project)){
+            $otherUser->addProjectsOwned($project);
+        }
+        $project->setCommunity(null);
+        $project->setPrivate(true);
+
+
+        /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
+           **                        PROJECTS IN COMMUNITY TEST_IN                       **
+           ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
+
+        /* ** ** test_project_community_owner ** ** */
+        /* ** ** TEST IS OWNER OF THIS PROJECT ** ** */
         $project = $this->container->get('doctrine')->getRepository('metaProjectBundle:StandardProject')->findOneByName('test_project_community_owner');
 
         if (!$project){
@@ -189,7 +280,8 @@ class LoadTestData implements FixtureInterface, ContainerAwareInterface
         }
         $project->setPrivate(false);
 
-        // New project where test is participant in community
+        /* ** ** test_project_community_participant ** ** */
+        /* ** ** TEST IS PARTICIPANT IN THIS PROJECT ** ** */
         $project = $this->container->get('doctrine')->getRepository('metaProjectBundle:StandardProject')->findOneByName('test_project_community_participant');
 
         if (!$project){
@@ -210,8 +302,65 @@ class LoadTestData implements FixtureInterface, ContainerAwareInterface
         }
         $project->setPrivate(false);
 
+        /* ** ** test_project_community_not_in ** ** */
+        /* ** ** TEST IS NOT IN THIS PROJECT ** ** */
+        $project = $this->container->get('doctrine')->getRepository('metaProjectBundle:StandardProject')->findOneByName('test_project_community_not_in');
 
-        // New idea owned by test in community
+        if (!$project){
+            // A New test project
+            $project = new StandardProject();
+            $manager->persist($project);
+        }
+
+        $project->setName('test_project_community_not_in');
+        if (!$otherUser->isOwning($project)){
+            $otherUser->addProjectsOwned($project);
+        }
+        if (!$community->getProjects()->contains($project)){
+            $community->addProject($project);
+        }
+        $project->setPrivate(false);
+
+        /* ** ** test_project_community_not_in_private ** ** */
+        /* ** ** PRIVATE PROJECT WHERE TEST IS NOT IN ** ** */
+        $project = $this->container->get('doctrine')->getRepository('metaProjectBundle:StandardProject')->findOneByName('test_project_community_not_in_private');
+
+        if (!$project){
+            // A New test project
+            $project = new StandardProject();
+            $manager->persist($project);
+        }
+
+        $project->setName('test_project_community_not_in_private');
+        if (!$otherUser->isOwning($project)){
+            $otherUser->addProjectsOwned($project);
+        }
+        if (!$community->getProjects()->contains($project)){
+            $community->addProject($project);
+        }
+        $project->setPrivate(true);
+
+        /* ** ** test_project_community_owner_private ** ** */
+        /* ** ** TEST IS OWNER OF THIS PRIVATE PROJECT ** ** */
+        $project = $this->container->get('doctrine')->getRepository('metaProjectBundle:StandardProject')->findOneByName('test_project_community_owner_private');
+
+        if (!$project){
+            // A New test project
+            $project = new StandardProject();
+            $manager->persist($project);
+        }
+
+        $project->setName('test_project_community_owner_private');
+        if (!$user->isOwning($project)){
+            $user->addProjectsOwned($project);
+        }
+        if (!$community->getProjects()->contains($project)){
+            $community->addProject($project);
+        }
+        $project->setPrivate(true);
+
+        /* ** ** test_idea_community_owner ** ** */
+        /* ** ** TEST IS CREATOR OF THIS IDEA ** ** */
         $idea = $this->container->get('doctrine')->getRepository('metaIdeaBundle:Idea')->findOneByName('test_idea_community_owner');
 
         if (!$idea){
@@ -228,7 +377,8 @@ class LoadTestData implements FixtureInterface, ContainerAwareInterface
             $community->addIdea($idea);
         }
 
-        // New idea participated in by test in community
+        /* ** ** test_idea_community_participant ** ** */
+        /* ** ** TEST IS PARTICIPANT IN THIS IDEA ** ** */
         $idea = $this->container->get('doctrine')->getRepository('metaIdeaBundle:Idea')->findOneByName('test_idea_community_participant');
 
         if (!$idea){
@@ -248,7 +398,64 @@ class LoadTestData implements FixtureInterface, ContainerAwareInterface
             $community->addIdea($idea);
         }
 
-        // Flushes all that shit
+        /* ** ** test_idea_community_not_in ** ** */
+        /* ** ** TEST IS NOT IN THIS IDEA ** ** */
+        $idea = $this->container->get('doctrine')->getRepository('metaIdeaBundle:Idea')->findOneByName('test_idea_community_not_in');
+
+        if (!$idea){
+            // A New test idea
+            $idea = new Idea();
+            $manager->persist($idea);
+        }
+
+        $idea->setName('test_idea_community_not_in');
+        if (!$idea->getCreators()->contains($otherUser)){
+            $idea->addCreator($otherUser);
+        }
+        if (!$community->getIdeas()->contains($idea)){
+            $community->addIdea($idea);
+        }
+
+        /* ** ** test_out_idea ** ** */
+        /* ** ** OTHER_TEST IS CREATOR OF THIS IDEA ** ** */
+        $idea = $this->container->get('doctrine')->getRepository('metaIdeaBundle:Idea')->findOneByName('test_out_idea');
+
+        if (!$idea){
+            // A New test idea
+            $idea = new Idea();
+            $manager->persist($idea);
+        }
+
+        $idea->setName('test_out_idea');
+        if (!$idea->getCreators()->contains($otherUser)){
+            $idea->addCreator($otherUser);
+        }
+        if (!$communityOut->getIdeas()->contains($idea)){
+            $communityOut->addIdea($idea);
+        }
+
+        /* ** ** test_out_project ** ** */
+        /* ** ** TEST IS OWNER OF THIS PROJECT ** ** */
+        $project = $this->container->get('doctrine')->getRepository('metaProjectBundle:StandardProject')->findOneByName('test_out_project');
+
+        if (!$project){
+            // A New test project
+            $project = new StandardProject();
+            $manager->persist($project);
+        }
+
+        $project->setName('test_out_project');
+        if (!$otherUser->isOwning($project)){
+            $otherUser->addProjectsOwned($project);
+        }
+        if (!$communityOut->getProjects()->contains($project)){
+            $communityOut->addProject($project);
+        }
+        $project->setPrivate(false);
+
+        /* ********************* */
+        /* FLUSHES ALL THAT SHIT */
+        /* ********************* */
         $manager->flush();
         
     }
