@@ -499,7 +499,7 @@ class LoadTestData implements FixtureInterface, ContainerAwareInterface
             $idea->addCreator($otherUser);
         }
         if (!$idea->getParticipants()->contains($user)){
-            $idea->addParticipant($user);
+            $user->addIdeaParticipatedIn($idea);
         }
         if (!$community->getIdeas()->contains($idea)){
             $community->addIdea($idea);
