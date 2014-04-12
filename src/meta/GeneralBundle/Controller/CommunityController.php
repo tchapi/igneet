@@ -942,6 +942,7 @@ class CommunityController extends Controller
 
         $authenticatedUser = $this->getUser();
         $community = $authenticatedUser->getCurrentCommunity();
+        $lastNotified = $authenticatedUser->getLastNotifiedAt();
 
         $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('community' => $community->getId(), 'user' => $authenticatedUser->getId()));
 
@@ -992,7 +993,7 @@ class CommunityController extends Controller
                 }
             }
 
-            $text = $logService->getHTML($entry);
+            $text = $logService->getHTML($entry, $lastNotified);
             $createdAt = date_create($entry->getCreatedAt()->format('Y-m-d H:i:s')); // not for display
 
             $history[] = array( 'createdAt' => $createdAt, 'text' => $text);
@@ -1002,7 +1003,7 @@ class CommunityController extends Controller
         // Comments
         foreach ($community->getComments() as $comment) {
 
-          $text = $logService->getHTML($comment);
+          $text = $logService->getHTML($comment, $lastNotified);
           $createdAt = date_create($comment->getCreatedAt()->format('Y-m-d H:i:s')); // not for display
 
           $history[] = array( 'createdAt' => $createdAt, 'text' => $text);
