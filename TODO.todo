@@ -5,7 +5,6 @@ TODO :
 
   ☐  Refaire un point sur la deletion des users
 
-  ☐ Tests : créer un fixture user pour les tests + community fixture etc ...
   ☐  Tests unitaires : continuer User
   ☐  tests unitaires : project
   ☐  tests unitaires : idea
@@ -13,11 +12,15 @@ TODO :
   ☐  tests unitaires : general
   ☐  tests unitaires : admin
 
+ ☐  Mail auto pour les communautés soon to expire (genre tache en cron ? regrouper toutes les taches d'igneet dans une seule commande en cron runCronCommand ?) --> envoyer aussi un mail a l'admin en meme temps
+
+ ☐ (WIP WIP WIP) Mettre un log dans l'admin avec les X derniers commits et fichiers modifiés
+   * Rajouter des trucs dedans
+
 Admin :
 
  ☐ Admin : liste des utilisateurs à styler en tableau comme les announcements
    
- ☐ Mettre un log dans l'admin avec les X derniers commits et fichiers modifiés
  ☐ brad : rajouter une notification (mail a la fin de la mise en prod) dans la config ?
    
 A évaluer :

@@ -69,4 +69,20 @@ class UsersControllerTest extends SecuredWebTestCase
 
   }
 
+  public function testChooseInPrivateSpace()
+  {
+
+  }
+
+  public function testChooseInCommunity()
+  {
+    
+  }
+
+  public function testChooseInCommunityNoUserToChoose()
+  {
+    
+  }
+
+
 }
