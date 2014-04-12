@@ -1341,7 +1341,7 @@ class User implements AdvancedUserInterface
      * @param \meta\IdeaBundle\Entity\Idea $ideaParticipatedIn
      * @return User
      */
-    public function addIdeasParticipatedIn(\meta\IdeaBundle\Entity\Idea $ideaParticipatedIn)
+    public function addIdeaParticipatedIn(\meta\IdeaBundle\Entity\Idea $ideaParticipatedIn)
     {
         if (!is_null($ideaParticipatedIn)){
             $ideaParticipatedIn->addParticipant($this);
@@ -1356,7 +1356,7 @@ class User implements AdvancedUserInterface
      *
      * @param \meta\IdeaBundle\Entity\Idea $ideaParticipatedIn
      */
-    public function removeIdeasParticipatedIn(\meta\IdeaBundle\Entity\Idea $ideaParticipatedIn)
+    public function removeIdeaParticipatedIn(\meta\IdeaBundle\Entity\Idea $ideaParticipatedIn)
     {
         if (!is_null($ideaParticipatedIn)){
             $ideaParticipatedIn->removeParticipant($this);

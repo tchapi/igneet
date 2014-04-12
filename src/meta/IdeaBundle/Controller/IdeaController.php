@@ -703,7 +703,7 @@ class IdeaController extends Controller
                 !($newParticipant->isParticipatingInIdea($this->base['idea']))
                ) {
 
-                $newParticipant->addIdeasParticipatedIn($this->base['idea']);
+                $newParticipant->addIdeaParticipatedIn($this->base['idea']);
 
                 $this->get('session')->getFlashBag()->add(
                     'success',

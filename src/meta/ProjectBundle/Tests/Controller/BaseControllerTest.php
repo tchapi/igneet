@@ -21,5 +21,4 @@ class BaseControllerTest extends SecuredWebTestCase
 
   }
 
-
 }
