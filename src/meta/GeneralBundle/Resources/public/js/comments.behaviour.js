@@ -29,7 +29,7 @@ $(document).ready(function() {
 
                 // Adds the comment, depends on the timeline type
                 if (firstTimelineItem.length == 0) {
-                    timeline.append(data.comment);
+                    _self.parent('.comment').siblings('.timeline').append(data.comment);
                 } else if (firstTimelineItem.hasClass("step") && firstTimelineItem.attr('current')) {
                     firstTimelineItem.after(data.comment);
                 } else {
