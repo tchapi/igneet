@@ -203,6 +203,7 @@ ul.timeline {
       background: none;
       margin: 0;
       padding: $gutter*1.5 $gutter;
+      border: none;
       border-top: 2px solid $_sensible-dark;
       @include media($tablet, $mobile) {
         min-height: $comment_box_height + $gutter*1.5;
