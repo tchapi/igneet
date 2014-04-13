@@ -11,9 +11,13 @@ class DefaultController extends Controller
     public function homeAction()
     {
         if ($this->container->getParameter('enable_static_site') == true ){
+        
           return $this->render('metaStaticBundle:Static:home.html.twig');
+        
         } else {
+        
           return $this->redirect($this->generateUrl('g_home_community'));
+        
         }
     }
 
@@ -24,26 +28,34 @@ class DefaultController extends Controller
           throw $this->createNotFoundException();
         }
 
-        if(filter_var($request->request->get('email'), FILTER_VALIDATE_EMAIL)){ 
+        if ($request->isMethod('POST')) {
 
-          // Sends mail to contact
-          $message = \Swift_Message::newInstance()
-              ->setSubject('Contact from igneet.com')
-              ->setFrom($request->request->get('email'))
-              ->setTo($this->container->getParameter('mailer_contact'))
-              ->setBody(
-                  "Name    : " . $request->request->get('name') . "\n" .
-                  "Email   : " . $request->request->get('email') . "\n" .
-                  "Message : " . "\n\n" . $request->request->get('message'));
+          if(filter_var($request->request->get('email'), FILTER_VALIDATE_EMAIL)){ 
 
-          $this->get('mailer')->send($message);
-        
-          return new Response(1);
+            // Sends mail to contact
+            $message = \Swift_Message::newInstance()
+                ->setSubject('Contact from igneet.com')
+                ->setFrom($request->request->get('email'))
+                ->setTo($this->container->getParameter('mailer_contact'))
+                ->setBody(
+                    "Name    : " . $request->request->get('name') . "\n" .
+                    "Email   : " . $request->request->get('email') . "\n" .
+                    "Message : " . "\n\n" . $request->request->get('message'));
+
+            $this->get('mailer')->send($message);
+          
+            return new Response(1);
+
+          } else {
+          
+            return new Response(0);
+
+          }
 
         } else {
-        
-          return new Response(0);
 
+          throw $this->createNotFoundException();
+        
         }
 
     }
@@ -51,9 +63,13 @@ class DefaultController extends Controller
     public function termsAction()
     {
         if ($this->container->getParameter('enable_static_site') == true ){
+
           return $this->render('metaStaticBundle:Static:terms.html.twig');
+
         } else {
+
           throw $this->createNotFoundException();
+
         }
     }
 }

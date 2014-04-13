@@ -35,8 +35,26 @@ class ResourceController extends BaseController
                 }
             }
 
-            $guessedType = explode('.', $url);
-            $guessedType = $guessedType[count($guessedType)-1];
+            // Once the provider is guessed, let's try to guess type
+            if (isset($provider_infos['types'])) {
+
+                if ($provider_infos['types']['type'] == "fixed") {
+                    $guessedType = $provider_infos['types']['value'];
+                } elseif ($provider_infos['types']['type'] == "regex") {
+                    preg_match($provider_infos['types']['value'], $url, $matches);
+                    if (isset($matches[1])) {
+                        $guessedType = $guessedProvider . "_" . $matches[1];
+                    }
+                }
+                
+            } else {
+
+                // Just in case, let's try this as a last resort
+                $guessedType = 'other';
+            
+            }
+
+            
 
         } else {
 

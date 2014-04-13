@@ -74,7 +74,12 @@
             list.placeEl = $('<div class="' + list.options.placeClass + '"/>');
 
             $.each(this.el.find(list.options.itemNodeName), function(k, el) {
-                list.setParent($(el));
+                var item = $(el),
+                    parent = item.parent();
+                list.setParent(item);
+                if (parent.hasClass(list.options.collapsedClass)) {
+                   list.collapseItem(parent.parent());
+                }
             });
 
             list.el.on('click', 'a', function(e) {
@@ -305,8 +310,8 @@
 
             this.placeEl.css('height', dragItem.height());
 
-            mouse.offsetX = e.offsetX !== undefined ? e.offsetX : e.pageX - dragItem.offset().left;
-            mouse.offsetY = e.offsetY !== undefined ? e.offsetY : e.pageY - dragItem.offset().top;
+            mouse.offsetX = e.pageX - dragItem.offset().left;
+            mouse.offsetY = e.pageY - dragItem.offset().top;
             mouse.startX = mouse.lastX = e.pageX;
             mouse.startY = mouse.lastY = e.pageY;
 

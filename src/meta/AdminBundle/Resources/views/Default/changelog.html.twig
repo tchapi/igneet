@@ -1,0 +1,35 @@
+{% extends 'metaAdminBundle::layout.html.twig' %}
+
+{% block title %}{{ parent() }} > Changelog & Version{% endblock %}
+
+{% block section %}Changelog & version{% endblock %}
+
+{% block content %}
+<div class="wrapper tiles">
+
+  <section>
+    
+    <h2>Environment version</h2>
+    <pre>{{ current_version|split('-')[0] }} ({{ current_version }})</pre>
+    {% set base_commit = current_version|split('/')[0]|split('-')[1] %}
+    {% set last_commit = current_version|split('/')[1]|split('(')[0] %}
+    {% if last_commit[:7] != "RELEASE" %}
+      <pre>Last commit : {{ last_commit }} (<a href="https://github.com/tchapi/igneet/commit/{{ last_commit }}">View in repo</a>)</pre>
+    {% else %}
+      <p><i class="fa fa-check"></i> No changes since release tag</p>
+    {% endif %}
+    <pre>Base commit : {{ base_commit }} (<a href="https://github.com/tchapi/igneet/commit/{{ base_commit }}">View in repo</a>)</pre>
+    
+    <h2>Last changes</h2>
+    <pre>git diff HEAD^ HEAD --summary --stat</pre>
+
+
+    <h2>Full Changelog</h2>
+    <p>{{ log|nl2br }}</p>
+
+  </section>
+
+</div>
+{% endblock %}
+
+

@@ -703,7 +703,7 @@ class IdeaController extends Controller
                 !($newParticipant->isParticipatingInIdea($this->base['idea']))
                ) {
 
-                $newParticipant->addIdeasParticipatedIn($this->base['idea']);
+                $newParticipant->addIdeaParticipatedIn($this->base['idea']);
 
                 $this->get('session')->getFlashBag()->add(
                     'success',
@@ -919,6 +919,8 @@ class IdeaController extends Controller
     public function historyAction(Request $request, $uid)
     {
 
+        $lastNotified = $this->getUser()->getLastNotifiedAt();
+
         $this->timeframe = array( 'today' => array( 'current' => true, 'name' => $this->get('translator')->trans('date.today'), 'data' => array()),
                             'd-1'   => array( 'name' => $this->get('translator')->trans('date.yesterday'), 'data' => array() ),
                             'd-2'   => array( 'name' => $this->get('translator')->trans('date.timeline', array( "%days%" => 2)), 'data' => array() ),
@@ -942,7 +944,7 @@ class IdeaController extends Controller
           
           if ($log_types[$entry->getType()]['displayable'] === false ) continue;
 
-          $text = $logService->getHTML($entry);
+          $text = $logService->getHTML($entry, $lastNotified);
           $createdAt = date_create($entry->getCreatedAt()->format('Y-m-d H:i:s')); // Not for display
 
           $history[] = array( 'createdAt' => $createdAt , 'text' => $text);
@@ -952,7 +954,7 @@ class IdeaController extends Controller
         // Comments
         foreach ($this->base['idea']->getComments() as $comment) {
 
-          $text = $logService->getHTML($comment);
+          $text = $logService->getHTML($comment, $lastNotified);
           $createdAt = date_create($comment->getCreatedAt()->format('Y-m-d H:i:s')); // not for display
 
           $history[] = array( 'createdAt' => $createdAt , 'text' => $text);

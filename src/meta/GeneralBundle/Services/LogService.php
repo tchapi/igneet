@@ -14,14 +14,15 @@ class LogService
 {
 
     private $em;
-    private $log_types, $log_routing, $concurrent_merge_interval;
+    private $log_types, $log_social_filters, $log_routing, $concurrent_merge_interval;
     private $twig, $template_link, $template_link_null, $template_item;
 
-    public function __construct(EntityManager $entity_manager, $log_types, $log_routing, $log_concurrent_merge_interval, $security_context, $twig, $translator, $uid)
+    public function __construct(EntityManager $entity_manager, $log_types, $log_social_filters, $log_routing, $log_concurrent_merge_interval, $security_context, $twig, $translator, $uid)
     {
         $this->em = $entity_manager;
         
         $this->log_types = $log_types;
+        $this->log_social_filters = $log_social_filters;
         $this->log_routing = $log_routing;
         $this->concurrent_merge_interval = $log_concurrent_merge_interval;
 
@@ -87,6 +88,7 @@ class LogService
         } else {
 
             // else persists the new log
+            // $this->security_context->getToken() is NEVER null here
             $entry->setCommunity($this->security_context->getToken()->getUser()->getCurrentCommunity());
             $entry->setUser($user);
             $entry->setType($logActionName);
@@ -127,7 +129,7 @@ class LogService
 
     }
 
-    public function getHTML($logEntryOrComment, $locale = null)
+    public function getHTML($logEntryOrComment, $lastNotified, $locale = null)
     {
 
         if ( is_null($logEntryOrComment) ) {
@@ -136,7 +138,7 @@ class LogService
 
         if ($logEntryOrComment instanceof BaseComment) {
 
-            return $this->twig->render($this->template_item_comment, array('comment' => $logEntryOrComment, 'locale' => $locale, 'lastNotified' => $this->security_context->getToken()->getUser()->getLastNotifiedAt()));
+            return $this->twig->render($this->template_item_comment, array('comment' => $logEntryOrComment, 'locale' => $locale, 'lastNotified' => $lastNotified));
 
         } else {
 
@@ -151,7 +153,7 @@ class LogService
             $icon = $this->log_types[$logEntryOrComment->getType()]['icon'];
             $groups = $this->log_types[$logEntryOrComment->getType()]['filter_groups'];
 
-            return $this->twig->render($this->template_item, array( 'icon' => $icon, 'user' => $user, 'text' => $text, 'date' => $date, 'combinedCount' => $combinedCount, 'groups' => $groups, 'locale' => $locale, 'lastNotified' => $this->security_context->getToken()->getUser()->getLastNotifiedAt()));
+            return $this->twig->render($this->template_item, array( 'icon' => $icon, 'user' => $user, 'text' => $text, 'date' => $date, 'combinedCount' => $combinedCount, 'groups' => $groups, 'locale' => $locale, 'lastNotified' => $lastNotified));
 
         }
 
@@ -283,7 +285,7 @@ class LogService
         // In the repository, we make sure we only get logs for the communities the current user can see
         if (count($objects['users']) > 0){
             $baseLogRepository = $this->em->getRepository('metaGeneralBundle:Log\BaseLogEntry');
-            $userLogs = $baseLogRepository->countSocialLogsForUsersInCommunitiesOfUser($objects['users'], $from, $user, $community);
+            $userLogs = $baseLogRepository->countSocialLogsForUsersInCommunitiesOfUser($this->log_social_filters, $objects['users'], $from, $user, $community);
         } else {
             $userLogs = 0;
         }
@@ -330,7 +332,7 @@ class LogService
         // In the repository, we make sure we only get logs for the communities the current user can see
         if (count($objects['users']) > 0){
             $baseLogRepository = $this->em->getRepository('metaGeneralBundle:Log\BaseLogEntry');
-            $userLogs = $baseLogRepository->findSocialLogsForUsersInCommunitiesOfUser($objects['users'], null, $user, $community);
+            $userLogs = $baseLogRepository->findSocialLogsForUsersInCommunitiesOfUser($this->log_social_filters, $objects['users'], null, $user, $community);
             if (count($userLogs)> 0) {
                 $lastDate = max($lastDate, $userLogs[0]->getCreatedAt());
             }
@@ -355,28 +357,28 @@ class LogService
         // Around myself
         $userLogRepository = $this->em->getRepository('metaGeneralBundle:Log\UserLogEntry');
         $selfLogs = $userLogRepository->findLogsForUser($from, $user, $community); // New followers of user
-        foreach ($selfLogs as $notification) { $notifications[] = array( 'createdAt' => date_create($notification->getCreatedAt()->format('Y-m-d H:i:s')), 'data' => $this->getHTML($notification, $locale) ); }
+        foreach ($selfLogs as $notification) { $notifications[] = array( 'createdAt' => date_create($notification->getCreatedAt()->format('Y-m-d H:i:s')), 'data' => $this->getHTML($notification, $lastNotified, $locale) ); }
 
         // Fetch logs related to the projects
         if (count($objects['projects']) > 0){
             $projectLogRepository = $this->em->getRepository('metaGeneralBundle:Log\StandardProjectLogEntry');
             $projectLogs = $projectLogRepository->findLogsForProjects($objects['projects'], $from, $user, $community);
-            foreach ($projectLogs as $notification) { $notifications[] = array( 'createdAt' => date_create($notification->getCreatedAt()->format('Y-m-d H:i:s')), 'data' => $this->getHTML($notification, $locale) ); }
+            foreach ($projectLogs as $notification) { $notifications[] = array( 'createdAt' => date_create($notification->getCreatedAt()->format('Y-m-d H:i:s')), 'data' => $this->getHTML($notification, $lastNotified, $locale) ); }
         }
         
         // Fetch all logs related to the ideas
         if (count($objects['ideas']) > 0){
             $ideaLogRepository = $this->em->getRepository('metaGeneralBundle:Log\IdeaLogEntry');
             $ideaLogs = $ideaLogRepository->findLogsForIdeas($objects['ideas'], $from, $user, $community);
-            foreach ($ideaLogs as $notification) { $notifications[] = array( 'createdAt' => date_create($notification->getCreatedAt()->format('Y-m-d H:i:s')), 'data' => $this->getHTML($notification, $locale) ); }
+            foreach ($ideaLogs as $notification) { $notifications[] = array( 'createdAt' => date_create($notification->getCreatedAt()->format('Y-m-d H:i:s')), 'data' => $this->getHTML($notification, $lastNotified, $locale) ); }
         }
 
         // Fetch all logs related to the users followed (their updates, or if they have created new projects or been added into one)
         // In the repository, we make sure we only get logs for the communities the current user can see
         if (count($objects['users']) > 0){
             $baseLogRepository = $this->em->getRepository('metaGeneralBundle:Log\BaseLogEntry');
-            $userLogs = $baseLogRepository->findSocialLogsForUsersInCommunitiesOfUser($objects['users'], $from, $user, $community);
-            foreach ($userLogs as $notification) { $notifications[] = array( 'createdAt' => date_create($notification->getCreatedAt()->format('Y-m-d H:i:s')), 'data' => $this->getHTML($notification, $locale) ); }
+            $userLogs = $baseLogRepository->findSocialLogsForUsersInCommunitiesOfUser($this->log_social_filters, $objects['users'], $from, $user, $community);
+            foreach ($userLogs as $notification) { $notifications[] = array( 'createdAt' => date_create($notification->getCreatedAt()->format('Y-m-d H:i:s')), 'data' => $this->getHTML($notification, $lastNotified, $locale) ); }
         }
 
         // Sort !

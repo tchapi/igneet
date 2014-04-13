@@ -29,7 +29,7 @@ $(document).ready(function() {
 
                 // Adds the comment, depends on the timeline type
                 if (firstTimelineItem.length == 0) {
-                    timeline.append(data.comment);
+                    _self.parent('.comment').siblings('.timeline').append(data.comment);
                 } else if (firstTimelineItem.hasClass("step") && firstTimelineItem.attr('current')) {
                     firstTimelineItem.after(data.comment);
                 } else {
@@ -72,6 +72,7 @@ $(document).ready(function() {
         $.post($(this).attr('data-url'))
             .done(function() {
                 commentBox.html('<em>' + Translator.trans('comment.deleted') + '</em>');
+                commentBox.parent().addClass("deleted");
                 actionBox.fadeOut();
                 alertify.success(Translator.trans('comment.been.deleted'));
             })

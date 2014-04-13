@@ -38,6 +38,8 @@ class TimelineController extends BaseController
         $menu = $this->container->getParameter('project.menu');
         $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => $menu['timeline']['private']));
 
+        $lastNotified = $this->getUser()->getLastNotifiedAt();
+
         if ($this->access == false) 
           return $this->forward('metaProjectBundle:Base:showRestricted', array('uid' => $uid));
 
@@ -65,7 +67,7 @@ class TimelineController extends BaseController
           
           if ($log_types[$entry->getType()]['displayable'] === false ) continue; // We do not display them
 
-          $text = $logService->getHTML($entry);
+          $text = $logService->getHTML($entry, $lastNotified);
           $createdAt = date_create($entry->getCreatedAt()->format('Y-m-d H:i:s')); // not for display
 
           $history[] = array( 'createdAt' => $createdAt, 'text' => $text);
@@ -75,7 +77,7 @@ class TimelineController extends BaseController
         // Comments
         foreach ($this->base['project']->getComments() as $comment) {
 
-          $text = $logService->getHTML($comment);
+          $text = $logService->getHTML($comment, $lastNotified);
           $createdAt = date_create($comment->getCreatedAt()->format('Y-m-d H:i:s')); // not for display
 
           $history[] = array( 'createdAt' => $createdAt, 'text' => $text);

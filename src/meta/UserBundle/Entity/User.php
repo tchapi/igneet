@@ -34,7 +34,7 @@ class User implements AdvancedUserInterface
     /**
      * @var string $username
      *
-     * @ORM\Column(name="username", type="string", length=255, unique=true)
+     * @ORM\Column(name="username", type="string", length=255, unique=true, nullable=true)
      * @Assert\NotBlank()
      * @Assert\Length(min = "3")
      * @Assert\Regex(pattern="/^[a-zA-Z0-9\-]+$/")
@@ -1298,7 +1298,7 @@ class User implements AdvancedUserInterface
      * @param \meta\IdeaBundle\Entity\Idea $ideaCreated
      * @return User
      */
-    public function addIdeasCreated(\meta\IdeaBundle\Entity\Idea $ideaCreated)
+    public function addIdeaCreated(\meta\IdeaBundle\Entity\Idea $ideaCreated)
     {
         $this->ideasCreated[] = $ideaCreated;
         return $this;
@@ -1310,7 +1310,7 @@ class User implements AdvancedUserInterface
      * BINDING LOGIC IS DONE IN 'IDEA' CLASS
      * @param \meta\IdeaBundle\Entity\Idea $ideaCreated
      */
-    public function removeIdeasCreated(\meta\IdeaBundle\Entity\Idea $ideaCreated)
+    public function removeIdeaCreated(\meta\IdeaBundle\Entity\Idea $ideaCreated)
     {
         $this->ideasCreated->removeElement($ideaCreated);
     }
@@ -1341,7 +1341,7 @@ class User implements AdvancedUserInterface
      * @param \meta\IdeaBundle\Entity\Idea $ideaParticipatedIn
      * @return User
      */
-    public function addIdeasParticipatedIn(\meta\IdeaBundle\Entity\Idea $ideaParticipatedIn)
+    public function addIdeaParticipatedIn(\meta\IdeaBundle\Entity\Idea $ideaParticipatedIn)
     {
         if (!is_null($ideaParticipatedIn)){
             $ideaParticipatedIn->addParticipant($this);
@@ -1356,7 +1356,7 @@ class User implements AdvancedUserInterface
      *
      * @param \meta\IdeaBundle\Entity\Idea $ideaParticipatedIn
      */
-    public function removeIdeasParticipatedIn(\meta\IdeaBundle\Entity\Idea $ideaParticipatedIn)
+    public function removeIdeaParticipatedIn(\meta\IdeaBundle\Entity\Idea $ideaParticipatedIn)
     {
         if (!is_null($ideaParticipatedIn)){
             $ideaParticipatedIn->removeParticipant($this);
@@ -1621,6 +1621,8 @@ class User implements AdvancedUserInterface
     public function delete()
     {
         $this->deleted_at = new \DateTime('now');
+        // Resets the unique properties
+        $this->username = null;
         $this->email = null;
         return $this;
     }

@@ -32,23 +32,6 @@ class BaseLogEntryRepository extends EntityRepository
   
   }
 
-  public function computeWeekActivityForUser($user)
-  {
- 
-    $qb = $this->getEntityManager()->createQueryBuilder();
-
-    return $qb->select('COUNT(l.id) AS nb_actions')
-            ->addSelect('SUBSTRING(l.created_at,1,10) AS date')
-            ->from('metaGeneralBundle:Log\BaseLogEntry', 'l')
-            ->where('l.user = :user')
-            ->setParameter('user', $user)
-            ->andWhere("l.created_at > DATE_SUB(CURRENT_DATE(),7,'DAY')")
-            ->groupBy('date')
-            ->getQuery()
-            ->getResult();
-
-  }
-
   public function findLastActivityDateForUser($user)
   {
     $qb = $this->getEntityManager()->createQueryBuilder();
@@ -68,11 +51,8 @@ class BaseLogEntryRepository extends EntityRepository
     return $result;
   }
 
-  private function getLogsQuery($users, $from, $user, $community)
+  private function getSocialLogsQuery($logTypes, $users, $from, $user, $community)
   {
-
-    // Types of logs we want to see from users we follow :
-    $types = array('user_update_profile', 'user_create_project', 'user_create_project_from_idea', 'user_create_idea');
 
     $qb = $this->getEntityManager()->createQueryBuilder();
 
@@ -82,7 +62,7 @@ class BaseLogEntryRepository extends EntityRepository
             ->where('l.user IN (:users)')
             ->setParameter('users', $users)
             ->andWhere('l.type IN (:types)')
-            ->setParameter('types', $types)
+            ->setParameter('types', $logTypes)
             ->andWhere('uc.user = :user')
             ->setParameter('user', $user)
             ->andWhere('uc.guest = :guest')
@@ -105,10 +85,10 @@ class BaseLogEntryRepository extends EntityRepository
   }
 
 
-  public function findSocialLogsForUsersInCommunitiesOfUser($users, $from, $user, $community = null)
+  public function findSocialLogsForUsersInCommunitiesOfUser($logTypes, $users, $from, $user, $community = null)
   {
 
-    $query = $this->getLogsQuery($users, $from, $user, $community);
+    $query = $this->getSocialLogsQuery($logTypes, $users, $from, $user, $community);
 
     if ($query === null) {
       return null;
@@ -120,10 +100,10 @@ class BaseLogEntryRepository extends EntityRepository
 
   }
 
-  public function countSocialLogsForUsersInCommunitiesOfUser($users, $from, $user, $community = null)
+  public function countSocialLogsForUsersInCommunitiesOfUser($logTypes, $users, $from, $user, $community = null)
   {
 
-    $query = $this->getLogsQuery($users, $from, $user, $community);
+    $query = $this->getSocialLogsQuery($logTypes, $users, $from, $user, $community);
 
     if ($query === null) {
       return 0;
@@ -133,6 +113,26 @@ class BaseLogEntryRepository extends EntityRepository
                    ->getSingleScalarResult();
     }
 
+  }
+
+  public function findByLogTypes($logTypes, $options)
+  {
+
+      if (is_null($logTypes) || count($logTypes) === 0){
+        return $this->findByCommunity($options['community']);
+      }
+
+      $qb = $this->getEntityManager()->createQueryBuilder();
+
+      $query = $qb->select('l')
+                  ->from('metaGeneralBundle:Log\BaseLogEntry', 'l')
+                  ->where('l.community = :community')
+                  ->setParameter('community', $options['community'])
+                  ->andWhere('l.type IN (:types)')
+                  ->setParameter('types', $logTypes);
+
+      return $query->getQuery()
+                   ->getResult();
   }
 
 }

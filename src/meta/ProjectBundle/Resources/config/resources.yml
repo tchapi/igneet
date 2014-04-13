@@ -48,14 +48,49 @@ parameters:
     psd:
       icon: file_extension_psd
       displayable: false
+    # Other providers types
+    youtube_video:
+      icon: file_extension_mswmm
+      displayable: true
+    gdocs_presentation:
+      icon: gdocs_presentation
+      displayable: true
+    gdocs_folderview:
+      icon: folders_explorer
+      displayable: true
+    gdocs_spreadsheet:
+      icon: gdocs_spreadsheet
+      displayable: true
+    gdocs_document:
+      icon: gdocs_document
+      displayable: true
+    gdocs_forms:
+      icon: gdocs_forms
+      displayable: true
+    gdocs_#folders:
+      icon: folders_explorer
+      displayable: true
+    gdocs_drawing:
+      icon: gdocs_drawing
+      displayable: true
+    gdocs_file:
+      icon: document_image_ver
+      displayable: true
+    prezi_prezi:
+      icon: page
+      displayable: true
+    # Misc
     other: 
       icon: document_comments
       displayable: false
   project.resource_providers:
     gdocs:
-      pattern: /docs\.google\.com/
+      pattern: /(docs|drive)\.google\.com/
       icon: provider_gdocs
       downloadable: false
+      types:
+        type: regex
+        value: "/\.google\.com\/(document|spreadsheet|folderview|presentation|file|forms|drawing|\#folders)/"
     evernote:
       pattern: /evernote\.com\/pub/
       icon: provider_evernote
@@ -64,14 +99,27 @@ parameters:
       pattern: /dropbox\.com/
       icon: provider_dropbox
       downloadable: false
+      types:
+        type: regex
+        value: /\.([a-zA-Z]+)$/
     droplr:
       pattern: /d\.pr\/i/
       icon: provider_droplr
       downloadable: false
     youtube:
-      pattern: /youtube\.com/
+      pattern: /(youtube\.com|youtu\.be)/
       icon: provider_youtube
       downloadable: false
+      types:
+        type: fixed
+        value: youtube_video
+    prezi:
+      pattern: /prezi\.com/
+      icon: provider_prezi
+      downloadable: false
+      types:
+        type: fixed
+        value: prezi_prezi
     skydrive:
       pattern: /sdrv\.com/
       icon: provider_skydrive

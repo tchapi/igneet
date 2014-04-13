@@ -18,6 +18,22 @@ class AdminController extends Controller
 
     }
 
+    public function changelogAction()
+    {
+
+        // Read changelog
+        $log = file_get_contents($this->get('kernel')->getRootDir() . '/../web/CHANGELOG.txt', FILE_USE_INCLUDE_PATH);
+
+        // FIX ME
+        
+        // Link to latest commit
+
+        // Display last changes in files from last commit, github style
+
+        return $this->render('metaAdminBundle:Default:changelog.html.twig', array( 'log' => $log ));
+
+    }
+
     /* ********************************************************************* */
     /*                           Non-routed actions                          */
     /*                     are NOT subject to Pre-execute                    */

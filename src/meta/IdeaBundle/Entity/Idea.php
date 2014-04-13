@@ -707,7 +707,7 @@ class Idea extends Taggable
     public function addCreator(\meta\UserBundle\Entity\User $creator)
     {
         if(!is_null($creator)){
-            $creator->addIdeasCreated($this);
+            $creator->addIdeaCreated($this);
         }
 
         $this->creators[] = $creator;
@@ -722,7 +722,7 @@ class Idea extends Taggable
     public function removeCreator(\meta\UserBundle\Entity\User $creator)
     {
         if(!is_null($creator)){
-            $creator->removeIdeasCreated($this);
+            $creator->removeIdeaCreated($this);
         }
         $this->creators->removeElement($creator);
     }

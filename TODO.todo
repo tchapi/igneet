@@ -1,9 +1,31 @@
 
 ## TODO ##
 
+TODO : 
+
+  ☐  Refaire un point sur la deletion des users
+
+  ☐  Tests unitaires : continuer User
+  ☐  tests unitaires : project
+  ☐  tests unitaires : idea
+  ☐  tests unitaires : community
+  ☐  tests unitaires : general
+  ☐  tests unitaires : admin
+
+ ☐  Mail auto pour les communautés soon to expire (genre tache en cron ? regrouper toutes les taches d'igneet dans une seule commande en cron runCronCommand ?) --> envoyer aussi un mail a l'admin en meme temps
+
+ ☐ (WIP WIP WIP) Mettre un log dans l'admin avec les X derniers commits et fichiers modifiés
+   * Rajouter des trucs dedans
+   * Il faut avoir l'info dans un fichier ? genre dans le changelog, mettre des séparateurs pour pouvoir parser ensuite !!
+     git diff HEAD^ HEAD --summary --stat en premier, puis
+     --
+     le changelog avec des modifs : genre ** entre chaque ligne ?
+
 Admin :
 
  ☐ Admin : liste des utilisateurs à styler en tableau comme les announcements
+   
+ ☐ brad : rajouter une notification (mail a la fin de la mise en prod) dans la config ?
    
 A évaluer :
 
@@ -11,6 +33,15 @@ A évaluer :
    Sinon mettre en gras mais ne pas linker avec une icone oeil barré (?)
  
  ☐ [Eric] Tri des resources dans la vue / resources
+
+ ☐ Retirer le markdown :
+    retirer ensuite les |markdown dans
+        Project:showInfo.twig
+        Project:showWiki.twig
+        User:show.twig
+        Idea:showInfo.twig
+        Idea:showContent.twig
+    Puis dans logItemComment.html.twig 
 
 Fausses bonnes idées:
 
@@ -28,11 +59,10 @@ Home de community
  - resources ?? Vraiment besoin ?
  - listes ?? idem ??
 
+ ☐ Limiter le nombre de notifs en home page ...
+     ☐ coté requete SQL / ou coté display ??
+
 Todo - Search:
 
  ☐ Recherche
  ☐ par tags exacts
-
-Site statique:
-
- ☐ Page Licence avec explication que tous les contenus sont soumis au copyright etc ... expliquer que l'hébergement est en France, etc

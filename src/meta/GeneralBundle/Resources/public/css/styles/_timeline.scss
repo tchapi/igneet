@@ -105,6 +105,17 @@ ul.timeline {
         border-left: 1px solid $_discrete;
       }
     }
+    &.log-comment:not(.deleted) {
+      border: 1px solid $_primary;
+      background: rgba($_primary,0.1);
+      & > .actions > .delete-trigger {
+        color: $_primary;
+        border-left: 1px solid $_primary;
+      }
+    }
+    &.log-comment.deleted {
+      display: none;
+    }
     & > i {
       color: $_muted;
       display: inline-block;
