@@ -14,13 +14,6 @@ TODO :
 
  ☐  Mail auto pour les communautés soon to expire (genre tache en cron ? regrouper toutes les taches d'igneet dans une seule commande en cron runCronCommand ?) --> envoyer aussi un mail a l'admin en meme temps
 
- ☐ (WIP WIP WIP) Mettre un log dans l'admin avec les X derniers commits et fichiers modifiés
-   * Rajouter des trucs dedans
-   * Il faut avoir l'info dans un fichier ? genre dans le changelog, mettre des séparateurs pour pouvoir parser ensuite !!
-     git diff HEAD^ HEAD --summary --stat en premier, puis
-     --
-     le changelog avec des modifs : genre ** entre chaque ligne ?
-
 Admin :
 
  ☐ Admin : liste des utilisateurs à styler en tableau comme les announcements

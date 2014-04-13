@@ -20,12 +20,17 @@
     {% endif %}
     <pre>Base commit : {{ base_commit }} (<a href="https://github.com/tchapi/igneet/commit/{{ base_commit }}">View in repo</a>)</pre>
     
-    <h2>Last changes</h2>
-    <pre>git diff HEAD^ HEAD --summary --stat</pre>
+    <h2>Last modifications</h2>
+    <pre>{{ last }}</pre>
 
+    <h2>Last ten logs</h2>
+    {% for log in last_ten %}
+      <li>{{ log.date }}, {{ log.author }}, {{ log.logs }}, {{ log.commit }}</li>
+    {% endfor %}
 
     <h2>Full Changelog</h2>
-    <p>{{ log|nl2br }}</p>
+    <h4>View raw file <a href="/CHANGELOG.txt">here</a></h4>
+    <pre>{{ full }}</pre>
 
   </section>
 
