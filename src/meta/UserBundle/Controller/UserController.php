@@ -391,6 +391,7 @@ class UserController extends Controller
         }
 
         $authenticatedUser = $this->getUser();
+        $em = $this->getDoctrine()->getManager();
 
         if ($authenticatedUser->getUsername() === $username) {
         
@@ -426,7 +427,7 @@ class UserController extends Controller
                 
                 $community = $userCommunity->getCommunity();
                 $nbManagersInCommunity = $userRepository->countManagersInCommunity(array('community' => $community));
-                $nbUsersInCommunity = $userRepository->countUsersInCommunity(array('community' => $community));
+                $nbUsersInCommunity = $userRepository->countUsersInCommunity(array('community' => $community, 'includeGuests' => false));
 
                 // Do we have a single manager ? Then we might have a problem. Else, no.
                 if ($nbManagersInCommunity == 1 && $userCommunity->isManager()){
@@ -460,8 +461,6 @@ class UserController extends Controller
                         $idea->delete();
                     }
                 }
-
-                $em = $this->getDoctrine()->getManager();
                 
                 foreach ($authenticatedUser->getUserCommunities() as $userCommunity) {
                     // We delete the userCommunity object
