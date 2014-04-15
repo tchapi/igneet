@@ -58,7 +58,11 @@ class AdminController extends Controller
                 $commit = explode("<", $line);
                 $mail = explode(">", $commit[1]);
                 $tags = explode(")", $mail[1]);
-                $logs = explode("|", $tags[1]);
+                if (isset($tags[1])) {
+                    $logs = explode("|", $tags[1]);
+                } else {
+                    $logs = explode("|", $mail[1]);
+                }
                 $last_ten[] = array('commit' => trim($commit[0]), 'tags' => trim($tags[0]), 'logs' => trim($logs[0]), 'author' => trim($mail[0]), 'date' => trim($date[1]));
             }
 
