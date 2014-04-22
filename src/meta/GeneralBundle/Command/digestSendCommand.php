@@ -110,7 +110,7 @@ class digestSendCommand extends ContainerAwareCommand
               $messages[] = \Swift_Message::newInstance()
                   ->setSubject($this->getContainer()->get('translator')->trans('user.digest.mail.subject', array(), null, $locale))
                   ->setFrom($this->getContainer()->getParameter('mailer_from'))
-                  ->setTo($user->getEmail())
+                  ->setTo(array($user->getEmail() => $user->getFullName()))
                   ->setBody(
                       $this->getContainer()->get('templating')->render(
                           'metaGeneralBundle:Digest:digest.mail.html.twig',
@@ -146,7 +146,7 @@ class digestSendCommand extends ContainerAwareCommand
                 $messages[] = \Swift_Message::newInstance()
                   ->setSubject($this->getContainer()->get('translator')->trans('user.digest.mail.subject', array(), null, $locale))
                   ->setFrom($this->getContainer()->getParameter('mailer_from'))
-                  ->setTo($user->getEmail())
+                  ->setTo(array($user->getEmail() => $user->getFullName()))
                   ->setBody(
                       $this->getContainer()->get('templating')->render(
                           'metaGeneralBundle:Digest:digest.mail.html.twig',

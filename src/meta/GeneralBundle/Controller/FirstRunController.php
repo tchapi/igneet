@@ -153,7 +153,7 @@ class FirstRunController extends Controller
         $message = \Swift_Message::newInstance()
             ->setSubject($this->get('translator')->trans('user.invitation.mail.subject'))
             ->setFrom($this->container->getParameter('mailer_from'))
-            ->setReplyTo($authenticatedUser->getEmail())
+            ->setReplyTo(array($authenticatedUser->getEmail() => $authenticatedUser->getFullName()))
             ->setTo($email)
             ->setBody(
                 $this->renderView(

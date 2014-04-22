@@ -341,7 +341,7 @@ class SecurityController extends Controller
                 $message = \Swift_Message::newInstance()
                     ->setSubject($this->get('translator')->trans('user.creation.mail.subject'))
                     ->setFrom($this->container->getParameter('mailer_from'))
-                    ->setTo($user->getEmail())
+                    ->setTo(array($user->getEmail() => $user->getFullName()))
                     ->setBody(
                         $this->renderView(
                             'metaUserBundle:Mail:welcome.mail.html.twig',
@@ -410,11 +410,11 @@ class SecurityController extends Controller
                     $this->get('translator')->trans('user.passwordChange.sent', array( '%mail%' => $mail))
                 );
 
-                // Sends mail to invitee
+                // Sends mail to user
                 $message = \Swift_Message::newInstance()
                     ->setSubject($this->get('translator')->trans('user.passwordChange.mail.subject'))
                     ->setFrom($this->container->getParameter('mailer_from'))
-                    ->setTo($mail)
+                    ->setTo(array($mail => $user->getFullName()))
                     ->setBody(
                         $this->renderView(
                             'metaUserBundle:Mail:recover.mail.html.twig',
