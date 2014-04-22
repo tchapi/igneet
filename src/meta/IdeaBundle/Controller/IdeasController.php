@@ -25,20 +25,22 @@ class IdeasController extends Controller
 
         if (!is_null($community)){
 
-            $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true));
+            $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId()));
         
             // User is guest in community
-            if ($userCommunityGuest){
+            if ($userCommunity && $userCommunity->isGuest()){
                 throw new AccessDeniedHttpException($this->get('translator')->trans('guest.community.cannot.access'), null);
             }
  
             // And that community is valid ?
-            if ( !($community->isValid()) ){
+            if (!$userCommunity || !($community->isValid()) ){
 
-                $this->get('session')->getFlashBag()->add(
-                    'error',
-                    $this->get('translator')->trans('community.invalid', array( "%community%" => $community->getName()) )
-                );
+                if (!($community->isValid()) ){
+                    $this->get('session')->getFlashBag()->add(
+                        'error',
+                        $this->get('translator')->trans('community.invalid', array( "%community%" => $community->getName()) )
+                    );
+                }
 
                 // Back in private space, ahah
                 $authenticatedUser->setCurrentCommunity(null);

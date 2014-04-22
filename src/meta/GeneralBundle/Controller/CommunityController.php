@@ -27,13 +27,17 @@ class CommunityController extends Controller
         // In a real community
         if ( !is_null($community) ){
 
-            // Is community valid ?
-            if(!$community->isValid()){
+            $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId()));
 
-                $this->get('session')->getFlashBag()->add(
-                    'error',
-                    $this->get('translator')->trans('community.invalid', array( "%community%" => $community->getName()) )
-                );
+            // User in community or That community is valid ?
+            if ( !$userCommunity || !($community->isValid()) ){
+
+                if (!($community->isValid())) {
+                    $this->get('session')->getFlashBag()->add(
+                        'error',
+                        $this->get('translator')->trans('community.invalid', array( "%community%" => $community->getName()) )
+                    );
+                }
 
                 // Back in private space, ahah
                 $authenticatedUser->setCurrentCommunity(null);

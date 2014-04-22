@@ -49,9 +49,9 @@ class IdeaController extends Controller
         if (!is_null($community)){
 
             // Check we're not guest
-            $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true));
+            $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId()));
         
-            if ($userCommunityGuest){
+            if (!$userCommunity || $userCommunity->isGuest()){
                 // User is guest in community
                 throw $this->createNotFoundException($this->get('translator')->trans('idea.not.found'));
             }

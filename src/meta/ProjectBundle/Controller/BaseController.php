@@ -46,10 +46,10 @@ class BaseController extends Controller
 
         if (!is_null($community)){
           
-          $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true));
+          $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId()));
         
           // User is guest in community
-          if ($userCommunityGuest && !$isOwning && !$isParticipatingIn){
+          if (!$userCommunity || ($userCommunity->isGuest() && !$isOwning && !$isParticipatingIn)) {
               throw $this->createNotFoundException($this->get('translator')->trans('project.not.found'));
           }
 
