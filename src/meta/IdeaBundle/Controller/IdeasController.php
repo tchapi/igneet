@@ -25,7 +25,7 @@ class IdeasController extends Controller
 
         if (!is_null($community)){
 
-            $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId()));
+            $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId()));
         
             // User is guest in community
             if ($userCommunity && $userCommunity->isGuest()){

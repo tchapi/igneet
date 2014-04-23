@@ -24,7 +24,7 @@ class ProjectsController extends Controller
 
         if (!is_null($community)){
 
-            $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId()));
+            $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId()));
 
             // User in community or That community is valid ?
             if ( !$userCommunity || !($community->isValid()) ){
@@ -90,7 +90,7 @@ class ProjectsController extends Controller
 
         // Let's determine if user is guest in the community
         if (!is_null($community)){
-            $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true));
+            $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true));
             $userIsGuest = ($userCommunityGuest != null);
         } else {
             $userCommunityGuest = null; // You're not guest in your private space
@@ -128,7 +128,7 @@ class ProjectsController extends Controller
 
         if (!is_null($community)){
             
-            $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true));
+            $userCommunityGuest = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => true));
         
             if ($userCommunityGuest){
                 $this->get('session')->getFlashBag()->add(

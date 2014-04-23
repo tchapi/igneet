@@ -27,7 +27,7 @@ class CommunityController extends Controller
         // In a real community
         if ( !is_null($community) ){
 
-            $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId()));
+            $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId()));
 
             // User in community or That community is valid ?
             if ( !$userCommunity || !($community->isValid()) ){
@@ -184,7 +184,7 @@ class CommunityController extends Controller
         if ( !is_null($community) && $community){
 
             // Is the user manager ?
-            $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'manager' => true));
+            $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'manager' => true));
 
             if ($userCommunity){
         
@@ -302,7 +302,7 @@ class CommunityController extends Controller
         if ( !is_null($community) && $community){
 
             // Is the user manager ?
-            $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'manager' => true));
+            $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'manager' => true));
 
             if ($userCommunity){
 
@@ -341,7 +341,7 @@ class CommunityController extends Controller
         if ( !is_null($community) && $community){
 
             // Is the user manager ?
-            $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'manager' => true));
+            $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'manager' => true));
 
             if ($userCommunity){
             

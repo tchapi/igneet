@@ -49,7 +49,7 @@ class IdeaController extends Controller
         if (!is_null($community)){
 
             // Check we're not guest
-            $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId()));
+            $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId()));
         
             if (!$userCommunity || $userCommunity->isGuest()){
                 // User is guest in community
@@ -96,7 +96,7 @@ class IdeaController extends Controller
             } else {
 
                 // $community is not null here, for sure
-                $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => false));
+                $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'guest' => false));
 
                 if ($userCommunity){
                     $this->getUser()->setCurrentCommunity($community);
@@ -292,7 +292,7 @@ class IdeaController extends Controller
                         
                         if (!is_null($community)){
                            
-                            $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('user' => $this->getUser()->getId(), 'community' => $community->getId(), 'guest' => false));
+                            $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('user' => $this->getUser()->getId(), 'community' => $community->getId(), 'guest' => false));
 
                             if ($userCommunity){
                                 $community->addIdea($this->base['idea']);
