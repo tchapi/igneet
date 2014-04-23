@@ -191,8 +191,10 @@ user:
     sent: "Un email a été envoyé à %mail% avec un lien de changement de mot de passe."
     mail:
       subject: "Changement de mot de passe"
-      body: "Cliquez sur le lien suivant pour changer votre mot de passe"
+      title: "Sécurité de votre compte"
+      body: "Vous avez demandé une réinitialisation de votre mot de passe. Cliquez sur le lien suivant pour changer votre mot de passe"
       tip: "Une fois ceci fait, vous pourrez de nouveau vous connecter avec votre identifiant : %username%."
+      error: "Si vous n'êtes pas l'initiateur de cette demande, quelqu'un d'autre a demandé une réinitialisation de mot de passe en indiquant votre adresse email. Pas d'inquiétude, cette personne ne pourra pas le changer, vous pouvez donc sereinement ignorer ce message."
   changedPassword: "Votre mot de passe a été changé avec succès."
   language:
     title: "Langue de l'interface"
@@ -223,6 +225,7 @@ user:
     noCommunity: "Vous n'appartenez pour l'instant à aucune communauté. Vous pourrez changer vos paramètres de réception des résumés quand vous ferez parti d'une ou plusieurs communautés."
     mail:
       subject: "Quoi de neuf sur igneet récemment"
+      title: "Résumé"
       intro: "Voici un résumé de ce que vous avez raté sur igneet depuis votre dernier passage dans la communauté %community%."
       intro.generic: "Voici un résumé de tout ce que vous avez raté sur igneet depuis votre dernier passage."
-      more: "... et d'autres encore."
+      more: "... et d'autres encore — les voir toutes sur votre <a href='%path%'>page de notifications</a>."

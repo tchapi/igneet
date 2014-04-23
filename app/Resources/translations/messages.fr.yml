@@ -80,7 +80,8 @@ mail:
   unknow.igneet: "Vous ne connaissez pas Igneet ? Vous pouvez découvrir toutes les fonctionnalités <a href=\"http://igneet.com\">ici</a>."
   error: "Vous pensez que c'est une erreur ? Dans ce cas n'hésitez pas à contacter un administrateur de votre communauté pour en savoir plus."
   manage.settings: "Vous recevez cet email car vous avez activé vos résumés d'activités sur igneet.com. Si vous désirez modifier ce paramètre ou simplement changer la fréquence des emails, rendez-vous sur votre page paramètres, accessible depuis le menu en haut à droite."
-  manage.digest: "Paramètres"
+  manage.digest: "Paramètres mails"
+  share.igneet: "Igneet vous plaît ? N'hésitez pas à en parler autour de vous !"
 # dropzone
 dropzone:
   dictDefaultMessage: "Cliquez ou glissez des fichiers ici pour les ajouter"

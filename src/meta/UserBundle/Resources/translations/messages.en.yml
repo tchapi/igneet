@@ -191,8 +191,10 @@ user:
     sent: "An email was sent to %mail% so you can renew your password."
     mail:
       subject: "Renew your password"
-      body: "Please click on the following link to change your password"
-      tip: "Once done, you will be able to login again using your username : %username%."
+      title: "Your security"
+      body: "You have requested a password change on igneet. Please click on the following link to change your password"
+      tip: "Once done, you will be able to login again using your username : %username% or your email address."
+      error: "If you haven't requested a password change, someone has, indicating your email. This person will not be able to change your password, thus no further action is required on your side."
   changedPassword: "Your password was changed successfully."
   language:
     title: "Preferred language"
@@ -223,6 +225,7 @@ user:
     noCommunity: "You are currently in no community. You will be able to change your digest settings when you enter one or more communities."
     mail:
       subject: "What's happening on igneet lately"
+      title: "Digest"
       intro: "This is a digest of the notifications you haven't seen yet for the community %community%."
       intro.generic: "This is a digest of all the notifications you haven't seen yet on igneet."
-      more: "... and more."
+      more: "... and more — see them all <a href='%path%'>on your notifications page</a>."
