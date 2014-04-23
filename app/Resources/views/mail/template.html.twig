@@ -1,0 +1,146 @@
+{#
+
+  This is Zurb's Ink Boilerplate
+
+  http://zurb.com/ink/docs.php
+
+#}<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width"/>
+</head>
+{% inlinecss '::mail/template.css.twig' %}
+<body>
+  <table class="body">
+    <tr>
+      <td class="center" align="center" valign="top">
+        <center>
+
+          <table class="row header">
+            <tr>
+              <td class="center" align="center">
+                <center>
+
+                  <table class="container">
+                    <tr>
+                      <td class="wrapper last">
+
+                        <table class="twelve columns">
+                          <tr>
+                            <td class="six sub-columns">
+                              <img src="{{ base_path ~ "/bundles/metageneral/img/logo/logo-mails.png" }}" alt="igneet" title="igneet" height="60px">
+                            </td>
+                            <td class="six sub-columns last" style="text-align:right; vertical-align:middle;">
+                              <span class="template-label">{% block title %}{% endblock %}</span>
+                            </td>
+                            <td class="expander"></td>
+                          </tr>
+                        </table>
+
+                      </td>
+                    </tr>
+                  </table>
+
+                </center>
+              </td>
+            </tr>
+          </table>
+
+          <table class="container">
+            <tr>
+              <td>
+
+                <table class="row">
+                  <tr>
+                    <td class="wrapper last">
+
+                      <table class="twelve columns">
+                        <tr>
+                          <td>
+                          {% block body %}{% endblock %}
+                          </td>
+                          <td class="expander"></td>
+                        </tr>
+                      </table>
+
+                    </td>
+                  </tr>
+                </table>
+
+                <table class="row callout">
+                  <tr>
+                    <td class="wrapper last">
+
+                      <table class="twelve columns">
+                        <tr>
+                          <td class="panel">
+                            {% block link %}{% endblock %}
+                          </td>
+                        </tr>
+                      </table>
+
+                    </td>
+                  </tr>
+                </table>
+
+                <table class="row footer">
+                  <tr>
+                    <td class="wrapper">
+
+                      <table class="twelve columns">
+                        <tr>
+                          <td class="text-pad">
+                            {% block auto %}
+                            <p><em>{{ "mail.automated"|trans }}</em></p>
+                            <p><strong>{{ "team"|trans }}</strong></p>
+                            {% endblock %}
+                          </td>
+                        </tr>
+                      </table>
+
+                    </td>
+                  </tr>
+                </table>
+
+              <!-- container end below -->
+              </td>
+            </tr>
+          </table>
+
+          <table class="row legal">
+            <tr>
+              <td class="center" align="center">
+                <center>
+
+                  <table class="container">
+                    <tr>
+                      <td class="wrapper last">
+
+                        <table class="twelve columns">
+                        <tr>
+                          <td align="center">
+                            <center>
+                              <p style="text-align:center;">&copy; copyright <a href="https://about.me/tchap">tchap</a> 2012-{{ "now"|date('Y') }} | <a href="http://igneet.com/terms">{{ "terms"|trans }}</a> | <a href="{{ base_path ~ path('u_show_user_settings') }}">{{ "mail.manage.digest"|trans }}</a></p>
+                            </center>
+                          </td>
+                          <td class="expander"></td>
+                        </tr>
+                      </table>
+
+                      </td>
+                    </tr>
+                  </table>
+
+                </center>
+              </td>
+            </tr>
+          </table>
+
+        </center>
+      </td>
+    </tr>
+  </table>
+</body>
+{% endinlinecss %}
+</html>

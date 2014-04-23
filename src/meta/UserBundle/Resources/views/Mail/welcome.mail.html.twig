@@ -1,3 +1,10 @@
+{% extends ':mail:template.html.twig' %}
+
+{% block title %}
+{{ "user.creation.mail.subject"|trans }}
+{% endblock %}
+
+{% block body %}
 <h3>{{ "mail.hello"|trans }}</h3>
 
 <p>
@@ -18,6 +25,8 @@
 <p>
   {{ "user.creation.mail.body.envoy"|trans }}
 </p> 
+{% endblock %}
 
-<p><em>{{ "mail.automated"|trans }}</em></p>
-<p><strong>{{ "team"|trans }}</strong></p>
+{% block link %}
+<p>{{ "mail.share.igneet"|trans }}</p>
+{% endblock %}

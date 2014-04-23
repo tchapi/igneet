@@ -1,7 +1,15 @@
+{% extends ':mail:template.html.twig' %}
+
 {% if not locale %}{% set locale = 'en_US' %}{% endif %}
+
+{% block title %}
+{{ "user.digest.mail.title"|trans({}, "messages", locale) }}
+{% endblock %}
+
+{% block body %}
 <h3>{{ "mail.hello"|trans({}, "messages", locale) }}</h3>
 
-<h4>{% if community is not null %}{{ "user.digest.mail.intro"|trans({ '%community%': community.name}, "messages", locale) }}{% else %}{{ "user.digest.mail.intro.generic"|trans({}, "messages", locale) }}{% endif %}</h4>
+<p>{% if community is not null %}{{ "user.digest.mail.intro"|trans({ '%community%': community.name}, "messages", locale) }}{% else %}{{ "user.digest.mail.intro.generic"|trans({}, "messages", locale) }}{% endif %}</p>
 
 {% if notifications|length > 0 %}
   <section>
@@ -10,17 +18,19 @@
       {% for notification in notifications|slice(0, 10) %}
 
         {% if notification['createdAt']|date('Y-m-d') < currentDate|date('Y-m-d') %}
-          <li class="dateWrapper date"><div class="date-wrapper"><div class="date">{{ notification['createdAt']|date("date.timeline"|trans({}, "messages", locale)) }}</div></div></li>
+          <li class="step">{{ notification['createdAt']|date("date.readable"|trans({}, "messages", locale)) }}</li>
           {% set currentDate = notification['createdAt'] %}
         {% endif %}
 
-        <li class="logWrapper full"><div class="log{% if notification['createdAt']|date('c') > lastNotified|date('c') %} bold{% endif %}">{{ notification['data']|raw }}</div></li>
+        {{ notification['data']|raw }}
 
       {% endfor %}
-      {% if notifications|length > 10 %}
-        <li>{{ "user.digest.mail.more"|trans }}</li>
-      {% endif %}
     </ul>
+    
+    {% if notifications|length > 10 %}
+      <p class="more">{{ "user.digest.mail.more"|trans({ '%path%': base_path ~ path('u_show_user_notifications')}, "messages", locale)|raw }}</p>
+    {% endif %}
+
   </section>
 {% else %}
   <section class="centered">
@@ -29,5 +39,13 @@
   </section>
 {% endif %}
 
+{% endblock %}
+
+{% block auto %}
 <p><em>{{ "mail.automated"|trans({}, "messages", locale) }}</em></p>
 <p><strong>{{ "team"|trans({}, "messages", locale) }}</strong></p>
+{% endblock %}
+
+{% block link %}
+<p>{{ "mail.manage.settings"|trans({}, "messages", locale)|raw }}</p>
+{% endblock %}

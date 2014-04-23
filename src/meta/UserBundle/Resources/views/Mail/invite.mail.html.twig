@@ -1,3 +1,10 @@
+{% extends ':mail:template.html.twig' %}
+
+{% block title %}
+{{ "user.invitation.mail.title"|trans }}
+{% endblock %}
+
+{% block body %}
 <h3>{{ "mail.hello"|trans }}</h3>
 
 {% if not invitee %}
@@ -23,6 +30,13 @@
   <p>{{ "user.invitation.mail.body.member.click"|trans }} :</p>
   <p><a href="{{ url('u_me' ) }}">{{ url('u_me' ) }}</a></p>
 {% endif %}
+{% endblock %}
 
+{% block auto %}
 <p><em>{{ "mail.automated.user"|trans({ '%user%': user.getFullName() }) }}</em></p>
 <p><strong>{{ "team"|trans }}</strong></p>
+{% endblock %}
+
+{% block link %}
+<p>{{ "mail.unknow.igneet"|trans|raw }}</p>
+{% endblock %}

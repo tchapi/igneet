@@ -1,3 +1,10 @@
+{% extends ':mail:template.html.twig' %}
+
+{% block title %}
+{{ "user.removal.mail.title"|trans }}
+{% endblock %}
+
+{% block body %}
 <h3>{{ "mail.hello"|trans }}</h3>
 
   <p>
@@ -6,6 +13,13 @@
 
   <p>{{ "user.removal.mail.body.member.click"|trans }} :</p>
   <p><a href="{{ url('u_me' ) }}">{{ url('u_me' ) }}</a></p>
+{% endblock %}
 
+{% block auto %}
 <p><em>{{ "mail.automated.user"|trans({ '%user%': user.getFullName() }) }}</em></p>
 <p><strong>{{ "team"|trans }}</strong></p>
+{% endblock %}
+
+{% block link %}
+<p>{{ "mail.error"|trans|raw }}</p>
+{% endblock %}
