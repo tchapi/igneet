@@ -146,6 +146,7 @@ user:
     confirmation: "Veuillez confirmer l'invitation de cet utilisateur dans la communauté %community% :"
     mail:
       subject: "Vous avez été invité à rejoindre une communauté sur igneet !"
+      title: "Invitation"
       body:
         new:
           click: "Cliquez sur le lien suivant pour créer votre compte"
@@ -170,6 +171,7 @@ user:
     no.guest.in.community: "L'utilisateur %user% n'est plus membre de la communauté %community%."
     mail:
       subject: "Vous avez été retiré d'une communauté sur igneet"
+      title: "Communautés"
       body:
         member:
           click: "Cliquez sur le lien suivant pour vous connecter"

@@ -75,8 +75,12 @@ guide.reactivated: "Interface, guides et textes par défaut ont été réinitial
 # Mails
 mail:
   hello: "Bonjour,"
-  automated.user: "Ceci est un message automatique d'igneet, mais vous pouvez répondre directement à %user% en répondant à ce message."
+  automated.user: "Ceci est un message automatique d'igneet envoyé par %user%; vous pouvez lui répondre directement en répondant à ce message."
   automated: "Ceci est un message automatique d'igneet, merci de ne pas y répondre."
+  unknow.igneet: "Vous ne connaissez pas Igneet ? Vous pouvez découvrir toutes les fonctionnalités <a href=\"http://igneet.com\">ici</a>."
+  error: "Vous pensez que c'est une erreur ? Dans ce cas n'hésitez pas à contacter un administrateur de votre communauté pour en savoir plus."
+  manage.settings: "Vous recevez cet email car vous avez activé vos résumés d'activités sur igneet.com. Si vous désirez modifier ce paramètre ou simplement changer la fréquence des emails, rendez-vous sur votre page paramètres, accessible depuis le menu en haut à droite."
+  manage.digest: "Paramètres"
 # dropzone
 dropzone:
   dictDefaultMessage: "Cliquez ou glissez des fichiers ici pour les ajouter"
