@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "9c0f091d5bdfd96d8260a225932dbfb9",
+    "hash": "26b47093bb114c86fe14abbe3cdc2f80",
     "packages": [
         {
             "name": "dflydev/markdown",
@@ -70,12 +70,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/annotations.git",
-                "reference": "510afadeb61247418c57da011701fa22f428a7a0"
+                "reference": "373c0d08bf1f326ff40bc237046aa10638bf28f6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/annotations/zipball/510afadeb61247418c57da011701fa22f428a7a0",
-                "reference": "510afadeb61247418c57da011701fa22f428a7a0",
+                "url": "https://api.github.com/repos/doctrine/annotations/zipball/373c0d08bf1f326ff40bc237046aa10638bf28f6",
+                "reference": "373c0d08bf1f326ff40bc237046aa10638bf28f6",
                 "shasum": ""
             },
             "require": {
@@ -124,7 +124,7 @@
                 {
                     "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "http://jmsyst.com",
+                    "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -135,7 +135,7 @@
                 "docblock",
                 "parser"
             ],
-            "time": "2014-04-22 11:44:09"
+            "time": "2014-04-24 04:07:43"
         },
         {
             "name": "doctrine/cache",
@@ -615,12 +615,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/inflector.git",
-                "reference": "dc02e4f73eb0938c35ddd60fa37825a98195a33f"
+                "reference": "64de2fe36d578c5d5f3807ac7984547bbba5f7c5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/inflector/zipball/dc02e4f73eb0938c35ddd60fa37825a98195a33f",
-                "reference": "dc02e4f73eb0938c35ddd60fa37825a98195a33f",
+                "url": "https://api.github.com/repos/doctrine/inflector/zipball/64de2fe36d578c5d5f3807ac7984547bbba5f7c5",
+                "reference": "64de2fe36d578c5d5f3807ac7984547bbba5f7c5",
                 "shasum": ""
             },
             "require": {
@@ -679,7 +679,7 @@
                 "singularize",
                 "string"
             ],
-            "time": "2014-04-22 02:37:36"
+            "time": "2014-04-23 12:36:11"
         },
         {
             "name": "doctrine/lexer",
@@ -1142,12 +1142,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "97f79f7ed37c9253712eaa9c9a967199456a2f16"
+                "reference": "65026b610f8c19e61d7242f600530677b0466aac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/97f79f7ed37c9253712eaa9c9a967199456a2f16",
-                "reference": "97f79f7ed37c9253712eaa9c9a967199456a2f16",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/65026b610f8c19e61d7242f600530677b0466aac",
+                "reference": "65026b610f8c19e61d7242f600530677b0466aac",
                 "shasum": ""
             },
             "require": {
@@ -1202,7 +1202,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2014-04-21 18:22:17"
+            "time": "2014-04-24 13:29:03"
         },
         {
             "name": "psr/log",
@@ -1253,13 +1253,13 @@
             "target-dir": "RobertoTru/ToInlineStyleEmailBundle",
             "source": {
                 "type": "git",
-                "url": "https://github.com/robertotru/ToInlineStyleEmailBundle.git",
-                "reference": "550357ba81671411f4db41044b2e48492d1a3640"
+                "url": "https://github.com/tchapi/ToInlineStyleEmailBundle.git",
+                "reference": "df0cf5c0779f715d3524bb570a67f764db5e6780"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/robertotru/ToInlineStyleEmailBundle/zipball/550357ba81671411f4db41044b2e48492d1a3640",
-                "reference": "550357ba81671411f4db41044b2e48492d1a3640",
+                "url": "https://api.github.com/repos/tchapi/ToInlineStyleEmailBundle/zipball/df0cf5c0779f715d3524bb570a67f764db5e6780",
+                "reference": "df0cf5c0779f715d3524bb570a67f764db5e6780",
                 "shasum": ""
             },
             "require": {
@@ -1280,7 +1280,6 @@
                     "RobertoTru\\ToInlineStyleEmailBundle": ""
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1302,7 +1301,10 @@
                 "style",
                 "symfony"
             ],
-            "time": "2014-01-17 07:28:44"
+            "support": {
+                "source": "https://github.com/tchapi/ToInlineStyleEmailBundle/tree/master"
+            },
+            "time": "2014-04-22 21:19:08"
         },
         {
             "name": "sensio/distribution-bundle",
@@ -1690,12 +1692,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "0deaceb2ff983e91f6e727732c36fe19f37aeaac"
+                "reference": "dd175cfcd89023ea9db0cbc73d2fdb5f8e2cc0a6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/0deaceb2ff983e91f6e727732c36fe19f37aeaac",
-                "reference": "0deaceb2ff983e91f6e727732c36fe19f37aeaac",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/dd175cfcd89023ea9db0cbc73d2fdb5f8e2cc0a6",
+                "reference": "dd175cfcd89023ea9db0cbc73d2fdb5f8e2cc0a6",
                 "shasum": ""
             },
             "require": {
@@ -1797,7 +1799,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2014-04-22 08:11:06"
+            "time": "2014-04-23 14:07:18"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
@@ -1898,12 +1900,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fabpot/Twig.git",
-                "reference": "af6910e1a73eca5ed0adaaa26adfb6c3f92e7eb7"
+                "reference": "28256f5eda6174c8f9ffd32ec7313da12cb07805"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fabpot/Twig/zipball/af6910e1a73eca5ed0adaaa26adfb6c3f92e7eb7",
-                "reference": "af6910e1a73eca5ed0adaaa26adfb6c3f92e7eb7",
+                "url": "https://api.github.com/repos/fabpot/Twig/zipball/28256f5eda6174c8f9ffd32ec7313da12cb07805",
+                "reference": "28256f5eda6174c8f9ffd32ec7313da12cb07805",
                 "shasum": ""
             },
             "require": {
@@ -1947,7 +1949,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2014-04-15 20:49:49"
+            "time": "2014-04-23 20:31:20"
         },
         {
             "name": "willdurand/expose-translation-bundle",
