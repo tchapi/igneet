@@ -27,9 +27,10 @@ services:
         arguments: 
             entity_manager: "@doctrine.orm.entity_manager"
             log_types: %general.log_types%
-            log_social_filters: %general.log_filters.social%
+            log_filters: %general.log_filters%
             log_routing: %general.log_routing%
             log_concurrent_merge_interval: %general.log_concurrent_merge_interval%
+            csrf_provider: "@form.csrf_provider"
             security_context: "@security.context"
             twig: "@twig"
             translator: "@translator"

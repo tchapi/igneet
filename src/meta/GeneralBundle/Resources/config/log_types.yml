@@ -2,9 +2,10 @@ parameters:
   general.log_concurrent_merge_interval: 3600
   general.log_routing:
     community: 
-      path: g_home_community
+      path: g_switch_community
       is_uid: true
       key: uid
+      token: switchCommunity
     user: 
       path: u_show_user_profile
       is_uid: false
@@ -33,20 +34,20 @@ parameters:
       path: p_show_project_wiki_show_page
       is_uid: true
       key: page_uid
-  general.log_filters.social:
-    - user_update_profile
-    - user_create_project
-    - user_create_project_from_idea
-    - user_create_idea
-  general.log_filters.community:
-    - user_created
-    - user_enters_community
-    - project_enters_community
-    - idea_enters_community
-    - user_create_idea
-    - user_create_project
-    - user_create_project_from_idea
-    - user_change_project_status
+  general.log_filters:
+    social:
+      - user_update_profile
+      - user_create_project
+      - user_create_project_from_idea
+      - user_create_idea
+    community:
+      - user_enters_community
+      - project_enters_community
+      - idea_enters_community
+      - user_create_idea
+      - user_create_project
+      - user_create_project_from_idea
+      - user_change_project_status
   general.log_types:
 # Communities
     user_create_community:

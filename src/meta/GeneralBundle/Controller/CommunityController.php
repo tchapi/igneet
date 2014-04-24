@@ -966,7 +966,8 @@ class CommunityController extends Controller
                             );
 
         $repository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\BaseLogEntry');
-        $entries = $repository->findByLogTypes($this->container->getParameter('general.log_filters.community'), array('community' => $community));
+        $log_filters = $this->container->getParameter('general.log_filters');
+        $entries = $repository->findByLogTypes($log_filters['community'], array('community' => $community));
 
         $history = array();
 

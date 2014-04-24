@@ -14,17 +14,21 @@ class LogService
 {
 
     private $em;
-    private $log_types, $log_social_filters, $log_routing, $concurrent_merge_interval;
+    private $log_types, $log_social_filters, $log_community_filters, $log_routing, $concurrent_merge_interval;
+    private $csrf_provider;
     private $twig, $template_link, $template_link_null, $template_item;
 
-    public function __construct(EntityManager $entity_manager, $log_types, $log_social_filters, $log_routing, $log_concurrent_merge_interval, $security_context, $twig, $translator, $uid)
+    public function __construct(EntityManager $entity_manager, $log_types, $log_filters, $log_routing, $log_concurrent_merge_interval, $csrf_provider, $security_context, $twig, $translator, $uid)
     {
         $this->em = $entity_manager;
         
         $this->log_types = $log_types;
-        $this->log_social_filters = $log_social_filters;
+        $this->log_social_filters = $log_filters['social'];
+        $this->log_community_filters = $log_filters['community'];
         $this->log_routing = $log_routing;
         $this->concurrent_merge_interval = $log_concurrent_merge_interval;
+
+        $this->csrf_provider = $csrf_provider;
 
         $this->security_context = $security_context;
 
@@ -319,7 +323,7 @@ class LogService
             }
         }
 
-        // LAst idea log
+        // Last idea log
         if (count($objects['ideas']) > 0){
             $ideaLogRepository = $this->em->getRepository('metaGeneralBundle:Log\IdeaLogEntry');
             $ideaLogs = $ideaLogRepository->findLogsForIdeas($objects['ideas'], null, $user, $community);
