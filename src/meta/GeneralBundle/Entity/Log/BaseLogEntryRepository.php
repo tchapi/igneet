@@ -129,8 +129,9 @@ class BaseLogEntryRepository extends EntityRepository
                   ->where('l.community = :community')
                   ->setParameter('community', $options['community'])
                   ->andWhere('l.type IN (:types)')
-                  ->setParameter('types', $logTypes);
-
+                  ->setParameter('types', $logTypes)
+                  ->orderBy('l.created_at', 'DESC');
+                  
       return $query->getQuery()
                    ->getResult();
   }
