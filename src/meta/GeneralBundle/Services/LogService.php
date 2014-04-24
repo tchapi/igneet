@@ -262,9 +262,14 @@ class LogService
         // Users
         $usersFollowed = $user->getFollowing()->toArray();
 
+        // Communities
+        $communities = array();
+        foreach ($user->getUserCommunities() as $userCommunity){ $communities[] = $userCommunity->getCommunity(); }
+
         return array( 'projects' => $allProjects,
                       'ideas'   => $allIdeas,
-                      'users'   => $usersFollowed);
+                      'users'   => $usersFollowed,
+                      'communities' => $communities);
     }
 
     /*
@@ -346,11 +351,21 @@ class LogService
 
         // Last user log
         // In the repository, we make sure we only get logs for the communities the current user can see
+        $baseLogRepository = $this->em->getRepository('metaGeneralBundle:Log\BaseLogEntry');
         if (count($objects['users']) > 0){
-            $baseLogRepository = $this->em->getRepository('metaGeneralBundle:Log\BaseLogEntry');
             $userLogs = $baseLogRepository->findSocialLogsForUsersInCommunitiesOfUser($this->log_social_filters, $objects['users'], null, $user, $community);
-            if (count($userLogs)> 0) {
+            if (count($userLogs) > 0) {
                 $lastDate = max($lastDate, $userLogs[0]->getCreatedAt());
+            }
+        }
+
+        // Last community log
+        if (count($objects['communities']) > 0){
+            foreach ($objects['communities'] as $community) {
+                $entries = $baseLogRepository->findByLogTypes($this->log_community_filters, array('community' => $community));
+                if (count($entries) > 0) {
+                    $lastDate = max($lastDate, $entries[0]->getCreatedAt());
+                }
             }
         }
 
@@ -391,10 +406,27 @@ class LogService
 
         // Fetch all logs related to the users followed (their updates, or if they have created new projects or been added into one)
         // In the repository, we make sure we only get logs for the communities the current user can see
+        $baseLogRepository = $this->em->getRepository('metaGeneralBundle:Log\BaseLogEntry'); // used for the two next loops
         if (count($objects['users']) > 0){
-            $baseLogRepository = $this->em->getRepository('metaGeneralBundle:Log\BaseLogEntry');
             $userLogs = $baseLogRepository->findSocialLogsForUsersInCommunitiesOfUser($this->log_social_filters, $objects['users'], $from, $user, $community);
             foreach ($userLogs as $notification) { $notifications[] = array( 'createdAt' => date_create($notification->getCreatedAt()->format('Y-m-d H:i:s')), 'data' => $this->getHTML($notification, $lastNotified, $locale) ); }
+        }
+
+        // Fetch all logs related to the communities
+        if (count($objects['communities']) > 0){
+            foreach ($objects['communities'] as $community) {
+                $entries = $baseLogRepository->findByLogTypes($this->log_community_filters, array('community' => $community));
+                foreach ($entries as $notification) { 
+                    // Strips private projects logs
+                    if ($this->log_types[$notification->getType()]['type'] === "project" && $notification->getSubject()->isPrivate()) {
+                        continue;
+                    }
+                    // If it's a log from the user, no need to display !
+                    if ($notification->getUser() !== $user) {
+                        $notifications[] = array( 'createdAt' => date_create($notification->getCreatedAt()->format('Y-m-d H:i:s')), 'data' => $this->getHTML($notification, $lastNotified, $locale) ); 
+                    }
+                }
+            }
         }
 
         // Sort !
