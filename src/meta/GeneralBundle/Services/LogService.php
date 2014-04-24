@@ -194,8 +194,14 @@ class LogService
             $subject_uid = $this->uid->toUId($subject_uid);
         }
 
+        // Do we need a token ?
+        $token = null;
+        if (isset($this->log_routing["$type"]['token'])){
+            $token = $this->csrf_provider->generateCsrfToken($this->log_routing["$type"]['token']);
+        }
+
         // Creates the routing
-        $subject_routing = array( 'path' => $this->log_routing["$type"]['path'], 'args' => array( $this->log_routing["$type"]['key'] => $subject_uid ) );
+        $subject_routing = array( 'path' => $this->log_routing["$type"]['path'], 'args' => array( $this->log_routing["$type"]['key'] => $subject_uid, 'token' => $token) );
 
         $parameters["%$type%"] = $this->twig->render($this->template_link, array( 'logName' => $subject_logName, 'routing' => $subject_routing ) );
 
@@ -214,8 +220,14 @@ class LogService
                     $object_uid = $this->uid->toUId($object_uid);
                 }
 
+                // Do we need a token ?
+                $token = null;
+                if (isset($this->log_routing["$key"]['token'])){
+                    $token = $this->csrf_provider->generateCsrfToken($this->log_routing["$key"]['token']);
+                }
+
                 // we need to merge with the subject for the routing (/project/{uid}/list/{list_uid} for example)
-                $routing = array( 'path' => $this->log_routing["$key"]['path'], 'args' => array_merge($subject_routing['args'], array( $this->log_routing["$key"]['key'] => $object_uid )) ); 
+                $routing = array( 'path' => $this->log_routing["$key"]['path'], 'args' => array_merge($subject_routing['args'], array( $this->log_routing["$key"]['key'] => $object_uid, 'token' => $token )) ); 
             
             }
 
