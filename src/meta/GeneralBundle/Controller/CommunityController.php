@@ -986,6 +986,11 @@ class CommunityController extends Controller
                 continue;
             }
 
+            // If it's my own notif ... I don't care
+            if ($entry->getUser() === $authenticatedUser) {
+                continue;
+            }
+
             // If I'm guest, I don't see idea logs, and projects where I'm not in
             if ($userCommunity->isGuest()) {
                 if ($log_types[$entry->getType()]['type'] === "idea") {
