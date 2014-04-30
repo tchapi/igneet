@@ -130,3 +130,7 @@ parameters:
     local:
       icon: provider_local
       downloadable: true
+    zapier:
+      pattern: /zapier\.com/
+      icon: provider_zapier
+      downloadable: false

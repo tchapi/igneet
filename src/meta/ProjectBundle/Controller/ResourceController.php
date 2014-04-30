@@ -121,7 +121,9 @@ class ResourceController extends BaseController
                     // A file
                     $resource->setTitle($this->get('translator')->trans('project.resources.default.file'));
                     $title = $uploadedFile->getClientOriginalName();
-                    if ($title != "") $resource->setTitle($title);
+                    if ($title != "") {
+                        $resource->setTitle($title);
+                    }
                     
                 } else {
 
@@ -136,10 +138,15 @@ class ResourceController extends BaseController
                     } else {
                         // It's good, let's try to get the title
                         $doc = new \DOMDocument();
-                        @$doc->loadHTMLFile($resource->getUrl());
-                        $xpath = new \DOMXPath($doc);
-                        $title = $xpath->query('//title')->item(0)->nodeValue;
-                        if ($title != "") $resource->setTitle($title);
+                        if (@$doc->loadHTMLFile($resource->getUrl())) {
+                            $xpath = new \DOMXPath($doc);
+                            $title = $xpath->query('//title')->item(0)->nodeValue;
+                        } else {
+                            $title = "";
+                        }
+                        if ($title != "") {
+                            $resource->setTitle($title);
+                        }
                     }
                 }
 
