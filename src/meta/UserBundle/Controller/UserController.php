@@ -436,6 +436,13 @@ class UserController extends Controller
                     // or he is the only manager of a community of others, in which case he is not deletable
                     if ($nbUsersInCommunity == 1) {
 
+                        // If we remove a community, we need to remove the userInviteToken for this community
+                        $userInviteTokenRepository = $this->getDoctrine()->getRepository('metaUserBundle:UserInviteToken');
+                        $userInviteTokens = $userInviteTokenRepository->findByCommunity($community);
+                        foreach ($userInviteTokens as $userInviteToken) {
+                            $em->remove($userInviteToken);
+                        }
+
                         // Good to go : it's his own community and he's alone in it
                         // But we have to delete the community as well (the following is safe since it will not be flushed until $em->flush() though)
                         $em->remove($community);
@@ -473,6 +480,17 @@ class UserController extends Controller
 
                 foreach ($openIdIdentities as $openIdIdentity) {
                     $em->remove($openIdIdentity);
+                }
+
+                // Removes any userInviteToken
+                $userInviteTokenRepository = $this->getDoctrine()->getRepository('metaUserBundle:UserInviteToken');
+                $referedUserInviteTokens = $userInviteTokenRepository->findByReferalUser($authenticatedUser);
+                foreach ($referedUserInviteTokens as $referedUserInviteToken) {
+                    $em->remove($referedUserInviteToken);
+                }
+                $resultingUserInviteTokens = $userInviteTokenRepository->findByResultingUser($authenticatedUser);
+                foreach ($resultingUserInviteTokens as $resultingUserInviteToken) {
+                    $em->remove($resultingUserInviteToken);
                 }
 
                 // Delete the user and the associated elements FOR REAL MOTHER FUCKERZ
