@@ -1904,12 +1904,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fabpot/Twig.git",
-                "reference": "6af8182fbd3ead19f8f9e01d33e9b09063e1a1b0"
+                "reference": "55253c3f37b1b47ad797eb95f27b0a33e3a76d2f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fabpot/Twig/zipball/6af8182fbd3ead19f8f9e01d33e9b09063e1a1b0",
-                "reference": "6af8182fbd3ead19f8f9e01d33e9b09063e1a1b0",
+                "url": "https://api.github.com/repos/fabpot/Twig/zipball/55253c3f37b1b47ad797eb95f27b0a33e3a76d2f",
+                "reference": "55253c3f37b1b47ad797eb95f27b0a33e3a76d2f",
                 "shasum": ""
             },
             "require": {
@@ -1953,7 +1953,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2014-05-14 11:51:43"
+            "time": "2014-05-15 19:43:48"
         },
         {
             "name": "willdurand/expose-translation-bundle",
