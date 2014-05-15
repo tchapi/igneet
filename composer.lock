@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "26b47093bb114c86fe14abbe3cdc2f80",
+    "hash": "8ada649a3398da6610fbc8149312c0b2",
     "packages": [
         {
             "name": "dflydev/markdown",
@@ -217,12 +217,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/collections.git",
-                "reference": "b99c5c46c87126201899afe88ec490a25eedd6a2"
+                "reference": "97475b2761f22cd9817c135283ad1079543a4586"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/collections/zipball/b99c5c46c87126201899afe88ec490a25eedd6a2",
-                "reference": "b99c5c46c87126201899afe88ec490a25eedd6a2",
+                "url": "https://api.github.com/repos/doctrine/collections/zipball/97475b2761f22cd9817c135283ad1079543a4586",
+                "reference": "97475b2761f22cd9817c135283ad1079543a4586",
                 "shasum": ""
             },
             "require": {
@@ -264,7 +264,7 @@
                     "email": "kontakt@beberlei.de"
                 },
                 {
-                    "name": "Johannes M. Schmitt",
+                    "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
                     "homepage": "http://jmsyst.com",
                     "role": "Developer of wrapped JMSSerializerBundle"
@@ -277,7 +277,7 @@
                 "collections",
                 "iterator"
             ],
-            "time": "2014-02-03 23:07:43"
+            "time": "2014-05-07 01:20:20"
         },
         {
             "name": "doctrine/common",
@@ -740,16 +740,16 @@
         },
         {
             "name": "doctrine/orm",
-            "version": "2.4.x-dev",
+            "version": "v2.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/doctrine2.git",
-                "reference": "63c5758070dd39a9a4dcf6e97025f712850d7e7f"
+                "reference": "0363a5548d9263f979f9ca149decb9cfc66419ab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/doctrine2/zipball/63c5758070dd39a9a4dcf6e97025f712850d7e7f",
-                "reference": "63c5758070dd39a9a4dcf6e97025f712850d7e7f",
+                "url": "https://api.github.com/repos/doctrine/doctrine2/zipball/0363a5548d9263f979f9ca149decb9cfc66419ab",
+                "reference": "0363a5548d9263f979f9ca149decb9cfc66419ab",
                 "shasum": ""
             },
             "require": {
@@ -812,7 +812,7 @@
                 "database",
                 "orm"
             ],
-            "time": "2014-04-21 05:07:57"
+            "time": "2014-02-08 16:35:09"
         },
         {
             "name": "fp/openid-bundle",
@@ -882,12 +882,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Incenteev/ParameterHandler.git",
-                "reference": "f6b98615a403a0f684eb15581ed9f6e93709169d"
+                "reference": "15b15d8246d501df277dd6e40f5fd3f6e2084c42"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Incenteev/ParameterHandler/zipball/f6b98615a403a0f684eb15581ed9f6e93709169d",
-                "reference": "f6b98615a403a0f684eb15581ed9f6e93709169d",
+                "url": "https://api.github.com/repos/Incenteev/ParameterHandler/zipball/15b15d8246d501df277dd6e40f5fd3f6e2084c42",
+                "reference": "15b15d8246d501df277dd6e40f5fd3f6e2084c42",
                 "shasum": ""
             },
             "require": {
@@ -925,7 +925,7 @@
             "keywords": [
                 "parameters management"
             ],
-            "time": "2014-03-11 08:44:13"
+            "time": "2014-05-02 13:55:31"
         },
         {
             "name": "jdorn/sql-formatter",
@@ -1042,12 +1042,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/kriswallsmith/assetic.git",
-                "reference": "f2a5214034928d4c6849bc94cfd462ea832a50a8"
+                "reference": "964340e69361802eddf51e8eaa85acbd1c621edf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kriswallsmith/assetic/zipball/f2a5214034928d4c6849bc94cfd462ea832a50a8",
-                "reference": "f2a5214034928d4c6849bc94cfd462ea832a50a8",
+                "url": "https://api.github.com/repos/kriswallsmith/assetic/zipball/964340e69361802eddf51e8eaa85acbd1c621edf",
+                "reference": "964340e69361802eddf51e8eaa85acbd1c621edf",
                 "shasum": ""
             },
             "require": {
@@ -1064,6 +1064,7 @@
                 "mrclay/minify": "*",
                 "patchwork/jsqueeze": "*",
                 "phpunit/phpunit": "~3.7",
+                "psr/log": "~1.0",
                 "ptachoire/cssembed": "*",
                 "twig/twig": "~1.6"
             },
@@ -1107,7 +1108,7 @@
                 "compression",
                 "minification"
             ],
-            "time": "2014-04-08 21:27:14"
+            "time": "2014-05-05 12:59:42"
         },
         {
             "name": "lightopenid/lightopenid",
@@ -1142,12 +1143,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "65026b610f8c19e61d7242f600530677b0466aac"
+                "reference": "467e30a9c9fa22395608cc515cd45a60ecc84c4e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/65026b610f8c19e61d7242f600530677b0466aac",
-                "reference": "65026b610f8c19e61d7242f600530677b0466aac",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/467e30a9c9fa22395608cc515cd45a60ecc84c4e",
+                "reference": "467e30a9c9fa22395608cc515cd45a60ecc84c4e",
                 "shasum": ""
             },
             "require": {
@@ -1202,7 +1203,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2014-04-24 13:29:03"
+            "time": "2014-05-01 15:55:56"
         },
         {
             "name": "psr/log",
@@ -1361,12 +1362,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioGeneratorBundle.git",
-                "reference": "201c75b4ae26e906c26cdfe4db7ac5043cc15743"
+                "reference": "8b7a33aa3d22388443b6de0b0cf184122e9f60d2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioGeneratorBundle/zipball/201c75b4ae26e906c26cdfe4db7ac5043cc15743",
-                "reference": "201c75b4ae26e906c26cdfe4db7ac5043cc15743",
+                "url": "https://api.github.com/repos/sensiolabs/SensioGeneratorBundle/zipball/8b7a33aa3d22388443b6de0b0cf184122e9f60d2",
+                "reference": "8b7a33aa3d22388443b6de0b0cf184122e9f60d2",
                 "shasum": ""
             },
             "require": {
@@ -1402,7 +1403,7 @@
                 }
             ],
             "description": "This bundle generates code for you",
-            "time": "2014-03-30 07:47:50"
+            "time": "2014-04-28 14:01:06"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -1410,19 +1411,19 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/swiftmailer/swiftmailer.git",
-                "reference": "19a15a44b21d13f6c19beefc8e4b6c849558ec50"
+                "reference": "46d55baab96f943061de6712b38011db354eed78"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/19a15a44b21d13f6c19beefc8e4b6c849558ec50",
-                "reference": "19a15a44b21d13f6c19beefc8e4b6c849558ec50",
+                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/46d55baab96f943061de6712b38011db354eed78",
+                "reference": "46d55baab96f943061de6712b38011db354eed78",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.2.4"
             },
             "require-dev": {
-                "mockery/mockery": "~0.9@dev"
+                "mockery/mockery": "~0.9.1"
             },
             "type": "library",
             "extra": {
@@ -1456,7 +1457,7 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2014-04-22 07:28:24"
+            "time": "2014-05-08 08:35:11"
         },
         {
             "name": "symfony/assetic-bundle",
@@ -1465,12 +1466,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/AsseticBundle.git",
-                "reference": "ea2424a1ea11dd276eaecdbacd188de637fd904a"
+                "reference": "ff46000dd73411bbe812238f38bcacaf3f94b504"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/AsseticBundle/zipball/ea2424a1ea11dd276eaecdbacd188de637fd904a",
-                "reference": "ea2424a1ea11dd276eaecdbacd188de637fd904a",
+                "url": "https://api.github.com/repos/symfony/AsseticBundle/zipball/ff46000dd73411bbe812238f38bcacaf3f94b504",
+                "reference": "ff46000dd73411bbe812238f38bcacaf3f94b504",
                 "shasum": ""
             },
             "require": {
@@ -1520,7 +1521,7 @@
                 "compression",
                 "minification"
             ],
-            "time": "2014-04-01 18:02:48"
+            "time": "2014-05-05 14:19:41"
         },
         {
             "name": "symfony/icu",
@@ -1636,12 +1637,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/SwiftmailerBundle.git",
-                "reference": "e98defd402f72e8b54a029ba4d3ac4cb51dc3577"
+                "reference": "85840a287403e53268e212f892607e01cc61b6da"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/SwiftmailerBundle/zipball/e98defd402f72e8b54a029ba4d3ac4cb51dc3577",
-                "reference": "e98defd402f72e8b54a029ba4d3ac4cb51dc3577",
+                "url": "https://api.github.com/repos/symfony/SwiftmailerBundle/zipball/85840a287403e53268e212f892607e01cc61b6da",
+                "reference": "85840a287403e53268e212f892607e01cc61b6da",
                 "shasum": ""
             },
             "require": {
@@ -1654,6 +1655,9 @@
                 "symfony/dependency-injection": "~2.1",
                 "symfony/http-kernel": "~2.1",
                 "symfony/yaml": "~2.1"
+            },
+            "suggest": {
+                "psr/log": "Allows logging"
             },
             "type": "symfony-bundle",
             "extra": {
@@ -1684,7 +1688,7 @@
             ],
             "description": "Symfony SwiftmailerBundle",
             "homepage": "http://symfony.com",
-            "time": "2014-04-05 17:15:52"
+            "time": "2014-04-29 13:05:02"
         },
         {
             "name": "symfony/symfony",
@@ -1692,12 +1696,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "dd175cfcd89023ea9db0cbc73d2fdb5f8e2cc0a6"
+                "reference": "be3c0dcfc0a63c38aefe1a557f1c3a26d371546c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/dd175cfcd89023ea9db0cbc73d2fdb5f8e2cc0a6",
-                "reference": "dd175cfcd89023ea9db0cbc73d2fdb5f8e2cc0a6",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/be3c0dcfc0a63c38aefe1a557f1c3a26d371546c",
+                "reference": "be3c0dcfc0a63c38aefe1a557f1c3a26d371546c",
                 "shasum": ""
             },
             "require": {
@@ -1799,21 +1803,21 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2014-04-23 14:07:18"
+            "time": "2014-05-15 07:59:49"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
-            "version": "dev-master",
+            "version": "1.3.0",
             "target-dir": "TijsVerkoyen/CssToInlineStyles",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tijsverkoyen/CssToInlineStyles.git",
-                "reference": "4bf7879cedfed8ac3d66f98a98b68fc557f7c1f7"
+                "reference": "3848e86d51b79d484fa60ebb64602967ca0a7a3f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tijsverkoyen/CssToInlineStyles/zipball/4bf7879cedfed8ac3d66f98a98b68fc557f7c1f7",
-                "reference": "4bf7879cedfed8ac3d66f98a98b68fc557f7c1f7",
+                "url": "https://api.github.com/repos/tijsverkoyen/CssToInlineStyles/zipball/3848e86d51b79d484fa60ebb64602967ca0a7a3f",
+                "reference": "3848e86d51b79d484fa60ebb64602967ca0a7a3f",
                 "shasum": ""
             },
             "require": {
@@ -1843,7 +1847,7 @@
             ],
             "description": "CssToInlineStyles is a class that enables you to convert HTML-pages/files into HTML-pages/files with inline styles. This is very useful when you're sending emails.",
             "homepage": "https://github.com/tijsverkoyen/CssToInlineStyles",
-            "time": "2013-06-12 11:47:48"
+            "time": "2014-05-05 09:15:31"
         },
         {
             "name": "twig/extensions",
@@ -1900,12 +1904,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fabpot/Twig.git",
-                "reference": "28256f5eda6174c8f9ffd32ec7313da12cb07805"
+                "reference": "6af8182fbd3ead19f8f9e01d33e9b09063e1a1b0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fabpot/Twig/zipball/28256f5eda6174c8f9ffd32ec7313da12cb07805",
-                "reference": "28256f5eda6174c8f9ffd32ec7313da12cb07805",
+                "url": "https://api.github.com/repos/fabpot/Twig/zipball/6af8182fbd3ead19f8f9e01d33e9b09063e1a1b0",
+                "reference": "6af8182fbd3ead19f8f9e01d33e9b09063e1a1b0",
                 "shasum": ""
             },
             "require": {
@@ -1949,7 +1953,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2014-04-23 20:31:20"
+            "time": "2014-05-14 11:51:43"
         },
         {
             "name": "willdurand/expose-translation-bundle",
