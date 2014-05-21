@@ -89,7 +89,7 @@ dropzone:
   dictFallbackText: "Veuillez utiliser le formulaire classique pour ajouter des fichiers."
   dictFileTooBig: "Le fichier est trop gros ({{filesize}}MiB). Taille maximum: {{maxFilesize}}MiB."
   dictInvalidFileType: "Ce type de fichier n'est pas autorisé."
-  dictResponseError: "Il y a eu une erreur coté serveur, veuillez réessayer ({{statusCode}})."
+  dictResponseError: "Il y a eu une erreur, veuillez réessayer ({{statusCode}})."
   dictCancelUpload: "Annuler"
   dictCancelUploadConfirmation: "Voulez-vous vraiment annuler ?"
   dictRemoveFile: "Supprimer"
