@@ -340,7 +340,7 @@ class SecurityController extends Controller
                 // Send the welcome mail
                 $message = \Swift_Message::newInstance()
                     ->setSubject($this->get('translator')->trans('user.creation.mail.subject'))
-                    ->setFrom($this->container->getParameter('mailer_from'))
+                    ->setFrom(array($this->container->getParameter('mailer_from') => $this->container->getParameter('mailer_from_name')))
                     ->setTo(array($user->getEmail() => $user->getFullName()))
                     ->setBody(
                         $this->renderView(
@@ -413,7 +413,7 @@ class SecurityController extends Controller
                 // Sends mail to user
                 $message = \Swift_Message::newInstance()
                     ->setSubject($this->get('translator')->trans('user.passwordChange.mail.subject'))
-                    ->setFrom($this->container->getParameter('mailer_from'))
+                    ->setFrom(array($this->container->getParameter('mailer_from') => $this->container->getParameter('mailer_from_name')))
                     ->setTo(array($mail => $user->getFullName()))
                     ->setBody(
                         $this->renderView(

@@ -260,7 +260,7 @@ class BaseController extends Controller
           // Sends mail to invitee
           $message = \Swift_Message::newInstance()
               ->setSubject($this->get('translator')->trans('project.invitation.mail.subject'))
-              ->setFrom($this->container->getParameter('mailer_from'))
+              ->setFrom(array($this->container->getParameter('mailer_from') => $this->container->getParameter('mailer_from_name')))
               ->setReplyTo($authenticatedUser->getEmail())
               ->setTo($mailOrUsername)
               ->setBody(
