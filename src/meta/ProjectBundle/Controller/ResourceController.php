@@ -193,11 +193,16 @@ class ResourceController extends BaseController
            
                 }
 
-               $this->get('session')->getFlashBag()->add(
-                    'error',
-                    $this->get('translator')->trans('information.not.valid', array(), 'errors')
-                );
+                // Any other errors ?
+                $errors = $form->getErrorsAsString();
+                // Get children errors too, in case
+                foreach ($form->getChildren() as $child) {
+                    $errors .= " - " . $child->getErrorsAsString();
+                }
 
+                // Same "error" token for Dropzone
+                return new Response(json_encode(array('error' => $errors)), 413, array('Content-Type'=>'application/json'));
+        
             }
         }
 
