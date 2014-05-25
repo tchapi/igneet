@@ -152,13 +152,13 @@ class FirstRunController extends Controller
         // Sends mail to invitee
         $message = \Swift_Message::newInstance()
             ->setSubject($this->get('translator')->trans('user.invitation.mail.subject'))
-            ->setFrom($this->container->getParameter('mailer_from'))
+            ->setFrom(array($this->container->getParameter('mailer_from') => $this->container->getParameter('mailer_from_name')))
             ->setReplyTo(array($authenticatedUser->getEmail() => $authenticatedUser->getFullName()))
             ->setTo($email)
             ->setBody(
                 $this->renderView(
                     'metaUserBundle:Mail:invite.mail.html.twig',
-                    array('user' => $authenticatedUser, 'inviteToken' => $token?$token->getToken():null, 'invitee' => ($user && !$user->isDeleted()), 'community' => $community, 'project' => null )
+                    array('user' => $authenticatedUser, 'inviteToken' => isset($token)?$token->getToken():null, 'invitee' => ($user && !$user->isDeleted()), 'community' => $community, 'project' => null )
                 ), 'text/html'
             );
         $this->get('mailer')->send($message);
