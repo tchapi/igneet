@@ -21,7 +21,7 @@
   {% if not comment.isDeleted %}
   <div class="actions">
 
-    <span class="validation{% if app.user in comment.validators %} validated{% endif %}" title="{% for user in comment.validators %}{{ user.getFullName() }}{% if not loop.last %},{% endif %}{% endfor %}">
+    <span class="validation{% if app.user in comment.validators %} validated{% endif %}" title="{% for user in comment.validators %}{{ user.getFullName() }}{% if not loop.last %}, {% endif %}{% endfor %}">
       <a title="{{ "comment.vote"|trans({}, 'messages', locale) }}" class="validate-trigger" data-url="{{ path('g_validate_comment', {'id': comment.id, 'token': csrf_token('validateComment')} ) }}"><i class="fa fa-thumbs-up"></i></a>
       <span>{{ comment.validators|length }}</span>
     </span>
