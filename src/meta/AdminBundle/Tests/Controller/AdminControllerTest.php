@@ -11,11 +11,18 @@ class AdminControllerTest extends SecuredWebTestCase
   public function testHomePage()
   {
 
+    $client = static::createClient();
+    $crawler = $client->request('GET', '/admin/');
+
+    $this->assertTrue(
+        $client->getResponse()->isRedirect()
+    );
+
     $client = static::createClientWithAuthentication();
     $crawler = $client->request('GET', '/admin/');
     
     $this->assertEquals(
-        Response::HTTP_OK,
+        Response::HTTP_FORBIDDEN,
         $client->getResponse()->getStatusCode()
     );
 
