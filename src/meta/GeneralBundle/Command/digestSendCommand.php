@@ -145,7 +145,7 @@ class digestSendCommand extends ContainerAwareCommand
                 
                 $messages[] = \Swift_Message::newInstance()
                   ->setSubject($this->getContainer()->get('translator')->trans('user.digest.mail.subject', array(), null, $locale))
-                  ->setFrom($this->getContainer()->getParameter('mailer_from'))
+                  ->setFrom(array($this->getContainer()->getParameter('mailer_from') => $this->getContainer()->getParameter('mailer_from_name')))
                   ->setTo(array($user->getEmail() => $user->getFullName()))
                   ->setBody(
                       $this->getContainer()->get('templating')->render(
