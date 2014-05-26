@@ -443,6 +443,34 @@ class UserController extends Controller
                             $em->remove($userInviteToken);
                         }
 
+                        // And the logs as well
+                        $logsRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Log\BaseLogEntry');
+                        $logs = $logsRepository->findByCommunity($community);
+                        foreach ($logs as $log) {
+                            $em->remove($log);
+                        }
+
+                        // And the projects & users owns / participating
+                        $ideasRepository = $this->getDoctrine()->getRepository('metaIdeaBundle:Idea');
+                        $ideas = $ideasRepository->findByCommunity($community);
+                        foreach ($ideas as $idea) {
+                            $em->remove($idea);
+                        }
+
+                        // And the ideas & user created / participating
+                        $projectRepository = $this->getDoctrine()->getRepository('metaStandardProjectBundle:StandardProject');
+                        $projects = $projectRepository->findByCommunity($community);
+                        foreach ($projects as $project) {
+                            $em->remove($project);
+                        }
+
+                        // Comments
+                        $commentsRepository = $this->getDoctrine()->getRepository('metaGeneralProjectBundle:Comment\CommunityComment');
+                        $comments = $commentsRepository->findByCommunity($community);
+                        foreach ($comments as $comment) {
+                            $em->remove($comment);
+                        }
+
                         // Good to go : it's his own community and he's alone in it
                         // But we have to delete the community as well (the following is safe since it will not be flushed until $em->flush() though)
                         $em->remove($community);
