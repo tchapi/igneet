@@ -75,7 +75,7 @@ class ResourceController extends BaseController
         }
 
         // Guesses type
-        if (isset($types[$guessedType])){
+        if ($guessedType != "" && isset($types[$guessedType])){
             $type = $guessedType;
         } else {
             $type = 'other';
