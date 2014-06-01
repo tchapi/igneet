@@ -13,12 +13,6 @@ TODO :
 
  ☐  Mail auto pour les communautés soon to expire (genre tache en cron ? regrouper toutes les taches d'igneet dans une seule commande en cron runCronCommand ?) --> envoyer aussi un mail a l'admin en meme temps
 
-Admin :
-
- ☐ Admin : liste des utilisateurs à styler en tableau comme les announcements
-   
- ☐ brad : rajouter une notification (mail a la fin de la mise en prod) dans la config ?
-   
 A évaluer :
 
  ☐ + Deep linking : verifier a l'affichage que l'utilisateur a le droit de voir l'objet deep linké !
