@@ -90,7 +90,7 @@ class LoadTestData implements FixtureInterface, ContainerAwareInterface
 
             2.
                 test a accès à test_idea_private_space
-                Switch auto quand accès alors que dans une communauté
+                    Switch auto quand accès alors que dans une communauté
                 other_test n'a pas accès à test_idea_private_space
 
                 "add participant" dans test_idea_private_space ne marche pas avec test
@@ -147,14 +147,14 @@ class LoadTestData implements FixtureInterface, ContainerAwareInterface
                 test n'a pas accès à test_out_idea (404)
 
             13.
-                test a accès a test_guest_project
+                test a accès a test_guest_project OK
                 test peut modifier test_guest_project
-                other_test a accès à test_guest_project
+                other_test a accès à test_guest_project OK
                 other_test peut modifier test_guest_project
 
             14. 
-                test n'a pas accès a test_guest_project_not_in
-                other_test a accès à test_guest_project_not_in
+                test n'a pas accès a test_guest_project_not_in OK
+                other_test a accès à test_guest_project_not_in OK
                 other_test peut modifier test_guest_project_not_in
 
             15.

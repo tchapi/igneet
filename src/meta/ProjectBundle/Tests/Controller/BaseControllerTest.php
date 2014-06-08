@@ -60,6 +60,8 @@ class BaseControllerTest extends SecuredWebTestCase
         $client->getResponse()->getStatusCode()
     );
 
+    $this->assertCount(1, $crawler->filter('h2:contains("test_project_private_space")'));
+
   }
 
   public function testProjectInOtherPrivateSpace()
@@ -99,6 +101,8 @@ class BaseControllerTest extends SecuredWebTestCase
         $client->getResponse()->getStatusCode()
     );
 
+    $this->assertCount(1, $crawler->filter('h2:contains("test_project_community_owner")'));
+
   }
 
   public function testProjectInCommunityOtherOwner()
@@ -118,6 +122,8 @@ class BaseControllerTest extends SecuredWebTestCase
         Response::HTTP_OK,
         $client->getResponse()->getStatusCode()
     );
+
+    $this->assertCount(1, $crawler->filter('h2:contains("test_project_community_owner")'));
 
   }
 
@@ -139,6 +145,8 @@ class BaseControllerTest extends SecuredWebTestCase
         $client->getResponse()->getStatusCode()
     );
 
+    $this->assertCount(1, $crawler->filter('h2:contains("test_project_community_participant")'));
+
   }
 
   public function testProjectInCommunityOtherParticipant()
@@ -159,6 +167,8 @@ class BaseControllerTest extends SecuredWebTestCase
         $client->getResponse()->getStatusCode()
     );
 
+    $this->assertCount(1, $crawler->filter('h2:contains("test_project_community_participant")'));
+
   }
 
   public function testProjectInCommunityOwnerPrivate()
@@ -178,6 +188,8 @@ class BaseControllerTest extends SecuredWebTestCase
         Response::HTTP_OK,
         $client->getResponse()->getStatusCode()
     );
+
+    $this->assertCount(1, $crawler->filter('h2:contains("test_project_community_owner_private")'));
 
   }
 
@@ -239,6 +251,8 @@ class BaseControllerTest extends SecuredWebTestCase
         $client->getResponse()->getStatusCode()
     );
 
+    $this->assertCount(1, $crawler->filter('h2:contains("test_project_community_not_in")'));
+
   }
 
   public function testProjectInOtherCommunity()
@@ -279,6 +293,8 @@ class BaseControllerTest extends SecuredWebTestCase
         $client->getResponse()->getStatusCode()
     );
 
+    $this->assertCount(1, $crawler->filter('h2:contains("test_guest_project")'));
+
   }
 
   public function testGuestProjectInCommunityImOtherGuest()
@@ -299,6 +315,8 @@ class BaseControllerTest extends SecuredWebTestCase
         $client->getResponse()->getStatusCode()
     );
 
+    $this->assertCount(1, $crawler->filter('h2:contains("test_guest_project")'));
+
   }
 
   public function testGuestProjectInCommunityImOtherGuest2()
@@ -318,6 +336,8 @@ class BaseControllerTest extends SecuredWebTestCase
         Response::HTTP_OK,
         $client->getResponse()->getStatusCode()
     );
+
+    $this->assertCount(1, $crawler->filter('h2:contains("test_guest_project_not_in")'));
 
   }
 
