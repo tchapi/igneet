@@ -22,10 +22,48 @@ class CommunityControllerTest extends SecuredWebTestCase
 
   public function testSwitchCommunity()
   {
-    $communityId = "3xsdgob0n"; // "Thirdplace"
 
-    $client = static::createClientWithAuthentication();
-    $crawler = $client->request('GET', '/app/community/switch/0' . $communityId, array('token' => $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('switchCommunity')));
+    $this->setUp();
+    $community = $this->em->getRepository('metaGeneralBundle:Community\Community')->findOneByName("test_in");
+    $this->tearDown();
+
+    $client = static::createClientWithAuthentication("test"); // test is in test_in 
+
+    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('switchCommunity')));
+
+    $this->assertTrue(
+        $client->getResponse()->isRedirect('/app/')
+    );
+
+  }
+
+  public function testSwitchCommunityOther()
+  {
+
+    $this->setUp();
+    $community = $this->em->getRepository('metaGeneralBundle:Community\Community')->findOneByName("test_in");
+    $this->tearDown();
+
+    $client = static::createClientWithAuthentication("other_test"); // test is in test_in 
+
+    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('switchCommunity')));
+
+    $this->assertTrue(
+        $client->getResponse()->isRedirect('/app/')
+    );
+
+  }
+
+  public function testSwitchCommunityOtherOut()
+  {
+
+    $this->setUp();
+    $community = $this->em->getRepository('metaGeneralBundle:Community\Community')->findOneByName("test_out");
+    $this->tearDown();
+
+    $client = static::createClientWithAuthentication("other_test"); // other_test is in test_out
+
+    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('switchCommunity')));
 
     $this->assertTrue(
         $client->getResponse()->isRedirect('/app/')
@@ -35,9 +73,9 @@ class CommunityControllerTest extends SecuredWebTestCase
 
   public function testSwitchCommunityNotExist()
   {
-    $communityId = "foobar"; // "Thirdplace"
+    $communityId = "foobar";
 
-    $client = static::createClientWithAuthentication();
+    $client = static::createClientWithAuthentication("test");
     $crawler = $client->request('GET', '/app/community/switch/0' . $communityId, array('token' => $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('switchCommunity')));
 
     $this->assertEquals(
@@ -47,12 +85,50 @@ class CommunityControllerTest extends SecuredWebTestCase
 
   }
 
+  public function testSwitchCommunityGuest()
+  {
+
+    $this->setUp();
+    $community = $this->em->getRepository('metaGeneralBundle:Community\Community')->findOneByName("test_guest");
+    $this->tearDown();
+
+    $client = static::createClientWithAuthentication("test"); // test is in test_guest
+
+    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('switchCommunity')));
+
+    $this->assertTrue(
+        $client->getResponse()->isRedirect('/app/')
+    );
+
+  }
+
+  public function testSwitchCommunityGuestOther()
+  {
+
+    $this->setUp();
+    $community = $this->em->getRepository('metaGeneralBundle:Community\Community')->findOneByName("test_guest");
+    $this->tearDown();
+
+    $client = static::createClientWithAuthentication("other_test"); // other_test is in test_guest
+
+    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('switchCommunity')));
+
+    $this->assertTrue(
+        $client->getResponse()->isRedirect('/app/')
+    );
+
+  }
+
   public function testSwitchCommunityUserNotIn()
   {
-    $communityId = "????"; // Community tchap is not in
 
-    $client = static::createClientWithAuthentication();
-    $crawler = $client->request('GET', '/app/community/switch/0' . $communityId, array('token' => $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('switchCommunity')));
+    $this->setUp();
+    $community = $this->em->getRepository('metaGeneralBundle:Community\Community')->findOneByName("test_out");
+    $this->tearDown();
+
+    $client = static::createClientWithAuthentication("test"); // test is not in test_out
+
+    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('switchCommunity')));
 
     $this->assertEquals(
         Response::HTTP_NOT_FOUND,

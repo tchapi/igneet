@@ -72,17 +72,17 @@ class LoadTestData implements FixtureInterface, ContainerAwareInterface
             TESTS:
 
             0.
-                test a accès à test_in
-                other_test a accès à test_in
-                test n'a pas accès à test_out
-                other_test a accès à test_out
-                test a accès à test_guest
-                other_test a accès à test_guest
+                test a accès à test_in OK
+                other_test a accès à test_in OK
+                test n'a pas accès à test_out OK
+                other_test a accès à test_out OK
+                test a accès à test_guest OK
+                other_test a accès à test_guest OK
 
             1.
-                test a accès à test_project_private_space
-                Switch auto quand accès alors que dans une communauté
-                other_test n'a pas accès à test_project_private_space
+                test a accès à test_project_private_space OK
+                    Switch auto quand accès alors que dans une communauté
+                other_test n'a pas accès à test_project_private_space OK
 
                 "add participant" dans test_project_private_space ne marche pas avec test
                 "add owner" dans test_project_private_space ne marche pas avec test
@@ -98,31 +98,31 @@ class LoadTestData implements FixtureInterface, ContainerAwareInterface
                 toutes modifs (POST) etc, marchent avec test
 
             3. 
-                test a accès à test_project_community_owner
-                other_test a accès à test_project_community_owner
+                test a accès à test_project_community_owner OK
+                other_test a accès à test_project_community_owner OK
                     Switch auto quand accès alors que dans une communauté
                 test peut modifier tout dans test_project_community_owner
                 other_test ne peut pas mofidier test_project_community_owner, sauf commenter
 
             4.  
-                test a accès à test_project_community_owner_private
-                other_test n'a pas accès à test_project_community_owner_private
+                test a accès à test_project_community_owner_private OK
+                other_test n'a pas accès à test_project_community_owner_private OK
                     Switch auto quand accès alors que dans une communauté
                 test peut modifier tout dans test_project_community_owner, sauf commenter
 
             5.
-                test a accès à test_project_community_participant
-                other_test a accès à test_project_community_participant
+                test a accès à test_project_community_participant OK
+                other_test a accès à test_project_community_participant OK
                     Switch auto quand accès alors que dans une communauté
                 test peut modifier tout ce que peut faire un participant dans test_project_community_participant
                 other_test ne peut pas mofidier test_project_community_participant, sauf commenter
 
             6.
-                test a accès à test_project_community_not_in
+                test a accès à test_project_community_not_in OK
                 test ne peut pas modifier test_project_community_not_in, sauf commenter
 
             7.
-                test n'a pas accès à test_project_community_not_in_private
+                test n'a pas accès à test_project_community_not_in_private OK
 
             8.
                 test a accès à test_idea_community_owner
@@ -141,7 +141,7 @@ class LoadTestData implements FixtureInterface, ContainerAwareInterface
                 test ne peut pas modifier test_idea_community_not_in
 
             11. 
-                test n'a pas accès à test_out_project (404)
+                test n'a pas accès à test_out_project (404) OK
 
             12. 
                 test n'a pas accès à test_out_idea (404)
@@ -261,6 +261,7 @@ class LoadTestData implements FixtureInterface, ContainerAwareInterface
         $otherUserCommunity->setCommunity($community);
         $otherUserCommunity->setGuest(false);
         $community->setName('test_in');
+        $community->setValidUntil(new \DateTime('now + 10 years'));
         $community->setHeadline('Test users should be here.');
 
         /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
@@ -289,6 +290,7 @@ class LoadTestData implements FixtureInterface, ContainerAwareInterface
         }
 
         $communityOut->setName('test_out');
+        $communityOut   ->setValidUntil(new \DateTime('now + 10 years'));
         $communityOut->setHeadline('Only OTHER_TEST should be here.');
         $otherUserCommunity->setUser($otherUser);
         $otherUserCommunity->setCommunity($communityOut);
@@ -321,6 +323,7 @@ class LoadTestData implements FixtureInterface, ContainerAwareInterface
         }
 
         $communityGuest->setName('test_guest');
+        $communityGuest->setValidUntil(new \DateTime('now + 10 years'));
         $communityGuest->setHeadline('Only OTHER_TEST should be here, and TEST as guest.');
         $otherUserCommunity->setUser($otherUser);
         $otherUserCommunity->setCommunity($communityGuest);

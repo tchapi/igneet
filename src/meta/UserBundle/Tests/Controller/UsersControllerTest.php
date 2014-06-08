@@ -49,12 +49,16 @@ class UsersControllerTest extends SecuredWebTestCase
 
   }
 
-  public function testListCommunity()
+  public function testListCommunityUserIsIn()
   {
-    $communityId = "3xsdgob0n"; // "Thirdplace"
 
-    $client = static::createClientWithAuthentication();
-    $client->request('GET', '/app/community/switch/0' . $communityId, array('token' => $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('switchCommunity')));
+    $this->setUp();
+    $community = $this->em->getRepository('metaGeneralBundle:Community\Community')->findOneByName("test_in");
+    $this->tearDown();
+
+    $client = static::createClientWithAuthentication("test"); // test is in test_in 
+
+    $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('switchCommunity')));
     $crawler = $client->request('GET', '/app/people');
 
     $this->assertEquals(
