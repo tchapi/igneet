@@ -74,12 +74,11 @@ class LoadTestData implements FixtureInterface, ContainerAwareInterface
             1.
                 "add participant" dans test_project_private_space ne marche pas avec test
                 "add owner" dans test_project_private_space ne marche pas avec test
-                toutes modifs (POST) etc, marchent avec test OK
 
             2.
                 "add participant" dans test_idea_private_space ne marche pas avec test
                 "add owner" dans test_idea_private_space ne marche pas avec test
-                toutes modifs (POST) etc, marchent avec test OK
+                
 
         **/
 
@@ -97,11 +96,13 @@ class LoadTestData implements FixtureInterface, ContainerAwareInterface
                 test a accès à test_project_private_space OK
                     Switch auto quand accès alors que dans une communauté OK
                 other_test n'a pas accès à test_project_private_space OK
+                toutes modifs (POST) etc, marchent avec test OK
 
             2.
                 test a accès à test_idea_private_space OK
                     Switch auto quand accès alors que dans une communauté OK
                 other_test n'a pas accès à test_idea_private_space OK
+                toutes modifs (POST) etc, marchent avec test OK
 
             3. 
                 test a accès à test_project_community_owner OK
