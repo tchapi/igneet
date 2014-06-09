@@ -620,6 +620,17 @@ class IdeaController extends Controller
      */
     public function addIdeaCommentAction(Request $request, $uid){
 
+        if ($request->isMethod('POST') && !$this->get('form.csrf_provider')->isCsrfTokenValid('comment', $request->get('token'))) {
+            return new Response(
+                json_encode(
+                    array(
+                        'message' => $this->get('translator')->trans('invalid.token', array(), 'errors'))
+                    ), 
+                400, 
+                array('Content-Type'=>'application/json')
+            );
+        }
+        
         $comment = new IdeaComment();
         $form = $this->createFormBuilder($comment)
             ->add('text', 'textarea', array('required' => false, 'attr' => array('placeholder' => $this->get('translator')->trans('comment.placeholder') )))
@@ -662,7 +673,7 @@ class IdeaController extends Controller
 
         } else { // Non-routed
 
-            $route = $this->get('router')->generate('i_show_idea_comment', array('uid' => $uid));
+            $route = $this->get('router')->generate('i_show_idea_comment', array('uid' => $uid, 'token' => $this->get('form.csrf_provider')->generateCsrfToken('comment')));
 
             // We can fetch directly here since it is a non routed action
             $ideaRepository = $this->getDoctrine()->getRepository('metaIdeaBundle:Idea');

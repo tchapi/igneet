@@ -23,6 +23,17 @@ class CommentController extends BaseController
     public function addProjectCommentAction(Request $request, $uid)
     {
 
+        if ($request->isMethod('POST') && !$this->get('form.csrf_provider')->isCsrfTokenValid('comment', $request->get('token'))) {
+            return new Response(
+                json_encode(
+                    array(
+                        'message' => $this->get('translator')->trans('invalid.token', array(), 'errors'))
+                    ), 
+                400, 
+                array('Content-Type'=>'application/json')
+            );
+        }
+
         $menu = $this->container->getParameter('project.menu');
         $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => $menu['timeline']['private']));
 
@@ -63,7 +74,7 @@ class CommentController extends BaseController
 
             } else {
 
-                $route = $this->get('router')->generate('p_show_project_comment', array('uid' => $uid));
+                $route = $this->get('router')->generate('p_show_project_comment', array('uid' => $uid, 'token' => $this->get('form.csrf_provider')->generateCsrfToken('comment')));
 
                 return $this->render('metaGeneralBundle:Comment:commentBox.html.twig', 
                     array('object' => $this->base['project'], 'route' => $route, 'form' => $form->createView()));
@@ -79,7 +90,19 @@ class CommentController extends BaseController
     /*
      * Output the comment form for a wiki page or add a comment to a wiki page when POST
      */
-    public function addWikiPageCommentAction(Request $request, $uid, $page_uid){
+    public function addWikiPageCommentAction(Request $request, $uid, $page_uid)
+    {
+
+        if ($request->isMethod('POST') && !$this->get('form.csrf_provider')->isCsrfTokenValid('comment', $request->get('token'))) {
+            return new Response(
+                json_encode(
+                    array(
+                        'message' => $this->get('translator')->trans('invalid.token', array(), 'errors'))
+                    ), 
+                400, 
+                array('Content-Type'=>'application/json')
+            );
+        }
 
         $menu = $this->container->getParameter('project.menu');
         $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => $menu['wiki']['private']));
@@ -130,7 +153,7 @@ class CommentController extends BaseController
            
                     } else {
 
-                        $route = $this->get('router')->generate('p_show_project_wikipage_comment', array('uid' => $uid, 'page_uid' => $page_uid ));
+                        $route = $this->get('router')->generate('p_show_project_wikipage_comment', array('uid' => $uid, 'page_uid' => $page_uid, 'token' => $this->get('form.csrf_provider')->generateCsrfToken('comment') ));
 
                         return $this->render('metaGeneralBundle:Comment:commentThread.html.twig', 
                             array('object' => $wikiPage, 'route' => $route, 'form' => $form->createView()));
@@ -148,7 +171,19 @@ class CommentController extends BaseController
     /*
      * Output the comment form for a list or add a comment to a list when POST
      */
-    public function addListCommentAction(Request $request, $uid, $list_uid){
+    public function addListCommentAction(Request $request, $uid, $list_uid)
+    {
+
+        if ($request->isMethod('POST') && !$this->get('form.csrf_provider')->isCsrfTokenValid('comment', $request->get('token'))) {
+            return new Response(
+                json_encode(
+                    array(
+                        'message' => $this->get('translator')->trans('invalid.token', array(), 'errors'))
+                    ), 
+                400, 
+                array('Content-Type'=>'application/json')
+            );
+        }
 
         $menu = $this->container->getParameter('project.menu');
         $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => $menu['lists']['private']));
@@ -194,7 +229,7 @@ class CommentController extends BaseController
 
                 } else {
 
-                    $route = $this->get('router')->generate('p_show_project_list_comment', array('uid' => $uid, 'list_uid' => $list_uid ));
+                    $route = $this->get('router')->generate('p_show_project_list_comment', array('uid' => $uid, 'list_uid' => $list_uid, 'token' => $this->get('form.csrf_provider')->generateCsrfToken('comment') ));
 
                     return $this->render('metaGeneralBundle:Comment:commentThread.html.twig', 
                         array('object' => $commonList, 'route' => $route, 'form' => $form->createView()));

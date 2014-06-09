@@ -388,7 +388,19 @@ class CommunityController extends Controller
     /*
      * Output the comment form for a community or add a comment to a community when POST
      */
-    public function addCommunityCommentAction(Request $request){
+    public function addCommunityCommentAction(Request $request)
+    {
+
+        if ($request->isMethod('POST') && !$this->get('form.csrf_provider')->isCsrfTokenValid('comment', $request->get('token'))) {
+            return new Response(
+                json_encode(
+                    array(
+                        'message' => $this->get('translator')->trans('invalid.token', array(), 'errors'))
+                    ), 
+                400, 
+                array('Content-Type'=>'application/json')
+            );
+        }
 
         $authenticatedUser = $this->getUser();
         $community = $authenticatedUser->getCurrentCommunity();
@@ -430,7 +442,7 @@ class CommunityController extends Controller
 
             } else {
 
-                $route = $this->get('router')->generate('g_community_comment');
+                $route = $this->get('router')->generate('g_community_comment', array('token' => $this->get('form.csrf_provider')->generateCsrfToken('comment')));
 
                 return $this->render('metaGeneralBundle:Comment:commentBox.html.twig', 
                     array('object' => $community, 'route' => $route, 'form' => $form->createView()));
