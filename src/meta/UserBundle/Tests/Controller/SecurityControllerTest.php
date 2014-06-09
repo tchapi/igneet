@@ -54,16 +54,16 @@ class SecurityControllerTest extends SecuredWebTestCase
 
     // By username
     $client->submit($form, array(
-        '_username'  => 'tchap',
-        '_password'  => 'tata',
+        '_username'  => 'test',
+        '_password'  => 'test',
     ));
     
     $this->assertRegExp('/\/app\/$/', $client->getResponse()->headers->get('location'));
 
     // By email
     $client->submit($form, array(
-        '_username'  => 'regbasket+test@gmail.com',
-        '_password'  => 'tata',
+        '_username'  => 'test@igneet.com',
+        '_password'  => 'test',
     ));
 
     $this->assertRegExp('/\/app\/$/', $client->getResponse()->headers->get('location'));
@@ -71,14 +71,14 @@ class SecurityControllerTest extends SecuredWebTestCase
     // By wrong email
     $client->submit($form, array(
         '_username'  => 'regbasket+test+false@gmail.com',
-        '_password'  => 'tata',
+        '_password'  => 'test',
     ));
 
     $this->assertRegExp('/\/app\/login$/', $client->getResponse()->headers->get('location'));
 
     // By wrong password
     $client->submit($form, array(
-        '_username'  => 'tchap',
+        '_username'  => 'test',
         '_password'  => 'foobar',
     ));
 
@@ -116,7 +116,7 @@ class SecurityControllerTest extends SecuredWebTestCase
 
   }
 
-  public function testSignup()
+  public function testSignupPage()
   {
 
     $client = static::createClient();
@@ -155,6 +155,26 @@ class SecurityControllerTest extends SecuredWebTestCase
   
     $this->assertTrue($client->getResponse()->isRedirect());
 
+  }
+
+  public function testSignup()
+  {
+
+  }
+
+  public function testSignupExistingLogin()
+  {
+    
+  }
+
+  public function testSignupExistingEmail()
+  {
+    
+  }
+
+  public function testSignupWithInvitation()
+  {
+    
   }
 
 }

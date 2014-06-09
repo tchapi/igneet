@@ -87,3 +87,12 @@ The code base is divided in 6 bundles :
     This bundle manages the static site at `/`. It does not define any entity, and has a single controller to serve the various pages of the static site.
 
 
+## Unit tests
+
+To run the unit tests with `phpunit`, you need to add some fixtures first :
+
+    php app/console doctrine:fixtures:load --append
+
+Then you can run the tests :
+
+    phpunit -c app/

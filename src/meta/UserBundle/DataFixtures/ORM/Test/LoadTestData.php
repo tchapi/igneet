@@ -71,6 +71,51 @@ class LoadTestData implements FixtureInterface, ContainerAwareInterface
 
             TESTS:
 
+            1.
+                "add participant" dans test_project_private_space ne marche pas avec test
+                "add owner" dans test_project_private_space ne marche pas avec test
+                toutes modifs (POST) etc, marchent avec test
+
+            2.
+                "add participant" dans test_idea_private_space ne marche pas avec test
+                "add owner" dans test_idea_private_space ne marche pas avec test
+                toutes modifs (POST) etc, marchent avec test
+
+            3. 
+                test peut modifier tout dans test_project_community_owner
+                other_test ne peut pas mofidier test_project_community_owner, sauf commenter
+
+            4.  
+                test peut modifier tout dans test_project_community_owner, sauf commenter
+
+            5.
+                test peut modifier tout ce que peut faire un participant dans test_project_community_participant
+                other_test ne peut pas mofidier test_project_community_participant, sauf commenter
+
+            6.
+                test ne peut pas modifier test_project_community_not_in, sauf commenter
+
+            8.
+                test peut modifier test_idea_community_owner
+                other_test ne peut pas modifier test_idea_community_owner
+
+            9.
+                test peut modifier en tant que participant test_idea_community_participant 
+                other_test ne peut pas modifier test_idea_community_participant 
+
+            10.
+                test ne peut pas modifier test_idea_community_not_in
+
+            13.
+                test peut modifier test_guest_project
+                other_test peut modifier test_guest_project
+
+            14. 
+                other_test peut modifier test_guest_project_not_in
+        **/
+
+        /* DONE
+
             0.
                 test a accès à test_in OK
                 other_test a accès à test_in OK
@@ -81,86 +126,64 @@ class LoadTestData implements FixtureInterface, ContainerAwareInterface
 
             1.
                 test a accès à test_project_private_space OK
-                    Switch auto quand accès alors que dans une communauté
+                    Switch auto quand accès alors que dans une communauté OK
                 other_test n'a pas accès à test_project_private_space OK
 
-                "add participant" dans test_project_private_space ne marche pas avec test
-                "add owner" dans test_project_private_space ne marche pas avec test
-                toutes modifs (POST) etc, marchent avec test
-
             2.
-                test a accès à test_idea_private_space
-                    Switch auto quand accès alors que dans une communauté
-                other_test n'a pas accès à test_idea_private_space
-
-                "add participant" dans test_idea_private_space ne marche pas avec test
-                "add owner" dans test_idea_private_space ne marche pas avec test
-                toutes modifs (POST) etc, marchent avec test
+                test a accès à test_idea_private_space OK
+                    Switch auto quand accès alors que dans une communauté OK
+                other_test n'a pas accès à test_idea_private_space OK
 
             3. 
                 test a accès à test_project_community_owner OK
                 other_test a accès à test_project_community_owner OK
-                    Switch auto quand accès alors que dans une communauté
-                test peut modifier tout dans test_project_community_owner
-                other_test ne peut pas mofidier test_project_community_owner, sauf commenter
+                    Switch auto quand accès alors que dans une communauté OK
 
             4.  
                 test a accès à test_project_community_owner_private OK
                 other_test n'a pas accès à test_project_community_owner_private OK
-                    Switch auto quand accès alors que dans une communauté
-                test peut modifier tout dans test_project_community_owner, sauf commenter
+                    Switch auto quand accès alors que dans une communauté OK
 
             5.
                 test a accès à test_project_community_participant OK
                 other_test a accès à test_project_community_participant OK
-                    Switch auto quand accès alors que dans une communauté
-                test peut modifier tout ce que peut faire un participant dans test_project_community_participant
-                other_test ne peut pas mofidier test_project_community_participant, sauf commenter
+                    Switch auto quand accès alors que dans une communauté OK
 
             6.
                 test a accès à test_project_community_not_in OK
-                test ne peut pas modifier test_project_community_not_in, sauf commenter
 
             7.
                 test n'a pas accès à test_project_community_not_in_private OK
 
             8.
-                test a accès à test_idea_community_owner
-                other_test a accès à test_idea_community_owner
-                test peut modifier test_idea_community_owner
-                other_test ne peut pas modifier test_idea_community_owner
+                test a accès à test_idea_community_owner OK
+                other_test a accès à test_idea_community_owner OK
 
             9.
-                test a accès à test_idea_community_participant 
-                other_test a accès à test_idea_community_participant 
-                test peut modifier en tant que participant test_idea_community_participant 
-                other_test ne peut pas modifier test_idea_community_participant 
+                test a accès à test_idea_community_participant OK
+                other_test a accès à test_idea_community_participant OK 
 
             10.
-                test a accès à test_idea_community_not_in
-                test ne peut pas modifier test_idea_community_not_in
+                test a accès à test_idea_community_not_in OK
 
             11. 
                 test n'a pas accès à test_out_project (404) OK
 
             12. 
-                test n'a pas accès à test_out_idea (404)
+                test n'a pas accès à test_out_idea (404) OK
 
             13.
                 test a accès a test_guest_project OK
-                test peut modifier test_guest_project
                 other_test a accès à test_guest_project OK
-                other_test peut modifier test_guest_project
 
             14. 
                 test n'a pas accès a test_guest_project_not_in OK
                 other_test a accès à test_guest_project_not_in OK
-                other_test peut modifier test_guest_project_not_in
 
             15.
-                other_test a accès a test_guest_idea
-                test n'a pas accès à test_guest_idea
-        **/
+                other_test a accès a test_guest_idea OK
+                test n'a pas accès à test_guest_idea OK
+        */
 
         /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
            **                         FIRST TEST USER : "TEST"                           **
