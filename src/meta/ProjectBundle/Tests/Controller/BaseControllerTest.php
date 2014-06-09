@@ -427,5 +427,758 @@ class BaseControllerTest extends SecuredWebTestCase
 
   }
 
+  public function testProjectWatch()
+  {
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_project_community_owner");
+    $this->tearDown();
+
+    $client = static::createClientWithAuthentication("test");
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/watch?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('watch')
+    );
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/unwatch?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('unwatch')
+    );
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/unwatch?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('unwatch')
+    );
+
+    $this->assertEquals(
+        Response::HTTP_NOT_ACCEPTABLE,
+        $client->getResponse()->getStatusCode()
+    );
+  }
+
+  public function testProjectWatchPrivateNotIn()
+  {
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_project_community_not_in_private");
+    $this->tearDown();
+
+    $client = static::createClientWithAuthentication("test");
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/watch?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('watch')
+    );
+
+    $this->assertEquals(
+        Response::HTTP_NOT_FOUND,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/unwatch?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('unwatch')
+    );
+
+    $this->assertEquals(
+        Response::HTTP_NOT_FOUND,
+        $client->getResponse()->getStatusCode()
+    );
+  }
+
+  public function testProjectWatchOut()
+  {
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_out_project");
+    $this->tearDown();
+
+    $client = static::createClientWithAuthentication("test");
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/watch?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('watch')
+    );
+
+    $this->assertEquals(
+        Response::HTTP_NOT_FOUND,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/unwatch?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('unwatch')
+    );
+
+    $this->assertEquals(
+        Response::HTTP_NOT_FOUND,
+        $client->getResponse()->getStatusCode()
+    );
+  }
+
+  public function testProjectModifOwner()
+  {
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_project_community_owner");
+    $this->tearDown();
+
+    $client = static::createClientWithAuthentication("test"); 
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "name", "value" => "test_project_community_owner_TEST". rand())
+    );
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "name", "value" => "test_project_community_owner")
+    );
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "about", "value" => "test" . rand())
+    );
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "skills", "value" => "add", "key" => "management")
+    );
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "skills", "value" => "remove", "key" => "management")
+    );
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "status", "value" => "0")
+    );
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+  }
+
+
+  public function testProjectModifOtherNotOwner()
+  {
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_project_community_owner");
+    $this->tearDown();
+
+    $client = static::createClientWithAuthentication("other_test"); 
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "name", "value" => "test_project_community_owner_TEST". rand())
+    );
+
+    $this->assertEquals(
+        Response::HTTP_NOT_ACCEPTABLE,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "about", "value" => "test" . rand())
+    );
+
+    $this->assertEquals(
+        Response::HTTP_NOT_ACCEPTABLE,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "skills", "value" => "add", "key" => "management")
+    );
+
+    $this->assertEquals(
+        Response::HTTP_NOT_ACCEPTABLE,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "skills", "value" => "remove", "key" => "management")
+    );
+
+    $this->assertEquals(
+        Response::HTTP_NOT_ACCEPTABLE,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "status", "value" => "0")
+    );
+
+    $this->assertEquals(
+        Response::HTTP_NOT_ACCEPTABLE,
+        $client->getResponse()->getStatusCode()
+    );
+  }
+
+  public function testProjectModifGuestOwner()
+  {
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_guest_project");
+    $this->tearDown();
+
+    $client = static::createClientWithAuthentication("test"); 
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "name", "value" => "test_guest_project_TEST". rand())
+    );
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "name", "value" => "test_guest_project")
+    );
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "about", "value" => "test" . rand())
+    );
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "skills", "value" => "add", "key" => "management")
+    );
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "skills", "value" => "remove", "key" => "management")
+    );
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "status", "value" => "0")
+    );
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+  }
+
+  public function testProjectModifGuestOwnerOther()
+  {
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_guest_project");
+    $this->tearDown();
+
+    $client = static::createClientWithAuthentication("other_test"); 
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "name", "value" => "test_guest_project_TEST". rand())
+    );
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "name", "value" => "test_guest_project")
+    );
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "about", "value" => "test" . rand())
+    );
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "skills", "value" => "add", "key" => "management")
+    );
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "skills", "value" => "remove", "key" => "management")
+    );
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "status", "value" => "0")
+    );
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+  }
+
+  public function testProjectModifGuestOwnerOtherNotIn()
+  {
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_guest_project_not_in");
+    $this->tearDown();
+
+    $client = static::createClientWithAuthentication("other_test"); 
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "name", "value" => "test_guest_project_not_in_TEST". rand())
+    );
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "name", "value" => "test_guest_project_not_in")
+    );
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "about", "value" => "test" . rand())
+    );
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "skills", "value" => "add", "key" => "management")
+    );
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "skills", "value" => "remove", "key" => "management")
+    );
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "status", "value" => "0")
+    );
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+  }
+
+  public function testProjectModifParticipant()
+  {
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_project_community_participant");
+    $this->tearDown();
+
+    $client = static::createClientWithAuthentication("test"); 
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "name", "value" => "test_project_community_participant_TEST". rand())
+    );
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "name", "value" => "test_project_community_participant")
+    );
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "about", "value" => "test" . rand())
+    );
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "skills", "value" => "add", "key" => "management")
+    );
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "skills", "value" => "remove", "key" => "management")
+    );
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "status", "value" => "0")
+    );
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+  }
+
+  public function testProjectModifOtherNotIn()
+  {
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_project_community_not_in");
+    $this->tearDown();
+
+    $client = static::createClientWithAuthentication("test"); 
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "name", "value" => "test_project_community_not_in_TEST". rand())
+    );
+
+    $this->assertEquals(
+        Response::HTTP_NOT_ACCEPTABLE,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "about", "value" => "test" . rand())
+    );
+
+    $this->assertEquals(
+        Response::HTTP_NOT_ACCEPTABLE,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "skills", "value" => "add", "key" => "management")
+    );
+
+    $this->assertEquals(
+        Response::HTTP_NOT_ACCEPTABLE,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "skills", "value" => "remove", "key" => "management")
+    );
+
+    $this->assertEquals(
+        Response::HTTP_NOT_ACCEPTABLE,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "status", "value" => "0")
+    );
+
+    $this->assertEquals(
+        Response::HTTP_NOT_ACCEPTABLE,
+        $client->getResponse()->getStatusCode()
+    );
+  }
+
+  public function testProjectModifOtherNotInPrivate()
+  {
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_project_community_not_in_private");
+    $this->tearDown();
+
+    $client = static::createClientWithAuthentication("test"); 
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "name", "value" => "test_project_community_not_in_private_TEST". rand())
+    );
+
+    $this->assertEquals(
+        Response::HTTP_NOT_FOUND,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "about", "value" => "test" . rand())
+    );
+
+    $this->assertEquals(
+        Response::HTTP_NOT_FOUND,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "skills", "value" => "add", "key" => "management")
+    );
+
+    $this->assertEquals(
+        Response::HTTP_NOT_FOUND,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "skills", "value" => "remove", "key" => "management")
+    );
+
+    $this->assertEquals(
+        Response::HTTP_NOT_FOUND,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "status", "value" => "0")
+    );
+
+    $this->assertEquals(
+        Response::HTTP_NOT_FOUND,
+        $client->getResponse()->getStatusCode()
+    );
+  }
+
+  public function testProjectPrivatePublic()
+  {
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_project_community_owner");
+    $this->tearDown();
+
+    $client = static::createClientWithAuthentication("test");
+    $tokenPrivate = $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('makePrivate');
+    $tokenPublic = $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('makePublic');
+
+    $client->request(
+        'GET',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/make/private?token=' . $tokenPrivate
+    );
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_project_community_owner");
+    $this->tearDown();
+
+    $this->assertTrue(
+        $project->isPrivate()
+    );
+
+    $client->request(
+        'GET',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/make/public?token=' . $tokenPublic
+    );
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_project_community_owner");
+    $this->tearDown();
+
+    $this->assertFalse(
+        $project->isPrivate()
+    );
+  }
+
+  public function testProjectPrivatePublicNotOwner()
+  {
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_project_community_owner");
+    $this->tearDown();
+
+    $client = static::createClientWithAuthentication("other_test");
+
+    $client->request(
+        'GET',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/make/private?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('makePrivate')
+    );
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_project_community_owner");
+    $this->tearDown();
+
+    $this->assertFalse(
+        $project->isPrivate()
+    );
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_project_community_participant");
+    $this->tearDown();
+
+    $client->reload();
+    $client = static::createClientWithAuthentication("test");
+
+    $client->request(
+        'GET',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/make/private?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('makePrivate')
+    );
+
+    $this->assertFalse(
+        $project->isPrivate()
+    );
+
+  }
 
 }

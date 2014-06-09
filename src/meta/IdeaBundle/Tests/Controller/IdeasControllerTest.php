@@ -279,4 +279,239 @@ class IdeasControllerTest extends SecuredWebTestCase
     $this->assertCount(1, $crawler->filter('h2:contains("test_guest_idea")'));
 
   }
+
+  public function testIdeaModifOwner()
+  {
+
+    $this->setUp();
+    $idea = $this->em->getRepository('metaIdeaBundle:Idea')->findOneByName("test_idea_community_owner");
+    $this->tearDown();
+
+    $client = static::createClientWithAuthentication("test"); 
+
+    $client->request(
+        'POST',
+        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "name", "value" => "test_idea_community_owner_TEST". rand())
+    );
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client->request(
+        'POST',
+        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "name", "value" => "test_idea_community_owner")
+    );
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client->request(
+        'POST',
+        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "about", "value" => "test" . rand())
+    );
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client->request(
+        'POST',
+        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "content", "value" => "test" . rand())
+    );
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+  }
+
+  public function testIdeaModifNotOwner()
+  {
+
+    $this->setUp();
+    $idea = $this->em->getRepository('metaIdeaBundle:Idea')->findOneByName("test_idea_community_owner");
+    $this->tearDown();
+
+    $client = static::createClientWithAuthentication("other_test"); 
+
+    $client->request(
+        'POST',
+        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "name", "value" => "test_idea_community_owner_TEST". rand())
+    );
+
+    $this->assertEquals(
+        Response::HTTP_NOT_ACCEPTABLE,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client->request(
+        'POST',
+        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "about", "value" => "test" . rand())
+    );
+
+    $this->assertEquals(
+        Response::HTTP_NOT_ACCEPTABLE,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client->request(
+        'POST',
+        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "content", "value" => "test" . rand())
+    );
+
+    $this->assertEquals(
+        Response::HTTP_NOT_ACCEPTABLE,
+        $client->getResponse()->getStatusCode()
+    );
+  }
+
+  public function testIdeaModifParticipant()
+  {
+
+    $this->setUp();
+    $idea = $this->em->getRepository('metaIdeaBundle:Idea')->findOneByName("test_idea_community_participant");
+    $this->tearDown();
+
+    $client = static::createClientWithAuthentication("test"); 
+
+    $client->request(
+        'POST',
+        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "name", "value" => "test_idea_community_participant_TEST". rand())
+    );
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client->request(
+        'POST',
+        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "name", "value" => "test_idea_community_participant")
+    );
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client->request(
+        'POST',
+        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "about", "value" => "test" . rand())
+    );
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client->request(
+        'POST',
+        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "content", "value" => "test" . rand())
+    );
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+  }
+
+  public function testIdeaModifNotIn()
+  {
+
+    $this->setUp();
+    $idea = $this->em->getRepository('metaIdeaBundle:Idea')->findOneByName("test_idea_community_not_in");
+    $this->tearDown();
+
+    $client = static::createClientWithAuthentication("test"); 
+
+    $client->request(
+        'POST',
+        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "name", "value" => "test_idea_community_not_in_TEST". rand())
+    );
+
+    $this->assertEquals(
+        Response::HTTP_NOT_ACCEPTABLE,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client->request(
+        'POST',
+        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "about", "value" => "test" . rand())
+    );
+
+    $this->assertEquals(
+        Response::HTTP_NOT_ACCEPTABLE,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client->request(
+        'POST',
+        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        array( "name" => "content", "value" => "test" . rand())
+    );
+
+    $this->assertEquals(
+        Response::HTTP_NOT_ACCEPTABLE,
+        $client->getResponse()->getStatusCode()
+    );
+  }
+
+  public function testIdeaWatch()
+  {
+
+    $this->setUp();
+    $idea = $this->em->getRepository('metaIdeaBundle:Idea')->findOneByName("test_idea_community_owner");
+    $this->tearDown();
+
+    $client = static::createClientWithAuthentication("test");
+
+    $client->request(
+        'POST',
+        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/watch?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('watch')
+    );
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client->request(
+        'POST',
+        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/unwatch?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('unwatch')
+    );
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client->request(
+        'POST',
+        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/unwatch?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('unwatch')
+    );
+
+    $this->assertEquals(
+        Response::HTTP_NOT_ACCEPTABLE,
+        $client->getResponse()->getStatusCode()
+    );
+  }
+
 }
