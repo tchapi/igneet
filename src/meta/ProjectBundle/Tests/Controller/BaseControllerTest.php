@@ -1181,4 +1181,169 @@ class BaseControllerTest extends SecuredWebTestCase
 
   }
 
+  public function testProjectCommentOwner()
+  {
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_project_community_owner");
+    $this->tearDown();
+
+    $client = static::createClientWithAuthentication("test");
+    $comment = "comment" . mt_rand() . " - " . mt_rand();
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/comment?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('comment'),
+        array( "comment" => $comment )
+    );
+
+    $crawler = $client->request(
+        'GET',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId())
+    );
+    $client->reload();
+
+    $this->assertCount(1, $crawler->filter('p:contains("'.$comment.'")'));
+
+  }
+
+  public function testProjectCommentOwnerPrivate()
+  {
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_project_community_owner_private");
+    $this->tearDown();
+
+    $client = static::createClientWithAuthentication("test");
+    $comment = "comment" . mt_rand() . " - " . mt_rand();
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/comment?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('comment'),
+        array( "comment" => $comment )
+    );
+
+    $crawler = $client->request(
+        'GET',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId())
+    );
+    $client->reload();
+
+    $this->assertCount(1, $crawler->filter('p:contains("'.$comment.'")'));
+
+  }
+
+  public function testProjectCommentParticipant()
+  {
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_project_community_participant");
+    $this->tearDown();
+
+    $client = static::createClientWithAuthentication("test");
+    $comment = "comment" . mt_rand() . " - " . mt_rand();
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/comment?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('comment'),
+        array( "comment" => $comment )
+    );
+
+    $crawler = $client->request(
+        'GET',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId())
+    );
+    $client->reload();
+
+    $this->assertCount(1, $crawler->filter('p:contains("'.$comment.'")'));
+
+  }
+
+  public function testProjectCommentNotIn()
+  {
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_project_community_not_in");
+    $this->tearDown();
+
+    $client = static::createClientWithAuthentication("test");
+    $comment = "comment" . mt_rand() . " - " . mt_rand();
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/comment?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('comment'),
+        array( "comment" => $comment )
+    );
+
+    $crawler = $client->request(
+        'GET',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId())
+    );
+    $client->reload();
+
+    $this->assertCount(1, $crawler->filter('p:contains("'.$comment.'")'));
+
+  }
+
+  public function testProjectCommentNotInPrivate()
+  {
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_project_community_not_in_private");
+    $this->tearDown();
+
+    $client = static::createClientWithAuthentication("test");
+    $comment = "comment" . mt_rand() . " - " . mt_rand();
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/comment?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('comment'),
+        array( "comment" => $comment )
+    );
+
+    $this->assertEquals(
+        Response::HTTP_NOT_FOUND,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $crawler = $client->request(
+        'GET',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId())
+    );
+    $client->reload();
+
+    $this->assertCount(0, $crawler->filter('p:contains("'.$comment.'")'));
+
+  }
+
+  public function testProjectCommentOut()
+  {
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_out_project");
+    $this->tearDown();
+
+    $client = static::createClientWithAuthentication("test");
+    $comment = "comment" . mt_rand() . " - " . mt_rand();
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/comment?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('comment'),
+        array( "comment" => $comment )
+    );
+
+    $this->assertEquals(
+        Response::HTTP_NOT_FOUND,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $crawler = $client->request(
+        'GET',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId())
+    );
+    $client->reload();
+
+    $this->assertCount(0, $crawler->filter('p:contains("'.$comment.'")'));
+
+  }
 }

@@ -93,6 +93,6 @@ To run the unit tests with `phpunit`, you need to add some fixtures first :
 
     php app/console doctrine:fixtures:load --append
 
-Then you can run the tests :
+Then you can run the tests (you need more than 300 Mo, so the limit is set to 1Go of memory):
 
-    phpunit -c app/
+    phpunit -d memory_limit=1024M -c app/
