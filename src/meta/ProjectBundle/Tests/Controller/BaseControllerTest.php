@@ -1203,6 +1203,11 @@ class BaseControllerTest extends SecuredWebTestCase
     );
     $client->reload();
 
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
     $this->assertCount(1, $crawler->filter('p:contains("'.$comment.'")'));
 
   }
@@ -1228,6 +1233,11 @@ class BaseControllerTest extends SecuredWebTestCase
         '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId())
     );
     $client->reload();
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
 
     $this->assertCount(1, $crawler->filter('p:contains("'.$comment.'")'));
 
@@ -1255,6 +1265,11 @@ class BaseControllerTest extends SecuredWebTestCase
     );
     $client->reload();
 
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
     $this->assertCount(1, $crawler->filter('p:contains("'.$comment.'")'));
 
   }
@@ -1280,6 +1295,11 @@ class BaseControllerTest extends SecuredWebTestCase
         '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId())
     );
     $client->reload();
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
 
     $this->assertCount(1, $crawler->filter('p:contains("'.$comment.'")'));
 
@@ -1312,7 +1332,74 @@ class BaseControllerTest extends SecuredWebTestCase
     );
     $client->reload();
 
-    $this->assertCount(0, $crawler->filter('p:contains("'.$comment.'")'));
+    $this->assertEquals(
+        Response::HTTP_NOT_FOUND,
+        $client->getResponse()->getStatusCode()
+    );
+
+  }
+
+  public function testProjectCommentGuest()
+  {
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_guest_project");
+    $this->tearDown();
+
+    $client = static::createClientWithAuthentication("test");
+    $comment = "comment" . mt_rand() . " - " . mt_rand();
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/comment?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('comment'),
+        array( "comment" => $comment )
+    );
+    $crawler = $client->request(
+        'GET',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId())
+    );
+    $client->reload();
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $this->assertCount(1, $crawler->filter('p:contains("'.$comment.'")'));
+
+  }
+
+  public function testProjectCommentGuestNotIn()
+  {
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_guest_project_not_in");
+    $this->tearDown();
+
+    $client = static::createClientWithAuthentication("test");
+    $comment = "comment" . mt_rand() . " - " . mt_rand();
+
+    $client->request(
+        'POST',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/comment?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('comment'),
+        array( "comment" => $comment )
+    );
+
+    $this->assertEquals(
+        Response::HTTP_NOT_FOUND,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $crawler = $client->request(
+        'GET',
+        '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId())
+    );
+    $client->reload();
+
+    $this->assertEquals(
+        Response::HTTP_NOT_FOUND,
+        $client->getResponse()->getStatusCode()
+    );
 
   }
 
@@ -1343,7 +1430,10 @@ class BaseControllerTest extends SecuredWebTestCase
     );
     $client->reload();
 
-    $this->assertCount(0, $crawler->filter('p:contains("'.$comment.'")'));
+    $this->assertEquals(
+        Response::HTTP_NOT_FOUND,
+        $client->getResponse()->getStatusCode()
+    );
 
   }
 }

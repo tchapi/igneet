@@ -612,6 +612,37 @@ class IdeasControllerTest extends SecuredWebTestCase
         Response::HTTP_NOT_FOUND,
         $client->getResponse()->getStatusCode()
     );
+
+    $crawler = $client->request(
+        'GET',
+        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId())
+    );
+    $client->reload();
+
+    $this->assertCount(0, $crawler->filter('p:contains("'.$comment.'")'));
+
+  }
+
+  public function testIdeaGuest()
+  {
+
+    $this->setUp();
+    $idea = $this->em->getRepository('metaIdeaBundle:Idea')->findOneByName("test_guest_idea");
+    $this->tearDown();
+
+    $client = static::createClientWithAuthentication("test");
+    $comment = "comment" . mt_rand() . " - " . mt_rand();
+
+    $client->request(
+        'POST',
+        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/comment?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('comment'),
+        array( "comment" => $comment )
+    );
+
+    $this->assertEquals(
+        Response::HTTP_NOT_FOUND,
+        $client->getResponse()->getStatusCode()
+    );
     
     $crawler = $client->request(
         'GET',
