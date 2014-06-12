@@ -8,6 +8,7 @@ use meta\UserBundle\Entity\User,
     meta\GeneralBundle\Entity\Log\UserLogEntry,
     meta\GeneralBundle\Entity\Log\IdeaLogEntry,
     meta\GeneralBundle\Entity\Log\StandardProjectLogEntry,
+    meta\GeneralBundle\Entity\Log\CommunityLogEntry,
     meta\GeneralBundle\Entity\Comment\BaseComment;
 
 class LogService
@@ -48,7 +49,7 @@ class LogService
 
         // Find the type of LogEntry
         $type = $this->log_types[$logActionName]['type'];
-        
+
         switch ($type) {
             case 'idea':
                  $entry = new IdeaLogEntry();
@@ -59,6 +60,11 @@ class LogService
                  $entry = new StandardProjectLogEntry();
                  $repositoryName = 'metaGeneralBundle:Log\StandardProjectLogEntry';
                  $subjectType = "standardProject";
+                 break;
+            case 'community':
+                 $entry = new CommunityLogEntry();
+                 $repositoryName = 'metaGeneralBundle:Log\CommunityLogEntry';
+                 $subjectType = "community";
                  break;
             case 'other_user':
                  $entry = new UserLogEntry();
@@ -90,7 +96,6 @@ class LogService
             $lastEntry->setCreatedAt(new \Datetime('now'));
             $lastEntry->incrementCombinedCount();
         } else {
-
             // else persists the new log
             // $this->security_context->getToken() is NEVER null here
             $entry->setCommunity($this->security_context->getToken()->getUser()->getCurrentCommunity());
@@ -362,7 +367,7 @@ class LogService
         // Last community log
         if (count($objects['communities']) > 0){
             foreach ($objects['communities'] as $community) {
-                $entries = $baseLogRepository->findByLogTypes($this->log_community_filters, array('community' => $community));
+                $entries = $baseLogRepository->findByLogTypes(null/*$this->log_community_filters*/, array('community' => $community));
                 if (count($entries) > 0) {
                     $lastDate = max($lastDate, $entries[0]->getCreatedAt());
                 }
@@ -415,7 +420,7 @@ class LogService
         // Fetch all logs related to the communities
         if (count($objects['communities']) > 0){
             foreach ($objects['communities'] as $community) {
-                $entries = $baseLogRepository->findByLogTypes($this->log_community_filters, array('community' => $community));
+                $entries = $baseLogRepository->findByLogTypes(null/*$this->log_community_filters*/, array('community' => $community));
                 foreach ($entries as $notification) { 
                     // Strips private projects logs
                     if ($this->log_types[$notification->getType()]['type'] === "project" && $notification->getSubject()->isPrivate()) {

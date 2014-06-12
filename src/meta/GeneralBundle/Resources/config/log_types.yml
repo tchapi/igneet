@@ -57,8 +57,8 @@ parameters:
       type: community
       icon: group
     user_comment_community:
-      combinable: false
-      displayable: false
+      combinable: true
+      displayable: true
       filter_groups: [comments, community, social]
       type: community
       icon: group
