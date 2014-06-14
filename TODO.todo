@@ -2,7 +2,7 @@
 
 TODO : 
 
-  ☐  Refaire un point sur la deletion des users<
+  ☐  Refaire un point sur la deletion des users
 
   ☐  Tests unitaires : continuer User
   ☐  tests unitaires : project
@@ -19,6 +19,7 @@ A évaluer :
    Sinon mettre en gras mais ne pas linker avec une icone oeil barré (?)
  
  ☐ [Eric] Tri des resources dans la vue / resources
+ ☐  Dossiers pour les ressources
 
  ☐ Retirer le markdown :
     retirer ensuite les |markdown dans

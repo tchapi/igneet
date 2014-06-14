@@ -69,17 +69,6 @@ class LoadTestData implements FixtureInterface, ContainerAwareInterface
 
         // FIX ME : managers ?
 
-            TESTS:
-
-            1.
-                "add participant" dans test_project_private_space ne marche pas avec test
-                "add owner" dans test_project_private_space ne marche pas avec test
-
-            2.
-                "add participant" dans test_idea_private_space ne marche pas avec test
-                "add owner" dans test_idea_private_space ne marche pas avec test
-                
-
         **/
 
         /* DONE
@@ -97,12 +86,18 @@ class LoadTestData implements FixtureInterface, ContainerAwareInterface
                     Switch auto quand accès alors que dans une communauté OK
                 other_test n'a pas accès à test_project_private_space OK
                 toutes modifs (POST) etc, marchent avec test OK
+                "add participant" dans test_project_private_space ne marche pas avec test
+                "add owner" dans test_project_private_space ne marche pas avec test
+                "add participant" et "add_owner" et leurs combinaisons
 
             2.
                 test a accès à test_idea_private_space OK
                     Switch auto quand accès alors que dans une communauté OK
                 other_test n'a pas accès à test_idea_private_space OK
                 toutes modifs (POST) etc, marchent avec test OK
+                "add participant" dans test_idea_private_space ne marche pas avec test
+                "add owner" dans test_idea_private_space ne marche pas avec test
+                
 
             3. 
                 test a accès à test_project_community_owner OK

@@ -654,4 +654,111 @@ class IdeasControllerTest extends SecuredWebTestCase
 
   }
 
+  public function testIdeaAddUserPrivateSpace()
+  {
+
+    $client = static::createClientWithAuthentication("test");
+    $tokenAdd = $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('addParticipant');
+    
+    // add other_test as participant
+
+    $this->setUp();
+    $idea = $this->em->getRepository('metaIdeaBundle:Idea')->findOneByName("test_idea_private_space");
+    $this->tearDown();
+
+    $crawler = $client->request('GET', '/app/switch/privatespace', array('token' => $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('switchCommunity')));
+
+    $targetParticipantAsBase64 = array('slug' => 'metaIdeaBundle:Idea:addParticipant', 'external' => false, 'params' => array('uid' => $client->getContainer()->get('uid')->toUId($idea->getId()), 'owner' => false, 'guest' => false));
+    $base64 = base64_encode(json_encode($targetParticipantAsBase64));
+
+    $crawler = $client->request('POST', 
+      '/app/people/choose/' . $base64 . '?token=' . $tokenAdd,
+      array('mailOrUsername' => 'other_test')
+    );
+
+    $this->assertEquals(
+        Response::HTTP_NOT_FOUND,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $this->setUp();
+    $idea = $this->em->getRepository('metaIdeaBundle:Idea')->findOneByName("test_idea_private_space");
+    $this->tearDown();
+
+    $this->assertEquals(
+      0,
+      count($idea->getParticipants())
+    );
+
+  }
+
+
+  public function testIdeaAddUserParticipant()
+  {
+
+    $client = static::createClientWithAuthentication("test");
+    $tokenAdd = $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('addParticipant');
+    $tokenRemove = $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('removeParticipant');
+    
+    // add other_test as participant
+
+    $this->setUp();
+    $idea = $this->em->getRepository('metaIdeaBundle:Idea')->findOneByName("test_idea_community_owner");
+    $community = $this->em->getRepository('metaGeneralBundle:Community\Community')->findOneByName("test_in");
+    $this->tearDown();
+
+    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('switchCommunity')));
+
+    $targetParticipantAsBase64 = array('slug' => 'metaIdeaBundle:Idea:addParticipant', 'external' => false, 'params' => array('uid' => $client->getContainer()->get('uid')->toUId($idea->getId()),'owner' => false, 'guest' => false));
+    $base64 = base64_encode(json_encode($targetParticipantAsBase64));
+
+    $crawler = $client->request('POST', 
+      '/app/people/choose/' . $base64 . '?token=' . $tokenAdd,
+      array("username" => "other_test")
+    );
+
+    $this->assertTrue(
+        $client->getResponse()->isRedirect('/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/info')
+    );
+
+    $this->setUp();
+    $idea = $this->em->getRepository('metaIdeaBundle:Idea')->findOneByName("test_idea_community_owner");
+    $this->tearDown();
+
+    $this->assertEquals(
+      1,
+      count($idea->getParticipants())
+    );
+  
+
+    // remove other_test as Participant
+
+    $this->setUp();
+    $idea = $this->em->getRepository('metaIdeaBundle:Idea')->findOneByName("test_idea_community_owner");
+    $this->tearDown();
+
+    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('switchCommunity')));
+
+    $targetOwnerAsBase64 = array('slug' => 'metaIdeaBundle:Idea:removeParticipant', 'external' => false, 'params' => array('uid' => $client->getContainer()->get('uid')->toUId($idea->getId()),'owner' => false, 'guest' => false));
+    $base64 = base64_encode(json_encode($targetOwnerAsBase64));
+
+    $crawler = $client->request('GET', 
+      '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/team/remove/other_test/participant?token=' . $tokenRemove
+    );
+
+    $this->assertTrue(
+        $client->getResponse()->isRedirect('/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/info')
+    );
+
+    $this->setUp();
+    $idea = $this->em->getRepository('metaIdeaBundle:Idea')->findOneByName("test_idea_community_owner");
+    $this->tearDown();
+
+    $this->assertEquals(
+      0,
+      count($idea->getParticipants())
+    );
+  
+  }
+
 }

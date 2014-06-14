@@ -1436,4 +1436,623 @@ class BaseControllerTest extends SecuredWebTestCase
     );
 
   }
+
+  public function testProjectAddUserPrivateSpace()
+  {
+
+    $client = static::createClientWithAuthentication("test");
+    $tokenAdd = $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('addParticipantOrOwner');
+    // add other_test as Owner
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_project_private_space");
+    $this->tearDown();
+
+    $crawler = $client->request('GET', '/app/switch/privatespace', array('token' => $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('switchCommunity')));
+
+    $targetOwnerAsBase64 = array('slug' => 'metaProjectBundle:Info:addParticipantOrOwner', 'external' => true, 'params' => array('uid' => $client->getContainer()->get('uid')->toUId($project->getId()),'owner' => true, 'guest' => false));
+    $base64 = base64_encode(json_encode($targetOwnerAsBase64));
+
+    $crawler = $client->request('POST', 
+      '/app/people/choose/' . $base64 . '?token=' . $tokenAdd,
+      array('mailOrUsername' => 'other_test')
+    );
+
+    $this->assertEquals(
+        Response::HTTP_NOT_FOUND,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_project_private_space");
+    $this->tearDown();
+
+    $this->assertEquals(
+      1,
+      count($project->getOwners())
+    );
+
+    // add other_test as Participant
+    
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_project_private_space");
+    $this->tearDown();
+
+    $crawler = $client->request('GET', '/app/switch/privatespace', array('token' => $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('switchCommunity')));
+
+    $targetParticipantAsBase64 = array('slug' => 'metaProjectBundle:Info:addParticipantOrOwner', 'external' => true, 'params' => array('uid' => $client->getContainer()->get('uid')->toUId($project->getId()),'owner' => false, 'guest' => false));
+    $base64 = base64_encode(json_encode($targetParticipantAsBase64));
+
+    $crawler = $client->request('POST', 
+      '/app/people/choose/' . $base64 . '?token=' . $tokenAdd,
+      array('mailOrUsername' => 'other_test')
+    );
+
+    $this->assertEquals(
+        Response::HTTP_NOT_FOUND,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_project_private_space");
+    $this->tearDown();
+
+    $this->assertEquals(
+      0,
+      count($project->getParticipants())
+    );
+
+  }
+
+  public function testProjectRemoveUserPrivateSpace()
+  {
+
+    $client = static::createClientWithAuthentication("test");
+    $tokenRemove = $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('removeParticipantOrOwner');
+    $tokenRemoveMySelf = $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('removeMySelfParticipant');
+    // remove other_test as Owner
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_project_private_space");
+    $this->tearDown();
+
+    $crawler = $client->request('GET', '/app/switch/privatespace', array('token' => $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('switchCommunity')));
+
+    $targetOwnerAsBase64 = array('slug' => 'metaProjectBundle:Info:removeParticipantOrOwner', 'external' => true, 'params' => array('uid' => $client->getContainer()->get('uid')->toUId($project->getId()),'owner' => true, 'guest' => false));
+    $base64 = base64_encode(json_encode($targetOwnerAsBase64));
+
+    $crawler = $client->request('GET', 
+      '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/team/remove/other_test/owner?token=' . $tokenRemove
+    );
+
+    $this->assertTrue(
+        $client->getResponse()->isRedirect('/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/info')
+    );
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_project_private_space");
+    $this->tearDown();
+
+    $this->assertEquals(
+      1,
+      count($project->getOwners())
+    );
+
+    // remove test as Owner
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_project_private_space");
+    $this->tearDown();
+
+    $crawler = $client->request('GET', '/app/switch/privatespace', array('token' => $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('switchCommunity')));
+
+    $targetOwnerAsBase64 = array('slug' => 'metaProjectBundle:Info:removeParticipantOrOwner', 'external' => true, 'params' => array('uid' => $client->getContainer()->get('uid')->toUId($project->getId()),'owner' => true, 'guest' => false));
+    $base64 = base64_encode(json_encode($targetOwnerAsBase64));
+
+    $crawler = $client->request('GET', 
+      '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/team/remove/test/owner?token=' . $tokenRemove
+    );
+
+    $this->assertTrue(
+        $client->getResponse()->isRedirect('/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/info')
+    );
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_project_private_space");
+    $this->tearDown();
+
+    $this->assertEquals(
+      1,
+      count($project->getOwners())
+    );
+
+
+    // remove test as Owner (removeMyselfParticipant)
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_project_private_space");
+    $this->tearDown();
+
+    $crawler = $client->request('GET', '/app/switch/privatespace', array('token' => $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('switchCommunity')));
+
+    $targetOwnerAsBase64 = array('slug' => 'metaProjectBundle:Info:removeMySelfParticipant', 'external' => true, 'params' => array('uid' => $client->getContainer()->get('uid')->toUId($project->getId()),'owner' => false, 'guest' => false));
+    $base64 = base64_encode(json_encode($targetOwnerAsBase64));
+
+    $crawler = $client->request('GET', 
+      '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/team/remove/other_test/participant/self?token=' . $tokenRemoveMySelf
+    );
+
+    $this->assertTrue(
+        $client->getResponse()->isRedirect('/app/projects')
+    );
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_project_private_space");
+    $this->tearDown();
+
+    $this->assertEquals(
+      0,
+      count($project->getParticipants())
+    );
+
+
+    // remove other_test as Participant
+    
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_project_private_space");
+    $this->tearDown();
+
+    $crawler = $client->request('GET', '/app/switch/privatespace', array('token' => $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('switchCommunity')));
+
+    $targetParticipantAsBase64 = array('slug' => 'metaProjectBundle:Info:removeParticipantOrOwner', 'external' => true, 'params' => array('uid' => $client->getContainer()->get('uid')->toUId($project->getId()),'owner' => false, 'guest' => false));
+    $base64 = base64_encode(json_encode($targetParticipantAsBase64));
+
+    $crawler = $client->request('GET', 
+      '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/team/remove/other_test/owner?token=' . $tokenRemove
+    );
+
+    $this->assertTrue(
+        $client->getResponse()->isRedirect('/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/info')
+    );
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_project_private_space");
+    $this->tearDown();
+
+    $this->assertEquals(
+      0,
+      count($project->getParticipants())
+    );
+
+  }
+
+
+  public function testProjectAddUserOwner()
+  {
+
+    $client = static::createClientWithAuthentication("test");
+    $tokenAdd = $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('addParticipantOrOwner');
+    $tokenRemove = $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('removeParticipantOrOwner');
+    
+    // add other_test as Owner
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_project_community_owner");
+    $community = $this->em->getRepository('metaGeneralBundle:Community\Community')->findOneByName("test_in");
+    $this->tearDown();
+
+    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('switchCommunity')));
+
+    $targetOwnerAsBase64 = array('slug' => 'metaProjectBundle:Info:addParticipantOrOwner', 'external' => true, 'params' => array('uid' => $client->getContainer()->get('uid')->toUId($project->getId()),'owner' => true, 'guest' => false));
+    $base64 = base64_encode(json_encode($targetOwnerAsBase64));
+
+    $crawler = $client->request('POST', 
+      '/app/people/choose/' . $base64 . '?token=' . $tokenAdd,
+      array("username" => "other_test")
+    );
+
+    $this->assertTrue(
+        $client->getResponse()->isRedirect('/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/info')
+    );
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_project_community_owner");
+    $this->tearDown();
+
+    $this->assertEquals(
+      2,
+      count($project->getOwners())
+    );
+  
+
+    // remove other_test as Owner
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_project_community_owner");
+    $this->tearDown();
+
+    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('switchCommunity')));
+
+    $targetOwnerAsBase64 = array('slug' => 'metaProjectBundle:Info:removeParticipantOrOwner', 'external' => true, 'params' => array('uid' => $client->getContainer()->get('uid')->toUId($project->getId()),'owner' => true, 'guest' => false));
+    $base64 = base64_encode(json_encode($targetOwnerAsBase64));
+
+    $crawler = $client->request('GET', 
+      '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/team/remove/other_test/owner?token=' . $tokenRemove
+    );
+
+    $this->assertTrue(
+        $client->getResponse()->isRedirect('/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/info')
+    );
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_project_community_owner");
+    $this->tearDown();
+
+    $this->assertEquals(
+      1,
+      count($project->getOwners())
+    );
+  
+  }
+
+  public function testProjectAddUserParticipant()
+  {
+
+    $client = static::createClientWithAuthentication("test");
+    $tokenAdd = $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('addParticipantOrOwner');
+    $tokenRemove = $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('removeParticipantOrOwner');
+    
+    // add other_test as participant
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_project_community_owner");
+    $community = $this->em->getRepository('metaGeneralBundle:Community\Community')->findOneByName("test_in");
+    $this->tearDown();
+
+    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('switchCommunity')));
+
+    $targetOwnerAsBase64 = array('slug' => 'metaProjectBundle:Info:addParticipantOrOwner', 'external' => true, 'params' => array('uid' => $client->getContainer()->get('uid')->toUId($project->getId()),'owner' => false, 'guest' => false));
+    $base64 = base64_encode(json_encode($targetOwnerAsBase64));
+
+    $crawler = $client->request('POST', 
+      '/app/people/choose/' . $base64 . '?token=' . $tokenAdd,
+      array("username" => "other_test")
+    );
+
+    $this->assertTrue(
+        $client->getResponse()->isRedirect('/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/info')
+    );
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_project_community_owner");
+    $this->tearDown();
+
+    $this->assertEquals(
+      1,
+      count($project->getParticipants())
+    );
+  
+
+    // remove other_test as participant
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_project_community_owner");
+    $this->tearDown();
+
+    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('switchCommunity')));
+
+    $targetOwnerAsBase64 = array('slug' => 'metaProjectBundle:Info:removeParticipantOrOwner', 'external' => true, 'params' => array('uid' => $client->getContainer()->get('uid')->toUId($project->getId()),'owner' => false, 'guest' => false));
+    $base64 = base64_encode(json_encode($targetOwnerAsBase64));
+
+    $crawler = $client->request('GET', 
+      '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/team/remove/other_test/participant?token=' . $tokenRemove
+    );
+
+    $this->assertTrue(
+        $client->getResponse()->isRedirect('/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/info')
+    );
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_project_community_owner");
+    $this->tearDown();
+
+    $this->assertEquals(
+      0,
+      count($project->getParticipants())
+    );
+  
+  }
+
+
+  public function testProjectAddUserParticipantAndUpgradeOwner()
+  {
+
+    $client = static::createClientWithAuthentication("test");
+    $tokenAdd = $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('addParticipantOrOwner');
+    $tokenRemove = $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('removeParticipantOrOwner');
+    
+    // add other_test as participant
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_project_community_owner");
+    $community = $this->em->getRepository('metaGeneralBundle:Community\Community')->findOneByName("test_in");
+    $this->tearDown();
+
+    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('switchCommunity')));
+
+    $targetOwnerAsBase64 = array('slug' => 'metaProjectBundle:Info:addParticipantOrOwner', 'external' => true, 'params' => array('uid' => $client->getContainer()->get('uid')->toUId($project->getId()),'owner' => false, 'guest' => false));
+    $base64 = base64_encode(json_encode($targetOwnerAsBase64));
+
+    $crawler = $client->request('POST', 
+      '/app/people/choose/' . $base64 . '?token=' . $tokenAdd,
+      array("username" => "other_test")
+    );
+
+    $this->assertTrue(
+        $client->getResponse()->isRedirect('/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/info')
+    );
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_project_community_owner");
+    $this->tearDown();
+
+    $this->assertEquals(
+      1,
+      count($project->getParticipants())
+    );
+  
+    // add other_test as owner
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_project_community_owner");
+    $community = $this->em->getRepository('metaGeneralBundle:Community\Community')->findOneByName("test_in");
+    $this->tearDown();
+
+    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('switchCommunity')));
+
+    $targetOwnerAsBase64 = array('slug' => 'metaProjectBundle:Info:addParticipantOrOwner', 'external' => true, 'params' => array('uid' => $client->getContainer()->get('uid')->toUId($project->getId()),'owner' => true, 'guest' => false));
+    $base64 = base64_encode(json_encode($targetOwnerAsBase64));
+
+    $crawler = $client->request('POST', 
+      '/app/people/choose/' . $base64 . '?token=' . $tokenAdd,
+      array("username" => "other_test")
+    );
+
+    $this->assertTrue(
+        $client->getResponse()->isRedirect('/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/info')
+    );
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_project_community_owner");
+    $this->tearDown();
+
+    $this->assertEquals(
+      0,
+      count($project->getParticipants())
+    );
+  
+    $this->assertEquals(
+      2,
+      count($project->getOwners())
+    );
+  
+    // remove other_test as owner
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_project_community_owner");
+    $this->tearDown();
+
+    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('switchCommunity')));
+
+    $targetOwnerAsBase64 = array('slug' => 'metaProjectBundle:Info:removeParticipantOrOwner', 'external' => true, 'params' => array('uid' => $client->getContainer()->get('uid')->toUId($project->getId()),'owner' => true, 'guest' => false));
+    $base64 = base64_encode(json_encode($targetOwnerAsBase64));
+
+    $crawler = $client->request('GET', 
+      '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/team/remove/other_test/owner?token=' . $tokenRemove
+    );
+
+    $this->assertTrue(
+        $client->getResponse()->isRedirect('/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/info')
+    );
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_project_community_owner");
+    $this->tearDown();
+
+    $this->assertEquals(
+      0,
+      count($project->getParticipants())
+    );
+
+    $this->assertEquals(
+      1,
+      count($project->getOwners())
+    );
+  
+  }
+
+
+  public function testProjectAddSelfOwnerAndParticipant()
+  {
+
+    $client = static::createClientWithAuthentication("test");
+    $tokenAdd = $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('addParticipantOrOwner');
+    $tokenRemove = $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('removeParticipantOrOwner');
+    
+    // add test as owner
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_project_community_owner");
+    $community = $this->em->getRepository('metaGeneralBundle:Community\Community')->findOneByName("test_in");
+    $this->tearDown();
+
+    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('switchCommunity')));
+
+    $targetOwnerAsBase64 = array('slug' => 'metaProjectBundle:Info:addParticipantOrOwner', 'external' => true, 'params' => array('uid' => $client->getContainer()->get('uid')->toUId($project->getId()),'owner' => true, 'guest' => false));
+    $base64 = base64_encode(json_encode($targetOwnerAsBase64));
+
+    $crawler = $client->request('POST', 
+      '/app/people/choose/' . $base64 . '?token=' . $tokenAdd,
+      array("username" => "test")
+    );
+
+    $this->assertTrue(
+        $client->getResponse()->isRedirect('/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/info')
+    );
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_project_community_owner");
+    $this->tearDown();
+
+    $this->assertEquals(
+      1,
+      count($project->getOwners())
+    );
+  
+
+    // add test as participant
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_project_community_owner");
+    $community = $this->em->getRepository('metaGeneralBundle:Community\Community')->findOneByName("test_in");
+    $this->tearDown();
+
+    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('switchCommunity')));
+
+    $targetOwnerAsBase64 = array('slug' => 'metaProjectBundle:Info:addParticipantOrOwner', 'external' => true, 'params' => array('uid' => $client->getContainer()->get('uid')->toUId($project->getId()),'owner' => false, 'guest' => false));
+    $base64 = base64_encode(json_encode($targetOwnerAsBase64));
+
+    $crawler = $client->request('POST', 
+      '/app/people/choose/' . $base64 . '?token=' . $tokenAdd,
+      array("username" => "test")
+    );
+
+    $this->assertTrue(
+        $client->getResponse()->isRedirect('/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/info')
+    );
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_project_community_owner");
+    $this->tearDown();
+
+    $this->assertEquals(
+      1,
+      count($project->getOwners())
+    );
+  
+    $this->assertEquals(
+      0,
+      count($project->getParticipants())
+    );
+  }
+
+
+  public function testProjectAddStrangerFromCommunity()
+  {
+    
+
+    $client = static::createClientWithAuthentication("other_test");
+    $tokenAdd = $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('addParticipantOrOwner');
+    $tokenRemove = $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('removeParticipantOrOwner');
+    
+    // add test as participant
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_out_project");
+    $community = $this->em->getRepository('metaGeneralBundle:Community\Community')->findOneByName("test_out");
+    $this->tearDown();
+
+    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('switchCommunity')));
+
+    $targetOwnerAsBase64 = array('slug' => 'metaProjectBundle:Info:addParticipantOrOwner', 'external' => true, 'params' => array('uid' => $client->getContainer()->get('uid')->toUId($project->getId()),'owner' => false, 'guest' => false));
+    $base64 = base64_encode(json_encode($targetOwnerAsBase64));
+
+    $crawler = $client->request('POST', 
+      '/app/people/choose/' . $base64 . '?token=' . $tokenAdd,
+      array("username" => "test")
+    );
+
+    $this->assertTrue(
+        $client->getResponse()->isRedirect('/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/info')
+    );
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_out_project");
+    $this->tearDown();
+
+    $this->assertEquals(
+      1,
+      count($project->getParticipants())
+    );
+
+    // add test as owner
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_out_project");
+    $community = $this->em->getRepository('metaGeneralBundle:Community\Community')->findOneByName("test_out");
+    $this->tearDown();
+
+    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('switchCommunity')));
+
+    $targetOwnerAsBase64 = array('slug' => 'metaProjectBundle:Info:addParticipantOrOwner', 'external' => true, 'params' => array('uid' => $client->getContainer()->get('uid')->toUId($project->getId()),'owner' => true, 'guest' => false));
+    $base64 = base64_encode(json_encode($targetOwnerAsBase64));
+
+    $crawler = $client->request('POST', 
+      '/app/people/choose/' . $base64 . '?token=' . $tokenAdd,
+      array("username" => "test")
+    );
+
+    $this->assertTrue(
+        $client->getResponse()->isRedirect('/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/info')
+    );
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_out_project");
+    $this->tearDown();
+
+    $this->assertEquals(
+      2,
+      count($project->getOwners())
+    );
+  
+    $this->assertEquals(
+      0,
+      count($project->getParticipants())
+    );
+
+    // remove test as owner
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_out_project");
+    $this->tearDown();
+
+    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('switchCommunity')));
+
+    $targetOwnerAsBase64 = array('slug' => 'metaProjectBundle:Info:removeParticipantOrOwner', 'external' => true, 'params' => array('uid' => $client->getContainer()->get('uid')->toUId($project->getId()),'owner' => true, 'guest' => false));
+    $base64 = base64_encode(json_encode($targetOwnerAsBase64));
+
+    $crawler = $client->request('GET', 
+      '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/team/remove/test/owner?token=' . $tokenRemove
+    );
+
+    $this->assertTrue(
+        $client->getResponse()->isRedirect('/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . '/info')
+    );
+
+    $this->setUp();
+    $project = $this->em->getRepository('metaProjectBundle:StandardProject')->findOneByName("test_out_project");
+    $this->tearDown();
+
+    $this->assertEquals(
+      0,
+      count($project->getParticipants())
+    );
+
+    $this->assertEquals(
+      1,
+      count($project->getOwners())
+    );
+  
+  }
+
 }
