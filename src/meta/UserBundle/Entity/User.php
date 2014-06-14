@@ -1247,7 +1247,7 @@ class User implements AdvancedUserInterface
      * @param \meta\IdeaBundle\Entity\Idea $ideaWatched
      * @return User
      */
-    public function addIdeasWatched(\meta\IdeaBundle\Entity\Idea $ideaWatched)
+    public function addIdeaWatched(\meta\IdeaBundle\Entity\Idea $ideaWatched)
     {
         if (!is_null($ideaWatched)){
             $ideaWatched->addWatcher($this);
@@ -1272,7 +1272,7 @@ class User implements AdvancedUserInterface
      *
      * @param \meta\IdeaBundle\Entity\Idea $ideaWatched
      */
-    public function removeIdeasWatched(\meta\IdeaBundle\Entity\Idea $ideaWatched)
+    public function removeIdeaWatched(\meta\IdeaBundle\Entity\Idea $ideaWatched)
     {
         if (!is_null($ideaWatched)){
             $ideaWatched->removeWatcher($this);

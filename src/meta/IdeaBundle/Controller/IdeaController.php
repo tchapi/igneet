@@ -722,7 +722,7 @@ class IdeaController extends Controller
                 );
 
                 $logService = $this->container->get('logService');
-                $logService->log($this->getUser(), 'user_is_made_participant_idea', $this->base['idea'], array( 'other_user' => array('logName' => $newParticipant->getLogName(), 'identifier' => $newParticipant->getUsername()) ));
+                $logService->log($this->getUser(), 'user_made_user_participant_idea', $this->base['idea'], array( 'other_user' => array('logName' => $newParticipant->getLogName(), 'identifier' => $newParticipant->getUsername()) ));
 
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
@@ -770,7 +770,7 @@ class IdeaController extends Controller
 
             if ($toRemoveParticipant && $toRemoveParticipant->isParticipatingInIdea($this->base['idea']) ) {
                 
-                $toRemoveParticipant->removeIdeasParticipatedIn($this->base['idea']);
+                $toRemoveParticipant->removeIdeaParticipatedIn($this->base['idea']);
 
                 $this->get('session')->getFlashBag()->add(
                     'success',
@@ -827,7 +827,7 @@ class IdeaController extends Controller
 
             if ( !($authenticatedUser->isWatchingIdea($this->base['idea'])) ){
 
-                $authenticatedUser->addIdeasWatched($this->base['idea']);
+                $authenticatedUser->addIdeaWatched($this->base['idea']);
 
                 $logService = $this->container->get('logService');
                 $logService->log($authenticatedUser, 'user_watch_idea', $this->base['idea'], array());
@@ -883,7 +883,7 @@ class IdeaController extends Controller
             // The actually authenticated user now unwatches $idea
             if ( $authenticatedUser->isWatchingIdea($this->base['idea']) ){
 
-                $authenticatedUser->removeIdeasWatched($this->base['idea']);
+                $authenticatedUser->removeIdeaWatched($this->base['idea']);
 
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
