@@ -1,0 +1,140 @@
+fos_elastica:
+  clients:
+    default: { host: %elastic_host%, port: %elastic_port% }
+  indexes:
+    igneet:
+      client: default
+      finder: ~
+      settings:
+        index:
+          analysis:
+            analyzer:
+              custom_analyzer :
+                type     :    custom
+                tokenizer:    nGram
+                filter   :    [stopwords, asciifolding ,lowercase, snowball, elision, worddelimiter]
+              custom_search_analyzer :
+                type     :    custom
+                tokenizer:    standard
+                filter   :    [stopwords, asciifolding ,lowercase, snowball, elision, worddelimiter]
+            tokenizer:
+              nGram:
+                type:     nGram
+                min_gram: 2
+                max_gram: 20
+            filter:
+              snowball:
+                type:     snowball
+                language: French
+              elision:
+                type:     elision
+                articles: [l, m, t, qu, n, s, j, d]
+              stopwords:
+                type:      stop
+                stopwords: [_french_]
+                ignore_case : true
+              worddelimiter :
+                type:       word_delimiter
+      types:
+        user:
+          mappings:
+            id:
+              type: integer
+            createdAt:
+              type: date
+            username: ~
+            first_name: ~
+            last_name: ~
+            headline: ~
+            about: ~
+          persistence:
+            driver: orm
+            model: meta\UserBundle\Entity\User
+            finder: ~
+            provider: ~
+            listener: ~
+        idea:
+          mappings:
+            id:
+              type: integer
+            createdAt:
+              type: date
+            name: ~
+            headline: ~
+            content: ~
+          persistence:
+            driver: orm
+            model: meta\IdeaBundle\Entity\Idea
+            finder: ~
+            provider: ~
+            listener: ~
+        project:
+          mappings:
+            id:
+              type: integer
+            createdAt:
+              type: date
+            name: ~
+            headline: ~
+          persistence:
+            driver: orm
+            model: meta\ProjectBundle\Entity\StandardProject
+            finder: ~
+            provider: ~
+            listener: ~
+        wikipages:
+          mappings:
+            id:
+              type: integer
+            createdAt:
+              type: date
+            title: ~
+            content: ~
+          persistence:
+            driver: orm
+            model: meta\ProjectBundle\Entity\WikiPage
+            finder: ~
+            provider: ~
+            listener: ~
+        resources:
+          mappings:
+            id:
+              type: integer
+            createdAt:
+              type: date
+            title: ~
+            original_filename: ~
+            url: ~
+          persistence:
+            driver: orm
+            model: meta\ProjectBundle\Entity\Resource
+            finder: ~
+            provider: ~
+            listener: ~
+        lists:
+          mappings:
+            id:
+              type: integer
+            createdAt:
+              type: date
+            name: ~
+            description: ~
+          persistence:
+            driver: orm
+            model: meta\ProjectBundle\Entity\CommonList
+            finder: ~
+            provider: ~
+            listener: ~
+        listitems:
+          mappings:
+            id:
+              type: integer
+            createdAt:
+              type: date
+            text: ~
+          persistence:
+            driver: orm
+            model: meta\ProjectBundle\Entity\CommonListItem
+            finder: ~
+            provider: ~
+            listener: ~

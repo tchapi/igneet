@@ -1,0 +1,46 @@
+{% extends 'metaGeneralBundle:Community:layout.html.twig' %}
+
+{% block title %}{{ parent() }} > {{ "search.results"|trans }}{% endblock %}
+
+{% block header %}
+  <div class="title">
+    <h2>{{ "search.title"|trans({'%term%': term}) }}</h2>
+    <form>
+
+    </form>
+  </div>
+{% endblock %}
+
+{% block content %}
+<section class="search index">
+  <ul>
+  {% for key, value in data %}
+      {% if value|length > 0 %}
+      <li><a href="#{{ key }}"><i class="fa fa-chevron-down"></i> {{ ("search.results." ~ key)|trans }} ({{ "search.results.count"|transchoice(value|length,{'%count%': value|length}) }})</a></li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+</section>
+<section class="search results">
+
+  {% for key, value in data %}
+
+    {% if value|length > 0 %}
+      <h4>{{ ("search.results." ~ key)|trans }} ({{ "search.results.count"|transchoice(value|length,{'%count%': value|length}) }})</h4>
+      {% spaceless %}
+      <ul id="{{ key }}">
+        {% for item in value %}
+        <li>
+          <img src="{{ asset(item.picture) }}" width="50px" height="50px"/>
+          <h5>{{ item.title }}</h5>
+          <h6>{{ item.extra }}</h6>
+        </li>
+        {% endfor %}
+      </ul>
+      {% endspaceless %}
+    {% endif %}
+  
+  {% endfor %}
+
+</section>
+{% endblock %}
