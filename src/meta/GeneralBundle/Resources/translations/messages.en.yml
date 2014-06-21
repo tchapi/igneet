@@ -189,3 +189,16 @@ shortcode.help: "Toggle the embed link of this page"
 # General
 credits: "Credits"
 creditsHelp: "Thanks to all these projects with which building igneet was made possible."
+# Search
+search:
+  title: "Search results for « %term% »"
+  headline: "Results are sorted by type"
+  results:
+    total: "Total number of results : %count%"
+    count: "{1} 1 result|]1,Inf] %count% results"
+    users: "Users"
+    projects: "Projects"
+    ideas: "Ideas"
+    wikipages: "Wiki pages"
+    resources: "Resources"
+    lists: "Lists"

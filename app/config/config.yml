@@ -10,7 +10,7 @@ imports:
     - { resource: @metaGeneralBundle/Resources/config/first_run.yml }
     - { resource: @metaGeneralBundle/Resources/config/services.yml }
     - { resource: @metaAdminBundle/Resources/config/services.yml }
-
+    - { resource: @metaGeneralBundle/Resources/config/fos_elastica.yml }
 
 framework:
     #esi:             ~

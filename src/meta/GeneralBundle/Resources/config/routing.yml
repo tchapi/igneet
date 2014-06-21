@@ -91,6 +91,12 @@ g_choose_community:
     path:  /community/choose/{targetAsBase64}
     defaults: { _controller: metaGeneralBundle:Default:chooseCommunity }
 
+# Search
+
+g_search:
+    pattern: /search/{term}
+    defaults: { _controller: metaGeneralBundle:Search:search, term: null }
+
 # Comments
 
 g_validate_comment:

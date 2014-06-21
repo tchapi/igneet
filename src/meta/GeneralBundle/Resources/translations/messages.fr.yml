@@ -189,3 +189,16 @@ shortcode.help: "Afficher/Masquer le code court de cette page"
 # General
 credits: "Crédits"
 creditsHelp: "Merci à tous ces projets sans lesquels construire igneet n'aurait pas été possible."
+# Search
+search:
+  title: "Résultats de la recherche « %term% »"
+  headline: "Le résultats sont triés par type"
+  results:
+    total: "Nombre total de résultats : %count%"
+    count: "{1} 1 résultat|]1,Inf] %count% résultats"
+    users: "Utilisateurs"
+    projects: "Projets"
+    ideas: "Idées"
+    wikipages: "Pages Wiki"
+    resources: "Ressources"
+    lists: "Listes"

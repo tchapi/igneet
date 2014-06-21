@@ -22,6 +22,7 @@ class AppKernel extends Kernel
             new Bazinga\Bundle\JsTranslationBundle\BazingaJsTranslationBundle(), /* Provides translation for JS files */
             new Fp\OpenIdBundle\FpOpenIdBundle(), /* To use Open Id for login */
             new RobertoTru\ToInlineStyleEmailBundle\RobertoTruToInlineStyleEmailBundle(), /* For inlining styles in mails */
+            new FOS\ElasticaBundle\FOSElasticaBundle(), /* Elastic Search, for search, you know */
 
             new meta\GeneralBundle\metaGeneralBundle(),
             new meta\UserBundle\metaUserBundle(),

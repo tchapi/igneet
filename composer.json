@@ -29,7 +29,8 @@
         "willdurand/expose-translation-bundle" : "dev-master",
         "fp/openid-bundle"                     : "dev-master",
         "lightopenid/lightopenid"              : "dev-master",
-        "robertotru/to-inline-style-email-bundle" : "dev-master"
+        "robertotru/to-inline-style-email-bundle" : "dev-master",
+        "friendsofsymfony/elastica-bundle"     : "dev-master"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"

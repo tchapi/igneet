@@ -112,14 +112,25 @@ nav[role=mobile]{
     span.help { display: none; }
 
     /* Short code */
-    div.shortcode{
+    div.shortcode {
       display: inline-block;
       line-height: ($menu-inner-height - 2); //see above
       vertical-align: top;
       padding: 0 $menu-padding;
       @include menu-button(false, true);
       & form { display: inline; }
-      & input { outline: 0; margin-left: $menu_padding/2; width: initial; }
+      & input { outline: 0; margin-left: $menu_padding/2; width: initial;}
+    }
+
+    /* Search */
+    div.search {
+      display: inline-block;
+      line-height: ($menu-inner-height - 2); //see above
+      vertical-align: top;
+      padding: 0 $menu-padding;
+      @include menu-button(false, true);
+      & form { display: inline; }
+      & input { outline: 0; margin-left: $menu_padding/2; width: initial; border: none; background: #555; box-shadow: 0 0 1px 3px #555;}
     }
 
     /* inline list */

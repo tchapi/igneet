@@ -20,6 +20,8 @@ parameters:
     ga_tracker_id: 0
     host: igneet.com
     scheme: http
+    elastic_host : localhost
+    elastic_port : 9200
     shared_projects: []
     uservoice_enabled: false
     uservoice_id: null
