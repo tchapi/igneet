@@ -21,8 +21,22 @@ class SearchController extends Controller
     /*
      * Allow to search the wide index
      */
-    public function searchAction(Request $request, $term)
+    public function searchAction(Request $request)
     {
+
+      $term = $request->request->get('term');
+
+      // No term ? Redirect
+      if ($term == "") {
+
+        $this->get('session')->getFlashBag()->add(
+                    'warning',
+                    $this->get('translator')->trans('search.no.term')
+                );
+
+        return $this->redirect($this->generateUrl('g_home_community'));
+      
+      }
 
       $finder = $this->container->get('fos_elastica.finder.igneet');
 
@@ -38,6 +52,10 @@ class SearchController extends Controller
       $wikipages = array();
 
       foreach($results as $result) {
+
+        // TODO FIXME
+        // TODO Check if $authenticatedUser has the right to see the items
+        // TODO FIXME
 
         if ($result instanceof StandardProject) {
           $projects[] = array(

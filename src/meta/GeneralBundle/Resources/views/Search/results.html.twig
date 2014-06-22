@@ -12,6 +12,7 @@
 {% endblock %}
 
 {% block content %}
+{% if total != 0 %}
 <section class="search index">
   <ul>
   {% for key, value in data %}
@@ -26,21 +27,33 @@
   {% for key, value in data %}
 
     {% if value|length > 0 %}
+      <div>
       <h4>{{ ("search.results." ~ key)|trans }} ({{ "search.results.count"|transchoice(value|length,{'%count%': value|length}) }})</h4>
       {% spaceless %}
       <ul id="{{ key }}">
         {% for item in value %}
         <li>
-          <img src="{{ asset(item.picture) }}" width="50px" height="50px"/>
-          <h5>{{ item.title }}</h5>
-          <h6>{{ item.extra }}</h6>
+          <a href="{{ item.path }}">
+            <img src="{{ asset(item.picture) }}" width="50px" height="50px"/>
+              <div>
+                <h5>{{ item.title }}</h5>
+                <h6>{{ item.extra }}</h6>
+              </div>
+          </a>
         </li>
         {% endfor %}
       </ul>
       {% endspaceless %}
+      </div>
     {% endif %}
   
   {% endfor %}
 
 </section>
+{% else %}
+<section>
+<p>{{ "search.no.result"|trans }}</p>
+<p><a href="{{ path('g_home_community') }}">{{ "search.no.result.help"|trans }}</a></p>
+</section>
+{% endif %}
 {% endblock %}

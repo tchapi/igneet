@@ -94,8 +94,8 @@ g_choose_community:
 # Search
 
 g_search:
-    pattern: /search/{term}
-    defaults: { _controller: metaGeneralBundle:Search:search, term: null }
+    pattern: /search
+    defaults: { _controller: metaGeneralBundle:Search:search}
 
 # Comments
 

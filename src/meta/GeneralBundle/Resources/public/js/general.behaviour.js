@@ -120,6 +120,28 @@ $(document).ready(function() {
         e.preventDefault();
     });
 
+
+    // Open the search field
+    $("#search-trigger").click(function(e) {
+        $("#search").fadeToggle(200, function() {
+
+            if ($("#search").is(":visible")) {
+                $("#search input").focus();
+            } else {
+                $("#search input").blur();
+            }
+
+        });
+        e.preventDefault();
+    });
+
+    // Prevents empty search term
+    $("#search").submit(function(e) {
+        if ($("#search input").val() == "") {
+            e.preventDefault();
+        }
+    });
+
     // Toggle index (pages) view
     $(".tree > .toggle").click(function(e) {
         $(this).parent().toggleClass("open");

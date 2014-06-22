@@ -202,3 +202,6 @@ search:
     wikipages: "Wiki pages"
     resources: "Resources"
     lists: "Lists"
+  no.term: "You must provide a search term"
+  no.result: "Your search did not return any result"
+  no.result.help: "Go back to the home of your community"
