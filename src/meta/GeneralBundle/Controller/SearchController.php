@@ -235,9 +235,9 @@ class SearchController extends Controller
           'ideas' => $ideas, 
           'users' => $users,
           'wikipages' => $wikipages,
+          'resources' => $resources,
           'lists' => $lists, 
-          'listitems' => $listitems,
-          'resources' => $resources)
+          'listitems' => $listitems)
         ));
 
     }
