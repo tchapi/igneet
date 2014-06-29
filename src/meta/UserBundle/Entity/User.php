@@ -1624,6 +1624,16 @@ class User implements AdvancedUserInterface
     }
 
     /**
+     * Is not deleted
+     *
+     * @return boolean 
+     */
+    public function isNotDeleted()
+    {
+        return ($this->deleted_at === NULL);
+    }
+
+    /**
      * Deletes
      *
      * @return User 
