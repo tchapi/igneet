@@ -94,13 +94,16 @@ ul.resources {
         @include media($mobile) {
           display: none;
         }
+        & > i {
+          margin-right: 10px;
+        }
         & > * { 
           line-height: 25px;
           vertical-align: top;
         } 
         & > span {
           display: inline-block;
-          @include ellipsis(740px);
+          @include ellipsis(580px);
           @include media($tablet) {
             @include span-columns(3 of 4);
           }
@@ -121,12 +124,20 @@ ul.resources {
         & > a.delete {
           float: right;
           color: $_red;
+          margin-left: 10px;
           @include media($tablet) {
             @include span-columns(1 of 4);
             @include omega;
             float: none;
             display: inline-block;   
             text-align: right;
+          }
+        }
+        & > a.mark {
+          float: right;
+          color: $_secondary;
+          @include media($tablet, $mobile) {
+            display: none;
           }
         }
       }

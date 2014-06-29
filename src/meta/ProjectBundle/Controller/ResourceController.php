@@ -431,6 +431,51 @@ class ResourceController extends BaseController
     }
 
     /*
+     * Mark a resource as  updated
+     */
+    public function updateResourceAction(Request $request, $uid, $resource_uid)
+    {
+
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('markUpdated', $request->get('token'))) {
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $this->get('translator')->trans('invalid.token', array(), 'errors')
+            );
+            return $this->redirect($this->generateUrl('p_show_project_resource', array('uid' => $uid, 'resource_uid' => $resource_uid)));
+        }
+          
+        $this->preComputeRights(array("mustBeOwner" => false, "mustParticipate" => true));
+
+        $response = null;
+        $error = null;
+
+        if ($this->base != false) {
+
+            $repository = $this->getDoctrine()->getRepository('metaProjectBundle:Resource');
+            $resource = $repository->findOneById($this->container->get('uid')->fromUId($resource_uid));
+
+            if ($resource) {
+
+                $em = $this->getDoctrine()->getManager();
+                $resource->update();
+
+                $logService = $this->container->get('logService');
+                $logService->log($this->getUser(), 'user_update_resource', $this->base['project'], array( 'resource' => array( 'logName' => $resource->getLogName(), 'identifier' => $resource->getId()) ) );
+
+                $em->flush();
+
+                $this->get('session')->getFlashBag()->add(
+                    'success',
+                    $this->get('translator')->trans('project.resources.updated')
+                );
+
+            }
+        }
+
+        return $this->redirect($this->generateUrl('p_show_project_resource', array('uid' => $uid, 'resource_uid' => $resource_uid)));
+    }
+
+    /*
      * Delete a resource in the project
      */
     public function deleteResourceAction(Request $request, $uid, $resource_uid)

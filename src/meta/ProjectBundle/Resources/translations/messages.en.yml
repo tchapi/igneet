@@ -139,6 +139,8 @@ project:
     change: "Change this resource"
     delete: "Delete this resource"
     deleteHelp: "Are you sure you want to delete this resource ?"
+    markUpdated: "Mark updated"
+    markUpdatedHelp: "Mark this resource as updated on an external platform"
     download: "Download this resource"
     open: "Open in a new window"
     openHelp: "View in a new window"
@@ -153,6 +155,7 @@ project:
     available: "Available resources"
     created: "Your resource %resource% has successfully been added to the project %project%."
     deleted: "Your resource has successfully been deleted from the project %project%."
+    updated: "Your resource has successfully been marked as updated."
   wiki:
     title: "Wiki"
     titleField: "Title"

@@ -37,6 +37,7 @@
       <i class="fa fa-link"></i> <span data-url="{{ path('p_show_project_resource_edit', {'uid': project.id|to_uid, 'resource_uid': resource.id|to_uid, 'token': csrf_token('edit') }) }}" data-name="url" data-last="{{ resource.url }}" contenteditable="true" rich="false">{{ resource.url }}</span>
       {% endif %}
       <a class="delete" data-confirm="{{ "project.resources.deleteHelp"|trans }}" href="{{ path('p_show_project_resource_delete', {'uid': project.id|to_uid, 'resource_uid': resource.id|to_uid, 'token': csrf_token('delete')}) }}"><i class="fa fa-trash-o"></i> {{ "delete"|trans }}</a>
+      <a class="mark" title="{{ "project.resources.markUpdatedHelp"|trans }}" href="{{ path('p_show_project_resource_mark_updated', {'uid': project.id|to_uid, 'resource_uid': resource.id|to_uid, 'token': csrf_token('markUpdated')}) }}"><i class="fa fa-history"></i> {{ "project.resources.markUpdated"|trans }}</a>
     </form>
     {% endif %}
     

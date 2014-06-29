@@ -180,6 +180,13 @@ p_show_project_resource_delete:
       uid: "[0-9a-zA-Z]*"
       resource_uid: "[0-9a-zA-Z]*"
 
+p_show_project_resource_mark_updated:
+    pattern:  /project/0{uid}/resource/0{resource_uid}/update
+    defaults: { _controller: metaProjectBundle:Resource:updateResource }
+    requirements:
+      uid: "[0-9a-zA-Z]*"
+      resource_uid: "[0-9a-zA-Z]*"
+
 ## LISTS
 p_show_project_list_home:
     pattern:  /project/0{uid}/lists/{page}
