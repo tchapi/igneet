@@ -36,7 +36,7 @@ fos_elastica:
               worddelimiter :
                 type:       word_delimiter
       types:
-        user:
+        users:
           mappings:
             id:
               type: integer
@@ -53,7 +53,8 @@ fos_elastica:
             finder: ~
             provider: ~
             listener: ~
-        idea:
+          indexable_callback: 'isNotDeleted'
+        ideas:
           mappings:
             id:
               type: integer
@@ -68,7 +69,8 @@ fos_elastica:
             finder: ~
             provider: ~
             listener: ~
-        project:
+          indexable_callback: 'isNotDeleted'
+        projects:
           mappings:
             id:
               type: integer
@@ -82,6 +84,7 @@ fos_elastica:
             finder: ~
             provider: ~
             listener: ~
+          indexable_callback: 'isNotDeleted'
         wikipages:
           mappings:
             id:
@@ -138,3 +141,13 @@ fos_elastica:
             finder: ~
             provider: ~
             listener: ~
+parameters:
+  search.limit: 100
+  search.icons:
+      projects: fa fa-paperclip
+      ideas: fa fa-lightbulb-o
+      wikipages: fa fa-font
+      resources: fa fa-file
+      lists: fa fa-tasks
+      listitems: fa fa-bars
+      users: fa fa-users

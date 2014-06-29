@@ -27,6 +27,7 @@ $_red: hsl( 0, saturation($_primary)/2, lightness($_primary));
 $_orange: hsl( 30, saturation($_primary)/2, lightness($_primary));
 $_green: hsl( 120, saturation($_primary)/2, lightness($_primary));
 $_blue: hsl( 220, saturation($_primary)/2, lightness($_primary));
+$_yellow: hsl( 60, 100%, 75%);
 $_error: #9c3535;
 
 /* ******************************************************************** */

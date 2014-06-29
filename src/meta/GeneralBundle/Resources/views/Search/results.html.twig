@@ -5,6 +5,8 @@
 {% block header %}
   <div class="title">
     <h2>{{ "search.title"|trans({'%term%': term}) }}</h2>
+    {% if showNotice %}<h4>{{ "search.notice"|trans({ '%limit%': limit}) }}</h4>{% endif %}
+
     <form>
 
     </form>
@@ -17,7 +19,7 @@
   <ul>
   {% for key, value in data %}
       {% if value|length > 0 %}
-      <li><a href="#{{ key }}"><i class="fa fa-chevron-down"></i> {{ ("search.results." ~ key)|trans }} ({{ "search.results.count"|transchoice(value|length,{'%count%': value|length}) }})</a></li>
+      <li><a href="#{{ key }}"><i class="fa fa-chevron-down"></i> {{ ("search.results." ~ key)|trans }} ({{ value|length }})</a></li>
       {% endif %}
     {% endfor %}
   </ul>
@@ -28,15 +30,15 @@
 
     {% if value|length > 0 %}
       <div>
-      <h4>{{ ("search.results." ~ key)|trans }} ({{ "search.results.count"|transchoice(value|length,{'%count%': value|length}) }})</h4>
+      <h3><i class="{{ icons[key] }}"></i> {{ ("search.results." ~ key)|trans }} ({{ "search.results.count"|transchoice(value|length,{'%count%': value|length}) }})</h3>
       {% spaceless %}
       <ul id="{{ key }}" class="content">
         {% for item in value %}
         <li>
-          <a href="{{ item.path }}"><img src="{{ asset(item.picture) }}" width="50px" height="50px"/></a>
+          {% if item.picture is not null %}<a href="{{ item.path }}"><img src="{{ asset(item.picture) }}" width="50px" height="50px"/></a>{% endif %}
           <div>
-            <a href="{{ item.path }}">{{ item.title }}</a>
-            <div>{{ item.extra }}</div>
+            <a href="{{ item.path }}">{{ item.title|striptags }}</a>{% if item.extra is defined %}<span>({% if item.extra_picture is not null %}<img src="{{ asset(item.extra_picture) }}" width="15px" height="15px"/> {% endif %}{{ item.extra }}</span>){% endif %}
+            <div class="highlight">{% if item.highlight is defined %}...{{ item.highlight|raw }}...{% endif %}</div>
           </div>
         </li>
         {% endfor %}

@@ -192,6 +192,7 @@ creditsHelp: "Merci à tous ces projets sans lesquels construire igneet n'aurait
 # Search
 search:
   title: "Résultats de la recherche « %term% »"
+  notice: "Votre recherche a retourné plus de %limit% résultats, certains ne sont pas affichés ci-dessous; pour affiner votre recherche, essayez d'être plus précis"
   headline: "Le résultats sont triés par type"
   results:
     total: "Nombre total de résultats : %count%"
@@ -202,6 +203,7 @@ search:
     wikipages: "Pages Wiki"
     resources: "Ressources"
     lists: "Listes"
+    listitems: "Entrées de listes"
   no.term: "Vous devez renseigner un terme de recherche"
   no.result: "Votre recherche n'a retourné aucun résultat"
   no.result.help: "Retourner à l'accueil de votre communauté"

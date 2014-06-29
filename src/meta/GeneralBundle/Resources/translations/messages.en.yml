@@ -192,6 +192,7 @@ creditsHelp: "Thanks to all these projects with which building igneet was made p
 # Search
 search:
   title: "Search results for « %term% »"
+  notice: "You search returned more than %limit% results, some are not shown here; for better results, try to be more specific"
   headline: "Results are sorted by type"
   results:
     total: "Total number of results : %count%"
@@ -202,6 +203,7 @@ search:
     wikipages: "Wiki pages"
     resources: "Resources"
     lists: "Lists"
+    listitems: "List items"
   no.term: "You must provide a search term"
   no.result: "Your search did not return any result"
   no.result.help: "Go back to the home of your community"

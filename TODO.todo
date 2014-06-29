@@ -12,6 +12,10 @@ Tests Benjy 1er Nov. :
 
 ---------------------------------------------------------------------------------------------------------------
 
+ ☐  Search :
+    - mettre un "more" à la fin de chaque type
+      more ==> /search/{type} (POST $term) qui ne renvoie que sur un type particulier
+      si 1 seul résultat : ne pas mettre de more etc ...
 
 A évaluer :
 

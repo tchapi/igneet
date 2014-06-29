@@ -94,8 +94,10 @@ g_choose_community:
 # Search
 
 g_search:
-    pattern: /search
-    defaults: { _controller: metaGeneralBundle:Search:search}
+    pattern: /search/{type}
+    defaults: { _controller: metaGeneralBundle:Search:search, type: null }
+    requirements:
+      type: user|idea|project|wikipage|resource|list|listitem
 
 # Comments
 
