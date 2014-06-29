@@ -137,7 +137,7 @@ $(document).ready(function() {
 
     // Prevents empty search term
     $("#search").submit(function(e) {
-        if ($("#search input").val() == "") {
+        if ( $.trim($("#search input").val()) == "") {
             e.preventDefault();
         }
     });
