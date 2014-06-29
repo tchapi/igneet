@@ -350,6 +350,29 @@ class UserRepository extends EntityRepository implements UserProviderInterface
 
   }
 
+  /*
+   * Find all communities a user is in, as a guest or not
+   */
+  public function findCommunitiesOfUser($user, $guest = false)
+  {
+
+    $qb = $this->getEntityManager()->createQueryBuilder();
+
+    $query = $qb->select('c')
+            ->from('metaGeneralBundle:Community\Community', 'c')
+            ->join('c.userCommunities', 'uc')
+            ->where('uc.user = :user')
+            ->setParameter('user', $user)
+            ->andWhere('uc.guest = :guest')
+            ->setParameter('guest', $guest)
+            ->groupBy('c');
+
+    return $query->getQuery()
+                 ->getResult();
+
+  }
+
+
   /* 
    * Find users that should be sent a digest on the date passer
    */
