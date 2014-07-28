@@ -81,7 +81,7 @@ class SearchController extends Controller
       // Define a test function to know if we can display the result
       $test = function ($project) use ($validCommunities, $validGuestCommunities, $authenticatedUser) {
         
-        if ($project->isDeleted()) { return false; }
+        if (is_null($project) || $project->isDeleted()) { return false; }
         //  project is in one of my communities AND (project not private OR (project private AND owner or participant )  )
         //    OR 
         //  project in guest communities AND (owner OR participant)
