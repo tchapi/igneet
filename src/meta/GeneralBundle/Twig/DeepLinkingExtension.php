@@ -52,7 +52,7 @@ class DeepLinkingExtension extends \Twig_Extension
     public function convertDeepLinks($text)
     {
 
-        $count = preg_match_all("/\[\[(\w+?)\:(\w+?)\]\]/", $text, $matches);
+        $count = preg_match_all("/\[\[(\w+?)\:([\w\-]+?)\]\]/", $text, $matches);
 
         if($count > 0)
         {
