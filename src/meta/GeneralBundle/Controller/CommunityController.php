@@ -554,7 +554,7 @@ class CommunityController extends Controller
                         $em->persist($userCommunity);
 
                         $logService = $this->container->get('logService');
-                        $logService->log($user, 'user_enters_community', $this->getUser(), array( 'community' => array( 'logName' => $community->getLogName(), 'identifier' => $community->getId()) ) );
+                        $logService->log($this->getUser(), 'user_enters_community', $user, array( 'community' => array( 'logName' => $community->getLogName(), 'identifier' => $community->getId()) ) );
                             
                         $this->get('session')->getFlashBag()->add(
                             'success',
