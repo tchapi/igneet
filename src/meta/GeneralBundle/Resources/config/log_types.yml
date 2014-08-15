@@ -91,7 +91,7 @@ parameters:
       combinable: false
       displayable: true
       filter_groups: [general, users, social, community]
-      type: other_user
+      type: community
       icon: globe
 # User acting on a project
     project_enters_community: # DONE
