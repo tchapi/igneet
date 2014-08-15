@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * CommunityLogEntry
  *
  * @ORM\Table()
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="meta\GeneralBundle\Entity\Log\CommunityLogEntryRepository")
  */
 class CommunityLogEntry extends BaseLogEntry
 {
