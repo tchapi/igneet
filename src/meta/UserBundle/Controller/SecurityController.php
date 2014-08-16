@@ -288,7 +288,7 @@ class SecurityController extends Controller
                         if ($inviteTokenObject->getCommunityType() === 'user'){
 
                             $logService = $this->container->get('logService');
-                            $logService->log($this->getUser(), 'user_enters_community', $user, array( 'community' => array( 'logName' => $inviteTokenObject->getCommunity()->getLogName() ) ) );
+                            $logService->log($this->getUser(), 'user_enters_community', $community, array());
                         
                         }
 

@@ -533,7 +533,7 @@ class CommunityController extends Controller
                         // User is not guest anymore, we already have a userCommunity object
                         $userCommunityGuest->setGuest(false);
                         $logService = $this->container->get('logService');
-                        $logService->log($this->getUser(), 'user_enters_community', $user, array( 'community' => array( 'logName' => $community->getLogName(), 'identifier' => $community->getId()) ) );
+                        $logService->log($user, 'user_enters_community', $community, array());
                             
                         $this->get('session')->getFlashBag()->add(
                             'success',
@@ -554,7 +554,7 @@ class CommunityController extends Controller
                         $em->persist($userCommunity);
 
                         $logService = $this->container->get('logService');
-                        $logService->log($this->getUser(), 'user_enters_community', $user, array( 'community' => array( 'logName' => $community->getLogName(), 'identifier' => $community->getId()) ) );
+                        $logService->log($user, 'user_enters_community', $community, array());
                             
                         $this->get('session')->getFlashBag()->add(
                             'success',

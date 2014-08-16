@@ -135,7 +135,7 @@ class FirstRunController extends Controller
             $em->persist($community);
 
             $logService = $this->container->get('logService');
-            $logService->log($this->getUser(), 'user_enters_community', $user, array( 'community' => array( 'logName' => $community->getLogName(), 'identifier' => $community->getId()) ) );
+            $logService->log($user, 'user_enters_community', $community, array());
                 
             $community->extendValidityBy($this->container->getParameter('community.viral_extension'));
             

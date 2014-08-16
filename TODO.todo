@@ -2,6 +2,11 @@
 
 TODO : 
 
+user_enters_community
+user principal doit etre l'user qui rentre dans la communauté
+ - remettre de l'ordre dans la table en prod : other_user_id doit etre celui qui invite, user_id celui qui rentre
+ - rajouter array( 'other_user' => le mec qui invite ) dans les calls à user_enters_community
+
   ☐  Refaire un point sur la deletion des users
 
   ☐  Tests unitaires : continuer User
