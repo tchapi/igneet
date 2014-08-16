@@ -18,10 +18,10 @@
        {{ user.createdAt|date("date.fullFormat"|trans) }}
     </td>
     <td>
-      {{ user.lastSeenAt|date("date.fullFormat"|trans) }}
+      {{ user.updatedAt|date("date.fullFormat"|trans) }}
     </td>
     <td>
-      {{ user.updatedAt|date("date.fullFormat"|trans) }}
+      {{ user.lastSeenAt|date("date.fullFormat"|trans) }}
     </td>
   </tr>
 {% endfor %}

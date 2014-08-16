@@ -32,7 +32,7 @@ user:
     name: "Name"
     created: "Created"
     updated: "Updated"
-    members: "Members"
+    last.seen: "Last seen"
   delete: "Delete my account"
   deleteHelp: "Are you sure you want to delete yourself ? Ideas for which you are the only creator will be deleted as well."
   skills:
