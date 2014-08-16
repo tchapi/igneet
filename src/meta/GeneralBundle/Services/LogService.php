@@ -389,8 +389,7 @@ class LogService
     }
     
     /*
-     * Count the new notifications for a user
-     * No 'backward' style as per the showNotificationsAction (it's just the count of the new stuff)
+     * Counts the new notifications for a user
      */
     public function countNotifications($user, $community = null)
     {
@@ -400,6 +399,9 @@ class LogService
 
     }
 
+    /*
+     * Sorts and returns all the new notifications for a user
+     */
     public function getNotifications($user, $date = null, $community = null, $locale = null)
     {
 
