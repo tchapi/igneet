@@ -50,244 +50,244 @@ parameters:
       - user_change_project_status
   general.log_types:
 # Communities
-    user_create_community:
+    user_create_community: # TRANSLATED
       combinable: false
       displayable: true
       filter_groups: [creations, community, social]
       type: community
       icon: group
-    user_comment_community:
+    user_comment_community: # TRANSLATED
       combinable: true
       displayable: true
       filter_groups: [comments, community, social]
       type: community
       icon: group
-    user_update_community_info:
+    user_update_community_info: # TRANSLATED
       combinable: false
       displayable: true
       filter_groups: [community, social, general]
       type: community
       icon: edit
-# User acting for his profile or on another user
-    user_created: # DONE
-      combinable: false
-      displayable: true
-      filter_groups: [creations, users]
-      type: other_user
-      icon: check
-    user_update_profile: # DONE
-      combinable: true
-      displayable: true
-      filter_groups: [updates, users]
-      type: other_user
-      icon: edit
-    user_follow_user: # DONE
-      combinable: false
-      displayable: true
-      filter_groups: [general, users, social]
-      type: other_user
-      icon: thumb-tack
-    user_enters_community: # DONE
+    user_enters_community: # TRANSLATED
       combinable: false
       displayable: true
       filter_groups: [general, users, social, community]
       type: community
       icon: globe
+# User acting for his profile or on another user
+    user_created: # TRANSLATED
+      combinable: false
+      displayable: true
+      filter_groups: [creations, users]
+      type: other_user
+      icon: check
+    user_update_profile: # TRANSLATED
+      combinable: true
+      displayable: true
+      filter_groups: [updates, users]
+      type: other_user
+      icon: edit
+    user_follow_user: # TRANSLATED
+      combinable: false
+      displayable: true
+      filter_groups: [general, users, social]
+      type: other_user
+      icon: thumb-tack
 # User acting on a project
-    project_enters_community: # DONE
+    project_enters_community: # TRANSLATED
       combinable: false
       displayable: true
       filter_groups: [creations, community, projects]
       type: project
       icon: globe
-    user_create_project: # DONE
+    user_create_project: # TRANSLATED
       combinable: false
       displayable: true
       filter_groups: [creations, projects]
       type: project
       icon: flask
-    user_comment_project: # DONE
+    user_comment_project: # TRANSLATED
       combinable: false
       displayable: false
       filter_groups: [comments, projects]
       type: project
       icon: flask
-    user_create_project_from_idea: # DONE
+    user_create_project_from_idea: # TRANSLATED
       combinable: false
       displayable: true
       filter_groups: [creations, projects, ideas]
       type: project
       icon: flask
-    user_made_user_owner_project: # DONE
+    user_made_user_owner_project: # TRANSLATED
       combinable: false
       displayable: true
       filter_groups: [updates, users, projects, social]
       type: project
       icon: key
-    user_made_user_participant_project: # DONE
+    user_made_user_participant_project: # TRANSLATED
       combinable: false
       displayable: true
       filter_groups: [updates, users, projects, social]
       type: project
       icon: group
-    user_watch_project: # DONE
+    user_watch_project: # TRANSLATED
       combinable: false
       displayable: true
       filter_groups: [users, projects, social]
       type: project
       icon: eye
-    user_update_project_info: # DONE
+    user_update_project_info: # TRANSLATED
       combinable: true
       displayable: true
       filter_groups: [updates, general, projects]
       type: project
       icon: edit
-    user_create_wikipage: # DONE
+    user_create_wikipage: # TRANSLATED
       combinable: false
       displayable: true
       filter_groups: [creations, projects, wiki]
       type: project
       icon: file-text-o
-    user_update_wikipage: # DONE
+    user_update_wikipage: # TRANSLATED
       combinable: true
       displayable: true
       filter_groups: [updates, projects, wiki]
       type: project
       icon: edit
-    user_comment_wikipage: # DONE
+    user_comment_wikipage: # TRANSLATED
       combinable: true
       displayable: true
       filter_groups: [comments, projects, wiki]
       type: project
       icon: comments
-    user_delete_wikipage: # DONE
+    user_delete_wikipage: # TRANSLATED
       combinable: false
       displayable: true
       filter_groups: [deletions, projects, wiki]
       type: project
       icon: trash-o
-    user_create_list: # DONE
+    user_create_list: # TRANSLATED
       combinable: false
       displayable: true
       filter_groups: [creations, projects, lists]
       type: project
       icon: list
-    user_update_list: # DONE
+    user_update_list: # TRANSLATED
       combinable: true
       displayable: true
       filter_groups: [updates, projects, lists]
       type: project
       icon: edit
-    user_comment_list: # DONE
+    user_comment_list: # TRANSLATED
       combinable: true
       displayable: true
       filter_groups: [comments, projects, lists]
       type: project
       icon: comments
-    user_delete_list: # DONE
+    user_delete_list: # TRANSLATED
       combinable: false
       displayable: true
       filter_groups: [deletions, projects, lists]
       type: project
       icon: trash-o
-    user_create_list_item: # DONE
+    user_create_list_item: # TRANSLATED
       combinable: false
       displayable: true
       filter_groups: [creations, projects, lists]
       type: project
       icon: indent
-    user_update_list_item: # DONE
+    user_update_list_item: # TRANSLATED
       combinable: true
       displayable: true
       filter_groups: [updates, projects, lists]
       type: project
       icon: edit
-    user_delete_list_item: # DONE
+    user_delete_list_item: # TRANSLATED
       combinable: false
       displayable: true
       filter_groups: [deletions, projects, lists]
       type: project
       icon: outdent
-    user_do_list_item: # DONE
+    user_do_list_item: # TRANSLATED
       combinable: false
       displayable: true
       filter_groups: [updates, projects, lists]
       type: project
       icon: check
-    user_undo_list_item: # DONE
+    user_undo_list_item: # TRANSLATED
       combinable: false
       displayable: true
       filter_groups: [updates, projects, lists]
       type: project
       icon: square-o
-    user_add_resource: 
+    user_add_resource:  # TRANSLATED
       combinable: false
       displayable: true
       filter_groups: [creations, projects, resources]
       type: project
       icon: file
-    user_update_resource: 
+    user_update_resource:  # TRANSLATED
       combinable: true
       displayable: true
       filter_groups: [updates, projects, resources]
       type: project
       icon: paste
-    user_delete_resource: 
+    user_delete_resource:  # TRANSLATED
       combinable: false
       displayable: true
       filter_groups: [deletions, projects, resources]
       type: project
       icon: trash
-    user_change_project_status:
+    user_change_project_status: # TRANSLATED
       combinable: true
       displayable: true
       filter_groups: [updates, projects, general]
       type: project
       icon: location-arrow
 # User acting on an idea
-    idea_enters_community: # DONE
+    idea_enters_community: # TRANSLATED
       combinable: false
       displayable: true
       filter_groups: [creations, community, ideas]
       type: idea
       icon: globe
-    user_transform_idea_in_project: # DONE
+    user_transform_idea_in_project: # TRANSLATED
       combinable: true
       displayable: true
       filter_groups: [creations, projects, ideas]
       type: idea
       icon: upload
-    user_create_idea: # DONE
+    user_create_idea: # TRANSLATED
       combinable: false
       displayable: true
       filter_groups: [creations, ideas]
       type: idea
       icon: lightbulb-o
-    user_comment_idea: # DONE
+    user_comment_idea: # TRANSLATED
       combinable: false
       displayable: false
       filter_groups: [comments, ideas]
       type: idea
       icon: lightbulb-o
-    user_is_made_creator_idea: # DONE
+    user_is_made_creator_idea: # TRANSLATED
       combinable: false
       displayable: true
       filter_groups: [updates, ideas, users]
       type: idea
       icon: share
-    user_update_idea_info: # DONE
+    user_update_idea_info: # TRANSLATED
       combinable: true
       displayable: true
       filter_groups: [updates, general, ideas]
       type: idea
       icon: edit
-    user_made_user_participant_idea: # DONE
+    user_made_user_participant_idea: # TRANSLATED
       combinable: false
       displayable: true
       filter_groups: [updates, users, ideas, social]
       type: idea
       icon: group
-    user_watch_idea: # DONE
+    user_watch_idea: # TRANSLATED
       combinable: false
       displayable: true
       filter_groups: [users, ideas, social]
