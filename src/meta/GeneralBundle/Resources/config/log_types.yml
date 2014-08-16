@@ -227,7 +227,7 @@ parameters:
       type: project
       icon: file
     user_update_resource:  # TRANSLATED
-      combinable: true
+      combinable: false
       displayable: true
       filter_groups: [updates, projects, resources]
       type: project
