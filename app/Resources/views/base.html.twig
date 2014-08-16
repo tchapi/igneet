@@ -20,18 +20,7 @@
 
   <a href="{{ path('g_home_community') }}" class="logo"><img src="{{ asset('/bundles/metageneral/img/logo/logo-64.png') }}" /><span>Igneet</span></a>
 
-  {% render(controller("metaUserBundle:Security:currentUserMenu")) %}
-
-  {% if shortcode is defined %}
-    <div class="shortcode">
-      <a id="shortcode-trigger" href="#" title="{{ "shortcode.help"|trans }}">
-        <i class="fa fa-link fa-lg"></i> 
-      </a>
-      <form role="shortcode" id="shortcode" style="display: none;">
-        <input type="text" onclick="this.select()" value="{{ shortcode|lower }}" />
-      </form>
-    </div>
-  {% endif %}
+  {% render(controller("metaUserBundle:Security:currentUserMenu", { 'shortcode': shortcode|default(null) })) %}
 
   {% render(controller("metaGeneralBundle:Announcement:getAnnouncements")) %}
 

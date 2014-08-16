@@ -577,7 +577,7 @@ class SecurityController extends Controller
     /*
      * Output the top header menu
      */
-    public function currentUserMenuAction()
+    public function currentUserMenuAction($shortcode = null)
     {
         $authenticatedUser = $this->getUser();
 
@@ -596,7 +596,7 @@ class SecurityController extends Controller
             
             return $this->render(
                 'metaUserBundle:Partials:_authenticated.html.twig',
-                array('user' => $authenticatedUser, 'currentUserCommunity' => $userCommunity )
+                array('user' => $authenticatedUser, 'currentUserCommunity' => $userCommunity, 'shortcode' => $shortcode)
             );
 
         } else {
