@@ -12,8 +12,10 @@
       <div class="label">{{ label|trans }} :</div>
       <div class="content">
         {{ form_widget(form, { 'attr' : { 'class': errors?'error':'' }}) }}{% if form.vars.full_name == "standardProject[private]" %}<label for="{{ form.vars.id }}" >{{ label|trans }}</label>{% endif %}
-        {% if errors %}
-          <em class="error"><i class="fa fa-exclamation-triangle"></i> {{ errors[0].message|trans }}</em>
+        {% if errors|length > 0 %}
+          {% for error in errors %}
+            <em class="error"><i class="fa fa-exclamation-triangle"></i> {{ error.message|trans }}</em>
+          {% endfor %}
         {% endif %}
         {% if required or attr.help is defined %}
           <em class="help">{% if required %}* {{ "required"|trans }}.{% endif %} {% if attr.help is defined %}{{ attr.help|trans }}{% endif %}</em>

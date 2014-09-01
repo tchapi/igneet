@@ -11,9 +11,9 @@
     {{ form_widget(form, { 'attr': { 'placeholder': label }}) }}
     
     {% if errors %}
-    {% for error in errors %}
-    <div class="error"><i class="fa fa-exclamation-triangle"></i> {{ error.message|trans }}</div>
-    {% endfor %}
+        {% for error in errors %}
+        <div class="error"><i class="fa fa-exclamation-triangle"></i> {{ error.message|trans }}</div>
+        {% endfor %}
     {% endif %}
 
     {% if required or attr.help is defined %}
