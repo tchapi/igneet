@@ -1,0 +1,14 @@
+{% extends '::base.html.twig' %}
+{% set template = "card" %}
+
+{% block title %}{{ parent() }} > {{ "user.title"|trans }}{% endblock %}
+
+{% block container %}
+
+<header>
+{% block header %}{% endblock %}
+</header>
+
+{% block content %}{% endblock %}
+
+{% endblock %}

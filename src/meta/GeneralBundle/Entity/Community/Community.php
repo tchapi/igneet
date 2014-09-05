@@ -117,6 +117,21 @@ class Community
      **/
     private $comments;
 
+    // ::::::: PAYPAL :::::::
+    /**
+     * @var string $billing_plan
+     *
+     * @ORM\Column(name="billing_plan", type="text", nullable=true)
+     */
+    private $billing_plan;
+
+    /**
+     * @var string $billing_agreement
+     *
+     * @ORM\Column(name="billing_agreement", type="text", nullable=true)
+     */
+    private $billing_agreement;
+
     /**
      * Constructor
      */
@@ -133,6 +148,8 @@ class Community
         // BILLING
         $this->type = "demo"; // By default, all communities are not _yet_ paid for
         $this->valid_until = new \DateTime('now + ' . $span); // Default validity for a demo
+
+        $this->billing_plan = $this->billing_agreement = null;
 
     }
     
@@ -591,4 +608,49 @@ class Community
         return $this->comments;
     }
 
+    /**
+     * Set billing plan
+     *
+     * @param string $plan
+     * @return Community
+     */
+    public function setBillingPlan($billing_plan)
+    {
+        $this->billing_plan = $billing_plan;
+    
+        return $this;
+    }
+
+    /**
+     * Get billing_plan
+     *
+     * @return string 
+     */
+    public function getBillingPlan()
+    {
+        return $this->billing_plan;
+    }
+
+    /**
+     * Set billing agreement
+     *
+     * @param string $agreement
+     * @return Community
+     */
+    public function setBillingAgreement($billing_agreement)
+    {
+        $this->billing_agreement = $billing_agreement;
+    
+        return $this;
+    }
+
+    /**
+     * Get billing_agreement
+     *
+     * @return string 
+     */
+    public function getBillingAgreement()
+    {
+        return $this->billing_agreement;
+    }
 }

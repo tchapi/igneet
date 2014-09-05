@@ -45,3 +45,14 @@ Todo - Search:
 
  ☐ Recherche
  ☐ par tags exacts
+
+Paypal :
+    ☐  Paiement : XX € / mois pour accès illimité pour création d'1 communauté
+      Premier mois gratuit, nombre illimité de communautés
+      Communauté supplémentaire XX/2 € / mois
+
+      Front :
+        https://developer.paypal.com/webapps/developer/docs/classic/express-checkout/integration-guide/ECRecurringPayments/
+
+      Nouveau cron :
+        Typically, however, you can call GetTransactionDetails to obtain the information you need.

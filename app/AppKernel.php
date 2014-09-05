@@ -30,7 +30,8 @@ class AppKernel extends Kernel
             new meta\IdeaBundle\metaIdeaBundle(),
             new meta\StaticBundle\metaStaticBundle(),
             new meta\AdminBundle\metaAdminBundle(),
-
+            new meta\SubscriptionBundle\metaSubscriptionBundle(),
+            
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

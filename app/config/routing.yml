@@ -1,3 +1,4 @@
+
 # Administration
 admin:
     resource: "@metaAdminBundle/Resources/config/routing.yml"
@@ -24,6 +25,10 @@ standard_project_profile:
 user:
     resource: "@metaUserBundle/Resources/config/routing.yml"
     prefix:   /app/
+
+subscription:
+    resource: "@metaSubscriptionBundle/Resources/config/routing.yml"
+    prefix:   /app/secure/
 
 # Third party
 _bazinga_jstranslation:

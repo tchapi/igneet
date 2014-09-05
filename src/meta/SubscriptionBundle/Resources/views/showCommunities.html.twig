@@ -1,0 +1,43 @@
+{% extends 'metaSubscriptionBundle::layout.html.twig' %}
+
+{% block title %}{{ parent() }} > {{ "billing.title"|trans }}{% endblock %}
+
+{% block header %}
+<div class="title">
+  <h2>{{ "billing.title"|trans }}</h2>
+  <h3>{{ "billing.help"|trans }}</h3>
+</div>
+{% endblock %}
+
+{% block content %}
+
+{% if communities %}
+<section>
+  <table>
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Type</th>
+        <th>Valide</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for community in communities %}
+        <tr>
+          <td>{{ community.name }}</td>
+          <td><span class="community-{{ community.type }}">&#9679;</span> {{ community.type }}</td>
+          <td>{% if community.valid %}<i class="fa fa-check"></i> {{ "billing.valid"|trans }}{% else %}<i class="fa fa-times"></i> {{ "billing.invalid"|trans }}{% endif %}</td>
+          <td><a href="{{ path('s_show_billing', {'uid': community.uid }) }}" class="button button-info"><i class="fa fa-wrench"></i> {{ "billing.manage"|trans }}</a></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% else %}
+  <section>
+    {{ "billing.no.communities"|trans }}
+  </section>
+{% endif %}
+
+{% endblock %}

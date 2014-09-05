@@ -27,3 +27,5 @@ parameters:
     uservoice_enabled: false
     uservoice_id: null
     version: "CURRENT_VERSION"
+    paypal_clientid: null
+    paypal_secret: null

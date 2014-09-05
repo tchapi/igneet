@@ -1,0 +1,15 @@
+billing.menu: "Subscriptions"
+billing.title: "Communities subscription"
+billing.help: "You'll find here all the details about your communities subscription."
+billing.cancel: "Cancel this subscription"
+billing.no.plan: "You have currently no subscription for this community."
+billing.manage: "Manage"
+billing.valid: "Valid"
+billing.invalid: "Expired"
+billing.community:
+  title: "Community subscription"
+  help: "Manage your %community% community subscription here."
+billing.error:
+  no.plan: "You cannot do this action : you do not have a current subscription for this community."
+  cancel: "There was an error deleting your subscription for this community, please contact us."
+  retrieve: "There was an error retrieving your subscription for this community, please try again later."

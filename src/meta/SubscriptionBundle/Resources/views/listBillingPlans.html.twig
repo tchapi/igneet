@@ -1,0 +1,45 @@
+{% extends 'metaSubscriptionBundle::layout.html.twig' %}
+
+{% block title %}{{ parent() }} > {{ "billing.plans.title"|trans }}{% endblock %}
+
+{% block header %}
+<div class="title">
+  <h2>{{ "billing.plans.title"|trans }}</h2>
+  <h3>{{ "billing.plans.help"|trans({'%community%': community.name }) }}</h3>
+</div>
+{% endblock %}
+
+{% block content %}
+
+{% if plans %}
+<section>
+  <table>
+    <thead>
+      <tr>
+        <th>Statut</th>
+        <th>Nom</th>
+        <th>Description</th>
+        <th>Identifiant Paypal</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for plan in plans %}
+        <tr>
+          <td>{{ plan.state }}</td>
+          <td>{{ plan.name }}</td>
+          <td>{{ plan.description }}</td>
+          <td>{{ plan.id }}</td>
+          <td><a href="{{ path('s_create_billing_agreement', {'uid': community.id|to_uid, 'plan': plan.id, 'token': csrf_token('createBillingAgreement')}) }}" class="button">Choose</a></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% else %}
+  <section>
+    {{ "billing.error.retrieve"|trans }}
+  </section>
+{% endif %}
+
+{% endblock %}

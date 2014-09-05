@@ -1,0 +1,15 @@
+billing.menu: "Abonnements"
+billing.title: "Abonnements de vos communautés"
+billing.help: "Retrouvez ici tous les détails sur vos communautés et leur validité."
+billing.cancel: "Annuler cet abonnement"
+billing.no.plan: "Vous n'avez pas encore souscrit à un abonnement pour cette communauté."
+billing.manage: "Gérer"
+billing.valid: "Valide"
+billing.invalid: "Expirée"
+billing.community:
+  title: "Abonnement de communauté"
+  help: "Gérez ici votre abonnement pour la communauté %community%."
+billing.error:
+  no.plan: "Vous ne pouvez pas effectuer cette action : il n'y a pas d'abonnement en cours pour cette communauté."
+  cancel: "Il y a eu une erreur à la suppression de votre abonnement pour cette communauté, veuillez nous contacter."
+  retrieve: "Il y a eu une erreur lors de la récupération des données de votre abonnement pour cette communauté, veuillez réessayer plus tard."

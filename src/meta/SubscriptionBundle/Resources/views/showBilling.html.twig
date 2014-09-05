@@ -1,0 +1,59 @@
+{% extends 'metaSubscriptionBundle::layout.html.twig' %}
+
+{% block title %}{{ parent() }} > {{ "billing.community.title"|trans }}{% endblock %}
+
+{% block header %}
+<div class="title">
+  <h2>{{ "billing.community.title"|trans }}</h2>
+  <h3>{{ "billing.community.help"|trans({"%community%": community.name}) }}</h3>
+</div>
+{% endblock %}
+
+{% block content %}
+
+  <p>{{ "billing.community.valid"|trans({"%date%": community.validUntil|date}) }}</p>
+  
+  {% if agreement %}
+
+    {% if legacy %}
+    <p>{{ "billing.legacy.help"|trans({"%date%": community.validUntil|date}) }}</p>
+    {% endif %}
+
+    <table>
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Etat</th>
+          <th>Description</th>
+          <th>Date de début</th>
+          <th>Balance</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr>
+            <td>{{ agreement.id }}</td>
+            <td>{{ agreement.state }}</td>
+            <td>{{ agreement.description }}</td>
+            <td>{{ agreement.start_date|date }}</td>
+            <td>{{ agreement.agreement_details.outstanding_balance.value }} {{ agreement.agreement_details.outstanding_balance.currency }}</td>
+          </tr>
+      </tbody>
+    </table>
+
+    {% if agreement.state|upper == "ACTIVE" %}
+      <a href="{{ path('s_cancel_billing_agreement', {'uid': community.id|to_uid, 'token': csrf_token('cancelBilling')}) }}">{{ "billing.cancel"|trans }}</a>
+    {% else %}
+      <a href="{{ path('s_list_billing_plans', {'uid': community.id|to_uid, 'token': csrf_token('showBillingPlans') }) }}">Nouvel abonnement</a>
+    {% endif %}
+
+  {% else %}
+    
+    <section>
+      {{ "billing.no.plan"|trans }}
+
+      <a href="{{ path('s_list_billing_plans', {'uid': community.id|to_uid, 'token': csrf_token('showBillingPlans') }) }}">Subscribe</a>
+    </section>
+
+  {% endif %}
+
+{% endblock %}

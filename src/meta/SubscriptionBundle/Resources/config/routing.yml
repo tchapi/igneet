@@ -1,0 +1,39 @@
+s_show_communities:
+    path:     /billing/communities
+    defaults: { _controller: metaSubscriptionBundle:Default:showCommunities }
+
+s_show_billing:
+    path:     /billing/community/0{uid}
+    defaults: { _controller: metaSubscriptionBundle:Default:showCommunityBilling }
+    requirements:
+      uid: "[0-9a-zA-Z]*"
+
+s_list_billing_plans:
+    path:     /billing/subscribe/0{uid}
+    defaults: { _controller: metaSubscriptionBundle:Default:listBillingPlans }
+    requirements:
+      uid: "[0-9a-zA-Z]*"
+
+s_create_billing_agreement:
+    path:     /billing/subscribe/0{uid}/plan/{plan}
+    defaults: { _controller: metaSubscriptionBundle:Default:createBillingAgreement }
+    requirements:
+      uid: "[0-9a-zA-Z]*"
+
+s_abort_billing_agreement:
+    path:     /billing/abort
+    defaults: { _controller: metaSubscriptionBundle:Default:abortBillingAgreement }
+
+s_confirm_billing_agreement:
+    path:     /billing/confirm
+    defaults: { _controller: metaSubscriptionBundle:Default:confirmBillingAgreement }
+
+s_execute_billing_agreement:
+    path:     /billing/pay/{payment_token}
+    defaults: { _controller: metaSubscriptionBundle:Default:executeBillingAgreement }
+
+s_cancel_billing_agreement:
+    path:     /billing/community/0{uid}/cancel
+    defaults: { _controller: metaSubscriptionBundle:Default:cancelBilling }
+    requirements:
+      uid: "[0-9a-zA-Z]*"

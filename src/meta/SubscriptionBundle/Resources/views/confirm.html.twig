@@ -1,0 +1,22 @@
+{% extends 'metaSubscriptionBundle::layout.html.twig' %}
+
+{% block title %}{{ parent() }} > {{ "billing.confirm.title"|trans }}{% endblock %}
+
+{% block header %}
+<div class="title">
+  <h2>{{ "billing.confirm.title"|trans }}</h2>
+  <h3>{{ "billing.confirm.help"|trans}}</h3>
+</div>
+{% endblock %}
+
+{% block content %}
+
+  <section>
+    <p>{{ "billing.confirm"|trans }}</p>
+    <p>{{ community.name }}</p>
+    <p>{{ plan }}</p>
+    <a href="{{ path('s_execute_billing_agreement', {'payment_token': payment_token, 'token': csrf_token('executeBillingAgreement') }) }}">Pay</a>
+  </section>
+
+
+{% endblock %}
