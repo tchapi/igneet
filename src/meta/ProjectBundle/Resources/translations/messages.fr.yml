@@ -156,6 +156,7 @@ project:
     created: "La ressource %resource% a été ajoutée au projet %project% avec succès."
     deleted: "La ressource a bien été supprimée du projet %project%."
     updated: "La ressource a bien été marquée comme mise à jour."
+    changed: "La ressource a bien été mise à jour."
   wiki:
     title: "Wiki"
     titleField: "Titre"
