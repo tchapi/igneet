@@ -35,7 +35,8 @@ class DefaultController extends Controller
             'uid' => $this->container->get('uid')->toUId($userCommunity->getCommunity()->getId()),
             'name' => $userCommunity->getCommunity()->getName(),
             'type' => $userCommunity->getCommunity()->getType(),
-            'valid' => $userCommunity->getCommunity()->isValid()
+            'valid' => $userCommunity->getCommunity()->isValid(),
+            'agreement' => $userCommunity->getCommunity()->getBillingAgreement()
           );
       }
       return $this->render('metaSubscriptionBundle::showCommunities.html.twig', array( 'communities' => $communities ));
@@ -85,12 +86,7 @@ class DefaultController extends Controller
 
             // If agreement not active, tell user his community will be invalid soon
             if (strtoupper($agreement['state']) != "ACTIVE") {
-              if ($community->isValid()){
-                $legacy = true;
-              } else {
-                // Community is not valid and agreement is not valid : start from scratch
-                $agreement = null;
-              }
+              $agreement = null;
             }
 
           } else {
@@ -105,7 +101,7 @@ class DefaultController extends Controller
 
         }
 
-        return $this->render('metaSubscriptionBundle::showBilling.html.twig', array( 'agreement' => $agreement, 'legacy' => $legacy, 'community' => $community) );
+        return $this->render('metaSubscriptionBundle::showBilling.html.twig', array( 'agreement' => $agreement, 'community' => $community) );
 
       } else {
         
@@ -213,6 +209,7 @@ class DefaultController extends Controller
           $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
           curl_close($ch);
 
+          // https://developer.paypal.com/docs/api/#create-an-agreement
           if ($http_status != 201) { // If status is not : "CREATED"
       
             $this->get('session')->getFlashBag()->add(
@@ -406,50 +403,39 @@ class DefaultController extends Controller
           $token = "Bearer " . $credential->getAccessToken(array('mode' => 'sandbox'));
 
           // Cancels the billing agreement
+          // Paypal PHP SDK still doesn't support billing agreements (01/09/2014)
           $ch = curl_init();
-          curl_setopt($ch,CURLOPT_URL,'https://api.sandbox.paypal.com/v1/payments/billing-agreements/' . $agreementId . "/cancel");
-          curl_setopt($ch, CURLOPT_POS, TRUE);
+          curl_setopt($ch, CURLOPT_URL,'https://api.sandbox.paypal.com/v1/payments/billing-agreements/' . $agreementId . "/cancel");
+          curl_setopt($ch, CURLOPT_POST, TRUE);
           curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
           curl_setopt($ch, CURLOPT_HTTPHEADER, array(
             'Content-Type: application/json',
             'Authorization: ' . $token
           ));
           $data = array(
-                  "note" => "Canceling upon user request on ." . date()
+                  "note" => "Canceling upon user request on " . date('c') . "."
               );
           curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));   
           $result = curl_exec($ch);
+          $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
           curl_close($ch);
 
-          // Inactivates the billing plan
-          // Paypal PHP SDK still doesn't support billing agreements (01/09/2014)
-          $ch = curl_init();
-          curl_setopt($ch,CURLOPT_URL,'https://api.sandbox.paypal.com/v1/payments/billing-plans/' . $planId);
-          curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PATCH');
-          curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-          curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'Content-Type: application/json',
-            'Authorization: ' . $token
-          ));
-          $data = [
-              array(
-                  "path" => "/",
-                  "value" => array(
-                      "state" => "INACTIVE"
-                  ),
-                  "op" => "replace"
-              )
-          ];
-          curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));   
-          $result = curl_exec($ch);
-          curl_close($ch);
-
-          if ($result != 1) {
+          if ($http_status != 204) { //https://developer.paypal.com/docs/api/#cancel-an-agreement
 
             $this->get('session')->getFlashBag()->add(
                 'error',
                 $this->get('translator')->trans('billing.error.cancel')
             );
+
+          } else {
+
+            // Let's remove the agreement and plan from the community object
+            $community->setBillingPlan(null);
+            $community->setBillingAgreement(null);
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+
+            // We don't touch validity of course...
 
           }
 

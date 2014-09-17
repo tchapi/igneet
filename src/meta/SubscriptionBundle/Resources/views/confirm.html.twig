@@ -18,5 +18,10 @@
     <a href="{{ path('s_execute_billing_agreement', {'payment_token': payment_token, 'token': csrf_token('executeBillingAgreement') }) }}">Pay</a>
   </section>
 
+  <section class="billing-help">
+    <em>
+      <i class="fa fa-question-circle"></i> {{ "billing.problems"|trans({ "%mail%": mailer_contact})|raw }}
+    </em>
+  </section>
 
 {% endblock %}

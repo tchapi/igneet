@@ -82,6 +82,20 @@ The code base is divided in 6 bundles :
 
     Implements a LanguageListener to handle session / request locales, and a OpenIdUserManager to comply with fpOpenId bundle's requirements.
 
+  - ###SubscriptionBundle
+
+    This bundle contains all code related to subscription w/ Paypal.
+
+    #### A note on billing
+
+    A community is deemed valid if its `valid` property is `true`; This, however, is not directly related to the actual billing state of the community. A community can be valid eventhough no billing plan is associated to it. More specifically, a community can be
+
+      - valid and paid for : in this case, a valid billing agreement and plan are attached to the community `billingAgreement`and `billingPlan` must not be null
+      - valid and expiring : that means that the billing agreement has been cancelled but the community is still valid for the current month. `billingAgreement`and `billingPlan` must be null.
+      - expired : the community is no longer valid and no billing plan or agreement are related. `billingAgreement`and `billingPlan` must be null. 
+
+      A community cannot have a billing agreement and plan *AND* be invalid at the same time.
+
   - ###StaticBundle
 
     This bundle manages the static site at `/`. It does not define any entity, and has a single controller to serve the various pages of the static site.

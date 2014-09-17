@@ -11,49 +11,70 @@
 
 {% block content %}
 
-  <p>{{ "billing.community.valid"|trans({"%date%": community.validUntil|date}) }}</p>
-  
-  {% if agreement %}
-
-    {% if legacy %}
-    <p>{{ "billing.legacy.help"|trans({"%date%": community.validUntil|date}) }}</p>
+  <section>
+    {% if community.valid and agreement is null %}
+      <div class="billing-status billing-status-legacy"><i class="fa fa-exclamation"></i></div>
+      <p>{{ "billing.community.legacy"|trans({"%date%": community.validUntil|date("date.format"|trans)}) }}</p>
+    {% elseif community.valid %}
+      <div class="billing-status billing-status-valid"><i class="fa fa-check"></i></div>
+      <p>{{ "billing.community.valid"|trans }}</p>
+    {% else %}
+      <div class="billing-status billing-status-invalid"><i class="fa fa-times"></i></div>
+      <p>{{ "billing.community.invalid"|trans }}</p>
     {% endif %}
+  </section>
 
+  {% if agreement %}
+  <section class="billing-table">
     <table>
       <thead>
         <tr>
-          <th>Id</th>
-          <th>Etat</th>
-          <th>Description</th>
-          <th>Date de début</th>
-          <th>Balance</th>
+          <th>{{ "billing.community.agreement.description"|trans }}</th>
+          <th>{{ "billing.community.agreement.status"|trans }}</th>
+          <th>{{ "billing.community.agreement.balance"|trans }}</th>
         </tr>
       </thead>
       <tbody>
           <tr>
-            <td>{{ agreement.id }}</td>
+            <td>
+              {{ "billing.community.agreement.id"|trans({ '%id%': ('<strong>' ~ agreement.id ~ '</strong>') })|raw }}<br>
+              {{ "billing.community.agreement.start_date"|trans({'%date%':agreement.start_date|date("date.format"|trans) }) }}<br>
+              <em>{{ agreement.description }}</em>
+            </td>
             <td>{{ agreement.state }}</td>
-            <td>{{ agreement.description }}</td>
-            <td>{{ agreement.start_date|date }}</td>
             <td>{{ agreement.agreement_details.outstanding_balance.value }} {{ agreement.agreement_details.outstanding_balance.currency }}</td>
           </tr>
       </tbody>
     </table>
+  </section>
 
-    {% if agreement.state|upper == "ACTIVE" %}
-      <a href="{{ path('s_cancel_billing_agreement', {'uid': community.id|to_uid, 'token': csrf_token('cancelBilling')}) }}">{{ "billing.cancel"|trans }}</a>
-    {% else %}
-      <a href="{{ path('s_list_billing_plans', {'uid': community.id|to_uid, 'token': csrf_token('showBillingPlans') }) }}">Nouvel abonnement</a>
-    {% endif %}
+  <section>
+    <div class="billing-action">
+      <p>{{ "billing.community.cancel.help"|trans }}</p>
+      <div>
+        <a  data-confirm="{{ "billing.community.cancel.confirm"|trans }}" href="{{ path('s_cancel_billing_agreement', {'uid': community.id|to_uid, 'token': csrf_token('cancelBilling')}) }}" class="button button-danger">{{ "billing.community.cancel"|trans }}</a>
+      </div>
+    </div>
+  </section>
 
   {% else %}
     
     <section>
-      {{ "billing.no.plan"|trans }}
-
-      <a href="{{ path('s_list_billing_plans', {'uid': community.id|to_uid, 'token': csrf_token('showBillingPlans') }) }}">Subscribe</a>
+      <div class="billing-action">
+        {% if community.valid and agreement is null %}
+          <a href="{{ path('s_list_billing_plans', {'uid': community.id|to_uid, 'token': csrf_token('showBillingPlans') }) }}" class="button button-warning"><i class="fa fa-refresh"></i> {{ "billing.extend"|trans }}</a>
+        {% else %}
+          <a href="{{ path('s_list_billing_plans', {'uid': community.id|to_uid, 'token': csrf_token('showBillingPlans') }) }}" class="button button-success"><i class="fa fa-credit-card"></i> {{ "billing.renew"|trans }}</a>
+        {% endif %}
+      </div>
     </section>
 
   {% endif %}
+
+  <section class="billing-help">
+    <em>
+      <i class="fa fa-question-circle"></i> {{ "billing.problems"|trans({ "%mail%": mailer_contact})|raw }}
+    </em>
+  </section>
 
 {% endblock %}

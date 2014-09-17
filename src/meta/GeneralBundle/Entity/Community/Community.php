@@ -121,14 +121,14 @@ class Community
     /**
      * @var string $billing_plan
      *
-     * @ORM\Column(name="billing_plan", type="text", nullable=true)
+     * @ORM\Column(name="billing_plan", type="string", length=255, nullable=true)
      */
     private $billing_plan;
 
     /**
      * @var string $billing_agreement
      *
-     * @ORM\Column(name="billing_agreement", type="text", nullable=true)
+     * @ORM\Column(name="billing_agreement", type="string", length=255, unique=true, nullable=true)
      */
     private $billing_agreement;
 

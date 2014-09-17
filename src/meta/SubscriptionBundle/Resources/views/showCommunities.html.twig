@@ -1,11 +1,12 @@
 {% extends 'metaSubscriptionBundle::layout.html.twig' %}
 
-{% block title %}{{ parent() }} > {{ "billing.title"|trans }}{% endblock %}
+{% block title %}{{ parent() }} > {{ "billing.communities.title"|trans }}{% endblock %}
 
 {% block header %}
 <div class="title">
-  <h2>{{ "billing.title"|trans }}</h2>
-  <h3>{{ "billing.help"|trans }}</h3>
+  <h2>{{ "billing.communities.title"|trans }}</h2>
+  <h3>{{ "billing.communities.help"|trans }}</h3>
+  <p>{{ "billing.communities.text"|trans }}</p>
 </div>
 {% endblock %}
 
@@ -16,19 +17,35 @@
   <table>
     <thead>
       <tr>
-        <th>Nom</th>
-        <th>Type</th>
-        <th>Valide</th>
+        <th>{{ "billing.communities.name"|trans }}</th>
+        <th>{{ "billing.communities.type"|trans }}</th>
+        <th>{{ "billing.communities.valid"|trans }}</th>
         <th></th>
       </tr>
     </thead>
-    <tbody>
+    <tbody class="small">
       {% for community in communities %}
         <tr>
           <td>{{ community.name }}</td>
           <td><span class="community-{{ community.type }}">&#9679;</span> {{ community.type }}</td>
-          <td>{% if community.valid %}<i class="fa fa-check"></i> {{ "billing.valid"|trans }}{% else %}<i class="fa fa-times"></i> {{ "billing.invalid"|trans }}{% endif %}</td>
-          <td><a href="{{ path('s_show_billing', {'uid': community.uid }) }}" class="button button-info"><i class="fa fa-wrench"></i> {{ "billing.manage"|trans }}</a></td>
+          <td>
+            {% if community.valid and community.agreement is null %}
+              <span class="billing-status-legacy"><i class="fa fa-exclamation"></i> {{ "billing.expiring"|trans }}</span>
+            {% elseif community.valid %}
+              <span class="billing-status-valid"><i class="fa fa-check"></i> {{ "billing.valid"|trans }}</span>
+            {% else %}
+              <span class="billing-status-invalid"><i class="fa fa-times"></i> {{ "billing.invalid"|trans }}</span>
+            {% endif %}
+          </td>
+          <td>
+            {% if community.valid and community.agreement is null %}
+              <a href="{{ path('s_show_billing', {'uid': community.uid }) }}" class="button"><i class="fa fa-refresh"></i> {{ "billing.extend"|trans }}</a>
+            {% elseif community.valid %}
+              <a href="{{ path('s_show_billing', {'uid': community.uid }) }}" class="button button-success"><i class="fa fa-wrench"></i> {{ "billing.manage"|trans }}</a>
+            {% else %}
+              <a href="{{ path('s_show_billing', {'uid': community.uid }) }}" class="button button-danger"><i class="fa fa-warning"></i> {{ "billing.renew"|trans }}</a>
+            {% endif %}
+          </td>
         </tr>
       {% endfor %}
     </tbody>
@@ -36,8 +53,14 @@
 </section>
 {% else %}
   <section>
-    {{ "billing.no.communities"|trans }}
+    {{ "billing.communities.none"|trans }}
   </section>
 {% endif %}
+
+<section class="billing-help">
+  <em>
+    <i class="fa fa-question-circle"></i> {{ "billing.problems"|trans({ "%mail%": mailer_contact})|raw }}
+  </em>
+</section>
 
 {% endblock %}

@@ -1,0 +1,28 @@
+section.billing-help {
+  font-size: 0.8em;
+  text-align: center;
+}
+
+section.billing-table {
+  padding: 0 !important;
+}
+
+div.billing-status {
+  font-size: 3em;
+  text-align: center;
+}
+.billing-status-valid {
+  color: $_green;
+}
+.billing-status-invalid {
+  color: $_red;
+}
+.billing-status-legacy {
+  color: $_orange;
+}
+
+div.billing-action{
+  text-align: center;
+  background: $_background;
+  padding: 10px;
+}

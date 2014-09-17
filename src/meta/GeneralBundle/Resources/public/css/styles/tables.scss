@@ -90,6 +90,15 @@ table {
       border-radius: $border-radius/2;
     }
   }
+  tbody.small tr {
+    height: auto;
+    & > td {
+      padding: 20px;
+      & .button {
+        display: inline;
+      }
+    }
+  }
 
   /* Responsive sugar */
   @include media($tablet) {
@@ -104,4 +113,11 @@ table {
     }
   }
   
+}
+
+body.full table tbody tr:hover {
+  background: $_container;
+}
+body.card table tbody tr:hover {
+  background: $_background;
 }

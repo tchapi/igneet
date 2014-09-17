@@ -474,35 +474,6 @@ $(document).ready(function() {
 
     });
 
-    /* Delete behaviours
-     * to catch and two-stepize deletion
-     */
-    $('a[data-confirm]').on('click', function(ev) {
-
-        var href = $(this).attr('href');
-        var text = $(this).attr('data-confirm') || Translator.trans('alert.please.confirm');
-
-        // Custom alert box 
-        alertify.set({
-            labels: {
-                ok: Translator.trans('ok'),
-                cancel: Translator.trans('cancel')
-            }
-        });
-        alertify.set({
-            buttonFocus: "cancel"
-        });
-
-        alertify.confirm(text, function(e) {
-            if (e) {
-                document.location.href = href;
-            }
-        });
-
-        return false;
-
-    });
-
     /*
      * Settings page : trigger display
      */

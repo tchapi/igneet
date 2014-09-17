@@ -6,40 +6,47 @@
 <div class="title">
   <h2>{{ "billing.plans.title"|trans }}</h2>
   <h3>{{ "billing.plans.help"|trans({'%community%': community.name }) }}</h3>
+  <p>{{ "billing.plans.text"|trans }}</p>
 </div>
 {% endblock %}
 
 {% block content %}
 
 {% if plans %}
-<section>
-  <table>
-    <thead>
-      <tr>
-        <th>Statut</th>
-        <th>Nom</th>
-        <th>Description</th>
-        <th>Identifiant Paypal</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for plan in plans %}
+  <section class="billing-table">
+    <table>
+      <thead>
         <tr>
-          <td>{{ plan.state }}</td>
-          <td>{{ plan.name }}</td>
-          <td>{{ plan.description }}</td>
-          <td>{{ plan.id }}</td>
-          <td><a href="{{ path('s_create_billing_agreement', {'uid': community.id|to_uid, 'plan': plan.id, 'token': csrf_token('createBillingAgreement')}) }}" class="button">Choose</a></td>
+          <th>{{ "billing.plans.plans"|trans }}</th>
+          <th></th>
         </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-</section>
+      </thead>
+      <tbody class="small">
+        {% for plan in plans %}
+          <tr>
+            <td>
+              <h3>{{ plan.name }}</h3>
+              <p>{{ plan.description }}</p>
+              <p><em>{{ plan.state }} - {{ plan.id }}</em></p>
+            </td>
+            <td>
+              <a href="{{ path('s_create_billing_agreement', {'uid': community.id|to_uid, 'plan': plan.id, 'token': csrf_token('createBillingAgreement')}) }}" class="button button-success"><i class="fa fa-check"></i> {{ "billing.plans.choose"|trans }}</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
 {% else %}
   <section>
     {{ "billing.error.retrieve"|trans }}
   </section>
 {% endif %}
+
+<section class="billing-help">
+  <em>
+    <i class="fa fa-question-circle"></i> {{ "billing.problems"|trans({ "%mail%": mailer_contact})|raw }}
+  </em>
+</section>
 
 {% endblock %}
