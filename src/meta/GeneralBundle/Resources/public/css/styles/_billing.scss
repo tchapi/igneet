@@ -26,3 +26,16 @@ div.billing-action{
   background: $_background;
   padding: 10px;
 }
+
+.billing-state-created {
+  background-color: $_blue;
+  color: white;
+}
+.billing-state-active {
+  background-color: $_green;
+  color: white;
+}
+.billing-state-inactive {
+  background-color: $_orange;
+  color: white;
+}

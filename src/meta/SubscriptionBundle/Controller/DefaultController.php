@@ -13,6 +13,28 @@ use meta\GeneralBundle\Entity\Community\Community,
 
 class DefaultController extends Controller
 {
+
+    private function getApiEndpoint(){
+
+      if ($this->container->getParameter('paypal_sandbox') === false) {
+        return "https://api.paypal.com/v1";
+      } else {
+        return "https://api.sandbox.paypal.com/v1";
+      }
+
+    }
+
+    private function getApiMode(){
+
+      if ($this->container->getParameter('paypal_sandbox') === false) {
+        return array();
+      } else {
+        return array('mode' => 'sandbox');
+      }
+
+    }
+
+
     /*
      * STEP 1.
      * User should choose the community he wants to pay for in the list of communities he is manager in
@@ -67,11 +89,11 @@ class DefaultController extends Controller
 
           // Get Customer billing agreement
           $credential = new OAuthTokenCredential($this->container->getParameter('paypal_clientid'),$this->container->getParameter('paypal_secret'));
-          $token = "Bearer " . $credential->getAccessToken(array('mode' => 'sandbox'));
+          $token = "Bearer " . $credential->getAccessToken($this->getApiMode());
 
           // Paypal PHP SDK still doesn't support billing plans/agreements (01/09/2014)
           $ch = curl_init();
-          curl_setopt($ch,CURLOPT_URL,'https://api.sandbox.paypal.com/v1/payments/billing-agreements/' . $agreementId);
+          curl_setopt($ch,CURLOPT_URL, $this->getApiEndpoint() . '/payments/billing-agreements/' . $agreementId);
           curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
           curl_setopt($ch, CURLOPT_HTTPHEADER, array(
             'Content-Type: application/json',
@@ -127,11 +149,11 @@ class DefaultController extends Controller
 
           // Get billing plans
           $credential = new OAuthTokenCredential($this->container->getParameter('paypal_clientid'),$this->container->getParameter('paypal_secret'));
-          $token = "Bearer " . $credential->getAccessToken(array('mode' => 'sandbox'));
+          $token = "Bearer " . $credential->getAccessToken($this->getApiMode());
 
           // Paypal PHP SDK still doesn't support billing plans (01/09/2014)
           $ch = curl_init();
-          curl_setopt($ch,CURLOPT_URL,'https://api.sandbox.paypal.com/v1/payments/billing-plans?status=ACTIVE');
+          curl_setopt($ch,CURLOPT_URL, $this->getApiEndpoint() . '/payments/billing-plans?status=ACTIVE');
           curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
           curl_setopt($ch, CURLOPT_HTTPHEADER, array(
             'Content-Type: application/json',
@@ -181,12 +203,12 @@ class DefaultController extends Controller
 
           // Get billing plans
           $credential = new OAuthTokenCredential($this->container->getParameter('paypal_clientid'),$this->container->getParameter('paypal_secret'));
-          $token = "Bearer " . $credential->getAccessToken(array('mode' => 'sandbox'));
+          $token = "Bearer " . $credential->getAccessToken($this->getApiMode());
 
           // Paypal PHP SDK still doesn't support billing agreements (01/09/2014)
           // Creates billing agreement
           $ch = curl_init();
-          curl_setopt($ch,CURLOPT_URL,'https://api.sandbox.paypal.com/v1/payments/billing-agreements');
+          curl_setopt($ch,CURLOPT_URL, $this->getApiEndpoint() . '/payments/billing-agreements');
           curl_setopt($ch, CURLOPT_POST, TRUE);
           curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
           curl_setopt($ch, CURLOPT_HTTPHEADER, array(
@@ -323,11 +345,11 @@ class DefaultController extends Controller
 
           // Get Credentials
           $credential = new OAuthTokenCredential($this->container->getParameter('paypal_clientid'),$this->container->getParameter('paypal_secret'));
-          $token = "Bearer " . $credential->getAccessToken(array('mode' => 'sandbox'));
+          $token = "Bearer " . $credential->getAccessToken($this->getApiMode());
 
           // Execute the billing agreement
           $ch = curl_init();
-          curl_setopt($ch,CURLOPT_URL,'https://api.sandbox.paypal.com/v1/payments/billing-agreements/' . $payment_token . "/agreement-execute");
+          curl_setopt($ch,CURLOPT_URL, $this->getApiEndpoint() . '/payments/billing-agreements/' . $payment_token . "/agreement-execute");
           curl_setopt($ch, CURLOPT_POST, TRUE);
           curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
           curl_setopt($ch, CURLOPT_HTTPHEADER, array(
@@ -400,12 +422,12 @@ class DefaultController extends Controller
 
           // Get Customer billing plan
           $credential = new OAuthTokenCredential($this->container->getParameter('paypal_clientid'),$this->container->getParameter('paypal_secret'));
-          $token = "Bearer " . $credential->getAccessToken(array('mode' => 'sandbox'));
+          $token = "Bearer " . $credential->getAccessToken($this->getApiMode());
 
           // Cancels the billing agreement
           // Paypal PHP SDK still doesn't support billing agreements (01/09/2014)
           $ch = curl_init();
-          curl_setopt($ch, CURLOPT_URL,'https://api.sandbox.paypal.com/v1/payments/billing-agreements/' . $agreementId . "/cancel");
+          curl_setopt($ch, CURLOPT_URL, $this->getApiEndpoint() . '/payments/billing-agreements/' . $agreementId . "/cancel");
           curl_setopt($ch, CURLOPT_POST, TRUE);
           curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
           curl_setopt($ch, CURLOPT_HTTPHEADER, array(

@@ -102,5 +102,18 @@ class CommunityRepository extends EntityRepository
             ->getQuery()
             ->getResult();
 
+
+  public function countCommunitiesUsingBillingPlan($id)
+  {
+ 
+    $qb = $this->getEntityManager()->createQueryBuilder();
+
+    return $qb->select('COUNT(c)')
+            ->from('metaGeneralBundle:Community\Community', 'c')
+            ->where('c.billing_plan = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getSingleScalarResult();
+
   }
 }

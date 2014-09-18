@@ -47,6 +47,32 @@ a_communities_storage:
     path:  /community/storage/{uid}
     defaults: { _controller: metaAdminBundle:Communities:storage, uid: null }
 
+# BILLING
+a_billing_plans:
+    path:  /billing/plans
+    defaults: { _controller: metaAdminBundle:Billing:listPlans }
+
+a_billing_agreements:
+    path:  /billing/agreements
+    defaults: { _controller: metaAdminBundle:Billing:listAgreements }
+
+a_billing_plan_new:
+    path:  /billing/new
+    defaults: { _controller: metaAdminBundle:Billing:newPlan }
+
+a_billing_plan_edit:
+    path:  /billing/edit/{id}
+    defaults: { _controller: metaAdminBundle:Billing:editPlan }
+
+a_billing_plan_activate:
+    path:  /billing/activate/{id}
+    defaults: { _controller: metaAdminBundle:Billing:activatePlan }
+
+a_billing_plan_inactivate:
+    path:  /billing/inactivate/{id}
+    defaults: { _controller: metaAdminBundle:Billing:inactivatePlan }
+
+# MISC & FILES & LOGS
 a_prune:
     path:  /files/prune
     defaults: { _controller: metaAdminBundle:Communities:prune }
