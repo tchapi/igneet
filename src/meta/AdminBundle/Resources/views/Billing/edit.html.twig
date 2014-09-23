@@ -1,0 +1,48 @@
+{% extends 'metaAdminBundle::layout.html.twig' %}
+
+{% block title %}{{ parent() }} > Edit billing plan{% endblock %}
+
+{% block section %}Edit billing plan{% endblock %}
+
+{% form_theme form _self %}
+
+{% use 'form_div_layout.html.twig' %}
+
+{% block form_row %}
+    
+    <section>
+      <div class="label">{{ label|trans }} :</div>
+      <div class="content">
+        {{ form_widget(form, { 'attr' : { 'class': (errors|length > 0)?'error':'' }}) }}
+        {% if errors|length > 0 %}
+          {% for error in errors %}
+            <em class="error"><i class="fa fa-exclamation-triangle"></i> {{ error.message|trans }}</em>
+          {% endfor %}
+        {% endif %}
+        {% if required or attr.help is defined %}
+          <em class="help">{% if required %}* {{ "required"|trans }}.{% endif %} {% if attr.help is defined %}{{ attr.help|trans }}{% endif %}</em>
+        {% endif %}
+      </div>
+    </section>
+
+{% endblock form_row %}
+
+{% block checkbox_widget %}
+  {% spaceless %}
+      <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} /><label for="{{ id }}" class="checkbox {% if checked %}checked{% endif %}" >{{ label|trans }}</label>
+  {% endspaceless %}
+{% endblock checkbox_widget %}
+
+{% block content %}
+<div class="wrapper info">
+  <form action="{{ path('a_billing_plan_edit', { 'id': id}) }}" method="post" {{ form_enctype(form) }}>
+    {{ form_rest(form) }}
+    {{ form_row(form._token) }} 
+    <section>
+      <div class="content">
+        <input type="submit" value="Save" class="button button-success" />
+      </div>
+    </section>
+  </form>
+</div>
+{% endblock %}
