@@ -52,25 +52,37 @@ a_billing_plans:
     path:  /billing/plans
     defaults: { _controller: metaAdminBundle:Billing:listPlans }
 
-a_billing_agreements:
-    path:  /billing/agreements
-    defaults: { _controller: metaAdminBundle:Billing:listAgreements }
-
-a_billing_plan_new:
+a_billing_plans_new:
     path:  /billing/new
-    defaults: { _controller: metaAdminBundle:Billing:newPlan }
+    defaults: { _controller: metaAdminBundle:Billing:create }
+
+a_billing_plan_show:
+    path:  /billing/view/{id}
+    defaults: { _controller: metaAdminBundle:Billing:show }
+    requirements:
+      id: "P-[0-9A-Z]{24}"
 
 a_billing_plan_edit:
     path:  /billing/edit/{id}
-    defaults: { _controller: metaAdminBundle:Billing:editPlan }
+    defaults: { _controller: metaAdminBundle:Billing:edit }
+    requirements:
+      id: "P-[0-9A-Z]{24}"
 
 a_billing_plan_activate:
     path:  /billing/activate/{id}
     defaults: { _controller: metaAdminBundle:Billing:activatePlan }
+    requirements:
+      id: "P-[0-9A-Z]{24}"
 
 a_billing_plan_inactivate:
     path:  /billing/inactivate/{id}
     defaults: { _controller: metaAdminBundle:Billing:inactivatePlan }
+    requirements:
+      id: "P-[0-9A-Z]{24}"
+
+a_billing_agreements:
+    path:  /billing/agreements
+    defaults: { _controller: metaAdminBundle:Billing:listAgreements }
 
 # MISC & FILES & LOGS
 a_prune:

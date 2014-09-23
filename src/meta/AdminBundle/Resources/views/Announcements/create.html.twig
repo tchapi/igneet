@@ -13,7 +13,7 @@
     <section>
       <div class="label">{{ label|trans }} :</div>
       <div class="content">
-        {{ form_widget(form, { 'attr' : { 'class': errors?'error':'' }}) }}
+        {{ form_widget(form, { 'attr' : { 'class': (errors|length > 0)?'error':'' }}) }}
         {% if errors|length > 0 %}
           {% for error in errors %}
             <em class="error"><i class="fa fa-exclamation-triangle"></i> {{ error.message|trans }}</em>
@@ -40,7 +40,7 @@
     {{ form_row(form._token) }} 
     <section>
       <div class="content">
-        <input type="submit" value="{{ "create"|trans }}" class="button button-success" />
+        <input type="submit" value="Create" class="button button-success" />
       </div>
     </section>
   </form>
