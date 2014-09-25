@@ -11,111 +11,48 @@ use PayPal\Auth\OAuthTokenCredential;
 class BillingController extends Controller
 {
 
-    private function getApiEndpoint(){
-
-      if ($this->container->getParameter('paypal_sandbox') === false) {
-        return "https://api.paypal.com/v1";
-      } else {
-        return "https://api.sandbox.paypal.com/v1";
-      }
-
-    }
-
-    private function getApiMode(){
-
-      if ($this->container->getParameter('paypal_sandbox') === false) {
-        return array();
-      } else {
-        return array('mode' => 'sandbox');
-      }
-
-    }
-
     public function listPlansAction()
     {
 
-        // Get billing plans
-        $credential = new OAuthTokenCredential($this->container->getParameter('paypal_clientid'),$this->container->getParameter('paypal_secret'));
-        $token = "Bearer " . $credential->getAccessToken($this->getApiMode());
+        $token = $this->get('paypalHelper')->getToken();
+
+        if ($token === false){
+          return $this->render('metaAdminBundle:Billing:error.html.twig');
+        }
 
         // Paypal PHP SDK still doesn't support billing plans (01/09/2014)
-        $ch = curl_init();
-        curl_setopt($ch,CURLOPT_URL, $this->getApiEndpoint() . '/payments/billing-plans?status=CREATED');
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-          'Content-Type: application/json',
-          'Authorization: ' . $token
-        ));
-        $result = curl_exec($ch);
-        curl_close($ch);
+        $plans_created = $this->get('paypalHelper')->getBillingPlans($token, 'CREATED');
 
-        if ($result != "") {
-
-          $plans_created = json_decode($result, true);
-          $plans_created = $plans_created['plans'];
-
-        } else {
-
+        if ($plans_created == null) {
           $this->get('session')->getFlashBag()->add(
               'error',
               $this->get('translator')->trans('billing.error.retrieve')
           );
-          $plans_created = null;
-
         }
 
-        $ch = curl_init();
-        curl_setopt($ch,CURLOPT_URL, $this->getApiEndpoint() . '/payments/billing-plans?status=ACTIVE');
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-          'Content-Type: application/json',
-          'Authorization: ' . $token
-        ));
-        $result = curl_exec($ch);
-        curl_close($ch);
+        // Paypal PHP SDK still doesn't support billing plans (01/09/2014)
+        $plans_active = $this->get('paypalHelper')->getBillingPlans($token, 'ACTIVE');
 
-        if ($result != "") {
-
-          $plans_active = json_decode($result, true);
-          $plans_active = $plans_active['plans'];
-
-        } else {
-
+        if ($plans_active == null) {
           $this->get('session')->getFlashBag()->add(
               'error',
               $this->get('translator')->trans('billing.error.retrieve')
           );
-          $plans_active = null;
-
         }
 
-        $ch = curl_init();
-        curl_setopt($ch,CURLOPT_URL, $this->getApiEndpoint() . '/payments/billing-plans?status=INACTIVE');
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-          'Content-Type: application/json',
-          'Authorization: ' . $token
-        ));
-        $result = curl_exec($ch);
-        curl_close($ch);
+        // Paypal PHP SDK still doesn't support billing plans (01/09/2014)
+        $plans_inactive = $this->get('paypalHelper')->getBillingPlans($token, 'INACTIVE');
 
-        if ($result != "") {
-
-          $plans_inactive = json_decode($result, true);
-          $plans_inactive = $plans_inactive['plans'];
-
-        } else {
-
+        if ($plans_inactive == null) {
           $this->get('session')->getFlashBag()->add(
               'error',
               $this->get('translator')->trans('billing.error.retrieve')
           );
-          $plans_inactive = null;
-
         }
 
         $plans = array_merge($plans_created, $plans_active, $plans_inactive);
 
+        // We need to count the number of communities that have this plan active
         $communityRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Community\Community');
         foreach ($plans as $key => $plan) {
           $plans[$key]['count'] = $communityRepository->countCommunitiesUsingBillingPlan($plan['id']);
@@ -128,33 +65,16 @@ class BillingController extends Controller
     public function activatePlanAction($id)
     {
 
-        // Get billing plans
-        $credential = new OAuthTokenCredential($this->container->getParameter('paypal_clientid'),$this->container->getParameter('paypal_secret'));
-        $token = "Bearer " . $credential->getAccessToken($this->getApiMode());
+        $token = $this->get('paypalHelper')->getToken();
+
+        if ($token === false){
+          return $this->render('metaAdminBundle:Billing:error.html.twig');
+        }
 
         // Paypal PHP SDK still doesn't support billing plans (01/09/2014)
-        $ch = curl_init();
-        curl_setopt($ch,CURLOPT_URL, $this->getApiEndpoint() . '/payments/billing-plans/' . $id);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PATCH');
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-          'Content-Type: application/json',
-          'Authorization: ' . $token
-        ));
-        $data = array(array(
-                      "path" => "/",
-                      "value" => array(
-                            "state" => "ACTIVE"
-                        ),
-                        "op" => "replace"
-          ));
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));   
-        $result = curl_exec($ch);
-        $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
+        $result = $this->get('paypalHelper')->activateBillingPlan($token, $id, true);
 
-        if ($http_status != 200) {
-
+        if ($result != 200) {
           $this->get('session')->getFlashBag()->add(
               'error',
               $this->get('translator')->trans('billing.error.activate')
@@ -184,33 +104,16 @@ class BillingController extends Controller
           return $this->redirect($this->generateUrl('a_billing_plans'));
         }
 
-        // Get billing plans
-        $credential = new OAuthTokenCredential($this->container->getParameter('paypal_clientid'),$this->container->getParameter('paypal_secret'));
-        $token = "Bearer " . $credential->getAccessToken($this->getApiMode());
+        $token = $this->get('paypalHelper')->getToken();
+
+        if ($token === false){
+          return $this->render('metaAdminBundle:Billing:error.html.twig');
+        }
 
         // Paypal PHP SDK still doesn't support billing plans (01/09/2014)
-        $ch = curl_init();
-        curl_setopt($ch,CURLOPT_URL, $this->getApiEndpoint() . '/payments/billing-plans/' . $id);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PATCH');
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-          'Content-Type: application/json',
-          'Authorization: ' . $token
-        ));
-        $data = array(array(
-                      "path" => "/",
-                      "value" => array(
-                            "state" => "INACTIVE"
-                        ),
-                        "op" => "replace"
-          ));
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));   
-        $result = curl_exec($ch);
-        $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
+        $result = $this->get('paypalHelper')->activateBillingPlan($token, $id, false);
 
-        if ($http_status != 200) {
-
+        if ($result != 200) {
           $this->get('session')->getFlashBag()->add(
               'error',
               $this->get('translator')->trans('billing.error.inactivate')
@@ -225,24 +128,27 @@ class BillingController extends Controller
         return $this->redirect($this->generateUrl('a_billing_plans'));
     }
 
+    /*
+     * Helper to create the form to fill in Billing Plan details or edit them
+     */
     private function createBillingPlanForm($defaultData = array(), $full = true)
     {
 
       $form = $this->createFormBuilder($defaultData)
             ->add('name', 'text', array('label' => 'Name', 'attr' => array( 'placeholder' => "Igneet monthly plan")))
-            ->add('description', 'textarea', array('label' => 'Description', 'attr' => array( 'placeholder' => "Describe the plan details")))
-            ->add('type', 'choice', array(
+            ->add('description', 'textarea', array('label' => 'Description', 'attr' => array( 'placeholder' => "Describe the plan details")));
+
+      // Once created, these settings CANNOT be changed (the *PATCH* verb will return an error)
+      if ($full == true){
+        $form->add('type', 'choice', array(
               'choices' => array('fixed' => "Fixed", 'infinite' => "Infinite"), 
               'label' => 'Type'
-            ));
-
-      if ($full == true){
-        $form->add('price', 'text', array('label' => 'Price (€, incl. VAT)', 'attr' => array( 'placeholder' => "10")))
+            ))
+            ->add('price', 'text', array('label' => 'Price (€, incl. VAT)', 'attr' => array( 'placeholder' => "10")))
             ->add('interval', 'text', array('label' => 'Interval (# of month)', 'attr' => array( 'placeholder' => "1")))
             ->add('cycles', 'text', array('label' => 'Cycles (0: no limit)', 'attr' => array( 'placeholder' => "0")))
             ->add('return_url', 'text', array('label' => 'Return URL'))
             ->add('cancel_url', 'text', array('label' => 'Cancel URL'));
-
       }
             
       return $form->getForm();
@@ -310,25 +216,16 @@ class BillingController extends Controller
                     )
                   );
 
-                // Get token
-                $credential = new OAuthTokenCredential($this->container->getParameter('paypal_clientid'),$this->container->getParameter('paypal_secret'));
-                $token = "Bearer " . $credential->getAccessToken($this->getApiMode());
+                $token = $this->get('paypalHelper')->getToken();
+
+                if ($token === false){
+                  return $this->render('metaAdminBundle:Billing:error.html.twig');
+                }
 
                 // Paypal PHP SDK still doesn't support billing plans (01/09/2014)
-                $ch = curl_init();
-                curl_setopt($ch,CURLOPT_URL, $this->getApiEndpoint() . '/payments/billing-plans');
-                curl_setopt($ch, CURLOPT_POST, true);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-                curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                  'Content-Type: application/json',
-                  'Authorization: ' . $token
-                ));
+                $result = $this->get('paypalHelper')->createBillingPlan($token, $data);
 
-                curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));   
-                $result = curl_exec($ch);
-                curl_close($ch);
-
-                if ($result['state'] == "CREATED") {
+                if ($result === true) {
               
                   $this->get('session')->getFlashBag()->add(
                       'success',
@@ -366,6 +263,29 @@ class BillingController extends Controller
      */
     public function showAction(Request $request, $id)
     {
+        $token = $this->get('paypalHelper')->getToken();
+
+        if ($token === false){
+          return $this->render('metaAdminBundle:Billing:error.html.twig');
+        }
+
+        // Paypal PHP SDK still doesn't support billing plans (01/09/2014)
+        $plan = $this->get('paypalHelper')->getBillingPlan($token, $id);
+
+        if ($plan == null) {
+
+          $this->get('session')->getFlashBag()->add(
+              'error',
+              $this->get('translator')->trans('billing.error.retrieve')
+          );
+          return $this->redirect($this->generateUrl('a_billing_plans')); 
+
+        } else {
+
+          return $this->render('metaAdminBundle:Billing:show.html.twig', array('plan' => $plan));
+
+        }
+
     }
 
     /*
@@ -374,32 +294,27 @@ class BillingController extends Controller
     public function editAction(Request $request, $id)
     {
 
-        $form = $this->createBillingPlanForm(array(), false);
+        $token = $this->get('paypalHelper')->getToken();
 
-        // Get billing plans
-        $credential = new OAuthTokenCredential($this->container->getParameter('paypal_clientid'),$this->container->getParameter('paypal_secret'));
-        $token = "Bearer " . $credential->getAccessToken($this->getApiMode());
+        if ($token === false){
+          return $this->render('metaAdminBundle:Billing:error.html.twig');
+        }
 
         // Paypal PHP SDK still doesn't support billing plans (01/09/2014)
-        $ch = curl_init();
-        curl_setopt($ch,CURLOPT_URL, $this->getApiEndpoint() . '/payments/billing-plans/' . $id);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-          'Content-Type: application/json',
-          'Authorization: ' . $token
-        ));   
-        $result = curl_exec($ch);
-        $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
+        $plan = $this->get('paypalHelper')->getBillingPlan($token, $id);
 
-        if ($http_status != 200) {
+        if ($plan == null) {
 
           $this->get('session')->getFlashBag()->add(
               'error',
               $this->get('translator')->trans('billing.error.retrieve')
           );
-
           return $this->redirect($this->generateUrl('a_billing_plans')); 
+
+        } else {
+        
+          $form = $this->createBillingPlanForm($plan, false);
+        
         }
 
         if ($request->isMethod('POST')) {
@@ -411,29 +326,9 @@ class BillingController extends Controller
                 $postData = current($request->request->all());
 
                 // Paypal PHP SDK still doesn't support billing plans (01/09/2014)
-                $ch = curl_init();
-                curl_setopt($ch,CURLOPT_URL, $this->getApiEndpoint() . '/payments/billing-plans/' . $id);
-                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PATCH');
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-                curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                  'Content-Type: application/json',
-                  'Authorization: ' . $token
-                ));
-                $data = array(array(
-                              "path" => "/",
-                              "value" => array(
-                                  "name" => $postData['name'],
-                                  "description" => $postData['description'],
-                                  "type" => strtoupper($postData['type'])
-                                  ),
-                                "op" => "replace"
-                  ));
-                curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));   
-                $result = curl_exec($ch);
-                $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-                curl_close($ch);
+                $result = $this->get('paypalHelper')->updateBillingPlan($token, $id, $postData['name'], $postData['description']);
 
-                if ($http_status != 200) {
+                if ($result !== true) {
 
                   $this->get('session')->getFlashBag()->add(
                       'error',
@@ -461,13 +356,14 @@ class BillingController extends Controller
 
         }
 
-        return $this->render('metaAdminBundle:Billing:edit.html.twig', array('form' => $form->createView()));
+        return $this->render('metaAdminBundle:Billing:edit.html.twig', array('form' => $form->createView(), 'id' => $plan['id']));
 
     }
 
     public function listAgreementsAction($id)
     {
 
+        // TODO  FIXME
         return $this->render('metaAdminBundle:Default:home.html.twig');
 
     }

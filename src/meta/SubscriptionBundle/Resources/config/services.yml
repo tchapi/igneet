@@ -1,4 +1,7 @@
 services:
-#    meta_subscription.example:
-#        class: meta\SubscriptionBundle\Example
-#        arguments: [@service_id, "plain_value", %parameter%]
+    paypalHelper:
+        class: meta\SubscriptionBundle\Services\PaypalHelper
+        arguments: 
+            sandbox: %paypal_sandbox%
+            clientid: %paypal_clientid%
+            secret: %paypal_secret%

@@ -27,7 +27,6 @@
             <td>
               <h3>{{ plan.name }}</h3>
               <p>{{ plan.description }}</p>
-              <p><em>{{ plan.state }} - {{ plan.id }}</em></p>
             </td>
             <td>
               <a href="{{ path('s_create_billing_agreement', {'uid': community.id|to_uid, 'plan': plan.id, 'token': csrf_token('createBillingAgreement')}) }}" class="button button-success"><i class="fa fa-check"></i> {{ "billing.plans.choose"|trans }}</a>

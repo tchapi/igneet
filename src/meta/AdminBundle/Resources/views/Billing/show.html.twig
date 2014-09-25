@@ -1,0 +1,23 @@
+{% extends 'metaAdminBundle::layout.html.twig' %}
+
+{% block title %}{{ parent() }} > Billing plan details{% endblock %}
+
+{% block section %}Billing plan details{% endblock %}
+
+{% block content %}
+<div class="wrapper info">
+  <h4>{{ plan.name }}</h4>
+  <p>{{ plan.description }}</p>
+  <p>{{ plan.id }}</p>
+  <p>{{ plan.state }}</p>
+  <p>{{ plan.type }}</p>
+  <p>Created on {{ plan.create_time|date('d/m/Y') }}</p>
+  <p>Updated on {{ plan.update_time|date('d/m/Y') }}</p>
+  {% for p in plan.payment_definitions %}
+    <p>{{ p.amount.value }} {{ p.amount.currency }}</p>
+    <p>Frequency : {{ p.frequency }}, for {{ p.cycles }} cycles</p>
+  {% endfor %}
+  <p>{{ plan.merchant_preferences.return_url }}</p>
+  <p>{{ plan.merchant_preferences.cancel_url }}</p>
+</div>
+{% endblock %}
