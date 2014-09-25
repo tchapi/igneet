@@ -121,9 +121,15 @@ class PaypalHelper {
       $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
       curl_close($ch);
 
-      if ($result['state'] == "CREATED" && $http_status == 200) {
+      if ($http_status == 200) {
 
+        $json_result = json_decode($result, true);
+
+        if ($json_result['state'] == "CREATED") {
           return true;
+        } else {
+          return false;
+        }
 
       } else {
 
