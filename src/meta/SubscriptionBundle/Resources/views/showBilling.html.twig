@@ -29,16 +29,16 @@
     <table>
       <thead>
         <tr>
-          <th>{{ "billing.community.agreement.description"|trans }}</th>
-          <th>{{ "billing.community.agreement.status"|trans }}</th>
-          <th>{{ "billing.community.agreement.balance"|trans }}</th>
+          <th>{{ "billing.agreement.description"|trans }}</th>
+          <th>{{ "billing.agreement.status"|trans }}</th>
+          <th>{{ "billing.agreement.balance"|trans }}</th>
         </tr>
       </thead>
       <tbody>
           <tr>
             <td>
-              {{ "billing.community.agreement.id"|trans({ '%id%': ('<strong>' ~ agreement.id ~ '</strong>') })|raw }}<br>
-              {{ "billing.community.agreement.start_date"|trans({'%date%':agreement.start_date|date("date.format"|trans) }) }}<br>
+              {{ "billing.agreement.id"|trans({ '%id%': ('<strong>' ~ agreement.id ~ '</strong>') })|raw }}<br>
+              {{ "billing.agreement.start_date"|trans({'%date%':agreement.start_date|date("date.format"|trans) }) }}<br>
               <em>{{ agreement.description }}</em>
             </td>
             <td>{{ agreement.state }}</td>

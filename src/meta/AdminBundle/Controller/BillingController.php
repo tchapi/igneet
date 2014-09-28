@@ -23,7 +23,7 @@ class BillingController extends Controller
         // Paypal PHP SDK still doesn't support billing plans (01/09/2014)
         $plans_created = $this->get('paypalHelper')->getBillingPlans($token, 'CREATED');
 
-        if ($plans_created == null) {
+        if ($plans_created === false) {
           $this->get('session')->getFlashBag()->add(
               'error',
               $this->get('translator')->trans('billing.error.retrieve')
@@ -33,7 +33,7 @@ class BillingController extends Controller
         // Paypal PHP SDK still doesn't support billing plans (01/09/2014)
         $plans_active = $this->get('paypalHelper')->getBillingPlans($token, 'ACTIVE');
 
-        if ($plans_active == null) {
+        if ($plans_active === false) {
           $this->get('session')->getFlashBag()->add(
               'error',
               $this->get('translator')->trans('billing.error.retrieve')
@@ -43,7 +43,7 @@ class BillingController extends Controller
         // Paypal PHP SDK still doesn't support billing plans (01/09/2014)
         $plans_inactive = $this->get('paypalHelper')->getBillingPlans($token, 'INACTIVE');
 
-        if ($plans_inactive == null) {
+        if ($plans_inactive === false) {
           $this->get('session')->getFlashBag()->add(
               'error',
               $this->get('translator')->trans('billing.error.retrieve')
@@ -74,7 +74,7 @@ class BillingController extends Controller
         // Paypal PHP SDK still doesn't support billing plans (01/09/2014)
         $result = $this->get('paypalHelper')->activateBillingPlan($token, $id, true);
 
-        if ($result != 200) {
+        if ($result === false) {
           $this->get('session')->getFlashBag()->add(
               'error',
               $this->get('translator')->trans('billing.error.activate')
@@ -113,7 +113,7 @@ class BillingController extends Controller
         // Paypal PHP SDK still doesn't support billing plans (01/09/2014)
         $result = $this->get('paypalHelper')->activateBillingPlan($token, $id, false);
 
-        if ($result != 200) {
+        if ($result === false) {
           $this->get('session')->getFlashBag()->add(
               'error',
               $this->get('translator')->trans('billing.error.inactivate')
@@ -272,7 +272,7 @@ class BillingController extends Controller
         // Paypal PHP SDK still doesn't support billing plans (01/09/2014)
         $plan = $this->get('paypalHelper')->getBillingPlan($token, $id);
 
-        if ($plan == null) {
+        if ($plan === false) {
 
           $this->get('session')->getFlashBag()->add(
               'error',
@@ -281,6 +281,9 @@ class BillingController extends Controller
           return $this->redirect($this->generateUrl('a_billing_plans')); 
 
         } else {
+
+          $communityRepository = $this->getDoctrine()->getRepository('metaGeneralBundle:Community\Community');
+          $plan['count'] = $communityRepository->countCommunitiesUsingBillingPlan($plan['id']);
 
           return $this->render('metaAdminBundle:Billing:show.html.twig', array('plan' => $plan));
 
@@ -303,7 +306,7 @@ class BillingController extends Controller
         // Paypal PHP SDK still doesn't support billing plans (01/09/2014)
         $plan = $this->get('paypalHelper')->getBillingPlan($token, $id);
 
-        if ($plan == null) {
+        if ($plan === false) {
 
           $this->get('session')->getFlashBag()->add(
               'error',

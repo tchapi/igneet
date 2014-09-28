@@ -5,17 +5,23 @@
 {% block header %}
 <div class="title">
   <h2>{{ "billing.confirm.title"|trans }}</h2>
-  <h3>{{ "billing.confirm.help"|trans}}</h3>
+  <h3><i class="fa fa-warning"></i> {{ "billing.confirm.help"|trans|raw }}</h3>
 </div>
 {% endblock %}
 
 {% block content %}
 
   <section>
-    <p>{{ "billing.confirm"|trans }}</p>
-    <p>{{ community.name }}</p>
-    <p>{{ plan }}</p>
-    <a href="{{ path('s_execute_billing_agreement', {'payment_token': payment_token, 'token': csrf_token('executeBillingAgreement') }) }}">Pay</a>
+    <p>{{ "billing.confirm.text"|trans|raw }}</p>
+    <h3>{{ "billing.confirm.summary"|trans }}</h3>
+
+    <div class="billing-confirm">
+      <p>{{ "billing.confirm.community"|trans({"%community%" : community.name }) }}</p>
+      <p>{{ "billing.confirm.name"|trans({"%name%" : plan.name }) }}</p>
+      <p>{{ "billing.confirm.description"|trans({"%description%" : plan.description }) }}</p>
+    </div>
+
+    <a href="{{ path('s_execute_billing_agreement', {'payment_token': payment_token, 'token': csrf_token('executeBillingAgreement') }) }}" class="button button-success">{{ "billing.confirm.pay"|trans }}</a>
   </section>
 
   <section class="billing-help">

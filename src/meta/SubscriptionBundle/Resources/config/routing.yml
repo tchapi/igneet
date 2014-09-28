@@ -15,10 +15,11 @@ s_list_billing_plans:
       uid: "[0-9a-zA-Z]*"
 
 s_create_billing_agreement:
-    path:     /billing/subscribe/0{uid}/plan/{plan}
+    path:     /billing/subscribe/0{uid}/plan/{planId}
     defaults: { _controller: metaSubscriptionBundle:Default:createBillingAgreement }
     requirements:
       uid: "[0-9a-zA-Z]*"
+      planId: "P-[0-9A-Z]{24}"
 
 s_abort_billing_agreement:
     path:     /billing/abort

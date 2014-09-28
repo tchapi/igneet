@@ -14,27 +14,6 @@ use meta\GeneralBundle\Entity\Community\Community,
 class DefaultController extends Controller
 {
 
-    private function getApiEndpoint(){
-
-      if ($this->container->getParameter('paypal_sandbox') === false) {
-        return "https://api.paypal.com/v1";
-      } else {
-        return "https://api.sandbox.paypal.com/v1";
-      }
-
-    }
-
-    private function getApiMode(){
-
-      if ($this->container->getParameter('paypal_sandbox') === false) {
-        return array();
-      } else {
-        return array('mode' => 'sandbox');
-      }
-
-    }
-
-
     /*
      * STEP 1.
      * User should choose the community he wants to pay for in the list of communities he is manager in
@@ -87,38 +66,19 @@ class DefaultController extends Controller
 
         } else {
 
-          // Get Customer billing agreement
-          $credential = new OAuthTokenCredential($this->container->getParameter('paypal_clientid'),$this->container->getParameter('paypal_secret'));
-          $token = "Bearer " . $credential->getAccessToken($this->getApiMode());
+          $token = $this->get('paypalHelper')->getToken();
+          if ($token === false){
+            return $this->render('metaSubscriptionBundle::error.html.twig');
+          }
 
           // Paypal PHP SDK still doesn't support billing plans/agreements (01/09/2014)
-          $ch = curl_init();
-          curl_setopt($ch,CURLOPT_URL, $this->getApiEndpoint() . '/payments/billing-agreements/' . $agreementId);
-          curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-          curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'Content-Type: application/json',
-            'Authorization: ' . $token
-          ));
-          $result = curl_exec($ch);
-          curl_close($ch);
+          $agreement = $this->get('paypalHelper')->getBillingAgreement($token, $agreementId);
 
-          if ($result != "") {
-
-            $agreement = json_decode($result, true);
-
-            // If agreement not active, tell user his community will be invalid soon
-            if (strtoupper($agreement['state']) != "ACTIVE") {
-              $agreement = null;
-            }
-
-          } else {
-
+          if ($agreement === false) {
             $this->get('session')->getFlashBag()->add(
                 'error',
                 $this->get('translator')->trans('billing.error.retrieve')
             );
-            $agreement = null;
-
           }
 
         }
@@ -147,33 +107,20 @@ class DefaultController extends Controller
 
       if ($community){
 
-          // Get billing plans
-          $credential = new OAuthTokenCredential($this->container->getParameter('paypal_clientid'),$this->container->getParameter('paypal_secret'));
-          $token = "Bearer " . $credential->getAccessToken($this->getApiMode());
+          $token = $this->get('paypalHelper')->getToken();
+          if ($token === false){
+            return $this->render('metaSubscriptionBundle::error.html.twig');
+          }
 
           // Paypal PHP SDK still doesn't support billing plans (01/09/2014)
-          $ch = curl_init();
-          curl_setopt($ch,CURLOPT_URL, $this->getApiEndpoint() . '/payments/billing-plans?status=ACTIVE');
-          curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-          curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'Content-Type: application/json',
-            'Authorization: ' . $token
-          ));
-          $result = curl_exec($ch);
-          curl_close($ch);
+          $plans = $this->get('paypalHelper')->getBillingPlans($token, 'ACTIVE');
 
-          if ($result != "") {
-
-            $plans = json_decode($result, true);
-            $plans = $plans['plans'];
-
-          } else {
+          if ($plans === false) {
 
             $this->get('session')->getFlashBag()->add(
                 'error',
                 $this->get('translator')->trans('billing.error.retrieve')
             );
-            $plans = null;
 
           }
 
@@ -192,7 +139,7 @@ class DefaultController extends Controller
      * User wants a plan and chooses it, we create an agreement and ask for his approval through paypal
      *
      */
-    public function createBillingAgreementAction(Request $request, $uid, $plan)
+    public function createBillingAgreementAction(Request $request, $uid, $planId)
     {
       if (!$this->get('form.csrf_provider')->isCsrfTokenValid('createBillingAgreement', $request->get('token')))
             return new Response($this->get('translator')->trans('invalid.token', array(), 'errors'), 400);
@@ -201,51 +148,43 @@ class DefaultController extends Controller
 
       if ($community){
 
-          // Get billing plans
-          $credential = new OAuthTokenCredential($this->container->getParameter('paypal_clientid'),$this->container->getParameter('paypal_secret'));
-          $token = "Bearer " . $credential->getAccessToken($this->getApiMode());
+          $token = $this->get('paypalHelper')->getToken();
+          if ($token === false){
+            return $this->render('metaSubscriptionBundle::error.html.twig');
+          }
+
+          // Get the plan
+          $plan = $this->get('paypalHelper')->getBillingPlan($token, $planId);
+
+          if ($plan === false) {
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $this->get('translator')->trans('billing.error.retrieve')
+            );
+            return $this->render('metaSubscriptionBundle::error.html.twig');
+          }
+
+          // Choose a wise start date, if the community is still valid let's start the 
+          // new agreement at this date and not now, this gices a bit more time for the user
+          $startDate = max(time(),$community->getValidUntil()->getTimestamp());
+
+          // Add relevant info to the description
+          $info = $this->get('translator')->trans('billing.agreement.community', array('%community%' => $community->getName()));
 
           // Paypal PHP SDK still doesn't support billing agreements (01/09/2014)
-          // Creates billing agreement
-          $ch = curl_init();
-          curl_setopt($ch,CURLOPT_URL, $this->getApiEndpoint() . '/payments/billing-agreements');
-          curl_setopt($ch, CURLOPT_POST, TRUE);
-          curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-          curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'Content-Type: application/json',
-            'Authorization: ' . $token
-          ));
-          $data = array(
-                  "name" => "Igneet Mensuel",
-                  "description" => "Igneet Mensuel | plan ID:" . $plan,
-                  "start_date" => date('Y-m-d\TH:i:s\Z'),
-                  "plan" => array(
-                      "id" => $plan
-                  ),
-                  "payer" => array(
-                      "payment_method" => "paypal"
-                  )
-          );
-          curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));   
-          $result = curl_exec($ch);
-          $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-          curl_close($ch);
+          $agreement = $this->get('paypalHelper')->createBillingAgreement($token, $plan, $startDate, $info);
 
-          // https://developer.paypal.com/docs/api/#create-an-agreement
-          if ($http_status != 201) { // If status is not : "CREATED"
+          if ($agreement === false) {
       
             $this->get('session')->getFlashBag()->add(
                 'error',
                 $this->get('translator')->trans('billing.error.create.agreemeent')
             );
-
             return $this->redirect($this->generateUrl('s_show_billing', array('uid' => $uid)));
 
           }
 
-          $response = json_decode($result, true);
-
-          foreach ($response['links'] as $link) {
+          foreach ($agreement['links'] as $link) {
             if ($link['rel'] == "approval_url") {
 
               // Agreement was created and we have the approval url. Let's store something in the session
@@ -343,45 +282,36 @@ class DefaultController extends Controller
 
       if ($community && $plan){
 
-          // Get Credentials
-          $credential = new OAuthTokenCredential($this->container->getParameter('paypal_clientid'),$this->container->getParameter('paypal_secret'));
-          $token = "Bearer " . $credential->getAccessToken($this->getApiMode());
+          $token = $this->get('paypalHelper')->getToken();
+          if ($token === false){
+            return $this->render('metaSubscriptionBundle::error.html.twig');
+          }
 
           // Execute the billing agreement
-          $ch = curl_init();
-          curl_setopt($ch,CURLOPT_URL, $this->getApiEndpoint() . '/payments/billing-agreements/' . $payment_token . "/agreement-execute");
-          curl_setopt($ch, CURLOPT_POST, TRUE);
-          curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-          curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'Content-Type: application/json',
-            'Authorization: ' . $token
-          ));
-          $data = array();
-          curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));   
-          $result = curl_exec($ch);
-          curl_close($ch);
+          $agreement = $this->get('paypalHelper')->executeBillingAgreement($token, $payment_token);
 
-          if ($result != "") {
-
-            $agreement = json_decode($result, true);
-            $this->get('session')->getFlashBag()->add(
-                'success',
-                $this->get('translator')->trans('billing.success')
-            );
-
-            $community->setBillingPlan($plan);
-            $community->setBillingAgreement($agreement['id']);
-            $community->setValidUntil(new \DateTime('now + 1 month'));
-            $em = $this->getDoctrine()->getManager();
-            $em->flush();
-
-          } else {
+          if ($agreement === false) {
 
             $this->get('session')->getFlashBag()->add(
                 'error',
                 $this->get('translator')->trans('billing.error.execute')
             );
-            $agreement = null;
+            
+          } else {
+
+            $this->get('session')->getFlashBag()->add(
+                'success',
+                $this->get('translator')->trans('billing.success')
+            );
+
+            $community->setBillingPlan($plan['id']);
+            $community->setBillingAgreement($agreement['id']);
+
+            $startDate = new \DateTime('@' . max(time(),$community->getValidUntil()->getTimestamp()));
+
+            $community->setValidUntil($startDate->add(new \DateInterval('P1M')));
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
 
           }
 
@@ -407,8 +337,8 @@ class DefaultController extends Controller
 
       if ($community){
 
-        $planId = $community->getBillingPlan(); //"P-0KM92061C8742900WG75XLBA"; //
-        $agreementId = $community->getBillingAgreement(); // I-95J8U2SK6LW6
+        $planId = $community->getBillingPlan(); 
+        $agreementId = $community->getBillingAgreement();
 
         // No paying communities ?
         if (is_null($planId) || is_null($agreementId)) {
@@ -420,29 +350,16 @@ class DefaultController extends Controller
 
         } else {
 
-          // Get Customer billing plan
-          $credential = new OAuthTokenCredential($this->container->getParameter('paypal_clientid'),$this->container->getParameter('paypal_secret'));
-          $token = "Bearer " . $credential->getAccessToken($this->getApiMode());
+          $token = $this->get('paypalHelper')->getToken();
+          if ($token === false){
+            return $this->render('metaSubscriptionBundle::error.html.twig');
+          }
 
           // Cancels the billing agreement
           // Paypal PHP SDK still doesn't support billing agreements (01/09/2014)
-          $ch = curl_init();
-          curl_setopt($ch, CURLOPT_URL, $this->getApiEndpoint() . '/payments/billing-agreements/' . $agreementId . "/cancel");
-          curl_setopt($ch, CURLOPT_POST, TRUE);
-          curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-          curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'Content-Type: application/json',
-            'Authorization: ' . $token
-          ));
-          $data = array(
-                  "note" => "Canceling upon user request on " . date('c') . "."
-              );
-          curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));   
-          $result = curl_exec($ch);
-          $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-          curl_close($ch);
+          $result = $this->get('paypalHelper')->cancelBillingAgreement($token, $agreementId);
 
-          if ($http_status != 204) { //https://developer.paypal.com/docs/api/#cancel-an-agreement
+          if ($result === false) {
 
             $this->get('session')->getFlashBag()->add(
                 'error',

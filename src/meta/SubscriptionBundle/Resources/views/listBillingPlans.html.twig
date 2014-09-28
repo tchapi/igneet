@@ -29,7 +29,7 @@
               <p>{{ plan.description }}</p>
             </td>
             <td>
-              <a href="{{ path('s_create_billing_agreement', {'uid': community.id|to_uid, 'plan': plan.id, 'token': csrf_token('createBillingAgreement')}) }}" class="button button-success"><i class="fa fa-check"></i> {{ "billing.plans.choose"|trans }}</a>
+              <a href="{{ path('s_create_billing_agreement', {'uid': community.id|to_uid, 'planId': plan.id, 'token': csrf_token('createBillingAgreement')}) }}" class="button button-success"><i class="fa fa-check"></i> {{ "billing.plans.choose"|trans }}</a>
             </td>
           </tr>
         {% endfor %}

@@ -39,7 +39,9 @@
           <td>{{ plan.create_time|date('d/m/Y') }}</td>
           <td>{{ plan.update_time|date("d/m/Y") }}</td>
           <td><a href="{{ path('a_billing_plan_show', { 'id' : plan.id } ) }}"><i class="fa fa-eye"></i></a>
+            {% if plan.state == 'CREATED' %}
               <a href="{{ path('a_billing_plan_edit', { 'id' : plan.id } ) }}"><i class="fa fa-pencil"></i></a>
+            {% endif %}
             {% if plan.state == 'ACTIVE' and plan.count == 0 %}
               <a href="{{ path('a_billing_plan_inactivate', { 'id' : plan.id} ) }}"><i class="fa fa-power-off"></i></a>
             {% elseif plan.state != 'ACTIVE' %}
