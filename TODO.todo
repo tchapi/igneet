@@ -50,6 +50,9 @@ Paypal :
  ☐  Paiement : XX € / mois pour accès illimité pour création d'1 communauté
       Premier mois gratuit, nombre illimité de communautés
       Communauté supplémentaire XX/2 € / mois
+ ☐ Utiliser le paypalHelper service coté front
+ ☐ Error.html.Twig : mettre en page
+ ☐ show.html.Twig : mettre en page
  ☐ Mettre du HTTPS coté web
  ☐ Mettre un logo paypal sur la liste des abonnements ?
  ☐ renew si community deja valid (donc dans le cas == legacy) : doit commencer le jour de la fin de validité, parce qu'on est pas des salauds

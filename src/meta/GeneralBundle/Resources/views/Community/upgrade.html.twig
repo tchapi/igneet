@@ -12,7 +12,12 @@
 {% block content %}
 <section>
   <div class="content-full">
-    {{ "community.upgradeText"|trans|raw }}
+    {% if manager %}
+      <p>{{ "community.upgradeTextManager"|trans({"%community%" : community.name})|raw }}</p>
+      <a href="{{ path('s_show_communities') }}" class="button button-success">{{ "community.upgradeButton"|trans }}</a>
+    {% else %}
+      <p>{{ "community.upgradeText"|trans|raw }}</p>
+    {% endif %}
   </div>
 </section>
 {% endblock %}

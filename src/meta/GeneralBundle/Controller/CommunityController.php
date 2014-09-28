@@ -158,11 +158,29 @@ class CommunityController extends Controller
 
     }
 
-    public function upgradeAction()
+    public function upgradeAction($uid)
     {
 
-        // TODO !!
-        return $this->render('metaGeneralBundle:Community:upgrade.html.twig');
+        $authenticatedUser = $this->getUser();
+        $community = $this->getDoctrine()->getRepository('metaGeneralBundle:Community\Community')->findOneById($this->get('uid')->fromUId($uid));
+
+        if ( !is_null($community) && $community && !$community->isValid()){
+
+            // Is the user manager ?
+            $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'manager' => true));
+            
+            if ($userCommunity){
+                $manager = true;
+            } else {
+                $manager = false;
+            }
+        
+            return $this->render('metaGeneralBundle:Community:upgrade.html.twig', array('community' => $community, 'manager' => $manager));
+
+        } else {
+
+            return $this->redirect($this->generateUrl('g_home_community'));
+        }
 
     }
 

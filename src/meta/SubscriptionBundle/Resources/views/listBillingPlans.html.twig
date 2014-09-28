@@ -14,6 +14,17 @@
 
 {% if plans %}
   <section class="billing-table">
+
+    {% if app.request.locale == "fr_FR" %}
+    <div class="billing-partner">
+      <!-- PayPal Logo --><a href="https://www.paypal.com/fr/webapps/mpp/paypal-popup" title="PayPal, Comment Ça Marche" onclick="javascript:window.open('https://www.paypal.com/fr/webapps/mpp/paypal-popup','WIPaypal','toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=1060, height=700'); return false;"><img src="https://www.paypalobjects.com/webstatic/mktg/logo-center/logo_paypal_moyens_paiement_fr.jpg" border="0" alt="PayPal Accepté" /></a><!-- PayPal Logo -->
+    </div>
+    {% else %}
+    <div class="billing-partner">
+      <!-- PayPal Logo --><a href="https://www.paypal.com/webapps/mpp/paypal-popup" title="How PayPal Works" onclick="javascript:window.open('https://www.paypal.com/webapps/mpp/paypal-popup','WIPaypal','toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=1060, height=700'); return false;"><img src="https://www.paypalobjects.com/webstatic/mktg/logo/AM_mc_vs_dc_ae.jpg" border="0" alt="PayPal Acceptance Mark"></a><!-- PayPal Logo -->
+    </div>
+    {% endif %}
+
     <table>
       <thead>
         <tr>
