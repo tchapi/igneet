@@ -116,4 +116,19 @@ class CommunityRepository extends EntityRepository
             ->getSingleScalarResult();
 
   }
+
+  public function findAllBilledCommunities()
+  {
+
+    $qb = $this->getEntityManager()->createQueryBuilder();
+
+    return $qb->select('c')
+            ->from('metaGeneralBundle:Community\Community', 'c')
+            ->where('c.billing_plan IS NOT NULL')
+            ->andWhere('c.billing_agreement IS NOT NULL')
+            ->getQuery()
+            ->getResult();
+
+  }
+
 }
