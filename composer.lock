@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "498e7a7a9c864b2ad53bd66cbefcbe31",
+    "hash": "a3c8d6a67056da010d926072c5c91da5",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1181,11 +1181,17 @@
         },
         {
             "name": "lightopenid/lightopenid",
-            "version": "v0.7.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://git.gitorious.org/lightopenid/lightopenid.git",
+                "url": "https://github.com/Mewp/lightopenid.git",
                 "reference": "9d42dc24e4dd34121c98a6491bc3ef7933a68a19"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Mewp/lightopenid/zipball/9d42dc24e4dd34121c98a6491bc3ef7933a68a19",
+                "reference": "9d42dc24e4dd34121c98a6491bc3ef7933a68a19",
+                "shasum": ""
             },
             "require": {
                 "php": ">=5.2.3"
@@ -2161,6 +2167,7 @@
     "stability-flags": {
         "willdurand/expose-translation-bundle": 20,
         "fp/openid-bundle": 20,
+        "lightopenid/lightopenid": 20,
         "robertotru/to-inline-style-email-bundle": 20
     },
     "prefer-stable": false,

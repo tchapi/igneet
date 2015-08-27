@@ -14,7 +14,7 @@
     ],
     "require": {
         "php": ">=5.3.9",
-        "symfony/symfony"                      : "~2.7",
+        "symfony/symfony"                      : "2.7.*",
         "doctrine/orm"                         : "~2.4",
         "doctrine/doctrine-bundle"             : "~1.5",
         "doctrine/doctrine-fixtures-bundle"    : "~2.2",
@@ -25,9 +25,10 @@
         "sensio/distribution-bundle"           : "~3.0",
 
         "incenteev/composer-parameter-handler" : "~2.0",
-        "knplabs/knp-markdown-bundle"          : "~1.3",
+        "knplabs/knp-markdown-bundle"          : "~1.4",
         "willdurand/expose-translation-bundle" : "dev-master",
         "fp/openid-bundle"                     : "dev-master",
+        "lightopenid/lightopenid"              : "dev-master",
         "robertotru/to-inline-style-email-bundle" : "dev-master"
     },
     "require-dev": {
@@ -56,7 +57,7 @@
             "file": "app/config/parameters.yml"
         },
         "branch-alias": {
-            "dev-master": "2.8-dev"
+            "dev-master": "2.7-dev"
         },
         "symfony-assets-install": "symlink"
     }
