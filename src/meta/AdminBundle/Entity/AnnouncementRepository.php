@@ -32,8 +32,8 @@ class AnnouncementRepository extends EntityRepository
             ->where('a.active = 1')
             ->andWhere('a.valid_until > :now')
             ->andWhere('a.valid_from < :now')
-            ->andWhere('tu IS NULL OR tu = :user')
             ->andWhere('a NOT IN (' . $subquery->getDql() . ')')
+            ->andWhere('tu = :user OR tu.id IS NULL') /* See http://www.doctrine-project.org/jira/browse/DDC-2780 */
             ->setParameter('now', $now)
             ->setParameter('user', $user)
             ->getQuery()
