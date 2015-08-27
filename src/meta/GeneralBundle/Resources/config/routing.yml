@@ -1,107 +1,107 @@
 # Community
 
 g_home_community:
-    pattern: /
+    path: /
     defaults: { _controller: metaGeneralBundle:Community:home }
 
 g_switch_community:
-    pattern: /community/switch/0{uid}
+    path: /community/switch/0{uid}
     defaults: { _controller: metaGeneralBundle:Default:switchCommunity }
     requirements:
       uid: "[0-9a-zA-Z]*"
 
 g_switch_private_space:
-    pattern: /switch/privatespace
+    path: /switch/privatespace
     defaults: { _controller: metaGeneralBundle:Default:switchCommunity, uid: null }
 
 g_create_community:
-    pattern: /communities/new
+    path: /communities/new
     defaults: { _controller: metaGeneralBundle:Community:create }
 
 g_upgrade_community:
-    pattern: /community/upgrade/0{uid}
+    path: /community/upgrade/0{uid}
     defaults: { _controller: metaGeneralBundle:Community:upgrade }
     requirements:
       uid: "[0-9a-zA-Z]*"
 
 g_edit_community:
-    pattern:  /community/edit
+    path:  /community/edit
     defaults: { _controller: metaGeneralBundle:Community:edit }
 
 g_community_comment:
-    pattern:  /community/comment
+    path:  /community/comment
     defaults: { _controller: metaGeneralBundle:Community:addCommunityComment }
 
 g_edit_community_reset_picture:
-    pattern:  /community/reset/picture
+    path:  /community/reset/picture
     defaults: { _controller: metaGeneralBundle:Community:resetPicture }
 
 g_manage_community:
-    pattern: /community/manage
+    path: /community/manage
     defaults: { _controller: metaGeneralBundle:Community:manage }
 
 g_add_manager_community:
-    pattern:  /community/0{uid}/team/add/{username}/manager
+    path:  /community/0{uid}/team/add/{username}/manager
     defaults: { _controller: metaGeneralBundle:Community:addManager }
     requirements:
       uid: "[0-9a-zA-Z]*"
 
 g_remove_manager_community:
-    pattern:  /community/0{uid}/team/remove/{username}/manager
+    path:  /community/0{uid}/team/remove/{username}/manager
     defaults: { _controller: metaGeneralBundle:Community:removeManager }
     requirements:
       uid: "[0-9a-zA-Z]*"
 
 g_invite:
-    pattern: /community/invite
+    path: /community/invite
     defaults: { _controller: metaGeneralBundle:Community:invite }
 
 g_remove:
-    pattern: /community/remove
+    path: /community/remove
     defaults: { _controller: metaGeneralBundle:Community:remove }
 
 # First run
 
 g_first_run:
-    pattern: /welcome/{step}
+    path: /welcome/{step}
     defaults: { _controller: metaGeneralBundle:FirstRun:doStep, step: 0 }
 
 # Language
 
 g_switch_language:
-    pattern: /language
+    path: /language
     defaults: { _controller: metaGeneralBundle:Default:switchLanguage}
     requirements:
-      _method: POST
+      methods: POST
 
 # General
 
 g_credits:
-    pattern: /credits
+    path: /credits
     defaults: { _controller: metaGeneralBundle:Default:showCredits }
 
 g_choose_file:
-    pattern:  /file/upload/{targetAsBase64}
+    path:  /file/upload/{targetAsBase64}
     defaults: { _controller: metaGeneralBundle:Default:chooseFile }
 
 g_choose_community:
-    pattern:  /community/choose/{targetAsBase64}
+    path:  /community/choose/{targetAsBase64}
     defaults: { _controller: metaGeneralBundle:Default:chooseCommunity }
 
 # Comments
 
 g_validate_comment:
-    pattern: /comment/validate/{id}
+    path: /comment/validate/{id}
     defaults: { _controller: metaGeneralBundle:Default:validateComment }
     requirements:
-      _method: POST
+      methods: POST
       id: \d+
 
 g_delete_comment:
-    pattern: /comment/delete/{id}
+    path: /comment/delete/{id}
     defaults: { _controller: metaGeneralBundle:Default:deleteComment }
     requirements:
-      _method: POST
+      methods: POST
       id: \d+
 
 # Announcements (deported here because /admin is protected)

@@ -4,57 +4,57 @@
 # ---------------
 
 i_list_ideas:
-    pattern:  /ideas/{sort}
+    path:  /ideas/{sort}
     defaults: { _controller: metaIdeaBundle:Ideas:list, page: 1, archived: false, sort: update }
     requirements:
         sort: update|newest|alpha
 
 i_list_archived_ideas:
-    pattern:  /ideas/archived/{sort}
+    path:  /ideas/archived/{sort}
     defaults: { _controller: metaIdeaBundle:Ideas:list, page: 1, archived: true, sort: update }
     requirements:
         sort: update|newest|alpha
 
 i_new_idea:
-    pattern:  /ideas/new
+    path:  /ideas/new
     defaults: { _controller: metaIdeaBundle:Ideas:create }
 
 # /IDEA/EDIT
 # ---------------
 
 i_edit_idea:
-    pattern:  /idea/0{uid}/edit
+    path:  /idea/0{uid}/edit
     defaults: { _controller: metaIdeaBundle:Idea:edit }
     requirements:
         uid: "[0-9a-zA-Z]*"
-        _method:  POST
+        methods:  POST
 
 i_edit_idea_reset_picture:
-    pattern:  /idea/0{uid}/reset/picture
+    path:  /idea/0{uid}/reset/picture
     defaults: { _controller: metaIdeaBundle:Idea:resetPicture }
     requirements:
         uid: "[0-9a-zA-Z]*"
 
 i_delete_idea:
-    pattern:  /idea/0{uid}/delete
+    path:  /idea/0{uid}/delete
     defaults: { _controller: metaIdeaBundle:Idea:delete }
     requirements:
         uid: "[0-9a-zA-Z]*"
 
 i_archive_idea:
-    pattern:  /idea/0{uid}/archive
+    path:  /idea/0{uid}/archive
     defaults: { _controller: metaIdeaBundle:Idea:archiveOrRecycle, archive: true }
     requirements:
         uid: "[0-9a-zA-Z]*"
 
 i_recycle_idea:
-    pattern:  /idea/0{uid}/recycle
+    path:  /idea/0{uid}/recycle
     defaults: { _controller: metaIdeaBundle:Idea:archiveOrRecycle, archive: false }
     requirements:
         uid: "[0-9a-zA-Z]*"
 
 i_turn_idea_into_project:
-    pattern:  /idea/0{uid}/make/project
+    path:  /idea/0{uid}/make/project
     defaults: { _controller: metaIdeaBundle:Idea:projectize }
     requirements:
         uid: "[0-9a-zA-Z]*"
@@ -63,7 +63,7 @@ i_turn_idea_into_project:
 # ---------------
 
 i_show_idea_comment:
-    pattern:  /idea/0{uid}/comment
+    path:  /idea/0{uid}/comment
     defaults: { _controller: metaIdeaBundle:Idea:addIdeaComment }
     requirements:
       uid: "[0-9a-zA-Z]*"
@@ -72,13 +72,13 @@ i_show_idea_comment:
 # ---------------
 
 i_add_participant_to_idea:
-    pattern:  /idea/0{uid}/team/add/{username}/participant
+    path:  /idea/0{uid}/team/add/{username}/participant
     defaults: { _controller: metaIdeaBundle:Idea:addParticipant }
     requirements:
         uid: "[0-9a-zA-Z]*"
 
 i_remove_participant_to_idea:
-    pattern:  /idea/0{uid}/team/remove/{username}/participant
+    path:  /idea/0{uid}/team/remove/{username}/participant
     defaults: { _controller: metaIdeaBundle:Idea:removeParticipant }
     requirements:
         uid: "[0-9a-zA-Z]*"
@@ -87,13 +87,13 @@ i_remove_participant_to_idea:
 # ---------------
 
 i_watch_idea:
-    pattern:  /idea/0{uid}/watch
+    path:  /idea/0{uid}/watch
     defaults: { _controller: metaIdeaBundle:Idea:watch }
     requirements:
         uid: "[0-9a-zA-Z]*"
 
 i_unwatch_idea:
-    pattern:  /idea/0{uid}/unwatch
+    path:  /idea/0{uid}/unwatch
     defaults: { _controller: metaIdeaBundle:Idea:unwatch }
     requirements:
         uid: "[0-9a-zA-Z]*"
@@ -103,28 +103,28 @@ i_unwatch_idea:
 
 ## INFO
 i_show_idea_info:
-    pattern:  /idea/0{uid}/info
+    path:  /idea/0{uid}/info
     defaults: { _controller: metaIdeaBundle:Idea:show }
     requirements:
         uid: "[0-9a-zA-Z]*"
 
 ## SETTINGS
 i_show_idea_settings:
-    pattern:  /idea/0{uid}/settings
+    path:  /idea/0{uid}/settings
     defaults: { _controller: metaIdeaBundle:Idea:showSettings}
     requirements:
         uid: "[0-9a-zA-Z]*"
 
 ## TIMELINE
 i_show_idea:
-    pattern:  /idea/0{uid}
+    path:  /idea/0{uid}
     defaults: { _controller: metaIdeaBundle:Idea:showTimeline }
     requirements:
         uid: "[0-9a-zA-Z]*"
 
 ## CONTENT
 i_show_idea_content:
-    pattern:  /idea/0{uid}/content
+    path:  /idea/0{uid}/content
     defaults: { _controller: metaIdeaBundle:Idea:showContent }
     requirements:
         uid: "[0-9a-zA-Z]*"

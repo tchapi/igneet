@@ -1,110 +1,110 @@
 login:
-    pattern: /login
+    path: /login
     defaults: { _controller: metaUserBundle:Security:login }
 
 login_check:
-    pattern: /login_check
+    path: /login_check
 
 logout:
-    pattern: /logout
+    path: /logout
 
 recover:
-    pattern: /recover
+    path: /recover
     defaults: { _controller: metaUserBundle:Security:recover }
 
 change_password:
-    pattern: /change/password/{passwordToken}
+    path: /change/password/{passwordToken}
     defaults: { _controller: metaUserBundle:Security:changePassword, passwordToken: null }
 
 u_signup:
-    pattern:  /signup/{inviteToken}
+    path:  /signup/{inviteToken}
     defaults: { _controller: metaUserBundle:Security:create, inviteToken: null, openid: false }
 
 u_signup_choice:
-    pattern:  /signup_choice/{inviteToken}
+    path:  /signup_choice/{inviteToken}
     defaults: { _controller: metaUserBundle:Security:chooseSignupProvider, inviteToken: null }
 
 u_signup_finish:
-    pattern:  /signup_finish/{inviteToken}
+    path:  /signup_finish/{inviteToken}
     defaults: { _controller: metaUserBundle:Security:create, inviteToken: null, openid: true }
 
 u_me:
-    pattern:  /me
+    path:  /me
     defaults: { _controller: metaUserBundle:User:showMe }
 
 u_show_user_profile:
-    pattern:  /who/{username}
+    path:  /who/{username}
     defaults: { _controller: metaUserBundle:User:show }
     requirements:
-        _method:  GET
+        methods:  GET
 
 u_show_user_settings:
-    pattern:  /settings
+    path:  /settings
     defaults: { _controller: metaUserBundle:Settings:showSettings }
     requirements:
-        _method:  GET
+        methods:  GET
 
 u_show_user_notifications:
-    pattern:  /notifications/{date}
+    path:  /notifications/{date}
     defaults: { _controller: metaUserBundle:User:showNotifications, date: null }
     requirements:
-        _method:  GET
+        methods:  GET
         date:  "[0-9]{4}\-[0-9]{2}\-[0-9]{2}"
 
 u_count_user_notifications:
-    pattern:  /notifications/count
+    path:  /notifications/count
     defaults: { _controller: metaUserBundle:User:countNotifications}
     requirements:
-        _method:  POST
+        methods:  POST
 
 u_mark_read_notifications:
-    pattern:  /notifications/mark
+    path:  /notifications/mark
     defaults: { _controller: metaUserBundle:User:markNotificationsRead}
     requirements:
-        _method:  POST
+        methods:  POST
 
 u_edit_user_profile:
-    pattern:  /who/{username}
+    path:  /who/{username}
     defaults: { _controller: metaUserBundle:User:edit }
     requirements:
-        _method:  POST
+        methods:  POST
 
 u_edit_user_settings:
-    pattern:  /settings
+    path:  /settings
     defaults: { _controller: metaUserBundle:Settings:editSettings }
     requirements:
-        _method:  POST
+        methods:  POST
 
 u_edit_user_profile_reset_avatar:
-    pattern:  /who/{username}/resetavatar
+    path:  /who/{username}/resetavatar
     defaults: { _controller: metaUserBundle:User:resetAvatar }
 
 u_delete_user_profile:
-    pattern:  /byebye/{username}
+    path:  /byebye/{username}
     defaults: { _controller: metaUserBundle:User:delete }
     requirements:
-        _method:  GET
+        methods:  GET
 
 u_list_users:
-    pattern:  /people/{page}/{sort}
+    path:  /people/{page}/{sort}
     defaults: { _controller: metaUserBundle:Users:list, page: 1, sort: newest }
     requirements:
         page: \d+
         sort: newest|update|active|alpha
 
 u_choose_user:
-    pattern:  /people/choose/{targetAsBase64}
+    path:  /people/choose/{targetAsBase64}
     defaults: { _controller: metaUserBundle:Users:choose }
 
 u_follow_user:
-    pattern:  /follow/{username}
+    path:  /follow/{username}
     defaults: { _controller: metaUserBundle:User:followUser }
 
 u_unfollow_user:
-    pattern:  /unfollow/{username}
+    path:  /unfollow/{username}
     defaults: { _controller: metaUserBundle:User:unfollowUser }
 
 
 u_list_all_skills:
-    pattern:  /skills
+    path:  /skills
     defaults: { _controller: metaUserBundle:Users:listSkills }

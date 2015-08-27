@@ -1,11 +1,11 @@
 home:
-    pattern:  /
+    path:  /
     defaults: { _controller: metaStaticBundle:Default:home}
 
 contact:
-    pattern:  /contact
+    path:  /contact
     defaults: { _controller: metaStaticBundle:Default:contact}
 
 terms:
-    pattern:  /terms
+    path:  /terms
     defaults: { _controller: metaStaticBundle:Default:terms}
