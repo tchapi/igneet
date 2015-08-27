@@ -7,6 +7,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller,
     Symfony\Component\HttpFoundation\Response,
     Symfony\Component\HttpFoundation\RedirectResponse;
 
+/* SYMFONY 2.8 
+use Symfony\Component\Form\Extension\Core\Type\TextType,
+    Symfony\Component\Form\Extension\Core\Type\TextareaType;
+    */
 use meta\GeneralBundle\Entity\Community\Community,
     meta\UserBundle\Entity\UserCommunity,
     meta\UserBundle\Entity\UserInviteToken;
@@ -45,7 +49,7 @@ class FirstRunController extends Controller
 
     $community = new Community();
     $form = $this->createFormBuilder($community)
-        ->add('name', 'text', array('required' => true, 'attr' => array( 'autofocus' => "autofocus", 'placeholder' => 'community.createForm.namePlaceholder')))
+        ->add('name', 'text' /* SYMFONY 2.8 TextType::class */, array('required' => true, 'attr' => array( 'autofocus' => "autofocus", 'placeholder' => 'community.createForm.namePlaceholder')))
         ->getForm();
 
     $authenticatedUser = $this->getUser();

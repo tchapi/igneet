@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\DiscriminatorColumn(name="subject_type", type="string")
  * @ORM\DiscriminatorMap({"idea" = "meta\GeneralBundle\Entity\Log\IdeaLogEntry", "project" = "meta\GeneralBundle\Entity\Log\StandardProjectLogEntry", "user" = "meta\GeneralBundle\Entity\Log\UserLogEntry", "community" = "meta\GeneralBundle\Entity\Log\CommunityLogEntry"})
  */
-class BaseLogEntry
+abstract class BaseLogEntry
 {
 
     /**

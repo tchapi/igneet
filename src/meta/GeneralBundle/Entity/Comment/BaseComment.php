@@ -17,7 +17,7 @@ use Doctrine\Common\Collections\ArrayCollection,
  */
 
 /*, "meta" = "meta\ProjectBundle\Entity\Comment\MetaProjectComment"*/
-class BaseComment
+abstract class BaseComment
 {
     /**
      * @var integer

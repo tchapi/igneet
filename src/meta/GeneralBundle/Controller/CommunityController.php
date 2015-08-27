@@ -7,6 +7,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller,
     Symfony\Component\HttpFoundation\File\File,
     Symfony\Component\HttpFoundation\Response;
 
+/* SYMFONY 2.8
+use Symfony\Component\Form\Extension\Core\Type\TextType,
+    Symfony\Component\Form\Extension\Core\Type\TextareaType;
+*/
 use meta\GeneralBundle\Entity\Community\Community,
     meta\GeneralBundle\Entity\Comment\CommunityComment,
     meta\UserBundle\Entity\UserCommunity,
@@ -409,7 +413,7 @@ class CommunityController extends Controller
 
             $comment = new CommunityComment();
             $form = $this->createFormBuilder($comment)
-                ->add('text', 'textarea', array('required' => false, 'attr' => array('placeholder' => $this->get('translator')->trans('comment.placeholder') )))
+                ->add('text', 'textarea' /* SYMFONY 2.8 TextareaType::class*/, array('required' => false, 'attr' => array('placeholder' => $this->get('translator')->trans('comment.placeholder') )))
                 ->getForm();
 
             if ($request->isMethod('POST')) {

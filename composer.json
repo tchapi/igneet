@@ -13,22 +13,25 @@
         }
     ],
     "require": {
-        "php": ">=5.3.3",
-        "symfony/symfony": "2.6.*",
-        "doctrine/orm": "2.4.6",
-        "doctrine/doctrine-bundle": "1.3.0",
-        "doctrine/doctrine-fixtures-bundle": "dev-master",
-        "twig/extensions": "1.0.*",
-        "symfony/assetic-bundle": "2.4.*",
-        "symfony/swiftmailer-bundle": "2.3.*",
-        "symfony/monolog-bundle": "2.4.*",
-        "sensio/distribution-bundle": "2.3.*",
-        "sensio/generator-bundle": "2.3.*",
-        "incenteev/composer-parameter-handler": "~2.0",
-        "knplabs/knp-markdown-bundle": "~1.3",
-        "willdurand/expose-translation-bundle": "dev-master",
-        "fp/openid-bundle": "dev-master",
-        "robertotru/to-inline-style-email-bundle": "dev-master"
+        "php": ">=5.3.9",
+        "symfony/symfony"                      : "~2.7",
+        "doctrine/orm"                         : "~2.4",
+        "doctrine/doctrine-bundle"             : "~1.5",
+        "doctrine/doctrine-fixtures-bundle"    : "~2.2",
+        "twig/extensions"                      : "~1.2",
+        "symfony/assetic-bundle"               : "~2.6",
+        "symfony/swiftmailer-bundle"           : "~2.3",
+        "symfony/monolog-bundle"               : "~2.7",
+        "sensio/distribution-bundle"           : "~3.0",
+
+        "incenteev/composer-parameter-handler" : "~2.0",
+        "knplabs/knp-markdown-bundle"          : "~1.3",
+        "willdurand/expose-translation-bundle" : "dev-master",
+        "fp/openid-bundle"                     : "dev-master",
+        "robertotru/to-inline-style-email-bundle" : "dev-master"
+    },
+    "require-dev": {
+        "sensio/generator-bundle": "~2.3"
     },
     "scripts": {
         "post-install-cmd": [
@@ -53,7 +56,7 @@
             "file": "app/config/parameters.yml"
         },
         "branch-alias": {
-            "dev-master": "2.4-dev"
+            "dev-master": "2.8-dev"
         },
         "symfony-assets-install": "symlink"
     }
