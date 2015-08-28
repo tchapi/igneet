@@ -577,11 +577,14 @@ class SecurityController extends Controller
     /*
      * Output the top header menu
      */
-    public function currentUserMenuAction($shortcode = null)
+    public function currentUserMenuAction(Request $request, $shortcode = null)
     {
         $authenticatedUser = $this->getUser();
-
+        
         if ($authenticatedUser) {
+
+            // Don't ask me why        
+            $this->get('translator')->setLocale($request->get("_locale"));
 
             $this->logLastSeenAt();
 
