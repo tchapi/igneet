@@ -4,15 +4,17 @@
 # ---------------
 
 i_list_ideas:
-    path:  /ideas/{sort}
+    path:  /ideas/{page}/{sort}
     defaults: { _controller: metaIdeaBundle:Ideas:list, page: 1, archived: false, sort: update }
     requirements:
+        page: \d+
         sort: update|newest|alpha
 
 i_list_archived_ideas:
-    path:  /ideas/archived/{sort}
+    path:  /ideas/archived/{page}/{sort}
     defaults: { _controller: metaIdeaBundle:Ideas:list, page: 1, archived: true, sort: update }
     requirements:
+        page: \d+
         sort: update|newest|alpha
 
 i_new_idea:

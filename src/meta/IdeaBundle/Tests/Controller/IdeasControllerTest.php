@@ -29,7 +29,48 @@ class IdeasControllerTest extends SecuredWebTestCase
 
   public function testIdeasListMore()
   {
-    // is JSON ??
+
+    $this->setUp();
+    $community = $this->em->getRepository('metaGeneralBundle:Community\Community')->findOneByName("test_in");
+    $this->tearDown();
+
+    $client = static::createClientWithAuthentication("test"); // test is in test_in 
+
+    $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')));
+    $crawler = $client->request('POST', '/app/ideas', array(), array(), array(
+      'HTTP_X-Requested-With' => 'XMLHttpRequest',
+    ), "page=2&full=false");
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $this->assertSame('application/json', $client->getResponse()->headers->get('Content-Type')); // Test if Content-Type is valid application/json
+    $this->assertTrue(is_array(json_decode($client->getResponse()->getContent(), true)));
+  }
+
+  public function testIdeasListMoreFull()
+  {
+
+    $this->setUp();
+    $community = $this->em->getRepository('metaGeneralBundle:Community\Community')->findOneByName("test_in");
+    $this->tearDown();
+
+    $client = static::createClientWithAuthentication("test"); // test is in test_in 
+
+    $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')));
+    $crawler = $client->request('POST', '/app/ideas', array(), array(), array(
+      'HTTP_X-Requested-With' => 'XMLHttpRequest',
+    ), "page=2&full=true");
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $this->assertSame('application/json', $client->getResponse()->headers->get('Content-Type')); // Test if Content-Type is valid application/json
+    $this->assertTrue(is_array(json_decode($client->getResponse()->getContent(), true)));
   }
 
   public function testIdeaNewInCommunity()
@@ -55,11 +96,58 @@ class IdeasControllerTest extends SecuredWebTestCase
   public function testIdeasSortUrls()
   {
 
+    $this->setUp();
+    $community = $this->em->getRepository('metaGeneralBundle:Community\Community')->findOneByName("test_in");
+    $this->tearDown();
+
+    $client = static::createClientWithAuthentication("test"); // test is in test_in 
+    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')));
+
+    $crawler = $client->request('GET', '/app/ideas');
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $crawler = $client->request('GET', '/app/ideas/1');
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+    
+    $crawler = $client->request('GET', '/app/ideas/1/newest');
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+    $crawler = $client->request('GET', '/app/ideas/1/alpha');
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
   }
 
   public function testIdeasArchivedUrls()
   {
     
+    $this->setUp();
+    $community = $this->em->getRepository('metaGeneralBundle:Community\Community')->findOneByName("test_in");
+    $this->tearDown();
+
+    $client = static::createClientWithAuthentication("test"); // test is in test_in 
+    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')));
+
+    $crawler = $client->request('GET', '/app/ideas/archived');
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
   }
 
   public function testIdeasUnauthorizedAsGuest()

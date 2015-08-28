@@ -8,6 +8,40 @@ use meta\UserBundle\Tests\SecuredWebTestCase,
 class DefaultControllerTest extends SecuredWebTestCase
 {
 
+  public function testStaticHome()
+  {
+    
+    $client = static::createClient();
+    $crawler = $client->request('GET', '/');
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $this->assertCount(1, $crawler->filter('h1'));
+    $this->assertCount(6, $crawler->filter('h2'));
+    $this->assertCount(2, $crawler->filter('h3'));
+
+  }
+
+  public function testStaticHomeAuthenticated()
+  {
+    
+    $client = static::createClientWithAuthentication();
+    $crawler = $client->request('GET', '/');
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $this->assertCount(1, $crawler->filter('h1'));
+    $this->assertCount(6, $crawler->filter('h2'));
+    $this->assertCount(2, $crawler->filter('h3'));
+
+  }
+
   public function testCredits()
   {
     
