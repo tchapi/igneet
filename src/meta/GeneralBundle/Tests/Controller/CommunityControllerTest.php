@@ -16,7 +16,7 @@ class CommunityControllerTest extends SecuredWebTestCase
 
     $client = static::createClientWithAuthentication("test_manager"); // test_manager is managing test_in 
 
-    $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')));
+    $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')->getValue()));
     $crawler = $client->request('GET', '/app/community/manage');
 
     $this->assertEquals(
@@ -33,7 +33,7 @@ class CommunityControllerTest extends SecuredWebTestCase
 
     $client = static::createClientWithAuthentication("test"); // test is not managing test_in 
 
-    $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')));
+    $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')->getValue()));
     $crawler = $client->request('GET', '/app/community/manage');
     
     $this->assertTrue(
@@ -71,7 +71,7 @@ class CommunityControllerTest extends SecuredWebTestCase
     $tokenManager = $client->getContainer()->get('security.csrf.token_manager');
     $inviteToken = $tokenManager->getToken('invite');
 
-    $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')));
+    $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')->getValue()));
     $crawler = $client->request('GET', '/app/community/invite', array('token' => $inviteToken));
 
     $this->assertTrue(
@@ -88,7 +88,7 @@ class CommunityControllerTest extends SecuredWebTestCase
 
     $client = static::createClientWithAuthentication("test_manager"); // test_manager is managing test_in 
 
-    $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')));
+    $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')->getValue()));
     $crawler = $client->request('GET', '/app/community/invite');
 
     $this->assertTrue(
@@ -143,7 +143,7 @@ class CommunityControllerTest extends SecuredWebTestCase
 
     $client = static::createClientWithAuthentication("test_manager"); // test_manager is managing test_in 
 
-    $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')));
+    $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')->getValue()));
     $crawler = $client->request('GET', '/app/community/remove');
 
     $this->assertTrue(
@@ -174,7 +174,7 @@ class CommunityControllerTest extends SecuredWebTestCase
   {
     
     $client = static::createClientWithAuthentication();
-    $crawler = $client->request('GET', '/app/switch/privatespace', array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')));
+    $crawler = $client->request('GET', '/app/switch/privatespace', array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')->getValue()));
 
     $this->assertTrue(
         $client->getResponse()->isRedirect('/app/')
@@ -191,7 +191,7 @@ class CommunityControllerTest extends SecuredWebTestCase
 
     $client = static::createClientWithAuthentication("test"); // test is in test_in 
 
-    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')));
+    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')->getValue()));
 
     $this->assertTrue(
         $client->getResponse()->isRedirect('/app/')
@@ -208,7 +208,7 @@ class CommunityControllerTest extends SecuredWebTestCase
 
     $client = static::createClientWithAuthentication("other_test"); // test is in test_in 
 
-    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')));
+    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')->getValue()));
 
     $this->assertTrue(
         $client->getResponse()->isRedirect('/app/')
@@ -225,7 +225,7 @@ class CommunityControllerTest extends SecuredWebTestCase
 
     $client = static::createClientWithAuthentication("other_test"); // other_test is in test_out
 
-    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')));
+    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')->getValue()));
 
     $this->assertTrue(
         $client->getResponse()->isRedirect('/app/')
@@ -238,7 +238,7 @@ class CommunityControllerTest extends SecuredWebTestCase
     $communityId = "foobar";
 
     $client = static::createClientWithAuthentication("test");
-    $crawler = $client->request('GET', '/app/community/switch/0' . $communityId, array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')));
+    $crawler = $client->request('GET', '/app/community/switch/0' . $communityId, array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')->getValue()));
 
     $this->assertEquals(
         Response::HTTP_NOT_FOUND,
@@ -256,7 +256,7 @@ class CommunityControllerTest extends SecuredWebTestCase
 
     $client = static::createClientWithAuthentication("test"); // test is in test_guest
 
-    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')));
+    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')->getValue()));
 
     $this->assertTrue(
         $client->getResponse()->isRedirect('/app/')
@@ -273,7 +273,7 @@ class CommunityControllerTest extends SecuredWebTestCase
 
     $client = static::createClientWithAuthentication("other_test"); // other_test is in test_guest
 
-    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')));
+    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')->getValue()));
 
     $this->assertTrue(
         $client->getResponse()->isRedirect('/app/')
@@ -290,7 +290,7 @@ class CommunityControllerTest extends SecuredWebTestCase
 
     $client = static::createClientWithAuthentication("test"); // test is not in test_out
 
-    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')));
+    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')->getValue()));
 
     $this->assertEquals(
         Response::HTTP_NOT_FOUND,
@@ -303,7 +303,7 @@ class CommunityControllerTest extends SecuredWebTestCase
   {
     
     $client = static::createClientWithAuthentication();
-    $crawler = $client->request('GET', '/app/switch/privatespace', array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('foobar')));
+    $crawler = $client->request('GET', '/app/switch/privatespace', array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('foobar')->getValue()));
 
     $this->assertTrue(
         $client->getResponse()->isRedirect('/app/me')
@@ -317,7 +317,7 @@ class CommunityControllerTest extends SecuredWebTestCase
     $communityId = "3xsdgob0n"; // "Thirdplace"
 
     $client = static::createClientWithAuthentication();
-    $crawler = $client->request('GET', '/app/community/switch/0' . $communityId, array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('foobar')));
+    $crawler = $client->request('GET', '/app/community/switch/0' . $communityId, array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('foobar')->getValue()));
 
     $this->assertTrue(
         $client->getResponse()->isRedirect('/app/me')

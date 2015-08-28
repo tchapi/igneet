@@ -7,7 +7,7 @@
   <form action="{{ path('login_check') }}" method="POST" class="non-auth">
 
     <input id="username" type="text" name="_username" value="{{ last_username }}" placeholder="{{ "user.login.login"|trans }}"/>
-      
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
     <div class="openid">
       <a href="{{ path('fp_openid_security_check', { 'openid_identifier': "https://www.google.com/accounts/o8/id" }) }}" title="{{ "user.login.gplus.title"|trans }}" tabindex="-1">
         <span class="fa-stack fa-lg">

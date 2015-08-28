@@ -41,7 +41,7 @@ services:
             log_filters: %general.log_filters%
             log_routing: %general.log_routing%
             log_concurrent_merge_interval: %general.log_concurrent_merge_interval%
-            csrf_provider: "@form.csrf_provider"
+            csrf_provider: "@security.csrf.token_manager"
             security_context: "@security.context"
             twig: "@twig"
             translator: "@translator"

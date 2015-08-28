@@ -202,7 +202,7 @@ class LogService
         // Do we need a token ?
         $token = null;
         if (isset($this->log_routing["$type"]['token'])){
-            $token = $this->csrf_provider->generateCsrfToken($this->log_routing["$type"]['token']);
+            $token = $this->csrf_provider->getToken($this->log_routing["$type"]['token']);
         }
 
         // Creates the routing
@@ -228,7 +228,7 @@ class LogService
                 // Do we need a token ?
                 $token = null;
                 if (isset($this->log_routing["$key"]['token'])){
-                    $token = $this->csrf_provider->generateCsrfToken($this->log_routing["$key"]['token']);
+                    $token = $this->csrf_provider->getToken($this->log_routing["$key"]['token']);
                 }
 
                 // we need to merge with the subject for the routing (/project/{uid}/list/{list_uid} for example)

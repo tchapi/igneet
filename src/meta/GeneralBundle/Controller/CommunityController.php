@@ -54,7 +54,7 @@ class CommunityController extends Controller
                   $this->get('translator')->trans('private.space.back')
                 );
 
-                return $this->redirect($this->generateUrl('g_switch_private_space', array('token' => $this->get('security.csrf.token_manager')->getToken('switchCommunity'), 'redirect' => true)));
+                return $this->redirect($this->generateUrl('g_switch_private_space', array('token' => $this->get('security.csrf.token_manager')->getToken('switchCommunity')->getValue(), 'redirect' => true)));
 
             }
 
@@ -447,7 +447,7 @@ class CommunityController extends Controller
 
             } else {
 
-                $route = $this->get('router')->generate('g_community_comment', array('token' => $this->get('security.csrf.token_manager')->getToken('comment')));
+                $route = $this->get('router')->generate('g_community_comment', array('token' => $this->get('security.csrf.token_manager')->getToken('comment')->getValue()));
 
                 return $this->render('metaGeneralBundle:Comment:commentBox.html.twig', 
                     array('object' => $community, 'route' => $route, 'form' => $form->createView()));
@@ -530,7 +530,7 @@ class CommunityController extends Controller
                             $this->get('translator')->trans('user.already.in.community', array( '%user%' => $user->getFullName(), '%community%' => $community->getName() ))
                         );
 
-                        return $this->redirect($this->generateUrl('g_invite', array('token' => $this->get('security.csrf.token_manager')->getToken('invite'))));
+                        return $this->redirect($this->generateUrl('g_invite', array('token' => $this->get('security.csrf.token_manager')->getToken('invite')->getValue())));
 
                     // If the user is already a guest in the community
                     } elseif ($userCommunityGuest) {
@@ -593,7 +593,7 @@ class CommunityController extends Controller
                         $this->get('translator')->trans('user.email.invalid')
                     );
 
-                    return $this->redirect($this->generateUrl('g_invite', array('token' => $this->get('security.csrf.token_manager')->getToken('invite'))));
+                    return $this->redirect($this->generateUrl('g_invite', array('token' => $this->get('security.csrf.token_manager')->getToken('invite')->getValue())));
                 }
 
                 $em->flush();

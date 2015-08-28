@@ -61,7 +61,7 @@ class UserController extends Controller
                       $this->get('translator')->trans('private.space.back')
                     );
 
-                    return $this->redirect($this->generateUrl('g_switch_private_space', array('token' => $this->get('security.csrf.token_manager')->getToken('switchCommunity'), 'redirect' => true)));
+                    return $this->redirect($this->generateUrl('g_switch_private_space', array('token' => $this->get('security.csrf.token_manager')->getToken('switchCommunity')->getValue(), 'redirect' => true)));
                 
                 } else {
 

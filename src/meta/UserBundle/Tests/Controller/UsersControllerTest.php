@@ -38,7 +38,7 @@ class UsersControllerTest extends SecuredWebTestCase
   {
     
     $client = static::createClientWithAuthentication();
-    $client->request('GET', '/app/switch/privatespace', array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')));
+    $client->request('GET', '/app/switch/privatespace', array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')->getValue()));
     $crawler = $client->request('GET', '/app/people');
 
     // No users in private space
@@ -58,7 +58,7 @@ class UsersControllerTest extends SecuredWebTestCase
 
     $client = static::createClientWithAuthentication("test"); // test is in test_in 
 
-    $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')));
+    $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')->getValue()));
     $crawler = $client->request('GET', '/app/people');
 
     $this->assertEquals(
@@ -81,7 +81,7 @@ class UsersControllerTest extends SecuredWebTestCase
 
     $client = static::createClientWithAuthentication("test"); // test is in test_in 
 
-    $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')));
+    $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')->getValue()));
     $crawler = $client->request('POST', '/app/people', array(), array(), array(
       'HTTP_X-Requested-With' => 'XMLHttpRequest',
     ), "page=2&full=false");
@@ -103,7 +103,7 @@ class UsersControllerTest extends SecuredWebTestCase
 
     $client = static::createClientWithAuthentication("test"); // test is in test_in 
 
-    $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')));
+    $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')->getValue()));
     $crawler = $client->request('POST', '/app/people', array(), array(), array(
       'HTTP_X-Requested-With' => 'XMLHttpRequest',
     ), "page=2&full=true");
@@ -126,7 +126,7 @@ class UsersControllerTest extends SecuredWebTestCase
 
     $client = static::createClientWithAuthentication("test"); // test is in test_in 
 
-    $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')));
+    $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')->getValue()));
     $crawler = $client->request('GET', '/app/people/1/update');
 
     $this->assertEquals(

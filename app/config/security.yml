@@ -45,6 +45,7 @@ security:
                 always_use_default_target_path: false
                 default_target_path: /app/
                 remember_me: true
+                csrf_provider: security.csrf.token_manager
 
             logout:
                 path: /app/logout
