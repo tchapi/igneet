@@ -809,17 +809,7 @@ class Idea extends Taggable
     {
         return ($this->deleted_at === NULL);
     }
-
-    /**
-     * Is not deleted
-     *
-     * @return boolean 
-     */
-    public function isNotDeleted()
-    {
-        return ($this->deleted_at === NULL);
-    }
-
+    
     /**
      * Deletes
      *

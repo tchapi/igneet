@@ -895,16 +895,6 @@ class StandardProject extends Taggable
     }
 
     /**
-     * Is not deleted
-     *
-     * @return boolean 
-     */
-    public function isNotDeleted()
-    {
-        return ($this->deleted_at === NULL);
-    }
-
-    /**
      * Deletes
      *
      * @return StandardProject 

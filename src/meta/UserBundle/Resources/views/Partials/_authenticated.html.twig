@@ -54,16 +54,12 @@
   </div>
 {% endif %}
 
-{% if shortcode is defined and shortcode is not null %}
-  <div class="shortcode">
-    <a id="shortcode-trigger" href="#" title="{{ "shortcode.help"|trans }}">
-      <i class="fa fa-link fa-lg"></i> 
-    </a>
-    <form role="shortcode" id="shortcode" style="display: none;">
-      <input type="text" onclick="this.select()" value="{{ shortcode|lower }}" />
-    </form>
-  </div>
-{% endif %}
+<div class="search">
+  <a id="search-trigger" href="#"><i class="fa fa-fw fa-search"></i></a>
+  <form role="search" id="search" style="display: none;" action="{{ path('g_search') }}" method="POST">
+    <input type="text" name="term" id="term"/>
+  </form>
+</div>
 
 <ul class="user">
 {% spaceless %}

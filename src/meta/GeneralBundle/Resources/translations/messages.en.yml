@@ -195,6 +195,7 @@ search:
   notice: "You search returned more than %limit% results, some are not shown here; for better results, try to be more specific"
   headline: "Results are sorted by type"
   results:
+    title: "Search results"
     total: "Total number of results : %count%"
     count: "{1} 1 result|]1,Inf] %count% results"
     users: "Users"

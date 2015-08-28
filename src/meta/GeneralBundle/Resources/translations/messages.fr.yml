@@ -195,6 +195,7 @@ search:
   notice: "Votre recherche a retourné plus de %limit% résultats, certains ne sont pas affichés ci-dessous; pour affiner votre recherche, essayez d'être plus précis"
   headline: "Le résultats sont triés par type"
   results:
+    title: "Résultats de recherche"
     total: "Nombre total de résultats : %count%"
     count: "{1} 1 résultat|]1,Inf] %count% résultats"
     users: "Utilisateurs"
