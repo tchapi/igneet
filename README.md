@@ -86,6 +86,9 @@ The code base is divided in 6 bundles :
 
     This bundle manages the static site at `/`. It does not define any entity, and has a single controller to serve the various pages of the static site.
 
+## Elastic Search index population
+
+    php app/console fos:elastica:populate
 
 ## Unit tests
 
