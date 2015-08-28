@@ -36,7 +36,7 @@ p_edit_project:
     defaults: { _controller: metaProjectBundle:Project:edit }
     requirements:
         uid: "[0-9a-zA-Z]*"
-        methods:  POST
+    methods:  [POST]
 
 p_edit_project_reset_picture:
     path:  /project/0{uid}/reset/picture
@@ -157,7 +157,7 @@ p_show_project_resource_edit:
     requirements:
       uid: "[0-9a-zA-Z]*"
       resource_uid: "[0-9a-zA-Z]*"
-      methods:  POST
+    methods:  [POST]
 
 p_show_project_resource_download:
     path:  /project/0{uid}/resource/0{resource_uid}/download
@@ -206,7 +206,7 @@ p_show_project_list_rank:
     defaults: { _controller: metaProjectBundle:List:rankLists }
     requirements:
       uid: "[0-9a-zA-Z]*"
-      methods:  POST
+    methods:  [POST]
 
 p_show_project_list:
     path:  /project/0{uid}/list/0{list_uid}
@@ -221,7 +221,7 @@ p_show_project_list_edit:
     requirements:
       uid: "[0-9a-zA-Z]*"
       list_uid: "[0-9a-zA-Z]*"
-      methods:  POST
+    methods:  [POST]
 
 p_show_project_list_delete:
     path:  /project/0{uid}/list/0{list_uid}/delete
@@ -252,7 +252,7 @@ p_show_project_listitem_rank:
     defaults: { _controller: metaProjectBundle:List:rankListItems }
     requirements:
       uid: "[0-9a-zA-Z]*"
-      methods:  POST
+    methods:  [POST]
 
 p_show_project_listitem_edit:
     path:  /project/0{uid}/list/0{list_uid}/item/0{item_uid}/edit
@@ -261,7 +261,7 @@ p_show_project_listitem_edit:
       uid: "[0-9a-zA-Z]*"
       list_uid: "[0-9a-zA-Z]*"
       item_uid: "[0-9a-zA-Z]*"
-      methods:  POST
+    methods:  [POST]
 
 p_show_project_listitem_do:
     path:  /project/0{uid}/list/0{list_uid}/item/0{item_uid}/do
@@ -305,7 +305,7 @@ p_show_project_wiki_rank:
     defaults: { _controller: metaProjectBundle:Wiki:rankWikiPages }
     requirements:
       uid: "[0-9a-zA-Z]*"
-      methods: POST
+    methods: [POST]
 
 p_show_project_wiki_show_page:
     path:  /project/0{uid}/wiki/page/0{page_uid}
@@ -320,7 +320,7 @@ p_show_project_wiki_edit_page:
     requirements:
       uid: "[0-9a-zA-Z]*"
       page_uid: "[0-9a-zA-Z]*"
-      methods: POST
+    methods: [POST]
 
 p_show_project_wiki_delete_page:
     path:  /project/0{uid}/wiki/page/0{page_uid}/delete

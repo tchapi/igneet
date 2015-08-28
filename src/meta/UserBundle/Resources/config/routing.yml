@@ -35,45 +35,39 @@ u_me:
 u_show_user_profile:
     path:  /who/{username}
     defaults: { _controller: metaUserBundle:User:show }
-    requirements:
-        methods:  GET
+    methods: [GET]
 
 u_show_user_settings:
     path:  /settings
     defaults: { _controller: metaUserBundle:Settings:showSettings }
-    requirements:
-        methods:  GET
+    methods: [GET]
 
 u_show_user_notifications:
     path:  /notifications/{date}
     defaults: { _controller: metaUserBundle:User:showNotifications, date: null }
+    methods: [GET]
     requirements:
-        methods:  GET
         date:  "[0-9]{4}\-[0-9]{2}\-[0-9]{2}"
 
 u_count_user_notifications:
     path:  /notifications/count
     defaults: { _controller: metaUserBundle:User:countNotifications}
-    requirements:
-        methods:  POST
+    methods: [POST]
 
 u_mark_read_notifications:
     path:  /notifications/mark
     defaults: { _controller: metaUserBundle:User:markNotificationsRead}
-    requirements:
-        methods:  POST
+    methods: [POST]
 
 u_edit_user_profile:
     path:  /who/{username}
     defaults: { _controller: metaUserBundle:User:edit }
-    requirements:
-        methods:  POST
+    methods: [POST]
 
 u_edit_user_settings:
     path:  /settings
     defaults: { _controller: metaUserBundle:Settings:editSettings }
-    requirements:
-        methods:  POST
+    methods: [POST]
 
 u_edit_user_profile_reset_avatar:
     path:  /who/{username}/resetavatar
@@ -82,8 +76,7 @@ u_edit_user_profile_reset_avatar:
 u_delete_user_profile:
     path:  /byebye/{username}
     defaults: { _controller: metaUserBundle:User:delete }
-    requirements:
-        methods:  GET
+    methods: [GET]
 
 u_list_users:
     path:  /people/{page}/{sort}

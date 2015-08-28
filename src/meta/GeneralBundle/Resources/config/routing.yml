@@ -71,8 +71,7 @@ g_first_run:
 g_switch_language:
     path: /language
     defaults: { _controller: metaGeneralBundle:Default:switchLanguage}
-    requirements:
-      methods: POST
+    methods: [POST]
 
 # General
 
@@ -94,15 +93,15 @@ g_validate_comment:
     path: /comment/validate/{id}
     defaults: { _controller: metaGeneralBundle:Default:validateComment }
     requirements:
-      methods: POST
       id: \d+
+    methods: [POST]
 
 g_delete_comment:
     path: /comment/delete/{id}
     defaults: { _controller: metaGeneralBundle:Default:deleteComment }
     requirements:
-      methods: POST
       id: \d+
+    methods: [POST]
 
 # Announcements (deported here because /admin is protected)
 

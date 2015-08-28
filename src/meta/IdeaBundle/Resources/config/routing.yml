@@ -27,7 +27,7 @@ i_edit_idea:
     defaults: { _controller: metaIdeaBundle:Idea:edit }
     requirements:
         uid: "[0-9a-zA-Z]*"
-        methods:  POST
+    methods: [POST]
 
 i_edit_idea_reset_picture:
     path:  /idea/0{uid}/reset/picture

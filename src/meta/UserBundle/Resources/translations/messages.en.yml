@@ -40,6 +40,7 @@ user:
     none: "No skills added yet."
     help: "List your skills"
     placeholder: "Start typing ..."
+    emptyText: "Add skills"
   email: 
     title: "Your email"
     registered: "This email is already registered."
