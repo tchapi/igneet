@@ -78,7 +78,7 @@ class CommentController extends BaseController
 
             } else {
 
-                $route = $this->get('router')->generate('p_show_project_comment', array('uid' => $uid, 'token' => $this->get('form.csrf_provider')->generateCsrfToken('comment')));
+                $route = $this->get('router')->generate('p_show_project_comment', array('uid' => $uid, 'token' => $this->get('security.csrf.token_manager')->getToken('comment')));
 
                 return $this->render('metaGeneralBundle:Comment:commentBox.html.twig', 
                     array('object' => $this->base['project'], 'route' => $route, 'form' => $form->createView()));
@@ -157,7 +157,7 @@ class CommentController extends BaseController
            
                     } else {
 
-                        $route = $this->get('router')->generate('p_show_project_wikipage_comment', array('uid' => $uid, 'page_uid' => $page_uid, 'token' => $this->get('form.csrf_provider')->generateCsrfToken('comment') ));
+                        $route = $this->get('router')->generate('p_show_project_wikipage_comment', array('uid' => $uid, 'page_uid' => $page_uid, 'token' => $this->get('security.csrf.token_manager')->getToken('comment') ));
 
                         return $this->render('metaGeneralBundle:Comment:commentThread.html.twig', 
                             array('object' => $wikiPage, 'route' => $route, 'form' => $form->createView()));
@@ -233,7 +233,7 @@ class CommentController extends BaseController
 
                 } else {
 
-                    $route = $this->get('router')->generate('p_show_project_list_comment', array('uid' => $uid, 'list_uid' => $list_uid, 'token' => $this->get('form.csrf_provider')->generateCsrfToken('comment') ));
+                    $route = $this->get('router')->generate('p_show_project_list_comment', array('uid' => $uid, 'list_uid' => $list_uid, 'token' => $this->get('security.csrf.token_manager')->getToken('comment') ));
 
                     return $this->render('metaGeneralBundle:Comment:commentThread.html.twig', 
                         array('object' => $commonList, 'route' => $route, 'form' => $form->createView()));

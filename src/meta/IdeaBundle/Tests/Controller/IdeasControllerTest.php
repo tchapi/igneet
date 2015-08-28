@@ -16,7 +16,7 @@ class IdeasControllerTest extends SecuredWebTestCase
     $this->tearDown();
 
     $client = static::createClientWithAuthentication("test"); // test is in test_in 
-    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('switchCommunity')));
+    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')));
 
     $crawler = $client->request('GET', '/app/ideas');
 
@@ -27,6 +27,41 @@ class IdeasControllerTest extends SecuredWebTestCase
 
   }
 
+  public function testIdeasListMore()
+  {
+    // is JSON ??
+  }
+
+  public function testIdeaNewInCommunity()
+  {
+
+  }
+
+  public function testIdeaNewInPrivateSpace()
+  {
+
+  }
+
+  public function testIdeaDeleteInCommunity()
+  {
+    
+  }
+
+  public function testIdeaDeleteInPrivateSpace()
+  {
+
+  }
+
+  public function testIdeasSortUrls()
+  {
+
+  }
+
+  public function testIdeasArchivedUrls()
+  {
+    
+  }
+
   public function testIdeasUnauthorizedAsGuest()
   {
 
@@ -35,7 +70,7 @@ class IdeasControllerTest extends SecuredWebTestCase
     $this->tearDown();
 
     $client = static::createClientWithAuthentication("test"); // test is in test_guest but guest 
-    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('switchCommunity')));
+    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')));
 
     $crawler = $client->request('GET', '/app/ideas');
     
@@ -54,7 +89,7 @@ class IdeasControllerTest extends SecuredWebTestCase
     $this->tearDown();
 
     $client = static::createClientWithAuthentication("test"); // test is in test_in 
-    $crawler = $client->request('GET', '/app/switch/privatespace', array('token' => $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('switchCommunity')));
+    $crawler = $client->request('GET', '/app/switch/privatespace', array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')));
 
     $crawler = $client->request('GET', '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()));
 
@@ -76,7 +111,7 @@ class IdeasControllerTest extends SecuredWebTestCase
     $this->tearDown();
 
     $client = static::createClientWithAuthentication("test"); // test is in test_in 
-    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('switchCommunity')));
+    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')));
 
     $crawler = $client->request('GET', '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()));
 
@@ -97,7 +132,7 @@ class IdeasControllerTest extends SecuredWebTestCase
     $this->tearDown();
 
     $client = static::createClientWithAuthentication("other_test"); // test is in test_in 
-    $crawler = $client->request('GET', '/app/switch/privatespace', array('token' => $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('switchCommunity')));
+    $crawler = $client->request('GET', '/app/switch/privatespace', array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')));
 
     $crawler = $client->request('GET', '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()));
 
@@ -118,7 +153,7 @@ class IdeasControllerTest extends SecuredWebTestCase
     $this->tearDown();
 
     $client = static::createClientWithAuthentication("test"); // test is in test_in 
-    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('switchCommunity')));
+    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')));
 
     $crawler = $client->request('GET', '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()));
 
@@ -140,7 +175,7 @@ class IdeasControllerTest extends SecuredWebTestCase
     $this->tearDown();
 
     $client = static::createClientWithAuthentication("other_test");
-    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('switchCommunity')));
+    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')));
 
     $crawler = $client->request('GET', '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()));
 
@@ -162,7 +197,7 @@ class IdeasControllerTest extends SecuredWebTestCase
     $this->tearDown();
 
     $client = static::createClientWithAuthentication("test"); // test is in test_in 
-    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('switchCommunity')));
+    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')));
 
     $crawler = $client->request('GET', '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()));
 
@@ -184,7 +219,7 @@ class IdeasControllerTest extends SecuredWebTestCase
     $this->tearDown();
 
     $client = static::createClientWithAuthentication("other_test");
-    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('switchCommunity')));
+    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')));
 
     $crawler = $client->request('GET', '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()));
 
@@ -206,7 +241,7 @@ class IdeasControllerTest extends SecuredWebTestCase
     $this->tearDown();
 
     $client = static::createClientWithAuthentication("test");
-    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('switchCommunity')));
+    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')));
 
     $crawler = $client->request('GET', '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()));
 
@@ -227,7 +262,7 @@ class IdeasControllerTest extends SecuredWebTestCase
     $this->tearDown();
 
     $client = static::createClientWithAuthentication("test"); // test is in test_in 
-    $crawler = $client->request('GET', '/app/switch/privatespace', array('token' => $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('switchCommunity')));
+    $crawler = $client->request('GET', '/app/switch/privatespace', array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')));
 
     $crawler = $client->request('GET', '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()));
 
@@ -247,7 +282,7 @@ class IdeasControllerTest extends SecuredWebTestCase
     $this->tearDown();
 
     $client = static::createClientWithAuthentication("test");
-    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('switchCommunity')));
+    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')));
 
     $crawler = $client->request('GET', '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()));
 
@@ -267,7 +302,7 @@ class IdeasControllerTest extends SecuredWebTestCase
     $this->tearDown();
 
     $client = static::createClientWithAuthentication("other_test");
-    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('switchCommunity')));
+    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')));
 
     $crawler = $client->request('GET', '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()));
 
@@ -291,7 +326,7 @@ class IdeasControllerTest extends SecuredWebTestCase
 
     $client->request(
         'POST',
-        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/edit?token=' . $client->getContainer()->get('security.csrf.token_manager')->getToken('edit'),
         array( "name" => "name", "value" => "test_idea_community_owner_TEST". rand())
     );
 
@@ -302,7 +337,7 @@ class IdeasControllerTest extends SecuredWebTestCase
 
     $client->request(
         'POST',
-        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/edit?token=' . $client->getContainer()->get('security.csrf.token_manager')->getToken('edit'),
         array( "name" => "name", "value" => "test_idea_community_owner")
     );
 
@@ -313,7 +348,7 @@ class IdeasControllerTest extends SecuredWebTestCase
 
     $client->request(
         'POST',
-        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/edit?token=' . $client->getContainer()->get('security.csrf.token_manager')->getToken('edit'),
         array( "name" => "about", "value" => "test" . rand())
     );
 
@@ -324,7 +359,7 @@ class IdeasControllerTest extends SecuredWebTestCase
 
     $client->request(
         'POST',
-        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/edit?token=' . $client->getContainer()->get('security.csrf.token_manager')->getToken('edit'),
         array( "name" => "content", "value" => "test" . rand())
     );
 
@@ -345,7 +380,7 @@ class IdeasControllerTest extends SecuredWebTestCase
 
     $client->request(
         'POST',
-        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/edit?token=' . $client->getContainer()->get('security.csrf.token_manager')->getToken('edit'),
         array( "name" => "name", "value" => "test_idea_community_owner_TEST". rand())
     );
 
@@ -356,7 +391,7 @@ class IdeasControllerTest extends SecuredWebTestCase
 
     $client->request(
         'POST',
-        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/edit?token=' . $client->getContainer()->get('security.csrf.token_manager')->getToken('edit'),
         array( "name" => "about", "value" => "test" . rand())
     );
 
@@ -367,7 +402,7 @@ class IdeasControllerTest extends SecuredWebTestCase
 
     $client->request(
         'POST',
-        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/edit?token=' . $client->getContainer()->get('security.csrf.token_manager')->getToken('edit'),
         array( "name" => "content", "value" => "test" . rand())
     );
 
@@ -388,7 +423,7 @@ class IdeasControllerTest extends SecuredWebTestCase
 
     $client->request(
         'POST',
-        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/edit?token=' . $client->getContainer()->get('security.csrf.token_manager')->getToken('edit'),
         array( "name" => "name", "value" => "test_idea_community_participant_TEST". rand())
     );
 
@@ -399,7 +434,7 @@ class IdeasControllerTest extends SecuredWebTestCase
 
     $client->request(
         'POST',
-        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/edit?token=' . $client->getContainer()->get('security.csrf.token_manager')->getToken('edit'),
         array( "name" => "name", "value" => "test_idea_community_participant")
     );
 
@@ -410,7 +445,7 @@ class IdeasControllerTest extends SecuredWebTestCase
 
     $client->request(
         'POST',
-        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/edit?token=' . $client->getContainer()->get('security.csrf.token_manager')->getToken('edit'),
         array( "name" => "about", "value" => "test" . rand())
     );
 
@@ -421,7 +456,7 @@ class IdeasControllerTest extends SecuredWebTestCase
 
     $client->request(
         'POST',
-        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/edit?token=' . $client->getContainer()->get('security.csrf.token_manager')->getToken('edit'),
         array( "name" => "content", "value" => "test" . rand())
     );
 
@@ -442,7 +477,7 @@ class IdeasControllerTest extends SecuredWebTestCase
 
     $client->request(
         'POST',
-        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/edit?token=' . $client->getContainer()->get('security.csrf.token_manager')->getToken('edit'),
         array( "name" => "name", "value" => "test_idea_community_not_in_TEST". rand())
     );
 
@@ -453,7 +488,7 @@ class IdeasControllerTest extends SecuredWebTestCase
 
     $client->request(
         'POST',
-        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/edit?token=' . $client->getContainer()->get('security.csrf.token_manager')->getToken('edit'),
         array( "name" => "about", "value" => "test" . rand())
     );
 
@@ -464,7 +499,7 @@ class IdeasControllerTest extends SecuredWebTestCase
 
     $client->request(
         'POST',
-        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/edit?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('edit'),
+        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/edit?token=' . $client->getContainer()->get('security.csrf.token_manager')->getToken('edit'),
         array( "name" => "content", "value" => "test" . rand())
     );
 
@@ -485,7 +520,7 @@ class IdeasControllerTest extends SecuredWebTestCase
 
     $client->request(
         'POST',
-        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/watch?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('watch')
+        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/watch?token=' . $client->getContainer()->get('security.csrf.token_manager')->getToken('watch')
     );
 
     $this->assertEquals(
@@ -495,7 +530,7 @@ class IdeasControllerTest extends SecuredWebTestCase
 
     $client->request(
         'POST',
-        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/unwatch?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('unwatch')
+        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/unwatch?token=' . $client->getContainer()->get('security.csrf.token_manager')->getToken('unwatch')
     );
 
     $this->assertEquals(
@@ -505,7 +540,7 @@ class IdeasControllerTest extends SecuredWebTestCase
 
     $client->request(
         'POST',
-        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/unwatch?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('unwatch')
+        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/unwatch?token=' . $client->getContainer()->get('security.csrf.token_manager')->getToken('unwatch')
     );
 
     $this->assertEquals(
@@ -526,7 +561,7 @@ class IdeasControllerTest extends SecuredWebTestCase
 
     $client->request(
         'POST',
-        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/comment?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('comment'),
+        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/comment?token=' . $client->getContainer()->get('security.csrf.token_manager')->getToken('comment'),
         array( "comment" => $comment )
     );
 
@@ -552,7 +587,7 @@ class IdeasControllerTest extends SecuredWebTestCase
 
     $client->request(
         'POST',
-        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/comment?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('comment'),
+        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/comment?token=' . $client->getContainer()->get('security.csrf.token_manager')->getToken('comment'),
         array( "comment" => $comment )
     );
 
@@ -578,7 +613,7 @@ class IdeasControllerTest extends SecuredWebTestCase
 
     $client->request(
         'POST',
-        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/comment?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('comment'),
+        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/comment?token=' . $client->getContainer()->get('security.csrf.token_manager')->getToken('comment'),
         array( "comment" => $comment )
     );
 
@@ -604,7 +639,7 @@ class IdeasControllerTest extends SecuredWebTestCase
 
     $client->request(
         'POST',
-        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/comment?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('comment'),
+        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/comment?token=' . $client->getContainer()->get('security.csrf.token_manager')->getToken('comment'),
         array( "comment" => $comment )
     );
 
@@ -635,7 +670,7 @@ class IdeasControllerTest extends SecuredWebTestCase
 
     $client->request(
         'POST',
-        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/comment?token=' . $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('comment'),
+        '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . '/comment?token=' . $client->getContainer()->get('security.csrf.token_manager')->getToken('comment'),
         array( "comment" => $comment )
     );
 
@@ -658,7 +693,7 @@ class IdeasControllerTest extends SecuredWebTestCase
   {
 
     $client = static::createClientWithAuthentication("test");
-    $tokenAdd = $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('addParticipant');
+    $tokenAdd = $client->getContainer()->get('security.csrf.token_manager')->getToken('addParticipant');
     
     // add other_test as participant
 
@@ -666,7 +701,7 @@ class IdeasControllerTest extends SecuredWebTestCase
     $idea = $this->em->getRepository('metaIdeaBundle:Idea')->findOneByName("test_idea_private_space");
     $this->tearDown();
 
-    $crawler = $client->request('GET', '/app/switch/privatespace', array('token' => $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('switchCommunity')));
+    $crawler = $client->request('GET', '/app/switch/privatespace', array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')));
 
     $targetParticipantAsBase64 = array('slug' => 'metaIdeaBundle:Idea:addParticipant', 'external' => false, 'params' => array('uid' => $client->getContainer()->get('uid')->toUId($idea->getId()), 'owner' => false, 'guest' => false));
     $base64 = base64_encode(json_encode($targetParticipantAsBase64));
@@ -697,8 +732,8 @@ class IdeasControllerTest extends SecuredWebTestCase
   {
 
     $client = static::createClientWithAuthentication("test");
-    $tokenAdd = $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('addParticipant');
-    $tokenRemove = $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('removeParticipant');
+    $tokenAdd = $client->getContainer()->get('security.csrf.token_manager')->getToken('addParticipant');
+    $tokenRemove = $client->getContainer()->get('security.csrf.token_manager')->getToken('removeParticipant');
     
     // add other_test as participant
 
@@ -707,7 +742,7 @@ class IdeasControllerTest extends SecuredWebTestCase
     $community = $this->em->getRepository('metaGeneralBundle:Community\Community')->findOneByName("test_in");
     $this->tearDown();
 
-    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('switchCommunity')));
+    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')));
 
     $targetParticipantAsBase64 = array('slug' => 'metaIdeaBundle:Idea:addParticipant', 'external' => false, 'params' => array('uid' => $client->getContainer()->get('uid')->toUId($idea->getId()),'owner' => false, 'guest' => false));
     $base64 = base64_encode(json_encode($targetParticipantAsBase64));
@@ -737,7 +772,7 @@ class IdeasControllerTest extends SecuredWebTestCase
     $idea = $this->em->getRepository('metaIdeaBundle:Idea')->findOneByName("test_idea_community_owner");
     $this->tearDown();
 
-    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('switchCommunity')));
+    $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')));
 
     $targetOwnerAsBase64 = array('slug' => 'metaIdeaBundle:Idea:removeParticipant', 'external' => false, 'params' => array('uid' => $client->getContainer()->get('uid')->toUId($idea->getId()),'owner' => false, 'guest' => false));
     $base64 = base64_encode(json_encode($targetOwnerAsBase64));

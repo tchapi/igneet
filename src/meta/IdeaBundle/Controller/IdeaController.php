@@ -79,7 +79,7 @@ class IdeaController extends Controller
                   $this->get('translator')->trans('private.space.back')
                 );
 
-                return $this->redirect($this->generateUrl('g_switch_private_space', array('token' => $this->get('form.csrf_provider')->generateCsrfToken('switchCommunity'), 'redirect' => true)));
+                return $this->redirect($this->generateUrl('g_switch_private_space', array('token' => $this->get('security.csrf.token_manager')->getToken('switchCommunity'), 'redirect' => true)));
             }
 
         }
@@ -678,7 +678,7 @@ class IdeaController extends Controller
 
         } else { // Non-routed
 
-            $route = $this->get('router')->generate('i_show_idea_comment', array('uid' => $uid, 'token' => $this->get('form.csrf_provider')->generateCsrfToken('comment')));
+            $route = $this->get('router')->generate('i_show_idea_comment', array('uid' => $uid, 'token' => $this->get('security.csrf.token_manager')->getToken('comment')));
 
             // We can fetch directly here since it is a non routed action
             $ideaRepository = $this->getDoctrine()->getRepository('metaIdeaBundle:Idea');

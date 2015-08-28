@@ -38,6 +38,7 @@ class LoadTestData implements FixtureInterface, ContainerAwareInterface
             Communauté test_in :
               test appartient à la communauté test_in
               other_test appartient à la communauté test_in
+              test_manager appartient à la communauté test_in et en est manager
 
             Communauté test_out : 
                 other_test appartient à la communauté test_out
@@ -67,7 +68,6 @@ class LoadTestData implements FixtureInterface, ContainerAwareInterface
               test_guest_project_not_in : projet dans test_guest, test n'est pas dedans, other_test est owner
               test_guest_idea : idée dans test_guest, test n'est pas dedans (il est guest, normal), other_test est creator
 
-        // FIX ME : managers ?
 
         **/
 
@@ -228,6 +228,33 @@ class LoadTestData implements FixtureInterface, ContainerAwareInterface
         if (!$otherUser->isFollowing($user)){
             $otherUser->addFollowing($user);
         }
+        /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
+           **                         THIRD TEST USER : "MANAGER"                           **
+           ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
+        $managerUser = $this->container->get('doctrine')->getRepository('metaUserBundle:User')->findOneByUsername('test_manager');
+
+        if (!$managerUser){
+            // A New test user
+            $managerUser = new User();
+            $manager->persist($managerUser);
+        }
+
+        $managerUser->setUsername("test_manager");
+        $managerUser->setFirstname("Patron BigBosss");
+        $managerUser->setLastname("Du Test");
+
+        $managerUser->setHeadline("Je suis là pour vous manager les autres et les communautés. Et tester.");
+        $managerUser->setCity("Test sur Seine");
+        $managerUser->setEmail("test+manager@igneet.com");
+
+        $managerUser->setAbout("<h2>Test!</h2><p>Oui, je manage et je teste.</p>"); // FIXME
+
+        $managerUser->setSalt(md5(uniqid()));
+
+        $encoder = $this->container
+            ->get('security.encoder_factory')
+            ->getEncoder($managerUser);
+        $managerUser->setPassword($encoder->encodePassword('test', $managerUser->getSalt()));
 
         /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
            **                        FIRST COMMUNITY : "TEST_IN"                         **
@@ -241,9 +268,11 @@ class LoadTestData implements FixtureInterface, ContainerAwareInterface
             $community = new Community();
             $userCommunity = new UserCommunity();
             $otherUserCommunity = new UserCommunity();
+            $managerUserCommunity = new UserCommunity();
             $manager->persist($community);
             $manager->persist($userCommunity);
             $manager->persist($otherUserCommunity);
+            $manager->persist($managerUserCommunity);
         } else {
             $userCommunity = $this->container->get('doctrine')->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('user' => $user->getId(), 'community' => $community->getId()));
             if (!$userCommunity){
@@ -255,6 +284,11 @@ class LoadTestData implements FixtureInterface, ContainerAwareInterface
                 $otherUserCommunity = new UserCommunity();
                 $manager->persist($otherUserCommunity);
             }
+            $managerUserCommunity = $this->container->get('doctrine')->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('user' => $managerUser->getId(), 'community' => $community->getId()));
+            if (!$managerUserCommunity){
+                $managerUserCommunity = new UserCommunity();
+                $manager->persist($managerUserCommunity);
+            }
         }
 
         $userCommunity->setUser($user);
@@ -263,6 +297,10 @@ class LoadTestData implements FixtureInterface, ContainerAwareInterface
         $otherUserCommunity->setUser($otherUser);
         $otherUserCommunity->setCommunity($community);
         $otherUserCommunity->setGuest(false);
+        $managerUserCommunity->setUser($managerUser);
+        $managerUserCommunity->setCommunity($community);
+        $managerUserCommunity->setGuest(false);
+        $managerUserCommunity->setManager(true);
         $community->setName('test_in');
         $community->setValidUntil(new \DateTime('now + 10 years'));
         $community->setHeadline('Test users should be here.');

@@ -38,7 +38,7 @@ class UsersControllerTest extends SecuredWebTestCase
   {
     
     $client = static::createClientWithAuthentication();
-    $client->request('GET', '/app/switch/privatespace', array('token' => $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('switchCommunity')));
+    $client->request('GET', '/app/switch/privatespace', array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')));
     $crawler = $client->request('GET', '/app/people');
 
     // No users in private space
@@ -58,7 +58,7 @@ class UsersControllerTest extends SecuredWebTestCase
 
     $client = static::createClientWithAuthentication("test"); // test is in test_in 
 
-    $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('form.csrf_provider')->generateCsrfToken('switchCommunity')));
+    $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')));
     $crawler = $client->request('GET', '/app/people');
 
     $this->assertEquals(
@@ -71,6 +71,97 @@ class UsersControllerTest extends SecuredWebTestCase
         count($crawler->filter('.wrapper.list table tr'))
     );
 
+  }
+
+  public function testUsersListMore()
+  {
+    $this->setUp();
+    $community = $this->em->getRepository('metaGeneralBundle:Community\Community')->findOneByName("test_in");
+    $this->tearDown();
+
+    $client = static::createClientWithAuthentication("test"); // test is in test_in 
+
+    $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')));
+    $crawler = $client->request('POST', '/app/people', array(), array(), array(
+      'HTTP_X-Requested-With' => 'XMLHttpRequest',
+    ), "page=2&full=false");
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $this->assertSame('application/json', $client->getResponse()->headers->get('Content-Type')); // Test if Content-Type is valid application/json
+    $this->assertTrue(is_array(json_decode($client->getResponse()->getContent(), true)));
+  }
+
+  public function testUsersListMoreFull()
+  {
+    $this->setUp();
+    $community = $this->em->getRepository('metaGeneralBundle:Community\Community')->findOneByName("test_in");
+    $this->tearDown();
+
+    $client = static::createClientWithAuthentication("test"); // test is in test_in 
+
+    $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')));
+    $crawler = $client->request('POST', '/app/people', array(), array(), array(
+      'HTTP_X-Requested-With' => 'XMLHttpRequest',
+    ), "page=2&full=true");
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $this->assertSame('application/json', $client->getResponse()->headers->get('Content-Type')); // Test if Content-Type is valid application/json
+    $this->assertTrue(is_array(json_decode($client->getResponse()->getContent(), true)));
+  }
+
+  public function testUsersSortUrls()
+  {
+
+    $this->setUp();
+    $community = $this->em->getRepository('metaGeneralBundle:Community\Community')->findOneByName("test_in");
+    $this->tearDown();
+
+    $client = static::createClientWithAuthentication("test"); // test is in test_in 
+
+    $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')));
+    $crawler = $client->request('GET', '/app/people/1/update');
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $this->assertGreaterThan(
+        1,
+        count($crawler->filter('.wrapper.list table tr'))
+    );
+
+    $crawler = $client->request('GET', '/app/people/1/active');
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $this->assertGreaterThan(
+        1,
+        count($crawler->filter('.wrapper.list table tr'))
+    );
+
+    $crawler = $client->request('GET', '/app/people/1/alpha');
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $this->assertGreaterThan(
+        1,
+        count($crawler->filter('.wrapper.list table tr'))
+    );
   }
 
   public function testChooseInPrivateSpace()
@@ -88,5 +179,48 @@ class UsersControllerTest extends SecuredWebTestCase
     
   }
 
+  public function testSettingsPage()
+  {
+
+    $client = static::createClientWithAuthentication();
+    $crawler = $client->request('GET', '/app/settings');
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+    
+  }
+
+  public function testNotificationsPage()
+  {
+
+    $client = static::createClientWithAuthentication();
+    $crawler = $client->request('GET', '/app/notifications');
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+    
+  }
+
+  public function testNotificationsPageMore()
+  {
+   
+    $client = static::createClientWithAuthentication();
+    $crawler = $client->request('GET', '/app/notifications/2013-01-01');
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+  }
+
+  public function testNotificationsMark()
+  {
+    
+  }
 
 }
