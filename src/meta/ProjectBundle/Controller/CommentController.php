@@ -4,7 +4,8 @@ namespace meta\ProjectBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller,
     Symfony\Component\HttpFoundation\Request,
-    Symfony\Component\HttpFoundation\Response;
+    Symfony\Component\HttpFoundation\Response,
+    Symfony\Component\Security\Csrf\CsrfToken;
 
 /* SYMFONY 2.8 
 use Symfony\Component\Form\Extension\Core\Type\TextType,
@@ -27,7 +28,7 @@ class CommentController extends BaseController
     public function addProjectCommentAction(Request $request, $uid)
     {
 
-        if ($request->isMethod('POST') && !$this->get('form.csrf_provider')->isCsrfTokenValid('comment', $request->get('token'))) {
+        if ($request->isMethod('POST') && !$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('comment', $request->get('token')))) {
             return new Response(
                 json_encode(
                     array(
@@ -97,7 +98,7 @@ class CommentController extends BaseController
     public function addWikiPageCommentAction(Request $request, $uid, $page_uid)
     {
 
-        if ($request->isMethod('POST') && !$this->get('form.csrf_provider')->isCsrfTokenValid('comment', $request->get('token'))) {
+        if ($request->isMethod('POST') && !$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('comment', $request->get('token')))) {
             return new Response(
                 json_encode(
                     array(
@@ -178,7 +179,7 @@ class CommentController extends BaseController
     public function addListCommentAction(Request $request, $uid, $list_uid)
     {
 
-        if ($request->isMethod('POST') && !$this->get('form.csrf_provider')->isCsrfTokenValid('comment', $request->get('token'))) {
+        if ($request->isMethod('POST') && !$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('comment', $request->get('token')))) {
             return new Response(
                 json_encode(
                     array(

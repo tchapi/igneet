@@ -6,7 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller,
     Symfony\Component\HttpFoundation\Request,
     Symfony\Component\HttpFoundation\File\File,
     Symfony\Component\HttpFoundation\Response,
-    Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+    Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException,
+    Symfony\Component\Security\Csrf\CsrfToken;
 
 /* SYMFONY 2.8 
 use Symfony\Component\Form\Extension\Core\Type\TextType,
@@ -261,7 +262,7 @@ class IdeaController extends Controller
     public function editAction(Request $request, $uid)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('edit', $request->get('token'))) {
+        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('edit', $request->get('token')))) {
             return new Response(
                 json_encode(
                     array(
@@ -401,7 +402,7 @@ class IdeaController extends Controller
     public function deleteAction(Request $request, $uid)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('delete', $request->get('token'))) {
+        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('delete', $request->get('token')))) {
             $this->get('session')->getFlashBag()->add(
                 'error',
                 $this->get('translator')->trans('invalid.token', array(), 'errors')
@@ -442,7 +443,7 @@ class IdeaController extends Controller
     public function archiveOrRecycleAction(Request $request, $uid, $archive)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('archiveOrRecycle', $request->get('token'))) {
+        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('archiveOrRecycle', $request->get('token')))) {
             $this->get('session')->getFlashBag()->add(
                 'error',
                 $this->get('translator')->trans('invalid.token', array(), 'errors')
@@ -489,7 +490,7 @@ class IdeaController extends Controller
     public function resetPictureAction(Request $request, $uid)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('resetPicture', $request->get('token'))) {
+        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('resetPicture', $request->get('token')))) {
             $this->get('session')->getFlashBag()->add(
                 'error',
                 $this->get('translator')->trans('invalid.token', array(), 'errors')
@@ -528,7 +529,7 @@ class IdeaController extends Controller
     public function projectizeAction(Request $request, $uid)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('projectize', $request->get('token'))) {
+        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('projectize', $request->get('token')))) {
             $this->get('session')->getFlashBag()->add(
                 'error',
                 $this->get('translator')->trans('invalid.token', array(), 'errors')
@@ -625,7 +626,7 @@ class IdeaController extends Controller
      */
     public function addIdeaCommentAction(Request $request, $uid){
 
-        if ($request->isMethod('POST') && !$this->get('form.csrf_provider')->isCsrfTokenValid('comment', $request->get('token'))) {
+        if ($request->isMethod('POST') && !$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('comment', $request->get('token')))) {
             return new Response(
                 json_encode(
                     array(
@@ -699,7 +700,7 @@ class IdeaController extends Controller
     public function addParticipantAction(Request $request, $uid, $mailOrUsername)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('addParticipant', $request->get('token'))) {
+        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('addParticipant', $request->get('token')))) {
             $this->get('session')->getFlashBag()->add(
                 'error',
                 $this->get('translator')->trans('invalid.token', array(), 'errors')
@@ -758,7 +759,7 @@ class IdeaController extends Controller
     public function removeParticipantAction(Request $request, $uid, $username)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('removeParticipant', $request->get('token'))) {
+        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('removeParticipant', $request->get('token')))) {
             $this->get('session')->getFlashBag()->add(
                 'error',
                 $this->get('translator')->trans('invalid.token', array(), 'errors')
@@ -812,7 +813,7 @@ class IdeaController extends Controller
     public function watchAction(Request $request, $uid)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('watch', $request->get('token'))) {
+        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('watch', $request->get('token')))) {
             return new Response(
                 json_encode(
                     array(
@@ -867,7 +868,7 @@ class IdeaController extends Controller
     public function unwatchAction(Request $request, $uid)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('unwatch', $request->get('token'))) {
+        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('unwatch', $request->get('token')))) {
             return new Response(
                 json_encode(
                     array(

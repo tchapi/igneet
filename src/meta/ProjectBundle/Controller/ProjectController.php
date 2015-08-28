@@ -5,7 +5,8 @@ namespace meta\ProjectBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller,
     Symfony\Component\HttpFoundation\Request,
     Symfony\Component\HttpFoundation\File\File,
-    Symfony\Component\HttpFoundation\Response;
+    Symfony\Component\HttpFoundation\Response,
+    Symfony\Component\Security\Csrf\CsrfToken;
 
 class ProjectController extends BaseController
 {
@@ -16,7 +17,7 @@ class ProjectController extends BaseController
     public function editAction(Request $request, $uid)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('edit', $request->get('token'))) {
+        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('edit', $request->get('token')))) {
             return new Response(
                 json_encode(
                     array(
@@ -175,7 +176,7 @@ class ProjectController extends BaseController
      */
     public function deleteAction(Request $request, $uid){
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('delete', $request->get('token'))) {
+        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('delete', $request->get('token')))) {
             $this->get('session')->getFlashBag()->add(
                 'error',
                 $this->get('translator')->trans('invalid.token', array(), 'errors')
@@ -234,7 +235,7 @@ class ProjectController extends BaseController
     public function resetPictureAction(Request $request, $uid)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('resetPicture', $request->get('token'))) {
+        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('resetPicture', $request->get('token')))) {
             $this->get('session')->getFlashBag()->add(
                 'error',
                 $this->get('translator')->trans('invalid.token', array(), 'errors')
@@ -273,7 +274,7 @@ class ProjectController extends BaseController
      */
     public function makePublicAction(Request $request, $uid)
     {
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('makePublic', $request->get('token'))) {
+        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('makePublic', $request->get('token')))) {
             $this->get('session')->getFlashBag()->add(
                 'error',
                 $this->get('translator')->trans('invalid.token', array(), 'errors')
@@ -313,7 +314,7 @@ class ProjectController extends BaseController
      */
     public function makePrivateAction(Request $request, $uid)
     {
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('makePrivate', $request->get('token'))) {
+        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('makePrivate', $request->get('token')))) {
             $this->get('session')->getFlashBag()->add(
                 'error',
                 $this->get('translator')->trans('invalid.token', array(), 'errors')
@@ -353,7 +354,7 @@ class ProjectController extends BaseController
     public function watchAction(Request $request, $uid)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('watch', $request->get('token'))) {
+        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('watch', $request->get('token')))) {
             return new Response(
                 json_encode(
                     array(
@@ -409,7 +410,7 @@ class ProjectController extends BaseController
     public function unwatchAction(Request $request, $uid)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('unwatch', $request->get('token'))) {
+        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('unwatch', $request->get('token')))) {
             return new Response(
                 json_encode(
                     array(

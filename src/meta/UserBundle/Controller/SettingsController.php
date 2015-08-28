@@ -5,7 +5,8 @@ namespace meta\UserBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller,
     Symfony\Component\Security\Core\SecurityContext,
     Symfony\Component\HttpFoundation\Request,
-    Symfony\Component\HttpFoundation\Response;
+    Symfony\Component\HttpFoundation\Response,
+    Symfony\Component\Security\Csrf\CsrfToken;
 
 /*
  * Importing Class definitions
@@ -31,7 +32,7 @@ class SettingsController extends Controller
     public function editSettingsAction(Request $request)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('editSettings', $request->get('token'))) {
+        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('editSettings', $request->get('token')))) {
             return new Response(
                 json_encode(
                     array(

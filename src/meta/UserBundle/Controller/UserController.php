@@ -6,7 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller,
     Symfony\Component\Security\Core\SecurityContext,
     Symfony\Component\HttpFoundation\Request,
     Symfony\Component\HttpFoundation\File\File,
-    Symfony\Component\HttpFoundation\Response;
+    Symfony\Component\HttpFoundation\Response,
+    Symfony\Component\Security\Csrf\CsrfToken;
 
 /*
  * Importing Class definitions
@@ -178,7 +179,7 @@ class UserController extends Controller
     public function markNotificationsReadAction(Request $request)
     {
         
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('markRead', $request->get('token'))) {
+        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('markRead', $request->get('token')))) {
             return new Response(
                 json_encode(
                     array(
@@ -205,7 +206,7 @@ class UserController extends Controller
     public function editAction(Request $request, $username)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('edit', $request->get('token'))) {
+        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('edit', $request->get('token')))) {
             return new Response(
                 json_encode(
                     array(
@@ -341,7 +342,7 @@ class UserController extends Controller
     public function resetAvatarAction(Request $request, $username)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('resetAvatar', $request->get('token'))) {
+        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('resetAvatar', $request->get('token')))) {
             $this->get('session')->getFlashBag()->add(
                 'error',
                 $this->get('translator')->trans('invalid.token', array(), 'errors')
@@ -382,7 +383,7 @@ class UserController extends Controller
     public function deleteAction(Request $request, $username)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('delete', $request->get('token'))) {
+        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('delete', $request->get('token')))) {
             $this->get('session')->getFlashBag()->add(
                 'error',
                 $this->get('translator')->trans('invalid.token', array(), 'errors')
@@ -560,7 +561,7 @@ class UserController extends Controller
      */
     public function followUserAction(Request $request, $username)
     {
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('followUser', $request->get('token'))) {
+        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('followUser', $request->get('token')))) {
             return new Response(
                 json_encode(
                     array(
@@ -625,7 +626,7 @@ class UserController extends Controller
     public function unfollowUserAction(Request $request, $username)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('unfollowUser', $request->get('token'))) {
+        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('unfollowUser', $request->get('token')))) {
             return new Response(
                 json_encode(
                     array(

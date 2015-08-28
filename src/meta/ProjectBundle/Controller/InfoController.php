@@ -4,7 +4,8 @@ namespace meta\ProjectBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller,
     Symfony\Component\HttpFoundation\Request,
-    Symfony\Component\HttpFoundation\Response;
+    Symfony\Component\HttpFoundation\Response,
+    Symfony\Component\Security\Csrf\CsrfToken;
 
 use meta\UserBundle\Entity\UserInviteToken,
     meta\UserBundle\Entity\UserCommunity;
@@ -39,7 +40,7 @@ class InfoController extends BaseController
     public function addParticipantOrOwnerAction(Request $request, $uid, $mailOrUsername, $owner)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('addParticipantOrOwner', $request->get('token'))) {
+        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('addParticipantOrOwner', $request->get('token')))) {
             $this->get('session')->getFlashBag()->add(
                 'error',
                 $this->get('translator')->trans('invalid.token', array(), 'errors')
@@ -126,7 +127,7 @@ class InfoController extends BaseController
     public function removeParticipantOrOwnerAction(Request $request, $uid, $username, $owner)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('removeParticipantOrOwner', $request->get('token'))) {
+        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('removeParticipantOrOwner', $request->get('token')))) {
             $this->get('session')->getFlashBag()->add(
                 'error',
                 $this->get('translator')->trans('invalid.token', array(), 'errors')
@@ -226,7 +227,7 @@ class InfoController extends BaseController
     public function removeMySelfParticipantAction(Request $request, $uid, $username)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('removeMySelfParticipant', $request->get('token'))) {
+        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('removeMySelfParticipant', $request->get('token')))) {
             $this->get('session')->getFlashBag()->add(
                 'error',
                 $this->get('translator')->trans('invalid.token', array(), 'errors')

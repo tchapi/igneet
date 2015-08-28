@@ -4,7 +4,8 @@ namespace meta\ProjectBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller,
     Symfony\Component\HttpFoundation\Request,
-    Symfony\Component\HttpFoundation\Response;
+    Symfony\Component\HttpFoundation\Response,
+    Symfony\Component\Security\Csrf\CsrfToken;
 
 /*
  * Importing Class definitions
@@ -247,7 +248,7 @@ class ResourceController extends BaseController
     public function editResourceAction(Request $request, $uid, $resource_uid)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('edit', $request->get('token'))) {
+        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('edit', $request->get('token')))) {
             return new Response(
                 json_encode(
                     array(
@@ -436,7 +437,7 @@ class ResourceController extends BaseController
     public function updateResourceAction(Request $request, $uid, $resource_uid)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('markUpdated', $request->get('token'))) {
+        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('markUpdated', $request->get('token')))) {
             $this->get('session')->getFlashBag()->add(
                 'error',
                 $this->get('translator')->trans('invalid.token', array(), 'errors')
@@ -480,7 +481,7 @@ class ResourceController extends BaseController
      */
     public function deleteResourceAction(Request $request, $uid, $resource_uid)
     {
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('delete', $request->get('token'))) {
+        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('delete', $request->get('token')))) {
             $this->get('session')->getFlashBag()->add(
                 'error',
                 $this->get('translator')->trans('invalid.token', array(), 'errors')

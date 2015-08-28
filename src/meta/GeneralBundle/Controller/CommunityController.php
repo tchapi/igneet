@@ -5,7 +5,8 @@ namespace meta\GeneralBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller,
     Symfony\Component\HttpFoundation\Request,
     Symfony\Component\HttpFoundation\File\File,
-    Symfony\Component\HttpFoundation\Response;
+    Symfony\Component\HttpFoundation\Response,
+    Symfony\Component\Security\Csrf\CsrfToken;
 
 /* SYMFONY 2.8
 use Symfony\Component\Form\Extension\Core\Type\TextType,
@@ -168,7 +169,7 @@ class CommunityController extends Controller
     public function editAction(Request $request)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('edit', $request->get('token'))) {
+        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('edit', $request->get('token')))) {
             return new Response(
                 json_encode(
                     array(
@@ -292,7 +293,7 @@ class CommunityController extends Controller
     public function resetPictureAction(Request $request)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('resetPicture', $request->get('token'))) {
+        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('resetPicture', $request->get('token')))) {
             $this->get('session')->getFlashBag()->add(
                 'error',
                 $this->get('translator')->trans('invalid.token', array(), 'errors')
@@ -395,7 +396,7 @@ class CommunityController extends Controller
     public function addCommunityCommentAction(Request $request)
     {
 
-        if ($request->isMethod('POST') && !$this->get('form.csrf_provider')->isCsrfTokenValid('comment', $request->get('token'))) {
+        if ($request->isMethod('POST') && !$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('comment', $request->get('token')))) {
             return new Response(
                 json_encode(
                     array(
@@ -465,7 +466,7 @@ class CommunityController extends Controller
     public function inviteAction(Request $request)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('invite', $request->get('token'))) {
+        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('invite', $request->get('token')))) {
             $this->get('session')->getFlashBag()->add(
                 'error',
                 $this->get('translator')->trans('invalid.token', array(), 'errors')
@@ -638,7 +639,7 @@ class CommunityController extends Controller
     public function removeAction(Request $request)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('remove', $request->get('token'))) {
+        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('remove', $request->get('token')))) {
             $this->get('session')->getFlashBag()->add(
                 'error',
                 $this->get('translator')->trans('invalid.token', array(), 'errors')
@@ -824,7 +825,7 @@ class CommunityController extends Controller
     public function addManagerAction(Request $request, $mailOrUsername)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('addManager', $request->get('token'))) {
+        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('addManager', $request->get('token')))) {
             $this->get('session')->getFlashBag()->add(
                 'error',
                 $this->get('translator')->trans('invalid.token', array(), 'errors')
@@ -891,7 +892,7 @@ class CommunityController extends Controller
     public function removeManagerAction(Request $request, $username)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('removeManager', $request->get('token'))) {
+        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('removeManager', $request->get('token')))) {
             $this->get('session')->getFlashBag()->add(
                 'error',
                 $this->get('translator')->trans('invalid.token', array(), 'errors')

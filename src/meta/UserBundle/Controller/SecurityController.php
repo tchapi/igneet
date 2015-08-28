@@ -7,7 +7,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller,
     Symfony\Component\Security\Core\SecurityContext,
     Symfony\Component\EventDispatcher\EventDispatcher,
     Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken,
-    Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
+    Symfony\Component\Security\Http\Event\InteractiveLoginEvent,
+    Symfony\Component\Security\Csrf\CsrfToken;
 
 use Fp\OpenIdBundle\RelyingParty\Exception\OpenIdAuthenticationCanceledException;
 use Fp\OpenIdBundle\RelyingParty\RecoveredFailureRelyingParty;
@@ -456,7 +457,7 @@ class SecurityController extends Controller
         // It may be an internal request
         if (is_null($passwordToken) && $this->getUser()){
             
-            if (!$this->get('form.csrf_provider')->isCsrfTokenValid('changePassword', $request->get('token'))){
+            if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('changePassword', $request->get('token')))){
                 throw $this->createNotFoundException($this->get('translator')->trans('invalid.token', array(), 'errors'));
             } else {
                 $em = $this->getDoctrine()->getManager();

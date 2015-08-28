@@ -5,7 +5,8 @@ namespace meta\GeneralBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller,
     Symfony\Component\HttpFoundation\Request,
     Symfony\Component\HttpFoundation\Response,
-    Symfony\Component\HttpFoundation\RedirectResponse;
+    Symfony\Component\HttpFoundation\RedirectResponse,
+    Symfony\Component\Security\Csrf\CsrfToken;
 
 class DefaultController extends Controller
 {
@@ -108,7 +109,7 @@ class DefaultController extends Controller
     public function validateCommentAction(Request $request, $id)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('validateComment', $request->get('token')))
+        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('validateComment', $request->get('token'))))
             return new Response($this->get('translator')->trans('invalid.token', array(), 'errors'), 400);
 
         $authenticatedUser = $this->getUser();
@@ -138,7 +139,7 @@ class DefaultController extends Controller
     public function deleteCommentAction(Request $request, $id)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('deleteComment', $request->get('token')))
+        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('deleteComment', $request->get('token'))))
             return new Response($this->get('translator')->trans('invalid.token', array(), 'errors'), 400);
 
         $authenticatedUser = $this->getUser();
@@ -220,7 +221,7 @@ class DefaultController extends Controller
     public function switchCommunityAction(Request $request, $uid)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('switchCommunity', $request->get('token'))) {
+        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('switchCommunity', $request->get('token')))) {
             
             $this->get('session')->getFlashBag()->add(
                 'error',

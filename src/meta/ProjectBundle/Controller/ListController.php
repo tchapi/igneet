@@ -87,7 +87,7 @@ class ListController extends BaseController
     public function rankListsAction(Request $request, $uid)
     {
         
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('rankLists', $request->get('token'))) {
+        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('rankLists', $request->get('token')))) {
             return new Response(
                 json_encode(
                     array(
@@ -135,7 +135,7 @@ class ListController extends BaseController
     public function newListAction(Request $request, $uid)
     {
 
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('newList', $request->get('token'))) {
+        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('newList', $request->get('token')))) {
             $this->get('session')->getFlashBag()->add(
                 'error',
                 $this->get('translator')->trans('invalid.token', array(), 'errors')
@@ -191,7 +191,7 @@ class ListController extends BaseController
     public function editListAction(Request $request, $uid, $list_uid)
     {
   
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('editList', $request->get('token'))) {
+        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('editList', $request->get('token')))) {
             return new Response(
                 json_encode(
                     array(
@@ -291,7 +291,7 @@ class ListController extends BaseController
     public function deleteListAction(Request $request, $uid, $list_uid)
     {
   
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('deleteList', $request->get('token'))) {
+        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('deleteList', $request->get('token')))) {
             return new Response(
                 json_encode(
                     array(
@@ -343,7 +343,7 @@ class ListController extends BaseController
     public function newListItemAction(Request $request, $uid, $list_uid)
     {
         
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('newListItem', $request->get('token'))) {
+        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('newListItem', $request->get('token')))) {
             return new Response(
                 json_encode(
                     array(
@@ -397,7 +397,7 @@ class ListController extends BaseController
     public function editListItemAction(Request $request, $uid, $list_uid, $item_uid)
     {
   
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('editListItem', $request->get('token'))) {
+        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('editListItem', $request->get('token')))) {
             return new Response(
                 json_encode(
                     array(
@@ -476,7 +476,7 @@ class ListController extends BaseController
     public function deleteListItemAction(Request $request, $uid, $list_uid, $item_uid)
     {
   
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('deleteListItem', $request->get('token'))) {
+        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('deleteListItem', $request->get('token')))) {
             return new Response(
                 json_encode(
                     array(
@@ -525,7 +525,7 @@ class ListController extends BaseController
      */
     public function rankListItemsAction(Request $request, $uid)
     {
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('rankListItems', $request->get('token'))) {
+        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('rankListItems', $request->get('token')))) {
             return new Response(
                 json_encode(
                     array(
@@ -569,7 +569,7 @@ class ListController extends BaseController
     public function toggleListItemAction(Request $request, $uid, $list_uid, $item_uid, $do)
     {
   
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('toggleListItem', $request->get('token'))) {
+        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('toggleListItem', $request->get('token')))) {
             return new Response(
                 json_encode(
                     array(

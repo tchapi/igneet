@@ -4,7 +4,8 @@ namespace meta\ProjectBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller,
     Symfony\Component\HttpFoundation\Request,
-    Symfony\Component\HttpFoundation\Response;
+    Symfony\Component\HttpFoundation\Response,
+    Symfony\Component\Security\Csrf\CsrfToken;
 
 /*
  * Importing Class definitions
@@ -116,7 +117,7 @@ class WikiController extends BaseController
     public function newWikiPageAction(Request $request, $uid)
     {
   
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('newWikiPage', $request->get('token'))) {
+        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('newWikiPage', $request->get('token')))) {
             $this->get('session')->getFlashBag()->add(
                 'error',
                 $this->get('translator')->trans('invalid.token', array(), 'errors')
@@ -181,7 +182,7 @@ class WikiController extends BaseController
      */
     public function makeHomeWikiPageAction(Request $request, $uid, $page_uid)
     {
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('makeHomeWikiPage', $request->get('token'))) {
+        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('makeHomeWikiPage', $request->get('token')))) {
             $this->get('session')->getFlashBag()->add(
                 'error',
                 $this->get('translator')->trans('invalid.token', array(), 'errors')
@@ -276,7 +277,7 @@ class WikiController extends BaseController
     public function editWikiPageAction(Request $request, $uid, $page_uid)
     {
   
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('editWikiPage', $request->get('token'))) {
+        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('editWikiPage', $request->get('token')))) {
             return new Response(
                 json_encode(
                     array(
@@ -385,7 +386,7 @@ class WikiController extends BaseController
     public function deleteWikiPageAction(Request $request, $uid, $page_uid)
     {
   
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('deleteWikiPage', $request->get('token'))) {
+        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('deleteWikiPage', $request->get('token')))) {
             return new Response(
                 json_encode(
                     array(
