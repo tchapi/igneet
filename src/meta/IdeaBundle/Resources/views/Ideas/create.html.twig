@@ -33,7 +33,7 @@
 {% endblock %}
 
 {% block content %}
-  <form action="{{ path('i_new_idea') }}" method="post" {{ form_enctype(form) }}>
+  <form action="{{ path('i_new_idea') }}" method="post" {{ form_enctype(form) }} name="new_idea">
     {{ form_rest(form) }}
     {{ form_row(form._token) }} 
     <section>

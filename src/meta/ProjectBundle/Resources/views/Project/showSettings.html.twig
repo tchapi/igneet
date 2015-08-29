@@ -37,7 +37,7 @@
 {% if base.canEdit %}
   <section>
     <div class="label">{{ "project.delete"|trans }} : </div>
-    <div class="content"><a class="button button-danger" data-confirm="{{ "project.deleteHelp"|trans }}" href="{{ path('p_delete_project', { 'uid': base.project.id|to_uid, 'token': csrf_token('delete') }) }}">{{ "delete"|trans }}</a><em><i class="fa fa-warning"></i> {{ "deleteHelp"|trans }}</em></div>
+    <div class="content"><a name="delete" class="button button-danger" data-confirm="{{ "project.deleteHelp"|trans }}" href="{{ path('p_delete_project', { 'uid': base.project.id|to_uid, 'token': csrf_token('delete') }) }}">{{ "delete"|trans }}</a><em><i class="fa fa-warning"></i> {{ "deleteHelp"|trans }}</em></div>
   </section>
 {% endif %}
 

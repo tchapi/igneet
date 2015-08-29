@@ -29,7 +29,7 @@
 {% if base.isCreator %}
   <section>
     <div class="label">{{ "idea.delete"|trans }} : </div>
-    <div class="content"><a class="button button-danger" data-confirm="{{ "idea.deleteHelp"|trans }}" href="{{ path('i_delete_idea', { 'uid': base.idea.id|to_uid, 'token': csrf_token('delete') }) }}">{{ "delete"|trans }}</a><em><i class="fa fa-warning"></i> {{ "deleteHelp"|trans }}</em></div>
+    <div class="content"><a name="delete" class="button button-danger" data-confirm="{{ "idea.deleteHelp"|trans }}" href="{{ path('i_delete_idea', { 'uid': base.idea.id|to_uid, 'token': csrf_token('delete') }) }}">{{ "delete"|trans }}</a><em><i class="fa fa-warning"></i> {{ "deleteHelp"|trans }}</em></div>
   </section>
 {% endif %}
 

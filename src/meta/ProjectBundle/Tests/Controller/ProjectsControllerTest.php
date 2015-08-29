@@ -75,22 +75,167 @@ class ProjectsControllerTest extends SecuredWebTestCase
 
   public function testProjectNewInCommunity()
   {
+    $this->setUp();
+    $community = $this->em->getRepository('metaGeneralBundle:Community\Community')->findOneByName("test_in");
+    $this->tearDown();
 
+    $client = static::createClientWithAuthentication("test"); // test is in test_in 
+
+    $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')->getValue()));
+    $crawler = $client->request('GET', '/app/projects/new');
+
+    $form = $crawler->filter('form[name=new_project]')->form();
+
+    $form['standardProject[name]'] = 'TEST New Project';
+    $form['standardProject[headline]'] = 'TEST New Project Headline';
+
+    $crawler = $client->submit($form);
+
+    $this->assertTrue($client->getResponse()->isRedirect());
+    $client->followRedirect();
+    $this->assertContains(
+        'TEST New Project',
+        $client->getResponse()->getContent()
+    );
+    $this->assertContains(
+        'TEST New Project Headline',
+        $client->getResponse()->getContent()
+    );
+
+    $project_1 = $client->getRequest()->getUri();
+  
+    $this->setUp();
+    $community = $this->em->getRepository('metaGeneralBundle:Community\Community')->findOneByName("test_in");
+    $this->tearDown();
+
+    $client = static::createClientWithAuthentication("test"); // test is in test_in 
+
+    $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')->getValue()));
+    $crawler = $client->request('GET', $project_1 . "/settings");
+
+    $this->assertEquals(200, $client->getResponse()->getStatusCode());
+
+    $delete_link = $crawler->filter('a[name=delete]')->link()->getUri();
+
+    $crawler = $client->request('GET', $delete_link);
+
+    $this->assertTrue(
+        $client->getResponse()->isRedirect('/app/projects')
+    );
+    
+  }
+
+  public function testProjectNewInCommunityNoHeadline()
+  {
+    $this->setUp();
+    $community = $this->em->getRepository('metaGeneralBundle:Community\Community')->findOneByName("test_in");
+    $this->tearDown();
+
+    $client = static::createClientWithAuthentication("test"); // test is in test_in 
+
+    $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')->getValue()));
+    $crawler = $client->request('GET', '/app/projects/new');
+
+    $form = $crawler->filter('form[name=new_project]')->form();
+
+    $form['standardProject[name]'] = 'TEST New Project';
+
+    $crawler = $client->submit($form);
+
+    $this->assertTrue($client->getResponse()->isRedirect());
+    $client->followRedirect();
+    $this->assertContains(
+        'TEST New Project',
+        $client->getResponse()->getContent()
+    );
+    $project_2 = $client->getRequest()->getUri();
+  
+    $this->setUp();
+    $community = $this->em->getRepository('metaGeneralBundle:Community\Community')->findOneByName("test_in");
+    $this->tearDown();
+
+    $client = static::createClientWithAuthentication("test"); // test is in test_in 
+
+    $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')->getValue()));
+    $crawler = $client->request('GET', $project_2 . "/settings");
+
+    $this->assertEquals(200, $client->getResponse()->getStatusCode());
+
+    $delete_link = $crawler->filter('a[name=delete]')->link()->getUri();
+
+    $crawler = $client->request('GET', $delete_link);
+
+    $this->assertTrue(
+        $client->getResponse()->isRedirect('/app/projects')
+    );
+    
+  }
+
+  public function testProjectNewInCommunityNoTitle()
+  {
+    $this->setUp();
+    $community = $this->em->getRepository('metaGeneralBundle:Community\Community')->findOneByName("test_in");
+    $this->tearDown();
+
+    $client = static::createClientWithAuthentication("test"); // test is in test_in 
+
+    $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')->getValue()));
+    $crawler = $client->request('GET', '/app/projects/new');
+
+    $form = $crawler->filter('form[name=new_project]')->form();
+    $crawler = $client->submit($form);
+
+    $this->assertEquals(200, $client->getResponse()->getStatusCode());
+    $this->assertRegexp(
+        '/This value should not be blank/',
+        $client->getResponse()->getContent()
+    );
+    
   }
 
   public function testProjectNewInPrivateSpace()
   {
 
-  }
+    $client = static::createClientWithAuthentication("test"); // test is in test_in 
 
-  public function testProjectDeleteInCommunity()
-  {
+    $client->request('GET', '/app/community/switch/privatespace', array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')->getValue()));
+    $crawler = $client->request('GET', '/app/projects/new');
+
+    $form = $crawler->filter('form[name=new_project]')->form();
+
+    $form['standardProject[name]'] = 'TEST New Project Private Space';
+    $form['standardProject[headline]'] = 'TEST New Project Headline Private Space';
+
+    $crawler = $client->submit($form);
+
+    $this->assertTrue($client->getResponse()->isRedirect());
+    $client->followRedirect();
+    $this->assertContains(
+        'TEST New Project Private Space',
+        $client->getResponse()->getContent()
+    );
+    $this->assertContains(
+        'TEST New Project Headline Private Space',
+        $client->getResponse()->getContent()
+    );
+
+    $project_3 = $client->getRequest()->getUri();
+
+    $client = static::createClientWithAuthentication("test"); // test is in test_in 
+
+    $client->request('GET', '/app/community/switch/privatespace', array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')->getValue()));
+    $crawler = $client->request('GET', $project_3 . "/settings");
+
+    $this->assertEquals(200, $client->getResponse()->getStatusCode());
+
+    $delete_link = $crawler->filter('a[name=delete]')->link()->getUri();
+
+    $crawler = $client->request('GET', $delete_link);
+
+    $this->assertTrue(
+        $client->getResponse()->isRedirect('/app/projects')
+    );
     
-  }
-
-  public function testProjectDeleteInPrivateSpace()
-  {
-
   }
 
   public function testProjectsSortUrls()
@@ -191,6 +336,51 @@ class ProjectsControllerTest extends SecuredWebTestCase
 
     $this->assertCount(1, $crawler->filter('h2:contains("test_project_private_space")'));
 
+    $crawler = $client->request('GET', '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . "/info");
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $this->assertCount(1, $crawler->filter('h2:contains("test_project_private_space")'));
+
+    $crawler = $client->request('GET', '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . "/lists");
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $this->assertCount(1, $crawler->filter('h2:contains("test_project_private_space")'));
+
+    $crawler = $client->request('GET', '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . "/resources");
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $this->assertCount(1, $crawler->filter('h2:contains("test_project_private_space")'));
+
+    $crawler = $client->request('GET', '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . "/wiki");
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $this->assertCount(1, $crawler->filter('h2:contains("test_project_private_space")'));
+
+    $crawler = $client->request('GET', '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . "/settings");
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $this->assertCount(1, $crawler->filter('h2:contains("test_project_private_space")'));
+
   }
 
   public function testProjectInPrivateSpaceSwitch()
@@ -232,6 +422,41 @@ class ProjectsControllerTest extends SecuredWebTestCase
         $client->getResponse()->getStatusCode()
     );
 
+    $crawler = $client->request('GET', '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . "/info");
+
+    $this->assertEquals(
+        Response::HTTP_NOT_FOUND,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $crawler = $client->request('GET', '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . "/lists");
+
+    $this->assertEquals(
+        Response::HTTP_NOT_FOUND,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $crawler = $client->request('GET', '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . "/resources");
+
+    $this->assertEquals(
+        Response::HTTP_NOT_FOUND,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $crawler = $client->request('GET', '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . "/wiki");
+
+    $this->assertEquals(
+        Response::HTTP_NOT_FOUND,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $crawler = $client->request('GET', '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . "/settings");
+
+    $this->assertEquals(
+        Response::HTTP_NOT_FOUND,
+        $client->getResponse()->getStatusCode()
+    );
+
   }
 
   public function testProjectInCommunityOwner()
@@ -246,6 +471,51 @@ class ProjectsControllerTest extends SecuredWebTestCase
     $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')->getValue()));
 
     $crawler = $client->request('GET', '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()));
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $this->assertCount(1, $crawler->filter('h2:contains("test_project_community_owner")'));
+
+    $crawler = $client->request('GET', '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . "/info");
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $this->assertCount(1, $crawler->filter('h2:contains("test_project_community_owner")'));
+
+    $crawler = $client->request('GET', '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . "/lists");
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $this->assertCount(1, $crawler->filter('h2:contains("test_project_community_owner")'));
+
+    $crawler = $client->request('GET', '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . "/resources");
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $this->assertCount(1, $crawler->filter('h2:contains("test_project_community_owner")'));
+
+    $crawler = $client->request('GET', '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . "/wiki");
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $this->assertCount(1, $crawler->filter('h2:contains("test_project_community_owner")'));
+
+    $crawler = $client->request('GET', '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . "/settings");
 
     $this->assertEquals(
         Response::HTTP_OK,
@@ -275,6 +545,50 @@ class ProjectsControllerTest extends SecuredWebTestCase
     );
 
     $this->assertCount(1, $crawler->filter('h2:contains("test_project_community_owner")'));
+
+    $crawler = $client->request('GET', '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . "/info");
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $this->assertCount(1, $crawler->filter('h2:contains("test_project_community_owner")'));
+
+    $crawler = $client->request('GET', '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . "/lists");
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $this->assertCount(1, $crawler->filter('h2:contains("test_project_community_owner")'));
+
+    $crawler = $client->request('GET', '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . "/resources");
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $this->assertCount(1, $crawler->filter('h2:contains("test_project_community_owner")'));
+
+    $crawler = $client->request('GET', '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . "/wiki");
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $this->assertCount(1, $crawler->filter('h2:contains("test_project_community_owner")'));
+
+    $crawler = $client->request('GET', '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . "/settings");
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+    $this->assertCount(1, $crawler->filter('h2[name=restricted]'));
 
   }
 
@@ -320,6 +634,50 @@ class ProjectsControllerTest extends SecuredWebTestCase
 
     $this->assertCount(1, $crawler->filter('h2:contains("test_project_community_participant")'));
 
+    $crawler = $client->request('GET', '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . "/info");
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $this->assertCount(1, $crawler->filter('h2:contains("test_project_community_participant")'));
+
+    $crawler = $client->request('GET', '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . "/lists");
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $this->assertCount(1, $crawler->filter('h2:contains("test_project_community_participant")'));
+
+    $crawler = $client->request('GET', '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . "/resources");
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $this->assertCount(1, $crawler->filter('h2:contains("test_project_community_participant")'));
+
+    $crawler = $client->request('GET', '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . "/wiki");
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $this->assertCount(1, $crawler->filter('h2:contains("test_project_community_participant")'));
+
+    $crawler = $client->request('GET', '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . "/settings");
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+    $this->assertCount(1, $crawler->filter('h2[name=restricted]'));
+
   }
 
   public function testProjectInCommunityOtherParticipant()
@@ -334,6 +692,51 @@ class ProjectsControllerTest extends SecuredWebTestCase
     $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')->getValue()));
 
     $crawler = $client->request('GET', '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()));
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $this->assertCount(1, $crawler->filter('h2:contains("test_project_community_participant")'));
+
+    $crawler = $client->request('GET', '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . "/info");
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $this->assertCount(1, $crawler->filter('h2:contains("test_project_community_participant")'));
+
+    $crawler = $client->request('GET', '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . "/lists");
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $this->assertCount(1, $crawler->filter('h2:contains("test_project_community_participant")'));
+
+    $crawler = $client->request('GET', '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . "/resources");
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $this->assertCount(1, $crawler->filter('h2:contains("test_project_community_participant")'));
+
+    $crawler = $client->request('GET', '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . "/wiki");
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $this->assertCount(1, $crawler->filter('h2:contains("test_project_community_participant")'));
+
+    $crawler = $client->request('GET', '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . "/settings");
 
     $this->assertEquals(
         Response::HTTP_OK,
@@ -400,6 +803,41 @@ class ProjectsControllerTest extends SecuredWebTestCase
     $crawler = $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')->getValue()));
 
     $crawler = $client->request('GET', '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()));
+
+    $this->assertEquals(
+        Response::HTTP_NOT_FOUND,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $crawler = $client->request('GET', '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . "/info");
+
+    $this->assertEquals(
+        Response::HTTP_NOT_FOUND,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $crawler = $client->request('GET', '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . "/lists");
+
+    $this->assertEquals(
+        Response::HTTP_NOT_FOUND,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $crawler = $client->request('GET', '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . "/resources");
+
+    $this->assertEquals(
+        Response::HTTP_NOT_FOUND,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $crawler = $client->request('GET', '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . "/wiki");
+
+    $this->assertEquals(
+        Response::HTTP_NOT_FOUND,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $crawler = $client->request('GET', '/app/project/0' . $client->getContainer()->get('uid')->toUId($project->getId()) . "/settings");
 
     $this->assertEquals(
         Response::HTTP_NOT_FOUND,

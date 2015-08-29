@@ -75,22 +75,161 @@ class IdeasControllerTest extends SecuredWebTestCase
 
   public function testIdeaNewInCommunity()
   {
+    $this->setUp();
+    $community = $this->em->getRepository('metaGeneralBundle:Community\Community')->findOneByName("test_in");
+    $this->tearDown();
 
+    $client = static::createClientWithAuthentication("test"); // test is in test_in 
+
+    $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')->getValue()));
+    $crawler = $client->request('GET', '/app/ideas/new');
+
+    $form = $crawler->filter('form[name=new_idea]')->form();
+
+    $form['idea[name]'] = 'TEST New Idea';
+    $form['idea[headline]'] = 'TEST New Idea Headline';
+
+    $crawler = $client->submit($form);
+
+    $this->assertTrue($client->getResponse()->isRedirect());
+    $client->followRedirect();
+    $this->assertContains(
+        'TEST New Idea',
+        $client->getResponse()->getContent()
+    );
+    $this->assertContains(
+        'TEST New Idea Headline',
+        $client->getResponse()->getContent()
+    );
+
+    $idea_1 = $client->getRequest()->getUri();
+  
+    $this->setUp();
+    $community = $this->em->getRepository('metaGeneralBundle:Community\Community')->findOneByName("test_in");
+    $this->tearDown();
+
+    $client = static::createClientWithAuthentication("test"); // test is in test_in 
+
+    $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')->getValue()));
+    $crawler = $client->request('GET', $idea_1 . "/settings");
+
+    $this->assertEquals(200, $client->getResponse()->getStatusCode());
+
+    $delete_link = $crawler->filter('a[name=delete]')->link()->getUri();
+
+    $crawler = $client->request('GET', $delete_link);
+
+    $this->assertTrue(
+        $client->getResponse()->isRedirect('/app/ideas')
+    );
+    
+  }
+
+  public function testIdeaNewInCommunityNoHeadline()
+  {
+    $this->setUp();
+    $community = $this->em->getRepository('metaGeneralBundle:Community\Community')->findOneByName("test_in");
+    $this->tearDown();
+
+    $client = static::createClientWithAuthentication("test"); // test is in test_in 
+
+    $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')->getValue()));
+    $crawler = $client->request('GET', '/app/ideas/new');
+
+    $form = $crawler->filter('form[name=new_idea]')->form();
+
+    $form['idea[name]'] = 'TEST New Idea';
+
+    $crawler = $client->submit($form);
+
+    $this->assertTrue($client->getResponse()->isRedirect());
+    $client->followRedirect();
+    $this->assertContains(
+        'TEST New Idea',
+        $client->getResponse()->getContent()
+    );
+
+    $idea_2 = $client->getRequest()->getUri();
+  
+    $this->setUp();
+    $community = $this->em->getRepository('metaGeneralBundle:Community\Community')->findOneByName("test_in");
+    $this->tearDown();
+
+    $client = static::createClientWithAuthentication("test"); // test is in test_in 
+
+    $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')->getValue()));
+    $crawler = $client->request('GET', $idea_2 . "/settings");
+
+    $this->assertEquals(200, $client->getResponse()->getStatusCode());
+
+    $delete_link = $crawler->filter('a[name=delete]')->link()->getUri();
+
+    $crawler = $client->request('GET', $delete_link);
+
+    $this->assertTrue(
+        $client->getResponse()->isRedirect('/app/ideas')
+    );
+  }
+
+  public function testIdeaNewInCommunityNoTitle()
+  {
+    $this->setUp();
+    $community = $this->em->getRepository('metaGeneralBundle:Community\Community')->findOneByName("test_in");
+    $this->tearDown();
+
+    $client = static::createClientWithAuthentication("test"); // test is in test_in 
+
+    $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')->getValue()));
+    $crawler = $client->request('GET', '/app/ideas/new');
+
+    $form = $crawler->filter('form[name=new_idea]')->form();
+
+    $crawler = $client->submit($form);
+
+    $this->assertEquals(200, $client->getResponse()->getStatusCode());
+    $this->assertRegexp(
+        '/This value should not be blank/',
+        $client->getResponse()->getContent()
+    );
   }
 
   public function testIdeaNewInPrivateSpace()
   {
 
-  }
+    $client = static::createClientWithAuthentication("test"); // test is in test_in 
 
-  public function testIdeaDeleteInCommunity()
-  {
-    
-  }
+    $client->request('GET', '/app/switch/privatespace', array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')->getValue()));
+    $crawler = $client->request('GET', '/app/ideas/new');
 
-  public function testIdeaDeleteInPrivateSpace()
-  {
+    $form = $crawler->filter('form[name=new_idea]')->form();
 
+    $form['idea[name]'] = 'TEST New Idea Private Space';
+
+    $crawler = $client->submit($form);
+
+    $this->assertTrue($client->getResponse()->isRedirect());
+    $client->followRedirect();
+    $this->assertContains(
+        'TEST New Idea Private Space',
+        $client->getResponse()->getContent()
+    );
+
+    $idea_3 = $client->getRequest()->getUri();
+
+    $client = static::createClientWithAuthentication("test"); // test is in test_in 
+
+    $client->request('GET', '/app/switch/privatespace', array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')->getValue()));
+    $crawler = $client->request('GET', $idea_3 . "/settings");
+
+    $this->assertEquals(200, $client->getResponse()->getStatusCode());
+
+    $delete_link = $crawler->filter('a[name=delete]')->link()->getUri();
+
+    $crawler = $client->request('GET', $delete_link);
+
+    $this->assertTrue(
+        $client->getResponse()->isRedirect('/app/ideas')
+    );
   }
 
   public function testIdeasSortUrls()
@@ -252,6 +391,32 @@ class IdeasControllerTest extends SecuredWebTestCase
 
     $this->assertCount(1, $crawler->filter('h2:contains("test_idea_community_owner")'));
 
+    $crawler = $client->request('GET', '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . "/info");
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $this->assertCount(1, $crawler->filter('h2:contains("test_idea_community_owner")'));
+
+    $crawler = $client->request('GET', '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . "/content");
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $this->assertCount(1, $crawler->filter('h2:contains("test_idea_community_owner")'));
+
+    $crawler = $client->request('GET', '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . "/settings");
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $this->assertCount(1, $crawler->filter('h2:contains("test_idea_community_owner")'));
   }
 
   public function testIdeaInCommunityOther()
@@ -273,6 +438,30 @@ class IdeasControllerTest extends SecuredWebTestCase
     );
 
     $this->assertCount(1, $crawler->filter('h2:contains("test_idea_community_owner")'));
+
+    $crawler = $client->request('GET', '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . "/info");
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $this->assertCount(1, $crawler->filter('h2:contains("test_idea_community_owner")'));
+
+    $crawler = $client->request('GET', '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . "/content");
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $this->assertCount(1, $crawler->filter('h2:contains("test_idea_community_owner")'));
+
+    $crawler = $client->request('GET', '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . "/settings");
+
+    $this->assertTrue(
+        $client->getResponse()->isRedirect('/app/ideas')
+    );
 
   }
 
@@ -296,6 +485,32 @@ class IdeasControllerTest extends SecuredWebTestCase
 
     $this->assertCount(1, $crawler->filter('h2:contains("test_idea_community_participant")'));
 
+    $crawler = $client->request('GET', '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . "/info");
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $this->assertCount(1, $crawler->filter('h2:contains("test_idea_community_participant")'));
+
+    $crawler = $client->request('GET', '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . "/content");
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $this->assertCount(1, $crawler->filter('h2:contains("test_idea_community_participant")'));
+
+    $crawler = $client->request('GET', '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . "/settings");
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $this->assertCount(1, $crawler->filter('h2:contains("test_idea_community_participant")'));
   }
 
   public function testIdeaInCommunityParticipantOther()
@@ -318,6 +533,32 @@ class IdeasControllerTest extends SecuredWebTestCase
 
     $this->assertCount(1, $crawler->filter('h2:contains("test_idea_community_participant")'));
 
+    $crawler = $client->request('GET', '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . "/info");
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $this->assertCount(1, $crawler->filter('h2:contains("test_idea_community_participant")'));
+
+    $crawler = $client->request('GET', '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . "/content");
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $this->assertCount(1, $crawler->filter('h2:contains("test_idea_community_participant")'));
+
+    $crawler = $client->request('GET', '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . "/settings");
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $this->assertCount(1, $crawler->filter('h2:contains("test_idea_community_participant")'));
   }
 
   public function testIdeaInCommunityNotIn()
@@ -340,6 +581,30 @@ class IdeasControllerTest extends SecuredWebTestCase
 
     $this->assertCount(1, $crawler->filter('h2:contains("test_idea_community_not_in")'));
 
+    $crawler = $client->request('GET', '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . "/info");
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $this->assertCount(1, $crawler->filter('h2:contains("test_idea_community_not_in")'));
+
+    $crawler = $client->request('GET', '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . "/content");
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $this->assertCount(1, $crawler->filter('h2:contains("test_idea_community_not_in")'));
+
+    $crawler = $client->request('GET', '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . "/settings");
+
+    $this->assertTrue(
+        $client->getResponse()->isRedirect('/app/ideas')
+    );
+
   }
 
   public function testIdeaOutCommunity()
@@ -353,6 +618,27 @@ class IdeasControllerTest extends SecuredWebTestCase
     $crawler = $client->request('GET', '/app/switch/privatespace', array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')->getValue()));
 
     $crawler = $client->request('GET', '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()));
+
+    $this->assertEquals(
+        Response::HTTP_NOT_FOUND,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $crawler = $client->request('GET', '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . "/info");
+
+    $this->assertEquals(
+        Response::HTTP_NOT_FOUND,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $crawler = $client->request('GET', '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . "/content");
+
+    $this->assertEquals(
+        Response::HTTP_NOT_FOUND,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $crawler = $client->request('GET', '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . "/settings");
 
     $this->assertEquals(
         Response::HTTP_NOT_FOUND,
@@ -379,6 +665,26 @@ class IdeasControllerTest extends SecuredWebTestCase
         $client->getResponse()->getStatusCode()
     );
 
+    $crawler = $client->request('GET', '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . "/info");
+
+    $this->assertEquals(
+        Response::HTTP_NOT_FOUND,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $crawler = $client->request('GET', '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . "/content");
+
+    $this->assertEquals(
+        Response::HTTP_NOT_FOUND,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $crawler = $client->request('GET', '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . "/settings");
+
+    $this->assertEquals(
+        Response::HTTP_NOT_FOUND,
+        $client->getResponse()->getStatusCode()
+    );
   }
 
   public function testIdeaInCommunityOtherGuest()
@@ -401,6 +707,32 @@ class IdeasControllerTest extends SecuredWebTestCase
 
     $this->assertCount(1, $crawler->filter('h2:contains("test_guest_idea")'));
 
+    $crawler = $client->request('GET', '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . "/info");
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $this->assertCount(1, $crawler->filter('h2:contains("test_guest_idea")'));
+
+    $crawler = $client->request('GET', '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . "/content");
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $this->assertCount(1, $crawler->filter('h2:contains("test_guest_idea")'));
+
+    $crawler = $client->request('GET', '/app/idea/0' . $client->getContainer()->get('uid')->toUId($idea->getId()) . "/settings");
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $this->assertCount(1, $crawler->filter('h2:contains("test_guest_idea")'));
   }
 
   public function testIdeaModifOwner()

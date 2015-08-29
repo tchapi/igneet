@@ -220,7 +220,40 @@ class UsersControllerTest extends SecuredWebTestCase
 
   public function testNotificationsMark()
   {
+    $user = $this->em->getRepository('metaUserBundle:User')->findOneByUsername('test');
+
+    if ($user){
+        $user->setLastNotifiedAt(new \DateTime("2012-07-08 11:14:15.638276"));
+        $this->em->flush();
+
+        $client = static::createClientWithAuthentication();
+        $crawler = $client->request('GET', '/app/notifications');
+
+        $this->assertEquals(
+            Response::HTTP_OK,
+            $client->getResponse()->getStatusCode()
+        );
     
+        $this->assertCount(1, $crawler->filter('button#markRead'));
+
+        $link = $crawler->filter('button#markRead')->attr('data-url');
+        $crawler = $client->request('POST', $link);
+
+        $this->assertEquals(
+            Response::HTTP_OK,
+            $client->getResponse()->getStatusCode()
+        );
+    
+        $crawler = $client->request('GET', '/app/notifications');
+
+        $this->assertEquals(
+            Response::HTTP_OK,
+            $client->getResponse()->getStatusCode()
+        );
+    
+        $this->assertCount(1, $crawler->filter('section[name=no_notifications]'));
+    }
+
   }
 
 }
