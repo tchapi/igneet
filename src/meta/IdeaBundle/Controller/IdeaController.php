@@ -175,7 +175,7 @@ class IdeaController extends Controller
 
             $this->get('session')->getFlashBag()->add(
                 'error',
-                $this->get('translator')->trans('idea.access')
+                $this->get('translator')->trans('idea.cannot.access')
             );
             
             return $this->redirect($this->generateUrl('i_list_ideas'));
@@ -199,7 +199,7 @@ class IdeaController extends Controller
 
             $this->get('session')->getFlashBag()->add(
                 'error',
-                $this->get('translator')->trans('idea.access')
+                $this->get('translator')->trans('idea.cannot.access')
             );
             
             return $this->redirect($this->generateUrl('i_list_ideas'));
@@ -224,7 +224,7 @@ class IdeaController extends Controller
 
             $this->get('session')->getFlashBag()->add(
                 'error',
-                $this->get('translator')->trans('idea.access')
+                $this->get('translator')->trans('idea.cannot.access')
             );
             
             return $this->redirect($this->generateUrl('i_list_ideas'));
@@ -248,7 +248,7 @@ class IdeaController extends Controller
 
             $this->get('session')->getFlashBag()->add(
                 'error',
-                $this->get('translator')->trans('idea.access')
+                $this->get('translator')->trans('idea.cannot.access')
             );
             
             return $this->redirect($this->generateUrl('i_list_ideas'));
