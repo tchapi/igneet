@@ -1,27 +1,26 @@
 ## TODO ##
 
-TODO : 
-
+Tests :
   ☐  Refaire un point sur la deletion des users
 
-  ☐  Tests unitaires : continuer User
-  ☐  tests unitaires : project
-  ☐  tests unitaires : idea
-  ☐  tests unitaires : community
-  ☐  tests unitaires : general
-  ☐  tests unitaires : admin
+TODO : 
 
- ☐  Mail auto pour les communautés soon to expire (genre tache en cron ? regrouper toutes les taches d'igneet dans une seule commande en cron runCronCommand ?) --> envoyer aussi un mail a l'admin en meme temps
+  Tests unitaires à finir :
+  ☐  User
+        public function testSignup()
+        public function testSignupExistingLogin()
+        public function testSignupExistingEmail()
+        public function testSignupWithInvitation()
+  ☐  Admin : au moins les autres admin pages ...
 
-A évaluer :
+  ☐  Mail auto pour les communautés soon to expire (genre tache en cron ? regrouper toutes les taches d'igneet dans une seule commande en cron runCronCommand ?) --> envoyer aussi un mail a l'admin en meme temps
 
- ☐ + Deep linking : verifier a l'affichage que l'utilisateur a le droit de voir l'objet deep linké !
-   Sinon mettre en gras mais ne pas linker avec une icone oeil barré (?)
- 
- ☐ [Eric] Tri des resources dans la vue / resources
- ☐  Dossiers pour les ressources
+Reply de  commentaires :
+   * un propriétaire d’un projet peut rajouter une note/recontextualisation à un commentaire sur un de ces projets
+   * un administrateur de communauté peut rajouter une note/recontextualisation à un commentaire dans la timeline d’une communauté
+   * ces « notes/recontextualisation » apparaitraient dans le corps de texte du commentaire, légèrement en dessous, en police italique. Un peu comme un « NDLR »
 
- ☐ Retirer le markdown :
+Retirer le markdown :
     retirer ensuite les |markdown dans
         Project:showInfo.twig
         Project:showWiki.twig
@@ -29,6 +28,18 @@ A évaluer :
         Idea:showInfo.twig
         Idea:showContent.twig
     Puis dans logItemComment.html.twig 
+
+Bugs :
+
+  - mettre test.com dans une ressource ===> 500 ????
+  - Fatal error: clone called on non-object in /home/tchap/www/igneet/rel-beta-2015-09-16-1442422791-aa6d8ea/src/meta/GeneralBundle/Entity/Community/Community.php on line 486
+
+A évaluer :
+
+ ☐ + Deep linking : verifier a l'affichage que l'utilisateur a le droit de voir l'objet deep linké !
+   Sinon mettre en gras mais ne pas linker avec une icone oeil barré (?)
+ ☐ [Eric] Tri des resources dans la vue / resources
+ ☐  Dossiers pour les ressources
 
 Fausses bonnes idées:
 
