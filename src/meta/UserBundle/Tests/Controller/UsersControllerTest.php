@@ -241,4 +241,8 @@ class UsersControllerTest extends SecuredWebTestCase
 
   }
 
+  public function testChangePasswordPage()
+  {
+  }
+
 }
