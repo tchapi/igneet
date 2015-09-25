@@ -5,7 +5,10 @@
   <form action="{{ route }}" method="post" {{ form_enctype(form) }}>
     {{ form_widget(form.text) }}
     {{ form_widget(form._token) }}
-    <span class="working"><i style="display: none;" class="fa fa-cog fa-spin"></i></span>
+    <span class="working">
+      <i style="display: none;" class="working-icon fa fa-cog fa-spin"></i>
+      <span data-tooltip="{{ "comment.markdown"|trans }}"><i class="fa fa-info-circle"></i></span>
+    </span>
     <input type="submit" class="button button-success" value="{{ "comment.post"|trans }}"/>
   </form>
 </div>

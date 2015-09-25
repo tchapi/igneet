@@ -208,9 +208,7 @@ class CommunityController extends Controller
                     case 'about':
                         $this->base['idea']->setAbout($request->request->get('value'));
                         $deepLinkingService = $this->container->get('deep_linking_extension');
-                        $response = $deepLinkingService->convertDeepLinks(
-                          $this->container->get('markdown.parser')->transformMarkdown($request->request->get('value'))
-                        );
+                        $response = $deepLinkingService->convertDeepLinks($request->request->get('value'));
                         $objectHasBeenModified = true;
                         break;
                         */

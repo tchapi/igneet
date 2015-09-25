@@ -4,7 +4,6 @@ Tests :
   ☐  Refaire un point sur la deletion des users
 
 TODO : 
-
   ☐  Mail auto pour les communautés soon to expire (genre tache en cron ? regrouper toutes les taches d'igneet dans une seule commande en cron runCronCommand ?) --> envoyer aussi un mail a l'admin en meme temps
 
 Reply de  commentaires :
@@ -12,19 +11,12 @@ Reply de  commentaires :
    * un administrateur de communauté peut rajouter une note/recontextualisation à un commentaire dans la timeline d’une communauté
    * ces « notes/recontextualisation » apparaitraient dans le corps de texte du commentaire, légèrement en dessous, en police italique. Un peu comme un « NDLR »
 
-Retirer le markdown :
-    retirer ensuite les |markdown dans
-        Project:showInfo.twig
-        Project:showWiki.twig
-        User:show.twig
-        Idea:showInfo.twig
-        Idea:showContent.twig
-    Puis dans logItemComment.html.twig 
+Retirer le markdown en base :
+  Script ?
 
 Bugs :
 
   - mettre test.com dans une ressource ===> 500 ????
-  - Fatal error: clone called on non-object in /home/tchap/www/igneet/rel-beta-2015-09-16-1442422791-aa6d8ea/src/meta/GeneralBundle/Entity/Community/Community.php on line 486
 
 A évaluer :
 

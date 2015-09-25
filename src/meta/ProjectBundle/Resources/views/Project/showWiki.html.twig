@@ -90,7 +90,7 @@
     </div>
 
     <div class="content-wiki">
-      <div{% if base.canEdit %} data-name="content" data-url="{{ path('p_show_project_wiki_edit_page', {'uid': base.project.id|to_uid, 'page_uid': wikiPage.id|to_uid, 'token': csrf_token('editWikiPage') }) }}" contenteditable="true" rich="full"{% else %} class="redactor_editor"{% endif %}>{{ wikiPage.content|deeplinks|markdown|raw }}</div>
+      <div{% if base.canEdit %} data-name="content" data-url="{{ path('p_show_project_wiki_edit_page', {'uid': base.project.id|to_uid, 'page_uid': wikiPage.id|to_uid, 'token': csrf_token('editWikiPage') }) }}" contenteditable="true" rich="full"{% else %} class="redactor_editor"{% endif %}>{{ wikiPage.content|deeplinks|raw }}</div>
     </div>
   </section>
   

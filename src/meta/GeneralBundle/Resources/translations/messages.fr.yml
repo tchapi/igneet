@@ -131,6 +131,7 @@ comment:
     add: "Il y a eu un problème lors de l'ajout du commentaire."
     delete: "Il y a eu un problème à la suppression du commentaire."
     validate: "Il y a eu un problème à la validation du commentaire."
+  markdown : "Vous pouvez utiliser la syntaxe Markdown dans vos commentaires"
 toggle: "Afficher/Masquer"
 # Logs
 log:

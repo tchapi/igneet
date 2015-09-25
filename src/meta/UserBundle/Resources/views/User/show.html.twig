@@ -90,7 +90,7 @@
 <section>
   <div class="label">{{ "user.about"|trans }}&nbsp;:</div>
   <div class="content">
-    <div{% if canEdit %} data-name="about" data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" contenteditable="true" rich="true"{% else %} class="redactor_editor"{% endif %}>{{ user.about|deeplinks|markdown|raw }}</div>
+    <div{% if canEdit %} data-name="about" data-url="{{ path('u_edit_user_profile', {'username': user.username, 'token': csrf_token('edit') }) }}" contenteditable="true" rich="full"{% else %} class="redactor_editor"{% endif %}>{{ user.about|deeplinks|raw }}</div>
   </div>
 </section>
 

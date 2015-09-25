@@ -16,7 +16,7 @@ $(document).ready(function() {
         }
 
         _self.find('[type=submit]').attr('disabled', 'disabled');
-        _self.find('.working i').show();
+        _self.find('.working i.working-icon').show();
 
         $.post(_self.attr('action'), {
             'comment': comment
@@ -41,7 +41,7 @@ $(document).ready(function() {
             })
             .always(function() {
                 _self.find('[type=submit]').removeAttr('disabled');
-                _self.find('.working i').fadeOut();
+                _self.find('.working i.working-icon').fadeOut();
             });
     });
 
