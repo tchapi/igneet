@@ -283,8 +283,9 @@ class SecurityController extends Controller
                 if (!is_null($inviteTokenObject)){
 
                     $inviteTokenObject->setResultingUser($user);
+                    $community = $inviteTokenObject->getCommunity();
 
-                    if (!is_null($inviteTokenObject->getCommunity())){
+                    if (!is_null($community)){
 
                         if ($inviteTokenObject->getCommunityType() === 'user'){
 
@@ -296,17 +297,17 @@ class SecurityController extends Controller
                         // Creates the userCommunity
                         $userCommunity = new UserCommunity();
                         $userCommunity->setUser($user);
-                        $userCommunity->setCommunity($inviteTokenObject->getCommunity());
+                        $userCommunity->setCommunity($community);
                         $userCommunity->setGuest( !($inviteTokenObject->getCommunityType() === 'user') );
 
                         // In case the user is not a guest, push the validity of the community by 'community.viral_extension'
                         if ($inviteTokenObject->getCommunityType() === 'user') {
-                            $inviteTokenObject->getCommunity()->extendValidityBy($this->container->getParameter('community.viral_extension'));
+                            $community->extendValidityBy($this->container->getParameter('community.viral_extension'));
                         }
 
                         $em->persist($userCommunity);
                         
-                        $user->setCurrentCommunity($inviteTokenObject->getCommunity());
+                        $user->setCurrentCommunity($community);
 
                     }
 

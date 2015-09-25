@@ -11,7 +11,8 @@ use meta\UserBundle\Entity\User,
     meta\UserBundle\Entity\UserCommunity,
     meta\GeneralBundle\Entity\Community\Community,
     meta\ProjectBundle\Entity\StandardProject,
-    meta\IdeaBundle\Entity\Idea;
+    meta\IdeaBundle\Entity\Idea,
+    meta\UserBundle\Entity\UserInviteToken;
 
 class LoadTestData implements FixtureInterface, ContainerAwareInterface
 {
@@ -39,6 +40,8 @@ class LoadTestData implements FixtureInterface, ContainerAwareInterface
               test appartient à la communauté test_in
               other_test appartient à la communauté test_in
               test_manager appartient à la communauté test_in et en est manager
+              test_admin appartient à la communauté test_in et a un ROLE_ADMIN
+
 
             Communauté test_out : 
                 other_test appartient à la communauté test_out
@@ -255,6 +258,34 @@ class LoadTestData implements FixtureInterface, ContainerAwareInterface
             ->get('security.encoder_factory')
             ->getEncoder($managerUser);
         $managerUser->setPassword($encoder->encodePassword('test', $managerUser->getSalt()));
+        /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
+           **                         FOURTH TEST USER : "ADMIN"                           **
+           ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
+        $adminUser = $this->container->get('doctrine')->getRepository('metaUserBundle:User')->findOneByUsername('test_admin');
+
+        if (!$adminUser){
+            // A New test user
+            $adminUser = new User();
+            $manager->persist($adminUser);
+        }
+
+        $adminUser->setUsername("test_admin");
+        $adminUser->setFirstname("God Almighty");
+        $adminUser->setLastname("Du Test");
+
+        $adminUser->setHeadline("Je suis là pour vous administrer.");
+        $adminUser->setCity("Test sur Seine");
+        $adminUser->setEmail("test+admin@igneet.com");
+        $adminUser->setRoles(array("ROLE_USER", "ROLE_ADMIN"));
+
+        $adminUser->setAbout("<h2>Test!</h2><p>Oui, j'administre et je teste.</p>"); // FIXME
+
+        $adminUser->setSalt(md5(uniqid()));
+
+        $encoder = $this->container
+            ->get('security.encoder_factory')
+            ->getEncoder($adminUser);
+        $adminUser->setPassword($encoder->encodePassword('test', $adminUser->getSalt()));
 
         /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
            **                        FIRST COMMUNITY : "TEST_IN"                         **
@@ -269,10 +300,12 @@ class LoadTestData implements FixtureInterface, ContainerAwareInterface
             $userCommunity = new UserCommunity();
             $otherUserCommunity = new UserCommunity();
             $managerUserCommunity = new UserCommunity();
+            $adminUserCommunity = new UserCommunity();
             $manager->persist($community);
             $manager->persist($userCommunity);
             $manager->persist($otherUserCommunity);
             $manager->persist($managerUserCommunity);
+            $manager->persist($adminUserCommunity);
         } else {
             $userCommunity = $this->container->get('doctrine')->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('user' => $user->getId(), 'community' => $community->getId()));
             if (!$userCommunity){
@@ -289,6 +322,11 @@ class LoadTestData implements FixtureInterface, ContainerAwareInterface
                 $managerUserCommunity = new UserCommunity();
                 $manager->persist($managerUserCommunity);
             }
+            $adminUserCommunity = $this->container->get('doctrine')->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('user' => $adminUser->getId(), 'community' => $community->getId()));
+            if (!$adminUserCommunity){
+                $adminUserCommunity = new UserCommunity();
+                $manager->persist($adminUserCommunity);
+            }
         }
 
         $userCommunity->setUser($user);
@@ -301,9 +339,16 @@ class LoadTestData implements FixtureInterface, ContainerAwareInterface
         $managerUserCommunity->setCommunity($community);
         $managerUserCommunity->setGuest(false);
         $managerUserCommunity->setManager(true);
+        $adminUserCommunity->setUser($adminUser);
+        $adminUserCommunity->setCommunity($community);
+        $adminUserCommunity->setGuest(false);
         $community->setName('test_in');
         $community->setValidUntil(new \DateTime('now + 10 years'));
         $community->setHeadline('Test users should be here.');
+
+        // Create an invite token for this community
+        $token = new UserInviteToken($user, "test+token@igneet.com", $community, 'user', null, null);
+        $manager->persist($token);
 
         /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
            **                       SECOND COMMUNITY : "TEST_OUT"                        **

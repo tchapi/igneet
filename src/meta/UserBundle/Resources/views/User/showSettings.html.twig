@@ -28,7 +28,7 @@
 <section>
   <div class="label">{{ "user.password"|trans }} :</div>
   <div class="content">
-    <a href="{{ path('change_password', {'token': csrf_token('changePassword')} ) }}">{{ "user.passwordChange.title"|trans }}</a>
+    <a id="password" href="{{ path('change_password', {'token': csrf_token('changePassword')} ) }}">{{ "user.passwordChange.title"|trans }}</a>
   </div>
 </section>
 

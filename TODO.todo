@@ -5,15 +5,6 @@ Tests :
 
 TODO : 
 
-  Tests unitaires à finir :
-  ☐  User
-        public function testSignup()
-        public function testSignupExistingLogin()
-        public function testSignupExistingEmail()
-        public function testSignupWithInvitation()
-        public function testChangePasswordPage()
-  ☐  Admin : au moins les autres admin pages ...
-
   ☐  Mail auto pour les communautés soon to expire (genre tache en cron ? regrouper toutes les taches d'igneet dans une seule commande en cron runCronCommand ?) --> envoyer aussi un mail a l'admin en meme temps
 
 Reply de  commentaires :

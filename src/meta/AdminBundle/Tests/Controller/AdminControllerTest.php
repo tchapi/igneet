@@ -26,6 +26,58 @@ class AdminControllerTest extends SecuredWebTestCase
         $client->getResponse()->getStatusCode()
     );
 
+    $client = static::createClientWithAuthentication('test_admin');
+    $crawler = $client->request('GET', '/admin/');
+    
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+  }
+
+  public function testPages()
+  {
+    $client = static::createClientWithAuthentication('test_admin');
+    $crawler = $client->request('GET', '/admin/stats');
+    
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client = static::createClientWithAuthentication('test_admin');
+    $crawler = $client->request('GET', '/admin/stats/users');
+    
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client = static::createClientWithAuthentication('test_admin');
+    $crawler = $client->request('GET', '/admin/announcements');
+    
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client = static::createClientWithAuthentication('test_admin');
+    $crawler = $client->request('GET', '/admin/communities');
+    
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $client = static::createClientWithAuthentication('test_admin');
+    $crawler = $client->request('GET', '/admin/files/prune');
+    
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+  
   }
 
 }

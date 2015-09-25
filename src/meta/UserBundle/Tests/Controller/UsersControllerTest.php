@@ -243,6 +243,28 @@ class UsersControllerTest extends SecuredWebTestCase
 
   public function testChangePasswordPage()
   {
+
+    $client = static::createClientWithAuthentication();
+    $crawler = $client->request('GET', '/app/settings');
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $this->assertCount(1, $crawler->filter('a#password'));
+
+    $link = $crawler->filter('a#password')->link();
+    $crawler = $client->click($link);
+
+    $this->assertTrue($client->getResponse()->isRedirect());
+
+    $this->assertRegExp('/\/app\/change\/password\/.*?$/', $client->getResponse()->headers->get('location'));
+    $crawler = $client->followRedirect();
+
+    $this->assertCount(1, $crawler->filter('input#password'));
+    $this->assertCount(1, $crawler->filter('input#password_2'));
+
   }
 
 }

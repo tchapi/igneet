@@ -483,8 +483,9 @@ class Community
      */
     public function setValidUntil($validUntil)
     {
-        $this->valid_until = clone $validUntil;
-    
+        if ($validUntil !== null) {
+            $this->valid_until = clone $validUntil;
+        }
         return $this;
     }
 
