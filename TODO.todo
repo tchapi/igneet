@@ -3,9 +3,6 @@
 Tests :
   ☐  Refaire un point sur la deletion des users
 
-TODO : 
-  ☐  Mail auto pour les communautés soon to expire (genre tache en cron ? regrouper toutes les taches d'igneet dans une seule commande en cron runCronCommand ?) --> envoyer aussi un mail a l'admin en meme temps
-
 Reply de  commentaires :
    * un propriétaire d’un projet peut rajouter une note/recontextualisation à un commentaire sur un de ces projets
    * un administrateur de communauté peut rajouter une note/recontextualisation à un commentaire dans la timeline d’une communauté

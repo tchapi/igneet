@@ -81,6 +81,15 @@ community:
     headlinePlaceholder: "Give your community some nice catchline"
   created: "The community %community% has been created successfully. Start inviting your first teammates !"
   createdOn: "Created on %date%"
+  expiry:
+    mail:
+      admin:
+        title: "Community %community%"
+        intro: "The community %community% expires soon — you might want to extend it in the backend."
+      subject: "Your community will soon expire"
+      title: "Your community expires soon"
+      intro: "The community <strong>%community%</strong>, that you manage, will soon expire. While igneet does not have a full fledged payment system yet, you can contact us (<a href='mailto:contact@igneet.com'>contact@igneet.com</a>) to see the different options for extending the validity of your community."
+      thanks: "Thank you for using igneet — we hope the platform suits your needs and that your communities grow."
 # First run
 firstrun:
   welcome: "Welcome !"

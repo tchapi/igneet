@@ -81,6 +81,15 @@ community:
     headlinePlaceholder: "Donnez un slogan accrocheur à votre communauté"
   created: "La communauté %community% a été créée avec succès. Commencez par ajouter vos premiers membres !"
   createdOn: "Créée le %date%"
+  expiry:
+    mail:
+      admin:
+        title: "Communauté %community%"
+        intro: "La communauté %community% arrive à expiration — Vous pouvez la prolonger dans le back-office."
+      subject: "Votre communauté arrive à expiration"
+      title: "Votre communauté"
+      intro: "La communauté <strong>%community%</strong>, que vous administrez, arrive bientôt à expiration. Igneet ne vous permet pas encore de vous abonner en ligne mais n'hésitez pas à nous contacter (<a href='mailto:contact@igneet.com'>contact@igneet.com</a>) pour que nous puissions rallonger la validité de votre communauté."
+      thanks: "Merci d'utiliser igneet — nous espérons que l'outil vous est utile et que vos communautés grandissent."
 # First run
 firstrun:
   welcome: "Bienvenue !"

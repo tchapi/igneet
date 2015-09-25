@@ -143,4 +143,5 @@ parameters:
     community.demo_validity: '6 months' # Format : as in new \DateTime(now + $validity);
     community.viral_extension: '15 days' # idem
     community.online_trigger: '5 minutes' # idem
+    community.soon_to_expire: '1 month' # idem
 

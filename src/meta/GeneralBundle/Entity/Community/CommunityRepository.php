@@ -90,4 +90,17 @@ class CommunityRepository extends EntityRepository
 
   }
 
+  public function findAllExpiringCommunity($datetime)
+  {
+    $qb = $this->getEntityManager()->createQueryBuilder();
+
+    return $qb->select('c')
+            ->from('metaGeneralBundle:Community\Community', 'c')
+            ->where('c.valid_until > CURRENT_TIMESTAMP()')
+            ->andWhere('c.valid_until < :date')
+            ->setParameter('date', $datetime)
+            ->getQuery()
+            ->getResult();
+
+  }
 }

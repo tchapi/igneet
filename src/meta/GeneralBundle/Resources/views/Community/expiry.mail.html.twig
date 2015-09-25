@@ -1,0 +1,22 @@
+{% extends ':mail:template.html.twig' %}
+
+{% if not locale %}{% set locale = 'en_US' %}{% endif %}
+
+{% block title %}
+{{ "community.expiry.mail.title"|trans({ '%community%': community.name}, "messages", locale) }}
+{% endblock %}
+
+{% block body %}
+<h3>{{ "mail.hello"|trans({}, "messages", locale) }}</h3>
+
+<p>{{ "community.expiry.mail.intro"|trans({ '%community%': community.name}, "messages", locale)|raw }}</p>
+{% endblock %}
+
+{% block auto %}
+<p><em>{{ "mail.automated"|trans({}, "messages", locale) }}</em></p>
+<p><strong>{{ "team"|trans({}, "messages", locale) }}</strong></p>
+{% endblock %}
+
+{% block link %}
+<p>{{ "community.expiry.mail.thanks"|trans({}, "messages", locale)|raw }}</p>
+{% endblock %}

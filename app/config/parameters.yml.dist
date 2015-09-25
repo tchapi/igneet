@@ -16,6 +16,7 @@ parameters:
     mailer_from: null
     mailer_from_name: Igneet
     mailer_contact: null
+    mailer_admin: null
     ga_tracker_id: 0
     host: igneet.com
     scheme: http

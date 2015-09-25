@@ -1,1 +1,2 @@
 00 11 * * * php [CONSOLE] digest:send --env=[ENV] --verbose --force >> [ROOT]/app/logs/digests.log
+30 09 1,15 * * php [CONSOLE] communities:expiring:send --env=[ENV] --verbose --force >> [ROOT]/app/logs/expiring_communities.log
