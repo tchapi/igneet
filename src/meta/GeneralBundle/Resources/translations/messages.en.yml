@@ -32,6 +32,7 @@ community:
   manage: "Manage your community"
   manageHelp: "As a manager, you can invite other members to manage the community or revoke managers."
   manage.short: "Manage"
+  propose.short: "Propose a new member"
   not.manager: "You are not manager of the community %community%."
   not.manageable: "Your private space is not a manageable community"
   home: 

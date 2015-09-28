@@ -1,26 +1,29 @@
 ## TODO ##
 
-Tests :
+Tests Benjy :
   ☐  Refaire un point sur la deletion des users
+  ☐  Tester la proposition / L'invitation. Vérifier le wording de la page de proposition et du mail
+  ☐  En prod, faire un tour des wikipages / ideas, et voir si les infos textes (contenu, info) sont correctement formattées
+
+
+Retirer le markdown en base :
+    reste wiki page : nok yet
 
 Reply de  commentaires :
    * un propriétaire d’un projet peut rajouter une note/recontextualisation à un commentaire sur un de ces projets
    * un administrateur de communauté peut rajouter une note/recontextualisation à un commentaire dans la timeline d’une communauté
    * ces « notes/recontextualisation » apparaitraient dans le corps de texte du commentaire, légèrement en dessous, en police italique. Un peu comme un « NDLR »
 
-Retirer le markdown en base :
-    reste wiki page : nok yet
-
 A évaluer :
 
  ☐ + Deep linking : verifier a l'affichage que l'utilisateur a le droit de voir l'objet deep linké !
    Sinon mettre en gras mais ne pas linker avec une icone oeil barré (?)
  ☐ [Eric] Tri des resources dans la vue / resources
- ☐  Dossiers pour les ressources
+ ☐ Dossiers pour les ressources
+
+- - -
 
 Fausses bonnes idées:
-
- ☐ Lors de l'upload d'images en tant que ressources, passer les thumbnails en POST et les stocker dans les ressources pour les afficher a coté de la vue détail
 
  ☐ Ajout de wikipage et de list : passer en ajax ? Et du coup faire des templates pour les morceaux de liste
  ☐ faire des templates pour les ul.sortable et refresh en ajax quand on fait "new"

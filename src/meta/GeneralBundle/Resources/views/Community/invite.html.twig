@@ -14,7 +14,7 @@
 <form action="{{ path('g_invite', {'token': csrf_token('invite'), 'confirm': true}) }}" method="post">
   <section>
     <div class="label"><label for="mailOrUsername" class="required">{{ "user.invitation.field"|trans }} : </label></div>
-    <div class="content"><input type="text" id="mailOrUsername" name="mailOrUsername" required="required"></div>
+    <div class="content"><input type="text" id="mailOrUsername" name="mailOrUsername" required="required" {% if predefined_user %}value="{{predefined_user}}"{% endif %}></div>
   </section>
   <section>
     <div class="content">

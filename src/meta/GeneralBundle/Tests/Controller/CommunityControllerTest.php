@@ -96,6 +96,83 @@ class CommunityControllerTest extends SecuredWebTestCase
     );
   }
 
+  public function testCommunityProposePageManager()
+  {
+    
+    $this->setUp();
+    $community = $this->em->getRepository('metaGeneralBundle:Community\Community')->findOneByName("test_in");
+    $this->tearDown();
+
+    $client = static::createClientWithAuthentication("test_manager"); // test_manager is managing test_in 
+    $tokenManager = $client->getContainer()->get('security.csrf.token_manager');
+    $inviteToken = $tokenManager->getToken('propose');
+
+    $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $tokenManager->getToken('switchCommunity')));
+    $crawler = $client->request('GET', '/app/community/propose', array('token' => $inviteToken));
+
+    $this->assertRegExp('/\/app\/community\/invite\?token.*$/', $client->getResponse()->headers->get('location'));
+
+  }
+
+  public function testCommunityProposePageNotManager()
+  {
+    $this->setUp();
+    $community = $this->em->getRepository('metaGeneralBundle:Community\Community')->findOneByName("test_in");
+    $this->tearDown();
+
+    $client = static::createClientWithAuthentication("test"); // test is not managing test_in 
+    $tokenManager = $client->getContainer()->get('security.csrf.token_manager');
+    $inviteToken = $tokenManager->getToken('propose');
+
+    $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')->getValue()));
+    $crawler = $client->request('GET', '/app/community/propose', array('token' => $inviteToken));
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+  }
+
+  public function testCommunityProposePageNoToken()
+  {
+    
+    $this->setUp();
+    $community = $this->em->getRepository('metaGeneralBundle:Community\Community')->findOneByName("test_in");
+    $this->tearDown();
+
+    $client = static::createClientWithAuthentication("test");
+
+    $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')->getValue()));
+    $crawler = $client->request('GET', '/app/community/propose');
+
+    $this->assertTrue(
+        $client->getResponse()->isRedirect('/app/')
+    );
+  }
+
+  public function testCommunityInvitePageNoTokenRefMail()
+  {
+    
+    $this->setUp();
+    $community = $this->em->getRepository('metaGeneralBundle:Community\Community')->findOneByName("test_in");
+    $this->tearDown();
+
+    $client = static::createClientWithAuthentication("test_manager");
+
+    $client->request('GET', '/app/community/switch/0' . $client->getContainer()->get('uid')->toUId($community->getId()), array('token' => $client->getContainer()->get('security.csrf.token_manager')->getToken('switchCommunity')->getValue()));
+    $crawler = $client->request('GET', '/app/community/invite?ref=mail&user=ABCDEFGHIJKLMNOPQRSTUVWXYZ');
+
+    $this->assertEquals(
+        Response::HTTP_OK,
+        $client->getResponse()->getStatusCode()
+    );
+
+    $this->assertContains(
+        'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+        $client->getResponse()->getContent()
+    );
+  }
+
   public function testCommunityRemovePage()
   {
     $this->setUp();

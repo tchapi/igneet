@@ -157,6 +157,22 @@ user:
           click: "Cliquez sur le lien suivant pour vous connecter"
           community: "%user% vous a fait membre de la communauté %community% sur igneet !"
           project: "%user% vous a fait membre du projet %project% sur igneet !"
+  proposition:
+    title: "Proposer un utilisateur à la communauté"
+    community: "Le(s) administrateur(s) de %community% seront avertis et pourront inviter cet utilisateur"
+    help: "Vous devez indiquer une adresse email ou un nom d'utilisateur valide."
+    text: ""
+    field: "Indiquez un nom d'utilisateur ou un mail valide"
+    button: "Proposer cet utilisateur"
+    sent: "Une proposition a été envoyée aux administrateurs en votre nom."
+    impossible: "Vous ne pouvez pas proposer de nouvel utilisateur"
+    privatespace: "Vous ne pouvez pas proposer de nouvel utilisateur dans votre espace privé"
+    confirmation: "Veuillez confirmer que vous voulez proposer cet utilisateur dans la communauté %community% :"
+    mail:
+      subject: "Proposition d'un nouvel utilisateur"
+      title: "Proposition"
+      intro: "<strong>%user%</strong> a proposé que <strong>%proposee%</strong> rejoigne la communauté %community% sur igneet !"
+      action: "Pour inviter cet utilisateur, rendez-vous dans votre communauté %community% puis cliquez sur ce <a href='%link%'>lien</a> pour aller directement à la page d'invitation."
   removal:
     title: "Retirer un utilisateur de la communauté"
     community: "L'utilisateur sera retiré de la communauté %community%. Pour retirer un administrateur, veillez d'abord à le retirer de la liste des administrateurs de la communauté."

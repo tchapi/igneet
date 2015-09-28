@@ -1,0 +1,19 @@
+{% extends ':mail:template.html.twig' %}
+
+{% block title %}
+{{ "user.proposition.mail.title"|trans({ '%community%': community.name}) }}
+{% endblock %}
+
+{% block body %}
+<h3>{{ "mail.hello"|trans }}</h3>
+<p>{{ "user.proposition.mail.intro"|trans({ '%community%': community.name, '%proposee%': proposee, '%user%': user.getFullName()})|raw }}</p>
+{% endblock %}
+
+{% block auto %}
+<p><em>{{ "mail.automated"|trans }}</em></p>
+<p><strong>{{ "team"|trans }}</strong></p>
+{% endblock %}
+
+{% block link %}
+<p>{{ "user.proposition.mail.action"|trans({ '%community%': community.name, '%link%': link, '%proposee%': proposee})|raw }}</p>
+{% endblock %}

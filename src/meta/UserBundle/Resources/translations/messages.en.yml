@@ -157,6 +157,22 @@ user:
           click: "Click on the following link to login and go to your profile"
           community: "%user% has made you a member of the community %community% on igneet !"
           project: "%user% has made you a member of the project %project% on igneet !"
+  proposition:
+    title: "Propose a new user to the community"
+    community: "The manager(s) of %community% will be notified and will be able to invite this user"
+    help: "You need to indicate a valid e-mail address or username to propose a new user to the manager(s)."
+    text: ""
+    field: "Indicate a valid e-mail or username"
+    button: "Propose this user"
+    sent: "A proposition was sent to the manager(s) on your behalf."
+    impossible: "You cannot propose a new user."
+    privatespace: "You cannot propose someone into your private space"
+    confirmation: "Please confirm that you want to propose this user to the community %community% :"
+    mail:
+      subject: "A user proposed a new member of the community"
+      title: "Proposition"
+      intro: "%user% has proposed %proposee% to the community %community% on igneet !"
+      action: "To invite this user, first go to your community %community% then click on this <a href='%link%'>link</a> to go directly to the invitation page."
   removal:
     title: "Remove a user from the community"
     community: "The user will be removed from the community %community%. If you want to remove a manager, remove him from the list of managers first."

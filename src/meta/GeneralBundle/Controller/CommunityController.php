@@ -464,7 +464,7 @@ class CommunityController extends Controller
     public function inviteAction(Request $request)
     {
 
-        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('invite', $request->get('token')))) {
+        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('invite', $request->get('token'))) && $request->get('ref') !== "mail") {
             $this->get('session')->getFlashBag()->add(
                 'error',
                 $this->get('translator')->trans('invalid.token', array(), 'errors')
@@ -614,7 +614,7 @@ class CommunityController extends Controller
 
             } else {
 
-                return $this->render('metaGeneralBundle:Community:invite.html.twig', array('community' => $community) );
+                return $this->render('metaGeneralBundle:Community:invite.html.twig', array('community' => $community, 'predefined_user' => $request->get('user')) );
 
             }
 
@@ -623,6 +623,147 @@ class CommunityController extends Controller
             $this->get('session')->getFlashBag()->add(
                 'error',
                 $this->get('translator')->trans('user.invitation.impossible')
+            );
+
+            return $this->redirect($this->generateUrl('g_home_community'));
+
+        }
+
+    }
+
+
+    /*
+     * Display propose page or propose a user in a community to a manager
+     */
+    public function proposeAction(Request $request)
+    {
+
+        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('propose', $request->get('token')))) {
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $this->get('translator')->trans('invalid.token', array(), 'errors')
+            );
+            return $this->redirect($this->generateUrl('g_home_community'));
+        }
+
+        $authenticatedUser = $this->getUser();
+        $community = $authenticatedUser->getCurrentCommunity();
+
+        // Redirect to invite if manager
+        $selfManager = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('community' => $community->getId(), 'user' => $authenticatedUser, 'manager' => true));
+        if ($selfManager){
+            return $this->redirect($this->generateUrl('g_invite', array('token' => $this->get('security.csrf.token_manager')->getToken('invite')->getValue())));
+        }
+
+        if (!is_null($community)){
+            $userCommunityManager = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findBy(array('community' => $community->getId(), 'manager' => true));
+        } else {
+
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $this->get('translator')->trans('user.invitation.privatespace')
+            );
+
+            return $this->redirect($this->generateUrl('g_home_community'));
+        
+        }
+        
+        if ( !is_null($community) && count($userCommunityManager) > 0 ) {
+
+            if ($request->isMethod('POST')) {
+            
+                // Gets mail or username
+                $mailOrUsername = $request->request->get('mailOrUsername');
+                $isEmail = filter_var($mailOrUsername, FILTER_VALIDATE_EMAIL);
+
+                // It might be a user already
+                $repository = $this->getDoctrine()->getRepository('metaUserBundle:User');
+
+                if($isEmail){
+                    $user = $repository->findOneByEmail($mailOrUsername);
+                } else {
+                    $user = $repository->findOneByUsername($mailOrUsername);
+                }
+
+                if ($user && !$user->isDeleted()) {
+
+                    // Confirm .. ?
+                    if ($request->get('confirm') == true) {
+                        return $this->render('metaGeneralBundle:Community:propose.confirm.html.twig', array('community' => $community, 'user' => $user) );
+                    }
+
+                    $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('user' => $user->getId(), 'community' => $community->getId()));
+
+                    // If the user is already in the community
+                    // or If the user is already a guest in the community
+                    if ($userCommunity){
+
+                        $this->get('session')->getFlashBag()->add(
+                            'warning',
+                            $this->get('translator')->trans('user.already.in.community', array( '%user%' => $user->getFullName(), '%community%' => $community->getName() ))
+                        );
+
+                        return $this->redirect($this->generateUrl('g_propose', array('token' => $this->get('security.csrf.token_manager')->getToken('propose')->getValue())));
+                    
+                    }
+
+                    $mailOrUsername = $user->getEmail();
+
+                } elseif ($isEmail) {
+
+                    // Confirm .. ?
+                    if ($request->get('confirm') == true) {
+                        return $this->render('metaGeneralBundle:Community:propose.confirm.html.twig', array('community' => $community, 'user' => null, 'email' => $mailOrUsername, 'md5' => md5(strtolower(trim($mailOrUsername)))) );
+                    }
+                
+                } else {
+
+                    $this->get('session')->getFlashBag()->add(
+                        'error',
+                        $this->get('translator')->trans('user.email.invalid')
+                    );
+
+                    return $this->redirect($this->generateUrl('g_propose', array('token' => $this->get('security.csrf.token_manager')->getToken('propose')->getValue())));
+                }
+
+                // admin mails
+                $managers = array();
+                foreach ($userCommunityManager as $ucmanager) {
+                    $managers[] = $ucmanager->getUser()->getEmail();
+                }
+
+                // OK, send mail to admins
+                $message = \Swift_Message::newInstance()
+                    ->setSubject($this->get('translator')->trans('user.proposition.mail.subject'))
+                    ->setFrom(array($this->container->getParameter('mailer_from') => $this->container->getParameter('mailer_from_name')))
+                    ->setReplyTo($authenticatedUser->getEmail())
+                    ->setTo($managers)
+                    ->setBody(
+                        $this->renderView(
+                            'metaUserBundle:Mail:propose.mail.html.twig',
+                            array('user' => $authenticatedUser, 'link' => $this->generateUrl('g_invite', array(), true)."?ref=mail&user=".urlencode($mailOrUsername), 'proposee' => $mailOrUsername, 'community' => $community, 'project' => null )
+                        ), 'text/html'
+                    );
+                $this->get('mailer')->send($message);
+
+                $this->get('session')->getFlashBag()->add(
+                    'success',
+                    $this->get('translator')->trans('user.proposition.sent', array('%mail%' => $mailOrUsername))
+                );
+
+                return $this->redirect($this->generateUrl('g_home_community'));
+
+            } else {
+
+                return $this->render('metaGeneralBundle:Community:propose.html.twig', array('community' => $community) );
+
+            }
+
+        } else {
+
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $this->get('translator')->trans('user.proposition.impossible')
             );
 
             return $this->redirect($this->generateUrl('g_home_community'));

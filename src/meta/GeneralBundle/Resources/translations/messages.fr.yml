@@ -32,6 +32,7 @@ community:
   manage: "Administrez votre communauté"
   manageHelp: "En tant qu'administrateur, vous pouvez rendre un autre membre de la communauté administrateur, ou révoquer des administrateurs."
   manage.short: "Administrer"
+  propose.short: "Proposer un membre"
   not.manager: "Vous devez être administrateur de la communauté %community% pour accéder à cette page."
   not.manageable: "Votre espace privé n'a pas vocation à être administré."
   home:

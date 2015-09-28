@@ -68,6 +68,10 @@
       <a class="button button-info" href="{{ path('g_invite', {'token': csrf_token('invite')}) }}"><i class="fa fa-user"></i> {{ "community.invite.short"|trans }}</a>
       <a class="button" href="{{ path('g_manage_community') }}"><i class="fa fa-cogs"></i> {{ "community.manage.short"|trans }}</a>
     </div>
+    {% else %}
+    <div>
+      <a class="button button-info" href="{{ path('g_propose', {'token': csrf_token('propose')}) }}"><i class="fa fa-user"></i> {{ "community.propose.short"|trans }}</a>
+    </div>
     {% endif %}
     <div class="users">
       <h4><i class="fa fa-group"></i> {{ "community.home.users"|trans }}</h4>

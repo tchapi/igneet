@@ -60,6 +60,10 @@ g_remove:
     path: /community/remove
     defaults: { _controller: metaGeneralBundle:Community:remove }
 
+g_propose:
+    path: /community/propose
+    defaults: { _controller: metaGeneralBundle:Community:propose }
+
 # First run
 
 g_first_run:

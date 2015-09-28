@@ -1,0 +1,24 @@
+{% extends 'metaGeneralBundle:Community:layout.html.twig' %}
+
+{% block title %}{{ parent() }} > {{ "user.proposition.title"|trans }}{% endblock %}
+
+{% block header %}
+  <div class="title">
+    <h2>{{ "user.proposition.title"|trans }}</h2>
+    <h3>{{ "user.proposition.community"|trans({ '%community%': community.name}) }}</h3>
+    <h4>{{ "user.proposition.text"|trans({ '%community%': community.name}) }}</h4>
+  </div>
+{% endblock %}
+
+{% block content %}
+<form action="{{ path('g_propose', {'token': csrf_token('propose'), 'confirm': true}) }}" method="post">
+  <section>
+    <div class="label"><label for="mailOrUsername" class="required">{{ "user.proposition.field"|trans }} : </label></div>
+    <div class="content"><input type="text" id="mailOrUsername" name="mailOrUsername" required="required"></div>
+  </section>
+  <section>
+    <div class="content">
+      <input type="submit" value="{{ "user.proposition.button"|trans }}" class="button" /></div>
+  </section>
+</form>
+{% endblock %}
