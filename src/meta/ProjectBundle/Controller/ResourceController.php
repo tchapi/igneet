@@ -140,11 +140,16 @@ class ResourceController extends BaseController
                         // It's good, let's try to get the title
                         $doc = new \DOMDocument();
                         if (@$doc->loadHTMLFile($resource->getUrl())) {
-                            $xpath = new \DOMXPath($doc);
-                            $title = $xpath->query('//title')->item(0)->nodeValue;
+                            try {
+                                $xpath = new \DOMXPath($doc);
+                                $title = $xpath->query('//title')->item(0)->nodeValue;
+                            } catch (\Exception $e) {
+                                $title = "";
+                            }
                         } else {
                             $title = "";
                         }
+
                         if ($title != "") {
                             $resource->setTitle($title);
                         }

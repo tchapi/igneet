@@ -9,11 +9,7 @@ Reply de  commentaires :
    * ces « notes/recontextualisation » apparaitraient dans le corps de texte du commentaire, légèrement en dessous, en police italique. Un peu comme un « NDLR »
 
 Retirer le markdown en base :
-  Script ?
-
-Bugs :
-
-  - mettre test.com dans une ressource ===> 500 ????
+    reste wiki page : nok yet
 
 A évaluer :
 
