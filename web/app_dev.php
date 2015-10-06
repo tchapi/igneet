@@ -12,11 +12,6 @@ if (isset($_SERVER['HTTP_CLIENT_IP'])
     || isset($_SERVER['HTTP_X_FORWARDED_FOR'])
     || !in_array(@$_SERVER['REMOTE_ADDR'], array(
         '127.0.0.1',
-        '109.190.90.220', // Home
-        '37.59.11.115',   // Proxy ismerging.us
-        '82.228.146.195', // Benjy Home
-        '128.78.93.110', // Bus Home
-        '82.66.246.250', // CKAB
         '::1',
         'fe80::1' // WTF
     ))
