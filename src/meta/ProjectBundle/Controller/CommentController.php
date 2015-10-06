@@ -65,6 +65,10 @@ class CommentController extends BaseController
                     $em->persist($comment);
                     $em->flush();
 
+                    // We indicate if the current user can add a note to the comment or not 
+                    // In strict mode, PHP will complain but well ...
+                    $comment->contextable = $this->getUser()->isOwning($this->base['project']);
+
                     $logService = $this->container->get('logService');
                     $logService->log($this->getUser(), 'user_comment_project', $this->base['project'], array());
 

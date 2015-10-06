@@ -146,6 +146,28 @@
   }
 }
 
+.note {
+  margin-top: 20px;
+  font-size: 0.8em;
+  @include clearfix;
+  & textarea {
+      margin-top: 0;
+      margin-bottom: 0;
+      @include fill-parent();
+      border: none;
+      background: white;
+      resize: none; 
+  }
+  & input {
+    margin-top: 3px;
+    float: right;
+  }
+  & > em {
+    color: $_discrete;
+    margin-left: 90px;
+  }
+}
+
 $comment_box_height : 70px;
 ul.timeline {
   margin: 0;
@@ -172,7 +194,7 @@ ul.timeline {
     &.unseen { 
       background: rgba($_secondary,0.1);
       border: 1px solid $_secondary;
-      & > .actions > .delete-trigger {
+      & > .actions > .delete-trigger, & > .actions > .note-trigger {
         color: $_discrete;
         border-left: 1px solid $_discrete;
       }
@@ -180,9 +202,12 @@ ul.timeline {
     &.log-comment:not(.deleted) {
       border: 1px solid $_primary;
       background: rgba($_primary,0.1);
-      & > .actions > .delete-trigger {
+      & > .actions > .delete-trigger, & > .actions > .note-trigger,  & > .actions > .note-added {
         color: $_primary;
         border-left: 1px solid $_primary;
+      }
+      & > .actions > .note-added {
+        cursor: auto;
       }
     }
     &.log-comment.deleted {
@@ -223,6 +248,16 @@ ul.timeline {
       & > .delete-trigger {
         display: inline-block;
         padding-left: 10px;
+        border-left: 1px solid $_sensible;
+        color: $_sensible;
+        @include media($mobile) {
+          display: none;
+        }
+      }
+      & > .note-trigger, & > .note-added {
+        display: inline-block;
+        padding-left: 10px;
+        padding-right: 10px;
         border-left: 1px solid $_sensible;
         color: $_sensible;
         @include media($mobile) {

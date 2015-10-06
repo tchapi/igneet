@@ -142,6 +142,13 @@ comment:
     delete: "There was a problem with the deletion of this comment."
     validate: "There was a problem validating this comment."
   markdown: "You can use Markdown syntax in your comments"
+  note:
+    add: "Add a note to this comment"
+    button: "Add a note"
+    placeholder: "Bring some insights to this comment ..."
+    added: "Your note was added successfully."
+    cannot.add: "You cannot add a note to this comment"
+    cannot.empty: "Your note contains no text"
 toggle: "Toggle"
 # Logs
 log:

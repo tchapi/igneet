@@ -76,12 +76,16 @@ class TimelineController extends BaseController
 
         // Comments
         foreach ($this->base['project']->getComments() as $comment) {
+          if (!$comment->isDeleted()) {
+            // We indicate if the current user can add a note to the comment or not 
+            // In strict mode, PHP will complain but well ...
+            $comment->contextable = $this->getUser()->isOwning($this->base['project']);
 
-          $text = $logService->getHTML($comment, $lastNotified);
-          $createdAt = date_create($comment->getCreatedAt()->format('Y-m-d H:i:s')); // not for display
+            $text = $logService->getHTML($comment, $lastNotified);
+            $createdAt = date_create($comment->getCreatedAt()->format('Y-m-d H:i:s')); // not for display
 
-          $history[] = array( 'createdAt' => $createdAt, 'text' => $text);
-
+            $history[] = array( 'createdAt' => $createdAt, 'text' => $text);
+          }
         }
 
         // Sort !

@@ -431,6 +431,11 @@ class CommunityController extends Controller
                     $em->persist($comment);
                     $em->flush();
 
+                    // We indicate if the current user can add a note to the comment or not 
+                    // In strict mode, PHP will complain but well ...
+                    $userCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('user' => $authenticatedUser->getId(), 'community' => $community->getId(), 'manager' => true));
+                    $comment->contextable = ($userCommunity !== null);
+
                     $logService = $this->container->get('logService');
                     $logService->log($this->getUser(), 'user_comment_community', $community, array());
 
@@ -1168,12 +1173,16 @@ class CommunityController extends Controller
 
         // Comments
         foreach ($community->getComments() as $comment) {
+            if (!$comment->isDeleted()) {
+                // We indicate if the current user can add a note to the comment or not 
+                // In strict mode, PHP will complain but well ...
+                $comment->contextable = $userCommunity->isManager();
 
-          $text = $logService->getHTML($comment, $lastNotified);
-          $createdAt = date_create($comment->getCreatedAt()->format('Y-m-d H:i:s')); // not for display
+                $text = $logService->getHTML($comment, $lastNotified);
+                $createdAt = date_create($comment->getCreatedAt()->format('Y-m-d H:i:s')); // not for display
 
-          $history[] = array( 'createdAt' => $createdAt, 'text' => $text);
-
+                $history[] = array( 'createdAt' => $createdAt, 'text' => $text);
+            }
         }
 
         // Sort !

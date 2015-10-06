@@ -663,6 +663,10 @@ class IdeaController extends Controller
                     $em->persist($comment);
                     $em->flush();
 
+                    // We indicate if the current user can add a note to the comment or not 
+                    // In strict mode, PHP will complain but well ...
+                    $comment->contextable = $this->base['idea']->getCreators()->contains($this->getUser());
+
                     $logService = $this->container->get('logService');
                     $logService->log($this->getUser(), 'user_comment_idea', $this->base['idea'], array());
 
@@ -970,12 +974,16 @@ class IdeaController extends Controller
 
         // Comments
         foreach ($this->base['idea']->getComments() as $comment) {
+            if (!$comment->isDeleted()) {
+                // We indicate if the current user can add a note to the comment or not 
+                // In strict mode, PHP will complain but well ...
+                $comment->contextable = $this->base['idea']->getCreators()->contains($this->getUser());
 
-          $text = $logService->getHTML($comment, $lastNotified);
-          $createdAt = date_create($comment->getCreatedAt()->format('Y-m-d H:i:s')); // not for display
+                $text = $logService->getHTML($comment, $lastNotified);
+                $createdAt = date_create($comment->getCreatedAt()->format('Y-m-d H:i:s')); // not for display
 
-          $history[] = array( 'createdAt' => $createdAt , 'text' => $text);
-
+                $history[] = array( 'createdAt' => $createdAt , 'text' => $text);
+            }
         }
 
         // Sort !

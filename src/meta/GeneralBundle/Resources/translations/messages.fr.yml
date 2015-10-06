@@ -142,6 +142,13 @@ comment:
     delete: "Il y a eu un problème à la suppression du commentaire."
     validate: "Il y a eu un problème à la validation du commentaire."
   markdown : "Vous pouvez utiliser la syntaxe Markdown dans vos commentaires"
+  note:
+    add: "Annoter ce commentaire"
+    button: "Annoter"
+    placeholder: "Apportez des précisions sur ce commentaire ... "
+    added: "Annotation ajoutée avec succès."
+    cannot.add: "Impossible d'ajouter votre annotation au commentaire."
+    cannot.empty: "Le texte de votre annotation est vide."
 toggle: "Afficher/Masquer"
 # Logs
 log:

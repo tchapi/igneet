@@ -82,4 +82,30 @@ $(document).ready(function() {
 
     });
 
+    // Show note inputs
+    $(document).on('click', '.note-trigger', function(e) {
+        e.preventDefault();
+        var noteBox = $(this).parent().parent().children('.note')[0];
+        $(noteBox).toggle();
+        $(noteBox).find('textarea')[0].focus();
+    });
+
+    // Add note in AJAX
+    $(document).on('click', '.note-add-trigger', function(e) {
+        e.preventDefault();
+        var form = $(this).parent(),
+            noteBox = form.parent(),
+            note = form.children('textarea')[0].value;
+
+        if (note != "") {
+            $.post(form.attr('action'), { note: note })
+                .done(function(data) {
+                    noteBox.replaceWith(data);
+                    alertify.success(Translator.trans('comment.note.added'));
+                })
+                .fail(function(xhr) {
+                    alertify.error(Translator.trans('comment.note.cannot.add'));
+                });
+        }
+    });
 });

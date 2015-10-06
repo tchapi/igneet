@@ -37,6 +37,13 @@ abstract class BaseComment
     private $text;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="note", type="text", nullable=true)
+     */
+    private $note;
+
+    /**
      * @var boolean
      *
      * @ORM\Column(name="public", type="boolean", nullable=true)
@@ -112,6 +119,38 @@ abstract class BaseComment
     public function getText()
     {
         return $this->text;
+    }
+
+    /**
+     * Set note
+     *
+     * @param string $note
+     * @return BaseComment
+     */
+    public function setNote($note)
+    {
+        $this->note = $note;
+        return $this;
+    }
+
+    /**
+     * Get note
+     *
+     * @return string 
+     */
+    public function getNote()
+    {
+        return $this->note;
+    }
+
+    /**
+     * Has note
+     *
+     * @return string 
+     */
+    public function hasNote()
+    {
+        return $this->note != "";
     }
 
     /**

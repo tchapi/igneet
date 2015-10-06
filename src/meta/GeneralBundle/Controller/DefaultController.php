@@ -8,6 +8,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller,
     Symfony\Component\HttpFoundation\RedirectResponse,
     Symfony\Component\Security\Csrf\CsrfToken;
 
+use meta\GeneralBundle\Entity\Comment\CommunityComment,
+    meta\IdeaBundle\Entity\Comment\IdeaComment,
+    meta\ProjectBundle\Entity\Comment\StandardProjectComment;
+
 class DefaultController extends Controller
 {
      
@@ -155,6 +159,59 @@ class DefaultController extends Controller
 
             return new Response();
             
+        } else {
+
+            return new Response($this->get('translator')->trans('invalid.request', array(), 'errors'), 400);
+
+        }
+
+    }
+
+    /*
+     * Toggles validation for a comment
+     */
+    public function addNoteCommentAction(Request $request, $id)
+    {
+
+        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken('addNoteComment', $request->get('token'))))
+            return new Response($this->get('translator')->trans('invalid.token', array(), 'errors'), 400);
+
+        $note = $request->request->get('note');
+        if ($note === "") {
+            return new Response($this->get('translator')->trans('comment.note.cannot.empty', array(), 'errors'), 400);
+        }
+
+        $authenticatedUser = $this->getUser();
+
+        $repository = $this->getDoctrine()->getRepository('metaGeneralBundle:Comment\BaseComment');
+        $comment = $repository->findOneById($id);
+
+        if ($comment instanceof CommunityComment) {
+            $userManagerCommunity = $this->getDoctrine()->getRepository('metaUserBundle:UserCommunity')->findOneBy(array('user' => $authenticatedUser, 'community' => $authenticatedUser->getCurrentCommunity(), 'manager' => true));
+            if (!$userManagerCommunity){
+                return new Response($this->get('translator')->trans('invalid.request', array(), 'errors'), 400);
+            }
+        } elseif ($comment instanceof IdeaComment) {
+            if (!$comment->getIdea()->getCreators()->contains($authenticatedUser)){
+                return new Response($this->get('translator')->trans('invalid.request', array(), 'errors'), 400);
+            }
+        } elseif ($comment instanceof StandardProjectComment) {
+            if (!$comment->getStandardProject()->getOwners()->contains($authenticatedUser)){
+                return new Response($this->get('translator')->trans('invalid.request', array(), 'errors'), 400);
+            }
+        } else {
+            return new Response($this->get('translator')->trans('invalid.request', array(), 'errors'), 400);
+        }
+
+        if ($authenticatedUser && $comment && !$comment->isDeleted() && !$comment->hasNote()){
+
+            $comment->setNote($note);
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+
+            $renderedNote = $this->renderView('metaGeneralBundle:Comment:commentNote.html.twig', array('note' => $note));
+            return new Response($renderedNote);
+
         } else {
 
             return new Response($this->get('translator')->trans('invalid.request', array(), 'errors'), 400);

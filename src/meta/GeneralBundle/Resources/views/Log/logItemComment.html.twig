@@ -18,6 +18,17 @@
 
   <span class="text">{% if comment.isDeleted %}<em>{{ "comment.deleted"|trans({}, 'messages', locale) }}</em>{% else %}{{ comment.text|deeplinks|markdown }}{% endif %}</span>
 
+  {% if comment.contextable is defined and comment.contextable == true and comment.note == "" %}
+    <div class="note" style="display: none;">
+      <form action="{{ path('g_note_comment', {'id': comment.id, 'token': csrf_token('addNoteComment')} ) }}" method="post" enctype="multipart/form-data">
+        <textarea name="note" id="note-{{comment.id}}" type="text" placeholder="{{ "comment.note.placeholder"|trans }}" ></textarea>
+        <input type="submit" class="note-add-trigger button button-info" value="{{ "comment.note.button"|trans }}">
+      </form>
+    </div>
+  {% elseif comment.note != "" %}
+    {{ include('metaGeneralBundle:Comment:commentNote.html.twig', {'note':  comment.note}) }}
+  {% endif %}
+
   {% if not comment.isDeleted %}
   <div class="actions">
 
@@ -26,8 +37,14 @@
       <span>{{ comment.validators|length }}</span>
     </span>
 
+    {% if comment.contextable is defined and comment.contextable == true and comment.note == "" %}
+      <a class="note-trigger" title="{{ "comment.note.add"|trans({}, 'messages', locale) }}"><i class="fa fa-sticky-note-o"></i></a>
+    {% elseif comment.note != "" %}
+      <a class="note-added"><i class="fa fa-sticky-note"></i></a>
+    {% endif %}
+  
     {% if comment.user == app.user %}
-    <a class="delete-trigger" data-url="{{ path('g_delete_comment', {'id': comment.id, 'token': csrf_token('deleteComment')} ) }}" title="{{ "comment.delete"|trans({}, 'messages', locale) }}"><i class="fa fa-trash-o"></i></a>
+      <a class="delete-trigger" data-url="{{ path('g_delete_comment', {'id': comment.id, 'token': csrf_token('deleteComment')} ) }}" title="{{ "comment.delete"|trans({}, 'messages', locale) }}"><i class="fa fa-trash-o"></i></a>
     {% endif %}
 
   </div>

@@ -107,6 +107,13 @@ g_delete_comment:
       id: \d+
     methods: [POST]
 
+g_note_comment:
+    path: /comment/add/note/{id}
+    defaults: { _controller: metaGeneralBundle:Default:addNoteComment }
+    requirements:
+      id: \d+
+    methods: [POST]
+
 # Announcements (deported here because /admin is protected)
 
 a_announcements_stat:
