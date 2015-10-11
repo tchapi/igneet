@@ -20,7 +20,16 @@ monolog:
             level: info
 
 assetic:
+    debug: "%kernel.debug%"
     use_controller: true
+    ruby: /usr/local/bin/ruby
+    filters:
+        cssrewrite: ~
+        compass:
+            bin: /usr/local/bin/compass
+            apply_to: "\.s[ac]ss$"
+            images_dir: "%kernel.root_dir%/../web/img"
+            http_path:  "/img"
 
 swiftmailer:
     delivery_address: igneet@tchap.me

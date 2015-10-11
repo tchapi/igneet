@@ -2,14 +2,12 @@
 
 Reste à faire Sprint 1er Novembre :
 
-  Retirer le markdown en base :
-  - tout fait en prod SAUF wiki page : nok yet
-
 Tests Benjy 1er Nov. :
-  ☐  Refaire un point sur la deletion des users
   ☐  Tester la proposition / L'invitation. Vérifier le wording de la page de proposition et du mail
   ☐  Tester les notes de commentaires / traductions des messages d'erreur etc : projets, idées, communauté
   ☐  En prod, faire un tour des wikipages / ideas, et voir si les infos textes (contenu, info) sont correctement formattées
+  ☐  En prod : Vérifier le projet "welcome" : formattage des textes, et ajout des nouvelles fonctionnalités depuis le dernier round
+  ☐  Refaire un point sur la deletion des users : ce que ca delete vraiment, conflits, etc
 
 
 ---------------------------------------------------------------------------------------------------------------
