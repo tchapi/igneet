@@ -106,8 +106,10 @@ class SearchController extends Controller
 
         $rawTotal += 1;
         $result = $rawResult->getTransformed();
-        $highlights = end($rawResult->getResult()->getHighlights()); // Gets the last item of the array
-        $highlight = strip_tags($highlights[0], '<em>');
+        $highlights = $rawResult->getResult()->getHighlights();
+        // Gets the last item of the array
+        $last_highlight = end($highlights);
+        $highlight = strip_tags($last_highlight[0], '<em>');
 
         /* Project */
         /***********/

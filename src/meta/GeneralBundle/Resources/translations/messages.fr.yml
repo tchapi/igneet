@@ -191,9 +191,10 @@ credits: "Crédits"
 creditsHelp: "Merci à tous ces projets sans lesquels construire igneet n'aurait pas été possible."
 # Search
 search:
+  in: "dans"
   title: "Résultats de la recherche « %term% »"
   notice: "Votre recherche a retourné plus de %limit% résultats, certains ne sont pas affichés ci-dessous; pour affiner votre recherche, essayez d'être plus précis"
-  headline: "Le résultats sont triés par type"
+  headline: "La recherche a retourné %count% résultats parmi vos communautés et votre espace privé. Les résultats sont triés par type."
   results:
     title: "Résultats de recherche"
     total: "Nombre total de résultats : %count%"

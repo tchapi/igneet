@@ -44,11 +44,16 @@
         &:first-child { border-top: 1px solid $_sensible; }
         & > div > span {
           display: inline-block;
-          font-size: 0.8em;
-          margin-left: 20px;
+          font-size: 0.9em;
+          margin-left: 10px;
           & > img {
             vertical-align: bottom;
           }
+        }
+        & > div > em {
+          display: inline-block;
+          font-size: 0.9em;
+          margin-left: 10px;
         }
         & > div div.highlight {
           font-size: 0.9em;

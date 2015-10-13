@@ -22,6 +22,7 @@ parameters:
     scheme: http
     elastic_host : localhost
     elastic_port : 9200
+    elastica_auth_header: ""
     shared_projects: []
     uservoice_enabled: false
     uservoice_id: null

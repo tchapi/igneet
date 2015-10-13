@@ -1,9 +1,14 @@
 fos_elastica:
   clients:
-    default: { host: %elastic_host%, port: %elastic_port% }
+    default: 
+      host: %elastic_host%
+      port: %elastic_port%
+      # php -r "Print 'Basic ' . base64_encode('USER' . ':' . 'PASSWORD');"
+      headers: { Authorization: %elastica_auth_header% }
   indexes:
     igneet:
       client: default
+      index_name: igneet_%host%_%kernel.environment%
       finder: ~
       settings:
         index:

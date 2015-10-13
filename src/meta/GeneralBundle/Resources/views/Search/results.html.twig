@@ -6,6 +6,7 @@
   <div class="title">
     <h2>{{ "search.title"|trans({'%term%': term}) }}</h2>
     {% if showNotice %}<h4>{{ "search.notice"|trans({ '%limit%': limit}) }}</h4>{% endif %}
+    <p>{{ "search.headline"|trans({'%count%': total}) }}</p>
 
     <form>
 
@@ -37,7 +38,7 @@
         <li>
           {% if item.picture is not null %}<a href="{{ item.path }}"><img src="{{ asset(item.picture) }}" width="50px" height="50px"/></a>{% endif %}
           <div>
-            <a href="{{ item.path }}">{{ item.title|striptags }}</a>{% if item.extra is defined %}<span>({% if item.extra_picture is not null %}<img src="{{ asset(item.extra_picture) }}" width="15px" height="15px"/> {% endif %}{{ item.extra }}</span>){% endif %}
+            <a href="{{ item.path }}">{{ item.title|striptags }}</a>{% if item.extra is defined %}<em>{{ "search.in"|trans }}</em><span> {% if item.extra_picture is not null %}<img src="{{ asset(item.extra_picture) }}" width="15px" height="15px"/> {% endif %}{{ item.extra }}</span>{% endif %} 
             <div class="highlight">{% if item.highlight is defined %}...{{ item.highlight|raw }}...{% endif %}</div>
           </div>
         </li>

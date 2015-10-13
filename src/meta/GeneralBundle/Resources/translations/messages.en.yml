@@ -191,9 +191,10 @@ credits: "Credits"
 creditsHelp: "Thanks to all these projects with which building igneet was made possible."
 # Search
 search:
+  in: "in"
   title: "Search results for « %term% »"
   notice: "You search returned more than %limit% results, some are not shown here; for better results, try to be more specific"
-  headline: "Results are sorted by type"
+  headline: "The search returned %count% results in all your communities and your private space. Results are sorted by type."
   results:
     title: "Search results"
     total: "Total number of results : %count%"
