@@ -6,11 +6,10 @@
   <div class="title">
     <h2>{{ "search.title"|trans({'%term%': term}) }}</h2>
     {% if showNotice %}<h4>{{ "search.notice"|trans({ '%limit%': limit}) }}</h4>{% endif %}
-    <p>{{ "search.headline"|trans({'%count%': total}) }}</p>
+    {% if total != 0 %}
+      <p>{{ "search.headline"|trans({'%count%': total}) }}</p>
+    {% endif %}
 
-    <form>
-
-    </form>
   </div>
 {% endblock %}
 
