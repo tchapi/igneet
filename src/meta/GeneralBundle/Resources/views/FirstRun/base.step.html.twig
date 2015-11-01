@@ -7,11 +7,11 @@
     <script type="text/javascript">
     $(document).ready(function(){
 
-      if ($('form').length === 1){
+      if ($('form#steps').length === 1){
         
-        $('form').on('submit', function(e){
+        $('form#steps').on('submit', function(e){
           e.preventDefault();
-          $.post($('form').attr('action'), $("form").serialize())
+          $.post($('form#steps').attr('action'), $("form#steps").serialize())
           .done(function(data){
             process(data, "success", null);
           })
@@ -20,14 +20,14 @@
           });
         });
 
-        $(".submit").on('click', function(e){
+        $("form#steps .submit").on('click', function(e){
           e.preventDefault();
-          $('form input[type=submit]').trigger('click');
+          $('form#steps input[type=submit]').trigger('click');
         });
 
       }
       // Prevents Enter key for submitting forms 
-      $("form input[type=text]").each(function(i) {
+      $("form#steps input[type=text]").each(function(i) {
         $(this).keypress(function(event){
           if ( event.which == 13 ) {
              event.preventDefault();

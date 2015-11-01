@@ -25,7 +25,7 @@
 
     <p>{{ "firstrun.steps.createCommunity.text"|trans|raw }}</p>
 
-    <form action="" method="post" {{ form_enctype(form) }}>
+    <form id="steps" action="" method="post" {{ form_enctype(form) }}>
       {{ form_rest(form) }}
       {{ form_row(form._token) }} 
       <input type="submit" style="display: none;">
