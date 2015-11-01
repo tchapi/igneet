@@ -77,15 +77,16 @@ $(document).ready(function() {
     };
 
     var createInterval = function(f, parameters, callback, interval) {
-        return setInterval(function() {
-            f(parameters, callback);
-        }, interval);
-    },
+            return setInterval(function() {
+                f(parameters, callback);
+            }, interval);
+        },
 
-        catchChange = function(dataArray, callback) {
+        catchChange = function(dataArray, callback, lazy) {
             if (dataArray.last !== dataArray.value)  {
                 clearInterval(timers[dataArray.name]);
-                timers[dataArray.name] = createInterval(saveData, dataArray, callback, saveDelay);
+                // LAZY intervalling prevents automatic saving, for special cases like the email inputs
+                if (!lazy) { timers[dataArray.name] = createInterval(saveData, dataArray, callback, saveDelay); }
             }
         };
 
@@ -168,7 +169,7 @@ $(document).ready(function() {
                 key: key,
                 last: last,
                 value: value
-            });
+            }, null, $(this).attr("data-name") === "email"); // Care for the email input on the settings page
         }
     });
     $(document).on('paste', '[contenteditable=true][rich=false], [contenteditable=true][rich=links]', function(e) { // Prevents insertion of markup
