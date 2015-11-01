@@ -1,16 +1,18 @@
 ## TODO ##
 
-Reste à faire Sprint 1er Novembre :
 
-Tests Benjy 1er Nov. :
-  ☐  Tester la proposition / L'invitation. Vérifier le wording de la page de proposition et du mail
-  ☐  Tester les notes de commentaires / traductions des messages d'erreur etc : projets, idées, communauté
-  ☐  En prod, faire un tour des wikipages / ideas, et voir si les infos textes (contenu, info) sont correctement formattées
-  ☐  En prod : Vérifier le projet "welcome" : formattage des textes, et ajout des nouvelles fonctionnalités depuis le dernier round
-  ☐  Refaire un point sur la deletion des users : ce que ca delete vraiment, conflits, etc
+ - OpenId à enlever (Google)
+   * CSS OK
+   * Code NOK
+ - first run : communauté quand entrée
 
+ enlever valid automatique sur les mails dans les parametres : ca va trop vite
 
----------------------------------------------------------------------------------------------------------------
+OK 
+ - project = > listes 
+  en temps réel, le taux de completion de la liste n'est pas bon
+
+Reste à faire :
 
  ☐  Search :
     - mettre un "more" à la fin de chaque type

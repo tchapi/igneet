@@ -51,7 +51,7 @@ class SearchController extends Controller
 
       $queryString = new \Elastica\Query\QueryString();
       $queryString->setDefaultField('_all');
-      $queryString->setQuery($term);
+      $queryString->setQuery($term . "*"); // See http://stackoverflow.com/a/18131292/1741150
       $boolQuery->addMust($queryString);
 
       $query = new \Elastica\Query($boolQuery);
