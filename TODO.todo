@@ -1,14 +1,17 @@
 ## TODO ##
 
 
+
+OK 
+
  - OpenId à enlever (Google)
    * CSS OK
    * Code NOK
- - first run : communauté quand entrée
 
+ - first run : communauté quand entrée
+    
  enlever valid automatique sur les mails dans les parametres : ca va trop vite
 
-OK 
  - project = > listes 
   en temps réel, le taux de completion de la liste n'est pas bon
 
