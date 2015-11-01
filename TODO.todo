@@ -2,12 +2,9 @@
 
 Bugs :
 
-Guest users ne peuvent pas rechercher dans les utilisateurs
-
+ - Guest users ne peuvent pas rechercher dans les utilisateurs
  - OpenId à enlever (Google)
-   * Code NOK
-
- - first run : communauté quand entrée
+   * dans le code
 
 Reste à faire :
 
