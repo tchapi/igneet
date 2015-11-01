@@ -13,7 +13,6 @@
 
   <section class="non-auth">
     <div class="content">
-      <a href="{{ path('fp_openid_security_check', { 'inviteToken': inviteToken, 'openid_identifier': "https://www.google.com/accounts/o8/id" }) }}" class="button"><i class="fa fa-google-plus"></i> Google</a>
       <a href="{{ path('fp_openid_security_check', { 'inviteToken': inviteToken, 'openid_identifier': "https://openid.stackexchange.com/" }) }}" class="button"><i class="fa fa-stack-exchange"></i> StackExchange</a>
       <a href="{{ path('u_signup',{ 'inviteToken': inviteToken}) }}" class="button"><i class="fa fa-envelope"></i> {{ "user.createForm.orSignup"|trans }}</a> 
     </div>

@@ -112,7 +112,7 @@ class SecurityControllerTest extends SecuredWebTestCase
     );
 
     $this->assertCount(
-        3,
+        2,
         $crawler->filter('.content a.button')
     );
 

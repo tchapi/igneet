@@ -9,12 +9,6 @@
     <input id="username" type="text" name="_username" value="{{ last_username }}" placeholder="{{ "user.login.login"|trans }}"/>
     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
     <div class="openid">
-      <a href="{{ path('fp_openid_security_check', { 'openid_identifier': "https://www.google.com/accounts/o8/id" }) }}" title="{{ "user.login.gplus.title"|trans }}" tabindex="-1">
-        <span class="fa-stack fa-lg">
-          <i class="fa fa-square fa-stack-2x"></i>
-          <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
-        </span>
-      </a>
       <a href="{{ path('fp_openid_security_check', { 'openid_identifier': "https://openid.stackexchange.com/" }) }}" title="{{ "user.login.stacke.title"|trans }}" tabindex="-1">
         <span class="fa-stack fa-lg">
           <i class="fa fa-square fa-stack-2x"></i>

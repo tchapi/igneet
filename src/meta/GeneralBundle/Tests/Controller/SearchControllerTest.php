@@ -12,8 +12,8 @@ class SearchControllerTest extends SecuredWebTestCase
   {
     
     $client = static::createClientWithAuthentication();
-    $crawler = $client->request('GET', '/app');
-
+    $crawler = $client->request('GET', '/app/');
+    
     $this->assertEquals(
         Response::HTTP_OK,
         $client->getResponse()->getStatusCode()
@@ -23,10 +23,7 @@ class SearchControllerTest extends SecuredWebTestCase
 
     $crawler = $client->request('GET', '/app/search');
 
-    $this->assertEquals(
-        Response::HTTP_OK,
-        $client->getResponse()->getStatusCode()
-    );
+    $this->assertTrue($client->getResponse()->isRedirect());
 
   }
 

@@ -238,7 +238,7 @@ class CommunityControllerTest extends SecuredWebTestCase
     $client = static::createClientWithAuthentication("test"); // no need to be manager
     $crawler = $client->request('GET', '/app/communities/new');
 
-    $this->assertCount(1, $crawler->filter('form'));
+    $this->assertCount(2, $crawler->filter('form'));
 
     $this->assertEquals(
         Response::HTTP_OK,
