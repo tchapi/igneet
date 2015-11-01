@@ -112,7 +112,7 @@ $(document).ready(function() {
 
     // Calculate progress
     var updateProgress = function(id) {
-        var val = $("ul.slip > li.done").length / ($("ul.slip > li").length - 1) * 100;
+        var val = $("ul.slip.items > li.done").length / ($("ul.slip.items > li").length - 1) * 100;
         if ($('.label-progress[data-list="' + id + '"]').length > 0) { // if there is a progress bar
             $('.label-progress[data-list="' + id + '"] > span').width(val + "%");
         }
