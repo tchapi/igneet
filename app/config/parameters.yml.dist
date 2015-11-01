@@ -26,4 +26,6 @@ parameters:
     shared_projects: []
     uservoice_enabled: false
     uservoice_id: null
+    
+    # Version MUST be the last line here !!!
     version: "CURRENT_VERSION"
