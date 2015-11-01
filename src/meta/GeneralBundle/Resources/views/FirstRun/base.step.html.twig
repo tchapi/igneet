@@ -26,7 +26,15 @@
         });
 
       }
-
+      // Prevents Enter key for submitting forms 
+      $("form input[type=text]").each(function(i) {
+        $(this).keypress(function(event){
+          if ( event.which == 13 ) {
+             event.preventDefault();
+          }
+        });
+      });
+      
     });
     </script>
 {% endblock %}
