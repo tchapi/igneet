@@ -1,16 +1,8 @@
 Igneet
 ===
 
-A tool for communities.
+A tool for communities based on Symfony 2
 
-
-## Credits and license
-
-igneet is developped by [tchapi](https://github.com/tchapi). It is copyrighted material.
-
-© 2014 - tchapi
-
-> For a list of open-source projects user herein, see [the credits](http://igneet.com/app/credits).
 
 ## Code Organisation
 
@@ -99,3 +91,66 @@ To run the unit tests with `phpunit`, you need to add some fixtures first :
 Then you can run the tests (you need more than 300 Mo, so the limit is set to 1Go of memory):
 
     phpunit -d memory_limit=1024M -c app/
+
+
+## Credits and license
+
+See Licence file
+
+List of open-source projects used herein :
+
+#### OpenId Symfony 2 Bundle by formapro
+MIT https://github.com/formapro/FpOpenIdBundle
+This bundle is under the MIT license, by https://github.com/formapro
+
+#### ExposeTranslation Bundle by William Durand
+MIT https://github.com/willdurand/BazingaExposeTranslationBundle
+This bundle is under the MIT license, by William Durand (https://github.com/willdurand)
+
+#### Bourbon & Neat by thoughtbot, inc
+MIT http://bourbon.io/
+Bourbon and NEAT are maintained and funded by thoughtbot, inc.
+
+Bourbon and NEAT are Copyright © 2011-2013 thoughtbot under the MIT License. It is free software, and may be redistributed under the terms specified in the LICENSE file.
+
+#### Alertify by Fabien Doiron
+MIT http://fabien-d.github.io/alertify.js/
+alertify.js is licensed under MIT, copyright © Fabien Doiron
+
+#### Redactor.js
+MIT https://github.com/html5cat/redactor-js
+Redactor below version 7.6.2 is under the MIT License. See : https://github.com/html5cat/redactor-js
+
+#### Dropzone.js by enyo
+MIT https://github.com/enyo/dropzone
+Dropzone is under the MIT License. See : https://github.com/enyo/dropzone
+
+#### Font Awesome by Dave Gandy
+SIL / MIT / CC BY 3.0 http://fortawesome.github.com/Font-Awesome
+The Font Awesome font is licensed under the SIL Open Font License - http://scripts.sil.org/OFL.
+
+Font Awesome CSS, LESS, and SASS files are licensed under the MIT License - http://opensource.org/licenses/mit-license.html.
+
+The Font Awesome pictograms are licensed under the CC BY 3.0 License - http://creativecommons.org/licenses/by/3.0/
+
+#### jCrop jQuery plugin by Kelly Hallman
+MIT http://deepliquid.com/projects/Jcrop
+© 2008-2010 Kelly Hallman
+
+Free software released under MIT License
+
+#### Nestable jQuery Plugin by David Bushell
+BSD + MIT https://github.com/tchapi/Nestable
+Copyright (c) 2013 David Bushell - http://dbushell.com/
+
+Contributions by tchapi (https://github.com/tchapi) - https://github.com/tchapi/Nestable
+
+Dual-licensed under the BSD or MIT licenses
+
+#### Linecons UI icons
+CC BY 3.0 http://designmodo.com/linecons-free
+Polaris UI and Linecons is licensed under a Creative Commons Attribution 3.0 Unported (CC BY 3.0) (http://creativecommons.org/licenses/by/3.0/)
+
+#### Markdown Bundle
+MIT https://github.com/KnpLabs/KnpMarkdownBundle
+Provide markdown conversion (based on Michel Fortin work).
